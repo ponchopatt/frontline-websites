@@ -1,11 +1,11 @@
 slug,url,industry,template,status,notes
-sunset-pools,https://www.sunsetpools.com.au,pools,trust,building,
+sunset-pools,https://www.sunsetpools.com.au,pools,trust,rework,Built and passing check. Independent review 4.0 then 4.3 (pass is 4.5). One blocker left: at 390px the pinned rooftop section puts two of three headline lines behind the sticky call bar. Was mid-rework when the limit hit.
 arizona-roofing,https://arizonaroofing.com.au,roofing,quote,needs-pat,No photos of their own work. All 40 images on their site are stock or Roofix theme demo content; 11 gallery files share one Photoshop export batch. Needs a photo folder from Oscar. Everything else is ready.
-utopian-landscaping,http://www.utopianlandscaping.com.au,landscaping,trust,building,
-south-coast-landscapes,https://southcoastlandscapes.com.au,landscaping,trust,building,
-lmac,https://www.lmac.com.au,air-conditioning,quote,building,
-greenway-landscapes,https://www.greenwaylandscapes.com.au,landscaping,trust,building,
-dp-landscaping,http://dplandscaping.com.au,landscaping,trust,building,
+utopian-landscaping,http://www.utopianlandscaping.com.au,landscaping,trust,rework,"Built and passing check. Independent review 3.7. Five unsourced claims to cut, a damaged logo knockout, and one job used in three slots. Was mid-rework when the limit hit."
+south-coast-landscapes,https://southcoastlandscapes.com.au,landscaping,trust,review,Built and passing check. Self-scored 4.7; the independent review was killed by the limit before it reported. Needs one review pass.
+lmac,https://www.lmac.com.au,air-conditioning,quote,review,Built and passing check. Self-scored 4.67; no independent review has run. Needs one review pass.
+greenway-landscapes,https://www.greenwaylandscapes.com.au,landscaping,trust,part-built,"Brief and config written, photos downloaded, not yet built. Builder was killed mid-run by the limit."
+dp-landscaping,http://dplandscaping.com.au,landscaping,trust,part-built,"Photos downloaded and config started, no brief, not built. Builder was killed mid-run by the limit."
 horgan-building,https://www.horganbuildingandrenovations.com.au,builders,trust,todo,
 nb-earthmoving,https://www.northernbeachesearthmoving.com.au,landscaping,trust,todo,
 karanda-interiors,https://www.karanda.com.au,kitchens-joinery,trust,todo,
