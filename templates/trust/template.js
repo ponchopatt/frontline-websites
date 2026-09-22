@@ -74,7 +74,7 @@ ${work(cfg, copy)}
 ${beforeAfter(cfg, { title: copy.beforeAfterTitle, intro: copy.beforeAfterIntro })}
 ${process(cfg, copy)}
 ${owner(cfg, copy)}
-${reviews(cfg, { title: copy.reviewsTitle ?? 'What clients say.', intro: copy.reviewsIntro })}
+${reviews(cfg, { title: copy.reviewsTitle ?? 'What clients say.', intro: copy.reviewsIntro, headClass: 't-d1', kicker: copy.reviewsLabel, kickerClass: 't-label' })}
 ${recognition(cfg, copy)}
 ${areas(cfg, copy)}
 ${faq(cfg, copy)}
