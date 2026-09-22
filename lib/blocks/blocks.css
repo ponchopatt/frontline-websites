@@ -206,3 +206,7 @@ footer .foot a {
   align-items: center;
   min-height: 44px;
 }
+
+/* ?clean=1, or dismissed earlier in this tab. Decided by the inline script in
+   the head, so the page never paints one state and then jumps to the other. */
+html.fl-clean .fl-demobar { display: none; }

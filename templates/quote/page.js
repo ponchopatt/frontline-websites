@@ -625,15 +625,14 @@
     var key = 'fl-demobar-' + (CFG.slug || 'demo');
     var dismissed = false;
     try { dismissed = sessionStorage.getItem(key) === 'off'; } catch (e) { /* private mode */ }
-    if (new URLSearchParams(location.search).has('clean') || dismissed) return;
-    bar.hidden = false;
+    if (html.classList.contains('fl-clean')) return;
     document.body.classList.add('has-demobar');
     function size() { html.style.setProperty('--demobar-h', bar.offsetHeight + 'px'); }
     size();
     window.addEventListener('resize', size, { passive: true });
     var close = $('demoClose');
     if (close) close.addEventListener('click', function () {
-      bar.hidden = true;
+      html.classList.add('fl-clean');
       document.body.classList.remove('has-demobar');
       html.style.setProperty('--demobar-h', '0px');
       try { sessionStorage.setItem(key, 'off'); } catch (e) { /* private mode */ }

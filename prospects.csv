@@ -1,0 +1,9 @@
+# One prospect per line. Columns: slug, url, industry
+# industries: pools, landscaping, builders, granny-flats, kitchens-joinery,
+#             bathrooms, roofing, air-conditioning, solar-batteries, fencing,
+#             concreting, decks-pergolas, glazing
+slug,url,industry
+horgan-building,horganbuildingandrenovations.com.au,builders
+south-coast-landscapes,southcoastlandscapes.com.au,landscaping
+nulook-pools,nulookpools.com.au,pools
+arizona-roofing,arizonaroofing.com.au,roofing

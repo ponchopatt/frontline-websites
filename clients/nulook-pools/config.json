@@ -1,0 +1,139 @@
+{
+  "_comment": "Built by npm run new from nulookpools.com.au. IMPORTANT: every usable image on their current site is an iStock stock photo, so this demo has NO photographs of their own work and no hero. Ask them for their photo folder before sending it — that is also the strongest thing to open the call with. Reviews are empty until pasted from their Google profile.",
+  "slug": "nulook-pools",
+  "template": "trust",
+  "industry": "pools",
+  "live": false,
+  "business": {
+    "name": "Nulook Pools",
+    "ownerName": "",
+    "ownerFirstName": "",
+    "phone": {
+      "display": "0411 055 329",
+      "e164": "+61411055329"
+    },
+    "email": "office@nulookpools.com.au",
+    "abn": "36 149 626 826",
+    "baseSuburb": "Canberra",
+    "region": "ACT",
+    "currentSite": "nulookpools.com.au",
+    "brand": {
+      "accent": "#1E8FA8",
+      "accent2": "#E8963C",
+      "themeColor": "#0A1418"
+    }
+  },
+  "responsePromise": "We come back to every enquiry within a day.",
+  "copy": {
+    "title": "Nulook Pools | Canberra's swimming pool specialists",
+    "description": "Swimming pool construction and renovation in Canberra. Thirty years building pools across the ACT.",
+    "ctaLabel": "Start a conversation",
+    "kicker": "Canberra, ACT",
+    "headline": "Canberra's pool<br>specialists.",
+    "sub": "Thirty years building and renovating swimming pools across the ACT.",
+    "heroSecondary": "Or send the details",
+    "heroSecondarySms": "Or text us a photo",
+    "servicesLabel": "What we do",
+    "servicesHeadline": "Pools, built<br>and rebuilt.",
+    "processLabel": "How it runs",
+    "processHeadline": "Four steps,<br>no surprises.",
+    "reviewsTitle": "What owners say.",
+    "areasLabel": "Where we work",
+    "areasHeadline": "Canberra and<br>the ACT.",
+    "faqLabel": "Before you call",
+    "faqHeadline": "Questions we are asked.",
+    "enquireLabel": "Start a conversation",
+    "enquireHeadline": "Tell us about<br>the space.",
+    "enquireIntro": "Tell us about the block and what you want from it, and we will come and look."
+  },
+  "stats": {
+    "yearsInBusiness": 30,
+    "googleRating": null,
+    "reviewCount": null,
+    "jobsDone": null
+  },
+  "services": [
+    {
+      "title": "Concrete pools",
+      "blurb": "Built to the block and the way you will actually use it."
+    },
+    {
+      "title": "Pool renovations",
+      "blurb": "Resurfacing, tiling, coping and plant, on pools that have earned it."
+    },
+    {
+      "title": "Pool and surrounds",
+      "blurb": "Paving, fencing and planting done with the pool, not after it."
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "Canberra",
+      "suburbs": [
+        "Canberra",
+        "Belconnen",
+        "Gungahlin",
+        "Woden",
+        "Tuggeranong",
+        "Queanbeyan"
+      ],
+      "_check": true
+    }
+  ],
+  "credentials": [
+    {
+      "kind": "licence",
+      "label": "Licence",
+      "number": "236338C"
+    }
+  ],
+  "photos": {
+    "gallery": [],
+    "beforeAfter": []
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [],
+  "_todo_reviews": "Paste their Google reviews here, word for word, as {\"name\": \"...\", \"text\": \"...\"}. Never write one.",
+  "form": {
+    "accessKey": ""
+  },
+  "_source": {
+    "url": "https://nulookpools.com.au",
+    "platform": "unknown",
+    "pagesRead": [
+      "home",
+      "contact"
+    ],
+    "aboutText": "",
+    "socials": {},
+    "stockLookingPhotos": [
+      "https://lirp.cdn-website.com/d9c2c926/dms3rep/multi/opt/iStock-1156523427-1920w.jpg",
+      "https://lirp.cdn-website.com/d9c2c926/dms3rep/multi/opt/iStock-1155925239-1920w.jpg",
+      "https://irp.cdn-website.com//d9c2c926/dms3rep/multi/opt/iStock-1003246122-2880w.jpg"
+    ]
+  },
+  "_check": [
+    "business.name",
+    "business.phone.display",
+    "business.email",
+    "business.abn",
+    "stats.yearsInBusiness",
+    "business.brand.accent",
+    "services",
+    "serviceAreas",
+    "googleReviewsUrl",
+    "googleWriteReviewUrl"
+  ],
+  "tagline": "Canberra's swimming pool specialists.",
+  "schemaType": "GeneralContractor",
+  "owner": {
+    "body": "",
+    "facts": [
+      {
+        "value": "30",
+        "label": "Years building pools"
+      }
+    ]
+  }
+}

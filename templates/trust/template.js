@@ -12,8 +12,8 @@ import { heroMedia } from '../../lib/blocks/hero-media.js';
 import { beforeAfter } from '../../lib/blocks/before-after.js';
 import { reviews } from '../../lib/blocks/reviews.js';
 import { enquiryForm, thanksPanel, FORM_CLASSES } from '../../lib/blocks/form.js';
-import { demoBanner, demoFooterNote, robotsMeta } from '../../lib/blocks/demo.js';
-import { headMeta, jsonLd } from '../../lib/blocks/schema.js';
+import { demoBanner, demoBannerHeadScript, demoFooterNote, robotsMeta } from '../../lib/blocks/demo.js';
+import { headMeta, jsonLd, faviconLink } from '../../lib/blocks/schema.js';
 
 const ICON = {
   phone: raw('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>'),
@@ -50,9 +50,10 @@ ${robotsMeta(cfg)}
 <!-- Set before first paint. Anything that may only be hidden while JS can put
      it back is scoped to html[data-js], so a no-JS visitor never loses content. -->
 <script>document.documentElement.dataset.js="1"</script>
+${demoBannerHeadScript(cfg)}
 ${cfg.siteUrl ? `<link rel="canonical" href="${escAttr(cfg.siteUrl)}">` : ''}
 ${headMeta(cfg, { title, description, canonical: cfg.siteUrl })}
-${cfg.icons?.favicon ? `<link rel="icon" href="${escAttr(cfg.icons.favicon)}"${/\.svg$/i.test(cfg.icons.favicon) ? ' type="image/svg+xml"' : ''}>` : ''}
+${faviconLink(cfg)}
 ${cfg.icons?.apple ? `<link rel="apple-touch-icon" href="${escAttr(cfg.icons.apple)}">` : ''}
 ${(cfg.fonts ?? []).map((f) => `<link rel="preload" as="font" type="font/woff2" crossorigin href="${escAttr(f)}">`).join('\n')}
 ${heroPreload(cfg)}

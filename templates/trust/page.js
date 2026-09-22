@@ -52,15 +52,14 @@
     var key="fl-demobar-"+(CFG.slug||"demo");
     var dismissed=false;
     try{ dismissed=sessionStorage.getItem(key)==="off" }catch(e){}
-    if(new URLSearchParams(location.search).has("clean")||dismissed) return;
-    bar.hidden=false;
+    if(document.documentElement.classList.contains("fl-clean")) return;
     document.body.classList.add("has-demobar");
     function sizeBar(){ document.documentElement.style.setProperty("--demobar-h",bar.offsetHeight+"px"); }
     sizeBar();
     window.addEventListener("resize",sizeBar,{passive:true});
     var close=$("demoClose");
     if(close) close.addEventListener("click",function(){
-      bar.hidden=true;
+      document.documentElement.classList.add("fl-clean");
       document.body.classList.remove("has-demobar");
       document.documentElement.style.setProperty("--demobar-h","0px");
       try{ sessionStorage.setItem(key,"off") }catch(e){}

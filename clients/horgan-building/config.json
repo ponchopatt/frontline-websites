@@ -1,0 +1,328 @@
+{
+  "_comment": "Built by npm run new from horganbuildingandrenovations.com.au, then filled in by hand from their own About text. Everything still in _check is unconfirmed. Reviews are empty until they are pasted from their Google profile, word for word.",
+  "slug": "horgan-building",
+  "template": "trust",
+  "industry": "builders",
+  "live": false,
+  "business": {
+    "name": "Horgan Building & Renovations",
+    "ownerName": "Darryn Horgan",
+    "ownerFirstName": "Darryn",
+    "phone": {
+      "display": "0412 497 299",
+      "e164": "+61412497299"
+    },
+    "email": "darrynlisahbr@gmail.com",
+    "abn": "93 612 377 689",
+    "baseSuburb": "Bomaderry",
+    "region": "NSW",
+    "currentSite": "horganbuildingandrenovations.com.au",
+    "brand": {
+      "accent": "#3C4BA6",
+      "accent2": "#B3541E",
+      "themeColor": "#0A1418"
+    },
+    "logo": {
+      "src": "assets/logo.webp",
+      "width": 1206,
+      "height": 465
+    }
+  },
+  "responsePromise": "Darryn reads every enquiry himself and comes back within a day.",
+  "copy": {
+    "title": "Horgan Building & Renovations | Builder, Bomaderry and the South Coast",
+    "description": "Building, renovations and extensions across Bomaderry and the South Coast. Owner-operated by Darryn Horgan, 35 years in the industry. New homes, extensions, renovations, outdoor living and granny flats.",
+    "ctaLabel": "Start a conversation",
+    "kicker": "Bomaderry and the South Coast",
+    "headline": "Built by the man<br>who quotes it.",
+    "sub": "Building, renovations and extensions. Darryn Horgan has been in the industry 35 years and owner-operated for 23 of them, so the person who prices your job is the person on site.",
+    "heroSecondary": "Or send the details",
+    "heroSecondarySms": "Or text us a photo",
+    "navApproach": "Approach",
+    "statementLabel": "The difference",
+    "statementHeadline": "Owner-operated,<br>for 23 years.",
+    "statementBody": "Twenty-three years running his own business, and thirty-five in the industry before and during it. There is no site manager between you and the person doing the work.",
+    "servicesLabel": "What we build",
+    "servicesHeadline": "New homes, extensions,<br>and everything between.",
+    "servicesIntro": "Quality workmanship and attention to detail, on jobs from a single room to a whole house.",
+    "workLabel": "Selected work",
+    "workHeadline": "Recent jobs across<br>the South Coast.",
+    "processLabel": "How it runs",
+    "processHeadline": "Three steps,<br>no surprises.",
+    "ownerLabel": "Who you are dealing with",
+    "reviewsTitle": "What clients say.",
+    "recognitionLabel": "Credentials",
+    "recognitionHeadline": "Licensed and<br>accountable.",
+    "areasLabel": "Where we work",
+    "areasHeadline": "Bomaderry and<br>the South Coast.",
+    "areasIntro": "Based in Bomaderry, working across the surrounding areas.",
+    "faqLabel": "Before you call",
+    "faqHeadline": "Questions we are asked.",
+    "enquireLabel": "Start a conversation",
+    "enquireHeadline": "Tell us about<br>the job.",
+    "enquireIntro": "Darryn reads every enquiry. The more you can tell us about the property and what you want from it, the more useful the first conversation will be."
+  },
+  "stats": {
+    "yearsInBusiness": 35,
+    "googleRating": null,
+    "reviewCount": null,
+    "jobsDone": null
+  },
+  "services": [
+    {
+      "title": "Extensions",
+      "blurb": "More room without moving. We work through levels, access and how the new part meets the old before anything is priced.",
+      "photo": {
+        "src": "assets/20240924-100456-1920w-800.webp",
+        "srcset": "assets/20240924-100456-1920w-800.webp 800w, assets/20240924-100456-1920w-1800.webp 1800w",
+        "width": 800,
+        "height": 600,
+        "alt": "Poolside scene at sunset. Pool surrounded by light stone, with furniture and a house in the background."
+      }
+    },
+    {
+      "title": "Renovations",
+      "blurb": "Kitchens, bathrooms and whole-house work, done by the same hands that quoted it.",
+      "photo": {
+        "src": "assets/20230805-094353-1920w-800.webp",
+        "srcset": "assets/20230805-094353-1920w-800.webp 800w, assets/20230805-094353-1920w-1800.webp 1800w",
+        "width": 800,
+        "height": 600,
+        "alt": "House under construction; brick facade, scaffolding, ladder, and construction materials."
+      }
+    },
+    {
+      "title": "Design and Planning",
+      "blurb": "Drawings and approvals sorted before a tool comes out, so the price you sign is the price you pay.",
+      "photo": {
+        "src": "assets/20240731-110813-1-1920w-800.webp",
+        "srcset": "assets/20240731-110813-1-1920w-800.webp 800w, assets/20240731-110813-1-1920w-1800.webp 1800w",
+        "width": 800,
+        "height": 1067,
+        "alt": "House under construction, wooden deck frame visible, with a yellow house in the background."
+      }
+    },
+    {
+      "title": "Construction",
+      "blurb": "New homes and outdoor living, built to the drawing and finished properly.",
+      "photo": {
+        "src": "assets/20240731-110809-1920w-800.webp",
+        "srcset": "assets/20240731-110809-1920w-800.webp 800w, assets/20240731-110809-1920w-1800.webp 1800w",
+        "width": 800,
+        "height": 600,
+        "alt": "Construction site with workers on ladders rebuilding a patio and house with a rural backdrop."
+      }
+    },
+    {
+      "title": "Granny flats",
+      "blurb": "A second dwelling done properly: siting, approvals and build, with the rules for your block checked first.",
+      "photo": {
+        "src": "assets/20240731-110809-1920w-800.webp",
+        "srcset": "assets/20240731-110809-1920w-800.webp 800w, assets/20240731-110809-1920w-1800.webp 1800w",
+        "width": 800,
+        "height": 600,
+        "alt": ""
+      }
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "South Coast",
+      "suburbs": [
+        "Bomaderry",
+        "Nowra",
+        "Berry",
+        "Shoalhaven Heads",
+        "Cambewarra",
+        "Terara",
+        "North Nowra",
+        "Worrigee"
+      ],
+      "_check": true
+    }
+  ],
+  "credentials": [
+    {
+      "kind": "claim",
+      "label": "Owner-operated since 2003",
+      "strip": true,
+      "_check": true
+    },
+    {
+      "kind": "claim",
+      "label": "35 years in the industry",
+      "strip": true,
+      "_check": true
+    }
+  ],
+  "photos": {
+    "hero": {
+      "src": "assets/20230805-094328-1920w-800.webp",
+      "srcset": "assets/20230805-094328-1920w-800.webp 800w, assets/20230805-094328-1920w-1800.webp 1800w",
+      "width": 800,
+      "height": 600,
+      "alt": "Modern kitchen with dark wood cabinets, marble countertops, and accent lighting."
+    },
+    "gallery": [
+      {
+        "src": "assets/20250914-121057-1920w-800.webp",
+        "srcset": "assets/20250914-121057-1920w-800.webp 800w, assets/20250914-121057-1920w-1800.webp 1800w",
+        "width": 800,
+        "height": 600,
+        "alt": "Interior of a decaying barn; wooden beams, corrugated roof, sunlight streaming through openings, dusty floor.",
+        "full": "assets/20250914-121057-1920w-1800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/20240924-100456-1920w-800.webp",
+        "srcset": "assets/20240924-100456-1920w-800.webp 800w, assets/20240924-100456-1920w-1800.webp 1800w",
+        "width": 800,
+        "height": 600,
+        "alt": "Poolside scene at sunset. Pool surrounded by light stone, with furniture and a house in the background.",
+        "full": "assets/20240924-100456-1920w-1800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/20230805-094353-1920w-800.webp",
+        "srcset": "assets/20230805-094353-1920w-800.webp 800w, assets/20230805-094353-1920w-1800.webp 1800w",
+        "width": 800,
+        "height": 600,
+        "alt": "House under construction; brick facade, scaffolding, ladder, and construction materials.",
+        "full": "assets/20230805-094353-1920w-1800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/20240731-110813-1-1920w-800.webp",
+        "srcset": "assets/20240731-110813-1-1920w-800.webp 800w, assets/20240731-110813-1-1920w-1800.webp 1800w",
+        "width": 800,
+        "height": 1067,
+        "alt": "House under construction, wooden deck frame visible, with a yellow house in the background.",
+        "full": "assets/20240731-110813-1-1920w-1800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/20240731-110809-1920w-800.webp",
+        "srcset": "assets/20240731-110809-1920w-800.webp 800w, assets/20240731-110809-1920w-1800.webp 1800w",
+        "width": 800,
+        "height": 600,
+        "alt": "Construction site with workers on ladders rebuilding a patio and house with a rural backdrop.",
+        "full": "assets/20240731-110809-1920w-1800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/20230805-094504-1920w-800.webp",
+        "srcset": "assets/20230805-094504-1920w-800.webp 800w, assets/20230805-094504-1920w-1800.webp 1800w",
+        "width": 800,
+        "height": 600,
+        "alt": "Interior with staircase leading to a balcony, featuring white walls, paper lanterns, and wooden accents.",
+        "full": "assets/20230805-094504-1920w-1800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/20230805-094416-1920w-800.webp",
+        "srcset": "assets/20230805-094416-1920w-800.webp 800w, assets/20230805-094416-1920w-1800.webp 1800w",
+        "width": 800,
+        "height": 600,
+        "alt": "Black cabin with large windows, deck, and a grill on a cloudy day.",
+        "full": "assets/20230805-094416-1920w-1800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/20250914-115653-1920w-800.webp",
+        "srcset": "assets/20250914-115653-1920w-800.webp 800w, assets/20250914-115653-1920w-1800.webp 1800w",
+        "width": 800,
+        "height": 600,
+        "alt": "Spacious home interior with dark blue accent wall, hardwood floors, dining area with Persian rug, and living room visible.",
+        "full": "assets/20250914-115653-1920w-1800.webp",
+        "caption": ""
+      }
+    ],
+    "beforeAfter": []
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [],
+  "_todo_reviews": "Paste their Google reviews here, word for word, as {\"name\": \"...\", \"text\": \"...\"}. Never write one.",
+  "form": {
+    "accessKey": ""
+  },
+  "_source": {
+    "url": "https://horganbuildingandrenovations.com.au",
+    "platform": "Duda",
+    "pagesRead": [
+      "home",
+      "gallery",
+      "contact"
+    ],
+    "aboutText": "At Horgan Building & Renovations, we provide expert building, renovation, and extension services across Bomaderry and surrounding areas. With over 35 years of experience in the building industry and 23 years running our owner-operated business, Darryn Horgan delivers hands-on support and personalised service on every project. From new homes and extensions to renovations, outdoor living spaces, and granny flats, we focus on quality workmanship, attention to detail, and customer satisfaction, turning your vision into reality.\n\nAt Horgan Building & Renovations, we provide expert building, renovation, and extension services across Bomaderry and surrounding areas. With over 35 years of experience in the building industry and 23 years running our owner-operated business, Darryn Horgan delivers hands-on support and personalised service on every project. From new homes and extensions to renovations, outdoor living spaces, and granny flats, we focus on quality workmanship, attention to detail, and customer satisfaction, turning your vision into reality.\n\nAt Horgan Building & Renovations, we provide expert building, renovation, and extension services across Bomaderry and surrounding areas. With over 35 years of experience in the building industry and 23 years running our owner-operated business, Darryn Horgan delivers hands-on support and personalised service on every project. From new homes and extensions to renovations, outdoor living spaces, and granny flats, we focus on quality workmanship, attention to detail, and customer satisfaction, turning your vision into reality.",
+    "socials": {},
+    "stockLookingPhotos": [
+      "https://irp.cdn-website.com/c69da464/dms3rep/multi/opt/GettyImages-1270237767-1920w.jpg",
+      "https://irp.cdn-website.com/c69da464/dms3rep/multi/opt/GettyImages-157480478-1920w.JPG",
+      "https://irp.cdn-website.com/c69da464/dms3rep/multi/opt/GettyImages-1305506144-1920w.JPG"
+    ]
+  },
+  "_check": [
+    "business.name",
+    "business.email",
+    "business.abn",
+    "stats.yearsInBusiness",
+    "business.brand.accent",
+    "services",
+    "photos.hero",
+    "photos.gallery",
+    "googleReviewsUrl",
+    "googleWriteReviewUrl"
+  ],
+  "tagline": "Building, renovations and extensions across Bomaderry and the South Coast.",
+  "schemaType": "HomeAndConstructionBusiness",
+  "owner": {
+    "body": "Owner-operator. Thirty-five years in the building industry, twenty-three of them running this business, which means the person who quotes your job is the person who turns up to build it.",
+    "facts": [
+      {
+        "value": "35",
+        "label": "Years in the industry"
+      },
+      {
+        "value": "23",
+        "label": "Years owner-operated"
+      }
+    ]
+  },
+  "process": [
+    {
+      "step": "Tell us about the job",
+      "detail": "A few details and a photo or two is enough to start. Darryn will tell you straight away if it is something he takes on."
+    },
+    {
+      "step": "He comes and looks",
+      "detail": "Measurements, access and what you actually want, then a fixed price in writing with the inclusions spelled out."
+    },
+    {
+      "step": "We book it in",
+      "detail": "You pick a start date. The same person who quoted it runs the site."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Who will actually be on site?",
+      "a": "Darryn. He has been owner-operated for twenty-three years, which is the whole point — you are not handed to a site manager after you sign."
+    },
+    {
+      "q": "How much does an extension cost?",
+      "a": "It depends on size, access and how much of the existing house gets touched. We give you a real number after seeing it, not a per-square-metre guess over the phone."
+    },
+    {
+      "q": "Do you handle approvals?",
+      "a": "Yes. Design, drawings and the certifier are part of the job, so you are not chasing paperwork."
+    },
+    {
+      "q": "Can we live in the house during the build?",
+      "a": "Often yes, depending on what is being touched. We will be straight with you about what it will be like."
+    },
+    {
+      "q": "How do variations work?",
+      "a": "In writing, priced, and approved by you before the work happens. No surprises on the final invoice."
+    }
+  ]
+}
