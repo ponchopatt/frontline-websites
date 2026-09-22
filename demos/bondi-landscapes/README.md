@@ -111,6 +111,9 @@ The only thing it changes for the pitch:
 - [ ] Years in business — his site says 16+ in the meta description and 20+ in the body; which?
 - [ ] Whether the named projects can be used publicly, and their real job names
 - [ ] Form destination — needs a Web3Forms access key, or point it at his inbox
+- [ ] The pre-written text message wording — it currently reads: "Hi Antony, I'd like a
+      quote. Suburb: / What I'm after: / (Happy to send photos of the space.)" Edit it in
+      `SITE.smsBody`, which is the single source for every text button on the page.
 - [ ] Service area list — currently a sensible Eastern Suburbs list, not his actual coverage
 - [ ] Any pricing or timeframe claims
 
