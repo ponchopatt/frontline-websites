@@ -12,7 +12,7 @@ serving Sydney's Eastern Suburbs.
 | | |
 |---|---|
 | Principal | Antony Aris — licensed landscape contractor **and** licensed pool builder, 20+ years |
-| Team named in reviews | Matt, Jacob, Max |
+| Team named in reviews | Matt, Max, Tom, Sam, Jacob |
 | Phone | 0412 154 594 |
 | Email | antony@bondilandscapes.com.au |
 | Current site | bondilandscapes.com.au (WordPress) |
@@ -73,9 +73,41 @@ grounds (2.67:1 on bone) so it is never used for text on light sections.
 
 Fonts are self-hosted in `fonts/`: Fraunces (display) and Hanken Grotesk (body).
 
+## Their Google reviews — what we actually know
+
+Pat pulled the review list on 22 Sep 2026. Roughly 27 reviews are visible, spanning
+eight years, with the owner replying to many of them. Notable:
+
+- **Most recent: three weeks old** (Wayne Towers) and two months old (Amy Land), so the
+  profile is live and they are still winning work.
+- **Repeat clients**: David Walsh has used them for three separate jobs.
+- **Longevity of the work**: Debbie Tan's bamboo screen is still thriving years on.
+- **Team named individually by clients**: Max, Tom, Sam, Matt, Jacob.
+- **Positioning in a client's own words**: "this small family-run business".
+- **Exotic Nurseries' "nearly 10 years" quote is itself eight years old**, so that supply
+  relationship now runs to roughly eighteen. Do not repeat the stale number.
+
+### ⚠ There is one negative review
+
+**Lars Verheyen**, two years ago: *"I don't like to leave negative reviews but having hired
+Bondi Landscapes is a decision I deeply regret and I want to avoid that others make the
+same mistake."* It carries two reactions, so people have seen it.
+
+This matters for the call, not for the site:
+
+1. **Their rating is not 5.0.** Do not say or imply it is.
+2. **Do not raise it.** You are calling about a hacked website. Bringing up a bad review
+   uninvited puts him on the defensive in the first minute.
+3. **Be ready if he raises it.** Plenty of firms have one. It is not a reason to walk away
+   from the pitch, and the honest line is that a good site pushes twenty-six good reviews
+   in front of people rather than leaving them to find the one bad one on Google.
+
 ## To confirm with Antony before this could ever go live
 
-- [ ] Google rating and review count — **not confirmed**, deliberately left out rather than guessed
+- [ ] Google rating and review count — **still not confirmed**, deliberately left off the
+      page rather than guessed. Roughly 27 reviews visible, at least one of them negative.
+- [ ] How far back the Exotic Nurseries relationship actually goes (the page says "close to
+      two decades", inferred from an eight-year-old quote)
 - [ ] Years in business — his site says 16+ in the meta description and 20+ in the body; which?
 - [ ] Whether the named projects can be used publicly, and their real job names
 - [ ] Form destination — needs a Web3Forms access key, or point it at his inbox
