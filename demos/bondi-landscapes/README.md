@@ -87,20 +87,20 @@ eight years, with the owner replying to many of them. Notable:
 - **Exotic Nurseries' "nearly 10 years" quote is itself eight years old**, so that supply
   relationship now runs to roughly eighteen. Do not repeat the stale number.
 
-### ⚠ There is one negative review
+### ⚠ There is one 1-star review
 
-**Lars Verheyen**, two years ago: *"I don't like to leave negative reviews but having hired
-Bondi Landscapes is a decision I deeply regret and I want to avoid that others make the
-same mistake."* It carries two reactions, so people have seen it.
+**Lars Verheyen**, two years ago, confirmed 1 star: *"I don't like to leave negative reviews
+but having hired Bondi Landscapes is a decision I deeply regret and I want to avoid that
+others make the same mistake."* It carries two reactions, so people have seen it.
 
-This matters for the call, not for the site:
+**It is not on the demo and will not be.** Pat will decide how to handle it if and when this
+becomes a real build. Nothing to do here.
 
-1. **Their rating is not 5.0.** Do not say or imply it is.
-2. **Do not raise it.** You are calling about a hacked website. Bringing up a bad review
-   uninvited puts him on the defensive in the first minute.
-3. **Be ready if he raises it.** Plenty of firms have one. It is not a reason to walk away
-   from the pitch, and the honest line is that a good site pushes twenty-six good reviews
-   in front of people rather than leaving them to find the one bad one on Google.
+The only thing it changes for the pitch:
+
+1. **Their rating is not 5.0.** Do not say or imply it is — which is also why no star rating
+   appears anywhere on the page.
+2. **Do not raise it on the call.** You are ringing about a hacked website.
 
 ## To confirm with Antony before this could ever go live
 
