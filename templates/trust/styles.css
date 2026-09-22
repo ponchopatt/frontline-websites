@@ -79,6 +79,40 @@
   --pad:clamp(88px,10vw,168px);
   --header-h:78px;
   --ease:cubic-bezier(.16,1,.3,1);
+
+  /* ------------------------------------------------------------------------
+     The shared-block contract.
+
+     lib/blocks/blocks.css styles the blocks both templates use — reviews,
+     stats bar, response promise, before/after, form — against --fl-* tokens,
+     so one stylesheet can wear either template's clothes. The quote template
+     declared them and this one never did, so every --fl-* resolved to nothing:
+     the review cards lost their background and border, the quote floated on
+     the page ground, the footer inside each card picked up --bg-card and
+     rendered as a detached grey slab, and the section heading came out at 22px
+     next to 100px headings everywhere else. On the one section whose whole job
+     is proof.
+
+     It survived because demos/bondi-landscapes, the reference this template was
+     extracted from, uses none of those blocks — and because `check` looks at
+     what the page SAYS, not at whether its CSS variables resolve. Both gaps are
+     now closed: every token below is defined, and tools/css-vars.mjs fails on
+     an unresolved one.
+     ---------------------------------------------------------------------- */
+  --fl-bg:var(--bg);
+  --fl-surface:var(--bg-card);
+  --fl-ink:var(--fg);
+  --fl-mute:var(--fg-mute);
+  --fl-accent:var(--accent);
+  --fl-accent-ink:#06100E;
+  --fl-line:var(--line);
+  --fl-line-2:var(--line-2);
+  --fl-radius:4px;              /* this template is squarer than the other */
+  --fl-gut:var(--gut);
+  --fl-wrap:var(--wrap);
+  --fl-display:var(--font-display);
+  --fl-body:var(--font-body);
+  --fl-ease:var(--ease);
 }
 
 *,*::before,*::after{box-sizing:border-box}
