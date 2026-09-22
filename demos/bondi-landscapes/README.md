@@ -17,10 +17,24 @@ serving Sydney's Eastern Suburbs.
 | Email | antony@bondilandscapes.com.au |
 | Current site | bondilandscapes.com.au (WordPress) |
 | Socials | Facebook, Instagram, Houzz, Pinterest |
-| Recognition | Landscape Association Gold / Silver / Category Winner, Best of Houzz, TLA member |
+| Recognition | **2025 Landscape Excellence Awards: Gold Award AND Category Winner**, Residential Construction up to $100,000, for the project "Mediterranean Courtyard". Also Best of Houzz, and a TLA member. |
 
 Their own words, worth keeping: *"one of the best and award-winning boutique pool builders
 in Sydney"* and *"a tight-knit, multi-disciplinary team"*.
+
+### The award, confirmed from the certificate
+
+Pat supplied the Landscape Association awards-night photo. The certificate in it reads:
+**Bondi Landscapes — Mediterranean Courtyard — Residential Construction up to $100,000**,
+carrying both the **Gold Award** and **Category Winner** seals, at the **2025 Landscape
+Excellence Awards**. That is a specific, checkable claim and it is now on the page in place
+of the vague "Gold, Silver and a Category Winner" that came off their website.
+
+The photo itself is at `assets/Antony-Aris-Landscape-Excellence-Awards-2025.jpg` (the
+original is a square social composite; the site uses the top 1080x648 of it, which is the
+photograph without the promotional banner underneath). It is the only picture of Antony we
+have, and a named face holding a real award does more for a stranger's trust than another
+garden shot.
 
 ## Why we're calling them
 

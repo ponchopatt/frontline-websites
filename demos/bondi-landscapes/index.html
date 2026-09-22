@@ -277,7 +277,9 @@ html.no-js .intro,html[data-intro="done"] .intro{display:none}
 .pull{margin:var(--s40) 0 0;padding-left:var(--s32);border-left:1px solid var(--line-2)}
 .pull p{font-family:var(--font-body);font-weight:500;font-size:var(--t-h4);line-height:1.5;
   color:var(--fg);max-width:30em}
-.figure{position:relative;overflow:hidden;background:var(--bg-card)}
+.figure{position:relative;background:var(--bg-card)}
+.figure>img{border-radius:0}
+.figure:has(figcaption){overflow:visible}
 .figure img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
 .figure:hover img{transform:scale(1.04)}
 
@@ -556,7 +558,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
       <li>Licensed landscape contractor</li>
       <li>Licensed pool builder</li>
       <li>The Landscape Association</li>
-      <li>Twenty years</li>
+      <li>Gold Award 2025</li>
     </ul>
   </div>
 </div>
@@ -695,8 +697,9 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 <!-- ============================================================ antony -->
 <section class="about" id="antony" style="background:var(--bg-card)">
   <div class="wrap">
-    <figure class="figure" data-reveal="img" style="margin:0;aspect-ratio:1.45/1">
-      <img src="assets/about-team-725.webp" srcset="assets/about-team-480.webp 480w, assets/about-team-725.webp 725w" sizes="(min-width:960px) 40vw, 92vw" width="725" height="500" loading="lazy" decoding="async" alt="Layered planting against a rendered wall — sansevieria, bamboo screening and potted succulents">
+    <figure class="figure" data-reveal="img" style="margin:0;aspect-ratio:1080/648">
+      <img src="assets/antony-award-1080.webp" srcset="assets/antony-award-480.webp 480w, assets/antony-award-800.webp 800w, assets/antony-award-1080.webp 1080w" sizes="(min-width:960px) 40vw, 92vw" width="1080" height="648" loading="lazy" decoding="async" alt="Antony Aris at the 2025 Landscape Excellence Awards, holding the Gold Award certificate for Mediterranean Courtyard and the Category Winner trophy">
+      <figcaption class="t-label mute" style="margin:var(--s16) 0 0">Antony Aris · 2025 Landscape Excellence Awards</figcaption>
     </figure>
     <div data-reveal>
       <p class="t-label">Who you are dealing with</p>
@@ -737,9 +740,9 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
       <p class="t-lede">Judged by their peers, and answerable to an industry association rather than only to a review page.</p>
     </div>
     <div class="rec" data-reveal="stagger">
-      <div><h3 class="t-h4">Landscape Association</h3><p>Gold, Silver and a Category Winner.</p></div>
-      <div><h3 class="t-h4">TLA member</h3><p>A member, and held to its standards.</p></div>
-      <div><h3 class="t-h4">Best of Houzz</h3><p>Recognised on the platform architects and designers use.</p></div>
+      <div><h3 class="t-h4">Gold Award, 2025</h3><p>Landscape Excellence Awards — Residential Construction up to $100,000, for Mediterranean Courtyard.</p></div>
+      <div><h3 class="t-h4">Category Winner, 2025</h3><p>The same project took the category outright, judged by The Landscape Association.</p></div>
+      <div><h3 class="t-h4">Best of Houzz</h3><p>Recognised on the platform architects and designers actually use.</p></div>
       <div><h3 class="t-h4">Exotic Nurseries</h3><p>A supply relationship spanning close to two decades. [Confirm with Antony.]</p></div>
     </div>
   </div>
