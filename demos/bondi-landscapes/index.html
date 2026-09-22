@@ -220,17 +220,17 @@ section{padding-block:var(--pad);position:relative}
   place-items:center;color:var(--fg-mute);border-radius:2px}
 .demobar-x:hover{color:var(--fg)}
 .demobar-x:focus-visible{box-shadow:0 0 0 2px var(--bg),0 0 0 5px var(--teal)}
-/* the fixed header sits below the bar while it is showing */
+/* the header starts below the bar while it is showing */
 body.has-demobar .top{top:var(--demobar-h,0px)}
 
 /* ---------------------------------------------------------------- header */
-.top{position:fixed;top:0;left:0;right:0;z-index:70;color:var(--fg);
-  transition:background .4s var(--ease),box-shadow .4s}
+/* The header is ABSOLUTE, not fixed. It sits over the hero photograph and
+   scrolls away with it — it never rides down the page. Nothing to pin, no
+   backdrop-filter held for the life of the page, and the content below is
+   never covered. */
+.top{position:absolute;top:0;left:0;right:0;z-index:70;color:var(--fg)}
 .top::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:linear-gradient(rgba(6,12,15,.72),rgba(6,12,15,0));transition:opacity .4s}
-.top.scrolled{background:rgba(10,20,24,.93);backdrop-filter:blur(16px);
-  box-shadow:0 1px 0 var(--line)}
-.top.scrolled::before{opacity:0}
+  background:linear-gradient(rgba(6,12,15,.72),rgba(6,12,15,0))}
 .topin{display:flex;align-items:center;gap:var(--s24);height:var(--header-h)}
 .brand{display:flex;align-items:center;text-decoration:none;margin-right:auto;min-height:44px}
 .brand img{width:auto;height:32px}
@@ -1084,14 +1084,10 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     }).join("");
   })();
 
-  /* ---------- header + sticky bar ---------- */
-  var topbar=$("topbar"), ticking=false;
-  function onScroll(){
-    if(ticking) return; ticking=true;
-    requestAnimationFrame(function(){ topbar.classList.toggle("scrolled",window.scrollY>50); ticking=false; });
-  }
-  window.addEventListener("scroll",onScroll,{passive:true}); onScroll();
-
+  /* ---------- sticky bar ----------
+     The header needs no scroll listener: it is absolutely positioned over the
+     hero and simply scrolls away. The only scroll-aware chrome left is the
+     mobile call bar below. */
   var bar=$("sticky"), heroEl=$("hero"), enqEl=$("enquire"), heroIn=true, enqIn=false;
   function barSync(){ bar.classList.toggle("on",!heroIn&&!enqIn); }
   if("IntersectionObserver" in window){
