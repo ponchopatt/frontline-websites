@@ -7,6 +7,9 @@
 <meta name="description" content="Landscape design, construction and pool building in Sydney's Eastern Suburbs. Antony Aris holds a landscape contractor's licence and a pool builder's licence, with over twenty years' experience. One job at a time.">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
 <meta name="theme-color" content="#0A1418">
+<!-- Set before first paint. Anything that may only be hidden while JS can put it
+     back is scoped to html[data-js], so a no-JS visitor never loses content. -->
+<script>document.documentElement.dataset.js="1"</script>
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Bondi Landscapes — Landscape Design, Construction &amp; Pools">
@@ -338,8 +341,13 @@ body.has-demobar .top{top:var(--demobar-h,0px)}
 .ap .frame{position:absolute;pointer-events:none;border:1px solid var(--teal);
   inset:calc(var(--ap-y)*1%) calc(var(--ap-x)*1%);opacity:var(--ap-frame);
   box-shadow:0 0 50px rgba(77,191,166,.25)}
+/* The label fades in with the aperture, but ONLY when JS is running to drive
+   --ap-frame. With no JS the frame never moves, so an unscoped opacity rule
+   would leave this heading permanently invisible — and it is real copy and the
+   section's aria-labelledby target. Unscoped default is visible. */
 .ap .apLabel{position:absolute;left:0;right:0;top:calc(50% - 170px);z-index:2;
-  text-align:center;margin:0;opacity:clamp(0,calc((var(--ap-frame) - .5)*3),1)}
+  text-align:center;margin:0}
+html[data-js] .ap .apLabel{opacity:clamp(0,calc((var(--ap-frame) - .5)*3),1)}
 .ap .plate{position:absolute;left:var(--gut);bottom:var(--gut);z-index:2;max-width:36em;
   opacity:clamp(0,calc((.45 - var(--ap-frame))*3),1);
   text-shadow:0 1px 18px rgba(4,10,13,.9)}
@@ -415,7 +423,9 @@ dialog.lb::backdrop{background:rgba(6,13,16,.94)}
 /* ---------------------------------------------------------------- recognition */
 .rec{display:grid;gap:var(--s24);margin-top:var(--s48)}
 @media(min-width:720px){.rec{grid-template-columns:repeat(2,1fr);gap:var(--s32)}}
-@media(min-width:1100px){.rec{grid-template-columns:repeat(4,1fr)}}
+/* auto-fit, not repeat(4), so a card that has nothing to say can be left out
+   without leaving a hole in the row. Four cards still land on four columns. */
+@media(min-width:1100px){.rec{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}}
 .rec div{padding:var(--s32) 0 0;border-top:1px solid var(--line)}
 .rec h3{margin-bottom:var(--s12)}
 .rec p{font-size:var(--t-small);color:var(--fg-mute);margin:0}
@@ -759,7 +769,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     </div>
     <div class="railwrap" aria-hidden="true"><div class="rail" id="rail" data-draw></div></div>
     <div class="steps" data-reveal="stagger">
-      <div class="step"><span class="t-folio">01</span><h3 class="t-h3">Consultation</h3><p>Antony comes to your home and talks through the vision, the objectives and the budget. You receive a Design Fee Proposal scaled to the project.</p><p class="anchor" style="margin-top:var(--s12)">Design fees typically start from <b data-fee></b>, scaled to the project.</p></div>
+      <div class="step"><span class="t-folio">01</span><h3 class="t-h3">Consultation</h3><p>Antony comes to your home and talks through the vision, the objectives and the budget. You receive a Design Fee Proposal scaled to the project.</p><p class="anchor" style="margin-top:var(--s12)" data-priceline="fee" hidden>Design fees typically start from <b data-fee></b>, scaled to the project.</p></div>
       <div class="step"><span class="t-folio">02</span><h3 class="t-h3">Concept &amp; design</h3><p>A detailed landscape design, adjusted until you are completely happy. Where council approval is needed, we handle it.</p></div>
       <div class="step"><span class="t-folio">03</span><h3 class="t-h3">Quoting</h3><p>A comprehensive quotation built on the approved design. Itemised and transparent, tailored to the project rather than a rate card.</p></div>
       <div class="step"><span class="t-folio">04</span><h3 class="t-h3">Construction</h3><p>Our licensed team builds it — hardscape, softscape, planting, installation. One job at a time, project-managed by us.</p></div>
@@ -815,7 +825,9 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     <div class="rec" data-reveal="stagger">
       <div><h3 class="t-h4">Gold Award, 2025</h3><p>Landscape Excellence Awards — Residential Construction up to $100,000, for Mediterranean Courtyard.</p></div>
       <div><h3 class="t-h4">Category Winner, 2025</h3><p>The same project took the category outright, judged by The Landscape Association.</p></div>
-      <div><h3 class="t-h4">Best of Houzz <span id="houzzYear"></span></h3><p>Recognised on the platform architects and designers actually use.</p></div>
+      <!-- Hidden until SITE.houzzYear is filled in. An award with no year is a
+           claim we cannot back, so the whole card stays out rather than the year alone. -->
+      <div id="houzzCard" hidden><h3 class="t-h4">Best of Houzz <span id="houzzYear"></span></h3><p>Recognised on the platform architects and designers actually use.</p></div>
       <div><h3 class="t-h4">Exotic Nurseries</h3><p>A trade supplier who has vouched for them publicly: “very specific when it comes to the quality of plants they require.”</p></div>
     </div>
   </div>
@@ -849,7 +861,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
       <details class="faq"><summary>Do you build the pool yourselves, or subcontract it?</summary><div class="a"><p>Ourselves. Antony holds a pool builder's licence as well as a landscape contractor's licence. That is unusual — most landscapers subcontract the pool, which is where the finger-pointing starts when the pool and the garden do not meet properly. Here it is one contract and one team.</p></div></details>
       <details class="faq"><summary>How long does a project take?</summary><div class="a"><p>It depends entirely on scope, and we would rather tell you honestly after seeing the site than give you a number now. What we can promise is that we run one job at a time, so once we start we stay until it is done. One client's terrace garden — paving, fencing, a gate, lighting, irrigation and planting — was finished in three weeks.</p></div></details>
       <details class="faq"><summary>Do you handle council and DA approval?</summary><div class="a"><p>Yes. Where a project needs council approval we manage that process as part of the design phase, so you are not chasing it yourself.</p></div></details>
-      <details class="faq"><summary>What does the design cost?</summary><div class="a"><p>Design fees typically start from <b data-fee></b>, scaled to the size and complexity of your project rather than charged at a flat rate. You approve the Design Fee Proposal before any design work begins.</p><p>Construction is quoted separately once the design is approved. Most projects of this kind land between <b data-build></b>, though that depends entirely on scope.</p></div></details>
+      <details class="faq"><summary>What does the design cost?</summary><div class="a"><p><span data-priceline="fee" hidden>Design fees typically start from <b data-fee></b>. </span>They are scaled to the size and complexity of your project rather than charged at a flat rate. You approve the Design Fee Proposal before any design work begins.</p><p>Construction is quoted separately once the design is approved.<span data-priceline="build" hidden> Most projects of this kind land between <b data-build></b>, though that depends entirely on scope.</span></p></div></details>
       <details class="faq"><summary>Will you work with my architect or builder?</summary><div class="a"><p>Often, yes — a good deal of our work sits alongside a renovation or a new build. Bring us in earlier rather than later. One client's only regret in their review was not involving us sooner.</p></div></details>
       <details class="faq"><summary>Do you take on small gardens?</summary><div class="a"><p>Yes. We produce a full landscape design for every project regardless of size, courtyards and terraces included. Some of the work we are proudest of is small.</p></div></details>
       <details class="faq"><summary>When could you start?</summary><div class="a"><p>Because we run one job at a time, the honest answer depends on what is in front of yours. Call and we will tell you the real date rather than the one you want to hear.</p></div></details>
@@ -957,7 +969,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
         </ul>
       </div>
     </div>
-    <p class="demo-note"><strong>This is a demo.</strong> Built by Frontline Systems as a proposal for Bondi Landscapes. It is not the live site, it is not indexed by search engines, and all photography belongs to Bondi Landscapes. Anything in square brackets is still to be confirmed.</p>
+    <p class="demo-note">This is a demo built by Frontline Systems as a proposal for <strong>Bondi Landscapes</strong>. It is not their live site. It is not indexed by search engines, and all photography belongs to Bondi Landscapes.</p>
     <div class="legal">
       <span>&copy; <span id="yr">2026</span> Bondi Landscapes</span>
       <span>Demo by Frontline Systems</span>
@@ -1010,14 +1022,16 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     formAccessKey:"",  /* paste a Web3Forms key to make the form email Antony. Empty = demo mode. */
 
     /* ---------------------------------------------------------------------
-       CONFIRM WITH ANTONY BEFORE THIS GOES LIVE. These are deliberately
-       written as $X,XXX rather than plausible-looking numbers, so nobody
-       mistakes a guess for a quote. Change them here and they change
-       everywhere on the page.
+       ASK ANTONY, THEN FILL THESE IN. Left empty they show nothing at all:
+       the sentence that would carry the number is hidden, so a visitor never
+       sees a stub and never sees a sentence with a hole in it. Fill one in and
+       it appears in every place that quotes it.
+         designFeeFrom      e.g. "$3,500"
+         typicalBuildRange  e.g. "$60,000 and $180,000"
        --------------------------------------------------------------------- */
-    designFeeFrom:"$X,XXX",        /* the lowest Design Fee Proposal he'd write   */
-    typicalBuildRange:"$XX,XXX to $XXX,XXX",  /* typical construction spend        */
-    houzzYear:"",                  /* e.g. "2024". Empty hides the year entirely. */
+    designFeeFrom:"",              /* the lowest Design Fee Proposal he'd write   */
+    typicalBuildRange:"",          /* typical construction spend                  */
+    houzzYear:"",                  /* e.g. "2024". Empty hides the whole card.    */
 
     frontlineBookingUrl:"#enquire" /* swap for a real Calendly/Cal.com link       */
   };
@@ -1071,11 +1085,24 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   })();
 
   /* ---------- editable values, written once into every slot ---------- */
-  document.querySelectorAll("[data-fee]").forEach(function(el){ el.textContent=SITE.designFeeFrom });
-  document.querySelectorAll("[data-build]").forEach(function(el){ el.textContent=SITE.typicalBuildRange });
+  /* A price we have not confirmed is not shown at all. The sentence that would
+     carry it stays hidden, so a visitor never reads a stub like "$X,XXX" and
+     never reads a sentence with a hole in it either. */
   (function(){
-    var y=$("houzzYear");
-    if(y) y.textContent=SITE.houzzYear ? SITE.houzzYear : "";   /* no year invented */
+    var VALUES={fee:SITE.designFeeFrom,build:SITE.typicalBuildRange};
+    document.querySelectorAll("[data-fee]").forEach(function(el){ el.textContent=VALUES.fee||"" });
+    document.querySelectorAll("[data-build]").forEach(function(el){ el.textContent=VALUES.build||"" });
+    document.querySelectorAll("[data-priceline]").forEach(function(el){
+      el.hidden=!VALUES[el.getAttribute("data-priceline")];
+    });
+  })();
+  (function(){
+    /* No year, no card. The year is never invented, and the card does not stand
+       on its own without one, so both appear together or neither does. */
+    var y=$("houzzYear"), card=$("houzzCard");
+    if(!SITE.houzzYear) return;
+    if(y) y.textContent=SITE.houzzYear;
+    if(card) card.hidden=false;
   })();
 
   /* ---------- demo banner ----------
@@ -1152,41 +1179,24 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     return [].slice.call(el.querySelectorAll(".ln>span"));
   }
 
-  /* ---------- intro curtain ----------------------------------------------
-     Every exit path must remove the curtain — it covers the whole page. */
-  var intro=$("intro");
-  function killIntro(){
-    document.documentElement.dataset.intro="done";
-    if(intro&&intro.parentNode) intro.parentNode.removeChild(intro);
-  }
-
   /* ---------- motion ----------------------------------------------------
      THE RULE: every element's CSS default is its FINAL state. GSAP only sets
      a temporary from-state, with immediateRender:false on anything driven by
      a scroll trigger. If a trigger never fires, or GSAP never loads, or
      motion is reduced, the content is simply there. */
   function motion(){
-    if(!(window.gsap&&window.ScrollTrigger)||reduce){ killIntro(); return; }
+    if(!(window.gsap&&window.ScrollTrigger)||reduce) return;
     gsap.registerPlugin(ScrollTrigger);
 
     var heroLines=buildLines(document.querySelector(".hero h1"));
 
-    /* the hero timeline, held until the curtain starts lifting */
-    var hero=gsap.timeline({paused:true,defaults:{ease:"expo.out"}});
+    var hero=gsap.timeline({defaults:{ease:"expo.out"}});
     hero.fromTo(heroLines,{yPercent:110},{yPercent:0,duration:.95,stagger:.09},0)
         .fromTo(".hero-kicker",{opacity:0,y:10},{opacity:1,y:0,duration:.5},0)
         .fromTo(".hero-sub",{opacity:0,y:12},{opacity:1,y:0,duration:.55},.5)
         .fromTo(".hero-cta > *",{opacity:0,y:12},{opacity:1,y:0,duration:.55,stagger:.06},.6)
         .fromTo(".hero img.bg",{scale:1.14},{scale:1,duration:2.2},0);
 
-    if(intro){
-      gsap.timeline({onComplete:killIntro})
-        .fromTo(".intro-mark",{opacity:0,scale:.96,y:6},{opacity:1,scale:1,y:0,duration:.5,ease:"expo.out"},.1)
-        .fromTo(".intro-rule",{scaleX:0},{scaleX:1,duration:.6,ease:"power3.inOut"},.25)
-        .to(".intro-mark",{opacity:0,y:-8,duration:.25,ease:"power2.in"},.95)
-        .add(function(){ hero.play(); },1.05)
-        .to(intro,{yPercent:-100,duration:.8,ease:"expo.inOut"},1.05);
-    } else { hero.play(); }
 
     /* ---- the reveal vocabulary, lifted from Imperium ----
        data-lines     headline lines rise out of a mask
@@ -1254,8 +1264,6 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   }
   if(document.readyState==="complete") motion();
   else window.addEventListener("load",motion);
-  /* whatever happens, the curtain is gone by 3s */
-  setTimeout(killIntro,3000);
 
   /* ---------- lightbox ---------- */
   (function(){

@@ -119,14 +119,15 @@ The only thing it changes for the pitch:
 ## To confirm with Antony — every unverified value in one list
 
 Every one of these is a `SITE` value in `index.html`, so each is a single edit.
-Nothing on the page invents a number: the prices read `$X,XXX` on purpose, so a
-guess can never be mistaken for a quote.
+Nothing on the page invents a number, and nothing shows a stub either: a value
+left empty hides the whole sentence or card that would have carried it. Fill one
+in and it appears everywhere that quotes it.
 
 | # | Value | `SITE` key | Currently |
 |---|---|---|---|
-| 1 | Design fee starting point | `designFeeFrom` | `$X,XXX` — shown in Process step 01 and the FAQ |
-| 2 | Typical construction range | `typicalBuildRange` | `$XX,XXX to $XXX,XXX` — shown in the FAQ |
-| 3 | Best of Houzz year | `houzzYear` | empty, so no year renders. **Do not invent one.** |
+| 1 | Design fee starting point | `designFeeFrom` | empty, so the sentence is hidden in Process step 01 and the FAQ. e.g. `"$3,500"` |
+| 2 | Typical construction range | `typicalBuildRange` | empty, so the sentence is hidden in the FAQ. e.g. `"$60,000 and $180,000"` |
+| 3 | Best of Houzz year | `houzzYear` | empty, so **the whole card is hidden**. **Do not invent a year.** |
 | 4 | Booking link | `frontlineBookingUrl` | `#enquire` — swap for a real Calendly/Cal.com link |
 | 5 | Web3Forms key | `formAccessKey` | empty, so the form runs in demo mode |
 | 6 | Google rating and review count | — | **deliberately absent.** ~27 reviews, at least one 1-star, so it is not 5.0 |

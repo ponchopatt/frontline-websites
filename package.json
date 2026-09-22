@@ -20,5 +20,10 @@
   "type": "module",
   "dependencies": {
     "ai": "^7.0.109"
+  },
+  "devDependencies": {
+    "lighthouse": "^13.5.0",
+    "playwright": "^1.63.0",
+    "sharp": "^0.35.4"
   }
 }
