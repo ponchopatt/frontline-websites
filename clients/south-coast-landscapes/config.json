@@ -61,8 +61,8 @@
     "statementHeadline": "We clean the site<br>every night.",
     "statementBody": "A landscaping job takes over your driveway, your side gate and your weekends. Ours ends each day with the site swept and the gear stacked, because you still have to live there while we build it. It is the thing customers mention that we never put in a quote.",
     "servicesLabel": "What we do",
-    "servicesHeadline": "Four trades,<br>one crew.",
-    "servicesIntro": "Design, construction, maintenance and irrigation sit in the same business. The team that draws it builds it, plants it and sets the watering — nothing is handed to a stranger halfway through.",
+    "servicesHeadline": "Design it, build it,<br>keep it alive.",
+    "servicesIntro": "Design, construction, maintenance and irrigation sit in the same business. The crew that draws it builds it, plants it and sets the watering — nothing is handed to a stranger halfway through.",
     "apertureLabel": "Front and back",
     "apertureLine": "Wall. Driveway. Turf. Water. In one go.",
     "workLabel": "Selected work",
@@ -156,19 +156,8 @@
       }
     },
     {
-      "title": "Maintenance",
-      "blurb": "Mowing, weeding and pruning, mulching, fertilising and aeration, rubbish removal — by the crew who built it and know what was planted where.",
-      "photo": {
-        "src": "assets/thirroul-lawn-800.webp",
-        "srcset": "assets/thirroul-lawn-480.webp 480w, assets/thirroul-lawn-800.webp 800w, assets/thirroul-lawn-1200.webp 1200w",
-        "width": 1500,
-        "height": 1000,
-        "alt": "A kept Thirroul back lawn with planting running along the timber fence line"
-      }
-    },
-    {
-      "title": "Irrigation",
-      "blurb": "Automatic systems, driplines and SMART controllers such as SkyDrop, set from your phone. Ryan tailors the system to the garden rather than the catalogue.",
+      "title": "Irrigation & upkeep",
+      "blurb": "Automatic systems, driplines and SMART controllers such as SkyDrop, set from your phone. Then mowing, mulching, fertilising and pruning if you want us to keep it.",
       "photo": {
         "src": "assets/figtree-sprinkler-800.webp",
         "srcset": "assets/figtree-sprinkler-480.webp 480w, assets/figtree-sprinkler-800.webp 800w, assets/figtree-sprinkler-1200.webp 1200w",
