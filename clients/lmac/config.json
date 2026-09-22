@@ -49,7 +49,7 @@
     "servicesIntro": "Sales, installation, service and maintenance, domestic and commercial. We are dealers for six major brands, and we service any brand, even if it wasn't our installation.",
     "servicesAlso": "We're also the sole authorised stockist for Air Clean Filters in Western Sydney, and an approved supplier for the NSW Energy Savings Scheme rebate. <a class=\"link\" href=\"#faq\">How we install, in detail</a>",
     "galleryTitle": "The people who do the work",
-    "galleryIntro": "Fourteen staff, five vans and a showroom in Russell Street, Emu Plains. Every photo here is theirs — no stock, no catalogue shots.",
+    "galleryIntro": "Fourteen staff, a fleet of branded vans and a showroom in Russell Street, Emu Plains. Every photo here is theirs — no stock, no catalogue shots.",
     "reasonsTitle": "Why people pick LMAC",
     "reasonsIntro": "Four things the reviews keep saying, in one form or another.",
     "reviewsTitle": "What customers say",
@@ -239,12 +239,12 @@
         "alt": "The Lower Mountains Air Conditioning team standing in front of four branded vans at the Emu Plains showroom"
       },
       {
-        "src": "assets/owners-showroom-800.webp",
-        "full": "assets/owners-showroom-1600.webp",
+        "src": "assets/andrew-800.webp",
+        "full": "assets/andrew-1600.webp",
         "width": 800,
-        "height": 550,
-        "caption": "Andrew and Anthea at the shop",
-        "alt": "Andrew and Anthea Strathdee beside a branded van outside the Russell Street showroom, the window sign listing sales, installation, service, ducted and split systems"
+        "height": 513,
+        "caption": "Andrew, director and sales",
+        "alt": "Andrew Strathdee, director of Lower Mountains Air Conditioning, in front of a company van"
       },
       {
         "src": "assets/office-team-800.webp",
@@ -255,12 +255,12 @@
         "alt": "Four Lower Mountains Air Conditioning office staff in branded navy shirts outside the showroom"
       },
       {
-        "src": "assets/andrew-800.webp",
-        "full": "assets/andrew-1600.webp",
+        "src": "assets/owners-showroom-800.webp",
+        "full": "assets/owners-showroom-1600.webp",
         "width": 800,
-        "height": 513,
-        "caption": "Andrew, director and sales",
-        "alt": "Andrew Strathdee, director of Lower Mountains Air Conditioning, in front of a company van"
+        "height": 550,
+        "caption": "Andrew and Anthea at the shop",
+        "alt": "Andrew and Anthea Strathdee beside a branded van outside the Russell Street showroom, the window sign listing sales, installation, service, ducted and split systems"
       },
       {
         "src": "assets/anthea-800.webp",
