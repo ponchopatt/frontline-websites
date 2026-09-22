@@ -43,15 +43,15 @@
     "kicker": "Heating and cooling specialists, Emu Plains",
     "headline": "331 reviews.<br>4.8 stars.<br>Since 1988.",
     "sub": "Andrew and Anthea Strathdee have been putting air conditioning into Penrith and Blue Mountains homes since 1988, with a showroom you can walk into and fourteen staff behind them.",
-    "anchor": "<b>4.8 out of 5 from 331 Google reviews.</b> Free on-site quotes across Penrith, the Blue Mountains and the Hawkesbury.",
-    "ctaLabel": "Get a free quote",
+    "anchor": "<b>4.8 out of 5 from 331 Google reviews</b> and a five-year workmanship warranty on domestic installations.",
+    "ctaLabel": "Book a quote",
     "servicesTitle": "What we do",
     "servicesIntro": "Sales, installation, service and maintenance, domestic and commercial. We are dealers for six major brands, and we service any brand, even if it wasn't our installation.",
     "servicesAlso": "We're also the sole authorised stockist for Air Clean Filters in Western Sydney, and an approved supplier for the NSW Energy Savings Scheme rebate. <a class=\"link\" href=\"#faq\">How we install, in detail</a>",
     "galleryTitle": "The people who do the work",
     "galleryIntro": "Fourteen staff, a fleet of branded vans and a showroom in Russell Street, Emu Plains. Every photo here is theirs — no stock, no catalogue shots.",
     "reasonsTitle": "Why people pick LMAC",
-    "reasonsIntro": "Four things the reviews keep saying, in one form or another.",
+    "reasonsIntro": "Five things the reviews and the fine print keep coming back to.",
     "reviewsTitle": "What customers say",
     "reviewsIntro": "Real Google reviews, word for word. There are 331 of them.",
     "processTitle": "How it works",
@@ -61,7 +61,7 @@
     "areasNote": "Not on the list? Give the office a ring — if we get there, we'll say so.",
     "faqTitle": "Good to know",
     "faqIntro": "The questions the office fields most days.",
-    "quoteTitle": "Get a free quote",
+    "quoteTitle": "Book a quote",
     "quoteIntro": "Fill this in and the office comes back within one business hour, Monday to Friday. Andrew or Anthea does the on-site quote themselves.",
     "finalTitle": "Ready when you are.",
     "finalIntro": "Call the office on (02) 4735 6411, or drop into the showroom at Unit 2/129 Russell St, Emu Plains.",
@@ -73,9 +73,9 @@
     "<b>Andrew or Anthea quotes on site</b>, then you decide."
   ],
   "stats": {
-    "googleRating": null,
-    "reviewCount": null,
-    "yearsInBusiness": null,
+    "googleRating": 4.8,
+    "reviewCount": 331,
+    "yearsInBusiness": 38,
     "_comment": "4.8 from 331 (data/google_reviews_top25.json) and 38 years (operating since 1988) are BOTH true and BOTH on the page — in the hero headline, the hero anchor and the reviews intro. They are null here on purpose: the quote template renders the counter bar inside a .dark section, but its CSS binds --fl-ink to the light-theme --fg and --fl-accent to the light-theme --btn at :root, so every label comes out #1C1F23 on a #22252A background (1.06:1) and every number comes out in the dark brand navy (1.46:1). Nothing in a client config can reach those variables. Rather than ship a half-invisible band, the bar is hidden and the numbers live in readable copy. Fix the template variables and put 4.8 / 331 / 38 straight back."
   },
   "credentials": [
@@ -108,7 +108,7 @@
   "services": [
     {
       "title": "Split systems",
-      "blurb": "One room or an open living area, with or without an inverter. Wall-mounted, floor-mounted or a ceiling cassette — Andrew or Anthea works out which suits the room, where the outdoor unit can legally sit and which of the six brands makes sense. Usually in within a day."
+      "blurb": "One room or an open living area, with or without an inverter. Wall-mounted, floor-mounted or a ceiling cassette — Andrew or Anthea works out which suits the room, where the outdoor unit can legally sit and which of the six brands makes sense. Usually installed within a day."
     },
     {
       "title": "Ducted systems",
@@ -126,11 +126,15 @@
   "reasons": [
     {
       "title": "You can walk in and look at it",
-      "body": "There's a showroom in Russell Street, Emu Plains, with the units on the wall. Come in, ask whatever you like, nobody will chase you out."
+      "body": "There's a showroom in Russell Street, Emu Plains. Come in, talk through the options and ask whatever you like. Nobody will chase you out."
     },
     {
       "title": "Andrew or Anthea quotes it",
       "body": "The two owners do the on-site sales and quotations themselves. Andrew is a qualified electrician and refrigeration technician, so the person pricing it is the person who knows what it takes."
+    },
+    {
+      "title": "Five years on the workmanship",
+      "body": "Five years' workmanship warranty on domestic installations, twelve months on commercial, on top of the manufacturer's five-year parts and labour. It stays valid as long as we do the yearly general maintenance."
     },
     {
       "title": "We'll fix a unit we didn't install",
@@ -138,7 +142,7 @@
     },
     {
       "title": "Where it goes matters",
-      "body": "Customers tell us we \"problem solved the best way to install them in a way that was aesthetic to the house\". Pipe and wiring down an outside wall gets encased and colour-matched to your downpipe."
+      "body": "Customers tell us we “problem solved the best way to install them in a way that was aesthetic to the house”. Pipe and wiring down an outside wall gets encased and colour-matched to your downpipe."
     }
   ],
   "process": [
@@ -148,7 +152,7 @@
     },
     {
       "step": "Andrew or Anthea comes and quotes",
-      "detail": "On site, free, and they'll talk through where the indoor and outdoor units should go, what size the room needs and whether you qualify for the NSW Energy Savings Scheme rebate."
+      "detail": "On site, and they'll talk through where the indoor and outdoor units should go, what size the room needs and whether you qualify for the NSW Energy Savings Scheme rebate."
     },
     {
       "step": "The team installs it",
@@ -299,11 +303,11 @@
   "calculator": {
     "_comment": "Every job is mode 'quote', so not one dollar figure is printed anywhere. LMAC publish no prices — not per kW, not per system, not for ducted — and nothing here is invented. Give Andrew's ranges to whoever builds v2 and these become per-unit jobs with real numbers.",
     "heading": "What will it cost?",
-    "intro": "Honestly, it depends — on the room, the system, the run of the pipe and what rebate it attracts. So Andrew or Anthea comes out, measures up and puts the price in writing before anything is ordered. No call-out fee for a quote, and no pressure afterwards. Pick the job below and we'll start there.",
+    "intro": "Honestly, it depends — on the room, the system, the run of the pipe and what rebate it attracts. So Andrew or Anthea comes out, measures up and puts the price in writing before anything is ordered. Pick the job below and we'll start there.",
     "jobLabel": "What's the job?",
     "fine": "",
     "included": [
-      "Free on-site quote",
+      "Five-year workmanship warranty",
       "Old system taken away",
       "Six brands to choose from",
       "Fully insured",
@@ -317,7 +321,7 @@
         "mode": "quote",
         "formService": "Split system",
         "quoteEyebrow": "Priced on site, in writing",
-        "quoteLabel": "Book a free quote",
+        "quoteLabel": "Book a quote",
         "note": "Wall-mounted, floor-mounted or a ceiling cassette. <b>Usually installed within a day.</b>"
       },
       {
@@ -327,7 +331,7 @@
         "mode": "quote",
         "formService": "Multi-split system",
         "quoteEyebrow": "Priced on site, in writing",
-        "quoteLabel": "Book a free quote",
+        "quoteLabel": "Book a quote",
         "note": "Several heads off one outdoor unit, each controlled on its own. <b>The answer when there's no room outside.</b>"
       },
       {
@@ -337,7 +341,7 @@
         "mode": "quote",
         "formService": "Ducted system",
         "quoteEyebrow": "Priced on site, in writing",
-        "quoteLabel": "Book a free quote",
+        "quoteLabel": "Book a quote",
         "note": "Indoor unit up in the roof space, four or eight zones on the controller. <b>A larger ducted system can take two days.</b>"
       },
       {
@@ -386,15 +390,19 @@
   "faq": [
     {
       "q": "Will you service a system you didn't install?",
-      "a": "Yes. We service any brand, even if it wasn't our installation. Quite a bit of our service work started life as somebody else's job."
+      "a": "Yes. We service any brand, even if it wasn't our installation. You get a written report on any service or repair, and if parts are needed we email you a written quote for your approval before we go ahead."
     },
     {
       "q": "Which brands do you sell?",
-      "a": "We're dealers for six major brands: Mitsubishi Electric, Panasonic, LG, Daikin, Actron Air and Braemar. Which one suits you depends on the room, the budget and what rebate the system attracts — come and see them on the wall in the showroom."
+      "a": "We're dealers for six major brands: Mitsubishi Electric, Panasonic, LG, Daikin, Actron Air and Braemar. Which one suits you depends on the room, the budget and what rebate the system attracts — come and see them in the showroom."
     },
     {
       "q": "How long does an installation take?",
       "a": "As a guide, a wall-hung split system or a small ducted unit is usually in within a day. A larger ducted system can take two. Weather and the state of the roof space can move that, and we'll tell you at the quote, not afterwards."
+    },
+    {
+      "q": "What warranty do I get?",
+      "a": "On a domestic installation: five years' manufacturer warranty from the installation date covering parts and the associated labour, plus five years' workmanship warranty from us. Commercial is two years manufacturer and twelve months workmanship. The workmanship warranty stays valid as long as our technicians carry out the yearly general maintenance — we send you an Annual Maintenance Letter and the call-out is at a discounted rate. Flexible ducting carries a 20-year National Air Parts warranty against manufacturing defects."
     },
     {
       "q": "Is there a rebate?",

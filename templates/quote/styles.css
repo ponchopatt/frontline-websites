@@ -185,7 +185,10 @@ html.gsap .hero .line>span,html.gsap .rule{transition:none!important}
 .pg-actions .btn{background:var(--green-2);color:#1C1F23}
 .pg-actions .btn.ghost{background:transparent;color:#F3F0E9;border-color:rgba(243,240,233,.45)}
 .pg-actions .btn.ghost:hover{border-color:#F3F0E9}
-.pg-fine{font-size:.82rem;color:#8F959C}
+/* var(--mute), not a fixed grey: this line sits inside a .dark section on
+   some pages and on the bone ground on others, and #8F959C measured
+   2.66:1 against the dark panel. --mute is redeclared per theme. */
+.pg-fine{font-size:.82rem;color:var(--mute)}
 @media(max-width:899px){
   .pg-grid{gap:18px}
   .pg-result{order:-1;position:sticky;top:calc(var(--header-h) + 6px);z-index:3;padding:14px 18px;gap:6px;box-shadow:0 14px 30px -16px rgba(0,0,0,.85)}
@@ -470,7 +473,27 @@ html.gsap .hero .line>span,html.gsap .rule{transition:none!important}
   --fl-body:var(--body);
   --fl-ease:cubic-bezier(.2,.75,.1,1);
 }
+/*
+ * The shared blocks inside a dark section.
+ *
+ * The --fl-* tokens are derived at :root — --fl-ink:var(--fg) and so on — so
+ * they compute against :root's LIGHT palette and are then inherited, already
+ * resolved, by everything inside .dark. Redeclaring only the two grounds left
+ * the trust bar painting near-black labels on a near-black panel: measured at
+ * 1.06:1, invisible, on the strip whose whole job is proof. Lighthouse missed
+ * it because the bar ships opacity-0 until revealed, and tools/css-vars.mjs
+ * misses it because the tokens do resolve — they resolve to the wrong thing.
+ *
+ * Every derived token has to be redeclared here so it recomputes against
+ * .dark's own values.
+ */
 .dark{
   --fl-bg:var(--char);
   --fl-surface:var(--char-2);
+  --fl-ink:var(--fg);
+  --fl-mute:var(--mute);
+  --fl-accent:var(--btn);
+  --fl-accent-ink:var(--btn-ink);
+  --fl-line:var(--rule);
+  --fl-line-2:var(--rule-2);
 }

@@ -73,6 +73,30 @@ From their own nav and page copy:
 - Seniors: "10% discount applies for general servicing only (Does not apply to
   parts required and/or repairs). Available only for seniors."
 
+## Warranty and after-care (all from their Installation page)
+- "The manufacturer provides a comprehensive warranty of five (5) years from the
+  installation date, covering all parts for malfunction and associated labour.
+  Commercial installations have a warranty period of two (2) years."
+- "Lower Mountains Air Conditioning stands behind the quality of our workmanship
+  for domestic installations, offering a warranty period of five (5) years from
+  the installation date. The workmanship warranty is valid for commercial
+  installations for 12 months (1 year)… the workmanship warranty remains valid
+  only if our technicians perform yearly general maintenance on the unit."
+- "National Air Parts comes with a 20-year warranty that covers all R1.0/R1.5
+  flexible ducting against manufacturing defects."
+- "we will send an Annual Maintenance Letter to you, where you can have your
+  maintenance call out at a discounted rate for your ongoing loyalty."
+- "provide professional written report during any service/repair; if parts
+  required we provide written quote on email for your approval."
+- "Upon completion of your installation, our technicians will conduct a
+  comprehensive test and start-up procedure."
+
+**Nowhere on lmac.com.au does it say a quote is free.** Every "free quote" line
+was stripped out of the demo copy; the CTA reads "Book a quote". The one
+remaining "Free quote" string is the narrow-screen label baked into the quote
+template's header button, which a client config cannot reach. Confirm with Andy
+whether quotes are free and the template can say so again.
+
 ## Job size
 Residential and commercial. A reviewer describes "three fixed units in my
 mountains home"; another "replacement of our ageing A/C"; another "We have used

@@ -45,7 +45,18 @@ export function render(cfg, { styles, script }) {
     cfg.has.faq && ['#faq', 'FAQ'],
   ].filter(Boolean);
 
-  const ctaLabel = copy.ctaLabel ?? 'Get a free quote';
+  /*
+   * "Free" is a commercial claim, not a default.
+   *
+   * These labels used to read "Get a free quote" and "Free quote", so every
+   * demo promised a free quote whether or not the business offers one. LMAC's
+   * site never says a quote is free and says nothing about a call-out fee, so
+   * the demo would have committed them to it in their own voice. A business
+   * that does offer one sets copy.ctaLabel and copy.ctaLabelShort and says so
+   * in its own words.
+   */
+  const ctaLabel = copy.ctaLabel ?? 'Get a quote';
+  const ctaLabelShort = copy.ctaLabelShort ?? 'Get a quote';
 
   return `<!doctype html>
 <html lang="en-AU">
@@ -71,7 +82,7 @@ ${heroPreload(cfg)}
 ${demoBannerHeadScript(cfg)}
 <a class="skip" href="#quote">Skip to the quote form</a>
 ${demoBanner(cfg)}
-${header(cfg, { nav, tel, phone, ctaLabel })}
+${header(cfg, { nav, tel, phone, ctaLabel, ctaLabelShort })}
 <main>
 ${hero(cfg, { tel, sms, ctaLabel, copy })}
 ${statsBar(cfg, 'trust dark')}
@@ -104,7 +115,7 @@ ${jsonLd(cfg)}
 
 /* ------------------------------------------------------------------ sections */
 
-function header(cfg, { nav, tel, phone, ctaLabel }) {
+function header(cfg, { nav, tel, phone, ctaLabel, ctaLabelShort }) {
   const b = cfg.business ?? {};
   return html`
 <header class="top" id="topbar">
@@ -116,7 +127,7 @@ function header(cfg, { nav, tel, phone, ctaLabel }) {
       each(nav, ([href, label]) => html`<a href="${href}">${label}</a>`)
     }</nav>` : ''}
     ${tel ? html`<a class="phone" href="${tel}">${ICON.phone}${phone.display}</a>` : ''}
-    <a class="btn small" href="#quote"><span class="long">${ctaLabel}</span><span class="short">Free quote</span></a>
+    <a class="btn small" href="#quote"><span class="long">${ctaLabel}</span><span class="short">${ctaLabelShort}</span></a>
   </div>
 </header>`;
 }

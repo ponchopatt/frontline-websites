@@ -1,0 +1,133 @@
+{
+  "_comment": "Built by \"npm run new\" from http://dplandscaping.com.au on 2026-09-22. Everything listed in _check was worked out by reading their website and is NOT confirmed. Go through the checklist, fix or delete each one, then remove it from _check. Reviews are deliberately empty — paste them in from their Google profile, word for word.",
+  "slug": "dp-landscaping",
+  "template": "trust",
+  "industry": "landscaping",
+  "live": false,
+  "business": {
+    "name": "Garden Design",
+    "ownerName": "",
+    "ownerFirstName": "",
+    "phone": {
+      "display": "0402 469 118",
+      "e164": "+61402469118"
+    },
+    "email": "info@dplandscaping.com.au",
+    "abn": "",
+    "baseSuburb": "",
+    "region": "",
+    "currentSite": "dplandscaping.com.au",
+    "brand": {},
+    "logo": {
+      "src": "assets/logo.webp",
+      "width": 175,
+      "height": 117
+    }
+  },
+  "responsePromise": "",
+  "copy": {
+    "headline": "",
+    "sub": "",
+    "kicker": ""
+  },
+  "stats": {
+    "googleRating": null,
+    "reviewCount": null,
+    "jobsDone": null,
+    "yearsInBusiness": null
+  },
+  "services": [
+    {
+      "title": "Services",
+      "blurb": "",
+      "photo": {
+        "src": "assets/pond-view-800.webp",
+        "srcset": "assets/pond-view-800.webp 800w",
+        "width": 800,
+        "height": 292,
+        "alt": "Pond-view"
+      }
+    }
+  ],
+  "serviceAreas": [],
+  "credentials": [],
+  "photos": {
+    "hero": {
+      "src": "assets/front-entry-800.webp",
+      "srcset": "assets/front-entry-800.webp 800w",
+      "width": 800,
+      "height": 292,
+      "alt": "Front-entry"
+    },
+    "gallery": [
+      {
+        "src": "assets/pond-view-800.webp",
+        "srcset": "assets/pond-view-800.webp 800w",
+        "width": 800,
+        "height": 292,
+        "alt": "Pond-view",
+        "full": "assets/pond-view-800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/q-800.webp",
+        "srcset": "assets/q-800.webp 800w",
+        "width": 800,
+        "height": 292,
+        "alt": "Q",
+        "full": "assets/q-800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/main-sevices-photo-800.webp",
+        "srcset": "assets/main-sevices-photo-800.webp 800w",
+        "width": 800,
+        "height": 292,
+        "alt": "",
+        "full": "assets/main-sevices-photo-800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/mainportfolio-showcase-photo-800.webp",
+        "srcset": "assets/mainportfolio-showcase-photo-800.webp 800w",
+        "width": 800,
+        "height": 292,
+        "alt": "",
+        "full": "assets/mainportfolio-showcase-photo-800.webp",
+        "caption": ""
+      }
+    ],
+    "beforeAfter": []
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [],
+  "_todo_reviews": "Paste their Google reviews here, word for word, as {\"name\": \"...\", \"text\": \"...\"}. Never write one.",
+  "form": {
+    "accessKey": ""
+  },
+  "_source": {
+    "url": "http://dplandscaping.com.au",
+    "platform": "unknown",
+    "pagesRead": [
+      "home",
+      "services",
+      "gallery",
+      "contact"
+    ],
+    "aboutText": "Started in 1996 by Dale Pickering, the business employs ten members, passionate about creating and maintaining beautiful gardens and outdoor living spaces.\n\nWorking closely with both Sydney based and local architects, large construction firms and rural and residential property owners across the Shoalhaven and surrounding areas, Dale’s experience in the field of landscape gardening spans the last 20 years.\n\nOur qualified team is dedicated to producing unique landscape settings, through careful planning, professional construction, and follow up maintenance. A complete landscape service ensures each individually designed project, built to the highest standard, flourishes to its full potential.",
+    "socials": {},
+    "stockLookingPhotos": []
+  },
+  "_check": [
+    "business.name",
+    "business.phone.display",
+    "business.email",
+    "business.baseSuburb",
+    "services",
+    "serviceAreas",
+    "business.logo",
+    "photos.hero",
+    "photos.gallery"
+  ]
+}
