@@ -87,7 +87,7 @@
   --s32:32px;--s40:40px;--s48:48px;--s64:64px;--s80:80px;--s96:96px;
   --wrap:1560px;
   --gut:clamp(20px,5vw,72px);
-  --pad:clamp(72px,7.5vw,116px);
+  --pad:clamp(88px,10vw,168px);
   --header-h:78px;
   --ease:cubic-bezier(.16,1,.3,1);
 }
@@ -134,7 +134,7 @@ h1,h2,h3,h4{margin:0;font-weight:400;font-family:var(--font-display)}
 .t-lede{font-size:var(--t-lede);line-height:1.5;color:var(--fg-soft);max-width:var(--measure-tight)}
 .t-small{font-size:var(--t-small);line-height:1.5}
 .t-cap{font-size:var(--t-cap);line-height:1.45;color:var(--fg-mute)}
-.t-folio{font-family:var(--font-display);font-weight:800;font-size:var(--t-folio);line-height:.82;letter-spacing:0;color:var(--coral);font-variant-numeric:tabular-nums;display:block}
+.t-folio{font-family:var(--font-display);font-weight:800;font-size:var(--t-folio);line-height:.82;letter-spacing:0;color:var(--fg-mute);font-variant-numeric:tabular-nums;display:block}
 /* labels: real uppercase in the sans at 500. Never 700, never the serif,
    never font-variant-caps (neither face ships true small caps). */
 .t-label{font-family:var(--font-body);font-weight:500;font-size:var(--t-label);
@@ -150,12 +150,6 @@ section{padding-block:var(--pad);position:relative}
 .bleed{width:100vw;margin-inline:calc(50% - 50vw)}
 .card{background:var(--bg-card)}
 /* the blue-glow idea from Imperium, in their teal and coral */
-/* A glow sits outside its section's box on purpose, so its section MUST clip —
-   otherwise it grows the document and the whole page scrolls sideways. */
-section:has(.glow){overflow:hidden}
-.glow{position:absolute;pointer-events:none;border-radius:50%;filter:blur(90px);opacity:.5;z-index:0}
-.glow.teal{background:radial-gradient(closest-side,rgba(77,191,166,.5),rgba(77,191,166,0) 70%)}
-.glow.coral{background:radial-gradient(closest-side,rgba(239,68,53,.42),rgba(239,68,53,0) 70%)}
 .above{position:relative;z-index:1}
 
 /* section heads sit wide, not stranded in a narrow left column */
@@ -264,22 +258,17 @@ html.no-js .intro,html[data-intro="done"] .intro{display:none}
 .hero .t-label,.hero .meta{text-shadow:0 1px 18px rgba(4,10,13,.9)}
 
 /* ---------------------------------------------------------------- marquee */
-.strip{background:var(--bg-card);border-block:1px solid var(--line);
-  padding-block:var(--s20);overflow:hidden}
-.ticker{display:flex;width:max-content;animation:tick 40s linear infinite}
-.strip:hover .ticker{animation-play-state:paused}
-@keyframes tick{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
-.ticker b{font-family:var(--font-body);font-weight:500;font-size:var(--t-label);
-  letter-spacing:.14em;text-transform:uppercase;color:var(--fg-soft);
-  padding-inline:var(--s32);display:inline-flex;align-items:center;gap:var(--s32);white-space:nowrap}
-.ticker b::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--teal);flex:none}
-@media(prefers-reduced-motion:reduce){.ticker{animation:none;flex-wrap:wrap;justify-content:center;width:auto}}
+.strip{border-block:1px solid var(--line);padding-block:var(--s32)}
+.creds{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;
+  gap:var(--s20) clamp(var(--s32),6vw,var(--s96));justify-content:center}
+.creds li{font-family:var(--font-body);font-weight:500;font-size:var(--t-label);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--fg-mute)}
 
 /* ---------------------------------------------------------------- statement */
 .statement{overflow:hidden}
 .statement .wrap{display:grid;gap:clamp(var(--s40),5vw,var(--s80));align-items:center}
 @media(min-width:960px){.statement .wrap{grid-template-columns:1.05fr .95fr}}
-.pull{margin:var(--s40) 0 0;padding-left:var(--s24);border-left:2px solid var(--coral)}
+.pull{margin:var(--s40) 0 0;padding-left:var(--s32);border-left:1px solid var(--line-2)}
 .pull p{font-family:var(--font-body);font-weight:500;font-size:var(--t-h4);line-height:1.5;
   color:var(--fg);max-width:30em}
 .figure{position:relative;overflow:hidden;background:var(--bg-card)}
@@ -362,8 +351,7 @@ dialog.lb::backdrop{background:rgba(6,13,16,.94)}
 @media(min-width:900px){.steps{grid-template-columns:repeat(4,1fr);gap:var(--s32)}}
 .railwrap{position:relative;height:1px;background:var(--line);margin-bottom:var(--s48);display:none}
 @media(min-width:900px){.railwrap{display:block}}
-.rail{position:absolute;inset:0;background:var(--coral);transform-origin:left;
-  box-shadow:0 0 18px rgba(239,68,53,.7)}
+.rail{position:absolute;inset:0;background:var(--fg-soft);transform-origin:left}
 .step{padding-top:var(--s24);border-top:1px solid var(--line)}
 .step h3{margin:var(--s16) 0 var(--s12)}
 .step p{font-size:var(--t-small);color:var(--fg-mute);margin:0}
@@ -380,32 +368,21 @@ dialog.lb::backdrop{background:rgba(6,13,16,.94)}
   font-weight:500;color:var(--fg-mute);margin-top:var(--s12);display:block;line-height:1.4}
 
 /* ------------------------------------------------- reviews: scrolling columns */
-.tcols{display:grid;gap:var(--s20);margin-top:clamp(var(--s48),5vw,var(--s64));
-  height:clamp(520px,64vh,720px);overflow:hidden;
-  mask-image:linear-gradient(to bottom,transparent,#000 10%,#000 88%,transparent);
-  -webkit-mask-image:linear-gradient(to bottom,transparent,#000 10%,#000 88%,transparent)}
-@media(min-width:760px){.tcols{grid-template-columns:repeat(2,1fr)}}
-@media(min-width:1180px){.tcols{grid-template-columns:repeat(3,1fr);gap:var(--s24)}}
-.tcol{display:grid;gap:var(--s20);align-content:start;animation:tcol var(--d,44s) linear infinite;will-change:transform}
-.tcol.b{--d:56s}.tcol.c{--d:50s;animation-direction:reverse}
-@keyframes tcol{to{transform:translateY(-50%)}}
-.tcols:hover .tcol{animation-play-state:paused}
-@media(prefers-reduced-motion:reduce){
-  .tcols{height:auto;overflow:visible;mask-image:none;-webkit-mask-image:none}
-  .tcol{animation:none}
-}
-.rv{background:var(--bg-card);border:1px solid var(--line);padding:var(--s32) var(--s24);
-  display:grid;gap:var(--s16);align-content:start}
-.rv blockquote{margin:0;font-family:var(--font-body);font-size:var(--t-small);
-  line-height:1.6;color:var(--fg-soft)}
+.quotes{display:grid;gap:clamp(var(--s40),5vw,var(--s80)) clamp(var(--s40),5vw,var(--s96));
+  margin-top:clamp(var(--s48),6vw,var(--s80))}
+@media(min-width:820px){.quotes{grid-template-columns:repeat(2,1fr)}}
+.rv{display:grid;gap:var(--s20);align-content:start;
+  padding-top:var(--s24);border-top:1px solid var(--line)}
+.rv blockquote{margin:0;font-family:var(--font-body);font-weight:400;
+  font-size:var(--t-lede);line-height:1.5;color:var(--fg-soft);max-width:30em}
 .rv .who{font-family:var(--font-body);font-weight:500;font-size:var(--t-label);
-  letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+  letter-spacing:.14em;text-transform:uppercase;color:var(--fg-mute)}
 
 /* ---------------------------------------------------------------- recognition */
 .rec{display:grid;gap:var(--s24);margin-top:var(--s48)}
 @media(min-width:720px){.rec{grid-template-columns:repeat(2,1fr);gap:var(--s32)}}
 @media(min-width:1100px){.rec{grid-template-columns:repeat(4,1fr)}}
-.rec div{padding:var(--s32) var(--s24);background:var(--bg-card);border-top:2px solid var(--coral)}
+.rec div{padding:var(--s32) 0 0;border-top:1px solid var(--line)}
 .rec h3{margin-bottom:var(--s12)}
 .rec p{font-size:var(--t-small);color:var(--fg-mute);margin:0}
 
@@ -424,7 +401,7 @@ dialog.lb::backdrop{background:rgba(6,13,16,.94)}
   font-family:var(--font-body);font-weight:600;font-size:var(--t-h4);line-height:1.35}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"";flex:none;width:13px;height:13px;margin-top:.45em;
-  background:var(--coral);
+  background:var(--fg-mute);
   clip-path:polygon(45% 0,55% 0,55% 45%,100% 45%,100% 55%,55% 55%,55% 100%,45% 100%,45% 55%,0 55%,0 45%,45% 45%);
   transition:transform .35s var(--ease)}
 .faq[open] summary::after{transform:rotate(135deg)}
@@ -450,7 +427,7 @@ input,select,textarea{font-family:inherit;font-size:16px;color:var(--fg);
   border-radius:2px;padding:16px;min-height:58px;width:100%}
 textarea{min-height:136px;resize:vertical;line-height:1.55}
 input:focus,select:focus,textarea:focus{border-color:var(--teal)}
-input[aria-invalid="true"],textarea[aria-invalid="true"]{border-color:var(--coral)}
+input[aria-invalid="true"],textarea[aria-invalid="true"]{border-color:var(--coral-lt)}
 select option{color:#0A1418;background:#F4F7F8}
 .err{color:var(--coral-lt);font-size:var(--t-cap);letter-spacing:0;text-transform:none;font-weight:400}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
@@ -458,7 +435,7 @@ select option{color:#0A1418;background:#F4F7F8}
 .direct a{display:inline-flex;align-items:center;gap:13px;text-decoration:none;
   font-family:var(--font-body);font-weight:600;font-size:1.0625rem;word-break:break-word;transition:color .25s}
 .direct a:hover{color:var(--teal)}
-.direct svg{width:21px;height:21px;color:var(--coral);flex:none}
+.direct svg{width:21px;height:21px;color:var(--fg-mute);flex:none}
 .thanks{border:1px solid var(--teal);background:var(--bg-card);padding:var(--s40)}
 
 /* ---------------------------------------------------------------- footer */
@@ -471,7 +448,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 .foot a{text-decoration:none;color:var(--fg-soft)}
 .foot a:hover{color:var(--teal)}
 .foot img{height:32px;width:auto;margin-bottom:var(--s24)}
-.demo-note{border-left:3px solid var(--coral);background:rgba(239,68,53,.08);
+.demo-note{border-left:1px solid var(--line-2);background:transparent;
   padding:var(--s20) var(--s24);margin-top:var(--s40);font-size:var(--t-cap);
   color:var(--fg-soft);line-height:1.6}
 .legal{margin-top:var(--s40);padding-top:var(--s24);border-top:1px solid var(--line);
@@ -567,17 +544,23 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 </section>
 
 <!-- ============================================================ credentials -->
-<div class="strip" aria-label="Credentials">
-  <div class="ticker" id="ticker"></div>
+<div class="strip">
+  <div class="wrap">
+    <ul class="creds">
+      <li>Licensed landscape contractor</li>
+      <li>Licensed pool builder</li>
+      <li>The Landscape Association</li>
+      <li>Twenty years</li>
+    </ul>
+  </div>
 </div>
 
 <!-- ============================================================ statement -->
 <section class="statement" id="approach">
-  <div class="glow coral" style="width:640px;height:640px;left:-180px;top:10%"></div>
   <div class="wrap above">
     <div data-reveal>
       <p class="t-label">The difference</p>
-      <h2 class="t-d1" data-lines>We take <em style="color:var(--coral)">one job</em><br>at a time.</h2>
+      <h2 class="t-d1" data-lines>We take one job<br>at a time.</h2>
       <p class="t-lede" style="margin-top:var(--s32);max-width:34em">Most landscapers run three or four sites at once, and your garden becomes the one they visit between the others. Yours gets the crew until it is finished.</p>
       <blockquote class="pull">
         <p>“Best part was they do one job at a time, so they smashed it out over a few weeks and no long delays.”</p>
@@ -685,7 +668,6 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 
 <!-- ============================================================ process -->
 <section id="process">
-  <div class="glow teal" style="width:720px;height:720px;right:-220px;top:0"></div>
   <div class="wrap above">
     <div class="head" data-reveal>
       <div>
@@ -735,11 +717,11 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
       <p class="t-lede">Real reviews from their Google profile. Clients name the crew individually, and several are on their second and third job.</p>
     </div>
   </div>
-  <div class="wrap"><div class="tcols" id="tcols" aria-label="Client reviews"></div></div>
+  <div class="wrap"><div class="quotes" id="quotes" data-reveal="stagger" aria-label="Client reviews"></div></div>
 </section>
 
 <!-- ============================================================ recognition -->
-<section style="background:var(--bg-card)">
+<section>
   <div class="wrap">
     <div class="head" data-reveal>
       <div>
@@ -945,9 +927,6 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     return "sms:"+SITE.phoneE164+"?&body="+encodeURIComponent(body||SITE.smsBody);
   }
 
-  var CREDENTIALS=["Licensed landscape contractor","Licensed pool builder","Landscape Association Gold",
-    "Best of Houzz","Twenty years in the Eastern Suburbs","One job at a time","Design, build and pools in house"];
-
   /* Real reviews from their Google profile, names as published. */
   var REVIEWS=[
     ["Amy Land","They have completely transformed our backyard from a boring, impractical space into a stunning, modern and highly functional outdoor oasis."],
@@ -974,24 +953,13 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     if(a) track("generate_lead",{method:a.getAttribute("href").split(":")[0]});
   });
 
-  /* ---------- credential ticker ---------- */
+  /* ---------- reviews: four, standing still ----------
+     Twelve of them scrolling past was movement for its own sake. Named clients
+     read as credible without being animated at. */
   (function(){
-    var one=CREDENTIALS.map(function(c){return "<b>"+c+"</b>"}).join("");
-    $("ticker").innerHTML=one+one;      /* doubled, so -50% loops seamlessly */
-  })();
-
-  /* ---------- reviews: three columns that scroll slowly ---------- */
-  (function(){
-    function card(r){
+    $("quotes").innerHTML=REVIEWS.slice(0,4).map(function(r){
       return '<figure class="rv"><blockquote>&ldquo;'+r[1]+'&rdquo;</blockquote>'+
              '<figcaption class="who">'+r[0]+'</figcaption></figure>';
-    }
-    var cols=[[],[],[]];
-    REVIEWS.forEach(function(r,i){ cols[i%3].push(r) });
-    var cls=["a","b","c"];
-    $("tcols").innerHTML=cols.map(function(col,i){
-      var html=col.map(card).join("");
-      return '<div class="tcol '+cls[i]+'">'+html+html+'</div>';   /* doubled for the loop */
     }).join("");
   })();
 
