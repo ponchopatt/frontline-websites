@@ -169,9 +169,15 @@ section{padding-block:var(--pad);position:relative}
 .btn:hover{background:var(--teal-lt);transform:translateY(-2px);box-shadow:0 12px 34px rgba(77,191,166,.28)}
 .btn:active{transform:translateY(0) scale(.99);box-shadow:none}
 .btn.ghost{background:transparent;color:var(--fg);border-color:var(--line-2)}
+/* The hero's secondary action. A ruled link, not a second button — two buttons
+   side by side read as two primary actions, and neither wins. */
+.link{display:inline-flex;align-items:center;text-decoration:none;font-weight:500;
+  font-size:var(--t-small);color:var(--fg-soft);padding-block:6px;
+  border-bottom:1px solid var(--line-2);transition:color .25s,border-color .25s}
+.link:hover{color:var(--fg);border-color:var(--fg)}
 .btn.ghost:hover{background:rgba(244,247,248,.08);border-color:var(--fg);box-shadow:none}
 .btn svg{width:19px;height:19px;flex:none}
-.ctas{display:flex;flex-wrap:wrap;gap:var(--s16)}
+.ctas{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s16) var(--s32)}
 /* An sms: link opens the messages app on a phone and does absolutely nothing
    on a Windows or Linux desktop. So the same button in the same place is a
    text on a phone and the quote form on a laptop. */
@@ -536,8 +542,8 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
           0412 154 594
         </a>
-        <a class="btn ghost only-wide" href="#enquire">Get a quote</a>
-        <a class="btn ghost only-narrow" data-sms href="sms:+61412154594">Text us a photo</a>
+        <a class="link only-wide" href="#enquire">Or send the details</a>
+        <a class="link only-narrow" data-sms href="sms:+61412154594">Or text us a photo</a>
       </div>
     </div>
   </div>
