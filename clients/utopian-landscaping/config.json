@@ -1,0 +1,178 @@
+{
+  "_comment": "Built by \"npm run new\" from http://www.utopianlandscaping.com.au on 2026-09-22. Everything listed in _check was worked out by reading their website and is NOT confirmed. Go through the checklist, fix or delete each one, then remove it from _check. Reviews are deliberately empty — paste them in from their Google profile, word for word.",
+  "slug": "utopian-landscaping",
+  "template": "trust",
+  "industry": "landscaping",
+  "live": false,
+  "business": {
+    "name": "Utopian - logo",
+    "ownerName": "",
+    "ownerFirstName": "",
+    "phone": {
+      "display": "0423 814 300",
+      "e164": "+61423814300"
+    },
+    "email": "utopian@utopianlandscaping.com.au",
+    "abn": "",
+    "baseSuburb": "Canberra",
+    "region": "",
+    "currentSite": "utopianlandscaping.com.au",
+    "brand": {
+      "accent": "#37B0BA"
+    },
+    "logo": {
+      "src": "assets/logo.webp",
+      "width": 280,
+      "height": 120
+    }
+  },
+  "responsePromise": "",
+  "copy": {
+    "headline": "",
+    "sub": "",
+    "kicker": ""
+  },
+  "stats": {
+    "googleRating": null,
+    "reviewCount": null,
+    "jobsDone": null,
+    "yearsInBusiness": null
+  },
+  "services": [],
+  "serviceAreas": [
+    {
+      "region": "Service area",
+      "suburbs": [
+        "Canberra",
+        "Yass",
+        "Queanbeyan"
+      ]
+    }
+  ],
+  "credentials": [
+    {
+      "kind": "membership",
+      "label": "Master Builders"
+    }
+  ],
+  "photos": {
+    "hero": {
+      "src": "assets/img-0050-1920w-800.webp",
+      "srcset": "assets/img-0050-1920w-800.webp 800w, assets/img-0050-1920w-1800.webp 1800w",
+      "width": 800,
+      "height": 598,
+      "alt": ""
+    },
+    "gallery": [
+      {
+        "src": "assets/img-0253-1152w-800.webp",
+        "srcset": "assets/img-0253-1152w-800.webp 800w",
+        "width": 800,
+        "height": 598,
+        "alt": "",
+        "full": "assets/img-0253-1152w-800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/img-0321-1152w-800.webp",
+        "srcset": "assets/img-0321-1152w-800.webp 800w",
+        "width": 800,
+        "height": 598,
+        "alt": "",
+        "full": "assets/img-0321-1152w-800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/img-0093-1152w-800.webp",
+        "srcset": "assets/img-0093-1152w-800.webp 800w",
+        "width": 800,
+        "height": 600,
+        "alt": "",
+        "full": "assets/img-0093-1152w-800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/feb2012-001-1152w-800.webp",
+        "srcset": "assets/feb2012-001-1152w-800.webp 800w",
+        "width": 800,
+        "height": 573,
+        "alt": "",
+        "full": "assets/feb2012-001-1152w-800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/feb2012-003-1152w-800.webp",
+        "srcset": "assets/feb2012-003-1152w-800.webp 800w",
+        "width": 800,
+        "height": 534,
+        "alt": "",
+        "full": "assets/feb2012-003-1152w-800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/img-0178-1152w-800.webp",
+        "srcset": "assets/img-0178-1152w-800.webp 800w",
+        "width": 800,
+        "height": 598,
+        "alt": "",
+        "full": "assets/img-0178-1152w-800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/img-0092-1152w-800.webp",
+        "srcset": "assets/img-0092-1152w-800.webp 800w",
+        "width": 800,
+        "height": 600,
+        "alt": "",
+        "full": "assets/img-0092-1152w-800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/img-0177-1152w-800.webp",
+        "srcset": "assets/img-0177-1152w-800.webp 800w",
+        "width": 800,
+        "height": 598,
+        "alt": "",
+        "full": "assets/img-0177-1152w-800.webp",
+        "caption": ""
+      }
+    ],
+    "beforeAfter": []
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [],
+  "_todo_reviews": "Paste their Google reviews here, word for word, as {\"name\": \"...\", \"text\": \"...\"}. Never write one.",
+  "form": {
+    "accessKey": ""
+  },
+  "_source": {
+    "url": "http://www.utopianlandscaping.com.au",
+    "platform": "unknown",
+    "pagesRead": [
+      "home",
+      "about",
+      "gallery",
+      "contact"
+    ],
+    "aboutText": "Saturday in the garden#springtime #canberra#canberralife#utopianlandscapingcanberra #canberralandscaper #canberralocals #magnolia #daffodils\n\nA post shared by Utopian Landscaping Canberra (@utopian_landscaping) on Sep 13, 2019 at 7:40pm PDT",
+    "socials": {
+      "facebook": "https://www.facebook.com/Utopianlandscapingandsolutions/",
+      "instagram": "http://www.instagram.com/utopian_landscaping/"
+    },
+    "stockLookingPhotos": []
+  },
+  "_check": [
+    "business.name",
+    "business.phone.display",
+    "business.email",
+    "business.baseSuburb",
+    "services",
+    "serviceAreas",
+    "business.brand.accent",
+    "credentials",
+    "business.logo",
+    "photos.hero",
+    "photos.gallery"
+  ]
+}
