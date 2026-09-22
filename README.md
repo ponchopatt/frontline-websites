@@ -123,6 +123,12 @@ carrying someone else's brand.
   beside it reads as a rating being hidden. Bondi Landscapes set this rule: ~27
   reviews, one confirmed 1-star, so their page carries no rating at all and the
   reviews themselves do the work.
+- **A rating has to match the pull.** `data/google_reviews_top25.json` is the only
+  source for a rating, a count or a review's wording, keyed by the same slug
+  `QUEUE.csv` uses. `check` compares the config against it and fails on a figure
+  that disagrees — a number their own Google profile does not show is the first
+  thing an owner looks up. A 5.0 the pull confirms passes; a 5.0 for a client the
+  pull has never heard of goes on the to-confirm list.
 - **Only their own photos.** Stock is excluded and flagged.
 - **Every section hides when empty.** No empty headings, no "0" counters, no
   button that goes nowhere.

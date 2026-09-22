@@ -10,6 +10,7 @@ import {
   toE164, telHref, smsHref, headlineLines, sentenceList, firstName, image, slugify,
 } from '../lib/render.js';
 import { merge, normalise, cleanStats, findChecks, missingRequired, RATING_FLOOR } from '../lib/config.js';
+import { staticChecks } from '../lib/check.js';
 
 let passed = 0;
 let failed = 0;
@@ -253,6 +254,90 @@ check('a complete config has nothing missing', () => {
     responsePromise: 'Quote back within a few hours',
   });
   assert.deepEqual(missingRequired(cfg), []);
+});
+
+/* ------------------------------------------------- the rating and the pull */
+
+console.log('\nratings against data/google_reviews_top25.json');
+
+const acheck = async (name, fn) => {
+  try { await fn(); passed++; }
+  catch (err) { failed++; console.error(`  FAIL ${name}\n       ${err.message}`); }
+};
+
+/** A config with nothing else wrong with it, so only the stats can fail. */
+const statsCfg = (slug, stats) => normalise({
+  slug,
+  industry: 'builders',
+  business: { name: 'X', ownerName: 'Pat P', phone: '0412 154 594', baseSuburb: 'Bondi' },
+  services: [{ title: 'a' }, { title: 'b' }, { title: 'c' }],
+  photos: { hero: { src: 'h.webp', alt: 'A hero' } },
+  responsePromise: 'Quote back within a few hours',
+  demo: { footerNote: 'A demo.' },
+  stats,
+});
+const ratingIssues = (list) => list.filter((s) => /rating|reviewCount|pull/i.test(s));
+
+await acheck('a 5.0 the pull confirms passes', async () => {
+  // Horgan really is 5.0 from 5 reviews. This is the case that used to fail on
+  // the reasoning that a 5.0 might be invented; the pull settles it.
+  const r = await staticChecks(statsCfg('horgan-building', { googleRating: 5, reviewCount: 5 }));
+  assert.deepEqual(ratingIssues(r.blockers), [], 'a verified 5.0 is not a blocker');
+  assert.deepEqual(ratingIssues(r.confirm), [], 'and nothing left to confirm');
+  assert.ok(r.notes.some((n) => /verified against/.test(n)), 'and it says where it was verified');
+});
+
+await acheck('a 5.0 the pull has never heard of is a question, not a blocker', async () => {
+  const r = await staticChecks(statsCfg('someone-new', { googleRating: 5, reviewCount: 12 }));
+  assert.deepEqual(ratingIssues(r.blockers), [], 'an unknown 5.0 no longer stops the build');
+  assert.equal(ratingIssues(r.confirm).length, 1, 'it goes on the to-confirm list');
+});
+
+await acheck('a rating that disagrees with the pull is a blocker', async () => {
+  const r = await staticChecks(statsCfg('horgan-building', { googleRating: 4.9, reviewCount: 5 }));
+  assert.ok(r.blockers.some((b) => /does not match their profile/.test(b)),
+    'showing a number their Google profile does not show is the thing an owner checks');
+});
+
+await acheck('a review count that disagrees with the pull is a blocker', async () => {
+  const r = await staticChecks(statsCfg('lmac', { googleRating: 4.8, reviewCount: 300 }));
+  assert.ok(r.blockers.some((b) => /reviewCount is 300/.test(b)), 'LMAC has 331');
+});
+
+await acheck('a round review count the pull confirms is left alone', async () => {
+  // The round-number rule exists because 500 jobs is a guess. A count Google
+  // itself reports is not a guess, however tidy it looks.
+  const r = await staticChecks(statsCfg('lmac', { googleRating: 4.8, reviewCount: 331 }));
+  assert.deepEqual(ratingIssues(r.blockers), []);
+});
+
+await acheck(`a rating under ${RATING_FLOOR} is dropped and the note says why`, async () => {
+  const r = await staticChecks(statsCfg('dimension-gardenscape', { googleRating: 4.5, reviewCount: 54 }));
+  assert.deepEqual(ratingIssues(r.blockers), [], 'hidden, not failed');
+  assert.ok(r.notes.some((n) => /under the 4.7 floor/.test(n)), 'and it names the real figure');
+});
+
+await acheck('every row in QUEUE.csv has an industry the factory knows', async () => {
+  const { readFileSync } = await import('node:fs');
+  const { INDUSTRIES, INDUSTRY_TEMPLATE } = await import('../lib/config.js');
+  const rows = readFileSync('QUEUE.csv', 'utf8').trim().split('\n').slice(1)
+    .map((l) => l.split(',')).filter((c) => c[0]);
+  assert.ok(rows.length, 'the queue is not empty');
+  for (const [slug, , industry, template] of rows) {
+    assert.ok(INDUSTRIES.includes(industry), `${slug}: "${industry}" is not an industry the factory knows`);
+    assert.equal(INDUSTRY_TEMPLATE[industry], template, `${slug}: the queue says ${template}, the industry gives ${INDUSTRY_TEMPLATE[industry]}`);
+  }
+});
+
+await acheck('every row in QUEUE.csv has reviews pulled for it', async () => {
+  const { readFileSync } = await import('node:fs');
+  const { loadProspectReviews } = await import('../lib/config.js');
+  const pull = await loadProspectReviews();
+  const rows = readFileSync('QUEUE.csv', 'utf8').trim().split('\n').slice(1)
+    .map((l) => l.split(',')).filter((c) => c[0]);
+  for (const [slug] of rows) {
+    assert.ok(pull[slug], `${slug} is in the queue with no reviews pulled for it`);
+  }
 });
 
 console.log(`\n${passed} passed, ${failed} failed\n`);

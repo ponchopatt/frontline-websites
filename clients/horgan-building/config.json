@@ -64,8 +64,8 @@
   },
   "stats": {
     "yearsInBusiness": 35,
-    "googleRating": null,
-    "reviewCount": null,
+    "googleRating": 5.0,
+    "reviewCount": 5,
     "jobsDone": null
   },
   "services": [
