@@ -129,15 +129,14 @@ never asks it to render wider than 1500.
 
 | File | Source | Size | Where / what it shows |
 |---|---|---|---|
-| `dapto-pergola-*` | SCL_230PrincessHwyDapto_IMG_2779.jpg | 1500×1000 | Statement section. Dapto: merbau deck under a timber pergola, outdoor table and benches set, sandstone-faced raised bed, pool beyond. Inhabited, not staged. |
-| `figtree-turf-1500` | as above | 1500×1000 | Aperture band. |
+| `portkembla-front-*` | SCL_207Wentworth_049_low.jpg | 1500×1000 | Statement section. Port Kembla at dusk: the whole finished front — cobblestone path, merbau entry steps, sandstone-faced raised beds, white picket fence, new turf. |
+| `dapto-stonewall-*` | SCL_230PrincessHwyDapto_IMG_2784.jpg | 1500×1000 | Aperture band, full-bleed. Dapto: a raised bed faced in sandstone stackstone on a merbau deck, ferns planted through it, a light set into the wall. Chosen over the Figtree turf shot because the caption sits over dark decking rather than bright lawn. |
 | `portkembla-bench-*` | SCL_207Wentworth_077_low.jpg | 1500×1000 | Construction service card. Close on the stackstone wall and the merbau bench top. |
 | `thirroul-courtyard-*` | Thirroul-25.jpg | 1500×1000 | Design service card. Thirroul: paved courtyard, rendered wall, lawn, grow wall. |
-| `thirroul-lawn-*` | Thirroul-2.jpg | 1500×1000 | Maintenance service card. Thirroul: clipped lawn, planting along the timber fence. |
-| `figtree-sprinkler-*` | SCLandscape_55Redgum_007.jpg | 1500×1000 | Irrigation service card. Sprinkler head throwing over new turf against a brick home. |
-| `dapto-poolwide-1200` | SCL_230PrincessHwyDapto_IMG_2800.jpg | 1500×1000 | Enquiry-form background. Dapto pool and pergola, wide. |
-| `ryan-646.webp` | ryan.jpg | 646×852 | Ryan, leaning on the branded ute with the coast behind him. Their own about-page photo. Under 1000px — fine at the size the template renders a portrait, flagged anyway. |
-| `logo-scl.webp` | newlogo.png | 400×104 | Their wordmark, white with the green tree mark, already transparent. |
+| `figtree-sprinkler-*` | SCLandscape_55Redgum_007.jpg | 1500×1000 | Irrigation & upkeep service card. Sprinkler head throwing over new turf against a brick home. |
+| `figtree-turf-1200` | SCLandscape_55Redgum_003.jpg | 1500×1000 | Also the enquiry-form background, heavily darkened behind the form. |
+| `ryan-646.webp` | ryan.jpg | 646×852 | Ryan, leaning on the branded ute with the coast behind him. Their own about-page photo. Under 1000px wide — fine at the size the template renders a portrait, flagged anyway. |
+| `logo-scl.webp` | newlogo.png | 400×104 | Their wordmark, white with the green tree mark, already transparent. Brand green `#8FD24E` sampled from it. |
 
 ### Rejected, with the reason — every one was opened and looked at
 
@@ -164,8 +163,9 @@ never asks it to render wider than 1500.
 | `newlogo.png` derivatives, `icons8-*.png`, `default.jpg` | ≤48–600px | Logo and theme furniture. |
 | All `-1024x683` / `-768x512` files | — | WordPress's own downsized copies of images already used at full size. |
 
-**Count: 6 usable at gallery quality from 4 separate jobs, plus 7 more of the same standard
-used through the page — 13 in all, from 5 jobs. Hero at 1500px, flagged.**
+**Count: 13 photographs of their own work on the page — 6 in the gallery, plus hero, statement,
+aperture, three service cards and Ryan's portrait — drawn from 5 separate jobs (Dapto, Port Kembla,
+Flinders, Figtree, Thirroul) and their about page. Hero at 1500px against a 1600px bar, flagged.**
 
 ## Call opener
 

@@ -18,16 +18,50 @@
     ],
     "aboutText": "Ben Thompson is the founder of Sunset Pools and at the core of a new generation of Australian pool design and construction specialists who have rejected outdated design and construction ideas. Ben favours creating one-off special designs and more adventurous pool concepts that form bespoke assets to their lucky owners leisure environment and lifestyle.\n\nBen repeatedly illustrates how in the hands of a creative pool designer reinforced concrete has virtually limitless possibilities. Results that have earned Sunset Pools many fans and a well-deserved reputation in addition to a stream of local and national swimming pool design, construction and renovation awards. Ben appreciates that reinforced concrete can be fashioned to create swimming pools and spas that reflect his client’s individuality, formed to complement their lifestyle, and finished to harmonise with their environment. In light of this versatility, Ben laments that it is difficult to understand why so many concrete pool construction contractors simply carry on offering the same half dozen basic pool shapes year after year.\n\nAs a multi-award winning builder at the top of his trade, Ben is established as Sydney’s pool, spa and water feature specialist of choice for discerning residents, astute strata managers, local authorities, resorts and prestigious international hotels where accurate estimating, sound administration and safe work practices are mandatory.\n\nAs important as a new pool’s aesthetic and high-quality finish are the design solutions you can’t actually see. Less evident but just as critical is Ben’s meticulous attention to each project’s structural and hydraulic engineering and choice of building materials.\n\nAs a consequence of Ben’s long-term fascination with creating the industry’s most effective pool and spa hydraulics, his informed selection of filtration, sanitation and environmentally sensitive heating technologies means that Sunset Pool owners can also look forward to the long-term benefits of selecting a Sunset pool and spa.\n\nBy adopting and adapting commercial-grade water filtration, heating and sanitation systems Ben’s hydraulic solutions have established an unsurpassed “Sunset standard” for pool and spa water management efficiency, monitoring and control. Attributes that Ben bestows on the swimming pool renovation projects his company undertakes as well as the new builds.\n\nYou will discover that Ben Thompson enjoys nothing more than collaborating with visionary individuals who can appreciate the added value his innovative approach can realise. Working with discerning Sydney homeowners their architects, engineers and builders Ben creates innovative and practical leisure solutions. Ben always remains directly involved throughout every stage of construction, project managing each aspect and trade to ensure uncompromised high-end results that literally reflect their proud owners sense of style.",
     "claimSources": {
-      "business.ownerName = Ben Thompson": "/about/: “Ben Thompson is the founder of Sunset Pools and at the core of a new generation of Australian pool design and construction specialists who have rejected outdated design and construction ideas.” Also /residential-pools/: “Ben Thompson, our Managing Director, is ready to provide practical assistance”; /awards/: “Ben Thompson Sunset Pool’s founder and Managing Director has accepted requests to undertake public speaking engagements”; and the homepage JSON-LD sameAs lists instagram.com/benthompsonsunsetpools.",
-      "copy.sub ‘more than twenty years’ / stats.yearsInBusiness 20": "Homepage hero and footer: “For over 20 years we’ve been creating statements of luxury, turning ideas into reality for homes and venues in Sydney.” Homepage FAQ schema: “Our 20+ years of local experience sets us apart as experts in Sydney concrete pool interiors…” and “For over 20 years, our reputation has been built solely on our premium Sydney pool renovations…” The tile renders as “20+”, which is their own wording.",
-      "‘132 steps’": "/pool-renovations/, the Bellevue Hill case study: “Challenge # 1: Compromising of a total 132 steps from the road to the pool at the back of the property.”",
-      "‘on rooftops, inside buildings’": "Their own services menu on every page: “Rooftop, On Springs or Part of Building Structure”. Portfolio item on the homepage: “Sunset indoor lap pool and spa – Filtration/Plant Room Strathfield”. /commercial-pools-water-features/: “Where many pool builders might consider non-standard pool projects ‘too hard’, Sunset Pools takes architects’ and engineers’ more challenging ideas in their stride.”",
-      "licence 166547C": "Homepage FAQ schema: “As a licensed NSW Swimming Pool Builder with Business License No. 166547c, we ensure your renovation meets all current fencing and filtration laws.” Homepage footer: “Business License No. 166547C”.",
-      "‘three to six weeks’": "Homepage FAQ schema: “Most restorations take 3 to 6 weeks.”",
-      "awards": "/awards/ table: 2013 SPASA Gold NATIONAL Innovative; 2014 SPASA Gold NATIONAL Sustainable; 2011 SPASA Gold NATIONAL Commercial renovation over $250k; 2012 GAVA ‘International’ Silver Indoor lap pool and Bronze Infinity edge pool. ‘Member Of’ logos: SPASA, MBA Member, APSP Member. ‘Featured In’: Sydney Living, Smart Home Ideas, SPASA Magazine 2009-2012, “AquaTekture” International Award-Winning Pools, Spas, Water Environments III.",
-      "phone / email / address": "Homepage and /contact/: “12/3 Clyde St, Rydalmere NSW 2116”, “1300 000 412”; mailto on /awards/: info@sunsetpools.com.au.",
-      "service areas": "Homepage FAQ schema: “Northern Beaches (Manly, Mosman, Palm Beach) / Eastern Suburbs (Bondi, Vaucluse, Coogee) / North Shore & Inner West / Sutherland Shire (Cronulla, Miranda)”, plus the suburb names on their own project photos and portfolio items.",
-      "‘Sydney-only, no interstate namesakes’": "Homepage ‘Notice of Non-Affiliation’ and /faqs/: “Sunset Pools (https://www.sunsetpools.com.au/) is a strictly independent, family-owned business based in Sydney, NSW. We have no affiliation, association, or shared ownership with namesake companies located on the Gold Coast, in Queensland, or in the United States.”"
+      "business.ownerName = Ben Thompson": "/about/: “Ben Thompson is the founder of Sunset Pools and at the core of a new generation of Australian pool design and construction specialists who have rejected outdated design and construction ideas.” /residential-pools/: “Ben Thompson, our Managing Director, is ready to provide practical assistance and expert information on everything you need to know”. /about/ also carries his photo, file Ben-Thompson.jpg, alt “Ben Thompson”. The homepage JSON-LD sameAs lists instagram.com/benthompsonsunsetpools.",
+      "owner.body ‘founder and managing director’": "/awards/: “Ben Thompson Sunset Pool’s founder and Managing Director has accepted requests to undertake public speaking engagements and present at national industry expert forums on the principles and procedures of pool design and construction.” That full sentence is also the source for ‘he has presented at national industry forums on pool design and construction’.",
+      "owner.body ‘not one of half a dozen standard shapes’ / ‘one-off designs’": "/about/: “Ben laments that it is difficult to understand why so many concrete pool construction contractors simply carry on offering the same half dozen basic pool shapes year after year.” /residential-pools/: “Specializing in more enterprising designer pools, Sunset constructs one-off concepts seldom addressed by widely known builders.”",
+      "owner.body ‘reinforced concrete … indoor, rooftop, infinity edge, on springs, built into the structure’": "/about/: “Ben repeatedly illustrates how in the hands of a creative pool designer reinforced concrete has virtually limitless possibilities.” Their own services menu on every page lists “Rooftop, On Springs or Part of Building Structure”; the homepage portfolio lists “Sunset indoor lap pool and spa – Filtration/Plant Room Strathfield”; and their 2012 GAVA entry on /awards/ is an “Infinity edge pool”.",
+      "owner.team ‘at the first site visit and at handover, project-managing each trade’": "/about/: “Ben always remains directly involved throughout every stage of construction, project managing each aspect and trade to ensure uncompromised high-end results.”",
+      "owner.team ‘architects, engineers and other pool builders bring him in as a consultant’": "/hydraulic-consulting/: “As every project has a different complexity, bather load, use & environment. Please email your drawings & we can review them to advise a price.” and “Here’s why Project Managers Prefer Sunset Pools”. /commercial-pools-water-features/: “Sunset Pools is the supplier of choice for enlightened architectural specifiers, town planners, commercial builders, and successful developers across metropolitan Sydney.” Corroborated by Steve Guilbert’s Google review, which is on the page word for word.",
+      "copy.sub ‘more than twenty years’ / stats.yearsInBusiness 20": "Homepage hero and footer: “For over 20 years we’ve been creating statements of luxury, turning ideas into reality for homes and venues in Sydney.” Homepage FAQ schema: “Our 20+ years of local experience sets us apart as experts in Sydney concrete pool interiors…” and “For over 20 years, our reputation has been built solely on our premium Sydney pool renovations and our commitment to the local New South Wales community.” The tile renders “20+”, which is their own wording. (Matt Saggers’ ‘12 years ago’ is the age of one customer’s pool, not of the business, and supports nothing on the page except his own review.)",
+      "headline ‘the pools other builders call too hard’ / ‘on rooftops, inside buildings’": "/commercial-pools-water-features/: “Where many pool builders might consider non-standard pool projects ‘too hard’, Sunset Pools takes architects’ and engineers’ more challenging ideas in their stride.” Their own services menu on every page: “Rooftop, On Springs or Part of Building Structure”. Homepage portfolio: “Sunset indoor lap pool and spa – Filtration/Plant Room Strathfield”.",
+      "‘132 steps below the road’": "/pool-renovations/, the Bellevue Hill case study: “Challenge # 1: Compromising of a total 132 steps from the road to the pool at the back of the property.”",
+      "‘cranes’ (statement pull quote and FAQ 1)": "Not from their site — it is Wendy Carcaillet’s Google review, quoted word for word from data/google_reviews_top25.json: “Our pool is on a tricky site which involved cranes to bring supplies in and off the site.” It is attributed to her on the page, and the FAQ says ‘another client’s site needed cranes’ rather than asserting it as a Sunset claim.",
+      "‘three to six weeks’ and ‘scheduled around Sydney’s weather so glass bead and pebble interiors cure properly’": "Homepage FAQ schema: “Most restorations take 3 to 6 weeks. We schedule our projects specifically around Sydney’s climate to ensure premium finishes like glass bead or pebble interiors cure perfectly under local conditions.”",
+      "renovation scope — ‘interiors, waterline tiling, coping, filtration’, ‘old pebblecrete to a tiled finish’": "Homepage FAQ schema: “Our 20+ years of local experience sets us apart as experts in Sydney concrete pool interiors, glass bead finishes, and premium waterline tiling.” /pool-renovations/, Bellevue Hill: “New Travertine cooping & surrounds, waterline tiles, pebblecrete interior, filtration system, full glass fencing, landscaping”. Corroborated by Captain Others’ review, on the page word for word: “an old beige pebblecrete pool that needed modernising… stripping, remodelling, relining the pool and refurbishing the filtration system”.",
+      "licence 166547C and ‘NSW fencing and filtration rules’": "Homepage FAQ schema: “Yes. All our projects meet strict NSW safety standards. As a licensed NSW Swimming Pool Builder with Business License No. 166547c, we ensure your renovation meets all current fencing and filtration laws.” Homepage footer: “Business License No. 166547C”.",
+      "‘council and the certifier’ / council compliance (process step 3 and FAQ 4)": "/pool-renovations/, Bellevue Hill: “Challenge # 4: Council compliance. Using our integrated legal team we were able to work with council for pool compliance.” Homepage FAQ schema, on local rules: “As a local NSW-based company, we ensure every project is fully compliant with specific Sydney council regulations and Australian safety standards.”",
+      "‘3D imaging where it helps you picture it’ (process step 2)": "/hydraulic-consulting/: “3D imaging designs (if required)” and “3D imaging designs provide visual representations of the pool layout and surrounding environment… These designs help visualize the final look and functionality of the pool project before construction begins.” Their services menu also carries “3D Pool Design”.",
+      "hydraulics service — pipe sizing, plant room layout, filtration, lighting, heating, running costs": "/hydraulic-consulting/, their own list: “Hydraulics out of pool (plus spa or balance tank if required) including pipe sizing / Hydraulic schematic & specifications for plant room / Filtration specifications / Plant room layout schematic to scale / Lighting specifications & position location specs / Heat specifications & electrical loading / Projected energy ongoing costs / In-floor cleaning schematics (if required) / 3D imaging designs (if required) / Structural engineering design & specifications (if required)”.",
+      "‘structure’ / structural engineering (hero subhead, process step 2)": "/hydraulic-consulting/: “Structural engineering design & specifications (if required)” and “Structural engineering design specifies materials and requirements for safe and durable pool construction, ensuring compliance with building codes.” /about/: “Less evident but just as critical is Ben’s meticulous attention to each project’s structural and hydraulic engineering and choice of building materials.”",
+      "responsePromise ‘The first consultation is obligation-free’": "/residential-pools/: “complete the enquiry form to arrange your obligation-free design consultation” and “Call Sunset Pools today at 1300 000 412 or complete the enquiry form to arrange your obligation-free consultation.” The same line appears on /commercial-pools-water-features/.",
+      "award: SPASA National Gold, Innovation, 2013 (and ‘placed every year from 2010 to 2014’)": "/awards/ table. 2013 SPASA: Gold Chapter Innovative, Gold State Innovative, Gold NATIONAL Innovative, plus Silver Chapter Innovative. The same table lists Innovative placings in 2010 (Bronze Chapter), 2011 (Silver Chapter), 2012 (Silver Chapter) and 2014 (Bronze Chapter) — which is why the card claims placings, not exclusivity, and says nothing about how SPASA judges the category.",
+      "award: SPASA National Gold, Sustainable, 2014 (and 2013)": "/awards/ table. 2014 SPASA: Gold Chapter Sustainable, Gold State Sustainable, Gold NATIONAL Sustainable. 2013 SPASA: Gold Chapter Sustainable, Gold State Sustainable, Gold NATIONAL Sustainable.",
+      "award: SPASA National Gold, Commercial renovation over $250k, 2011 — and ‘national golds for construction over $100k and under $50k’": "/awards/ table. 2011 SPASA: Gold Chapter, Gold State and Gold NATIONAL for Commercial renovation over $250k, and Gold Chapter, Gold State and Gold NATIONAL for Construction under $50k. 2013 SPASA: Gold Chapter, Gold State and Gold NATIONAL for Construction over $100k.",
+      "award: GAVA International, 2012": "/awards/ table: “2012 - GAVA — ‘International’: Silver — Indoor lap pool. Bronze — Infinity edge pool.”",
+      "recognition: AquaTekture III, Sydney Living, SPASA Magazine": "/pool-renovations/ ‘Featured In’ strip, image alt text: “‘AquaTekture’ International Award-Winning Pools, Spas, Water Environments III”, “Sunset Pools Featured in Sydney Living Magazine”, “Sunset Pools in Smart Home Ideas Magazine”, “Sunset Featured In SPASA Magazine 2009 / 2010 / 2011 / 2012”. Their site also has a page at /aquatekture-international-award-winning-pools-spas-water-environments-3/.",
+      "credential strip: SPASA member, Master Builders Association member": "/pool-renovations/ ‘Member Of’ strip, lightbox titles and image alts: “SPASA Logo”, “MBA Member Logo”, “APSP Member Logo”. (APSP is a US body and was left off the page.)",
+      "‘multi-award winning’ / recognitionIntro ‘2009 to 2016’": "/awards/ runs from “2009 — SPASA (Swimming Pool & Spa Association) Awards” to “2016 — SPASA (Swimming Pool & Spa Association) Awards”, and the page is headed “NOW INTERNATIONAL AWARD WINNERS”. The homepage title is “Sunset Pools | Award-Winning Sydney Pool Renovations & Construction”.",
+      "phone / email / address": "Homepage header and /contact/: “Call: 1300 000 412”; /contact/: “Head Office: 12/3 Clyde St, Rydalmere NSW 2116”; mailto link on /awards/: info@sunsetpools.com.au. The phone also matches the number on their Google profile in data/google_reviews_top25.json.",
+      "service areas": "Homepage FAQ schema: “Our core service regions include: Northern Beaches (Manly, Mosman, Palm Beach) / Eastern Suburbs (Bondi, Vaucluse, Coogee) / North Shore & Inner West / Sutherland Shire (Cronulla, Miranda)”. The remaining suburbs on the page come from their own project pages and photo file names: Avalon (homepage portfolio, “Koi Fish Water Feature Plant Room – Avalon” and “Luxury Koi Fish Pond – Avalon”), Wentworth Point, Strathfield and Sans Souci (homepage portfolio), Parramatta (“Western Sydney University – Parramatta (UWS)”), Killara (“Sophisticated Sunset WEEPING WALL FOUNTAIN Killara”), Bellevue Hill (/pool-renovations/), and Northbridge, Willoughby, Wahroonga, Gordon, Lindfield, Greenwich, Neutral Bay, Hunters Hill, Woolwich, Putney, Drummoyne, Balmain, Lilyfield and Kensington from their portfolio pages and wp-content/uploads file names.",
+      "‘Sydney-only, independent, family-owned, no interstate namesakes’": "Homepage ‘Notice of Non-Affiliation’ and /faqs/: “Sunset Pools (https://www.sunsetpools.com.au/) is a strictly independent, family-owned business based in Sydney, NSW. We have no affiliation, association, or shared ownership with namesake companies located on the Gold Coast, in Queensland, or in the United States.”"
+    },
+    "photoClaims": {
+      "hero + owner — ‘Manly’ rooftop pool": "Manly-1.jpg (1920×1440) is on their homepage, /about/ and /project/; Manly-4.jpg (1000×750, the aerial) and Manly-6.jpg are in the same set, Manly-6 on /faqs/. The suburb is their own file naming; no client is named.",
+      "statement — apartment lap pool at dusk": "infinitive-2-scaled.jpg (2560×1707) from their own wp-content/uploads/2024/04 library. No suburb or client is claimed for it, and the alt text describes only what is in the frame.",
+      "aperture — ‘Rooftop pool and spa, Sydney Harbour’": "Commercial-Pool-Builder2.jpg (1700×1133), used by them on the homepage, /about/, /awards/, /contact/, /faqs/, /hydraulic-consulting/, /pool-renovations/, /project/, /residential-pools/ and /commercial-pools-water-features/. Their commercial page lists “Hotels, resorts & leisure complexes”. The file name says Park Hyatt; the page deliberately says only ‘Sydney Harbour’ because the client is not confirmed.",
+      "gallery — ‘Bellevue Hill · renovation, 132 steps below the road’": "Bellevue-Hill-1.jpg (1000×667) on /pool-renovations/ and /project/, beside the case study that carries the 132-steps line.",
+      "gallery — ‘Strathfield · indoor lap pool and spa’": "Strathfield-5.jpg (1000×667) on /hydraulic-consulting/; the homepage portfolio item reads “Sunset indoor lap pool and spa – Filtration/Plant Room Strathfield”.",
+      "gallery — ‘Hunters Hill · fully tiled pool, granite stepping stones’": "Residential-Pool-Project-Hunters-Hill-4.jpg (1200×1800) from their own uploads library; the suburb is their file naming.",
+      "gallery — ‘Drummoyne · pool and glass fence on the waterfront’": "Drummoyne-1.jpg (1000×667) on their homepage, /project/, /residential-pools/ and /commercial-pools-water-features/.",
+      "gallery — ‘Wahroonga · stone water wall, spa and new surrounds’": "Wahroonga-finished-1.jpg (960×640) on /commercial-pools-water-features/ and /project/.",
+      "gallery — ‘Wentworth Point · beach-entry community pool’": "12437-hires.jpg (4134×2756) from their uploads library, the same job as W.P-5.jpg on /commercial-pools-water-features/; the homepage portfolio item reads “Beach-looking oasis pool Filtration/Plant Room – Wentworth Point”.",
+      "services 01 — renovations photo, Sans Souci": "Sans-Souci-2.jpg (1000×667) on their homepage, /project/, /residential-pools/ and /commercial-pools-water-features/; the homepage portfolio item reads “Boutique Renovation on the Water – Sans Souci”, which is why it sits on the renovations card.",
+      "services 02 — new pools photo": "Home-1.jpg (1000×667) on /project/ and /residential-pools/. No suburb is claimed.",
+      "services 03 — plant room photo": "PLANTROOM.png (715×466) on /hydraulic-consulting/, their own photograph of a finished plant room.",
+      "enquiry background": "infinitive-5-scaled.jpg (2560×1707) from their uploads library, shown only as a dim background with an empty alt.",
+      "logo and favicon": "sunset-pools.png (323×71, 2023/08) and sunset-pools.png (110×110, 2024/02). The wordmark was recoloured near-white for the dark ground and the strapline cropped; the sun-and-pool mark is unaltered."
     },
     "notOnThePage": [
       "No founding year is published anywhere, so no year is claimed — only their own ‘over 20 years’.",
@@ -80,7 +114,7 @@
     "description": "Ben Thompson builds and renovates concrete pools across Sydney, including the rooftop and indoor jobs other builders turn down.",
     "alt": "A rooftop pool built on top of a Manly beachfront building, lit at dusk with the ocean behind it"
   },
-  "responsePromise": "Every enquiry goes to Ben, not a call centre.",
+  "responsePromise": "The first consultation is obligation-free.",
   "copy": {
     "title": "Sunset Pools | Sydney Concrete Pool Builder, Renovations & Hydraulics",
     "description": "Sunset Pools build and renovate concrete pools across Sydney — rooftop pools, indoor pools and sites other builders turn down. Ben Thompson runs every job himself. Licensed NSW pool builder 166547C.",
@@ -97,7 +131,7 @@
     "servicesLabel": "What Ben does",
     "servicesHeadline": "Three kinds of work,<br>one builder.",
     "servicesIntro": "Renovations, new pools — including the ones on a roof or inside a building — and the hydraulics behind both. Ben prices and runs each job himself.",
-    "apertureLabel": "Sydney Harbour",
+    "apertureLabel": "Commercial and rooftop",
     "apertureLine": "The pool is the easy part. Getting the weight, the water and the plant room onto a roof is not.",
     "workLabel": "Selected work",
     "workHeadline": "Six jobs,<br>six different sites.",
@@ -129,6 +163,9 @@
     "googleRating": "Google rating",
     "reviewCount": "Reviews",
     "yearsInBusiness": "Years building Sydney pools"
+  },
+  "statSublabels": {
+    "yearsInBusiness": "and counting"
   },
   "pullQuote": {
     "text": "Our pool is on a tricky site which involved cranes to bring supplies in and off the site.",
@@ -163,7 +200,7 @@
       "kind": "award",
       "label": "SPASA National Gold, Innovation",
       "year": 2013,
-      "body": "Innovation is the category SPASA only awards where a firm has solved a design or construction problem worth recognising. Sunset took it at chapter, state and national level in the same year.",
+      "body": "Gold in the Innovative category at chapter, state and national level in the one year. Their awards list has Sunset placed in that category every year from 2010 to 2014.",
       "strip": false
     },
     {
@@ -199,11 +236,11 @@
       "title": "Pool renovations",
       "blurb": "Strip the old interior back, fix what is under it, then re-tile, re-coping and re-plumb. Tired pebblecrete to a tiled finish, new filtration, compliant fencing. Most take three to six weeks.",
       "photo": {
-        "src": "assets/bellevue-hill-800.webp",
-        "srcset": "assets/bellevue-hill-480.webp 480w, assets/bellevue-hill-800.webp 800w, assets/bellevue-hill-1000.webp 1000w",
+        "src": "assets/sans-souci-800.webp",
+        "srcset": "assets/sans-souci-480.webp 480w, assets/sans-souci-800.webp 800w, assets/sans-souci-1000.webp 1000w",
         "width": 1000,
         "height": 667,
-        "alt": "A renovated Bellevue Hill pool with a new travertine surround, dark waterline tiles and glass fencing, the house behind it"
+        "alt": "A renovated pool and spa lit at dusk beside a glass waterfront house at Sans Souci"
       }
     },
     {
@@ -291,11 +328,11 @@
       "alt": "A Sunset Pools rooftop pool on top of a Manly beachfront building at dusk, glass balustrade around it and the ocean behind"
     },
     "statement": {
-      "src": "assets/hunters-hill-800.webp",
-      "srcset": "assets/hunters-hill-480.webp 480w, assets/hunters-hill-800.webp 800w, assets/hunters-hill-1200.webp 1200w",
+      "src": "assets/apartment-lap-pool-1200.webp",
+      "srcset": "assets/apartment-lap-pool-480.webp 480w, assets/apartment-lap-pool-800.webp 800w, assets/apartment-lap-pool-1200.webp 1200w, assets/apartment-lap-pool-1800.webp 1800w",
       "width": 1200,
-      "height": 1800,
-      "alt": "A fully tiled Hunters Hill pool with granite stepping stones across it and a submerged bench"
+      "height": 800,
+      "alt": "A lap pool set into a timber deck between apartment buildings, lit blue at dusk with uplit trees along the edge"
     },
     "aperture": {
       "src": "assets/harbour-rooftop-1200.webp",
@@ -306,13 +343,13 @@
       "caption": "Rooftop pool and spa, Sydney Harbour"
     },
     "owner": {
-      "src": "assets/greenwich-800.webp",
-      "srcset": "assets/greenwich-480.webp 480w, assets/greenwich-800.webp 800w, assets/greenwich-1000.webp 1000w",
+      "src": "assets/manly-aerial-800.webp",
+      "srcset": "assets/manly-aerial-480.webp 480w, assets/manly-aerial-800.webp 800w, assets/manly-aerial-1000.webp 1000w",
       "width": 1000,
-      "height": 667,
-      "ratio": "1000/667",
-      "alt": "A Greenwich lap pool with travertine surrounds, a clipped hedge behind it and frameless glass fencing",
-      "caption": "Greenwich · lap pool, travertine surrounds"
+      "height": 750,
+      "ratio": "1000/750",
+      "alt": "Looking straight down on the Manly rooftop pool, cantilevered over the edge of the building inside a glass balustrade",
+      "caption": "Manly · the rooftop pool, straight down"
     },
     "enquiryBackground": {
       "src": "assets/enquiry-bg-1200.webp",
@@ -341,14 +378,14 @@
         "alt": "An indoor lap pool inside a Strathfield home, lit blue along its full length"
       },
       {
-        "src": "assets/sans-souci-800.webp",
-        "full": "assets/sans-souci-1000.webp",
-        "srcset": "assets/sans-souci-480.webp 480w, assets/sans-souci-800.webp 800w, assets/sans-souci-1000.webp 1000w",
-        "width": 1000,
-        "height": 667,
-        "caption": "Sans Souci",
-        "detail": "Renovation on the water",
-        "alt": "A pool and spa lit at dusk beside a glass waterfront house at Sans Souci"
+        "src": "assets/hunters-hill-800.webp",
+        "full": "assets/hunters-hill-1200.webp",
+        "srcset": "assets/hunters-hill-480.webp 480w, assets/hunters-hill-800.webp 800w, assets/hunters-hill-1200.webp 1200w",
+        "width": 1200,
+        "height": 1800,
+        "caption": "Hunters Hill",
+        "detail": "Fully tiled pool, granite stepping stones",
+        "alt": "A fully tiled Hunters Hill pool with granite stepping stones across it and a submerged bench"
       },
       {
         "src": "assets/drummoyne-800.webp",

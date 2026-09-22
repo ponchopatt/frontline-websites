@@ -386,7 +386,9 @@ html.gsap .hero .line>span,html.gsap .rule{transition:none!important}
 .form .field-err{color:#B42318;font-weight:600;font-size:.88rem}
 .form .req{color:#B42318}
 .form .row2{display:grid;gap:14px}
-@media(min-width:560px){.form .row2{grid-template-columns:1fr 1fr}}
+/* align-items:end so a label that wraps to two lines does not push its input
+   out of line with the one beside it. */
+@media(min-width:560px){.form .row2{grid-template-columns:1fr 1fr;align-items:end}}
 .form .btn{margin-top:4px;min-height:56px}
 .form small{color:var(--mute);font-weight:400;font-size:.875rem}
 .form .err{color:#B42318;font-weight:700}

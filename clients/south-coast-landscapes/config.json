@@ -69,11 +69,11 @@
     "workHeadline": "Illawarra yards,<br>start to finish.",
     "workIntro": "Six jobs across Dapto, Port Kembla, Flinders, Figtree and Thirroul. Every one designed, built and planted by the same crew.",
     "processLabel": "How it runs",
-    "processHeadline": "Five steps.<br>The first is free.",
+    "processHeadline": "Four steps.<br>The first is free.",
     "processIntro": "Our own process, in our own order. You see a concept and a written quote before any detailed design is charged for, and you approve both before a machine comes near the block.",
     "ownerLabel": "Who you are dealing with",
     "reviewsTitle": "What customers say.",
-    "reviewsIntro": "Straight off their Google profile, word for word. Four of the six name Ryan.",
+    "reviewsIntro": "Straight off their Google profile, word for word. Three of the six name Ryan.",
     "recognitionLabel": "Credentials",
     "recognitionHeadline": "Licensed, and<br>backed by the trade.",
     "recognitionIntro": "Two things you can check before you book anyone: that they hold a licence, and that a real supplier stands behind their work.",
@@ -95,7 +95,7 @@
     "name": "BJ Hansen, Google"
   },
   "owner": {
-    "body": "Founder of South Coast Landscapes, and the person who quotes the work. Four reviewers across five years name him rather than the company — <em style=\"color:var(--accent)\">Ryan and the team</em>, <em style=\"color:var(--accent)\">Ryan and his team</em> — which is the short version of what a family-run business actually means.",
+    "body": "Founder of South Coast Landscapes, and the person who quotes the work. Four of their reviewers, over five years, name him rather than the company — <em style=\"color:var(--accent)\">Ryan and the team</em>, <em style=\"color:var(--accent)\">Ryan and his team</em> — which is the short version of what a family-run business actually means.",
     "team": "Behind him is a crew of qualified tradesmen and a horticulturist. Reviewers call them polite, hard-working and extremely punctual, and one made a point of the way they cleaned up the site at the end of each work day.",
     "facts": [
       {
@@ -181,12 +181,8 @@
       "detail": "The concept drawn up properly — levels, retaining, drainage, materials, planting and where the water runs. Adjusted until you are happy with it."
     },
     {
-      "step": "Construction & installation",
-      "detail": "The build, in the order the site needs it: excavation and drainage, retaining, concrete and paving, decking, turf, planting, irrigation. Site swept at the end of every day."
-    },
-    {
-      "step": "Client handover",
-      "detail": "We walk the finished yard with you, then the last thing off site is our gear. It goes back to being a home, not a job."
+      "step": "Build & handover",
+      "detail": "The build, in the order the site needs it: excavation and drainage, retaining, concrete and paving, decking, turf, planting, irrigation. Site swept at the end of every day, and the last thing to leave is our gear."
     }
   ],
   "serviceAreas": [
@@ -216,19 +212,19 @@
       "alt": "A finished Dapto backyard by South Coast Landscapes: granite pool coping and paving, a frameless glass fence, a river-pebble drainage strip, charcoal Tasman Block garden beds and a timber pergola over the deck"
     },
     "statement": {
-      "src": "assets/dapto-pergola-1200.webp",
-      "srcset": "assets/dapto-pergola-480.webp 480w, assets/dapto-pergola-800.webp 800w, assets/dapto-pergola-1200.webp 1200w",
+      "src": "assets/portkembla-front-1200.webp",
+      "srcset": "assets/portkembla-front-480.webp 480w, assets/portkembla-front-800.webp 800w, assets/portkembla-front-1200.webp 1200w",
       "width": 1500,
       "height": 1000,
-      "alt": "A merbau deck under a timber pergola in Dapto, table and benches set, a sandstone-faced raised bed alongside and the pool beyond"
+      "alt": "A finished Hamptons-style front yard in Port Kembla at dusk: cobblestone path, merbau entry steps, sandstone-faced raised beds and new turf"
     },
     "aperture": {
-      "src": "assets/figtree-turf-1200.webp",
-      "srcset": "assets/figtree-turf-800.webp 800w, assets/figtree-turf-1200.webp 1200w, assets/figtree-turf-1500.webp 1500w",
+      "src": "assets/dapto-stonewall-1200.webp",
+      "srcset": "assets/dapto-stonewall-800.webp 800w, assets/dapto-stonewall-1200.webp 1200w, assets/dapto-stonewall-1500.webp 1500w",
       "width": 1500,
       "height": 1000,
-      "alt": "New Matilda Buffalo turf in Figtree with the irrigation running, a rendered retaining wall and tropical planting above it",
-      "caption": "New turf and SMART irrigation, Figtree"
+      "alt": "A raised garden bed faced in sandstone stackstone on a merbau deck in Dapto, ferns planted through it and a light set into the wall",
+      "caption": "Sandstone feature wall, Dapto"
     },
     "owner": {
       "src": "assets/ryan-646.webp",
@@ -240,7 +236,7 @@
       "caption": "Ryan · founder, South Coast Landscapes"
     },
     "enquiryBackground": {
-      "src": "assets/dapto-poolwide-1200.webp",
+      "src": "assets/figtree-turf-1200.webp",
       "width": 1200,
       "height": 800
     },

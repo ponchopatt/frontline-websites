@@ -128,39 +128,50 @@ dimensions.
 
 ### Used on the demo
 
+Fourteen photographs are on the page, plus their logo and their favicon. Every
+one is theirs, every one was opened and looked at, and no photo is used in two
+places.
+
 | File on the demo | Source (their site) | Size | What it shows |
 |---|---|---|---|
-| `manly-rooftop` (hero) | `Manly-1.jpg` | 1920×1440 | **Hero.** Rooftop pool on top of a Manly beachfront building at dusk, glass fence, ocean and Norfolk pines behind. Sharp. On their homepage. |
-| `harbour-rooftop` (aperture) | `Commercial-Pool-Builder2.jpg` | 1700×1133 | Rooftop pool and spa above Sydney Harbour at dusk, sun lounges, the Opera House visible from the same roof in a second frame. Used site-wide by them. |
-| `hunters-hill` (statement) | `Residential-Pool-Project-Hunters-Hill-4.jpg` | 1200×1800 | Portrait. Fully tiled pool with granite stepping stones and a submerged bench, Hunters Hill. |
-| `bellevue-hill` (service + gallery) | `Bellevue-Hill-1.jpg` | 1000×667 | The renovated Bellevue Hill pool — travertine coping and surrounds, glass fence, sea glimpse. Their own case study: 132 steps from the road. |
-| `strathfield-indoor` (service + gallery) | `Strathfield-5.jpg` | 1000×667 | Indoor lap pool and spa inside a house at Strathfield, blue lighting down the length of it. |
-| `new-pool` (service) | `Home-1.jpg` | 1000×667 | Raised, fully tiled pool and spa at dusk with a sandstone feature wall and a spill edge into the deck. |
-| `plant-room` (service) | `PLANTROOM.png` | 715×466 | A finished plant room: pumps, filter, dosing, valves and switchboards, all labelled. The only photo of its kind — it is what the hydraulics service actually is. Lowest-resolution image used; fine at card size. |
-| `sans-souci` (gallery) | `Sans-Souci-2.jpg` | 1000×667 | Pool and spa at dusk at a glass waterfront house, Sans Souci. Their "Boutique Renovation on the Water". |
+| `manly-rooftop` (hero, and the share image) | `Manly-1.jpg` | 1920×1440 | **Hero.** Rooftop pool on top of a Manly beachfront building at dusk, glass balustrade, Norfolk pines and the ocean behind. Sharp. On their homepage, /about/ and /project/. |
+| `manly-aerial` (owner section) | `Manly-4.jpg` | 1000×750 | The same Manly rooftop pool shot straight down, cantilevered over the edge of the building inside a glass balustrade, lit rooms below. It is the picture of the sentence beside it. |
+| `apartment-lap-pool` (statement) | `infinitive-2-scaled.jpg` | 2560×1707 | A long lap pool set into a timber deck between apartment buildings, lit blue at dusk with uplit trees down one side. Their largest usable dusk frame. No suburb claimed. |
+| `harbour-rooftop` (aperture) | `Commercial-Pool-Builder2.jpg` | 1700×1133 | Rooftop pool and spa above Sydney Harbour at dusk, sun lounges along the mosaic edge. Used site-wide by them. Captioned "Sydney Harbour" only — the client is not confirmed. |
+| `sans-souci` (service 01, renovations) | `Sans-Souci-2.jpg` | 1000×667 | Pool and spa at dusk at a glass waterfront house, Sans Souci. Their own portfolio calls it "Boutique Renovation on the Water", which is why it carries the renovations card. |
+| `new-pool` (service 02) | `Home-1.jpg` | 1000×667 | Raised, fully tiled pool and spa at dusk with a sandstone feature wall and a spill edge into the deck. |
+| `plant-room` (service 03) | `PLANTROOM.png` | 715×466 | A finished plant room: pumps, filter, dosing, valves and labelled switchboards. The only photo of its kind — it is what the hydraulics service actually is. Lowest-resolution image used; fine at card size. |
+| `bellevue-hill` (gallery) | `Bellevue-Hill-1.jpg` | 1000×667 | The renovated Bellevue Hill pool — new travertine surround, dark waterline tiles, glass fencing, the house behind. Their own case study: 132 steps from the road. |
+| `strathfield-indoor` (gallery) | `Strathfield-5.jpg` | 1000×667 | Indoor lap pool and spa inside a Strathfield house, lit blue down its length. |
+| `hunters-hill` (gallery) | `Residential-Pool-Project-Hunters-Hill-4.jpg` | 1200×1800 | Portrait. Fully tiled pool with granite stepping stones across it and a submerged bench, Hunters Hill. |
 | `drummoyne` (gallery) | `Drummoyne-1.jpg` | 1000×667 | Pool right on the water at Drummoyne, yachts on moorings behind the glass fence. |
 | `wahroonga` (gallery) | `Wahroonga-finished-1.jpg` | 960×640 | Wahroonga: stacked-stone water wall spilling into the pool, spa to the left, sun setting through the hedge. |
 | `wentworth-point` (gallery) | `12437-hires.jpg` | 4134×2756 | The Wentworth Point beach-entry community pool — sand shelf, apartments behind, people in it. The largest and sharpest file they have. |
-| `enquiry-bg` (background) | `infinitive-5-scaled.jpg` | 2560×1707 | Infinity edge over bushland, stone blade wall. Used at low opacity behind the form. |
-| `logo-sunset-light.png` | `sunset-pools.png` | 323×71 | Their logo. The wordmark was recoloured to near-white for the dark ground and the strapline cropped off; the sun-and-pool mark is untouched. **Flagged.** |
-| `favicon.png` | `sunset-pools.png` (2024) | 110×110 | Their sun-and-pool mark on its own. |
+| `enquiry-bg` (background) | `infinitive-5-scaled.jpg` | 2560×1707 | Infinity edge over bushland, stone blade wall. Dim background behind the form, empty alt. |
+| `logo-sunset-light.png` | `sunset-pools.png` (2023/08) | 323×71 | Their logo. The wordmark was recoloured near-white for the dark ground and the strapline cropped off; the sun-and-pool mark is untouched. **Flagged.** |
+| `favicon.png` | `sunset-pools.png` (2024/02) | 110×110 | Their sun-and-pool mark on its own. |
+
+Cut after the first review round: `greenwich` (`Grenwich-1.jpg`) was briefly in
+the owner slot. Flat light, a plastic sun lounger and a dated tiled pillar, and
+directly under a heading about Ben it read as a portrait. The file was deleted
+from `assets/`.
 
 ### Looked at, good, not used (all theirs, all available for Pat)
 
-`infinitive-1…6` 2560px — infinity pools and lap pools, day and dusk ·
+`infinitive-1/3/4/6` 2560px — infinity pools and lap pools, day and dusk ·
 `Commercial-Pool-Building-Project-5/6` 1800px — the harbour rooftop spa with the
 Opera House, and the pool under the Harbour Bridge · `Commercial-Pool-Project-
-Alexandria-2/3` 1800px — apartment lap pools · `Manly-4/6` — the same Manly
-rooftop from above and at ground level · `Park-Hyatt-2/3/4` — harbour rooftop ·
-`Bellevue-Hill-2/3/4` — more of the renovation · `Wahroonga-finished-2/3/7/8` —
-including a drone shot straight down · `Residential-Pool-Builder1/4`,
-`Grenwich-1`, `Kensington-finished-1`, `Mitch_1/4`, `mcguiness01/03/05`,
-`sarkissian03/07`, `knoxst09`, `5-Wallaroo-01/03/05`, `Balmain-4`,
-`south-coogee-david-01`, `1a-Mandible-St-04/08/15/18/22`, `Blinkhorn-03/06`,
-`gordon-13/17`, `10717/10721/10722-hires`, `5776-hires`, `Aquarium-1`,
-`W.P-3/5/6-1`, `USW-04` (the Western Sydney University water feature),
-`Residential-Pool-Project-Greenwich-2 / Hunters-Hill-4 / Lilyfield-1/5 /
-Oatlands-5 / Putney-3 / Drummoyne-1 / Strathfield-5`.
+Alexandria-2/3` 1800px — apartment lap pools · `Manly-6` — the same Manly rooftop
+at ground level · `Park-Hyatt-2/3/4` — harbour rooftop · `Bellevue-Hill-2/3/4` —
+more of the renovation · `Wahroonga-finished-2/3/7/8` — including a drone shot
+straight down · `Residential-Pool-Builder1/4`, `Grenwich-1`,
+`Kensington-finished-1`, `Mitch_1/4`, `mcguiness01/03/05`, `sarkissian03/07`,
+`knoxst09`, `5-Wallaroo-01/03/05`, `Balmain-4`, `south-coogee-david-01`,
+`1a-Mandible-St-04/08/15/18/22`, `Blinkhorn-03/06`, `gordon-13/17`,
+`10717/10721/10722-hires`, `5776-hires`, `Aquarium-1`, `W.P-3/5/6-1`, `USW-04`
+(the Western Sydney University water feature),
+`Residential-Pool-Project-Greenwich-2 / Lilyfield-1/5 / Oatlands-5 / Putney-3 /
+Drummoyne-1 / Strathfield-5`.
 
 ### Rejected
 

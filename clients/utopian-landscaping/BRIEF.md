@@ -94,7 +94,9 @@ reproduce your plans and ideas". And their customers say it back unprompted:
 rough ideas turned into a practical reality, receptive to our ideas, good ideas
 of their own, integrated our native garden into the new landscaping.
 
-Hero headline comes straight off it: **"Rough ideas, turned into real gardens."**
+Hero headline comes straight off it: **"Rough ideas turned into real gardens."**
+(No comma — a line-ending comma in the display face drops its tail onto the
+line below.)
 
 The support under it is the second true thing: they do every part of the job
 themselves, so there is one quote, one crew and one person to ring.
@@ -176,7 +178,10 @@ was opened and looked at. 148 were candidates; 143 are 1920px wide.
 | Gallery 5 | `IMG_0104.JPG` | 1920×1434 | Timber deck and gabled pergola around a pool, hills behind. |
 | Gallery 6 | `IMG_6467.JPG` | 1920×1440 | Crazy paving, timber cabin, grass trees in wine barrels, synthetic turf. |
 | Enquiry background | `IMG_0253.JPG` | 1920×1434 | Stone water bowl spilling onto white pebble with a slate standing stone. |
+| Owner slot | `utopianaugust2010_025.JPG` | 1920×1440 → 1080×648 | Their own ute at the kerb with the Utopian logo on the door and their sign board beside it, behind a finished front garden of sandstone walls and brick steps. Softest image used (Laplacian 268) — it renders at ~700px so the softness does not show, but it is the weakest of the set. |
 | Share card | `IMG_0043.JPG` | 1200×857 crop | As hero. |
+| Logo | `logo2-280x120.png` → `logo-utopian-light.png` | 280×120 → 506×190 | Their only published logo. White plate knocked out, black subline turned off-white for a dark page, red kept, handwritten "Only Limited By Your Imagination" line cropped off because it is illegible at the 32px the header renders it at. Nothing redrawn. |
 
-**No photo of Derek exists anywhere on their site or in the reviews.** The
-owner section runs without one and that is flagged for Pat to collect.
+**No photo of Derek exists anywhere on their site, their socials or in the
+reviews.** The owner section runs with their branded ute on a finished job
+instead, and getting a photo of Derek is the first thing on Pat's supply list.

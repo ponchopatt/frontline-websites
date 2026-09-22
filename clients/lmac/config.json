@@ -1,5 +1,5 @@
 {
-  "_comment": "LMAC — Lower Mountains Air Conditioning, Emu Plains NSW. Scaffolded by \"npm run new\" from https://www.lmac.com.au on 2026-09-22, then filled by hand. Every factual claim on this page is traced to a sentence on their own site or to data/google_reviews_top25.json — see clients/lmac/BRIEF.md. No prices are set anywhere: LMAC publish none, so calculator.jobs is empty on purpose and the price section hides.",
+  "_comment": "LMAC — Lower Mountains Air Conditioning, Emu Plains NSW. Scaffolded by \"npm run new\" from https://www.lmac.com.au on 2026-09-22, then filled by hand. Every factual claim on this page is traced to a sentence on their own site or to data/google_reviews_top25.json — see clients/lmac/BRIEF.md. No prices are set anywhere: LMAC publish none, so every calculator job is quote-mode and no dollar figure is printed.",
   "slug": "lmac",
   "template": "quote",
   "industry": "air-conditioning",
@@ -23,27 +23,33 @@
     "brand": {
       "accent": "#253A7E",
       "_comment": "#253a7e is lifted from their own stylesheet and matches the deep blue on the vans and the shopfront signage."
+    },
+    "logoMark": {
+      "src": "assets/logo.webp",
+      "width": 251,
+      "height": 53,
+      "_comment": "Their own white wordmark (wp-content/uploads/2023/05/logo.png, 251x53). It is the only logo file on their site. Used as the header mark, where the background is dark; it is NOT set as business.logo because the footer puts that on a white tile and a white wordmark would vanish. A high-resolution, dark-ink logo is a SUPPLY item."
     }
   },
   "hours": [
     "Monday to Friday, 8:30am to 4:30pm",
     "After-hours service available"
   ],
-  "responsePromise": "Send the form and the office comes back to you within one business hour.",
+  "responsePromise": "The office replies within one business hour, Monday to Friday.",
   "copy": {
     "title": "Lower Mountains Air Conditioning | Penrith and Blue Mountains, since 1988",
     "description": "Split, multi-split and ducted air conditioning across Penrith and the Blue Mountains. Walk-in showroom at Emu Plains, six brands, and 4.8 stars from 331 Google reviews. Call (02) 4735 6411.",
-    "brandMark": "Lower Mountains<br>Air Conditioning",
+    "brandMark": "Since<br>1988",
     "kicker": "Heating and cooling specialists, Emu Plains",
     "headline": "331 reviews.<br>4.8 stars.<br>Since 1988.",
     "sub": "Andrew and Anthea Strathdee have been putting air conditioning into Penrith and Blue Mountains homes since 1988, with a showroom you can walk into and fourteen staff behind them.",
-    "anchor": "<b>4.8 out of 5 from 331 Google reviews.</b> Send the form and the office comes back within one business hour.",
+    "anchor": "<b>4.8 out of 5 from 331 Google reviews.</b> Free on-site quotes across Penrith, the Blue Mountains and the Hawkesbury.",
     "ctaLabel": "Get a free quote",
     "servicesTitle": "What we do",
     "servicesIntro": "Sales, installation, service and maintenance, domestic and commercial. We are dealers for six major brands, and we service any brand, even if it wasn't our installation.",
-    "servicesAlso": "We are also the sole authorised stockist for Air Clean Filters in Western Sydney. <a class=\"link\" href=\"#anatomy\">See what's in every installation</a>",
-    "galleryTitle": "The people who turn up",
-    "galleryIntro": "Andrew, Anthea, the office and the trade team, photographed outside the Russell Street showroom. Real people, real vans, no stock photos.",
+    "servicesAlso": "We're also the sole authorised stockist for Air Clean Filters in Western Sydney, and an approved supplier for the NSW Energy Savings Scheme rebate. <a class=\"link\" href=\"#faq\">How we install, in detail</a>",
+    "galleryTitle": "The people who do the work",
+    "galleryIntro": "Fourteen staff, five vans and a showroom in Russell Street, Emu Plains. Every photo here is theirs — no stock, no catalogue shots.",
     "reasonsTitle": "Why people pick LMAC",
     "reasonsIntro": "Four things the reviews keep saying, in one form or another.",
     "reviewsTitle": "What customers say",
@@ -67,33 +73,11 @@
     "<b>Andrew or Anthea quotes on site</b>, then you decide."
   ],
   "stats": {
-    "googleRating": 4.8,
-    "reviewCount": 331,
-    "yearsInBusiness": 38,
-    "_comment": "4.8 / 331 come from data/google_reviews_top25.json. 38 years is 2026 minus 1988; their about page says 'we have been operating since 1988' and every footer says 'over 30+ years of expertise'."
+    "googleRating": null,
+    "reviewCount": null,
+    "yearsInBusiness": null,
+    "_comment": "4.8 from 331 (data/google_reviews_top25.json) and 38 years (operating since 1988) are BOTH true and BOTH on the page — in the hero headline, the hero anchor and the reviews intro. They are null here on purpose: the quote template renders the counter bar inside a .dark section, but its CSS binds --fl-ink to the light-theme --fg and --fl-accent to the light-theme --btn at :root, so every label comes out #1C1F23 on a #22252A background (1.06:1) and every number comes out in the dark brand navy (1.46:1). Nothing in a client config can reach those variables. Rather than ship a half-invisible band, the bar is hidden and the numbers live in readable copy. Fix the template variables and put 4.8 / 331 / 38 straight back."
   },
-  "trustClaims": [
-    {
-      "value": "1988",
-      "label": "Operating since 1988",
-      "sub": "Started in Blaxland East, Emu Plains today"
-    },
-    {
-      "value": "14",
-      "label": "Fourteen staff",
-      "sub": "Tradespeople, apprentices and office"
-    },
-    {
-      "value": "6",
-      "label": "Six brands",
-      "sub": "Mitsubishi Electric, Panasonic, LG, Daikin, Actron Air, Braemar"
-    },
-    {
-      "value": "Showroom",
-      "label": "Walk in and look",
-      "sub": "Unit 2/129 Russell St, Emu Plains"
-    }
-  ],
   "credentials": [
     {
       "kind": "licence",
@@ -124,29 +108,19 @@
   "services": [
     {
       "title": "Split systems",
-      "blurb": "One room or an open living area, with or without an inverter. Wall-mounted, floor-mounted or a ceiling cassette — we work out which suits the room on site."
+      "blurb": "One room or an open living area, with or without an inverter. Wall-mounted, floor-mounted or a ceiling cassette — Andrew or Anthea works out which suits the room, where the outdoor unit can legally sit and which of the six brands makes sense. Usually in within a day."
     },
     {
       "title": "Ducted systems",
-      "blurb": "The indoor unit sits up in the roof space out of sight, with a zone controller for up to four or eight zones so you're not cooling empty rooms."
+      "blurb": "The indoor fan coil is suspended in the roof space on perforated straps, out of sight and away from the ceiling. A zone controller gives you four or eight zones, so you are not paying to cool empty rooms. Larger systems take two days."
     },
     {
       "title": "Multi-split systems",
-      "blurb": "Several rooms off one outdoor unit, each head controlled on its own. The answer when there's no room outside and no way to run ducting."
+      "blurb": "Several rooms off a single outdoor unit, each head set and scheduled on its own. This is the answer when there is no room outside for three condensers and no way to run ducting through the roof space."
     },
     {
       "title": "Service and repairs",
-      "blurb": "We service any brand, even if it wasn't our installation. Seniors get 10% off general servicing — parts and repairs aren't included."
-    },
-    {
-      "title": "Air Clean Filters",
-      "blurb": "We're the sole authorised stockist in Western Sydney. G4 V-pleat disposable filters, 25mm thick, straight into your existing return air grille.",
-      "href": "#quote"
-    },
-    {
-      "title": "Energy Savings Scheme rebates",
-      "blurb": "LMAC is an approved supplier for the NSW Energy Savings Scheme in the Penrith and Blue Mountains area. Every NSW home is eligible — no income test.",
-      "href": "#quote"
+      "blurb": "We service any brand, even if it wasn't our installation — filters, gas, drains, controllers, the lot. Seniors get 10% off general servicing. That's the service itself, not parts or repairs. After-hours service is available."
     }
   ],
   "reasons": [
@@ -169,7 +143,7 @@
   ],
   "process": [
     {
-      "step": "Call the office or send the form",
+      "step": "Call or send the form",
       "detail": "(02) 4735 6411, Monday to Friday 8:30am to 4:30pm, or the form on this page. You'll hear back within one business hour."
     },
     {
@@ -208,7 +182,12 @@
         "Kingswood",
         "Cambridge Gardens",
         "Cranebrook",
-        "Jordan Springs",
+        "Jordan Springs"
+      ]
+    },
+    {
+      "region": "Around Penrith",
+      "suburbs": [
         "Glenmore Park",
         "Regentville",
         "Castlereagh",
@@ -279,7 +258,7 @@
         "src": "assets/andrew-800.webp",
         "full": "assets/andrew-1600.webp",
         "width": 800,
-        "height": 495,
+        "height": 513,
         "caption": "Andrew, director and sales",
         "alt": "Andrew Strathdee, director of Lower Mountains Air Conditioning, in front of a company van"
       },
@@ -287,75 +266,48 @@
         "src": "assets/anthea-800.webp",
         "full": "assets/anthea-1600.webp",
         "width": 800,
-        "height": 542,
+        "height": 544,
         "caption": "Anthea, sales and accounts",
         "alt": "Anthea Strathdee of Lower Mountains Air Conditioning in front of a company van"
       },
       {
-        "src": "assets/tradesman-800.webp",
-        "full": "assets/tradesman-1600.webp",
+        "src": "assets/kurt-800.webp",
+        "full": "assets/kurt-1600.webp",
         "width": 800,
-        "height": 526,
-        "caption": "One of the refrigeration team",
-        "alt": "A Lower Mountains Air Conditioning refrigeration tradesman in a branded polo in front of a company van"
+        "height": 513,
+        "caption": "Kurt, refrigeration and service",
+        "alt": "Kurt, refrigeration and service technician at Lower Mountains Air Conditioning, in front of a company van"
+      },
+      {
+        "src": "assets/trevor-800.webp",
+        "full": "assets/trevor-1600.webp",
+        "width": 800,
+        "height": 529,
+        "caption": "Trevor, refrigeration and service",
+        "alt": "Trevor, refrigeration and service tradesman at Lower Mountains Air Conditioning, in front of a company van"
+      },
+      {
+        "src": "assets/owners-vans-800.webp",
+        "full": "assets/owners-vans-1366.webp",
+        "width": 800,
+        "height": 534,
+        "caption": "Outside the Russell Street showroom",
+        "alt": "Andrew and Anthea Strathdee between two company vans under the Lower Mountains Air Conditioning showroom sign"
       }
-    ]
-  },
-  "included": {
-    "title": "What's in every installation",
-    "intro": "The bits you never see are the bits that go wrong. Tap a part.",
-    "listTitle": "Included in every quote",
-    "parts": [
-      {
-        "id": "electrical",
-        "title": "The electrical work",
-        "body": "Done by Strathdee Electrical Pty Ltd, Lic. 127921C — the controls, the wiring between indoor and outdoor units, and the sub-mains back to your switchboard. Andrew is a qualified electrician, so it isn't subbed out to a stranger."
-      },
-      {
-        "id": "piping",
-        "title": "Refrigeration piping",
-        "body": "Refrigeration-grade copper that meets both the manufacturer's standard and Australian Standard AS1571. Suction and liquid lines are both insulated with industry-approved insulation."
-      },
-      {
-        "id": "colour",
-        "title": "Colour matching",
-        "body": "Pipe and wiring running down an external wall gets encased in colour bonding, matched as close as we can to your existing downpipe or wall colour. It's why people say the install suits the house."
-      },
-      {
-        "id": "drains",
-        "title": "Drains and the drip tray",
-        "body": "Condensate runs out through PVC into the roof gutter. Under the fan coil we fit a galvanised drip tray that drains separately through the eaves — so a blocked drain shows up outside instead of through your ceiling."
-      },
-      {
-        "id": "outdoor",
-        "title": "The outdoor unit",
-        "body": "Mounted on a poly slab beside the building with about 100mm of breathing space behind it. Council rules and the Noise Pollution Act decide where it can go; we recommend, and the final call is yours."
-      },
-      {
-        "id": "outlets",
-        "title": "Outlets and return air",
-        "body": "Square multi-directional, round, floor or wall outlets, all adjustable for summer and winter. Return air comes back through a hinged grille with a washable filter, usually in the hallway."
-      }
-    ],
-    "list": [
-      "A free on-site quote from Andrew or Anthea",
-      "Old system removed and taken away",
-      "Comprehensive insurance cover",
-      "Installed to all the necessary standards",
-      "A thorough clean-up before we leave",
-      "After-hours service if you ever need it"
     ]
   },
   "calculator": {
     "_comment": "Every job is mode 'quote', so not one dollar figure is printed anywhere. LMAC publish no prices — not per kW, not per system, not for ducted — and nothing here is invented. Give Andrew's ranges to whoever builds v2 and these become per-unit jobs with real numbers.",
-    "heading": "What are you after?",
-    "intro": "Pick the job. Andrew or Anthea comes out, measures up and gives you the price in writing before anything is ordered — LMAC don't quote a system they haven't seen the room for. Ask about the NSW Energy Savings Scheme rebate while they're there.",
+    "heading": "What will it cost?",
+    "intro": "Honestly, it depends — on the room, the system, the run of the pipe and what rebate it attracts. So Andrew or Anthea comes out, measures up and puts the price in writing before anything is ordered. No call-out fee for a quote, and no pressure afterwards. Pick the job below and we'll start there.",
     "jobLabel": "What's the job?",
     "fine": "",
     "included": [
       "Free on-site quote",
       "Old system taken away",
-      "Six brands to choose from"
+      "Six brands to choose from",
+      "Fully insured",
+      "Licence 127921C"
     ],
     "jobs": [
       {
@@ -438,27 +390,35 @@
     },
     {
       "q": "Which brands do you sell?",
-      "a": "We're dealers for six major brands: Mitsubishi Electric, Panasonic, LG, Daikin, Actron Air and Braemar. Which one suits you depends on the room, the budget and what rebate the system attracts."
+      "a": "We're dealers for six major brands: Mitsubishi Electric, Panasonic, LG, Daikin, Actron Air and Braemar. Which one suits you depends on the room, the budget and what rebate the system attracts — come and see them on the wall in the showroom."
     },
     {
       "q": "How long does an installation take?",
-      "a": "As a guide, a wall-hung split system or a small ducted unit is usually in within a day. A larger ducted system can take two. Weather and the state of the roof space can move that, and we'll tell you at the quote."
+      "a": "As a guide, a wall-hung split system or a small ducted unit is usually in within a day. A larger ducted system can take two. Weather and the state of the roof space can move that, and we'll tell you at the quote, not afterwards."
     },
     {
       "q": "Is there a rebate?",
-      "a": "The NSW Energy Savings Scheme gives homeowners a cash rebate on energy-efficient air conditioners, with no income threshold, and LMAC is an approved supplier for the scheme in the Penrith and Blue Mountains area. What you get back depends on the brand, the size of the system, whether it's new or a replacement, and your suburb's climate zone."
+      "a": "The NSW Energy Savings Scheme gives homeowners a cash rebate on energy-efficient air conditioners, with no income threshold, and LMAC is an approved supplier for the scheme in the Penrith and Blue Mountains area. What comes back depends on the brand, the size of the system, whether it's new or a replacement, and your suburb's climate zone."
     },
     {
       "q": "Who does the electrical work?",
-      "a": "Strathdee Electrical Pty Ltd, Licence 127921C. Andrew and Anthea own it too — it's a family business handed down from Andrew's grandfather since 1956. It covers the electrical controls, the wiring between indoor and outdoor units, and the sub-mains from the unit to your switchboard."
+      "a": "Strathdee Electrical Pty Ltd, Licence 127921C. Andrew and Anthea own that too — a family business handed down from Andrew's grandfather since 1956. It covers the electrical controls, the wiring between the indoor and outdoor units, and the sub-mains from the unit back to your switchboard."
+    },
+    {
+      "q": "What pipe do you run, and will I see it?",
+      "a": "Refrigeration-grade copper that meets both the manufacturer's standard and Australian Standard AS1571, with the suction and liquid lines both insulated. Where pipe and wiring run down an outside wall they're encased in colour bonding, matched as close as we can to your existing downpipe or wall colour."
+    },
+    {
+      "q": "Where does the outdoor unit go?",
+      "a": "On a poly slab beside the building, with about 100mm of breathing space behind it. Council rules and the Noise Pollution Act have a say in where it can sit, so we recommend the spot and the final call is yours. Reviewers say we “problem solved the best way to install them in a way that was aesthetic to the house”."
+    },
+    {
+      "q": "What happens if the drain ever blocks?",
+      "a": "Condensate normally runs out through PVC into the roof gutter. We also fit a galvanised drip tray under the indoor fan coil that drains separately through the eaves. So if a drain ever blocks you see water at the eaves, usually near the front door, instead of through your ceiling. If you see that, ring us without delay."
     },
     {
       "q": "Can I come and see the units first?",
-      "a": "Please do. The showroom is at Unit 2/129 Russell St, Emu Plains, open Monday to Friday 8:30am to 4:30pm. Come and ask whatever you like — that's what it's there for."
-    },
-    {
-      "q": "Do you do commercial work?",
-      "a": "Yes. Domestic and commercial both, and we've been doing it since 1988. One customer puts it plainly: \"We have used LMAC in both commercial and residential jobs and they never fail to deliver.\""
+      "a": "Please do. The showroom is at Unit 2/129 Russell St, Emu Plains, open Monday to Friday 8:30am to 4:30pm. Come in and ask whatever you like — that's what it's there for."
     },
     {
       "q": "Is there a discount for seniors?",
