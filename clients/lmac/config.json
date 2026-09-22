@@ -1,0 +1,188 @@
+{
+  "_comment": "Built by \"npm run new\" from https://www.lmac.com.au on 2026-09-22. Everything listed in _check was worked out by reading their website and is NOT confirmed. Go through the checklist, fix or delete each one, then remove it from _check. Reviews are deliberately empty — paste them in from their Google profile, word for word.",
+  "slug": "lmac",
+  "template": "quote",
+  "industry": "air-conditioning",
+  "live": false,
+  "business": {
+    "name": "LMAC",
+    "ownerName": "",
+    "ownerFirstName": "",
+    "phone": {
+      "display": "(02) 4735 6411",
+      "e164": "+61247356411"
+    },
+    "email": "info@lmac.com.au",
+    "abn": "",
+    "baseSuburb": "Emu Plains",
+    "region": "",
+    "currentSite": "lmac.com.au",
+    "brand": {
+      "accent": "#253A7E"
+    },
+    "logo": {
+      "src": "assets/logo.webp",
+      "width": 251,
+      "height": 53
+    }
+  },
+  "responsePromise": "",
+  "copy": {
+    "headline": "",
+    "sub": "",
+    "kicker": ""
+  },
+  "stats": {
+    "googleRating": null,
+    "reviewCount": null,
+    "jobsDone": null,
+    "yearsInBusiness": 38
+  },
+  "services": [
+    {
+      "title": "Finalist 2024",
+      "blurb": "",
+      "photo": {
+        "src": "assets/aanda2025-800.webp",
+        "srcset": "assets/aanda2025-800.webp 800w, assets/aanda2025-1800.webp 1800w",
+        "width": 800,
+        "height": 533,
+        "alt": "AandA2025"
+      }
+    },
+    {
+      "title": "Air Clean Filters",
+      "blurb": "",
+      "photo": {
+        "src": "assets/antheaandandrew2025-800.webp",
+        "srcset": "assets/antheaandandrew2025-800.webp 800w, assets/antheaandandrew2025-1800.webp 1800w",
+        "width": 800,
+        "height": 550,
+        "alt": "AntheaandAndrew2025"
+      }
+    },
+    {
+      "title": "Links",
+      "blurb": "",
+      "photo": {
+        "src": "assets/ladies2025-800.webp",
+        "srcset": "assets/ladies2025-800.webp 800w, assets/ladies2025-1800.webp 1800w",
+        "width": 800,
+        "height": 533,
+        "alt": ""
+      }
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "Service area",
+      "suburbs": [
+        "Emu Plains",
+        "South Penrith",
+        "Blaxland",
+        "Springwood",
+        "Kingswood",
+        "Glenbrook",
+        "Cranebrook",
+        "Katoomba",
+        "Glenmore Park",
+        "Blue Mountains",
+        "Does"
+      ]
+    }
+  ],
+  "credentials": [
+    {
+      "kind": "licence",
+      "label": "Licence",
+      "number": "127921C"
+    }
+  ],
+  "photos": {
+    "hero": {
+      "src": "assets/andrewandanthea-800.webp",
+      "srcset": "assets/andrewandanthea-800.webp 800w, assets/andrewandanthea-1800.webp 1800w",
+      "width": 800,
+      "height": 513,
+      "alt": "AndrewandAnthea"
+    },
+    "gallery": [
+      {
+        "src": "assets/aanda2025-800.webp",
+        "srcset": "assets/aanda2025-800.webp 800w, assets/aanda2025-1800.webp 1800w",
+        "width": 800,
+        "height": 533,
+        "alt": "AandA2025",
+        "full": "assets/aanda2025-1800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/antheaandandrew2025-800.webp",
+        "srcset": "assets/antheaandandrew2025-800.webp 800w, assets/antheaandandrew2025-1800.webp 1800w",
+        "width": 800,
+        "height": 550,
+        "alt": "AntheaandAndrew2025",
+        "full": "assets/antheaandandrew2025-1800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/ladies2025-800.webp",
+        "srcset": "assets/ladies2025-800.webp 800w, assets/ladies2025-1800.webp 1800w",
+        "width": 800,
+        "height": 533,
+        "alt": "",
+        "full": "assets/ladies2025-1800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/team2025-scaled-800.webp",
+        "srcset": "assets/team2025-scaled-800.webp 800w, assets/team2025-scaled-1800.webp 1800w",
+        "width": 800,
+        "height": 486,
+        "alt": "",
+        "full": "assets/team2025-scaled-1800.webp",
+        "caption": ""
+      }
+    ],
+    "beforeAfter": []
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [],
+  "_todo_reviews": "Paste their Google reviews here, word for word, as {\"name\": \"...\", \"text\": \"...\"}. Never write one.",
+  "form": {
+    "accessKey": ""
+  },
+  "_source": {
+    "url": "https://www.lmac.com.au",
+    "platform": "WordPress",
+    "pagesRead": [
+      "home",
+      "about",
+      "contact"
+    ],
+    "aboutText": "",
+    "socials": {
+      "facebook": "https://www.facebook.com/lowermountainsairconditioning/"
+    },
+    "stockLookingPhotos": []
+  },
+  "_check": [
+    "business.name",
+    "business.phone.display",
+    "business.email",
+    "business.baseSuburb",
+    "services",
+    "serviceAreas",
+    "stats.yearsInBusiness",
+    "business.brand.accent",
+    "credentials",
+    "business.logo",
+    "photos.hero",
+    "photos.gallery"
+  ],
+  "calculator": {
+    "_comment": "Prices are NOT filled in. Get them from the owner, then set each range. Any range left with \"_check\": true renders \"Guide only, confirmed on site\".",
+    "jobs": []
+  }
+}

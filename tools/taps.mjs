@@ -1,5 +1,8 @@
 import { chromium } from 'playwright';
-const b = await chromium.launch({ executablePath: process.env.CHROME_PATH });
+import { launchOptions } from '../lib/browser.js';
+// launchOptions() finds the Chromium this machine actually has; a bare
+// launch looks for the build matching Playwright's own version.
+const b = await chromium.launch(launchOptions());
 const p = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage();
 await p.goto(process.argv[2] + '?clean=1', { waitUntil: 'networkidle' });
 await p.waitForTimeout(2000);

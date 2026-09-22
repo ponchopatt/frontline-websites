@@ -13,6 +13,7 @@
  */
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
+import { launchOptions } from '../lib/browser.js';
 
 const args = process.argv.slice(2);
 const url = args.find((a) => !a.startsWith('--')) ?? 'http://127.0.0.1:8899/index.html';
@@ -86,7 +87,11 @@ function probe(mustShow) {
   return out;
 }
 
-const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || undefined });
+// Through lib/browser.js, which finds whatever Chromium build is actually on
+// disk. Launching bare made Playwright look for the headless-shell build
+// matching its own npm version, which this box does not have, and the tool
+// died before it could check anything.
+const browser = await chromium.launch(launchOptions());
 let failures = 0;
 
 for (const c of CASES) {
