@@ -52,8 +52,26 @@ npm run check                            is this safe to send?
 npm run check -- <slug> --draft          same, but ignore the to-confirm list
 npm run check -- <slug> --fast           skip Lighthouse
 npm run batch -- prospects.csv           run new for a whole list
+npm run single                           fold each demo into ONE html file you can open
+npm run single:check                     prove those match what deploys
 npm test                                 the unit tests
 ```
+
+### Sending a demo before it is hosted
+
+`npm run single` writes `dist-single/<slug>.html` — the whole demo, photos and
+fonts and scripts inlined, in one file. Double-click it and it works: no server,
+no internet, nothing to unzip. That is the thing to send yourself before a call,
+or to open on a phone.
+
+`npm run single:check` opens each one off disk **with the network switched off**
+and compares it to the built site next to it: same words, same images, same
+headline font and size, same page height to within 1%, no console errors, at 375,
+390, 1440 and once with JavaScript disabled. It is not enough that the single
+file renders — nothing may have gone quietly missing when forty files became one.
+
+`dist/<slug>/` is still what deploys. A host serves separate cacheable files; a
+data URI cannot be cached, shared between pages, or fetched only when needed.
 
 ### What `new` will and will not do
 
@@ -163,6 +181,7 @@ tools/                         paint-check, interact-check, compare, lighthouse
 demos/                         hand-built demos — the design reference
 sites/                         paid client work
 dist/                          build output (gitignored)
+dist-single/                   one-file copies for sending (gitignored)
 ```
 
 **Merge order:** `presets/_base.json` → `presets/<industry>.json` → the client's

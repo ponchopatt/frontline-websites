@@ -8,7 +8,9 @@
     "build": "node bin/build.js",
     "check": "node bin/check.js",
     "new": "node bin/new.js",
-    "batch": "node bin/batch.js"
+    "batch": "node bin/batch.js",
+    "single": "node tools/single.mjs",
+    "single:check": "node tools/single-check.mjs"
   },
   "repository": {
     "type": "git",
