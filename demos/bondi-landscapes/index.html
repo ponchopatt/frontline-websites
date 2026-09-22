@@ -15,7 +15,7 @@
 <meta property="og:locale" content="en_AU">
 
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/newsreader-roman-var.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/big-shoulders-var.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/instrument-sans-var.woff2">
 <link rel="preload" as="image" href="assets/griffith-ave-1800.webp" imagesrcset="assets/griffith-ave-480.webp 480w, assets/griffith-ave-800.webp 800w, assets/griffith-ave-1200.webp 1200w, assets/griffith-ave-1800.webp 1800w" imagesizes="100vw" fetchpriority="high">
 <link rel="preload" as="image" href="assets/hero-terrace-1800.webp">
@@ -33,9 +33,9 @@
    ========================================================================= */
 
 @font-face{
-  font-family:'Newsreader';font-style:normal;font-weight:200 800;font-display:swap;
-  src:url(fonts/newsreader-roman-var.woff2) format('woff2-variations'),
-      url(fonts/newsreader-roman-var.woff2) format('woff2');
+  font-family:'Big Shoulders Display';font-style:normal;font-weight:500 900;font-display:swap;
+  src:url(fonts/big-shoulders-var.woff2) format('woff2-variations'),
+      url(fonts/big-shoulders-var.woff2) format('woff2');
 }
 @font-face{
   font-family:'Instrument Sans';font-style:normal;font-weight:400 700;font-display:swap;
@@ -64,21 +64,21 @@
   --line:rgba(244,247,248,.14);
   --line-2:rgba(244,247,248,.28);
 
-  --font-display:'Newsreader',Georgia,'Times New Roman',serif;
+  --font-display:'Big Shoulders Display','Arial Narrow','Helvetica Neue Condensed',sans-serif;
   --font-body:'Instrument Sans',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
 
   /* type — considerably bigger than before, top to bottom */
-  --t-mega:clamp(3.25rem,9.2vw,8rem);
-  --t-d1:clamp(2.6rem,6.4vw,5.25rem);
-  --t-d2:clamp(2rem,4.4vw,3.5rem);
-  --t-h3:clamp(1.45rem,2.2vw,2rem);
+  --t-mega:clamp(3.4rem,min(10.4vw,15.5vh),9.25rem);
+  --t-d1:clamp(3rem,8vw,6.75rem);
+  --t-d2:clamp(2.25rem,5vw,4rem);
+  --t-h3:clamp(1.6rem,2.6vw,2.35rem);
   --t-h4:clamp(1.2rem,1.5vw,1.4rem);
   --t-lede:clamp(1.2rem,1.65vw,1.6rem);
   --t-body:clamp(1.0625rem,.9vw + .7rem,1.1875rem);
   --t-small:.9375rem;
   --t-cap:.8125rem;
   --t-label:.75rem;
-  --t-folio:clamp(3rem,6vw,5.5rem);
+  --t-folio:clamp(3.5rem,7vw,6.5rem);
 
   --measure:38em;
   --measure-tight:30em;
@@ -120,15 +120,21 @@ em,i{font-style:normal;font-weight:600}
 
 /* ---------------------------------------------------------------- type */
 h1,h2,h3,h4{margin:0;font-weight:400;font-family:var(--font-display)}
-.t-mega{font-family:var(--font-display);font-size:var(--t-mega);line-height:.94;letter-spacing:-.028em;text-wrap:balance}
-.t-d1{font-family:var(--font-display);font-size:var(--t-d1);line-height:1;letter-spacing:-.024em;text-wrap:balance}
-.t-d2{font-family:var(--font-display);font-size:var(--t-d2);line-height:1.04;letter-spacing:-.02em;text-wrap:balance}
-.t-h3{font-family:var(--font-display);font-size:var(--t-h3);line-height:1.15;letter-spacing:-.012em}
-.t-h4{font-family:var(--font-display);font-size:var(--t-h4);line-height:1.28;letter-spacing:-.006em}
+/* Condensed caps carry every headline — the same move Imperium makes, and the
+   reason a short line can be set enormous without ever wrapping badly. */
+.t-mega,.t-d1,.t-d2,.t-h3{font-family:var(--font-display);font-weight:800;
+  text-transform:uppercase;text-wrap:balance}
+.t-mega{font-size:var(--t-mega);line-height:.86;letter-spacing:.004em}
+.t-d1{font-size:var(--t-d1);line-height:.88;letter-spacing:.006em}
+.t-d2{font-size:var(--t-d2);line-height:.92;letter-spacing:.008em}
+.t-h3{font-size:var(--t-h3);line-height:.96;letter-spacing:.01em}
+/* h4 stays in the sans: at this size the condensed face stops being legible */
+.t-h4{font-family:var(--font-body);font-weight:600;font-size:var(--t-h4);
+  line-height:1.3;letter-spacing:-.004em}
 .t-lede{font-size:var(--t-lede);line-height:1.5;color:var(--fg-soft);max-width:var(--measure-tight)}
 .t-small{font-size:var(--t-small);line-height:1.5}
 .t-cap{font-size:var(--t-cap);line-height:1.45;color:var(--fg-mute)}
-.t-folio{font-family:var(--font-display);font-size:var(--t-folio);line-height:.9;letter-spacing:-.03em;color:var(--coral);font-variant-numeric:tabular-nums;display:block}
+.t-folio{font-family:var(--font-display);font-weight:800;font-size:var(--t-folio);line-height:.82;letter-spacing:0;color:var(--coral);font-variant-numeric:tabular-nums;display:block}
 /* labels: real uppercase in the sans at 500. Never 700, never the serif,
    never font-variant-caps (neither face ships true small caps). */
 .t-label{font-family:var(--font-body);font-weight:500;font-size:var(--t-label);
@@ -173,6 +179,21 @@ section:has(.glow){overflow:hidden}
 .btn svg{width:19px;height:19px;flex:none}
 .ctas{display:flex;flex-wrap:wrap;gap:var(--s16)}
 
+/* ---------------------------------------------------------------- intro
+   Mark fades up, a rule draws under it, then the whole curtain lifts. The
+   hero starts revealing the moment the lift begins, so nothing waits on it. */
+.intro{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center}
+.intro-mark{display:flex;flex-direction:column;align-items:center;gap:var(--s24);opacity:0}
+.intro-mark img{height:clamp(44px,6vw,64px);width:auto}
+.intro-rule{display:block;height:1px;width:176px;background:var(--teal);transform:scaleX(0);transform-origin:left}
+html.no-js .intro,html[data-intro="done"] .intro{display:none}
+
+/* ---------------------------------------------------------------- reveals
+   Masked line reveal. A headline is split into lines, each line wrapped in a
+   clipping box, and the inner span rides up out of it. */
+.ln{display:block;overflow:hidden}
+.ln>span{display:block;will-change:transform}
+
 /* ---------------------------------------------------------------- header */
 .top{position:fixed;top:0;left:0;right:0;z-index:70;color:var(--fg);
   transition:background .4s var(--ease),box-shadow .4s}
@@ -208,9 +229,18 @@ section:has(.glow){overflow:hidden}
   padding-bottom:clamp(var(--s48),7vh,var(--s96));
   padding-top:calc(var(--header-h) + var(--s32))}
 .hero-in{max-width:min(1100px,100%)}
-.hero .line{display:block;overflow:hidden;padding-bottom:.06em}
-.hero .line>span{display:block}
-.hero .line em{font-style:normal;font-weight:400;color:var(--teal)}
+.hero .ln{padding-bottom:.05em}
+.hero h1 em{font-style:normal;font-weight:inherit;color:var(--teal)}
+/* Before JS splits it, the headline must already be visible and correct —
+   the split only adds the clipping boxes the reveal needs. */
+.t-mega em,.t-d1 em{font-style:normal;font-weight:inherit}
+@media(max-height:700px){
+  .hero .wrap{padding-top:calc(var(--header-h) + var(--s16));padding-bottom:var(--s24)}
+  .hero .sub{margin:var(--s16) 0 var(--s20) !important;font-size:1rem;line-height:1.45}
+  .hero .t-label{margin-bottom:var(--s12)}
+  .hero .btn{min-height:50px;padding:13px 24px}
+  .hero .ctas{gap:var(--s12)}
+}
 .hero .sub{max-width:40em;font-size:var(--t-lede);line-height:1.48;
   color:var(--fg-soft);margin:var(--s32) 0 var(--s40)}
 .hero .meta{display:flex;flex-wrap:wrap;gap:var(--s12) var(--s32);
@@ -239,8 +269,8 @@ section:has(.glow){overflow:hidden}
 .statement .wrap{display:grid;gap:clamp(var(--s40),5vw,var(--s80));align-items:center}
 @media(min-width:960px){.statement .wrap{grid-template-columns:1.05fr .95fr}}
 .pull{margin:var(--s40) 0 0;padding-left:var(--s24);border-left:2px solid var(--coral)}
-.pull p{font-family:var(--font-display);font-size:var(--t-h3);line-height:1.3;
-  letter-spacing:-.012em;color:var(--fg);max-width:26em}
+.pull p{font-family:var(--font-body);font-weight:500;font-size:var(--t-h4);line-height:1.5;
+  color:var(--fg);max-width:30em}
 .figure{position:relative;overflow:hidden;background:var(--bg-card)}
 .figure img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
 .figure:hover img{transform:scale(1.04)}
@@ -281,8 +311,8 @@ section:has(.glow){overflow:hidden}
 .ap .plate{position:absolute;left:var(--gut);bottom:var(--gut);z-index:2;max-width:36em;
   opacity:clamp(0,calc((.45 - var(--ap-frame))*3),1);
   text-shadow:0 1px 18px rgba(4,10,13,.9)}
-.ap .plate p{margin:var(--s8) 0 0;font-family:var(--font-display);
-  font-size:var(--t-h3);line-height:1.25}
+.ap .plate p{margin:var(--s8) 0 0;font-family:var(--font-display);font-weight:800;
+  text-transform:uppercase;font-size:var(--t-h3);line-height:.95;letter-spacing:.01em}
 @media(max-width:767px){.ap img{object-position:56% 52%}.ap .apLabel{top:calc(50% - 120px)}}
 
 /* ---------------------------------------------------------------- work */
@@ -303,8 +333,8 @@ section:has(.glow){overflow:hidden}
 .plate-item figcaption{margin-top:var(--s16);display:flex;justify-content:space-between;
   gap:var(--s16);align-items:baseline;flex-wrap:wrap;
   padding-top:var(--s16);border-top:1px solid var(--line)}
-.plate-item figcaption .nm{font-family:var(--font-body);font-weight:500;
-  font-size:var(--t-label);letter-spacing:.14em;text-transform:uppercase;color:var(--fg)}
+.plate-item figcaption .nm{font-family:var(--font-display);font-weight:800;
+  font-size:1.25rem;letter-spacing:.012em;text-transform:uppercase;color:var(--fg);line-height:1}
 
 dialog.lb{border:none;padding:0;background:rgba(6,13,16,.98);max-width:100vw;max-height:100vh;width:100vw;height:100vh}
 dialog.lb::backdrop{background:rgba(6,13,16,.94)}
@@ -333,8 +363,8 @@ dialog.lb::backdrop{background:rgba(6,13,16,.94)}
 .facts{display:grid;gap:var(--s24);margin-top:var(--s48);padding-top:var(--s32);
   border-top:1px solid var(--line)}
 @media(min-width:560px){.facts{grid-template-columns:repeat(3,1fr)}}
-.facts .n{font-family:var(--font-display);font-size:clamp(2.6rem,4.2vw,3.6rem);
-  line-height:.95;display:block;color:var(--teal);font-variant-numeric:tabular-nums}
+.facts .n{font-family:var(--font-display);font-weight:800;font-size:clamp(3.25rem,5.5vw,4.75rem);
+  line-height:.85;display:block;color:var(--teal);font-variant-numeric:tabular-nums}
 .facts .l{font-size:var(--t-label);letter-spacing:.14em;text-transform:uppercase;
   font-weight:500;color:var(--fg-mute);margin-top:var(--s12);display:block;line-height:1.4}
 
@@ -355,8 +385,8 @@ dialog.lb::backdrop{background:rgba(6,13,16,.94)}
 }
 .rv{background:var(--bg-card);border:1px solid var(--line);padding:var(--s32) var(--s24);
   display:grid;gap:var(--s16);align-content:start}
-.rv blockquote{margin:0;font-family:var(--font-display);font-size:var(--t-h4);
-  line-height:1.4;color:var(--fg-soft)}
+.rv blockquote{margin:0;font-family:var(--font-body);font-size:var(--t-small);
+  line-height:1.6;color:var(--fg-soft)}
 .rv .who{font-family:var(--font-body);font-weight:500;font-size:var(--t-label);
   letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
 
@@ -380,7 +410,7 @@ dialog.lb::backdrop{background:rgba(6,13,16,.94)}
 .faq:last-child{border-bottom:1px solid var(--line)}
 .faq summary{cursor:pointer;list-style:none;display:flex;align-items:flex-start;
   justify-content:space-between;gap:var(--s24);padding:var(--s24) 0;
-  font-family:var(--font-display);font-size:var(--t-h4);line-height:1.3}
+  font-family:var(--font-body);font-weight:600;font-size:var(--t-h4);line-height:1.35}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"";flex:none;width:13px;height:13px;margin-top:.45em;
   background:var(--coral);
@@ -415,7 +445,7 @@ select option{color:#0A1418;background:#F4F7F8}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .direct{display:grid;gap:var(--s20);margin-top:var(--s48);padding-top:var(--s32);border-top:1px solid var(--line)}
 .direct a{display:inline-flex;align-items:center;gap:13px;text-decoration:none;
-  font-family:var(--font-display);font-size:var(--t-h3);word-break:break-word;transition:color .25s}
+  font-family:var(--font-body);font-weight:600;font-size:1.0625rem;word-break:break-word;transition:color .25s}
 .direct a:hover{color:var(--teal)}
 .direct svg{width:21px;height:21px;color:var(--coral);flex:none}
 .thanks{border:1px solid var(--teal);background:var(--bg-card);padding:var(--s40)}
@@ -470,6 +500,13 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-mark">
+    <img src="assets/logo-bondi-light.svg" width="687" height="255" alt="">
+    <span class="intro-rule"></span>
+  </div>
+</div>
+
 <header class="top" id="topbar">
   <div class="wrap topin">
     <a class="brand" href="#hero" aria-label="Bondi Landscapes, home">
@@ -503,23 +540,16 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   </div>
   <div class="wrap">
     <div class="hero-in">
-      <p class="t-label" data-hero>Eastern Suburbs, Sydney</p>
-      <h1 class="t-mega">
-        <span class="line"><span>Gardens built</span></span>
-        <span class="line"><span>the way they</span></span>
-        <span class="line"><span><em>were drawn.</em></span></span>
-      </h1>
-      <p class="sub" data-hero>Landscape design, construction and pool building under one roof. Antony Aris holds the landscape contractor's licence <em>and</em> the pool builder's licence — so the drawing, the build and the pool all answer to one person.</p>
-      <div class="ctas" data-hero>
+      <p class="t-label hero-kicker" data-hero>Eastern Suburbs, Sydney</p>
+      <h1 class="t-mega" data-lines>Gardens built<br>the way they<br><em>were drawn.</em></h1>
+      <p class="sub hero-sub" data-hero>Landscape design, construction and pool building under one roof. Antony Aris holds the landscape contractor's licence <em>and</em> the pool builder's licence — so the drawing, the build and the pool all answer to one person.</p>
+      <div class="ctas hero-cta" data-hero>
         <a class="btn" href="tel:+61412154594">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
           0412 154 594
         </a>
         <a class="btn ghost" href="#work">See the work</a>
       </div>
-      <p class="meta" data-hero>
-        <span>Twenty years</span><span>Award winning</span><span>Two trade licences</span><span>One job at a time</span>
-      </p>
     </div>
   </div>
 </section>
@@ -535,14 +565,14 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   <div class="wrap above">
     <div data-reveal>
       <p class="t-label">The difference</p>
-      <h2 class="t-d1">We take <em style="font-weight:400;color:var(--coral)">one job</em> at a time.</h2>
+      <h2 class="t-d1" data-lines>We take <em style="color:var(--coral)">one job</em><br>at a time.</h2>
       <p class="t-lede" style="margin-top:var(--s32);max-width:34em">Most landscapers run three or four sites at once, and your garden becomes the one they visit between the others. Yours gets the crew until it is finished.</p>
       <blockquote class="pull">
         <p>“Best part was they do one job at a time, so they smashed it out over a few weeks and no long delays.”</p>
         <p class="t-label mute" style="margin:var(--s20) 0 0">Kate Blake, Google</p>
       </blockquote>
     </div>
-    <figure class="figure" data-reveal style="margin:0;aspect-ratio:4/5">
+    <figure class="figure" data-reveal="img" style="margin:0;aspect-ratio:4/5">
       <img src="assets/bondi-road-seating-1200.webp"
         srcset="assets/bondi-road-seating-480.webp 480w, assets/bondi-road-seating-800.webp 800w, assets/bondi-road-seating-1200.webp 1200w"
         sizes="(min-width:960px) 44vw, 92vw" width="1200" height="1385" loading="lazy" decoding="async"
@@ -557,7 +587,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     <div class="head" data-reveal>
       <div>
         <p class="t-label">What we do</p>
-        <h2 class="t-d1">Three disciplines,<br>one team.</h2>
+        <h2 class="t-d1" data-lines>Three disciplines,<br>one team.</h2>
       </div>
       <p class="t-lede">Design, construction and pools sit in the same office. Nothing is handed to a stranger halfway through, and nobody blames the drawing when the build gets hard.</p>
     </div>
@@ -596,7 +626,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     <div class="head" data-reveal>
       <div>
         <p class="t-label">Selected work</p>
-        <h2 class="t-d1">Eastern Suburbs gardens,<br>start to finish.</h2>
+        <h2 class="t-d1" data-lines>Eastern Suburbs gardens,<br>start to finish.</h2>
       </div>
       <p class="t-lede">Eight named jobs across Bondi, Hastings, Griffith Avenue and Boundary Street. Every one designed, built and planted by the same team.</p>
     </div>
@@ -648,11 +678,11 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     <div class="head" data-reveal>
       <div>
         <p class="t-label">How it runs</p>
-        <h2 class="t-d1">Four steps,<br>no surprises.</h2>
+        <h2 class="t-d1" data-lines>Four steps,<br>no surprises.</h2>
       </div>
       <p class="t-lede">From the first visit to the last plant. You approve the design and the price before anything is built.</p>
     </div>
-    <div class="railwrap" aria-hidden="true"><div class="rail" id="rail"></div></div>
+    <div class="railwrap" aria-hidden="true"><div class="rail" id="rail" data-draw></div></div>
     <div class="steps" data-reveal="stagger">
       <div class="step"><span class="t-folio">01</span><h3 class="t-h3">Consultation</h3><p>Antony comes to your home and talks through the vision, the objectives and the budget. You receive a Design Fee Proposal scaled to the project.</p></div>
       <div class="step"><span class="t-folio">02</span><h3 class="t-h3">Concept &amp; design</h3><p>A detailed landscape design, adjusted until you are completely happy. Where council approval is needed, we handle it.</p></div>
@@ -665,12 +695,12 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 <!-- ============================================================ antony -->
 <section class="about" id="antony" style="background:var(--bg-card)">
   <div class="wrap">
-    <figure class="figure" data-reveal style="margin:0;aspect-ratio:1.45/1">
+    <figure class="figure" data-reveal="img" style="margin:0;aspect-ratio:1.45/1">
       <img src="assets/about-team-725.webp" srcset="assets/about-team-480.webp 480w, assets/about-team-725.webp 725w" sizes="(min-width:960px) 40vw, 92vw" width="725" height="500" loading="lazy" decoding="async" alt="Layered planting against a rendered wall — sansevieria, bamboo screening and potted succulents">
     </figure>
     <div data-reveal>
       <p class="t-label">Who you are dealing with</p>
-      <h2 class="t-d1">Antony Aris.</h2>
+      <h2 class="t-d1" data-lines>Antony Aris.</h2>
       <p class="t-lede" style="margin-top:var(--s32);max-width:36em">Principal and director. A licensed landscape contractor <em style="color:var(--teal)">and</em> a licensed pool builder with more than twenty years behind him — a pairing most Sydney firms cannot offer, because it means holding two licences rather than subcontracting one out.</p>
       <p style="margin-top:var(--s24);color:var(--fg-mute);max-width:38em">He visits every project himself at the start. Behind him is a tight-knit, multi-disciplinary team — Matt, Max, Tom, Sam and Jacob — whom clients name individually in their reviews, which tells you how long they have been together.</p>
       <div class="facts">
@@ -688,7 +718,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     <div class="head" data-reveal>
       <div>
         <p class="t-label">In their words</p>
-        <h2 class="t-d1">What clients say.</h2>
+        <h2 class="t-d1" data-lines>What clients say.</h2>
       </div>
       <p class="t-lede">Real reviews from their Google profile. Clients name the crew individually, and several are on their second and third job.</p>
     </div>
@@ -702,7 +732,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     <div class="head" data-reveal>
       <div>
         <p class="t-label">Recognition</p>
-        <h2 class="t-d1">Awarded, and accountable<br>to a body.</h2>
+        <h2 class="t-d1" data-lines>Awarded, and accountable<br>to a body.</h2>
       </div>
       <p class="t-lede">Judged by their peers, and answerable to an industry association rather than only to a review page.</p>
     </div>
@@ -721,7 +751,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     <div class="head" data-reveal>
       <div>
         <p class="t-label">Where we work</p>
-        <h2 class="t-d1">The Eastern Suburbs,<br>and the rest of Sydney.</h2>
+        <h2 class="t-d1" data-lines>The Eastern Suburbs,<br>and the rest of Sydney.</h2>
       </div>
       <p class="t-lede">Based in Bondi Beach. Most of the work sits within a few suburbs of it, and we travel across Sydney for the right project.</p>
     </div>
@@ -738,7 +768,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 <section style="background:var(--bg-card)">
   <div class="wrap" data-reveal>
     <p class="t-label">Before you call</p>
-    <h2 class="t-d1">Questions we are asked.</h2>
+    <h2 class="t-d1" data-lines>Questions we are asked.</h2>
     <div class="faqs">
       <details class="faq"><summary>Do you build the pool yourselves, or subcontract it?</summary><div class="a"><p>Ourselves. Antony holds a pool builder's licence as well as a landscape contractor's licence. That is unusual — most landscapers subcontract the pool, which is where the finger-pointing starts when the pool and the garden do not meet properly. Here it is one contract and one team.</p></div></details>
       <details class="faq"><summary>How long does a project take?</summary><div class="a"><p>It depends entirely on scope, and we would rather tell you honestly after seeing the site than give you a number now. What we can promise is that we run one job at a time, so once we start we stay until it is done. One client's terrace garden — paving, fencing, a gate, lighting, irrigation and planting — was finished in three weeks.</p></div></details>
@@ -757,7 +787,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   <div class="wrap">
     <div data-reveal>
       <p class="t-label">Start a conversation</p>
-      <h2 class="t-d1">Tell us about<br>the space.</h2>
+      <h2 class="t-d1" data-lines>Tell us about<br>the space.</h2>
       <p class="t-lede" style="margin-top:var(--s32)">Antony reads every enquiry. The more you can tell us about the property and what you want from it, the more useful the first conversation will be.</p>
       <div class="direct">
         <a href="tel:+61412154594">
@@ -955,54 +985,125 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     new IntersectionObserver(function(e){ enqIn=e[0].isIntersecting; barSync(); },{threshold:.12}).observe(enqEl);
   } else { heroIn=false; barSync(); }
 
-  /* ---------- motion ---------- */
+  /* ---------- masked line reveal ----------------------------------------
+     Splits a headline on its authored <br> into lines, each in a clipping
+     box with the text inside it. That is what the line-by-line rise needs,
+     and it keeps inline <em> intact. Runs before any tween so the layout
+     settles once, not twice. */
+  function buildLines(el){
+    if(el.dataset.built) return [].slice.call(el.querySelectorAll(".ln>span"));
+    var parts=el.innerHTML.split(/<br\s*\/?>/i);
+    el.innerHTML=parts.map(function(part){
+      return '<span class="ln"><span>'+part.trim()+"</span></span>";
+    }).join("");
+    el.dataset.built="1";
+    return [].slice.call(el.querySelectorAll(".ln>span"));
+  }
+
+  /* ---------- intro curtain ----------------------------------------------
+     Every exit path must remove the curtain — it covers the whole page. */
+  var intro=$("intro");
+  function killIntro(){
+    document.documentElement.dataset.intro="done";
+    if(intro&&intro.parentNode) intro.parentNode.removeChild(intro);
+  }
+
+  /* ---------- motion ----------------------------------------------------
+     THE RULE: every element's CSS default is its FINAL state. GSAP only sets
+     a temporary from-state, with immediateRender:false on anything driven by
+     a scroll trigger. If a trigger never fires, or GSAP never loads, or
+     motion is reduced, the content is simply there. */
   function motion(){
-    if(!(window.gsap&&window.ScrollTrigger)||reduce) return;
+    if(!(window.gsap&&window.ScrollTrigger)||reduce){ killIntro(); return; }
     gsap.registerPlugin(ScrollTrigger);
 
-    gsap.timeline({defaults:{ease:"expo.out"}})
-      .fromTo(".hero img.bg",{scale:1.16},{scale:1,duration:2.6},0)
-      /* y AND yPercent: a CSS percentage transform computes to a pixel matrix,
-         so animating yPercent alone would leave the pixel offset behind */
-      .fromTo(".hero .line>span",{yPercent:108,y:0},{yPercent:0,y:0,duration:1.15,stagger:.1},.15)
-      .fromTo("[data-hero]",{y:20,opacity:0},{y:0,opacity:1,duration:.9,stagger:.09},.5);
+    var heroLines=buildLines(document.querySelector(".hero h1"));
+
+    /* the hero timeline, held until the curtain starts lifting */
+    var hero=gsap.timeline({paused:true,defaults:{ease:"expo.out"}});
+    hero.fromTo(heroLines,{yPercent:110},{yPercent:0,duration:.95,stagger:.09},0)
+        .fromTo(".hero-kicker",{opacity:0,y:10},{opacity:1,y:0,duration:.5},0)
+        .fromTo(".hero-sub",{opacity:0,y:12},{opacity:1,y:0,duration:.55},.5)
+        .fromTo(".hero-cta > *",{opacity:0,y:12},{opacity:1,y:0,duration:.55,stagger:.06},.6)
+        .fromTo(".hero img.bg",{scale:1.14},{scale:1,duration:2.2},0);
+
+    if(intro){
+      gsap.timeline({onComplete:killIntro})
+        .fromTo(".intro-mark",{opacity:0,scale:.96,y:6},{opacity:1,scale:1,y:0,duration:.5,ease:"expo.out"},.1)
+        .fromTo(".intro-rule",{scaleX:0},{scaleX:1,duration:.6,ease:"power3.inOut"},.25)
+        .to(".intro-mark",{opacity:0,y:-8,duration:.25,ease:"power2.in"},.95)
+        .add(function(){ hero.play(); },1.05)
+        .to(intro,{yPercent:-100,duration:.8,ease:"expo.inOut"},1.05);
+    } else { hero.play(); }
+
+    /* ---- the reveal vocabulary, lifted from Imperium ----
+       data-lines     headline lines rise out of a mask
+       data-reveal    fades and rises a touch  (="stagger" does its children)
+       data-reveal=img fades in while the picture settles from a slight zoom
+       data-parallax  drifts by that percent as you scroll past
+       data-draw      a rule that draws left to right                       */
+    document.querySelectorAll("[data-lines]").forEach(function(el){
+      if(el.closest(".hero")) return;
+      var lines=buildLines(el);
+      gsap.fromTo(lines,{yPercent:110},{yPercent:0,duration:.9,ease:"expo.out",
+        stagger:.07,immediateRender:false,
+        scrollTrigger:{trigger:el,start:"top 88%",once:true}});
+    });
+
+    document.querySelectorAll("[data-reveal]").forEach(function(el){
+      var kind=el.getAttribute("data-reveal");
+      if(kind==="img"){
+        gsap.fromTo(el,{opacity:0},{opacity:1,duration:.7,ease:"power2.out",
+          immediateRender:false,scrollTrigger:{trigger:el,start:"top 88%",once:true}});
+        var media=el.querySelector("img,video");
+        if(media) gsap.fromTo(media,{scale:1.06},{scale:1,duration:1.1,ease:"expo.out",
+          immediateRender:false,scrollTrigger:{trigger:el,start:"top 88%",once:true}});
+        return;
+      }
+      var t=kind==="stagger"?el.children:el;
+      gsap.fromTo(t,{opacity:0,y:14},{opacity:1,y:0,duration:.7,ease:"expo.out",
+        stagger:.07,immediateRender:false,
+        scrollTrigger:{trigger:el,start:"top 92%",once:true}});
+    });
+
+    document.querySelectorAll("[data-parallax]").forEach(function(el){
+      gsap.to(el,{yPercent:Number(el.getAttribute("data-parallax")||-8),ease:"none",
+        scrollTrigger:{trigger:el.parentElement||el,scrub:.6}});
+    });
+
+    document.querySelectorAll("[data-draw]").forEach(function(el){
+      gsap.fromTo(el,{scaleX:0},{scaleX:1,transformOrigin:"left center",duration:1,
+        ease:"power3.inOut",immediateRender:false,
+        scrollTrigger:{trigger:el,start:"top 85%",once:true}});
+    });
 
     gsap.to(".hero img.bg",{yPercent:12,ease:"none",
       scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
     gsap.to(".enq .bgimg",{yPercent:-10,ease:"none",
       scrollTrigger:{trigger:"#enquire",start:"top bottom",end:"bottom top",scrub:true}});
 
-    document.querySelectorAll("[data-reveal]").forEach(function(el){
-      var t=el.getAttribute("data-reveal")==="stagger"?el.children:el;
-      gsap.fromTo(t,{y:30,opacity:0},{y:0,opacity:1,duration:.9,stagger:.08,
-        ease:"expo.out",immediateRender:false,
-        scrollTrigger:{trigger:el,start:"top 88%",once:true}});
-    });
-
     /* ---- THE APERTURE ---- the only pin on the page */
     var ap=$("aperture");
     if(ap){
       var narrow=window.matchMedia("(max-width:767px)").matches;
-      var endLen=narrow?"+=80%":"+=110%";
       gsap.fromTo(ap,
         {"--ap-y":43,"--ap-x":narrow?6:20,"--ap-frame":1},
         {"--ap-y":0,"--ap-x":0,"--ap-frame":0,ease:"none",immediateRender:false,
-         scrollTrigger:{trigger:ap,start:"top top",end:endLen,pin:true,scrub:.6,anticipatePin:1,
-           onToggle:function(s){
+         scrollTrigger:{trigger:ap,start:"top top",end:narrow?"+=80%":"+=110%",
+           pin:true,scrub:.6,anticipatePin:1,
+           onToggle:function(st){
              var im=ap.querySelector("img");
-             if(im) im.style.willChange=s.isActive?"clip-path":"";
+             if(im) im.style.willChange=st.isActive?"clip-path":"";
            }}});
     }
-
-    var rail=$("rail");
-    if(rail) gsap.fromTo(rail,{scaleX:0},{scaleX:1,ease:"none",immediateRender:false,
-      scrollTrigger:{trigger:".steps",start:"top 82%",end:"bottom 62%",scrub:true}});
 
     window.addEventListener("load",function(){ ScrollTrigger.refresh(); });
     if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ ScrollTrigger.refresh(); });
   }
   if(document.readyState==="complete") motion();
   else window.addEventListener("load",motion);
+  /* whatever happens, the curtain is gone by 3s */
+  setTimeout(killIntro,3000);
 
   /* ---------- lightbox ---------- */
   (function(){
