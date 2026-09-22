@@ -507,6 +507,38 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 }
 @media(min-width:768px){.stickybar{display:none}}
 
+/* ---------------------------------------------------------------- call dock
+   The header scrolls away with the hero, so on a wide screen the phone number
+   would be off-screen for the whole middle of the page. This is its stand-in:
+   a pill parked in the bottom-right corner. It does not travel with the
+   scroll the way the old fixed header did — it fades in once when the hero
+   has gone, sits perfectly still, and steps aside when the enquiry form is on
+   screen so it never covers the Send button. Wide screens only; a phone
+   already has the call bar along the bottom. */
+.calldock{position:fixed;right:var(--gut);bottom:var(--s32);z-index:66;
+  display:none;align-items:center;justify-content:flex-start;
+  width:54px;height:54px;padding-left:18px;overflow:hidden;
+  border-radius:2px;                       /* square, like every other edge here */
+  background:rgba(10,20,24,.94);backdrop-filter:blur(14px);
+  border:1px solid var(--line-2);color:var(--fg);text-decoration:none;
+  font-family:var(--font-body);font-weight:600;font-size:var(--t-small);
+  letter-spacing:.01em;white-space:nowrap;font-variant-numeric:tabular-nums;
+  box-shadow:0 18px 44px rgba(0,0,0,.42);
+  opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:opacity .4s var(--ease),transform .4s var(--ease),width .4s var(--ease),
+             background .2s ease,border-color .2s ease,color .2s ease}
+.calldock.on{opacity:1;transform:none;pointer-events:auto}
+/* At rest it is a 54px square in the corner, so it covers as little of the
+   page as a persistent control can. The number slides out on hover or focus. */
+.calldock .num{margin-left:11px;opacity:0;transition:opacity .3s var(--ease)}
+.calldock:hover,.calldock:focus-visible{width:var(--dock-w,164px);
+  background:var(--teal);color:var(--bg);border-color:var(--teal)}
+.calldock:hover .num,.calldock:focus-visible .num{opacity:1}
+.calldock svg{width:17px;height:17px;flex:none;color:var(--teal);transition:color .2s ease}
+.calldock:hover svg,.calldock:focus-visible svg{color:var(--bg)}
+.calldock:focus-visible{outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 5px var(--teal)}
+@media(min-width:768px){.calldock{display:inline-flex}}
+
 /* ---------------------------------------------------------------- motion
    THE RULE: every element's CSS default is its FINAL state. GSAP only ever
    sets a temporary from-state, with immediateRender:false, so the from is not
@@ -519,7 +551,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     transition-duration:.001ms!important;scroll-behavior:auto!important}
   .svc:hover,.svc:hover .ph img,.plate-item button:hover img,.figure:hover img,.btn:hover{transform:none}
 }
-@media print{.top,.stickybar{display:none!important}}
+@media print{.top,.stickybar,.calldock{display:none!important}}
 .skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--teal);
   color:var(--bg);padding:14px 22px;font-weight:600;text-decoration:none}
 .skip:focus{left:0}
@@ -938,6 +970,11 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   <a class="btn ghost" href="tel:+61412154594">Call Antony</a>
 </div>
 
+<a class="calldock" id="calldock" href="tel:+61412154594" aria-label="Call Antony on 0412 154 594">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
+  <span class="num">0412 154 594</span>
+</a>
+
 <dialog class="lb" id="lb" aria-label="Project image viewer">
   <div class="lbin">
     <img id="lbImg" src="" alt="" width="1600" height="1067">
@@ -1088,8 +1125,13 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
      The header needs no scroll listener: it is absolutely positioned over the
      hero and simply scrolls away. The only scroll-aware chrome left is the
      mobile call bar below. */
-  var bar=$("sticky"), heroEl=$("hero"), enqEl=$("enquire"), heroIn=true, enqIn=false;
-  function barSync(){ bar.classList.toggle("on",!heroIn&&!enqIn); }
+  var bar=$("sticky"), dock=$("calldock"),
+      heroEl=$("hero"), enqEl=$("enquire"), heroIn=true, enqIn=false;
+  function barSync(){
+    var show=!heroIn&&!enqIn;
+    bar.classList.toggle("on",show);
+    if(dock) dock.classList.toggle("on",show);
+  }
   if("IntersectionObserver" in window){
     new IntersectionObserver(function(e){ heroIn=e[0].isIntersecting; barSync(); },{threshold:.05}).observe(heroEl);
     new IntersectionObserver(function(e){ enqIn=e[0].isIntersecting; barSync(); },{threshold:.12}).observe(enqEl);
