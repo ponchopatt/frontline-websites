@@ -1,5 +1,5 @@
 {
-  "_comment": "Built by npm run new from arizonaroofing.com.au, then filled in by hand. IMPORTANT: every image on their current site is stock — four are named pexels-*, and the remaining three are theme stock (an American shingle-roof composite and a North American log cabin), which no filename check could catch. So this demo has NO photographs of their own work and no hero. Ask them for their photo folder before sending it; that is also the strongest thing to open the call with.",
+  "_comment": "Built by \"npm run new\" from https://arizonaroofing.com.au on 2026-09-22. Everything listed in _check was worked out by reading their website and is NOT confirmed. Go through the checklist, fix or delete each one, then remove it from _check. Reviews are deliberately empty — paste them in from their Google profile, word for word.",
   "slug": "arizona-roofing",
   "template": "quote",
   "industry": "roofing",
@@ -14,12 +14,11 @@
     },
     "email": "info@arizonaroofing.com.au",
     "abn": "38223082867",
-    "baseSuburb": "Canberra",
-    "region": "ACT",
+    "baseSuburb": "",
+    "region": "",
     "currentSite": "arizonaroofing.com.au",
     "brand": {
-      "accent": "#0C234B",
-      "themeColor": "#22252A"
+      "accent": "#0C234B"
     },
     "logo": {
       "src": "assets/logo.webp",
@@ -27,31 +26,11 @@
       "height": 1
     }
   },
-  "responsePromise": "Quote back within a few hours, seven days a week.",
+  "responsePromise": "",
   "copy": {
-    "title": "Arizona Roofing | Roof restoration, repairs and gutters across Canberra",
-    "description": "Roof restoration, roof repairs, gutter replacement, gutter guards, roof painting and metal roofing repairs for homes and businesses across Canberra. Free on-site quotes.",
-    "brandMark": "Arizona<br>Roofing",
-    "ctaLabel": "Get a free quote",
-    "kicker": "Roofing for Canberra homes and businesses",
-    "headline": "Roofing done<br>once, properly.",
-    "sub": "Restoration, repairs, gutters and metal roofing for homes and commercial properties across Canberra. Fast, efficient repairs that get your roof back to where it should be.",
-    "servicesTitle": "What we do",
-    "servicesIntro": "Residential and commercial. Whether it needs a complete makeover, a leak chased down, or new gutters and guards, it is the same team either way.",
-    "galleryTitle": "Recent jobs",
-    "galleryIntro": "Real roofs around Canberra.",
-    "reasonsTitle": "Why people pick us",
-    "reviewsTitle": "What customers say",
-    "processTitle": "How it works",
-    "processIntro": "Three steps. No paperwork marathon.",
-    "areasTitle": "Where we work",
-    "areasIntro": "Across Canberra and the surrounding districts.",
-    "faqTitle": "Good to know",
-    "quoteTitle": "Get a free quote",
-    "quoteIntro": "Send a couple of photos and your suburb and we will come back with a price, usually the same day.",
-    "finalTitle": "Ready when you are.",
-    "finalIntro": "Free quotes, seven days a week.",
-    "footerArea": "Canberra and districts"
+    "headline": "",
+    "sub": "",
+    "kicker": ""
   },
   "stats": {
     "googleRating": null,
@@ -59,45 +38,37 @@
     "jobsDone": null,
     "yearsInBusiness": null
   },
-  "services": [
-    {
-      "title": "Roof restoration",
-      "blurb": "A complete makeover: cleaned, repointed, resealed and recoated so the whole roof reads as new."
-    },
-    {
-      "title": "Roof repairs",
-      "blurb": "Leaks, cracked tiles and storm damage, chased down and fixed fast."
-    },
-    {
-      "title": "Gutter replacement and gutter guards",
-      "blurb": "New gutters and guards fitted so water goes where it should and leaves stay out."
-    },
-    {
-      "title": "Roof painting",
-      "blurb": "A full recoat in the colour you pick, sealed to hold up to Canberra summers and frosts."
-    },
-    {
-      "title": "Metal roofing repairs",
-      "blurb": "Rusted sheets, loose flashings and failed fixings on metal roofs, matched to what is already there."
-    }
-  ],
-  "serviceAreas": [
-    {
-      "region": "Canberra",
-      "suburbs": [
-        "Canberra",
-        "Belconnen",
-        "Gungahlin",
-        "Woden",
-        "Tuggeranong",
-        "Queanbeyan"
-      ],
-      "_check": true
-    }
-  ],
+  "services": [],
+  "serviceAreas": [],
   "credentials": [],
   "photos": {
-    "gallery": [],
+    "hero": {
+      "src": "assets/h6-about-img2-705.webp",
+      "srcset": "assets/h6-about-img2-705.webp 705w",
+      "width": 705,
+      "height": 638,
+      "alt": ""
+    },
+    "gallery": [
+      {
+        "src": "assets/banner-800.webp",
+        "srcset": "assets/banner-800.webp 800w, assets/banner-1800.webp 1800w",
+        "width": 800,
+        "height": 225,
+        "alt": "",
+        "full": "assets/banner-1800.webp",
+        "caption": ""
+      },
+      {
+        "src": "assets/home-6-banner-800.webp",
+        "srcset": "assets/home-6-banner-800.webp 800w, assets/home-6-banner-1800.webp 1800w",
+        "width": 800,
+        "height": 404,
+        "alt": "",
+        "full": "assets/home-6-banner-1800.webp",
+        "caption": ""
+      }
+    ],
     "beforeAfter": []
   },
   "googleReviewsUrl": "",
@@ -120,74 +91,27 @@
     "aboutText": "At Arizona Roofing, we are dedicated to providing top-notch roofing solutions for both residential and commercial properties in Canberra. With years of industry experience, our team of expert roofing professionals is committed to delivering exceptional services that meet our clients&#8217; needs and exceed their expectations.\n\nOur comprehensive range of roofing services includes roof restoration, roof repairs, gutter replacement, gutter guards, roof painting, and metal roofing repairs. Whether your roof needs a complete makeover, repairs to address leaks and damages, or the installation of new gutters and guards, we have the expertise to handle it all. We pride ourselves on delivering fast and efficient repairs, ensuring that your roof is restored to its optimal condition in no time.\n\nAt Arizona Roofing, we understand the importance of a sturdy and reliable roof for the protection of your property. That&#8217;s why we prioritize quality workmanship and utilize the latest industry techniques and materials to ensure the longevity and durability of our roofing solutions. We are a registered business with a team of experienced and professional roofing experts who are passionate about delivering exceptional results. Our commitment to customer satisfaction, affordable pricing, and reliable service has made us the go-to choice for roofing solutions in Canberra.",
     "socials": {},
     "stockLookingPhotos": [
-      "assets/banner-800.webp",
-      "assets/h6-about-img2-705.webp",
-      "assets/home-6-banner-800.webp",
-      "assets/pexels-david-brown-159649281-scaled-800.webp",
-      "assets/pexels-jim-mclain-11467876-800.webp",
-      "assets/pexels-los-muertos-crew-8853521-800.webp",
-      "assets/pexels-zeynel-aksakal-6170589-800.webp"
-    ],
-    "stockNote": "Four were named pexels-*. The other three are theme stock: h6-about-img2 is a composite of American shingle roofs on a white background, banner and home-6-banner are North American log cabins with green shingle roofs. Confirmed by looking at them."
+      "https://www.arizonaroofing.com.au/wp-content/uploads/2023/06/pexels-david-brown-159649281-scaled.jpg",
+      "https://www.arizonaroofing.com.au/wp-content/uploads/2023/06/pexels-jim-mclain-11467876.jpg",
+      "https://www.arizonaroofing.com.au/wp-content/uploads/2023/06/pexels-los-muertos-crew-8853521.jpg",
+      "https://www.arizonaroofing.com.au/wp-content/uploads/2023/06/pexels-zeynel-aksakal-6170589.jpg"
+    ]
   },
   "_check": [
     "business.name",
     "business.phone.display",
     "business.email",
-    "business.abn",
-    "business.brand.accent",
+    "business.baseSuburb",
     "services",
     "serviceAreas",
+    "business.abn",
+    "business.brand.accent",
+    "business.logo",
     "photos.hero",
-    "photos.gallery",
-    "googleReviewsUrl",
-    "googleWriteReviewUrl",
-    "calculator.jobs"
+    "photos.gallery"
   ],
   "calculator": {
-    "_comment": "Empty on purpose. Get the per-m2 ranges from the owner, then fill in jobs. Never guess a trade's prices.",
+    "_comment": "Prices are NOT filled in. Get them from the owner, then set each range. Any range left with \"_check\": true renders \"Guide only, confirmed on site\".",
     "jobs": []
-  },
-  "tagline": "Roof restoration, repairs, gutters and metal roofing across Canberra.",
-  "schemaType": "RoofingContractor",
-  "trustClaims": [
-    {
-      "value": "ABN",
-      "label": "ABN registered",
-      "sub": "38 223 082 867"
-    },
-    {
-      "value": "Fixed",
-      "label": "Fixed-price quotes",
-      "sub": "Free, on site, no surprises"
-    }
-  ],
-  "process": [
-    {
-      "step": "Send us a photo",
-      "detail": "A couple of photos and your suburb is enough for a guide price."
-    },
-    {
-      "step": "We come and measure",
-      "detail": "We get up there, check the frame and the flashings, and give you a fixed price in writing."
-    },
-    {
-      "step": "We do the job",
-      "detail": "We sheet and make watertight as we go, so you are never left open."
-    }
-  ],
-  "reasons": [
-    {
-      "title": "Residential and commercial",
-      "body": "The same team does both, so a commercial job is not subcontracted to whoever is free."
-    },
-    {
-      "title": "Fast repairs",
-      "body": "Leaks do not wait, and neither do we. Most repairs are done in a morning."
-    },
-    {
-      "title": "Fixed price in writing",
-      "body": "You see the number before we start, and the invoice matches it."
-    }
-  ]
+  }
 }
