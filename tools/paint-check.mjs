@@ -62,12 +62,24 @@ function probe(mustShow) {
   const text = document.body.innerText;
   out.placeholders = (text.match(/\$?X{2,}|\[[^\]]{2,40}\]|Lorem ipsum|TODO|TBC|\bXXX\b/gi) || []).slice(0, 6);
   // Tap targets smaller than 44px, which is the thumb minimum.
+  // A link sitting inline inside a sentence is exempt (WCAG 2.5.8 says so, and
+  // padding one out to 44px breaks the line it is written into), so only
+  // standalone links and controls are counted.
+  const inlineInProse = (el) => {
+    if (el.tagName !== 'A') return false;
+    const p = el.parentElement;
+    if (!p) return false;
+    if (!/^(P|LI|SPAN|SMALL|DIV|TD|SUMMARY)$/.test(p.tagName)) return false;
+    // Text either side of it means it is part of a sentence, not a button.
+    return (p.textContent || '').trim().length > (el.textContent || '').trim().length + 4;
+  };
   out.smallTargets = [...document.querySelectorAll('a,button,[role="button"],input,select,textarea')]
     .filter((el) => {
       const s = getComputedStyle(el);
       if (s.display === 'none' || s.visibility === 'hidden' || +s.opacity === 0) return false;
       const r = el.getBoundingClientRect();
-      return r.width > 0 && r.height > 0 && r.height < 44;
+      if (!(r.width > 0 && r.height > 0 && r.height < 44)) return false;
+      return !inlineInProse(el);
     })
     .map((el) => `${el.tagName.toLowerCase()}${el.id ? '#' + el.id : ''} ${Math.round(el.getBoundingClientRect().height)}px`)
     .slice(0, 6);

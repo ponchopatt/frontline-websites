@@ -1,0 +1,53 @@
+{
+  "_comment": "Defaults for kitchens-joinery. The client's own config.json overrides anything here — objects merge, arrays replace whole. Edit freely; nothing regenerates this.",
+  "industry": "kitchens-joinery",
+  "template": "trust",
+  "responsePromise": "We come back to every enquiry within a day.",
+  "copy": {
+    "servicesTitle": "What we make",
+    "processTitle": "How it runs",
+    "faqTitle": "Good to know"
+  },
+  "process": [
+    {
+      "step": "Measure and talk it through",
+      "detail": "How you actually use the space decides the layout more than the finishes do."
+    },
+    {
+      "step": "Design and a fixed price",
+      "detail": "Drawings and a quote with the hardware and materials named, so you know what you are getting."
+    },
+    {
+      "step": "Made to measure",
+      "detail": "Built in the workshop to your measurements, not adjusted on site."
+    },
+    {
+      "step": "Install",
+      "detail": "In and finished with the least disruption we can manage."
+    }
+  ],
+  "faq": [
+    {
+      "q": "How long will my kitchen be out of action?",
+      "a": "Usually days rather than weeks, because the cabinetry is made before we start pulling anything out."
+    },
+    {
+      "q": "Do you handle plumbing and electrical?",
+      "a": "We coordinate the trades so you are not managing three diaries."
+    },
+    {
+      "q": "Stone or laminate?",
+      "a": "Both have their place. We will tell you where the money actually shows and where it does not."
+    },
+    {
+      "q": "Can you match existing joinery?",
+      "a": "Usually. Bring us a photo or a door and we will tell you honestly how close we can get."
+    }
+  ],
+  "_serviceHints": [
+    "Kitchens",
+    "Wardrobes and storage",
+    "Vanities",
+    "Custom joinery"
+  ]
+}

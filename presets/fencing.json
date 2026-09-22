@@ -1,0 +1,60 @@
+{
+  "_comment": "Defaults for fencing. The client's own config.json overrides anything here — objects merge, arrays replace whole. Edit freely; nothing regenerates this.",
+  "industry": "fencing",
+  "template": "quote",
+  "responsePromise": "Quote back within a few hours, seven days a week.",
+  "copy": {
+    "servicesTitle": "What we do",
+    "processTitle": "How it works",
+    "faqTitle": "Good to know"
+  },
+  "process": [
+    {
+      "step": "Call, text or send the form",
+      "detail": "Tell us roughly how many metres, the style you want and your suburb. A photo of the yard helps."
+    },
+    {
+      "step": "We measure up and quote",
+      "detail": "We check the boundary and the levels, and give you a fixed price in writing."
+    },
+    {
+      "step": "Fence goes up",
+      "detail": "Most home fences take a day or two. We take the old one away and leave it tidy."
+    }
+  ],
+  "faq": [
+    {
+      "q": "How much does a fence cost?",
+      "a": "Use the price guide above for a range, then we confirm the exact figure on site."
+    },
+    {
+      "q": "Do I have to pay for the whole boundary fence myself?",
+      "a": "Usually not. Neighbours normally share the cost of a boundary fence. Talk to yours before the quote, and we will write it so you can hand a copy straight over."
+    },
+    {
+      "q": "Do I need council approval?",
+      "a": "Most side and back boundary fences do not, as long as they sit behind the front of the house and stay under the height limit. Front fences and corner blocks have extra rules."
+    },
+    {
+      "q": "My block slopes. Does that matter?",
+      "a": "Not much. We either step the panels down the slope or rake them to follow it, and fill gaps with a plinth."
+    },
+    {
+      "q": "Do you take the old fence away?",
+      "a": "Yes, and tip fees are in the replacement price."
+    }
+  ],
+  "_serviceHints": [
+    "New fences",
+    "Fence replacements",
+    "Gates",
+    "Repairs"
+  ],
+  "_calculatorUnits": {
+    "unit": "m",
+    "label": "How many metres?",
+    "min": 3,
+    "max": 300,
+    "default": 20
+  }
+}

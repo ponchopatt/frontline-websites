@@ -1,0 +1,61 @@
+{
+  "_comment": "Defaults every demo starts from. An industry preset overrides these, and the client's own config.json overrides both. Objects merge; arrays replace whole.",
+
+  "live": false,
+  "responsePromise": "Quote back within a few hours, seven days a week.",
+
+  "demo": {
+    "bannerPrefix": "Prepared for",
+    "bannerSuffix": "by Frontline Systems",
+    "bannerCta": "Book a 10-min walkthrough",
+    "bannerCtaUrl": "#enquire",
+    "footerNote": "This is a demo built by Frontline Systems as a proposal for {business}. It is not their live site.",
+    "formNote": "Demo mode — on the live site this goes straight to {owner}'s phone and inbox."
+  },
+
+  "form": {
+    "accessKey": "",
+    "endpoint": "https://api.web3forms.com/submit",
+    "submitLabel": "Send enquiry",
+    "sendingLabel": "Sending…",
+    "timingOptions": [
+      "As soon as possible",
+      "In the next few weeks",
+      "In the next few months",
+      "Just getting prices"
+    ],
+    "errors": {
+      "name": "Please tell us your name",
+      "phone": "Please enter a contact number",
+      "suburb": "Which suburb is the property in?",
+      "form": "Please complete the highlighted fields."
+    },
+    "successHeading": "Thank you, {first}.",
+    "successBody": "Your enquiry is with {owner}. He will be in touch on {phone}.",
+    "errorHeading": "That did not send.",
+    "errorBody": "Call or text {owner} on {phone} and he will pick it up straight away.",
+    "privacyNote": "We will only use your details to reply to this enquiry."
+  },
+
+  "sms": {
+    "label": "Text us a photo",
+    "body": "Hi {owner}, I'd like a quote.\nSuburb: \nWhat I'm after: \n(Happy to send photos of the space.)"
+  },
+
+  "statLabels": {
+    "googleRating": "Google rating",
+    "reviewCount": "Reviews",
+    "jobsDone": "Jobs completed",
+    "yearsInBusiness": "Years in business"
+  },
+
+  "reviewsLinks": {
+    "readAll": "Read all reviews on Google",
+    "write": "Write a review"
+  },
+
+  "calculatorNotes": {
+    "unconfirmed": "Guide only, confirmed on site.",
+    "confirmed": "A firm price follows a site visit."
+  }
+}
