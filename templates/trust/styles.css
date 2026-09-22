@@ -1,0 +1,545 @@
+/* ---------------------------------------------------------------------------
+   trust template.
+   The look is fixed: near-black ground, full-bleed photography, type set big.
+   What changes per client is the two brand colours, which arrive as --accent
+   and --accent-2 from clients/<slug>/config.json. Their lighter variants and
+   rgb triples are derived at build time, so a client only picks two colours.
+   These defaults are Bondi Landscapes' own, off their logo.
+   --------------------------------------------------------------------------- */
+:root{
+  --accent:#4DBFA6;      --accent-lt:#6FD3BC;   --accent-rgb:77,191,166;
+  --accent-2:#EF4435;    --accent-2-lt:#FF6A5C; --accent-2-rgb:239,68,53;
+}
+/* ============================================================================
+   ART DIRECTION
+   Cinematic, not quiet. Near-black ground so the photographs are the only
+   light in the room. Type is big and unafraid. Their coral and teal carry
+   real weight — glows, rules, folio numbers — rather than appearing as dots.
+   Film grain over everything: it is what stops a flat dark panel reading as
+   a flat dark panel.
+   Photography rule: warm and sunlit, built and settled, inhabited not staged.
+   No blue-hour, no heightened green, no drone shots.
+   ========================================================================= */
+
+@font-face{
+  font-family:'Big Shoulders Display';font-style:normal;font-weight:500 900;font-display:swap;
+  src:url(fonts/big-shoulders-var.woff2) format('woff2-variations'),
+      url(fonts/big-shoulders-var.woff2) format('woff2');
+}
+@font-face{
+  font-family:'Instrument Sans';font-style:normal;font-weight:400 700;font-display:swap;
+  src:url(fonts/instrument-sans-var.woff2) format('woff2-variations'),
+      url(fonts/instrument-sans-var.woff2) format('woff2');
+}
+
+:root{
+  /* grounds — near-black with a green-slate cast, taken off their own photographs */
+  --bg:#0A1418;
+  --bg-card:#101E24;
+  --bg-raised:#162A32;
+
+  /* ink */
+  --fg:#F4F7F8;        /* 17.3:1 on bg */
+  --fg-soft:#E8EEF0;   /* 15.9:1 */
+  --fg-mute:#9FB3BA;   /* 8.55:1 */
+
+  /* BRAND, off their logo SVG — used loudly */
+  --coral:var(--accent-2);     /* the second brand colour, per client */
+  --coral-lt:var(--accent-2-lt);
+  --teal:var(--accent);        /* the primary brand colour, per client */
+  --teal-lt:var(--accent-lt);
+  --slate:#274758;     /* their wordmark colour, used as a ground tint */
+
+  --line:rgba(244,247,248,.14);
+  --line-2:rgba(244,247,248,.28);
+
+  --font-display:'Big Shoulders Display','Arial Narrow','Helvetica Neue Condensed',sans-serif;
+  --font-body:'Instrument Sans',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
+
+  /* type — considerably bigger than before, top to bottom */
+  --t-mega:clamp(3.4rem,min(10.4vw,15.5vh),9.25rem);
+  --t-d1:clamp(3rem,8vw,6.75rem);
+  --t-d2:clamp(2.25rem,5vw,4rem);
+  --t-h3:clamp(1.6rem,2.6vw,2.35rem);
+  --t-h4:clamp(1.2rem,1.5vw,1.4rem);
+  --t-lede:clamp(1.2rem,1.65vw,1.6rem);
+  --t-body:clamp(1.0625rem,.9vw + .7rem,1.1875rem);
+  --t-small:.9375rem;
+  --t-cap:.8125rem;
+  --t-label:.75rem;
+  --t-folio:clamp(3.5rem,7vw,6.5rem);
+
+  --measure:38em;
+  --measure-tight:30em;
+
+  --s4:4px;--s8:8px;--s12:12px;--s16:16px;--s20:20px;--s24:24px;
+  --s32:32px;--s40:40px;--s48:48px;--s64:64px;--s80:80px;--s96:96px;
+  --wrap:1560px;
+  --gut:clamp(20px,5vw,72px);
+  --pad:clamp(88px,10vw,168px);
+  --header-h:78px;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:clip;color-scheme:dark}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font-family:var(--font-body);font-size:var(--t-body);line-height:1.6;
+  font-weight:400;font-synthesis:none;font-optical-sizing:auto;
+  text-rendering:optimizeLegibility;
+}
+/* Film grain over the lot. This is what makes flat dark panels feel like a
+   surface rather than a fill. Phones skip it — a fixed full-screen paint
+   layer is work a small GPU does not need. */
+body::after{
+  content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+}
+@media(max-width:767px){body::after{display:none}}
+
+img{max-width:100%;display:block;height:auto}
+a{color:inherit}
+strong,b{font-weight:600}
+em,i{font-style:normal;font-weight:600}
+::selection{background:var(--teal);color:var(--bg)}
+:where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
+  outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 5px var(--teal);border-radius:2px}
+
+/* ---------------------------------------------------------------- type */
+h1,h2,h3,h4{margin:0;font-weight:400;font-family:var(--font-display)}
+/* Condensed caps carry every headline — the same move Imperium makes, and the
+   reason a short line can be set enormous without ever wrapping badly. */
+.t-mega,.t-d1,.t-d2,.t-h3{font-family:var(--font-display);font-weight:800;
+  text-transform:uppercase;text-wrap:balance}
+.t-mega{font-size:var(--t-mega);line-height:.86;letter-spacing:.004em}
+.t-d1{font-size:var(--t-d1);line-height:.88;letter-spacing:.006em}
+.t-d2{font-size:var(--t-d2);line-height:.92;letter-spacing:.008em}
+.t-h3{font-size:var(--t-h3);line-height:.96;letter-spacing:.01em}
+/* h4 stays in the sans: at this size the condensed face stops being legible */
+.t-h4{font-family:var(--font-body);font-weight:600;font-size:var(--t-h4);
+  line-height:1.3;letter-spacing:-.004em}
+.t-lede{font-size:var(--t-lede);line-height:1.5;color:var(--fg-soft);max-width:var(--measure-tight)}
+.t-small{font-size:var(--t-small);line-height:1.5}
+.t-cap{font-size:var(--t-cap);line-height:1.45;color:var(--fg-mute)}
+.t-folio{font-family:var(--font-display);font-weight:800;font-size:var(--t-folio);line-height:.82;letter-spacing:0;color:var(--fg-mute);font-variant-numeric:tabular-nums;display:block}
+/* labels: real uppercase in the sans at 500. Never 700, never the serif,
+   never font-variant-caps (neither face ships true small caps). */
+.t-label{font-family:var(--font-body);font-weight:500;font-size:var(--t-label);
+  line-height:1.4;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);
+  display:block;margin:0 0 var(--s24)}
+.t-label.mute{color:var(--fg-mute)}
+p{margin:0 0 1em;text-wrap:pretty}
+p:last-child{margin-bottom:0}
+
+/* ---------------------------------------------------------------- layout */
+.wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gut)}
+section{padding-block:var(--pad);position:relative}
+.bleed{width:100vw;margin-inline:calc(50% - 50vw)}
+.card{background:var(--bg-card)}
+/* the blue-glow idea from Imperium, in their teal and coral */
+.above{position:relative;z-index:1}
+
+/* section heads sit wide, not stranded in a narrow left column */
+.head{display:grid;gap:var(--s24)}
+@media(min-width:1000px){
+  .head{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:var(--s64);align-items:end}
+  .head .t-lede{max-width:none;padding-bottom:.4rem}
+}
+
+/* ---------------------------------------------------------------- buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:11px;
+  min-height:60px;padding:18px 34px;border-radius:2px;
+  background:var(--teal);color:var(--bg);
+  font-family:var(--font-body);font-weight:600;font-size:1rem;letter-spacing:.01em;
+  text-decoration:none;border:1px solid transparent;cursor:pointer;
+  transition:transform .2s ease,box-shadow .2s ease,background .15s ease}
+.btn:hover{background:var(--teal-lt);transform:translateY(-2px);box-shadow:0 12px 34px rgba(var(--accent-rgb),.28)}
+.btn:active{transform:translateY(0) scale(.99);box-shadow:none}
+.btn.ghost{background:transparent;color:var(--fg);border-color:var(--line-2)}
+/* The hero's secondary action. A ruled link, not a second button — two buttons
+   side by side read as two primary actions, and neither wins. */
+.link{display:inline-flex;align-items:center;text-decoration:none;font-weight:500;
+  font-size:var(--t-small);color:var(--fg-soft);min-height:44px;padding-block:6px;
+  border-bottom:1px solid var(--line-2);transition:color .25s,border-color .25s}
+.link:hover{color:var(--fg);border-color:var(--fg)}
+.btn.ghost:hover{background:rgba(244,247,248,.08);border-color:var(--fg);box-shadow:none}
+.btn svg{width:19px;height:19px;flex:none}
+.ctas{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s16) var(--s32)}
+/* An sms: link opens the messages app on a phone and does absolutely nothing
+   on a Windows or Linux desktop. So the same button in the same place is a
+   text on a phone and the quote form on a laptop. */
+/* !important because these are display utilities: any component rule that sets
+   display on the same element (.direct a, .btn) is more specific than a single
+   class and would otherwise win. */
+.only-wide{display:none !important}
+@media(min-width:768px){
+  .only-wide{display:inline-flex !important}
+  .only-narrow{display:none !important}
+}
+
+
+/* ---------------------------------------------------------------- reveals
+   Masked line reveal. A headline is split into lines, each line wrapped in a
+   clipping box, and the inner span rides up out of it. */
+.ln{display:block;overflow:hidden}
+.ln>span{display:block;will-change:transform}
+
+/* ---------------------------------------------------------------- demo bar */
+.demobar{position:relative;z-index:80;background:var(--bg-card);
+  border-bottom:1px solid var(--line)}
+.demobar-in{display:flex;align-items:center;gap:var(--s16);
+  padding-block:10px;flex-wrap:wrap}
+.demobar p{margin:0;font-size:var(--t-cap);color:var(--fg-mute);flex:1 1 260px;line-height:1.5}
+.demobar b{color:var(--fg-soft);font-weight:600}
+.demobar-cta{font-size:var(--t-cap);font-weight:600;color:var(--teal);text-decoration:none;
+  white-space:nowrap;border-bottom:1px solid transparent;
+  min-height:44px;display:inline-flex;align-items:center}
+.demobar-cta:hover{border-color:var(--teal)}
+.demobar-x{all:unset;cursor:pointer;min-width:44px;min-height:44px;display:grid;
+  place-items:center;color:var(--fg-mute);border-radius:2px}
+.demobar-x:hover{color:var(--fg)}
+.demobar-x:focus-visible{box-shadow:0 0 0 2px var(--bg),0 0 0 5px var(--teal)}
+/* the header starts below the bar while it is showing */
+body.has-demobar .top{top:var(--demobar-h,0px)}
+
+/* ---------------------------------------------------------------- header */
+/* The header is ABSOLUTE, not fixed. It sits over the hero photograph and
+   scrolls away with it — it never rides down the page. Nothing to pin, no
+   backdrop-filter held for the life of the page, and the content below is
+   never covered. */
+.top{position:absolute;top:0;left:0;right:0;z-index:70;color:var(--fg)}
+.top::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(rgba(6,12,15,.72),rgba(6,12,15,0))}
+.topin{display:flex;align-items:center;gap:var(--s24);height:var(--header-h)}
+.brand{display:flex;align-items:center;text-decoration:none;margin-right:auto;min-height:44px}
+.brand img{width:auto;height:32px}
+.nav{display:none;gap:var(--s32);font-size:var(--t-small);font-weight:500}
+.nav a{text-decoration:none;color:var(--fg-soft);transition:color .25s;position:relative;padding-block:6px;min-height:44px;display:inline-flex;align-items:center}
+.nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.5px;
+  background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.nav a:hover{color:var(--fg)}.nav a:hover::after{transform:scaleX(1)}
+.top .btn{min-height:46px;padding:11px 22px;font-size:.9rem;display:none}
+.top .tel{display:inline-flex;align-items:center;gap:9px;text-decoration:none;min-height:44px;
+  font-weight:600;font-size:var(--t-small);white-space:nowrap}
+.top .tel svg{width:17px;height:17px;color:var(--teal)}
+@media(min-width:1040px){.nav{display:flex}.top .btn{display:inline-flex}}
+
+/* ---------------------------------------------------------------- hero */
+.hero{min-height:calc(100svh - var(--demobar-h,0px));padding:0;display:flex;align-items:flex-end;overflow:hidden;background:var(--bg)}
+.hero .bgwrap{position:absolute;inset:0;overflow:hidden}
+.hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:50% 62%;will-change:transform}
+@media(max-width:700px){.hero img.bg{object-position:58% 60%}}
+.hero .veil{position:absolute;inset:0;background:
+  linear-gradient(to top,rgba(6,13,16,.95) 0%,rgba(6,13,16,.8) 30%,rgba(6,13,16,.34) 62%,rgba(6,13,16,.06) 86%,rgba(6,13,16,.46) 100%),
+  linear-gradient(to right,rgba(6,13,16,.78) 0%,rgba(6,13,16,.36) 44%,rgba(6,13,16,0) 74%)}
+.hero .wrap{position:relative;z-index:2;
+  padding-bottom:clamp(var(--s48),7vh,var(--s96));
+  padding-top:calc(var(--header-h) + var(--s32))}
+.hero-in{max-width:min(1100px,100%)}
+.hero .ln{padding-bottom:.05em}
+.hero h1 em{font-style:normal;font-weight:inherit;color:var(--teal)}
+/* Before JS splits it, the headline must already be visible and correct —
+   the split only adds the clipping boxes the reveal needs. */
+.t-mega em,.t-d1 em{font-style:normal;font-weight:inherit}
+@media(max-height:790px){
+  .hero .wrap{padding-top:calc(var(--header-h) + var(--s12));padding-bottom:var(--s20)}
+  .hero .sub{margin:var(--s16) 0 var(--s20) !important;font-size:1rem;line-height:1.45}
+  .hero .t-label{margin-bottom:var(--s12)}
+  .hero .btn{min-height:48px;padding:12px 22px}
+  .hero .ctas{gap:var(--s12)}
+  /* the banner is a pitch affordance, not content — it shrinks first */
+  .demobar-in{padding-block:6px;gap:var(--s12)}
+  .demobar p{font-size:.7rem}
+}
+@media(max-height:660px){
+  .hero .sub{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+}
+.hero .sub{max-width:40em;font-size:var(--t-lede);line-height:1.48;
+  color:var(--fg-soft);margin:var(--s32) 0 var(--s40)}
+.hero .meta{display:flex;flex-wrap:wrap;gap:var(--s12) var(--s32);
+  margin:var(--s40) 0 0;padding-top:var(--s24);border-top:1px solid var(--line)}
+.hero .meta span{display:inline-flex;align-items:center;gap:11px;
+  font-family:var(--font-body);font-weight:500;font-size:var(--t-label);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--fg-soft)}
+.hero .meta span::before{content:"";width:6px;height:6px;border-radius:50%;
+  background:var(--coral);flex:none;box-shadow:0 0 12px rgba(var(--accent-2-rgb),.9)}
+.hero .t-label,.hero .meta{text-shadow:0 1px 18px rgba(4,10,13,.9)}
+
+/* ---------------------------------------------------------------- marquee */
+.strip{border-block:1px solid var(--line);padding-block:var(--s32)}
+.creds{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;
+  gap:var(--s20) clamp(var(--s32),6vw,var(--s96));justify-content:center}
+.creds li{font-family:var(--font-body);font-weight:500;font-size:var(--t-label);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--fg-mute)}
+
+/* ---------------------------------------------------------------- statement */
+.statement{overflow:hidden}
+.statement .wrap{display:grid;gap:clamp(var(--s40),5vw,var(--s80));align-items:center}
+@media(min-width:960px){.statement .wrap{grid-template-columns:1.05fr .95fr}}
+.pull{margin:var(--s40) 0 0;padding-left:var(--s32);border-left:1px solid var(--line-2)}
+.pull p{font-family:var(--font-body);font-weight:500;font-size:var(--t-h4);line-height:1.5;
+  color:var(--fg);max-width:30em}
+.figure{position:relative;background:var(--bg-card)}
+.figure>img{border-radius:0}
+.figure:has(figcaption){overflow:visible}
+.figure img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.figure:hover img{transform:scale(1.04)}
+
+/* ---------------------------------------------------------------- services */
+.svc-grid{display:grid;gap:var(--s20);margin-top:clamp(var(--s48),5vw,var(--s64))}
+@media(min-width:820px){.svc-grid{grid-template-columns:repeat(3,1fr);gap:var(--s24)}}
+.svc{position:relative;overflow:hidden;background:var(--bg-card);display:block;
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.svc:hover{transform:translateY(-4px);box-shadow:0 22px 50px rgba(0,0,0,.45)}
+.svc .ph{position:relative;aspect-ratio:3/4;overflow:hidden}
+.svc .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform 1s var(--ease)}
+.svc:hover .ph img{transform:scale(1.06)}
+.svc .ph::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(7,14,17,.94) 4%,rgba(7,14,17,.5) 42%,rgba(7,14,17,.05) 74%)}
+.svc .cap{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:var(--s32) var(--s24)}
+.svc .cap .t-folio{font-size:clamp(2rem,3vw,2.6rem);color:var(--teal);margin-bottom:var(--s8)}
+.svc .cap h3{margin-bottom:var(--s12)}
+.svc .cap p{font-size:var(--t-small);line-height:1.5;color:var(--fg-mute);margin:0;max-width:34ch}
+
+/* ------------------------------------------------- THE APERTURE (signature)
+   The page contracts to one frame, holds, then opens. The CSS default below
+   IS the finished state — GSAP only sets a temporary from-state, so with no
+   JS, no GSAP, or reduced motion the photograph simply renders full. */
+@property --ap-y{syntax:'<number>';inherits:true;initial-value:0}
+@property --ap-x{syntax:'<number>';inherits:true;initial-value:0}
+@property --ap-frame{syntax:'<number>';inherits:true;initial-value:0}
+.ap{position:relative;height:100svh;overflow:hidden;background:var(--bg);
+  --ap-y:0;--ap-x:0;--ap-frame:0}
+.ap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:50% 55%;clip-path:inset(calc(var(--ap-y)*1%) calc(var(--ap-x)*1%))}
+.ap .frame{position:absolute;pointer-events:none;border:1px solid var(--teal);
+  inset:calc(var(--ap-y)*1%) calc(var(--ap-x)*1%);opacity:var(--ap-frame);
+  box-shadow:0 0 50px rgba(var(--accent-rgb),.25)}
+/* The label fades in with the aperture, but ONLY when JS is running to drive
+   --ap-frame. With no JS the frame never moves, so an unscoped opacity rule
+   would leave this heading permanently invisible — and it is real copy and the
+   section's aria-labelledby target. Unscoped default is visible. */
+.ap .apLabel{position:absolute;left:0;right:0;top:calc(50% - 170px);z-index:2;
+  text-align:center;margin:0}
+html[data-js] .ap .apLabel{opacity:clamp(0,calc((var(--ap-frame) - .5)*3),1)}
+.ap .plate{position:absolute;left:var(--gut);bottom:var(--gut);z-index:2;max-width:36em;
+  opacity:clamp(0,calc((.45 - var(--ap-frame))*3),1);
+  text-shadow:0 1px 18px rgba(4,10,13,.9)}
+.ap .plate p{margin:var(--s8) 0 0;font-family:var(--font-display);font-weight:800;
+  text-transform:uppercase;font-size:var(--t-h3);line-height:.95;letter-spacing:.01em}
+@media(max-width:767px){.ap img{object-position:56% 52%}.ap .apLabel{top:calc(50% - 120px)}}
+
+/* ---------------------------------------------------------------- work */
+.plates{display:grid;gap:var(--s40);margin-top:clamp(var(--s48),5vw,var(--s64))}
+@media(min-width:900px){.plates{grid-template-columns:repeat(2,1fr);gap:var(--s64) var(--s40)}}
+.plate-item{margin:0}
+.plate-item button{all:unset;display:block;width:100%;cursor:zoom-in}
+.plate-item .shot{position:relative;display:block;overflow:hidden;background:var(--bg-card);
+  aspect-ratio:4/3}   /* uniform ratio: their photos are mixed quality, a ragged
+                         native-ratio grid made that obvious */
+.plate-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform 1s var(--ease)}
+.plate-item button:hover img{transform:scale(1.05)}
+.plate-item .shot::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(7,14,17,.75),rgba(7,14,17,0) 45%);
+  opacity:0;transition:opacity .4s}
+.plate-item button:hover .shot::after{opacity:1}
+.plate-item figcaption{margin-top:var(--s16);display:flex;justify-content:space-between;
+  gap:var(--s16);align-items:baseline;flex-wrap:wrap;
+  padding-top:var(--s16);border-top:1px solid var(--line)}
+.plate-item figcaption .nm{font-family:var(--font-display);font-weight:800;
+  font-size:1.25rem;letter-spacing:.012em;text-transform:uppercase;color:var(--fg);line-height:1}
+
+dialog.lb{border:none;padding:0;background:rgba(6,13,16,.98);max-width:100vw;max-height:100vh;width:100vw;height:100vh}
+dialog.lb::backdrop{background:rgba(6,13,16,.94)}
+.lbin{display:grid;grid-template-rows:1fr auto;height:100%;padding:var(--gut);gap:var(--s16)}
+.lbin img{width:100%;height:100%;object-fit:contain;min-height:0}
+.lbbar{display:flex;align-items:center;justify-content:space-between;gap:var(--s16)}
+.lbbar button{all:unset;cursor:pointer;min-width:48px;min-height:48px;display:grid;
+  place-items:center;border:1px solid var(--line-2);color:var(--fg)}
+.lbbar button:hover{background:rgba(244,247,248,.1);border-color:var(--teal)}
+.lbnav{display:flex;gap:var(--s8)}
+
+/* ---------------------------------------------------------------- process */
+.steps{margin-top:clamp(var(--s48),5vw,var(--s64));display:grid;gap:var(--s40)}
+@media(min-width:900px){.steps{grid-template-columns:repeat(4,1fr);gap:var(--s32)}}
+.railwrap{position:relative;height:1px;background:var(--line);margin-bottom:var(--s48);display:none}
+@media(min-width:900px){.railwrap{display:block}}
+.rail{position:absolute;inset:0;background:var(--fg-soft);transform-origin:left}
+.step{padding-top:var(--s24);border-top:1px solid var(--line)}
+.step h3{margin:var(--s16) 0 var(--s12)}
+.step p{font-size:var(--t-small);color:var(--fg-mute);margin:0}
+.anchor{color:var(--fg-soft)!important}
+.anchor b,.faq .a b{font-weight:600;color:var(--teal);white-space:nowrap}
+
+/* ---------------------------------------------------------------- about */
+.about .wrap{display:grid;gap:clamp(var(--s40),5vw,var(--s80));align-items:center}
+@media(min-width:960px){.about .wrap{grid-template-columns:.9fr 1.1fr}}
+.facts{display:grid;gap:var(--s24);margin-top:var(--s48);padding-top:var(--s32);
+  border-top:1px solid var(--line)}
+@media(min-width:560px){.facts{grid-template-columns:repeat(3,1fr)}}
+.facts .n{font-family:var(--font-display);font-weight:800;font-size:clamp(3.25rem,5.5vw,4.75rem);
+  line-height:.85;display:block;color:var(--teal);font-variant-numeric:tabular-nums}
+.facts .l{font-size:var(--t-label);letter-spacing:.14em;text-transform:uppercase;
+  font-weight:500;color:var(--fg-mute);margin-top:var(--s12);display:block;line-height:1.4}
+
+/* ------------------------------------------------- reviews: scrolling columns */
+.quotes{display:grid;gap:clamp(var(--s40),5vw,var(--s80)) clamp(var(--s40),5vw,var(--s96));
+  margin-top:clamp(var(--s48),6vw,var(--s80))}
+@media(min-width:820px){.quotes{grid-template-columns:repeat(2,1fr)}}
+.rv{display:grid;gap:var(--s20);align-content:start;
+  padding-top:var(--s24);border-top:1px solid var(--line)}
+.rv blockquote{margin:0;font-family:var(--font-body);font-weight:400;
+  font-size:var(--t-lede);line-height:1.5;color:var(--fg-soft);max-width:30em}
+.rv .who{font-family:var(--font-body);font-weight:500;font-size:var(--t-label);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--fg-mute)}
+
+/* ---------------------------------------------------------------- recognition */
+.rec{display:grid;gap:var(--s24);margin-top:var(--s48)}
+@media(min-width:720px){.rec{grid-template-columns:repeat(2,1fr);gap:var(--s32)}}
+/* auto-fit, not repeat(4), so a card that has nothing to say can be left out
+   without leaving a hole in the row. Four cards still land on four columns. */
+@media(min-width:1100px){.rec{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}}
+.rec div{padding:var(--s32) 0 0;border-top:1px solid var(--line)}
+.rec h3{margin-bottom:var(--s12)}
+.rec p{font-size:var(--t-small);color:var(--fg-mute);margin:0}
+
+/* ---------------------------------------------------------------- areas */
+.areas{display:flex;flex-wrap:wrap;gap:var(--s12);margin-top:var(--s40);padding:0;list-style:none}
+.areas li{font-size:var(--t-small);color:var(--fg-soft);padding:12px 18px;min-height:44px;display:inline-flex;align-items:center;
+  border:1px solid var(--line-2);transition:border-color .25s,color .25s}
+.areas li:hover{border-color:var(--teal);color:var(--teal)}
+
+/* ---------------------------------------------------------------- faq */
+.faqs{margin-top:var(--s48);max-width:58em}
+.faq{border-top:1px solid var(--line)}
+.faq:last-child{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;display:flex;align-items:flex-start;
+  justify-content:space-between;gap:var(--s24);padding:var(--s24) 0;
+  font-family:var(--font-body);font-weight:600;font-size:var(--t-h4);line-height:1.35}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";flex:none;width:13px;height:13px;margin-top:.45em;
+  background:var(--fg-mute);
+  clip-path:polygon(45% 0,55% 0,55% 45%,100% 45%,100% 55%,55% 55%,55% 100%,45% 100%,45% 55%,0 55%,0 45%,45% 45%);
+  transition:transform .35s var(--ease)}
+.faq[open] summary::after{transform:rotate(135deg)}
+.faq .a{padding-bottom:var(--s24);color:var(--fg-mute);max-width:40em}
+@keyframes faqin{from{opacity:0;transform:translateY(-4px)}}
+.faq[open] .a{animation:faqin .3s ease-out both}
+
+/* ---------------------------------------------------------------- enquiry */
+.enq{position:relative;overflow:hidden}
+.enq .bgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:.22;will-change:transform}
+.enq::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(rgba(8,16,20,.9),rgba(8,16,20,.95))}
+.enq .wrap{position:relative;z-index:2;display:grid;gap:clamp(var(--s40),5vw,var(--s80))}
+@media(min-width:1000px){.enq .wrap{grid-template-columns:.85fr 1.15fr}}
+form{display:grid;gap:var(--s16)}
+.row{display:grid;gap:var(--s16)}
+@media(min-width:560px){.row.two{grid-template-columns:1fr 1fr}}
+label{display:grid;gap:var(--s8);font-family:var(--font-body);font-weight:500;
+  font-size:var(--t-label);letter-spacing:.14em;text-transform:uppercase;color:var(--fg-mute)}
+input,select,textarea{font-family:inherit;font-size:16px;color:var(--fg);
+  background:rgba(244,247,248,.05);border:1px solid rgba(244,247,248,.34);
+  border-radius:2px;padding:16px;min-height:58px;width:100%}
+textarea{min-height:136px;resize:vertical;line-height:1.55}
+input:focus,select:focus,textarea:focus{border-color:var(--teal)}
+input[aria-invalid="true"],textarea[aria-invalid="true"]{border-color:var(--coral-lt)}
+select option{color:#0A1418;background:#F4F7F8}
+.err{color:var(--coral-lt);font-size:var(--t-cap);letter-spacing:0;text-transform:none;font-weight:400}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.direct{display:grid;gap:var(--s20);margin-top:var(--s48);padding-top:var(--s32);border-top:1px solid var(--line)}
+.direct a{display:inline-flex;align-items:center;gap:13px;text-decoration:none;min-height:44px;
+  font-family:var(--font-body);font-weight:600;font-size:1.0625rem;word-break:break-word;transition:color .25s}
+.direct a:hover{color:var(--teal)}
+.direct svg{width:21px;height:21px;color:var(--fg-mute);flex:none}
+.thanks{border:1px solid var(--teal);background:var(--bg-card);padding:var(--s40)}
+#thanksNote{color:var(--fg-mute)}
+.btn[aria-busy="true"]{opacity:.7;cursor:progress}
+
+/* ---------------------------------------------------------------- footer */
+footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:1px solid var(--line)}
+.foot{display:grid;gap:var(--s40)}
+@media(min-width:760px){.foot{grid-template-columns:1.5fr 1fr 1fr}}
+.foot h2{font-family:var(--font-body);font-size:var(--t-label);letter-spacing:.14em;
+  text-transform:uppercase;font-weight:500;color:var(--fg-mute);margin:0 0 var(--s20)}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s4);font-size:var(--t-small)}
+.foot li a{display:inline-flex;align-items:center;min-height:44px}
+.foot a{text-decoration:none;color:var(--fg-soft)}
+.foot a:hover{color:var(--teal)}
+.foot img{height:32px;width:auto;margin-bottom:var(--s24)}
+.demo-note{border-left:1px solid var(--line-2);background:transparent;
+  padding:var(--s20) var(--s24);margin-top:var(--s40);font-size:var(--t-cap);
+  color:var(--fg-soft);line-height:1.6}
+.legal{margin-top:var(--s40);padding-top:var(--s24);border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:var(--s12) var(--s32);justify-content:space-between;
+  font-size:var(--t-cap);color:var(--fg-mute)}
+
+/* ---------------------------------------------------------------- sticky bar */
+.stickybar{position:fixed;left:0;right:0;bottom:0;z-index:65;display:grid;
+  grid-template-columns:1fr 1fr;gap:var(--s8);
+  padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom,0px));
+  background:rgba(10,20,24,.97);backdrop-filter:blur(16px);border-top:1px solid var(--line);
+  transform:translateY(110%);transition:transform .4s var(--ease)}
+.stickybar.on{transform:none}
+.stickybar .btn{min-height:52px;padding:12px 16px;font-size:.95rem}
+/* the sticky bar is fixed, so the document needs its height back at the bottom
+   or it covers the Send button and the footer links */
+@media(max-width:767px){
+  body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+}
+@media(min-width:768px){.stickybar{display:none}}
+
+/* ---------------------------------------------------------------- call dock
+   The header scrolls away with the hero, so on a wide screen the phone number
+   would be off-screen for the whole middle of the page. This is its stand-in:
+   a pill parked in the bottom-right corner. It does not travel with the
+   scroll the way the old fixed header did — it fades in once when the hero
+   has gone, sits perfectly still, and steps aside when the enquiry form is on
+   screen so it never covers the Send button. Wide screens only; a phone
+   already has the call bar along the bottom. */
+.calldock{position:fixed;right:var(--gut);bottom:var(--s32);z-index:66;
+  display:none;align-items:center;justify-content:flex-start;
+  width:54px;height:54px;padding-left:18px;overflow:hidden;
+  border-radius:2px;                       /* square, like every other edge here */
+  background:rgba(10,20,24,.94);backdrop-filter:blur(14px);
+  border:1px solid var(--line-2);color:var(--fg);text-decoration:none;
+  font-family:var(--font-body);font-weight:600;font-size:var(--t-small);
+  letter-spacing:.01em;white-space:nowrap;font-variant-numeric:tabular-nums;
+  box-shadow:0 18px 44px rgba(0,0,0,.42);
+  opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:opacity .4s var(--ease),transform .4s var(--ease),width .4s var(--ease),
+             background .2s ease,border-color .2s ease,color .2s ease}
+.calldock.on{opacity:1;transform:none;pointer-events:auto}
+/* At rest it is a 54px square in the corner, so it covers as little of the
+   page as a persistent control can. The number slides out on hover or focus. */
+.calldock .num{margin-left:11px;opacity:0;transition:opacity .3s var(--ease)}
+.calldock:hover,.calldock:focus-visible{width:var(--dock-w,164px);
+  background:var(--teal);color:var(--bg);border-color:var(--teal)}
+.calldock:hover .num,.calldock:focus-visible .num{opacity:1}
+.calldock svg{width:17px;height:17px;flex:none;color:var(--teal);transition:color .2s ease}
+.calldock:hover svg,.calldock:focus-visible svg{color:var(--bg)}
+.calldock:focus-visible{outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 5px var(--teal)}
+@media(min-width:768px){.calldock{display:inline-flex}}
+
+/* ---------------------------------------------------------------- motion
+   THE RULE: every element's CSS default is its FINAL state. GSAP only ever
+   sets a temporary from-state, with immediateRender:false, so the from is not
+   applied until a trigger actually fires. If a trigger never fires, or GSAP
+   never loads, or motion is reduced, the content is simply there. Nothing on
+   this page can end up permanently invisible. */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important}
+  .svc:hover,.svc:hover .ph img,.plate-item button:hover img,.figure:hover img,.btn:hover{transform:none}
+}
+@media print{.top,.stickybar,.calldock{display:none!important}}
+.skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--teal);
+  color:var(--bg);padding:14px 22px;font-weight:600;text-decoration:none}
+.skip:focus{left:0}
