@@ -13,12 +13,20 @@
 <meta property="og:description" content="Landscape design, construction and pool building for Sydney's Eastern Suburbs. One job at a time.">
 <meta property="og:image" content="assets/griffith-ave-1200.webp">
 <meta property="og:locale" content="en_AU">
+<meta property="og:site_name" content="Bondi Landscapes">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="857">
+<meta property="og:image:alt" content="A Griffith Avenue courtyard by Bondi Landscapes: slatted pergola, built-in seating and sandstone paving">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bondi Landscapes — Landscape Design, Construction &amp; Pools">
+<meta name="twitter:description" content="Landscape design, construction and pool building for Sydney's Eastern Suburbs. One job at a time.">
+<meta name="twitter:image" content="assets/griffith-ave-1200.webp">
 
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/big-shoulders-var.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/instrument-sans-var.woff2">
 <link rel="preload" as="image" href="assets/griffith-ave-1800.webp" imagesrcset="assets/griffith-ave-480.webp 480w, assets/griffith-ave-800.webp 800w, assets/griffith-ave-1200.webp 1200w, assets/griffith-ave-1800.webp 1800w" imagesizes="100vw" fetchpriority="high">
-<link rel="preload" as="image" href="assets/hero-terrace-1800.webp">
+<link rel="preload" as="image" href="assets/hero-terrace-1200.webp" imagesrcset="assets/hero-terrace-800.webp 800w, assets/hero-terrace-1200.webp 1200w, assets/hero-terrace-1800.webp 1800w" imagesizes="100vw" fetchpriority="low">
 
 <style>
 /* ============================================================================
@@ -172,7 +180,7 @@ section{padding-block:var(--pad);position:relative}
 /* The hero's secondary action. A ruled link, not a second button — two buttons
    side by side read as two primary actions, and neither wins. */
 .link{display:inline-flex;align-items:center;text-decoration:none;font-weight:500;
-  font-size:var(--t-small);color:var(--fg-soft);padding-block:6px;
+  font-size:var(--t-small);color:var(--fg-soft);min-height:44px;padding-block:6px;
   border-bottom:1px solid var(--line-2);transition:color .25s,border-color .25s}
 .link:hover{color:var(--fg);border-color:var(--fg)}
 .btn.ghost:hover{background:rgba(244,247,248,.08);border-color:var(--fg);box-shadow:none}
@@ -190,20 +198,30 @@ section{padding-block:var(--pad);position:relative}
   .only-narrow{display:none !important}
 }
 
-/* ---------------------------------------------------------------- intro
-   Mark fades up, a rule draws under it, then the whole curtain lifts. The
-   hero starts revealing the moment the lift begins, so nothing waits on it. */
-.intro{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center}
-.intro-mark{display:flex;flex-direction:column;align-items:center;gap:var(--s24);opacity:0}
-.intro-mark img{height:clamp(44px,6vw,64px);width:auto}
-.intro-rule{display:block;height:1px;width:176px;background:var(--teal);transform:scaleX(0);transform-origin:left}
-html.no-js .intro,html[data-intro="done"] .intro{display:none}
 
 /* ---------------------------------------------------------------- reveals
    Masked line reveal. A headline is split into lines, each line wrapped in a
    clipping box, and the inner span rides up out of it. */
 .ln{display:block;overflow:hidden}
 .ln>span{display:block;will-change:transform}
+
+/* ---------------------------------------------------------------- demo bar */
+.demobar{position:relative;z-index:80;background:var(--bg-card);
+  border-bottom:1px solid var(--line)}
+.demobar-in{display:flex;align-items:center;gap:var(--s16);
+  padding-block:10px;flex-wrap:wrap}
+.demobar p{margin:0;font-size:var(--t-cap);color:var(--fg-mute);flex:1 1 260px;line-height:1.5}
+.demobar b{color:var(--fg-soft);font-weight:600}
+.demobar-cta{font-size:var(--t-cap);font-weight:600;color:var(--teal);text-decoration:none;
+  white-space:nowrap;border-bottom:1px solid transparent;
+  min-height:44px;display:inline-flex;align-items:center}
+.demobar-cta:hover{border-color:var(--teal)}
+.demobar-x{all:unset;cursor:pointer;min-width:44px;min-height:44px;display:grid;
+  place-items:center;color:var(--fg-mute);border-radius:2px}
+.demobar-x:hover{color:var(--fg)}
+.demobar-x:focus-visible{box-shadow:0 0 0 2px var(--bg),0 0 0 5px var(--teal)}
+/* the fixed header sits below the bar while it is showing */
+body.has-demobar .top{top:var(--demobar-h,0px)}
 
 /* ---------------------------------------------------------------- header */
 .top{position:fixed;top:0;left:0;right:0;z-index:70;color:var(--fg);
@@ -214,21 +232,21 @@ html.no-js .intro,html[data-intro="done"] .intro{display:none}
   box-shadow:0 1px 0 var(--line)}
 .top.scrolled::before{opacity:0}
 .topin{display:flex;align-items:center;gap:var(--s24);height:var(--header-h)}
-.brand{display:flex;align-items:center;text-decoration:none;margin-right:auto}
+.brand{display:flex;align-items:center;text-decoration:none;margin-right:auto;min-height:44px}
 .brand img{width:auto;height:32px}
 .nav{display:none;gap:var(--s32);font-size:var(--t-small);font-weight:500}
-.nav a{text-decoration:none;color:var(--fg-soft);transition:color .25s;position:relative;padding-block:6px}
+.nav a{text-decoration:none;color:var(--fg-soft);transition:color .25s;position:relative;padding-block:6px;min-height:44px;display:inline-flex;align-items:center}
 .nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.5px;
   background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
 .nav a:hover{color:var(--fg)}.nav a:hover::after{transform:scaleX(1)}
 .top .btn{min-height:46px;padding:11px 22px;font-size:.9rem;display:none}
-.top .tel{display:inline-flex;align-items:center;gap:9px;text-decoration:none;
+.top .tel{display:inline-flex;align-items:center;gap:9px;text-decoration:none;min-height:44px;
   font-weight:600;font-size:var(--t-small);white-space:nowrap}
 .top .tel svg{width:17px;height:17px;color:var(--teal)}
 @media(min-width:1040px){.nav{display:flex}.top .btn{display:inline-flex}}
 
 /* ---------------------------------------------------------------- hero */
-.hero{min-height:100svh;padding:0;display:flex;align-items:flex-end;overflow:hidden;background:var(--bg)}
+.hero{min-height:calc(100svh - var(--demobar-h,0px));padding:0;display:flex;align-items:flex-end;overflow:hidden;background:var(--bg)}
 .hero .bgwrap{position:absolute;inset:0;overflow:hidden}
 .hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   object-position:50% 62%;will-change:transform}
@@ -245,12 +263,18 @@ html.no-js .intro,html[data-intro="done"] .intro{display:none}
 /* Before JS splits it, the headline must already be visible and correct —
    the split only adds the clipping boxes the reveal needs. */
 .t-mega em,.t-d1 em{font-style:normal;font-weight:inherit}
-@media(max-height:700px){
-  .hero .wrap{padding-top:calc(var(--header-h) + var(--s16));padding-bottom:var(--s24)}
+@media(max-height:790px){
+  .hero .wrap{padding-top:calc(var(--header-h) + var(--s12));padding-bottom:var(--s20)}
   .hero .sub{margin:var(--s16) 0 var(--s20) !important;font-size:1rem;line-height:1.45}
   .hero .t-label{margin-bottom:var(--s12)}
-  .hero .btn{min-height:50px;padding:13px 24px}
+  .hero .btn{min-height:48px;padding:12px 22px}
   .hero .ctas{gap:var(--s12)}
+  /* the banner is a pitch affordance, not content — it shrinks first */
+  .demobar-in{padding-block:6px;gap:var(--s12)}
+  .demobar p{font-size:.7rem}
+}
+@media(max-height:660px){
+  .hero .sub{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 }
 .hero .sub{max-width:40em;font-size:var(--t-lede);line-height:1.48;
   color:var(--fg-soft);margin:var(--s32) 0 var(--s40)}
@@ -363,6 +387,8 @@ dialog.lb::backdrop{background:rgba(6,13,16,.94)}
 .step{padding-top:var(--s24);border-top:1px solid var(--line)}
 .step h3{margin:var(--s16) 0 var(--s12)}
 .step p{font-size:var(--t-small);color:var(--fg-mute);margin:0}
+.anchor{color:var(--fg-soft)!important}
+.anchor b,.faq .a b{font-weight:600;color:var(--teal);white-space:nowrap}
 
 /* ---------------------------------------------------------------- about */
 .about .wrap{display:grid;gap:clamp(var(--s40),5vw,var(--s80));align-items:center}
@@ -396,7 +422,7 @@ dialog.lb::backdrop{background:rgba(6,13,16,.94)}
 
 /* ---------------------------------------------------------------- areas */
 .areas{display:flex;flex-wrap:wrap;gap:var(--s12);margin-top:var(--s40);padding:0;list-style:none}
-.areas li{font-size:var(--t-small);color:var(--fg-soft);padding:10px 18px;
+.areas li{font-size:var(--t-small);color:var(--fg-soft);padding:12px 18px;min-height:44px;display:inline-flex;align-items:center;
   border:1px solid var(--line-2);transition:border-color .25s,color .25s}
 .areas li:hover{border-color:var(--teal);color:var(--teal)}
 
@@ -440,11 +466,13 @@ select option{color:#0A1418;background:#F4F7F8}
 .err{color:var(--coral-lt);font-size:var(--t-cap);letter-spacing:0;text-transform:none;font-weight:400}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .direct{display:grid;gap:var(--s20);margin-top:var(--s48);padding-top:var(--s32);border-top:1px solid var(--line)}
-.direct a{display:inline-flex;align-items:center;gap:13px;text-decoration:none;
+.direct a{display:inline-flex;align-items:center;gap:13px;text-decoration:none;min-height:44px;
   font-family:var(--font-body);font-weight:600;font-size:1.0625rem;word-break:break-word;transition:color .25s}
 .direct a:hover{color:var(--teal)}
 .direct svg{width:21px;height:21px;color:var(--fg-mute);flex:none}
 .thanks{border:1px solid var(--teal);background:var(--bg-card);padding:var(--s40)}
+#thanksNote{color:var(--fg-mute)}
+.btn[aria-busy="true"]{opacity:.7;cursor:progress}
 
 /* ---------------------------------------------------------------- footer */
 footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:1px solid var(--line)}
@@ -452,7 +480,8 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 @media(min-width:760px){.foot{grid-template-columns:1.5fr 1fr 1fr}}
 .foot h2{font-family:var(--font-body);font-size:var(--t-label);letter-spacing:.14em;
   text-transform:uppercase;font-weight:500;color:var(--fg-mute);margin:0 0 var(--s20)}
-.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s12);font-size:var(--t-small)}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s4);font-size:var(--t-small)}
+.foot li a{display:inline-flex;align-items:center;min-height:44px}
 .foot a{text-decoration:none;color:var(--fg-soft)}
 .foot a:hover{color:var(--teal)}
 .foot img{height:32px;width:auto;margin-bottom:var(--s24)}
@@ -471,7 +500,11 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   transform:translateY(110%);transition:transform .4s var(--ease)}
 .stickybar.on{transform:none}
 .stickybar .btn{min-height:52px;padding:12px 16px;font-size:.95rem}
-@media(max-width:767px){body{padding-bottom:66px}}
+/* the sticky bar is fixed, so the document needs its height back at the bottom
+   or it covers the Send button and the footer links */
+@media(max-width:767px){
+  body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+}
 @media(min-width:768px){.stickybar{display:none}}
 
 /* ---------------------------------------------------------------- motion
@@ -496,12 +529,18 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<div class="intro" id="intro" aria-hidden="true">
-  <div class="intro-mark">
-    <img src="assets/logo-bondi-light.svg" width="687" height="255" alt="">
-    <span class="intro-rule"></span>
+<!-- Pitch banner. Hidden entirely with ?clean=1 so the same URL can show the
+     unbranded version during a call. -->
+<div class="demobar" id="demobar" hidden>
+  <div class="wrap demobar-in">
+    <p>Prepared for <b>Antony Aris</b> by Frontline Systems — a preview of what bondilandscapes.com.au could look like.</p>
+    <a class="demobar-cta" id="demoBook" href="#enquire">Book a 10-min walkthrough</a>
+    <button class="demobar-x" id="demoClose" type="button" aria-label="Dismiss this banner">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
   </div>
 </div>
+
 
 <header class="top" id="topbar">
   <div class="wrap topin">
@@ -613,7 +652,9 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 
 <!-- ======================================================= THE APERTURE -->
 <section class="ap bleed" id="aperture" aria-labelledby="apHead">
-  <img src="assets/hero-terrace-1800.webp" width="1800" height="1200" decoding="async"
+  <img src="assets/hero-terrace-1200.webp"
+    srcset="assets/hero-terrace-800.webp 800w, assets/hero-terrace-1200.webp 1200w, assets/hero-terrace-1800.webp 1800w"
+    sizes="100vw" width="1800" height="1200" decoding="async"
     alt="A shaded terrace by Bondi Landscapes: sandstone, timber and a canvas umbrella">
   <div class="frame" aria-hidden="true"></div>
   <p class="t-label apLabel" id="apHead">One job at a time</p>
@@ -631,7 +672,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
         <p class="t-label">Selected work</p>
         <h2 class="t-d1" data-lines>Eastern Suburbs gardens,<br>start to finish.</h2>
       </div>
-      <p class="t-lede">Eight named jobs across Bondi, Hastings, Griffith Avenue and Boundary Street. Every one designed, built and planted by the same team.</p>
+      <p class="t-lede">Six recent jobs across Bondi and the Eastern Suburbs. Every one designed, built and planted by the same team.</p>
     </div>
     <div class="plates" data-reveal="stagger">
       <figure class="plate-item">
@@ -659,10 +700,10 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
         <figcaption><span class="nm">Pool &amp; deck</span><span class="t-cap">Shell, surrounds, coping</span></figcaption>
       </figure>
       <figure class="plate-item">
-        <button data-src="assets/hastings-kitchen-1500.webp" data-cap="Hastings kitchen garden" aria-label="View the Hastings kitchen garden larger">
+        <button data-src="assets/hastings-kitchen-1500.webp" data-cap="Kitchen garden" aria-label="View the kitchen garden larger">
           <span class="shot"><img src="assets/hastings-kitchen-800.webp" srcset="assets/hastings-kitchen-480.webp 480w, assets/hastings-kitchen-800.webp 800w, assets/hastings-kitchen-1200.webp 1200w" sizes="(min-width:900px) 46vw, 92vw" width="1500" height="1071" loading="lazy" decoding="async" alt="A kitchen garden with raised beds and stone paving"></span>
         </button>
-        <figcaption><span class="nm">Hastings kitchen garden</span><span class="t-cap">Raised beds, stone paving</span></figcaption>
+        <figcaption><span class="nm">Kitchen garden</span><span class="t-cap">Raised beds, stone paving</span></figcaption>
       </figure>
       <figure class="plate-item">
         <button data-src="assets/hero-terrace-1800.webp" data-cap="Shaded terrace, Bondi" aria-label="View the shaded terrace larger">
@@ -686,7 +727,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     </div>
     <div class="railwrap" aria-hidden="true"><div class="rail" id="rail" data-draw></div></div>
     <div class="steps" data-reveal="stagger">
-      <div class="step"><span class="t-folio">01</span><h3 class="t-h3">Consultation</h3><p>Antony comes to your home and talks through the vision, the objectives and the budget. You receive a Design Fee Proposal scaled to the project.</p></div>
+      <div class="step"><span class="t-folio">01</span><h3 class="t-h3">Consultation</h3><p>Antony comes to your home and talks through the vision, the objectives and the budget. You receive a Design Fee Proposal scaled to the project.</p><p class="anchor" style="margin-top:var(--s12)">Design fees typically start from <b data-fee></b>, scaled to the project.</p></div>
       <div class="step"><span class="t-folio">02</span><h3 class="t-h3">Concept &amp; design</h3><p>A detailed landscape design, adjusted until you are completely happy. Where council approval is needed, we handle it.</p></div>
       <div class="step"><span class="t-folio">03</span><h3 class="t-h3">Quoting</h3><p>A comprehensive quotation built on the approved design. Itemised and transparent, tailored to the project rather than a rate card.</p></div>
       <div class="step"><span class="t-folio">04</span><h3 class="t-h3">Construction</h3><p>Our licensed team builds it — hardscape, softscape, planting, installation. One job at a time, project-managed by us.</p></div>
@@ -742,8 +783,8 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     <div class="rec" data-reveal="stagger">
       <div><h3 class="t-h4">Gold Award, 2025</h3><p>Landscape Excellence Awards — Residential Construction up to $100,000, for Mediterranean Courtyard.</p></div>
       <div><h3 class="t-h4">Category Winner, 2025</h3><p>The same project took the category outright, judged by The Landscape Association.</p></div>
-      <div><h3 class="t-h4">Best of Houzz</h3><p>Recognised on the platform architects and designers actually use.</p></div>
-      <div><h3 class="t-h4">Exotic Nurseries</h3><p>A supply relationship spanning close to two decades. [Confirm with Antony.]</p></div>
+      <div><h3 class="t-h4">Best of Houzz <span id="houzzYear"></span></h3><p>Recognised on the platform architects and designers actually use.</p></div>
+      <div><h3 class="t-h4">Exotic Nurseries</h3><p>A trade supplier who has vouched for them publicly: “very specific when it comes to the quality of plants they require.”</p></div>
     </div>
   </div>
 </section>
@@ -776,10 +817,10 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
       <details class="faq"><summary>Do you build the pool yourselves, or subcontract it?</summary><div class="a"><p>Ourselves. Antony holds a pool builder's licence as well as a landscape contractor's licence. That is unusual — most landscapers subcontract the pool, which is where the finger-pointing starts when the pool and the garden do not meet properly. Here it is one contract and one team.</p></div></details>
       <details class="faq"><summary>How long does a project take?</summary><div class="a"><p>It depends entirely on scope, and we would rather tell you honestly after seeing the site than give you a number now. What we can promise is that we run one job at a time, so once we start we stay until it is done. One client's terrace garden — paving, fencing, a gate, lighting, irrigation and planting — was finished in three weeks.</p></div></details>
       <details class="faq"><summary>Do you handle council and DA approval?</summary><div class="a"><p>Yes. Where a project needs council approval we manage that process as part of the design phase, so you are not chasing it yourself.</p></div></details>
-      <details class="faq"><summary>What does the design cost?</summary><div class="a"><p>After the first consultation you receive a Design Fee Proposal, priced to the size and complexity of your project rather than a flat rate. You approve that before any design work begins, and the construction quote comes later, built on the approved design.</p></div></details>
+      <details class="faq"><summary>What does the design cost?</summary><div class="a"><p>Design fees typically start from <b data-fee></b>, scaled to the size and complexity of your project rather than charged at a flat rate. You approve the Design Fee Proposal before any design work begins.</p><p>Construction is quoted separately once the design is approved. Most projects of this kind land between <b data-build></b>, though that depends entirely on scope.</p></div></details>
       <details class="faq"><summary>Will you work with my architect or builder?</summary><div class="a"><p>Often, yes — a good deal of our work sits alongside a renovation or a new build. Bring us in earlier rather than later. One client's only regret in their review was not involving us sooner.</p></div></details>
       <details class="faq"><summary>Do you take on small gardens?</summary><div class="a"><p>Yes. We produce a full landscape design for every project regardless of size, courtyards and terraces included. Some of the work we are proudest of is small.</p></div></details>
-      <details class="faq"><summary>When could you start?</summary><div class="a"><p>[Antony to confirm the current lead time.]</p></div></details>
+      <details class="faq"><summary>When could you start?</summary><div class="a"><p>Because we run one job at a time, the honest answer depends on what is in front of yours. Call and we will tell you the real date rather than the one you want to hear.</p></div></details>
     </div>
   </div>
 </section>
@@ -848,6 +889,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
       <div class="thanks" id="thanks" hidden>
         <h3 class="t-h3" id="thanksHead">Thank you.</h3>
         <p id="thanksBody" style="margin-top:var(--s16)"></p>
+        <p class="t-cap" id="thanksNote" style="margin-top:var(--s12)" hidden></p>
         <a class="btn" href="tel:+61412154594" style="margin-top:var(--s24)">Call 0412 154 594</a>
       </div>
     </div>
@@ -898,7 +940,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 
 <dialog class="lb" id="lb" aria-label="Project image viewer">
   <div class="lbin">
-    <img id="lbImg" src="" alt="">
+    <img id="lbImg" src="" alt="" width="1600" height="1067">
     <div class="lbbar">
       <span class="t-label mute" id="lbCap" style="margin:0"></span>
       <div class="lbnav">
@@ -910,9 +952,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   </div>
 </dialog>
 
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LandscapingBusiness","name":"Bondi Landscapes","description":"Landscape design, construction and pool building in Sydney's Eastern Suburbs.","telephone":"+61412154594","email":"antony@bondilandscapes.com.au","areaServed":{"@type":"Place","name":"Eastern Suburbs, Sydney"},"address":{"@type":"PostalAddress","addressLocality":"Bondi Beach","addressRegion":"NSW","addressCountry":"AU"},"founder":{"@type":"Person","name":"Antony Aris","jobTitle":"Principal and Director"},"knowsAbout":["Landscape design","Landscape construction","Swimming pool construction"]}
-</script>
+<script type="application/ld+json" id="ldjson"></script>
 
 <script defer src="vendor/gsap.min.js"></script>
 <script defer src="vendor/ScrollTrigger.min.js"></script>
@@ -923,14 +963,35 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 
   var SITE={
     name:"Bondi Landscapes",
+    phoneDisplay:"0412 154 594",
     phoneE164:"+61412154594",
     email:"antony@bondilandscapes.com.au",
+    suburb:"Bondi Beach",
+    region:"NSW",
+
     formEndpoint:"https://api.web3forms.com/submit",
     formAccessKey:"",  /* paste a Web3Forms key to make the form email Antony. Empty = demo mode. */
-    /* Pre-written so the client only has to fill the blanks and hit send. A photo
-       of the space is the single most useful thing a landscaper can be sent. */
-    smsBody:"Hi Antony, I'd like a quote.\nSuburb: \nWhat I'm after: \n(Happy to send photos of the space.)"
+
+    /* ---------------------------------------------------------------------
+       CONFIRM WITH ANTONY BEFORE THIS GOES LIVE. These are deliberately
+       written as $X,XXX rather than plausible-looking numbers, so nobody
+       mistakes a guess for a quote. Change them here and they change
+       everywhere on the page.
+       --------------------------------------------------------------------- */
+    designFeeFrom:"$X,XXX",        /* the lowest Design Fee Proposal he'd write   */
+    typicalBuildRange:"$XX,XXX to $XXX,XXX",  /* typical construction spend        */
+    houzzYear:"",                  /* e.g. "2024". Empty hides the year entirely. */
+
+    frontlineBookingUrl:"#enquire" /* swap for a real Calendly/Cal.com link       */
   };
+
+  /* Pre-written so the client only has to fill the blanks and hit send. A photo
+     of the space is the single most useful thing a landscaper can be sent. */
+  SITE.smsBody="Hi Antony, I'd like a quote.\nSuburb: \nWhat I'm after: \n(Happy to send photos of the space.)";
+
+  SITE.areas=["Bondi","Bondi Beach","North Bondi","Bronte","Tamarama","Clovelly","Coogee",
+    "Vaucluse","Double Bay","Woollahra","Paddington","Randwick","Waverley","Dover Heights",
+    "Rose Bay","Bellevue Hill","Queens Park","Bondi Junction"];
 
   function smsHref(body){
     return "sms:"+SITE.phoneE164+"?&body="+encodeURIComponent(body||SITE.smsBody);
@@ -953,6 +1014,57 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   ];
 
   $("yr").textContent=new Date().getFullYear();
+
+  /* ---------- structured data, generated from SITE so it cannot drift ---------- */
+  (function(){
+    var el=$("ldjson"); if(!el) return;
+    el.textContent=JSON.stringify({
+      "@context":"https://schema.org",
+      "@type":["LocalBusiness","LandscapeArchitect"],
+      name:SITE.name,
+      description:"Landscape design, construction and pool building in Sydney's Eastern Suburbs.",
+      telephone:SITE.phoneE164,
+      email:SITE.email,
+      address:{"@type":"PostalAddress",addressLocality:SITE.suburb,addressRegion:SITE.region,addressCountry:"AU"},
+      areaServed:SITE.areas.map(function(a){ return {"@type":"Place",name:a+", NSW"} }),
+      founder:{"@type":"Person",name:"Antony Aris",jobTitle:"Principal and Director"},
+      knowsAbout:["Landscape design","Landscape construction","Swimming pool construction"],
+      award:"Gold Award and Category Winner, 2025 Landscape Excellence Awards — Residential Construction up to $100,000"
+    });
+  })();
+
+  /* ---------- editable values, written once into every slot ---------- */
+  document.querySelectorAll("[data-fee]").forEach(function(el){ el.textContent=SITE.designFeeFrom });
+  document.querySelectorAll("[data-build]").forEach(function(el){ el.textContent=SITE.typicalBuildRange });
+  (function(){
+    var y=$("houzzYear");
+    if(y) y.textContent=SITE.houzzYear ? SITE.houzzYear : "";   /* no year invented */
+  })();
+
+  /* ---------- demo banner ----------
+     ?clean=1 shows the page exactly as a real visitor would see it. */
+  (function(){
+    var bar=$("demobar");
+    if(!bar) return;
+    var clean=new URLSearchParams(location.search).has("clean");
+    var dismissed=false;
+    try{ dismissed=sessionStorage.getItem("bl-demobar")==="off" }catch(e){}
+    if(clean||dismissed) return;
+    bar.hidden=false;
+    $("demoBook").href=SITE.frontlineBookingUrl;
+    function sizeBar(){
+      document.documentElement.style.setProperty("--demobar-h",bar.offsetHeight+"px");
+    }
+    document.body.classList.add("has-demobar");
+    sizeBar();
+    window.addEventListener("resize",sizeBar,{passive:true});
+    $("demoClose").addEventListener("click",function(){
+      bar.hidden=true;
+      document.body.classList.remove("has-demobar");
+      document.documentElement.style.setProperty("--demobar-h","0px");
+      try{ sessionStorage.setItem("bl-demobar","off") }catch(e){}
+    });
+  })();
 
   document.querySelectorAll("[data-sms]").forEach(function(a){ a.href=smsHref(); });
 
@@ -1173,34 +1285,43 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
              service:$("fService").value,when:$("fWhen").value,message:$("fMsg").value.trim()};
       var btn=$("fSend");
 
-      function done(sent){
+      function done(mode,detail){
         $("thanksHead").textContent="Thank you, "+d.name.split(" ")[0]+".";
-        $("thanksBody").textContent=sent
-          ? "Your enquiry is with Antony. He will be in touch on "+d.phone+"."
-          : "This is a demo, so nothing was sent. On the live site this would land in Antony's inbox straight away.";
+        var body=$("thanksBody"), note=$("thanksNote");
+        if(mode==="sent"){
+          body.textContent="Your enquiry is with Antony. He will be in touch on "+d.phone+".";
+          note.hidden=true;
+        } else if(mode==="demo"){
+          body.textContent="Your enquiry has been received.";
+          note.textContent="Demo mode — on the live site this goes straight to Antony's phone and inbox.";
+          note.hidden=false;
+        } else {
+          body.textContent="We could not send that just now.";
+          note.textContent="Something went wrong on the way "+(detail?"("+detail+")":"")+". Call or text Antony on "+SITE.phoneDisplay+" and he will pick it up straight away.";
+          note.hidden=false;
+        }
         f.hidden=true; $("thanks").hidden=false;
         $("thanks").scrollIntoView({block:"center",behavior:reduce?"auto":"smooth"});
-        track("generate_lead",{method:"form",service:d.service});
+        track("generate_lead",{method:mode==="sent"?"form":mode,service:d.service});
       }
 
-      if(SITE.formAccessKey){
-        btn.disabled=true; btn.textContent="Sending…";
-        fetch(SITE.formEndpoint,{method:"POST",
-          headers:{"Content-Type":"application/json",Accept:"application/json"},
-          body:JSON.stringify({access_key:SITE.formAccessKey,
-            subject:"Enquiry: "+d.service+" in "+d.suburb,
-            from_name:SITE.name+" website",name:d.name,phone:d.phone,email:d.email,
-            suburb:d.suburb,service:d.service,when:d.when,message:d.message})})
-        .then(function(r){ return r.json().catch(function(){return{}}).then(function(b){ if(!r.ok||b.success===false) throw new Error(); }) })
-        .then(function(){ done(true) })
-        .catch(function(){
-          btn.disabled=false; btn.textContent="Send enquiry";
-          window.location.href="mailto:"+SITE.email+"?subject="+encodeURIComponent("Enquiry from "+d.name)+
-            "&body="+encodeURIComponent(["Name: "+d.name,"Phone: "+d.phone,"Email: "+d.email,
-              "Suburb: "+d.suburb,"Looking for: "+d.service,"Timing: "+d.when,"","About the project:",d.message].join("\n"));
-          done(false);
-        });
-      } else { done(false); }
+      if(!SITE.formAccessKey){ done("demo"); return; }   /* no network call at all */
+
+      btn.disabled=true; btn.setAttribute("aria-busy","true");
+      var label=btn.textContent; btn.textContent="Sending…";
+      fetch(SITE.formEndpoint,{method:"POST",
+        headers:{"Content-Type":"application/json",Accept:"application/json"},
+        body:JSON.stringify({access_key:SITE.formAccessKey,
+          subject:"Enquiry: "+d.service+" in "+d.suburb,
+          from_name:SITE.name+" website",name:d.name,phone:d.phone,email:d.email,
+          suburb:d.suburb,service:d.service,when:d.when,message:d.message})})
+      .then(function(r){ return r.json().catch(function(){return{}}).then(function(b){
+          if(!r.ok||b.success===false) throw new Error(b.message||("HTTP "+r.status)); }) })
+      .then(function(){ done("sent") })
+      .catch(function(err){
+        btn.disabled=false; btn.removeAttribute("aria-busy"); btn.textContent=label;
+        done("error",err&&err.message);
+      });
     });
   })();
 })();
