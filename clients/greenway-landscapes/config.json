@@ -1,0 +1,138 @@
+{
+  "_comment": "Built by \"npm run new\" from https://www.greenwaylandscapes.com.au on 2026-09-22. Everything listed in _check was worked out by reading their website and is NOT confirmed. Go through the checklist, fix or delete each one, then remove it from _check. Reviews are deliberately empty — paste them in from their Google profile, word for word.",
+  "slug": "greenway-landscapes",
+  "template": "trust",
+  "industry": "landscaping",
+  "live": false,
+  "business": {
+    "name": "Greenway Landscapes",
+    "ownerName": "",
+    "ownerFirstName": "",
+    "phone": {
+      "display": "0418 607 124",
+      "e164": "+61418607124"
+    },
+    "email": "info@greenwaylandscapes.com.au",
+    "abn": "",
+    "baseSuburb": "",
+    "region": "",
+    "currentSite": "greenwaylandscapes.com.au",
+    "brand": {
+      "accent": "#6ABF16"
+    },
+    "logo": {
+      "src": "assets/logo.webp",
+      "width": 458,
+      "height": 100
+    }
+  },
+  "responsePromise": "",
+  "copy": {
+    "headline": "",
+    "sub": "",
+    "kicker": ""
+  },
+  "stats": {
+    "googleRating": null,
+    "reviewCount": null,
+    "jobsDone": null,
+    "yearsInBusiness": 39
+  },
+  "services": [
+    {
+      "title": "Paving",
+      "blurb": "",
+      "photo": {
+        "src": "assets/outdoor-entertainment-area-landscaping-d-800.webp",
+        "srcset": "assets/outdoor-entertainment-area-landscaping-d-800.webp 800w",
+        "width": 800,
+        "height": 400,
+        "alt": "outdoor_entertainment_area_landscaping_design_trends_2019_greenway_ladnscapes"
+      }
+    },
+    {
+      "title": "Lawns & Turf",
+      "blurb": ""
+    },
+    {
+      "title": "RECENT POSTS",
+      "blurb": ""
+    }
+  ],
+  "serviceAreas": [],
+  "credentials": [
+    {
+      "kind": "licence",
+      "label": "Licence",
+      "number": "Honest"
+    },
+    {
+      "kind": "membership",
+      "label": "Housing Industry Association"
+    },
+    {
+      "kind": "membership",
+      "label": "Landscape Association"
+    },
+    {
+      "kind": "claim",
+      "label": "Fully insured"
+    }
+  ],
+  "photos": {
+    "hero": {
+      "src": "assets/outdoor-entertainment-area-landscaping-d-800.webp",
+      "srcset": "assets/outdoor-entertainment-area-landscaping-d-800.webp 800w",
+      "width": 800,
+      "height": 400,
+      "alt": "outdoor_entertainment_area_landscaping_design_trends_2019_greenway_ladnscapes"
+    },
+    "gallery": [
+      {
+        "src": "assets/outdoor-entertainment-area-landscaping-d-800.webp",
+        "srcset": "assets/outdoor-entertainment-area-landscaping-d-800.webp 800w",
+        "width": 800,
+        "height": 400,
+        "alt": "outdoor_entertainment_area_landscaping_design_trends_2019_greenway_ladnscapes",
+        "full": "assets/outdoor-entertainment-area-landscaping-d-800.webp",
+        "caption": ""
+      }
+    ],
+    "beforeAfter": []
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [],
+  "_todo_reviews": "Paste their Google reviews here, word for word, as {\"name\": \"...\", \"text\": \"...\"}. Never write one.",
+  "form": {
+    "accessKey": ""
+  },
+  "_source": {
+    "url": "https://www.greenwaylandscapes.com.au",
+    "platform": "WordPress",
+    "pagesRead": [
+      "home",
+      "about",
+      "contact"
+    ],
+    "aboutText": "Greenway Landscapes is a family business established in 1987. One of our priorities is quality of workmanship and we make sure the job is done properly the first time without cutting corners.\n\nWe also place great importance on communication with clients and good service which was recognized in 2004 when Greenway Landscapes won the Landscape category in the Australian Achiever awards for Excellence in Customer Service. Our business has all the required licenses and insurance in place including public liability, workers’ compensation and eligibility for Builders Warranty Insurance.\n\nWe are also current members of the Housing Industry Association and the Landscape Association NSW & ACT.",
+    "socials": {
+      "facebook": "https://www.facebook.com/Greenway-Landscapes-381707815271797/"
+    },
+    "stockLookingPhotos": []
+  },
+  "_check": [
+    "business.name",
+    "business.phone.display",
+    "business.email",
+    "business.baseSuburb",
+    "services",
+    "serviceAreas",
+    "stats.yearsInBusiness",
+    "business.brand.accent",
+    "credentials",
+    "business.logo",
+    "photos.hero",
+    "photos.gallery"
+  ]
+}
