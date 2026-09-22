@@ -3,11 +3,16 @@
  *
  *   node tools/serve.mjs <dir> <port>
  *
- * Deliberately minimal: no caching headers, no directory listing, no config.
- * Vercel serves the real thing; this only has to be good enough for Chromium
- * and Lighthouse to load a page.
+ * Deliberately minimal: no directory listing, no config. Vercel serves the real
+ * thing; this only has to be good enough for Chromium and Lighthouse.
+ *
+ * With one exception. Text responses are gzipped, because Vercel serves them
+ * compressed and a score measured without compression is not the score the
+ * prospect gets. Serving uncompressed made two demos read as 85 and 88; the
+ * same builds over gzip are 94 and 96.
  */
 import { createServer } from 'node:http';
+import { createGzip } from 'node:zlib';
 import { createReadStream, existsSync, statSync } from 'node:fs';
 import { join, extname, normalize } from 'node:path';
 
@@ -41,6 +46,14 @@ createServer((req, res) => {
     res.end('Not found');
     return;
   }
-  res.writeHead(200, { 'Content-Type': TYPES[extname(path).toLowerCase()] ?? 'application/octet-stream' });
-  createReadStream(path).pipe(res);
+  const type = TYPES[extname(path).toLowerCase()] ?? 'application/octet-stream';
+  const compressible = /^(text\/|application\/(json|javascript))/.test(type) || type.includes('svg');
+  const wantsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] ?? '');
+  if (compressible && wantsGzip) {
+    res.writeHead(200, { 'Content-Type': type, 'Content-Encoding': 'gzip', Vary: 'Accept-Encoding' });
+    createReadStream(path).pipe(createGzip()).pipe(res);
+  } else {
+    res.writeHead(200, { 'Content-Type': type });
+    createReadStream(path).pipe(res);
+  }
 }).listen(port, '127.0.0.1', () => console.log(`serving ${dir} on http://127.0.0.1:${port}`));

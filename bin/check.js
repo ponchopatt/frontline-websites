@@ -10,6 +10,7 @@
  * Exits non-zero if anything failed, so this can gate a deploy.
  */
 import { createServer } from 'node:http';
+import { createGzip } from 'node:zlib';
 import { createReadStream, existsSync, statSync } from 'node:fs';
 import { join, extname, normalize } from 'node:path';
 import { listClients, DIST_DIR } from '../lib/config.js';
@@ -130,7 +131,16 @@ function serve(dir, port) {
       let path = join(dir, rel);
       if (existsSync(path) && statSync(path).isDirectory()) path = join(path, 'index.html');
       if (!existsSync(path)) { res.writeHead(404); res.end('Not found'); return; }
-      res.writeHead(200, { 'Content-Type': TYPES[extname(path).toLowerCase()] ?? 'application/octet-stream' });
+      // Vercel serves text compressed, so measuring without it understates the
+      // score a prospect will actually get.
+      const type = TYPES[extname(path).toLowerCase()] ?? 'application/octet-stream';
+      const compressible = /^(text\/|application\/(json|javascript))/.test(type) || type.includes('svg');
+      if (compressible && /\bgzip\b/.test(req.headers['accept-encoding'] ?? '')) {
+        res.writeHead(200, { 'Content-Type': type, 'Content-Encoding': 'gzip', Vary: 'Accept-Encoding' });
+        createReadStream(path).pipe(createGzip()).pipe(res);
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': type });
       createReadStream(path).pipe(res);
     });
     s.listen(port, '127.0.0.1', () => resolve(s));
