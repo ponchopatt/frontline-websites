@@ -16,11 +16,18 @@
   gap: 28px 20px;
   padding-block: clamp(36px, 6vw, 60px);
   list-style: none;
-  margin: 0;
+  /* Centred here, explicitly. `.wrap` centres itself with auto inline margins,
+     but the quote template still carries `.trust ul{margin:0}` from the
+     hand-built site, which out-specifies `.wrap` and parked this bar flush
+     left at x=0 while every other section sat at the 120px gutter. */
+  margin: 0 auto;
 }
 @media (min-width: 760px) { .fl-stats .wrap { grid-template-columns: repeat(4, 1fr); } }
-/* Three stats should fill the row, not leave a hole where a fourth would be. */
+/* Fewer than four stats fill the row rather than leave holes where the others
+   would be. Two stats in a four-column band read as data that failed to load. */
 .fl-stats .wrap:has(li:nth-child(3):last-child) { grid-template-columns: repeat(3, 1fr); }
+.fl-stats .wrap:has(li:nth-child(2):last-child) { grid-template-columns: repeat(2, 1fr); }
+.fl-stats .wrap:has(li:only-child) { grid-template-columns: 1fr; }
 .fl-stats li { display: grid; gap: 6px; }
 .fl-stats b {
   font-family: var(--fl-display);
@@ -124,16 +131,24 @@
 .fl-rv footer b { font-weight: 700; }
 .fl-rv footer span { color: var(--fl-mute); font-size: .85rem; }
 
+/*
+ * Still belts: hide the DUPLICATE pass, never a row.
+ *
+ * With six or more reviews the list splits into two rows, and the second row
+ * holds the second half of the reviews — unique ones, not copies. Hiding
+ * `.rev` here meant three of six reviews never rendered on any phone or under
+ * reduced motion, on the section whose job is proof. Only `.dup`, the copy
+ * that makes the loop seamless, goes.
+ */
 @media (prefers-reduced-motion: reduce) {
   .fl-rv-row { animation: none; width: auto; flex-wrap: wrap; }
-  .fl-rv-row.rev, .fl-rv.dup { display: none; }
+  .fl-rv.dup { display: none; }
   .fl-rv { flex: 1 1 280px; }
 }
-/* On touch there is no hover to pause with, so the belt stands still and the
-   duplicate pass is hidden — otherwise half the reviews are unreachable. */
+/* On touch there is no hover to pause with, so each belt stands still and
+   scrolls sideways instead. */
 @media (hover: none) {
   .fl-rv-row { animation: none; width: auto; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
-  .fl-rv-row.rev { display: none; }
   .fl-rv.dup { display: none; }
   .fl-rv { scroll-snap-align: start; }
 }

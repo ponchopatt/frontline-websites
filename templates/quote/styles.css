@@ -422,7 +422,9 @@ html.gsap .hero .line>span,html.gsap .rule{transition:none!important}
 .fine{margin-top:34px;padding-top:16px;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:8px 24px;font-size:.85rem;color:var(--mute)}
 
 /* sticky call bar (phones) */
-.stickybar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom,0px));background:rgba(34,37,42,.96);backdrop-filter:blur(12px);border-top:1px solid rgba(243,240,233,.14);transform:translateY(110%);transition:transform .35s cubic-bezier(.2,.7,.1,1)}
+/* auto-fit, not a fixed three: on a landline the Text button is not rendered,
+   and a hard 1fr 1fr 1fr left a permanently empty third of the bar. */
+.stickybar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px;padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom,0px));background:rgba(34,37,42,.96);backdrop-filter:blur(12px);border-top:1px solid rgba(243,240,233,.14);transform:translateY(110%);transition:transform .35s cubic-bezier(.2,.7,.1,1)}
 .stickybar.on{transform:none}
 .stickybar .btn{min-height:50px;padding:8px 10px;font-size:.95rem;background:var(--green-2);color:#1C1F23;gap:6px}
 .stickybar .btn.ghost{background:transparent;color:#F3F0E9;border-color:rgba(243,240,233,.5)}

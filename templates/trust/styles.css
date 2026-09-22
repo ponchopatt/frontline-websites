@@ -518,8 +518,10 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   font-size:var(--t-cap);color:var(--fg-mute)}
 
 /* ---------------------------------------------------------------- sticky bar */
+/* auto columns, not a fixed two: a 1300 or landline number gets no Text
+   button, and a hard 1fr 1fr left half the bar empty. */
 .stickybar{position:fixed;left:0;right:0;bottom:0;z-index:65;display:grid;
-  grid-template-columns:1fr 1fr;gap:var(--s8);
+  grid-auto-flow:column;grid-auto-columns:1fr;gap:var(--s8);
   padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom,0px));
   background:rgba(10,20,24,.97);backdrop-filter:blur(16px);border-top:1px solid var(--line);
   transform:translateY(110%);transition:transform .4s var(--ease)}
