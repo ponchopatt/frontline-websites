@@ -1,21 +1,21 @@
 {
-  "_comment": "Built by \"npm run new\" from https://arizonaroofing.com.au on 2026-09-22. Everything listed in _check was worked out by reading their website and is NOT confirmed. Go through the checklist, fix or delete each one, then remove it from _check. Reviews are deliberately empty — paste them in from their Google profile, word for word.",
+  "_comment": "BLOCKED — DO NOT BUILD. Re-scraped and re-verified 2026-09-22: 40 images on arizonaroofing.com.au were downloaded at full resolution and looked at one by one. Every single one is stock or WordPress theme demo content. Zero photographs of their own work, so there is no hero and no gallery. The Our Projects gallery includes a Japanese temple roof, a North American log cabin and a Baltic cottage; the page titled \"Asghar Khan, CEO\" carries a stock studio photo of a young woman in a hard hat. Full evidence and the call angle are in BRIEF.md. Nothing has been uploaded to their media library since 2023-06-20 (the four Pexels files), and they have no social accounts, so there is no second source. Pat must get Oscar photo folder before this can be built.",
   "slug": "arizona-roofing",
   "template": "quote",
   "industry": "roofing",
   "live": false,
   "business": {
     "name": "Arizona Roofing",
-    "ownerName": "",
-    "ownerFirstName": "",
+    "ownerName": "Asghar Khan",
+    "ownerFirstName": "Oscar",
     "phone": {
       "display": "0421 149 431",
       "e164": "+61421149431"
     },
     "email": "info@arizonaroofing.com.au",
     "abn": "38223082867",
-    "baseSuburb": "",
-    "region": "",
+    "baseSuburb": "Franklin",
+    "region": "ACT",
     "currentSite": "arizonaroofing.com.au",
     "brand": {
       "accent": "#0C234B"
@@ -24,7 +24,8 @@
       "src": "assets/logo.webp",
       "width": 1,
       "height": 1
-    }
+    },
+    "address": "Unit 5/293 Flemington Road, Franklin ACT 2913"
   },
   "responsePromise": "",
   "copy": {
@@ -33,8 +34,8 @@
     "kicker": ""
   },
   "stats": {
-    "googleRating": null,
-    "reviewCount": null,
+    "googleRating": 5,
+    "reviewCount": 20,
     "jobsDone": null,
     "yearsInBusiness": null
   },
@@ -42,39 +43,41 @@
   "serviceAreas": [],
   "credentials": [],
   "photos": {
-    "hero": {
-      "src": "assets/h6-about-img2-705.webp",
-      "srcset": "assets/h6-about-img2-705.webp 705w",
-      "width": 705,
-      "height": 638,
-      "alt": ""
-    },
-    "gallery": [
-      {
-        "src": "assets/banner-800.webp",
-        "srcset": "assets/banner-800.webp 800w, assets/banner-1800.webp 1800w",
-        "width": 800,
-        "height": 225,
-        "alt": "",
-        "full": "assets/banner-1800.webp",
-        "caption": ""
-      },
-      {
-        "src": "assets/home-6-banner-800.webp",
-        "srcset": "assets/home-6-banner-800.webp 800w, assets/home-6-banner-1800.webp 1800w",
-        "width": 800,
-        "height": 404,
-        "alt": "",
-        "full": "assets/home-6-banner-1800.webp",
-        "caption": ""
-      }
-    ],
-    "beforeAfter": []
+    "gallery": [],
+    "beforeAfter": [],
+    "_comment": "Empty on purpose. There is not one usable photograph of their own work. See BRIEF.md."
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
-  "reviews": [],
-  "_todo_reviews": "Paste their Google reviews here, word for word, as {\"name\": \"...\", \"text\": \"...\"}. Never write one.",
+  "reviews": [
+    {
+      "name": "Jen Rush",
+      "text": "Oscar and the team did a fantastic job replacing all of our gutters and fascia. On time, cleaned up everything and great pricing. Highly recommend!"
+    },
+    {
+      "name": "Marcel vK",
+      "text": "The guys from Arizona Roofing did a great job at my parents house. Professional, on time, well priced and good communication. Highly recommend these guys!!"
+    },
+    {
+      "name": "Peter Arvanitis",
+      "text": "This is the second job Oscar has done for me and for good reason. Major roof repairs were needed for my 3 bedroom house. Great work, customer experience and satisfaction awsome. His quote was very competitive. Keep up the great work Oscar."
+    },
+    {
+      "name": "Louie Lavender",
+      "text": "Asghar (Oscar) was amazing, from start to finish he was kind, genuine and helpful. Whole roof repointing, collars, dektites, and clips in the valley. All installed to a high standard and at a very reasonable price.",
+      "shortened": true
+    },
+    {
+      "name": "Yujuan Liu",
+      "text": "Oscar was very kind and helpful. He did an excellent job ridgeds the entire roof and re-taping the valley collar. It was done on time, cleanly, and professionally every step of the way.",
+      "shortened": true
+    },
+    {
+      "name": "刘康",
+      "text": "I highly recommend Oscar to anyone who need their roof fixed. Oscar explained what he planned to do in details, patiently discussing the date to accommodate both sides’ need and did an excellent job!",
+      "shortened": true
+    }
+  ],
   "form": {
     "accessKey": ""
   },
@@ -98,20 +101,26 @@
     ]
   },
   "_check": [
-    "business.name",
-    "business.phone.display",
-    "business.email",
     "business.baseSuburb",
     "services",
     "serviceAreas",
-    "business.abn",
     "business.brand.accent",
     "business.logo",
     "photos.hero",
-    "photos.gallery"
+    "photos.gallery",
+    "calculator.jobs",
+    "business.yearsInBusiness"
   ],
   "calculator": {
     "_comment": "Prices are NOT filled in. Get them from the owner, then set each range. Any range left with \"_check\": true renders \"Guide only, confirmed on site\".",
     "jobs": []
+  },
+  "_blocked": {
+    "reason": "No photographs of their own work. Every image on their site is stock or theme demo content.",
+    "verifiedOn": "2026-09-22",
+    "imagesExamined": 40,
+    "imagesUsable": 0,
+    "minimumRequired": 4,
+    "seeAlso": "BRIEF.md"
   }
 }
