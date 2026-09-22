@@ -34,8 +34,11 @@ for (const s of slugs) {
 }
 
 const exe = chromePath();
-const port = 8930;
-const server = await serve(DIST_DIR, port);
+// Port 0 lets the OS pick a free one. It used to be hard-coded, which meant two
+// checks running at once fought over the socket and the second one died on
+// EADDRINUSE — fine for one person at a terminal, fatal for a batch.
+const server = await serve(DIST_DIR, 0);
+const port = server.address().port;
 let failed = 0;
 
 try {
