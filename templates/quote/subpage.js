@@ -55,6 +55,11 @@ export function renderSubpage(cfg, page, { styles, script }) {
   const title = page.title;
   const description = page.description;
   const canonical = cfg.siteUrl ? `${String(cfg.siteUrl).replace(/\/$/, '')}/${page.slug}.html` : undefined;
+  // A page can name its own hero photo (page.heroPhoto); otherwise it falls
+  // back to the same one every other page uses. Computed once here so the
+  // preload, the og:image and the hero itself never disagree about which
+  // photo is actually on the page.
+  const heroCfg = page.heroPhoto ? { ...cfg, photos: { ...cfg.photos, hero: page.heroPhoto } } : cfg;
 
   return `<!doctype html>
 <html lang="en-AU">
@@ -65,11 +70,11 @@ export function renderSubpage(cfg, page, { styles, script }) {
 <meta name="description" content="${escAttr(description)}">
 ${robotsMeta(cfg)}
 ${canonical ? `<link rel="canonical" href="${escAttr(canonical)}">` : ''}
-${headMeta(cfg, { title, description, canonical })}
+${headMeta(heroCfg, { title, description, canonical })}
 <meta name="theme-color" content="${escAttr(cfg.brand?.themeColor ?? '#22252A')}">
 ${faviconLink(cfg)}
 ${(cfg.fonts ?? []).map((f) => `<link rel="preload" as="font" type="font/woff2" href="${escAttr(f)}" crossorigin>`).join('\n')}
-${heroPreload(cfg)}
+${heroPreload(heroCfg)}
 <style>${styles}</style>
 </head>
 <body>
@@ -79,7 +84,7 @@ ${demoBannerHeadScript(cfg)}
 ${demoBanner(cfg)}
 ${header(cfg, { nav, tel, phone, ctaLabel, ctaLabelShort, homeHref: 'index.html' })}
 <main>
-${subHero(cfg, page, { tel, sms, ctaLabel })}
+${subHero(heroCfg, page, { tel, sms, ctaLabel })}
 ${page.kind === 'contact' ? contactInfo(cfg, page) : ''}
 ${introSection(page)}
 ${benefitsSection(page)}
@@ -105,7 +110,7 @@ function subHero(cfg, page, { tel, sms, ctaLabel }) {
   const phone = cfg.business?.phone ?? {};
   const lines = headlineLines(page.headline);
   return html`
-<section class="hero dark sub" id="hero">
+<section class="hero dark" id="hero">
   ${heroMedia(cfg)}
   <div class="wrap">
     <div class="hero-in">

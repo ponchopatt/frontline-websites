@@ -102,19 +102,49 @@
       "title": "Split system installation",
       "blurb": "One room or several, wall or floor-mounted. Sized properly for the room, not guessed — an undersized unit runs flat out through a Canberra winter and still can't keep up.",
       "slug": "split-system-installation",
-      "href": "split-system-installation.html"
+      "href": "split-system-installation.html",
+      "photo": {
+        "src": "assets/sample-brick-outdoor-unit-800.webp",
+        "width": 800,
+        "height": 530,
+        "alt": "Sample photo: a split system outdoor unit on wall brackets against a brick house",
+        "sample": true,
+        "license": "CC0 1.0",
+        "sourceUrl": "https://www.flickr.com/photos/29155878@N03/26869601272",
+        "credit": "Open Grid Scheduler / Grid Engine, Flickr"
+      }
     },
     {
       "title": "Ducted air conditioning",
       "blurb": "Whole-house heating and cooling, zoned so you're not heating rooms nobody's in. If your existing ducted system has died mid-winter before, this is the fix.",
       "slug": "ducted-air-conditioning",
-      "href": "ducted-air-conditioning.html"
+      "href": "ducted-air-conditioning.html",
+      "photo": {
+        "src": "assets/sample-daikin-outdoor-800.webp",
+        "width": 800,
+        "height": 600,
+        "alt": "Sample photo: a tall inverter outdoor unit beside a rendered wall",
+        "sample": true,
+        "license": "CC0 1.0",
+        "sourceUrl": "https://commons.wikimedia.org/w/index.php?curid=133257891",
+        "credit": "Pedalito, Wikimedia Commons"
+      }
     },
     {
       "title": "A/C service and repair",
       "blurb": "Any brand, not just what we installed. A system that's iced up, blowing warm, or short-cycling gets diagnosed properly before anything's replaced.",
       "slug": "ac-service-repair",
-      "href": "ac-service-repair.html"
+      "href": "ac-service-repair.html",
+      "photo": {
+        "src": "assets/sample-roof-condenser-800.webp",
+        "width": 800,
+        "height": 600,
+        "alt": "Sample photo: an air conditioner outdoor unit on a metal roof",
+        "sample": true,
+        "license": "CC0 1.0",
+        "sourceUrl": "https://wordpress.org/photos/photo/27469e3ea0/",
+        "credit": "Dylan Espinoza Pereira, WordPress Photo Directory"
+      }
     },
     {
       "title": "Evaporative cooling",
@@ -134,13 +164,33 @@
       "title": "HVAC install, repair & maintenance",
       "blurb": "Offices, retail and warehouses. Scheduled maintenance to keep a commercial system out of the repair queue.",
       "slug": "commercial-hvac",
-      "href": "commercial-hvac.html"
+      "href": "commercial-hvac.html",
+      "photo": {
+        "src": "assets/sample-commercial-lennox-rooftop-800.webp",
+        "width": 800,
+        "height": 600,
+        "alt": "Sample photo: a commercial rooftop packaged HVAC unit on a gravel roof",
+        "sample": true,
+        "license": "CC BY-SA 2.0",
+        "sourceUrl": "https://www.flickr.com/photos/192720500@N06/51389204474",
+        "credit": "SuperTech HVAC Services, Flickr"
+      }
     },
     {
       "title": "Mechanical installation",
       "blurb": "Mechanical services fit-out for new and refurbished commercial spaces.",
       "slug": "mechanical-installation",
-      "href": "mechanical-installation.html"
+      "href": "mechanical-installation.html",
+      "photo": {
+        "src": "assets/sample-commercial-trane-rooftop-800.webp",
+        "width": 800,
+        "height": 600,
+        "alt": "Sample photo: a commercial rooftop HVAC unit on a gravel roof",
+        "sample": true,
+        "license": "CC BY-SA 2.0",
+        "sourceUrl": "https://www.flickr.com/photos/192720500@N06/51389480745",
+        "credit": "SuperTech HVAC Services, Flickr"
+      }
     },
     {
       "title": "Ventilation",
@@ -267,12 +317,36 @@
         "license": "CC0 1.0",
         "sourceUrl": "https://www.flickr.com/photos/29155878@N03/22130133899",
         "credit": "Open Grid Scheduler / Grid Engine, Flickr"
+      },
+      {
+        "src": "assets/sample-commercial-lennox-rooftop-800.webp",
+        "full": "assets/sample-commercial-lennox-rooftop-1024.webp",
+        "width": 800,
+        "height": 600,
+        "caption": "Commercial job: rooftop packaged unit",
+        "alt": "Sample photo: a commercial rooftop packaged HVAC unit on a gravel roof, next to a brick building",
+        "sample": true,
+        "license": "CC BY-SA 2.0",
+        "sourceUrl": "https://www.flickr.com/photos/192720500@N06/51389204474",
+        "credit": "SuperTech HVAC Services, Flickr"
+      },
+      {
+        "src": "assets/sample-commercial-trane-rooftop-800.webp",
+        "full": "assets/sample-commercial-trane-rooftop-1024.webp",
+        "width": 800,
+        "height": 600,
+        "caption": "Commercial job: rooftop unit replacement",
+        "alt": "Sample photo: a commercial rooftop HVAC unit on a gravel roof",
+        "sample": true,
+        "license": "CC BY-SA 2.0",
+        "sourceUrl": "https://www.flickr.com/photos/192720500@N06/51389480745",
+        "credit": "SuperTech HVAC Services, Flickr"
       }
     ],
     "stockApproved": {
       "by": "Pat (standing approval)",
       "on": "2026-09-23",
-      "reason": "First Point has no photos of finished installs, vans or staff anywhere on firstpointairconditioning.com.au — every image on their own site is licensed stock (including a hand-holding-a-remote shot, excluded per the brief). Three labelled CC0 samples, already vetted for LMAC, stand in for the 'recent jobs' gallery until First Point sends real job photos."
+      "reason": "First Point has no photos of finished installs, vans or staff anywhere on firstpointairconditioning.com.au — every image on their own site is licensed stock (including a hand-holding-a-remote shot, excluded per the brief). Five labelled CC-licensed samples stand in for the 'recent jobs' gallery until First Point sends real job photos."
     }
   },
   "calculator": {
@@ -382,6 +456,17 @@
       "kicker": "Split System Installation, Canberra",
       "headline": "Split System<br>Installation, Canberra",
       "sub": "Wall or floor-mounted, sized to the room. Installed by the team, backed by a 12-month workmanship warranty.",
+      "heroPhoto": {
+        "src": "assets/sample-brick-outdoor-unit-800.webp",
+        "srcset": "assets/sample-brick-outdoor-unit-800.webp 800w, assets/sample-brick-outdoor-unit-1024.webp 1024w",
+        "width": 800,
+        "height": 530,
+        "alt": "Sample photo: a split system outdoor unit on wall brackets against a brick house, river pebbles below",
+        "sample": true,
+        "license": "CC0 1.0",
+        "sourceUrl": "https://www.flickr.com/photos/29155878@N03/26869601272",
+        "credit": "Open Grid Scheduler / Grid Engine, Flickr"
+      },
       "intro": "A split system is the most common fix for a Canberra house that's cold in July and stuffy in January — one room, or a few, cooled and heated without touching the whole house. We size it to the room rather than guessing: an undersized unit runs flat out through a Canberra winter and still can't keep up, and an oversized one short-cycles and wastes power.",
       "benefits": [
         "Wall, floor-mounted or ceiling cassette options",
@@ -428,6 +513,17 @@
       "kicker": "A/C Service & Repair, Canberra",
       "headline": "Air Conditioner Repair<br>& Servicing, Canberra",
       "sub": "Iced up, blowing warm, or making noise it shouldn't? We service any brand, not just what we installed.",
+      "heroPhoto": {
+        "src": "assets/sample-roof-condenser-800.webp",
+        "srcset": "assets/sample-roof-condenser-800.webp 800w, assets/sample-roof-condenser-1600.webp 1600w",
+        "width": 800,
+        "height": 600,
+        "alt": "Sample photo: an air conditioner outdoor unit on a steel frame on a corrugated metal roof, pipework running to it, blue sky behind",
+        "sample": true,
+        "license": "CC0 1.0",
+        "sourceUrl": "https://wordpress.org/photos/photo/27469e3ea0/",
+        "credit": "Dylan Espinoza Pereira, WordPress Photo Directory"
+      },
       "intro": "A system that's short-cycling, running warm, or icing up in the middle of a Canberra summer usually isn't a full replacement — most of the time it's a service, a clean, or a specific part. We look at what's actually wrong before recommending anything, whether we installed the system or not.",
       "benefits": [
         "Any brand serviced, not just our own installs",
@@ -491,6 +587,17 @@
       "kicker": "Commercial HVAC, Canberra",
       "headline": "Commercial HVAC Install,<br>Repair & Maintenance",
       "sub": "Offices, retail and warehouses — installed and kept running with scheduled maintenance.",
+      "heroPhoto": {
+        "src": "assets/sample-commercial-lennox-rooftop-800.webp",
+        "srcset": "assets/sample-commercial-lennox-rooftop-800.webp 800w, assets/sample-commercial-lennox-rooftop-1024.webp 1024w",
+        "width": 1024,
+        "height": 768,
+        "alt": "Sample photo: a commercial rooftop packaged HVAC unit on a gravel roof, next to a brick building",
+        "sample": true,
+        "license": "CC BY-SA 2.0",
+        "sourceUrl": "https://www.flickr.com/photos/192720500@N06/51389204474",
+        "credit": "SuperTech HVAC Services, Flickr"
+      },
       "intro": "A commercial HVAC system that's neglected tends to fail at the worst time — the first 40-degree day of summer, or the first frosty week of winter, with a shop full of customers or a warehouse full of stock on the line. Scheduled maintenance is the difference between a planned service call and an emergency one.",
       "benefits": [
         "Offices, retail and warehouses",
@@ -513,6 +620,17 @@
       "kicker": "Mechanical Installation, Canberra",
       "headline": "Mechanical Installation,<br>Canberra",
       "sub": "Mechanical services fit-out for new and refurbished commercial spaces.",
+      "heroPhoto": {
+        "src": "assets/sample-commercial-trane-rooftop-800.webp",
+        "srcset": "assets/sample-commercial-trane-rooftop-800.webp 800w, assets/sample-commercial-trane-rooftop-1024.webp 1024w",
+        "width": 1024,
+        "height": 768,
+        "alt": "Sample photo: a commercial rooftop HVAC unit on a gravel roof",
+        "sample": true,
+        "license": "CC BY-SA 2.0",
+        "sourceUrl": "https://www.flickr.com/photos/192720500@N06/51389480745",
+        "credit": "SuperTech HVAC Services, Flickr"
+      },
       "intro": "Fitting out or refurbishing a commercial space means the mechanical services — heating, cooling and ventilation — need to be planned in properly, not bolted on at the end. We work on new fit-outs and refurbishments across Canberra.",
       "benefits": [
         "New fit-outs and refurbishments",
