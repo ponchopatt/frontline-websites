@@ -29,6 +29,11 @@ section for section, with Imperium's blue swapped for Eurotech's lime.
 - **Most of the car photos on their site are stock.** The moody Mercedes grille, the
   Porsche 718 with US plates, the Škoda in an alley, the engine renders. Their own
   workshop photos are far better and are what the demo uses.
+- **They are losing enquiries by text.** A Google review from Rob Lang: he was told to
+  text his details for a service booking, did, and heard nothing for two months, so he
+  went to another workshop. Their reply says texts slip through and asks people to email
+  instead. A quote form that lands in an inbox fixes exactly that, and it is the first
+  thing on the demo after the hero.
 - Small copy slips on the live site: "back up an running", "UAE EXPERTISE" as a heading
   for work done in Bahrain and Dubai.
 
@@ -55,13 +60,27 @@ Instagram rate-limits). The only social content used is the reel Pat supplied.
 | # | What | Currently |
 |---|---|---|
 | 1 | Opening hours | **Not shown.** Their site does not list them. |
-| 2 | Google rating and review count | **Not shown**, and the review cards carry no stars: nothing confirms what each reviewer gave. |
+| 2 | Google rating and review count | **Not shown.** Pat confirmed the reviews shown are five stars, and the section says so, but at least one review (Rob Lang's) is a complaint, so no overall average or count is claimed. |
 | 3 | "Reply within 2 business hours, Mon–Fri" | Their own promise from their quote form. Confirm they still stand by it. |
 | 4 | Mobile diagnostics across Canberra | Their own claim. Confirm the area. |
 | 5 | Which number is primary | Calls go to the workshop line, texts to the mobile. |
 | 6 | Web3Forms key | `SITE.formAccessKey` is empty, so the form runs in demo mode and sends nothing. |
-| 7 | Reviews | Four, verbatim but trimmed, from their website. Ask for permission to use full reviews and for Google reviews. |
+| 7 | Reviews | 34 of their Google reviews, supplied by Pat, verbatim. Where Google cut one off at "More" it ends with "…". Ask for the full text of the cut ones. |
 | 8 | Prices | None shown. Imperium leads with from-prices; ask if they will publish any. |
+
+## Reviews
+
+The section is Imperium's review wall: cards drifting upward in three columns (two on a
+tablet, one on a phone), each column at its own speed, paused under the pointer. Under
+reduced motion, or without JavaScript, all 34 sit in a plain grid. The columns are built
+only as the section nears the screen.
+
+The line under each name is the car, taken from the review or from Eurotech's reply to it.
+
+Left out on purpose: Rob Lang's complaint; reviews with no text; one-word reviews; and
+reviews that criticise another named business ("better than Audi Canberra", the Alfa
+dealership, a named Phillip workshop). Piers Smith's review is quoted from its second
+sentence for that reason, with a leading "…".
 
 ## Behaviour
 

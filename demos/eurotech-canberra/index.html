@@ -92,9 +92,13 @@ body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opa
 .kicker{font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--lime);margin:0 0 18px}
 .lime{color:var(--lime)}
 .mute{color:var(--mute)}
-/* a masked line: padding for descenders, cancelled by the margin, so the
-   split never changes the height of the block it happens in */
-.ln{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+/* a masked line: room above for accents on capitals (the Á in Huracán, the
+   Š in Škoda) and below for descenders, each cancelled by a matching negative
+   margin, so the split never changes the height of the block it happens in */
+.ln{display:block;overflow:hidden;padding:.16em 0 .06em;margin:-.16em 0 -.06em}
+/* a split headline stacks its lines in a flex column: flex items' margins
+   never collapse, so each line's padding is cancelled exactly */
+[data-lines][data-built]{display:flex;flex-direction:column}
 .ln>span{display:block}
 
 /* ---------------------------------------------------------------- buttons */
@@ -372,18 +376,34 @@ form .btn{width:100%;margin-top:4px}
 .steps h3{margin-top:16px;font-size:21px;font-weight:600}
 .steps p{margin:10px 0 0;max-width:38ch;font-size:15px;color:var(--mute)}
 
-/* ---------------------------------------------------------------- reviews */
-.reviews{display:grid;gap:16px}
-@media(min-width:800px){.reviews{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}}
-.rv{margin:0;background:var(--card);border:1px solid var(--line);border-radius:var(--r-xl);padding:clamp(22px,2.6vw,32px);
-  display:flex;flex-direction:column}
-/* no stars: the site's reviews carry no confirmed rating, so none is shown */
-.rv .qm{font-family:var(--font-d);font-weight:800;color:var(--lime);font-size:64px;line-height:.6;height:28px;margin-bottom:10px}
-.rv blockquote{margin:0;font-size:clamp(1.0625rem,1.3vw,1.1875rem);line-height:1.5;color:var(--fg)}
-.rv figcaption{margin-top:auto;padding-top:20px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
-  font-size:14px}
-.rv figcaption b{font-weight:600}
-.rv figcaption span{color:var(--mute)}
+/* ---------------------------------------------------------------- reviews
+   Imperium's review columns: stacks of cards drifting upward at different
+   speeds, fading out top and bottom, paused under the pointer. Script deals
+   the cards into columns; without it, or under reduced motion, the same
+   cards sit in a plain grid. */
+.stars{color:var(--lime);letter-spacing:2px;margin-right:6px;white-space:nowrap}
+.rv-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.rv-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px;
+  box-shadow:0 10px 30px rgba(0,0,0,.3);user-select:none}
+.rv-card blockquote{margin:0}
+.rv-card p{margin:0;font-size:16px;line-height:1.65;color:var(--fg-2)}
+.rv-card footer{margin-top:22px;display:flex;align-items:center;gap:12px}
+.rv-av{width:40px;height:40px;flex:none;border-radius:50%;display:grid;place-items:center;
+  background:rgba(187,204,26,.16);color:var(--lime);font-size:14px;font-weight:600;box-shadow:0 0 0 2px var(--line)}
+.rv-card cite{display:block;font-style:normal;font-weight:600;line-height:1.25;letter-spacing:-.005em;color:var(--fg)}
+.rv-card footer span span{display:block;margin-top:2px;font-size:14px;line-height:1.3;color:var(--mute)}
+.tcols{display:flex;justify-content:center;gap:24px;overflow:hidden;height:680px;
+  -webkit-mask-image:linear-gradient(to bottom,transparent,#000 10%,#000 90%,transparent);
+  mask-image:linear-gradient(to bottom,transparent,#000 10%,#000 90%,transparent)}
+.tcol-wrap{flex:1 1 0;min-width:0;max-width:360px}
+.tcol{display:flex;flex-direction:column;gap:24px;padding-bottom:24px;
+  animation:tcol var(--tcol-duration,60s) linear infinite;will-change:transform}
+.tcols:hover .tcol{animation-play-state:paused}
+/* as Imperium: one column on a phone, two on a tablet, three from 1024px */
+@media(max-width:767px){.tcol-wrap:nth-child(n+2){display:none}}
+@media(max-width:1023px){.tcol-wrap:nth-child(n+3){display:none}}
+@keyframes tcol{to{transform:translateY(-50%)}}
+.rv-more{margin:24px 0 0}
 
 /* ---------------------------------------------------------------- brands */
 .brands{display:flex;flex-wrap:wrap;gap:6px 0;align-items:baseline}
@@ -739,31 +759,51 @@ form .btn{width:100%;margin-top:4px}
 <section class="sec" id="reviews">
   <div class="wrap">
     <div class="head">
-      <h2 class="caps h-lg" data-lines>What owners<br>say.</h2>
-      <p class="lede" data-reveal>In their own words, from the reviews on our website.</p>
+      <h2 class="caps h-lg" data-lines>From Fabias<br>to Huracáns.</h2>
+      <p class="lede" data-reveal><span class="stars" aria-label="Five stars">★★★★★</span> Every review here is five stars on Google, in the owner's own words.</p>
     </div>
-    <div class="reviews" data-reveal="stagger">
-      <figure class="rv">
-        <span class="qm" aria-hidden="true">&ldquo;</span>
-        <blockquote>&ldquo;EuroTech completed a major service on my Audi R8. I was very impressed by their knowledge and attention to detail. Now I&rsquo;ve found EuroTech I will not be going anywhere else. Thanks VJ! You&rsquo;re a legend.&rdquo;</blockquote>
-        <figcaption><b>Martin</b><span>Audi R8</span></figcaption>
-      </figure>
-      <figure class="rv">
-        <span class="qm" aria-hidden="true">&ldquo;</span>
-        <blockquote>&ldquo;He did a purchase inspection on my 2020 Volkswagen Golf R and I was blown away by how knowledgeable he was. He also recently changed my brakes and I couldn&rsquo;t be happier with the level of service he goes to!&rdquo;</blockquote>
-        <figcaption><b>Kayla Southwell</b><span>Volkswagen Golf R</span></figcaption>
-      </figure>
-      <figure class="rv">
-        <span class="qm" aria-hidden="true">&ldquo;</span>
-        <blockquote>&ldquo;I have watched Vijesh over several years and I appreciate that he cares for my car like it&rsquo;s his own, and he won&rsquo;t let anything go if he can improve or deal with any issue.&rdquo;</blockquote>
-        <figcaption><b>Felicity Latchford</b><span>Audi</span></figcaption>
-      </figure>
-      <figure class="rv">
-        <span class="qm" aria-hidden="true">&ldquo;</span>
-        <blockquote>&ldquo;I got another call from Vijesh saying there was a software update available for my car and if I took the car to him he could update it for me. I wasn&rsquo;t aware of any updates but Vijesh was.&rdquo;</blockquote>
-        <figcaption><b>MJ Qail</b><span>Audi R8 V10+</span></figcaption>
-      </figure>
+    <div data-reveal>
+      <!-- Without script, or with reduced motion, the cards sit in this grid.
+           With script they are dealt into Imperium's drifting columns below. -->
+      <ul class="rv-grid" id="rvGrid" aria-label="Customer reviews">
+        <li class="rv-card"><blockquote><p>Canberra and surrounding regions best European and supercar technician. Major service carried out to factory specifications on Lamborghini Huracan LP-610 with full diagnostics check. An exemplary mechanic with a passion for perfection in his work</p><footer><span class="rv-av" aria-hidden="true">MP</span><span><cite>Matthew Partridge</cite><span>Lamborghini Huracán LP 610</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>Had my C43 AMG serviced at Eurotech and I couldn’t be happier with the experience. VJ was extremely knowledgeable, professional, and very passionate about his work. He took the time to explain everything thoroughly and made the whole …</p><footer><span class="rv-av" aria-hidden="true">SA</span><span><cite>Srikar Abbaraju</cite><span>Mercedes-AMG C43</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>… I wish I&#x27;d been with them since day one!! The customer service, obvious product knowledge, evident experience, workshop cleanliness, and overall customer experience was brilliant!! The car seems to be going better now, than it had since new! I now know what an Alfa can be!!</p><footer><span class="rv-av" aria-hidden="true">PS</span><span><cite>Piers Smith</cite><span>Alfa Romeo</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>Have never felt more comfortable with my GLC 63s being looked after. VJ &amp; his team’s love for cars shines right through with everything they do. One of the most trust worthy, meticulous and passionate mechanics in Canberra - 10/10</p><footer><span class="rv-av" aria-hidden="true">TB</span><span><cite>Tim Burgess</cite><span>Mercedes-AMG GLC 63 S</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>No better place to take your European car. VJ is an Audi wizard and was knowledgeable, thorough and reasonably priced. I don’t think I’d go anywhere else! I could feel the tuning he had done to the car and it was never better to drive. …</p><footer><span class="rv-av" aria-hidden="true">DS</span><span><cite>Deborah Stanley</cite><span>Audi</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>Outstanding Service from a Genuine Professional<br>Vijesh did an exceptional job working on my M3, installing the DRL yellow lights …</p><footer><span class="rv-av" aria-hidden="true">KR</span><span><cite>Krishnadev Rajiah</cite><span>BMW M3</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>Eurotech is the only place to go with your European car!<br>From the moment I walked in, I could tell that they truly care about their customers and their cars. …</p><footer><span class="rv-av" aria-hidden="true">KS</span><span><cite>Kayla Southwell</cite><span>Volkswagen Golf R</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>The team at Eurotech were a pleasure to deal with, very response, helpful and efficient with timing and have pride in their work. Highly recommend them to anyone. I would have thought I’d have to go to Sydney to get work completed and pay …</p><footer><span class="rv-av" aria-hidden="true">IC</span><span><cite>Ivan Crnjac</cite><span>Mercedes-AMG C63 S, Stage 2</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>I recently had my Audi Q5 TDI in with Eurotech Canberra for a timing belt and water pump replacement, along with a routine service - and the entire experience was outstanding from beginning to end. …</p><footer><span class="rv-av" aria-hidden="true">CU</span><span><cite>Chidozie Ukoh</cite><span>Audi Q5 TDI</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>Serviced my Skoda Fabia with professionalism and care. Very impressed</p><footer><span class="rv-av" aria-hidden="true">ML</span><span><cite>Michael Latchford</cite><span>Škoda Fabia</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>I highly recommend Eurotech Canberra. VJ is one of those rare people who is incredibly passionate about his craft. I have had my RS6 (and previous S4s) serviced by other workshops in Canberra and they don&#x27;t hold a torch to VJ&#x27;s attention to …</p><footer><span class="rv-av" aria-hidden="true">B</span><span><cite>BB</cite><span>Audi RS6</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>First time owning a luxury sports car, so I had no clue about maintenance. Vj and the team at Eurotech took great care of my car and my wallet. I recommend them 100% …</p><footer><span class="rv-av" aria-hidden="true">ZZ</span><span><cite>Z Zumaya</cite><span>Mercedes-AMG</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>A true specialist including of less common vehicles; extremely knowledgeable, thorough and enthusiastic. Took the time to explain everything clearly, very patient and communicative. High quality work and parts, at great value. Highly recommended.</p><footer><span class="rv-av" aria-hidden="true">MH</span><span><cite>Matt Hackett</cite><span>Porsche 911</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>Vijesh has been looking after my SQ5 for more than a year now. I was really happy when Vijesh showed me how dirty the manifold intake and throttle body were. Glad to have had it cleaned and the engine is so much smoother. …</p><footer><span class="rv-av" aria-hidden="true">AY</span><span><cite>Alex Yee</cite><span>Audi SQ5</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>Vijesh Otto is a highly skilled and dedicated mechanic with outstanding expertise in European cars. He is extremely fastidious with his assessment of cars, knows their nuances and knows how to find the exact issues …</p><footer><span class="rv-av" aria-hidden="true">FL</span><span><cite>Felicity Latchford</cite><span>Audi A7</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>Had a great experience, my M2C was meticulously looked over during its service and all quality parts and liquids used.<br>Was also walked through all works done on my car and the condition it was in, …</p><footer><span class="rv-av" aria-hidden="true">EK</span><span><cite>Evan Kouklinos</cite><span>BMW M2 Competition</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>I can&#x27;t thank you enough for your expert advice. Kudos to your team for making exotic cars possible in Canberra, without needing to travel to Sydney for servicing. …</p><footer><span class="rv-av" aria-hidden="true">SG</span><span><cite>Samuel Georges</cite><span>Google review</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>I had an amazing experience with Vijesh — the service was top-notch. The car drives absolutely perfectly, and you can tell real care went into everything. On top of that, the prices are unbeatable. Highly recommend!</p><footer><span class="rv-av" aria-hidden="true">SN</span><span><cite>Shiv Nathan</cite><span>Mercedes-AMG</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>VJ and the team at Eurotech Canberra do great work! My Audi’s first trip to Eurotech Canberra was on the back of a tow truck with a blown engine. Eurotech Canberra managed to squeeze me in and then began the tedious task of sourcing a …</p><footer><span class="rv-av" aria-hidden="true">MR</span><span><cite>Maneja Reardon</cite><span>Audi</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>Fantastic place to go if you want your car properly looked after by someone with deep knowledge and care. VJ did a major service and post-purchase inspection on my Skoda Kodiaq RS, and now I’m confident of its status …</p><footer><span class="rv-av" aria-hidden="true">UB</span><span><cite>Ulrich Belcher</cite><span>Škoda Kodiaq RS</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>I took my C63s to Eurotech Canberra, and I can confidently say it was the best experience I’ve had with any workshop around. Vijesh is not just a mechanic—he’s a perfectionist who genuinely cares about cars and his customers. …</p><footer><span class="rv-av" aria-hidden="true">AE</span><span><cite>Ali E</cite><span>Mercedes-AMG C63 S</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>VJ is great, so friendly, down to earth &amp; helpful. Does a great job at very reasonable prices. And really goes the extra mile to make sure that you&#x27;re happy. He also does our daughters&#x27; cars. We refer to him as the family mechanic!</p><footer><span class="rv-av" aria-hidden="true">RT</span><span><cite>Rachael Thorpe</cite><span>The family’s cars</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>I recently had my audi S7 repaired with Eurotech Canberra, i was advised by a friend that VJ could sort it out. VJ kept me in the loop every step of the way. Travelled all the way from Sydney to get my car repaired. …</p><footer><span class="rv-av" aria-hidden="true">D</span><span><cite>DMV</cite><span>Audi S7</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>By far the best experience I’ve had! VJ and his team truly took care of my car treating it as if their own. Paired with his years of professional experience and honest pricing there isn’t anyone else I’d trust more than VJ and the team at Eurotech Canberra.</p><footer><span class="rv-av" aria-hidden="true">H</span><span><cite>Himesh</cite><span>Google review</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>I&#x27;ve been living in canberra for quite a while and been to so many different mechanics, from dealerships to private ones. but after finding Vijesh felt like that finally found the one for my baby girl 2021 Porsche ☺️<br>can&#x27;t recommend Vijesh and team enough.</p><footer><span class="rv-av" aria-hidden="true">PN</span><span><cite>Parisa Noubakht</cite><span>2021 Porsche</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>I recently took my Lamborghini to Vijesh at Eurotech Canberra, and I couldn&#x27;t be more satisfied with the exceptional service I received. From start to finish, the entire experience was top-notch. …</p><footer><span class="rv-av" aria-hidden="true">AZ</span><span><cite>Abdallah Zaidan</cite><span>Lamborghini</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>I&#x27;m not one to normally leave a review, however I know how hard it is to find a quality mechanic. VJ and the Eurotech team are nothing short of exceptional. Quality service and advice. …</p><footer><span class="rv-av" aria-hidden="true">LO</span><span><cite>Liam O&#x27;Riley</cite><span>Google review</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>Vj knows Audi R8’s from top to bottom! Unbelievable service &amp; even followed up post service. Highly recommended! …</p><footer><span class="rv-av" aria-hidden="true">AB</span><span><cite>Adam B</cite><span>Audi R8</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>After years of owning a European car, I have finally found a mechanic I can trust wholeheartedly with it! VJ is so knowledgable and is always eager to pass on his knowledge to his customers as well. Such a fantastic experience, will definitely be a returning customer.</p><footer><span class="rv-av" aria-hidden="true">TN</span><span><cite>Taylor Nikolovski</cite><span>BMW</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>I found VJ and his team through a mutual friend (and customer). Number 1, VJs quote on a very complex issue with my vehicle came in thousands of $$ cheaper than other Euro Mechanics in Canberra. He did an outstanding job with my car …</p><footer><span class="rv-av" aria-hidden="true">D</span><span><cite>Deaks</cite><span>Google review</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>Eurotech Canberra completed the first service of my Mercedes car a couple months ago. It is the first time I&#x27;ve had a European car and I was extremely happy with my service and the reasonable price. …</p><footer><span class="rv-av" aria-hidden="true">CL</span><span><cite>Courtney L</cite><span>Mercedes-Benz</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>Recently serviced my Audi with Eurotech very pleased with the service VJ is a gentleman and very experienced with euro cars. He explained everything he did and what will need attention in the near future. I will be moving away from the dealer servicing from now on.</p><footer><span class="rv-av" aria-hidden="true">MC</span><span><cite>Maria Cirina</cite><span>Audi</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>From fast cars to family cars. VJ and team do a great job! Even supplied me a water while I waited.<br>Super professional and detailed to give you the confidence that all options are explored for service and repairs.</p><footer><span class="rv-av" aria-hidden="true">BS</span><span><cite>Ben Strong</cite><span>Google review</span></span></footer></blockquote></li>
+        <li class="rv-card"><blockquote><p>professional service, VJ and his team are extremely qualified and very friendly, always giving me the best services no matter what, my car has never felt so healthy before, thanks guys :)</p><footer><span class="rv-av" aria-hidden="true">HL</span><span><cite>Hasnain Lakhani</cite><span>Google review</span></span></footer></blockquote></li>
+      </ul>
+      <div class="tcols" id="rvCols" role="region" aria-label="Customer reviews" hidden></div>
     </div>
+    <p class="rv-more" data-reveal><a class="link" href="https://www.google.com/maps/search/?api=1&amp;query=Eurotech+Canberra+103+Newcastle+St+Fyshwick" target="_blank" rel="noopener">Read every review on Google</a></p>
   </div>
 </section>
 
@@ -1031,6 +1071,37 @@ form .btn{width:100%;margin-top:4px}
     size(); render(); restart();
     window.addEventListener("resize",function(){ size(); render(); },{passive:true});
     if(document.fonts&&document.fonts.ready) document.fonts.ready.then(size);
+  })();
+
+  /* ---------- review columns ----------
+     Imperium's layout: the cards are dealt across three columns, each column
+     holds its cards twice so the upward drift loops without a seam, and each
+     drifts at its own speed. CSS shows one column on a phone, two on a
+     tablet. The columns are only built as the section comes near the screen;
+     until then the grid is set aside and the columns' box holds its height,
+     so nothing below it moves. The copies are hidden from screen readers.
+     Under reduced motion the plain grid stays. */
+  (function(){
+    var grid=$("rvGrid"), host=$("rvCols"); if(!grid||!host||reduce) return;
+    var cards=[].slice.call(grid.children), speed=[7,8.4,7.7];
+    grid.hidden=true; host.hidden=false;
+    function build(){
+      for(var c=0;c<3;c++){
+        var list=cards.filter(function(_,i){ return i%3===c; });
+        var wrap=document.createElement("div"); wrap.className="tcol-wrap";
+        var ul=document.createElement("ul"); ul.className="tcol";
+        ul.style.setProperty("--tcol-duration",(list.length*speed[c])+"s");
+        [0,1].forEach(function(copy){
+          list.forEach(function(li){ var k=li.cloneNode(true); if(copy) k.setAttribute("aria-hidden","true"); ul.appendChild(k); });
+        });
+        wrap.appendChild(ul); host.appendChild(wrap);
+      }
+    }
+    if(!("IntersectionObserver" in window)){ build(); return; }
+    var io=new IntersectionObserver(function(e){
+      if(e[0].isIntersecting){ io.disconnect(); build(); }
+    },{rootMargin:"800px 0px"});
+    io.observe(host);
   })();
 
   /* ---------- masked line reveal ----------
