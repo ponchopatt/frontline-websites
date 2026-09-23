@@ -18,7 +18,7 @@ import { calculator } from '../../lib/blocks/calculator.js';
 import { demoBanner, demoBannerHeadScript, demoFooterNote, robotsMeta } from '../../lib/blocks/demo.js';
 import { headMeta, jsonLd, faviconLink } from '../../lib/blocks/schema.js';
 
-const ICON = {
+export const ICON = {
   phone: raw('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>'),
   sms: raw('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-8 8H8l-5 3 1.5-4.5A8 8 0 1 1 21 12z"/></svg>'),
   arrow: raw('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'),
@@ -122,12 +122,12 @@ ${jsonLd(cfg)}
 
 /* ------------------------------------------------------------------ sections */
 
-function header(cfg, { nav, tel, phone, ctaLabel, ctaLabelShort }) {
+export function header(cfg, { nav, tel, phone, ctaLabel, ctaLabelShort, homeHref = '#hero' }) {
   const b = cfg.business ?? {};
   return html`
 <header class="top" id="topbar">
   <div class="wrap nav">
-    <a class="brand" href="#hero" aria-label="${b.name}, back to top">${
+    <a class="brand" href="${homeHref}" aria-label="${b.name}, back to top">${
       when(b.logoMark, (m) => html`<img src="${m.src}" width="${m.width ?? 240}" height="${m.height ?? 87}" alt="">`)
     }<b>${raw(headlineLines(cfg.copy?.brandMark ?? b.name).join('<br>'))}</b></a>
     ${nav.length ? html`<nav class="menu" aria-label="Sections">${
@@ -425,19 +425,22 @@ function finalCta(cfg, { tel, sms, ctaLabel, copy }) {
 </section>`;
 }
 
-function footer(cfg, { tel, phone }) {
+export function footer(cfg, { tel, phone, homePrefix = '' }) {
   const b = cfg.business ?? {};
   // Same sections and labels as the header nav — the footer's own list used
   // to disagree with it ("Price guide" vs "Pricing", "Good to know" vs
   // "FAQ") and had no link at all for the gallery or service areas.
+  // homePrefix points these back at the homepage's own anchors when the
+  // footer is rendered on a service or suburb page, which has no sections
+  // of its own to jump to.
   const links = [
-    cfg.has.services && ['#services', 'Services'],
-    cfg.has.calculator && ['#pricing', 'Pricing'],
-    (cfg.colours ?? []).length && ['#colours', 'Colours'],
-    cfg.has.gallery && ['#projects', 'Our work'],
-    cfg.has.reviews && ['#reviews', 'Reviews'],
-    cfg.has.serviceAreas && ['#areas', 'Areas'],
-    cfg.has.faq && ['#faq', 'FAQ'],
+    cfg.has.services && [`${homePrefix}#services`, 'Services'],
+    cfg.has.calculator && [`${homePrefix}#pricing`, 'Pricing'],
+    (cfg.colours ?? []).length && [`${homePrefix}#colours`, 'Colours'],
+    cfg.has.gallery && [`${homePrefix}#projects`, 'Our work'],
+    cfg.has.reviews && [`${homePrefix}#reviews`, 'Reviews'],
+    cfg.has.serviceAreas && [`${homePrefix}#areas`, 'Areas'],
+    cfg.has.faq && [`${homePrefix}#faq`, 'FAQ'],
   ].filter(Boolean);
 
   return html`
@@ -467,7 +470,7 @@ function footer(cfg, { tel, phone }) {
 </footer>`;
 }
 
-function stickyBar(cfg, { tel, sms }) {
+export function stickyBar(cfg, { tel, sms }) {
   if (!tel && !sms) return '';
   return html`
 <div class="stickybar" id="sticky">
@@ -495,7 +498,7 @@ function lightbox(cfg) {
  * the <img>. A preload that disagrees fetches the picture twice — that bug cost
  * the Bondi demo 194KB and nine Lighthouse points.
  */
-function heroPreload(cfg) {
+export function heroPreload(cfg) {
   const hero = cfg.photos?.hero;
   if (!present(hero?.src)) return '';
   if (hero.srcset) {
@@ -505,7 +508,7 @@ function heroPreload(cfg) {
 }
 
 /** The slice of config the runtime needs, as a safe inline JSON literal. */
-function jsonScript(cfg) {
+export function jsonScript(cfg) {
   const data = cfg.__runtime ?? {};
   // A literal </script> inside a string would end the block early, and
   // U+2028/U+2029 are line terminators to a JS parser but legal inside JSON.
@@ -513,5 +516,5 @@ function jsonScript(cfg) {
     (c) => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'));
 }
 
-const escText = (s) => String(s ?? '').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
-const escAttr = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+export const escText = (s) => String(s ?? '').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+export const escAttr = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

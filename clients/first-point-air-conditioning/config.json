@@ -96,41 +96,59 @@
   "services": [
     {
       "title": "Split system installation",
-      "blurb": "One room or several, wall or floor-mounted. Sized properly for the room, not guessed — an undersized unit runs flat out through a Canberra winter and still can't keep up."
+      "blurb": "One room or several, wall or floor-mounted. Sized properly for the room, not guessed — an undersized unit runs flat out through a Canberra winter and still can't keep up.",
+      "slug": "split-system-installation",
+      "href": "split-system-installation.html"
     },
     {
       "title": "Ducted air conditioning",
-      "blurb": "Whole-house heating and cooling, zoned so you're not heating rooms nobody's in. If your existing ducted system has died mid-winter before, this is the fix."
+      "blurb": "Whole-house heating and cooling, zoned so you're not heating rooms nobody's in. If your existing ducted system has died mid-winter before, this is the fix.",
+      "slug": "ducted-air-conditioning",
+      "href": "ducted-air-conditioning.html"
     },
     {
       "title": "A/C service and repair",
-      "blurb": "Any brand, not just what we installed. A system that's iced up, blowing warm, or short-cycling gets diagnosed properly before anything's replaced."
+      "blurb": "Any brand, not just what we installed. A system that's iced up, blowing warm, or short-cycling gets diagnosed properly before anything's replaced.",
+      "slug": "ac-service-repair",
+      "href": "ac-service-repair.html"
     },
     {
       "title": "Evaporative cooling",
-      "blurb": "Runs on Canberra's dry summer air for a fraction of the running cost of refrigerated cooling. Suits the climate here better than most people realise."
+      "blurb": "Runs on Canberra's dry summer air for a fraction of the running cost of refrigerated cooling. Suits the climate here better than most people realise.",
+      "slug": "evaporative-cooling",
+      "href": "evaporative-cooling.html"
     },
     {
       "title": "Gas heating",
-      "blurb": "Ducted or wall-mounted gas heating for the mornings a heat pump alone won't touch. Installed, serviced and repaired."
+      "blurb": "Ducted or wall-mounted gas heating for the mornings a heat pump alone won't touch. Installed, serviced and repaired.",
+      "slug": "gas-heating",
+      "href": "gas-heating.html"
     }
   ],
   "servicesCommercial": [
     {
       "title": "HVAC install, repair & maintenance",
-      "blurb": "Offices, retail and warehouses. Scheduled maintenance to keep a commercial system out of the repair queue."
+      "blurb": "Offices, retail and warehouses. Scheduled maintenance to keep a commercial system out of the repair queue.",
+      "slug": "commercial-hvac",
+      "href": "commercial-hvac.html"
     },
     {
       "title": "Mechanical installation",
-      "blurb": "Mechanical services fit-out for new and refurbished commercial spaces."
+      "blurb": "Mechanical services fit-out for new and refurbished commercial spaces.",
+      "slug": "mechanical-installation",
+      "href": "mechanical-installation.html"
     },
     {
       "title": "Ventilation",
-      "blurb": "Ventilation systems sized to the space and what it's used for."
+      "blurb": "Ventilation systems sized to the space and what it's used for.",
+      "slug": "commercial-ventilation",
+      "href": "commercial-ventilation.html"
     },
     {
       "title": "Cool room installation",
-      "blurb": "Cool rooms for food service and storage, installed and backed by ongoing service."
+      "blurb": "Cool rooms for food service and storage, installed and backed by ongoing service.",
+      "slug": "cool-room-installation",
+      "href": "cool-room-installation.html"
     }
   ],
   "reasons": [
@@ -349,6 +367,324 @@
     {
       "q": "Which brands do you install?",
       "a": "Daikin, Mitsubishi Electric, Mitsubishi Heavy Industries, Fujitsu, Toshiba, Samsung and Temperzone."
+    }
+  ],
+  "servicePages": [
+    {
+      "slug": "split-system-installation",
+      "kind": "service",
+      "title": "Split System Installation, Canberra | First Point Air Conditioning",
+      "description": "Split system installation across Canberra and Queanbeyan, sized to the room. Free quotes, all major brands, 12-month workmanship warranty. Call 02 6100 2247.",
+      "kicker": "Split System Installation, Canberra",
+      "headline": "Split System<br>Installation, Canberra",
+      "sub": "Wall or floor-mounted, sized to the room. Installed by the team, backed by a 12-month workmanship warranty.",
+      "intro": "A split system is the most common fix for a Canberra house that's cold in July and stuffy in January — one room, or a few, cooled and heated without touching the whole house. We size it to the room rather than guessing: an undersized unit runs flat out through a Canberra winter and still can't keep up, and an oversized one short-cycles and wastes power.",
+      "benefits": [
+        "Wall, floor-mounted or ceiling cassette options",
+        "Sized to the room, not guessed",
+        "All major brands — Daikin, Mitsubishi, Fujitsu and more",
+        "Free, no-obligation quote",
+        "12-month workmanship warranty"
+      ],
+      "defaultService": "Split system installation",
+      "related": [
+        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" },
+        { "href": "ac-service-repair.html", "label": "A/C service and repair" },
+        { "href": "gas-heating.html", "label": "Gas heating" }
+      ]
+    },
+    {
+      "slug": "ducted-air-conditioning",
+      "kind": "service",
+      "title": "Ducted Air Conditioning, Canberra | First Point Air Conditioning",
+      "description": "Ducted air conditioning for Canberra and Queanbeyan homes, zoned and sized properly. Free quotes, 12-month workmanship warranty. Call 02 6100 2247.",
+      "kicker": "Ducted Air Conditioning, Canberra",
+      "headline": "Ducted Air<br>Conditioning, Canberra",
+      "sub": "Whole-house heating and cooling, zoned so you're not paying to heat rooms nobody's in.",
+      "intro": "Old Canberra houses lose heat fast — high ceilings, single glazing, a slab that never quite warms up. A ducted system heats and cools the whole house from one unit, zoned so bedrooms and living areas can run differently. If your ducted system has died mid-winter before, replacing it properly, rather than patching it, is usually the cheaper option over a few years.",
+      "benefits": [
+        "Whole-house heating and cooling",
+        "Zoned so empty rooms aren't running",
+        "A price in writing before anything's booked in",
+        "Old system removed as part of the job",
+        "12-month workmanship warranty"
+      ],
+      "defaultService": "Ducted air conditioning",
+      "related": [
+        { "href": "split-system-installation.html", "label": "Split system installation" },
+        { "href": "ac-service-repair.html", "label": "A/C service and repair" },
+        { "href": "gas-heating.html", "label": "Gas heating" }
+      ]
+    },
+    {
+      "slug": "ac-service-repair",
+      "kind": "service",
+      "title": "Air Conditioner Repair & Servicing, Canberra | First Point Air Conditioning",
+      "description": "Air conditioner service and repair in Canberra, any brand. Same team that installs, services what's already there. Call 02 6100 2247.",
+      "kicker": "A/C Service & Repair, Canberra",
+      "headline": "Air Conditioner Repair<br>& Servicing, Canberra",
+      "sub": "Iced up, blowing warm, or making noise it shouldn't? We service any brand, not just what we installed.",
+      "intro": "A system that's short-cycling, running warm, or icing up in the middle of a Canberra summer usually isn't a full replacement — most of the time it's a service, a clean, or a specific part. We look at what's actually wrong before recommending anything, whether we installed the system or not.",
+      "benefits": [
+        "Any brand serviced, not just our own installs",
+        "Diagnosed properly before anything's replaced",
+        "Regular servicing keeps a workmanship warranty valid",
+        "Open Saturdays for when it can't wait"
+      ],
+      "defaultService": "A/C service and repair",
+      "related": [
+        { "href": "split-system-installation.html", "label": "Split system installation" },
+        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" }
+      ]
+    },
+    {
+      "slug": "evaporative-cooling",
+      "kind": "service",
+      "title": "Evaporative Cooling, Canberra | First Point Air Conditioning",
+      "description": "Evaporative cooling installed and serviced across Canberra — cheaper to run than refrigerated air, and suited to Canberra's dry summers. Call 02 6100 2247.",
+      "kicker": "Evaporative Cooling, Canberra",
+      "headline": "Evaporative Cooling,<br>Canberra",
+      "sub": "Runs on Canberra's dry summer air for a fraction of the running cost of refrigerated cooling.",
+      "intro": "Canberra's summers are hot but dry — exactly the climate evaporative cooling is built for. It works by drawing dry air through a wet pad, which doesn't work nearly as well somewhere humid. It costs a lot less to run than refrigerated air, and it keeps fresh air moving through the house rather than sealing it up.",
+      "benefits": [
+        "Lower running cost than refrigerated cooling",
+        "Suits Canberra's dry summer climate",
+        "Keeps fresh air moving through the house",
+        "Installed and serviced"
+      ],
+      "defaultService": "Evaporative cooling",
+      "related": [
+        { "href": "split-system-installation.html", "label": "Split system installation" },
+        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" }
+      ]
+    },
+    {
+      "slug": "gas-heating",
+      "kind": "service",
+      "title": "Gas Heating, Canberra | First Point Air Conditioning",
+      "description": "Ducted and wall-mounted gas heating installed and serviced across Canberra and Queanbeyan. Free quotes. Call 02 6100 2247.",
+      "kicker": "Gas Heating, Canberra",
+      "headline": "Gas Heating,<br>Canberra",
+      "sub": "Ducted or wall-mounted gas heating for the mornings a heat pump alone won't touch.",
+      "intro": "On a genuinely sub-zero Canberra morning, gas heating gets a house warm faster than most heat pumps manage, and a lot of older Canberra homes are already plumbed for it. We install, service and repair both ducted and wall-mounted gas heating.",
+      "benefits": [
+        "Fast heat-up on cold mornings",
+        "Ducted or wall-mounted options",
+        "Installed, serviced and repaired",
+        "12-month workmanship warranty"
+      ],
+      "defaultService": "Gas heating",
+      "related": [
+        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" },
+        { "href": "split-system-installation.html", "label": "Split system installation" }
+      ]
+    },
+    {
+      "slug": "commercial-hvac",
+      "kind": "service",
+      "title": "Commercial HVAC Install, Repair & Maintenance, Canberra | First Point Air Conditioning",
+      "description": "Commercial HVAC install, repair and maintenance for Canberra offices, retail and warehouses. Free quotes. Call 02 6100 2247.",
+      "kicker": "Commercial HVAC, Canberra",
+      "headline": "Commercial HVAC Install,<br>Repair & Maintenance",
+      "sub": "Offices, retail and warehouses — installed and kept running with scheduled maintenance.",
+      "intro": "A commercial HVAC system that's neglected tends to fail at the worst time — the first 40-degree day of summer, or the first frosty week of winter, with a shop full of customers or a warehouse full of stock on the line. Scheduled maintenance is the difference between a planned service call and an emergency one.",
+      "benefits": [
+        "Offices, retail and warehouses",
+        "Scheduled maintenance plans",
+        "Repairs on systems we didn't install",
+        "Free quotes for new installs"
+      ],
+      "defaultService": "HVAC install, repair & maintenance",
+      "related": [
+        { "href": "mechanical-installation.html", "label": "Mechanical installation" },
+        { "href": "commercial-ventilation.html", "label": "Ventilation" },
+        { "href": "cool-room-installation.html", "label": "Cool room installation" }
+      ]
+    },
+    {
+      "slug": "mechanical-installation",
+      "kind": "service",
+      "title": "Mechanical Installation, Canberra | First Point Air Conditioning",
+      "description": "Mechanical services fit-out for new and refurbished commercial spaces in Canberra. Free quotes. Call 02 6100 2247.",
+      "kicker": "Mechanical Installation, Canberra",
+      "headline": "Mechanical Installation,<br>Canberra",
+      "sub": "Mechanical services fit-out for new and refurbished commercial spaces.",
+      "intro": "Fitting out or refurbishing a commercial space means the mechanical services — heating, cooling and ventilation — need to be planned in properly, not bolted on at the end. We work on new fit-outs and refurbishments across Canberra.",
+      "benefits": [
+        "New fit-outs and refurbishments",
+        "Planned alongside the rest of the build",
+        "All major commercial brands",
+        "Free quotes"
+      ],
+      "defaultService": "Mechanical installation",
+      "related": [
+        { "href": "commercial-hvac.html", "label": "Commercial HVAC" },
+        { "href": "commercial-ventilation.html", "label": "Ventilation" }
+      ]
+    },
+    {
+      "slug": "commercial-ventilation",
+      "kind": "service",
+      "title": "Commercial Ventilation, Canberra | First Point Air Conditioning",
+      "description": "Commercial ventilation systems installed and maintained across Canberra, sized to the space. Free quotes. Call 02 6100 2247.",
+      "kicker": "Commercial Ventilation, Canberra",
+      "headline": "Commercial Ventilation,<br>Canberra",
+      "sub": "Ventilation systems sized to the space and what it's actually used for.",
+      "intro": "A kitchen, a warehouse and an office all need different things from their ventilation, and sizing it to the space and what it's used for is most of the job. We install and maintain commercial ventilation systems across Canberra.",
+      "benefits": [
+        "Sized to the space and its use",
+        "Installed and maintained",
+        "Commercial and industrial sites",
+        "Free quotes"
+      ],
+      "defaultService": "Ventilation",
+      "related": [
+        { "href": "commercial-hvac.html", "label": "Commercial HVAC" },
+        { "href": "mechanical-installation.html", "label": "Mechanical installation" }
+      ]
+    },
+    {
+      "slug": "cool-room-installation",
+      "kind": "service",
+      "title": "Cool Room Installation, Canberra | First Point Air Conditioning",
+      "description": "Cool room installation for food service and storage across Canberra, backed by ongoing service. Free quotes. Call 02 6100 2247.",
+      "kicker": "Cool Room Installation, Canberra",
+      "headline": "Cool Room Installation,<br>Canberra",
+      "sub": "Cool rooms for food service and storage, installed and backed by ongoing service.",
+      "intro": "A cool room that fails overnight can write off a night's stock, so getting the install right — and having someone to call when it plays up — matters more than most equipment in a commercial kitchen or storeroom. We install and service cool rooms for food service and storage across Canberra.",
+      "benefits": [
+        "Food service and storage cool rooms",
+        "Installed and backed by ongoing service",
+        "Free quotes",
+        "Open Saturdays"
+      ],
+      "defaultService": "Cool room installation",
+      "related": [
+        { "href": "commercial-hvac.html", "label": "Commercial HVAC" },
+        { "href": "mechanical-installation.html", "label": "Mechanical installation" }
+      ]
+    }
+  ],
+  "suburbPages": [
+    {
+      "slug": "gungahlin",
+      "kind": "suburb",
+      "title": "Air Conditioning & Heating in Gungahlin | First Point Air Conditioning",
+      "description": "Split systems, ducted air con, evaporative cooling and gas heating in Gungahlin, Canberra. Free quotes. Call 02 6100 2247.",
+      "kicker": "Gungahlin, ACT",
+      "headline": "Air Conditioning<br>& Heating, Gungahlin",
+      "sub": "Split systems, ducted air conditioning, evaporative cooling and gas heating — installed and serviced in Gungahlin.",
+      "intro": "First Point Air Conditioning services Gungahlin and the surrounding area from our Fyshwick base — split systems, ducted air conditioning, evaporative cooling and gas heating, plus commercial HVAC. Free quotes, all major brands, and a 12-month workmanship warranty on every install.",
+      "benefits": [
+        "Free, no-obligation quotes",
+        "Open Monday to Saturday",
+        "All major brands installed and serviced",
+        "12-month workmanship warranty"
+      ],
+      "defaultSuburb": "Gungahlin",
+      "related": [
+        { "href": "split-system-installation.html", "label": "Split system installation" },
+        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" },
+        { "href": "ac-service-repair.html", "label": "A/C service and repair" },
+        { "href": "evaporative-cooling.html", "label": "Evaporative cooling" },
+        { "href": "gas-heating.html", "label": "Gas heating" }
+      ]
+    },
+    {
+      "slug": "belconnen",
+      "kind": "suburb",
+      "title": "Air Conditioning & Heating in Belconnen | First Point Air Conditioning",
+      "description": "Split systems, ducted air con, evaporative cooling and gas heating in Belconnen, Canberra. Free quotes. Call 02 6100 2247.",
+      "kicker": "Belconnen, ACT",
+      "headline": "Air Conditioning<br>& Heating, Belconnen",
+      "sub": "Split systems, ducted air conditioning, evaporative cooling and gas heating — installed and serviced in Belconnen.",
+      "intro": "First Point Air Conditioning services Belconnen and the surrounding area from our Fyshwick base — split systems, ducted air conditioning, evaporative cooling and gas heating, plus commercial HVAC. Free quotes, all major brands, and a 12-month workmanship warranty on every install.",
+      "benefits": [
+        "Free, no-obligation quotes",
+        "Open Monday to Saturday",
+        "All major brands installed and serviced",
+        "12-month workmanship warranty"
+      ],
+      "defaultSuburb": "Belconnen",
+      "related": [
+        { "href": "split-system-installation.html", "label": "Split system installation" },
+        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" },
+        { "href": "ac-service-repair.html", "label": "A/C service and repair" },
+        { "href": "evaporative-cooling.html", "label": "Evaporative cooling" },
+        { "href": "gas-heating.html", "label": "Gas heating" }
+      ]
+    },
+    {
+      "slug": "tuggeranong",
+      "kind": "suburb",
+      "title": "Air Conditioning & Heating in Tuggeranong | First Point Air Conditioning",
+      "description": "Split systems, ducted air con, evaporative cooling and gas heating in Tuggeranong, Canberra. Free quotes. Call 02 6100 2247.",
+      "kicker": "Tuggeranong, ACT",
+      "headline": "Air Conditioning<br>& Heating, Tuggeranong",
+      "sub": "Split systems, ducted air conditioning, evaporative cooling and gas heating — installed and serviced in Tuggeranong.",
+      "intro": "First Point Air Conditioning services Tuggeranong and the surrounding area from our Fyshwick base — split systems, ducted air conditioning, evaporative cooling and gas heating, plus commercial HVAC. Free quotes, all major brands, and a 12-month workmanship warranty on every install.",
+      "benefits": [
+        "Free, no-obligation quotes",
+        "Open Monday to Saturday",
+        "All major brands installed and serviced",
+        "12-month workmanship warranty"
+      ],
+      "defaultSuburb": "Tuggeranong",
+      "related": [
+        { "href": "split-system-installation.html", "label": "Split system installation" },
+        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" },
+        { "href": "ac-service-repair.html", "label": "A/C service and repair" },
+        { "href": "evaporative-cooling.html", "label": "Evaporative cooling" },
+        { "href": "gas-heating.html", "label": "Gas heating" }
+      ]
+    },
+    {
+      "slug": "woden",
+      "kind": "suburb",
+      "title": "Air Conditioning & Heating in Woden | First Point Air Conditioning",
+      "description": "Split systems, ducted air con, evaporative cooling and gas heating in Woden, Canberra. Free quotes. Call 02 6100 2247.",
+      "kicker": "Woden, ACT",
+      "headline": "Air Conditioning<br>& Heating, Woden",
+      "sub": "Split systems, ducted air conditioning, evaporative cooling and gas heating — installed and serviced in Woden.",
+      "intro": "First Point Air Conditioning services Woden and the surrounding area from our Fyshwick base — split systems, ducted air conditioning, evaporative cooling and gas heating, plus commercial HVAC. Free quotes, all major brands, and a 12-month workmanship warranty on every install.",
+      "benefits": [
+        "Free, no-obligation quotes",
+        "Open Monday to Saturday",
+        "All major brands installed and serviced",
+        "12-month workmanship warranty"
+      ],
+      "defaultSuburb": "Woden",
+      "related": [
+        { "href": "split-system-installation.html", "label": "Split system installation" },
+        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" },
+        { "href": "ac-service-repair.html", "label": "A/C service and repair" },
+        { "href": "evaporative-cooling.html", "label": "Evaporative cooling" },
+        { "href": "gas-heating.html", "label": "Gas heating" }
+      ]
+    },
+    {
+      "slug": "queanbeyan",
+      "kind": "suburb",
+      "title": "Air Conditioning & Heating in Queanbeyan | First Point Air Conditioning",
+      "description": "Split systems, ducted air con, evaporative cooling and gas heating in Queanbeyan, NSW. Free quotes. Call 02 6100 2247.",
+      "kicker": "Queanbeyan, NSW",
+      "headline": "Air Conditioning<br>& Heating, Queanbeyan",
+      "sub": "Split systems, ducted air conditioning, evaporative cooling and gas heating — installed and serviced in Queanbeyan.",
+      "intro": "First Point Air Conditioning services Queanbeyan and the surrounding area from our Fyshwick base, just over the border — split systems, ducted air conditioning, evaporative cooling and gas heating, plus commercial HVAC. Free quotes, all major brands, and a 12-month workmanship warranty on every install.",
+      "benefits": [
+        "Free, no-obligation quotes",
+        "Open Monday to Saturday",
+        "All major brands installed and serviced",
+        "12-month workmanship warranty"
+      ],
+      "defaultSuburb": "Queanbeyan",
+      "related": [
+        { "href": "split-system-installation.html", "label": "Split system installation" },
+        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" },
+        { "href": "ac-service-repair.html", "label": "A/C service and repair" },
+        { "href": "evaporative-cooling.html", "label": "Evaporative cooling" },
+        { "href": "gas-heating.html", "label": "Gas heating" }
+      ]
     }
   ],
   "_source": {
