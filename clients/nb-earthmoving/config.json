@@ -27,7 +27,7 @@
       "_comment": "Their logo's own red is #ED1C24 and near-black is #1A1A1A (sampled directly from NBElogo.png), but #ED1C24 fails WCAG contrast against the template's fixed dark background on UI elements like the skip-link (4.26:1, under the 4.5 floor). #F5464C is the same red hue brightened just enough to clear that floor (5.3:1) while still reading as their red. #F2B705 approximates the yellow highlight behind 'Earthmoving' in the same logo."
     },
     "logo": {
-      "src": "assets/logo-nbe.webp",
+      "src": "assets/nbe-logo.png",
       "width": 264,
       "height": 118
     }
@@ -149,22 +149,22 @@
       "title": "Rock Sawing & Rock Excavation",
       "blurb": "Cutting and removing solid rock with a diamond blade saw and excavator-mounted hammers, for site cuts, trenches and footings a normal dig can't get through.",
       "photo": {
-        "src": "assets/nb-gallery-rock-saw-800.webp",
-        "srcset": "assets/nb-gallery-rock-saw-480.webp 480w, assets/nb-gallery-rock-saw-800.webp 800w, assets/nb-gallery-rock-saw-1200.webp 1200w, assets/nb-gallery-rock-saw-1536.webp 1536w",
-        "width": 1536,
-        "height": 1495,
-        "alt": "A worker operating a mini excavator fitted with a diamond blade rock saw, cutting sandstone under a house"
+        "src": "assets/nb-service-curved-rock-saw-600.webp",
+        "srcset": "assets/nb-service-curved-rock-saw-400.webp 400w, assets/nb-service-curved-rock-saw-600.webp 600w",
+        "width": 600,
+        "height": 480,
+        "alt": "A diamond blade rock saw mounted on a mini excavator, cutting a curved sandstone retaining wall"
       }
     },
     {
       "title": "Sandstone Block Walls",
       "blurb": "Retaining and garden walls built from cut sandstone blocks. Jim plans, orders and cuts the blocks, and uses specialty lifters so nothing gets damaged going in.",
       "photo": {
-        "src": "assets/nb-gallery-wall-build-800.webp",
-        "srcset": "assets/nb-gallery-wall-build-480.webp 480w, assets/nb-gallery-wall-build-800.webp 800w, assets/nb-gallery-wall-build-1200.webp 1200w, assets/nb-gallery-wall-build-1774.webp 1774w",
-        "width": 1774,
-        "height": 1774,
-        "alt": "A mini excavator placing large cut sandstone blocks to build a retaining wall"
+        "src": "assets/nb-service-wahroonga-finished-600.webp",
+        "srcset": "assets/nb-service-wahroonga-finished-400.webp 400w, assets/nb-service-wahroonga-finished-600.webp 600w",
+        "width": 600,
+        "height": 450,
+        "alt": "A finished sandstone block retaining wall along a driveway in Wahroonga"
       }
     },
     {
@@ -204,11 +204,11 @@
       "title": "Difficult Access Excavation",
       "blurb": "Sites a bigger machine can't reach. The right-sized gear, run personally by Jim, for tight side accesses and awkward blocks.",
       "photo": {
-        "src": "assets/nb-gallery-truck-dog-800.webp",
-        "srcset": "assets/nb-gallery-truck-dog-480.webp 480w, assets/nb-gallery-truck-dog-800.webp 800w",
-        "width": 800,
-        "height": 600,
-        "alt": "A Northern Beaches Earthmoving branded tip truck and dog trailer parked beside a mini excavator on site"
+        "src": "assets/nb-service-fairlight-600.webp",
+        "srcset": "assets/nb-service-fairlight-400.webp 400w, assets/nb-service-fairlight-600.webp 600w",
+        "width": 600,
+        "height": 480,
+        "alt": "A mini excavator working a tight site hard against an apartment building in Fairlight"
       }
     }
   ],
@@ -241,11 +241,11 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/nb-hero-sandstone-wall-1800.webp",
-      "srcset": "assets/nb-hero-sandstone-wall-480.webp 480w, assets/nb-hero-sandstone-wall-800.webp 800w, assets/nb-hero-sandstone-wall-1200.webp 1200w, assets/nb-hero-sandstone-wall-1800.webp 1800w",
+      "src": "assets/nb-hero-wall-close-1800.webp",
+      "srcset": "assets/nb-hero-wall-close-480.webp 480w, assets/nb-hero-wall-close-800.webp 800w, assets/nb-hero-wall-close-1200.webp 1200w, assets/nb-hero-wall-close-1800.webp 1800w",
       "width": 1800,
-      "height": 1520,
-      "alt": "A large sawn sandstone retaining wall built hard against a brick house in Manly by Northern Beaches Earthmoving"
+      "height": 1000,
+      "alt": "A large sawn sandstone retaining wall built by Northern Beaches Earthmoving in Manly, in bright daylight showing the finished stone texture against grass"
     },
     "statement": {
       "src": "assets/nb-gallery-wall-build-800.webp",
@@ -278,14 +278,14 @@
     },
     "gallery": [
       {
-        "src": "assets/nb-hero-sandstone-wall-800.webp",
-        "full": "assets/nb-hero-sandstone-wall-1800.webp",
-        "srcset": "assets/nb-hero-sandstone-wall-480.webp 480w, assets/nb-hero-sandstone-wall-800.webp 800w, assets/nb-hero-sandstone-wall-1200.webp 1200w",
-        "width": 1800,
-        "height": 1520,
-        "caption": "Sandstone retaining wall, Manly",
-        "detail": "Sawn sandstone blocks, house wall",
-        "alt": "A large sawn sandstone retaining wall built hard against a brick house in Manly"
+        "src": "assets/nb-gallery-wahroonga-blocks-400.webp",
+        "full": "assets/nb-gallery-wahroonga-blocks-400.webp",
+        "srcset": "assets/nb-gallery-wahroonga-blocks-300.webp 300w, assets/nb-gallery-wahroonga-blocks-400.webp 400w",
+        "width": 400,
+        "height": 533,
+        "caption": "Sandstone wall, Wahroonga",
+        "detail": "Cut blocks being placed for a retaining wall",
+        "alt": "Sandstone blocks being placed to build a retaining wall in Wahroonga"
       },
       {
         "src": "assets/nb-gallery-wall-bush-800.webp",
@@ -298,44 +298,44 @@
         "alt": "A sandstone block retaining wall built into a natural bush embankment"
       },
       {
-        "src": "assets/nb-gallery-wall-build-800.webp",
-        "full": "assets/nb-gallery-wall-build-1774.webp",
-        "srcset": "assets/nb-gallery-wall-build-480.webp 480w, assets/nb-gallery-wall-build-800.webp 800w, assets/nb-gallery-wall-build-1200.webp 1200w",
-        "width": 1774,
-        "height": 1774,
-        "caption": "Sandstone wall, mid-build",
-        "detail": "Excavator placing cut sandstone blocks",
-        "alt": "A mini excavator placing large cut sandstone blocks to build a retaining wall"
+        "src": "assets/nb-gallery-turramura-wall-500.webp",
+        "full": "assets/nb-gallery-turramura-wall-500.webp",
+        "srcset": "assets/nb-gallery-turramura-wall-300.webp 300w, assets/nb-gallery-turramura-wall-500.webp 500w",
+        "width": 500,
+        "height": 375,
+        "caption": "Sandstone wall, Turramura",
+        "detail": "Finished retaining wall, excavator on site",
+        "alt": "A finished sandstone block retaining wall with a mini excavator on site in Turramura"
       },
       {
-        "src": "assets/nb-gallery-rock-saw-800.webp",
-        "full": "assets/nb-gallery-rock-saw-1536.webp",
-        "srcset": "assets/nb-gallery-rock-saw-480.webp 480w, assets/nb-gallery-rock-saw-800.webp 800w, assets/nb-gallery-rock-saw-1200.webp 1200w",
-        "width": 1536,
-        "height": 1495,
-        "caption": "Rock saw, under-house excavation",
-        "detail": "Diamond blade rock saw cutting sandstone",
-        "alt": "A worker operating a mini excavator fitted with a diamond blade rock saw, cutting sandstone under a house"
+        "src": "assets/nb-gallery-truck-loaded-800.webp",
+        "full": "assets/nb-gallery-truck-loaded-1200.webp",
+        "srcset": "assets/nb-gallery-truck-loaded-480.webp 480w, assets/nb-gallery-truck-loaded-800.webp 800w, assets/nb-gallery-truck-loaded-1200.webp 1200w",
+        "width": 1200,
+        "height": 1600,
+        "caption": "Truck and dog, loaded",
+        "detail": "Fleet loaded with rock and spoil for removal",
+        "alt": "A Northern Beaches Earthmoving branded tip truck and dog trailer loaded with rock, with an excavator working behind"
       },
       {
-        "src": "assets/nb-gallery-truck-dog-800.webp",
-        "full": "assets/nb-gallery-truck-dog-800.webp",
-        "srcset": "assets/nb-gallery-truck-dog-480.webp 480w, assets/nb-gallery-truck-dog-800.webp 800w",
-        "width": 800,
-        "height": 600,
-        "caption": "Truck and dog, on site",
-        "detail": "Northern Beaches Earthmoving fleet",
-        "alt": "A Northern Beaches Earthmoving branded tip truck and dog trailer parked beside a mini excavator on a bush block"
+        "src": "assets/nb-gallery-pool-manlyvale-400.webp",
+        "full": "assets/nb-gallery-pool-manlyvale-640.webp",
+        "srcset": "assets/nb-gallery-pool-manlyvale-400.webp 400w, assets/nb-gallery-pool-manlyvale-640.webp 640w",
+        "width": 640,
+        "height": 480,
+        "caption": "Pool excavation, Manly Vale",
+        "detail": "Pool shell dug and ready for the pool build",
+        "alt": "A freshly dug swimming pool excavation pit in Manly Vale"
       },
       {
-        "src": "assets/nb-gallery-pool-completed-600.webp",
-        "full": "assets/nb-gallery-pool-completed-600.webp",
-        "srcset": "assets/nb-gallery-pool-completed-480.webp 480w, assets/nb-gallery-pool-completed-600.webp 600w",
-        "width": 600,
-        "height": 400,
-        "caption": "Pool excavation, completed — Manly",
-        "detail": "Finished pool and timber deck",
-        "alt": "A finished in-ground pool with glass fencing and timber deck, following pool excavation by Northern Beaches Earthmoving"
+        "src": "assets/nb-gallery-pool-stleonards-400.webp",
+        "full": "assets/nb-gallery-pool-stleonards-640.webp",
+        "srcset": "assets/nb-gallery-pool-stleonards-400.webp 400w, assets/nb-gallery-pool-stleonards-640.webp 640w",
+        "width": 640,
+        "height": 480,
+        "caption": "Pool excavation, St Leonards",
+        "detail": "Mini excavator digging out the pool shell",
+        "alt": "A mini excavator digging a swimming pool excavation pit in St Leonards"
       }
     ]
   },
@@ -424,7 +424,7 @@
     ],
     "aboutText": "Northern Beaches Earthmoving is a proudly family-owned and operated business, serving the local community for over 25 years. As both the owner and operator, Jim Brigden is hands-on with every project. This personal approach means clients deal directly with him from the initial site visit through to completion of the job — ensuring honest communication, attention to detail, and a consistent, high quality result. Behind the scenes, Jim's wife Lynette plays a key role in running the business, managing all administration with care and efficiency. Together they are committed to delivering friendly, reliable service with values you'd expect from a true family-run company. Northern Beaches Earthmoving specialises in all types of residential excavation work, including driveways, rock excavation, pool and spa digs, detailed footings, house site preparation, sandstone block retaining walls, and rubbish or fill removal. No job is too small — just honest, hard work from a trusted local family business.",
     "statsBlock": "Owner Operator. 21 years experience. From initial estimate or quote through to completion of job. Professional, reliable and friendly. Finds practical solutions to site problems. Good communication with owners, builders and tradesmen. Complies with Workcover and OHS requirements. Fully insured.",
-    "photoNote": "No stock or theme demo images found anywhere on the site — every image is the client's own job photo, served from their own wp-content/uploads folders (2013, 2016 and 2023). Most are small (500-800px) WordPress-optimised web copies; a handful of full-resolution phone-camera originals also exist unresized (the ones used for the hero and three gallery shots, all 1536-3024px wide). The hero is a crop of Manly-Sandstone-Block-Wall-1.jpg (3024x4032 original) cropped to 1814x1532 to remove a wheelie bin from frame and to get a usable landscape hero above the 1600px-wide bar; nothing was upscaled.",
+    "photoNote": "No stock or theme demo images found anywhere on the site — every image is the client's own job photo, served from their own wp-content/uploads folders (2013, 2016 and 2023). Reworked 2026-09-23 after review: the original build reused several photos across hero/statement/service/gallery slots (up to 3x each). Re-cropped and re-mapped so every hero, statement, aperture, owner, service and gallery slot shows a different photo, drawing on the fuller downloaded set (pool, Wahroonga/Turramura wall and loaded-truck shots) that was on disk but unused. The hero is now a brighter, wider crop of Manly-Sandstone-Block-Wall-1.jpg (3024x4032 original), cropped to the well-lit sawn-block corner with grass and gravel in frame — much higher contrast than the previous narrow, shadowed crop of the same photo, which now runs as a distinct gallery-only file. Several of the newly-used photos (Turramura, Wahroonga finished wall, Fairlight, curved-wall rock saw) are smaller native originals (500-640px wide, WordPress web copies) rather than full-resolution phone shots, so they are used at their native size for gallery/service thumbnails, not upscaled. Only four photos on the whole site reach 1600px+ natively (Manly-Sandstone-Block-Wall-1.jpg, IMG_2787.jpg, IMG_2792.jpg, IMG_2785.jpg) plus the 1200x1600 loaded-truck shot; those anchor the hero, statement, aperture and one large gallery slot. Nothing was upscaled.",
     "claimSources": {
       "Business name 'Northern Beaches Earthmoving'": {
         "sentence": "Excavation Contractors in Sydney | Northern Beaches Earthmoving (page title); Northern Beaches Earthmoving Sydney (og:site_name)",
