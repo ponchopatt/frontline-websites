@@ -9,10 +9,9 @@ below 4) and `npm run check` before it counts.
 
 | | |
 |---|---|
-| **Done — passed review and check** | 10 — sunset-pools (4.5), utopian-landscaping (4.5), greenway-landscapes (4.5), south-coast-landscapes (4.5), lmac (4.5), arizona-roofing (4.67), dp-landscaping (4.5), karanda-interiors (4.83), nb-earthmoving (4.67), ab-roof-tiling (4.5) |
+| **Done — passed review and check** | 11 — sunset-pools (4.5), utopian-landscaping (4.5), greenway-landscapes (4.5), south-coast-landscapes (4.5), lmac (4.5), arizona-roofing (4.67), dp-landscaping (4.5), karanda-interiors (4.83), nb-earthmoving (4.67), ab-roof-tiling (4.5), dimension-gardenscape (4.5+) |
 | **Needs Pat** | 2 — horgan-building (4.33 after one rework round), forest-joinery (4.33 after one rework round) — both need more/better photos |
-| **In review** | 1 — dimension-gardenscape |
-| **Not started** | 2 |
+| **Not started** | 1 |
 
 Each done demo has its own branch (`demo/<slug>`) and is live on the
 `frontline-demos` Vercel project at `frontline-demos.vercel.app/<slug>`.
@@ -52,17 +51,17 @@ panel.
 
 ## What to do first
 
-1. **Look at the ten done demos**, live at `frontline-demos.vercel.app/<slug>`
+1. **Look at the eleven done demos**, live at `frontline-demos.vercel.app/<slug>`
    for sunset-pools, utopian-landscaping, greenway-landscapes,
    south-coast-landscapes, lmac, arizona-roofing, dp-landscaping,
-   karanda-interiors, nb-earthmoving and ab-roof-tiling. Or
-   `node tools/single.mjs <slug>` writes one self-contained file to
-   `dist-single/<slug>.html` that opens on a phone.
+   karanda-interiors, nb-earthmoving, ab-roof-tiling and
+   dimension-gardenscape. Or `node tools/single.mjs <slug>` writes one
+   self-contained file to `dist-single/<slug>.html` that opens on a phone.
 2. **Ring Ryan at South Coast Landscapes today** — his website is hacked. Details
    under his entry below. Worth a call whether or not he ever buys a site.
-3. **horgan-building needs you** — it's a good site, just short on distinct,
-   bright photos after one rework round. Ask Darryn for more before it goes
-   further.
+3. **horgan-building and forest-joinery both need you** — same problem on
+   each: good sites, just short on distinct, bright photos after one rework
+   round. Ask Darryn and Dave for more before either goes further.
 4. Nothing else is waiting on you. The queue keeps going.
 
 ## What Phase 2 is waiting on
@@ -455,9 +454,13 @@ fine but a real portrait would be better if he has one.
 
 ---
 
-## dimension-gardenscape — IN REVIEW
+## dimension-gardenscape — DONE (4.5+)
 
-**Dimension Gardenscape** · Trevor Fuller · 4.5 from 54 · Queanbeyan NSW · trust
+**Dimension Gardenscape** · Trevor Fuller · 4.5 from 54 (reviews shown, no
+star figure — see below) · Queanbeyan NSW · trust
+Lighthouse 93 / 97 / 100. Branch `demo/dimension-gardenscape`.
+Demo: `frontline-demos.vercel.app/dimension-gardenscape`
+
 Their live site is fully bot-blocked (SiteGround sgcaptcha challenge on every
 page — confirmed not a proxy/TLS issue, it blocks the Internet Archive's own
 crawler too), so every fact and photo came from Wayback Machine snapshots,
@@ -469,9 +472,22 @@ Association) as the differentiator.
 Review 1 (3.92) caught a real factory-policy miss: their 4.5 rating is under
 this factory's 4.7 floor for displaying a number, so it should stay off the
 page — but it showed twice anyway (a stat tile and in the reviews intro),
-which the automated check didn't catch. Also a dark/unreadable mobile hero
-and a leaked builder-voice line ("their site" instead of "our site"). Rework
-in progress.
+which the automated check didn't catch (it verifies a shown rating against
+the review pull, not whether one should be shown at all). Also a
+dark/unreadable mobile hero and a leaked builder-voice line. Rework removed
+both rating instances (kept "54 reviews", dropped the "4.5"), swapped to a
+bright whole-garden hero photo, and fixed the voice leak. Review 2 landed at
+4.42 — one word short ("their Google profile" instead of "our"); fixed that
+directly and shipped.
+
+> **Opener.** I noticed your site is putting up a security challenge screen
+> for every visitor, including search engines — even the Internet Archive
+> can't get past it to keep a record of your pages.
+
+**Ask Trevor for:** the 2-star review sitting in the full Google review set
+isn't shown on the demo but is worth reading before the call; a higher-res
+hero-quality photo if one exists — the best available is 800px, under the
+1600px bar.
 
 ---
 
