@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://crossroads.org.au/sitemap.xml

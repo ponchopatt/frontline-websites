@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Greenway Landscapes">
-  <rect width="64" height="64" rx="12" fill="#0B140C"/>
-  <path d="M32 13c-9 6-15 12-15 21a15 15 0 0 0 30 0c0-9-6-15-15-21z" fill="#6ABF16"/>
-  <path d="M32 20v29" stroke="#0B140C" stroke-width="3" stroke-linecap="round"/>
-</svg>
