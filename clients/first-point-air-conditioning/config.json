@@ -1,5 +1,5 @@
 {
-  "_comment": "First Point Air Conditioning, Fyshwick ACT. Built 2026-09-23 from a direct brief (not QUEUE.csv) plus their live site https://www.firstpointairconditioning.com.au/ (about, contact, split-system pages read the same day) and their Localsearch profile (address + the only 4 Google reviews found). No pricing, no team names and no licence numbers are published anywhere First Point controls, so none are invented here — see _needsConfirming. Their own site's stock hero/product photos (including a hand-holding-a-remote shot) were explicitly excluded per the brief's 'no smiling models with remote controls' rule; the hero and gallery instead reuse the same CC0 sample photos already vetted for LMAC (Openverse/Wikimedia, credited below), clearly flagged as samples. The 7 brand logos are First Point's own real dealer-logo files, downloaded from their site.",
+  "_comment": "First Point Air Conditioning, Fyshwick ACT. Built 2026-09-23 from a direct brief (not QUEUE.csv) plus their live site https://www.firstpointairconditioning.com.au/ (about, contact, split-system pages read the same day) and their Localsearch profile (address + the original 4 Google reviews). Pat later pasted in 5 more real Google reviews plus the owner's first name, 'Brad' — named unprompted in three of them — which now fills the one field the quality checker was blocking on. No pricing and no licence numbers are published anywhere First Point controls, so none are invented — see _needsConfirming. Their own site's stock hero/product photos (including a hand-holding-a-remote shot) were explicitly excluded per the brief's 'no smiling models with remote controls' rule; the hero and gallery instead reuse a mix of CC0 and credited CC-BY-SA sample photos (Openverse/Wikimedia/Flickr, credited below), clearly flagged as samples. The 7 brand logos are First Point's own real dealer-logo files, downloaded from their site.",
   "slug": "first-point-air-conditioning",
   "template": "quote",
   "industry": "air-conditioning",
@@ -9,6 +9,8 @@
   "schemaType": "HVACBusiness",
   "business": {
     "name": "First Point Air Conditioning",
+    "ownerName": "Brad",
+    "_ownerComment": "No surname published anywhere. Confirmed only by being named, unprompted, in at least 4 separate Google reviews pasted in by Pat 2026-09-23 (William Gay, Lochlan Whittington, Matt Carnell all call him by name; Micheal Cowling's review refers to 'the staff and owner') — treated as reliable since independent customers naming the same person is stronger evidence than a single source.",
     "phone": {
       "display": "02 6100 2247",
       "e164": "+61261002247"
@@ -72,19 +74,19 @@
   },
   "quoteSteps": [
     "<b>Send this through.</b> Takes under a minute.",
-    "<b>We call you back</b> to arrange a free on-site look, or quote a straightforward job over the phone.",
+    "<b>Brad or the team calls you back</b> to arrange a free on-site look, or quote a straightforward job over the phone.",
     "<b>A price in writing, then it's installed</b> — backed by a 12-month workmanship warranty."
   ],
   "demo": {
-    "formNote": "Demo mode — on the live site this goes straight to First Point's phone and inbox."
+    "formNote": "Demo mode — on the live site this goes straight to Brad's phone and inbox."
   },
   "form": {
-    "successBody": "Your enquiry is with First Point Air Conditioning. They'll be in touch on {phone}.",
-    "errorBody": "That did not send. Please call First Point Air Conditioning on {phone} instead."
+    "successBody": "Your enquiry is with Brad and the team. They'll be in touch on {phone}.",
+    "errorBody": "That did not send. Please call Brad and the team on {phone} instead."
   },
   "stats": {
     "googleRating": 5,
-    "reviewCount": 4
+    "reviewCount": 9
   },
   "trustClaims": [
     {
@@ -230,7 +232,7 @@
     },
     {
       "step": "Free on-site quote",
-      "detail": "We look at the space, talk through split vs ducted (or whatever the job is), and give you a price in writing before anything's booked in."
+      "detail": "Brad or the team looks at the space, talks through split vs ducted (or whatever the job is), and gives you a price in writing before anything's booked in."
     },
     {
       "step": "Installed and backed by warranty",
@@ -401,16 +403,36 @@
       "text": "Professional. On time and very easy to deal with. Was able to fix our issue that 2 other trades couldn't. Highly recommend"
     },
     {
-      "name": "Michael",
-      "text": "Highly recommend First point air conditioning! Very easy to deal with, the staff and owner were friendly and super helpful, quick turn-around time with top quality workmanship from people that take pride in their work! I have recommended to friends and family."
+      "name": "William Gay",
+      "text": "Would highly recommend Brad and his team from First Point Air-conditioning to everyone. Extremely professional and efficient through the entire process. Brad was super helpful helping design the correct system needed for my house and he was happy to travel to Mollymook from Canberra to do the install."
+    },
+    {
+      "name": "Lochlan Whittington",
+      "text": "Gave Brad a call early in the week, his service was great, organised quote and install- prompt service -Highly competitive pricing, Air con installed today down Batemans Bay - the boys go out of there way! Highly recommend Brad, for air con needs, will definitely be using his service again."
+    },
+    {
+      "name": "Matt Carnell",
+      "text": "First point installed a new ducted air conditioner at my property. Brad and his team did an exceptional job, very approachable and responsive to any questions. They quoted at a very competitive price i will use them for all maintenance and installs in the future. Awesome job from the first point team."
     },
     {
       "name": "Shawn",
       "text": "We had First Point out on a last-minute decision to get our system updated. They came through for us, installing our system before we moved into our house and before our baby was born. Any questions we've had, they've been so prompt to get back to us and show us what we need to do. We've recommended them to all of our friends and family."
     },
     {
+      "name": "Joe Carmody",
+      "text": "Organised efficient and an great attention to detail. Had Firstpoint install an ac unit, the communication was transparent from the outset, their service was punctual and efficient and the quality of the installation was to a very high standard."
+    },
+    {
       "name": "Drew",
       "text": "Had these guys install a zoned ducted heating cooling system in my house, very happy with the results and how efficient they were. Will definitely use them again when my rental needs the upgrade."
+    },
+    {
+      "name": "Micheal Cowling",
+      "text": "Highly recommen First point air conditioning! very easy to deal with, the staff and owner where friendly and super helpful, quick trun around time with top quality workmanship from people that take pride in there work! I would highly recommend to friends and family or anyone that wants a top quality job done 👌"
+    },
+    {
+      "name": "Alexander",
+      "text": "Repaired my outdoor unit, great service"
     }
   ],
   "faq": [
@@ -818,7 +840,7 @@
       "kicker": "About Us",
       "headline": "19+ Years Combined<br>Experience, One Canberra Team",
       "sub": "Based in Fyshwick, servicing homes and businesses across Canberra and Queanbeyan.",
-      "intro": "First Point Air Conditioning is dedicated to delivering dependable, high-quality air conditioning and HVAC solutions for homes and businesses throughout Canberra and nearby regions. The team brings 19+ years of combined experience across split systems, ducted air conditioning, evaporative cooling, gas heating and commercial HVAC — installing all major brands and backing every install with a 12-month workmanship warranty.",
+      "intro": "First Point Air Conditioning is dedicated to delivering dependable, high-quality air conditioning and HVAC solutions for homes and businesses throughout Canberra and nearby regions. Brad and the team bring 19+ years of combined experience across split systems, ducted air conditioning, evaporative cooling, gas heating and commercial HVAC — installing all major brands and backing every install with a 12-month workmanship warranty. Customers consistently mention Brad by name for being hands-on with the quote and the install, not just running the business from the office.",
       "benefits": [
         "19+ years combined experience",
         "All major brands installed and serviced",
@@ -854,7 +876,7 @@
       "https://www.firstpointairconditioning.com.au/about",
       "https://www.firstpointairconditioning.com.au/contact",
       "https://www.firstpointairconditioning.com.au/split-system-air-conditioner",
-      "https://www.localsearch.com.au/profile/first-point-air-conditioning/cm3zbotrl000e08lehdpq3a0t (address + the 4 Google reviews)"
+      "https://www.localsearch.com.au/profile/first-point-air-conditioning/cm3zbotrl000e08lehdpq3a0t (address + the original 4 Google reviews)"
     ],
     "readOn": "2026-09-23",
     "quotedElsewhere": {
@@ -864,7 +886,8 @@
       "abn": "ABN 73 660 909 080",
       "hours": "Monday-Friday: 7:00 am - 5:00 pm / Saturday: 7:00 am - 12:00 pm / Sunday: Closed",
       "address": "4/1 Albany Street, Fyshwick ACT 2609 (Localsearch profile)",
-      "rating": "5 stars, 4 reviews, on Localsearch (which mirrors their Google Business Profile) — Ben, Michael, Shawn and Drew, quoted verbatim in reviews[]",
+      "rating": "5 stars across all 9 reviews now on file — the original 4 from Localsearch (Ben, Shawn, Drew, Micheal Cowling) plus 5 more Pat pasted in from Google directly on 2026-09-23 (William Gay, Lochlan Whittington, Matt Carnell, Joe Carmody, Alexander), all quoted verbatim in reviews[]",
+      "ownerName": "'Brad' — not published anywhere First Point controls, but named unprompted in William Gay's, Lochlan Whittington's and Matt Carnell's reviews, and Micheal Cowling's review calls out 'the staff and owner'. Pasted in by Pat 2026-09-23 alongside the 5 new reviews.",
       "brands": "Daikin, Toshiba, Mitsubishi Heavy Industries, Mitsubishi Electric, Fujitsu, Samsung, Temperzone — logos on their homepage and about page",
       "services": "Residential: Split Systems, Ducted air conditioning, A/C Service & Repair, Evaporative Cooling, Gas Heating. Commercial: HVAC Install/Repair/Maintenance, Mechanical Installation, Ventilation, Cool Room Installation."
     }
@@ -874,10 +897,10 @@
     "pricing": "No dollar figures anywhere — First Point publish none. The pricing guide (calculator section) is wired up in 'quote' mode with no numbers. Give real ranges (e.g. 'split install from $X') and these become priced tiers.",
     "email": "sales@firstpointac.com is their real, current email (used on their own homepage and contact page) but it does not match their own domain, firstpointairconditioning.com.au — the same mismatch exists on their live site today, it wasn't introduced here. Confirm which is correct before publishing.",
     "warranty": "Their own site states both a '12-Month Installation Warranty' and a 'comprehensive 5-year warranty' in the same breath, without saying what the 5-year covers (reads like the manufacturer's parts warranty, not workmanship). Used only the confirmed 12-month workmanship figure on the page; the 5-year claim needs the owner to clarify what it actually covers before it goes anywhere.",
-    "ownerName": "No owner or technician name is published anywhere — About page, team page, contact page, Localsearch or Google. Copy is written in the business's own voice ('we', 'the team') instead of a named person. If there's a name to use, the page gets more personal with it.",
+    "ownerSurname": "Only 'Brad' is confirmed (see business._ownerComment and _source.quotedElsewhere.ownerName) — no surname anywhere. The page uses the first name only, same as every review does.",
     "licensing": "No licence, certification or 'licensed & insured' claim is published anywhere on their site, so the brief's 'Licensed & insured' trust-strip item was left out rather than assumed. If they hold ARC/ACT trade licences, add the numbers and this becomes a strong trust signal.",
-    "photos": "Zero real photos of First Point's team, vans or installs exist anywhere online. Hero and gallery use CC0 stock, clearly labelled as samples. Needs real Canberra job photos before this goes anywhere near live.",
-    "reviews": "Only 4 Google reviews exist (via Localsearch, which mirrors Google) — genuinely all of them, not a curated subset. More reviews would strengthen this a lot; none were invented to pad the count.",
+    "photos": "Zero real photos of First Point's team, vans or installs exist anywhere online — Alexander's review even mentions a photo they attached to it, which isn't something a pasted review can carry over. Hero and gallery use CC0/CC-BY stock, clearly labelled as samples. Needs real Canberra job photos before this goes anywhere near live.",
+    "reviewCountTotal": "9 reviews are now on the page, all genuinely sourced (4 from Localsearch, 5 pasted in directly by Pat). Whether the real Google Business Profile has more than 9 total isn't confirmed either way — reviewCount is set to 9 because that's what's actually verified, not because it's necessarily the full count.",
     "secondPhoneNumber": "Their own site also lists a mobile, 0488 025 856, alongside 02 6100 2247. The brief said one number sitewide, no exceptions, so only 02 6100 2247 is used anywhere on this page."
   }
 }
