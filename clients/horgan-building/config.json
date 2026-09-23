@@ -45,9 +45,10 @@
     "statementBody": "Twenty-three years running his own business, and thirty-five in the industry before and during it. There is no site manager between you and the person doing the work.",
     "servicesLabel": "What we build",
     "servicesHeadline": "New homes, extensions,<br>and everything between.",
-    "servicesIntro": "Quality workmanship and attention to detail, on jobs from a single room to a whole house.",
+    "servicesIntro": "Job size ranges from three skylights in a hallway to a full storm-damage rebuild — Darryn takes it on either way.",
     "workLabel": "Selected work",
     "workHeadline": "Recent jobs across<br>the South Coast.",
+    "workIntro": "Recent jobs across Bomaderry and the South Coast, including a storm-damage rebuild and a client HBR has worked with for over 20 years.",
     "processLabel": "How it runs",
     "processHeadline": "Three steps,<br>no surprises.",
     "ownerLabel": "Who you are dealing with",
@@ -68,6 +69,9 @@
     "googleRating": 5.0,
     "reviewCount": 5,
     "jobsDone": null
+  },
+  "statLabels": {
+    "yearsInBusiness": "Years in the industry"
   },
   "services": [
     {
@@ -104,25 +108,14 @@
       }
     },
     {
-      "title": "Construction",
-      "blurb": "New homes and outdoor living, built to the drawing and finished properly.",
+      "title": "Construction and granny flats",
+      "blurb": "New homes, outdoor living and granny flats — sited, approved and built to the drawing, finished properly.",
       "photo": {
         "src": "assets/20240731-110809-1920w-800.webp",
         "srcset": "assets/20240731-110809-1920w-800.webp 800w, assets/20240731-110809-1920w-1800.webp 1800w",
         "width": 800,
         "height": 600,
-        "alt": "Construction site with workers on ladders rebuilding a patio and house with a rural backdrop."
-      }
-    },
-    {
-      "title": "Granny flats",
-      "blurb": "A second dwelling done properly: siting, approvals and build, with the rules for your block checked first.",
-      "photo": {
-        "src": "assets/20240731-110809-1920w-800.webp",
-        "srcset": "assets/20240731-110809-1920w-800.webp 800w, assets/20240731-110809-1920w-1800.webp 1800w",
-        "width": 800,
-        "height": 600,
-        "alt": "Ladders and roof framing during an outdoor rebuild, with a rural hillside backdrop."
+        "alt": "Ladders and roof framing during a construction and granny flat rebuild, with a rural hillside backdrop."
       }
     }
   ],
@@ -164,21 +157,21 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/20230805-094328-1920w-800.webp",
-      "srcset": "assets/20230805-094328-1920w-800.webp 800w, assets/20230805-094328-1920w-1800.webp 1800w",
+      "src": "assets/20250914-114449-1920w-800.webp",
+      "srcset": "assets/20250914-114449-1920w-800.webp 800w, assets/20250914-114449-1920w-1800.webp 1800w",
       "width": 800,
       "height": 600,
-      "alt": "Black timber-clad home with a large pitched gable window, timber deck and stairs, built by Horgan Building & Renovations."
+      "alt": "Finished weatherboard home with a wraparound verandah and in-ground pool, under a clear blue sky, built by Horgan Building & Renovations."
     },
     "gallery": [
       {
-        "src": "assets/20250914-114449-1920w-800.webp",
-        "srcset": "assets/20250914-114449-1920w-800.webp 800w, assets/20250914-114449-1920w-1800.webp 1800w",
+        "src": "assets/20230805-094328-1920w-800.webp",
+        "srcset": "assets/20230805-094328-1920w-800.webp 800w, assets/20230805-094328-1920w-1800.webp 1800w",
         "width": 800,
         "height": 600,
-        "alt": "Finished weatherboard home with a wraparound verandah and in-ground pool, under a clear blue sky.",
-        "full": "assets/20250914-114449-1920w-1800.webp",
-        "caption": "Finished home and pool"
+        "alt": "Black timber-clad home with a large pitched gable window, timber deck and stairs.",
+        "full": "assets/20230805-094328-1920w-1800.webp",
+        "caption": "Finished black cabin, front elevation"
       },
       {
         "src": "assets/20240924-100456-1920w-800.webp",

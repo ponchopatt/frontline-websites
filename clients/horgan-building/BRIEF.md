@@ -61,14 +61,15 @@ Assets live in `clients/horgan-building/assets/`, each as an 800w and a
 1800w webp.
 
 **Used on the demo:**
-1. `20230805-094328` — 1800×1350. Hero. Black timber-clad home, pitched
-   gable end with a large triangular window, timber deck and stairs.
-   Overcast light, sharp, no people. Strong hero: distinctive, finished,
-   clearly their build.
-2. `20250914-114449` — 1800×1350. Finished weatherboard home, wraparound
-   verandah, in-ground pool, clear blue sky. Bright, sharp, the strongest
-   "after" shot in the set — added to the gallery (was unused in the
-   original scrape).
+1. `20250914-114449` — 1800×1350. Hero. Finished weatherboard home,
+   wraparound verandah, in-ground pool, clear blue sky. Bright, sharp, reads
+   well under the hero overlay at 390px — moved to hero after review flagged
+   the original hero (below) as too dark on mobile, since the template
+   exposes no overlay-opacity setting to fix that in place.
+2. `20230805-094328` — 1800×1350. Black timber-clad home, pitched gable end
+   with a large triangular window, timber deck and stairs. Overcast light,
+   sharp, no people. Distinctive, clearly their build — moved from hero into
+   the gallery (see above).
 3. `20240924-100456` — 1800×1350. Mid-build: new roof trusses going up over
    an existing house, pool in the foreground. Real in-progress shot, used
    for the Extensions service tile and gallery.
@@ -77,9 +78,10 @@ Assets live in `clients/horgan-building/assets/`, each as an 800w and a
 5. `20240731-110813-1` — 1800×2400 (portrait). Deck frame under
    construction, yellow weatherboard house behind.
 6. `20240731-110809` — 1800×1350. Ladders and roof framing mid-rebuild,
-   rural hillside backdrop. Used for Construction and Granny flats service
-   tiles (only one photo fits "granny flats," so it's reused; alt text now
-   written for both placements).
+   rural hillside backdrop. Used for the combined "Construction and granny
+   flats" service tile — no second photo in the set fits "granny flats" well
+   enough to stand on its own, so the two service cards were merged into one
+   rather than repeat this same photo back-to-back on the page.
 7. `20230805-094504` — 1800×1350. Interior: open-tread stair to a mezzanine
    with a timber balustrade and paper lantern lights. Distinctive, finished
    interior shot.

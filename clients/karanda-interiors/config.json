@@ -73,7 +73,7 @@
     "recognitionIntro": "Toni's credentials and industry standing, alongside the trade partners and platforms that know her work.",
     "areasLabel": "Where we've worked",
     "areasHeadline": "Sutherland Shire,<br>and across Sydney.",
-    "areasIntro": "Based in Sylvania Heights. These are suburbs where Karanda's own published projects are — not a stated service boundary, so if you're further out, ask.",
+    "areasIntro": "Based in Sylvania Heights. These are the suburbs where we've completed projects — not a strict boundary, so if you're further out, just ask.",
     "faqLabel": "Before you call",
     "faqHeadline": "Questions we are asked.",
     "enquireLabel": "Talk to Toni",
@@ -91,7 +91,7 @@
   },
   "owner": {
     "body": "Interior Designer F.D.I.A. — a Fellow of the Design Institute of Australia. Toni has over 40 years' experience in the design industry, and her interior architecture and design training, alongside comprehensive construction knowledge, let her resolve complex floor plan issues herself rather than referring them on.",
-    "team": "She gives back to the industry as a Counselor with the Design Institute of Australia. Behind her, Jelena Bruce (a graduate of Design Centre Enmore), Kasey Pogson and Jannelle Peck round out the studio — named on Karanda's own about page.",
+    "team": "She gives back to the industry as a Counselor with the Design Institute of Australia. Behind her, Jelena Bruce (a graduate of Design Centre Enmore), Kasey Pogson and Jannelle Peck round out the studio.",
     "facts": [
       {
         "value": "40+",
@@ -100,10 +100,6 @@
       {
         "value": "F.D.I.A.",
         "label": "Design Institute of Australia Fellow"
-      },
-      {
-        "value": "4",
-        "label": "Team members named on their site"
       }
     ]
   },
@@ -117,13 +113,13 @@
     {
       "kind": "partner",
       "label": "Joint projects with The Company of Fire",
-      "body": "Their residential interior design page credits joint projects with The Company of Fire — and The Company Of Fire's own Google review calls Karanda's work 'second to none.'",
+      "body": "We've worked on joint projects with The Company of Fire — whose own Google review calls our work 'second to none.'",
       "strip": false
     },
     {
       "kind": "profile",
       "label": "Houzz professional profile",
-      "body": "Listed as a professional on Houzz, linked from every page of their site.",
+      "body": "You'll find us listed as a professional on Houzz, linked from every page of our site.",
       "strip": false
     }
   ],
@@ -354,6 +350,9 @@
       "a": "Over 40 years in the design industry. She's an Interior Designer F.D.I.A. — a Fellow of the Design Institute of Australia — and serves the industry as a DIA Counselor. Her interior architecture and construction training let her resolve complex floor plan issues herself."
     }
   ],
+  "form": {
+    "notesHint": "Anything that will help us prepare for your consultation."
+  },
   "sms": {
     "label": "Text a photo",
     "body": "Hi {owner}, I'd like a quote.\nSuburb: \nWhat I'm after: \n(Happy to send photos of the space.)"
