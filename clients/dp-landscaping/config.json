@@ -1,108 +1,308 @@
 {
-  "_comment": "Built by \"npm run new\" from http://dplandscaping.com.au on 2026-09-22. Everything listed in _check was worked out by reading their website and is NOT confirmed. Go through the checklist, fix or delete each one, then remove it from _check. Reviews are deliberately empty — paste them in from their Google profile, word for word.",
+  "_comment": "DP Landscaping & Design demo. Finished 2026-09-23 from http://dplandscaping.com.au and data/google_reviews_top25.json. Only 4 real job photos exist (all downloaded already, all cropped to 800x292 banner strips by the original site) — the hero photo is reused as the first gallery tile so the gallery still shows 4. No stock or sample photos used. Every fact on the page is traced in _source.claimSources or comes straight from the review pull. 'Started in 1996' and '20 years' experience' in their own about text contradict each other, so no years-in-business figure is shown anywhere — flagged in BRIEF.md for Pat.",
   "slug": "dp-landscaping",
   "template": "trust",
   "industry": "landscaping",
   "live": false,
+  "tagline": "Landscape design, construction and garden maintenance across the Shoalhaven, NSW South Coast.",
+  "schemaType": "LandscapeArchitect",
   "business": {
-    "name": "Garden Design",
-    "ownerName": "",
-    "ownerFirstName": "",
+    "name": "DP Landscaping & Design",
+    "ownerName": "Dale Pickering",
+    "ownerFirstName": "Dale",
     "phone": {
       "display": "0402 469 118",
       "e164": "+61402469118"
     },
-    "email": "info@dplandscaping.com.au",
+    "email": "",
     "abn": "",
-    "baseSuburb": "",
-    "region": "",
+    "baseSuburb": "Falls Creek",
+    "region": "NSW",
     "currentSite": "dplandscaping.com.au",
-    "brand": {},
+    "brand": {
+      "accent": "#7CAA82",
+      "accent2": "#6B8195",
+      "themeColor": "#0D1512",
+      "_comment": "accent2 #6B8195 is the single most common pixel in their own logo.webp (3,867 of them, sampled with PIL). accent #7CAA82 is a deepened, more saturated version of the logo's pale sage green (#B3CAB9) — the original is too low-contrast for buttons and links, so it was darkened while keeping the same hue. Nothing sampled from the live site's CSS, which uses a generic page-builder theme unrelated to the logo."
+    },
     "logo": {
       "src": "assets/logo.webp",
       "width": 175,
       "height": 117
     }
   },
-  "responsePromise": "",
+  "fonts": [
+    "fonts/big-shoulders-var.woff2",
+    "fonts/instrument-sans-var.woff2"
+  ],
+  "icons": {
+    "favicon": "assets/favicon.svg"
+  },
+  "share": {
+    "image": "assets/q-800.webp",
+    "width": 800,
+    "height": 292,
+    "title": "DP Landscaping & Design — Landscape Design, Construction & Maintenance, Shoalhaven",
+    "description": "Landscape design, construction and garden maintenance across the Shoalhaven, NSW South Coast. Based in Falls Creek. Call Dale on 0402 469 118.",
+    "alt": "A stone-and-timber bridge arching over a rock water feature, with clipped shrubs and ornamental grasses on either bank"
+  },
+  "responsePromise": "We look forward to hearing from you. Landscape design, construction and garden maintenance across the Shoalhaven, NSW South Coast.",
   "copy": {
-    "headline": "",
-    "sub": "",
-    "kicker": ""
+    "title": "DP Landscaping & Design — Landscape Design, Construction & Maintenance, Shoalhaven",
+    "description": "Landscape design, construction and garden maintenance across the Shoalhaven, NSW South Coast. Based in Falls Creek. Call Dale on 0402 469 118.",
+    "ctaLabel": "Get a quote",
+    "kicker": "Falls Creek · the Shoalhaven",
+    "headline": "The gardener<br>Shoalhaven clients<br><em>keep for years.</em>",
+    "sub": "Dale Pickering and his team design, build and maintain gardens across the Shoalhaven. <em>Ask his clients — some have kept him on for ten, even fifteen, years.</em>",
+    "heroSecondary": "Or send the details",
+    "heroSecondarySms": "Or text Dale a photo",
+    "navApproach": "Approach",
+    "statementLabel": "The difference",
+    "statementHeadline": "Clients who stay<br>for years.",
+    "statementBody": "Most landscapers finish the job and move on. Dale's clients keep him on long after: Gary Teagle has had him maintaining the same garden for fifteen years, and Bernadette Wyer has used him for ten, across several jobs. That kind of repeat trust is hard to fake.",
+    "servicesLabel": "What we do",
+    "servicesHeadline": "Design, build,<br>and keep it growing.",
+    "servicesIntro": "Consultation and garden design, then construction, then ongoing maintenance — the same team from the first sketch to years of upkeep.",
+    "workLabel": "Our work",
+    "workHeadline": "Stonework, ponds<br>and quiet gardens.",
+    "workIntro": "Photos from around the Shoalhaven: dry-stone walling, a water feature bridge, and established garden beds.",
+    "processLabel": "How it runs",
+    "processHeadline": "From first visit<br>to years of upkeep.",
+    "processIntro": "Consultation, design, construction, then maintenance — the same team the whole way through.",
+    "ownerLabel": "Who you are dealing with",
+    "reviewsTitle": "What clients say.",
+    "reviewsIntro": "Real reviews from their Google profile, word for word.",
+    "areasLabel": "Where we work",
+    "areasHeadline": "Falls Creek, and<br>the Shoalhaven.",
+    "areasIntro": "Based in Falls Creek, working across Nowra, Berry, Kiama, Kangaroo Valley and Jamberoo.",
+    "faqLabel": "Before you call",
+    "faqHeadline": "Questions we're asked.",
+    "enquireLabel": "Get a quote",
+    "enquireHeadline": "Tell us about<br>the garden.",
+    "enquireIntro": "Tell us the suburb, what's there now and what you're after. Photos help."
   },
   "stats": {
-    "googleRating": null,
-    "reviewCount": null,
+    "googleRating": 5.0,
+    "reviewCount": 10,
     "jobsDone": null,
-    "yearsInBusiness": null
+    "yearsInBusiness": null,
+    "_comment": "yearsInBusiness deliberately null: their own about page says 'Started in 1996' in one sentence and 'experience... spans the last 20 years' in the next, which cannot both be true today. No number is shown anywhere on the page rather than pick one. Flagged in BRIEF.md for Pat to get the real figure from Dale."
+  },
+  "pullQuote": {
+    "text": "Dale has worked with us for 10 years. He has done several landscaping jobs over that time.",
+    "name": "Bernadette Wyer, Google"
+  },
+  "owner": {
+    "body": "Founder of DP Landscaping & Design. His team get named individually in his reviews — Trent, Matt and James all get a specific shout-out — which is not something people do for a crew they don't remember.",
+    "team": "A team of ten, based in Falls Creek and working across the Shoalhaven and surrounding areas, with local and Sydney-based architects, builders and property owners.",
+    "facts": [
+      {
+        "value": "5.0",
+        "label": "Google rating"
+      },
+      {
+        "value": "10",
+        "label": "Google reviews"
+      },
+      {
+        "value": "10",
+        "label": "Team members"
+      }
+    ]
+  },
+  "credentials": [],
+  "priceLines": {
+    "fee": "",
+    "build": "",
+    "_comment": "No price published anywhere on their site and none invented here. Ask Dale, then fill in, e.g. fee: \"$0 — the first consultation is free\", build: \"$20,000 and $80,000\"."
   },
   "services": [
     {
-      "title": "Services",
-      "blurb": "",
+      "title": "Garden design",
+      "blurb": "A consultation first, then a design for the property — working with your architect or builder, or directly with you.",
+      "photo": {
+        "src": "assets/front-entry-800.webp",
+        "srcset": "assets/front-entry-800.webp 800w",
+        "width": 800,
+        "height": 292,
+        "alt": "A garden entry path in burgundy fountain grass and stone, leading up steps past a stone water bowl"
+      }
+    },
+    {
+      "title": "Construction",
+      "blurb": "Stonework, retaining walls, water features and planting, built by the qualified team to the design.",
+      "photo": {
+        "src": "assets/main-sevices-photo-800.webp",
+        "srcset": "assets/main-sevices-photo-800.webp 800w",
+        "width": 800,
+        "height": 292,
+        "alt": "A dry-stone retaining wall built from coursed fieldstone in ochre, plum and grey tones"
+      }
+    },
+    {
+      "title": "Garden maintenance",
+      "blurb": "Ongoing care once it's built. Several clients have kept Dale on for years after the first job finished.",
       "photo": {
         "src": "assets/pond-view-800.webp",
         "srcset": "assets/pond-view-800.webp 800w",
         "width": 800,
         "height": 292,
-        "alt": "Pond-view"
+        "alt": "A dry-stone wall along a garden pond, with mown lawn and established planting behind it"
       }
     }
   ],
-  "serviceAreas": [],
-  "credentials": [],
+  "process": [
+    {
+      "step": "Consultation",
+      "detail": "Dale visits to understand what you want from the space and talks it through."
+    },
+    {
+      "step": "Garden design",
+      "detail": "A design for the property, working with your architect or builder if you have one, or directly with you."
+    },
+    {
+      "step": "Construction",
+      "detail": "The qualified team builds it — stonework, planting, water features and more — to the design."
+    },
+    {
+      "step": "Garden maintenance",
+      "detail": "Ongoing care once it's built. Some clients have kept the team on for ten years and more."
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "Shoalhaven",
+      "suburbs": [
+        "Falls Creek",
+        "Nowra",
+        "Berry",
+        "Kiama",
+        "Kangaroo Valley",
+        "Jamberoo"
+      ]
+    }
+  ],
   "photos": {
     "hero": {
-      "src": "assets/front-entry-800.webp",
-      "srcset": "assets/front-entry-800.webp 800w",
+      "src": "assets/q-800.webp",
+      "srcset": "assets/q-800.webp 800w",
       "width": 800,
       "height": 292,
-      "alt": "Front-entry"
+      "alt": "A stone-and-timber bridge arching over a rock water feature, with clipped shrubs and ornamental grasses on either bank"
+    },
+    "statement": {
+      "src": "assets/pond-view-800.webp",
+      "srcset": "assets/pond-view-800.webp 800w",
+      "width": 800,
+      "height": 292,
+      "alt": "A dry-stone retaining wall along a garden pond, with mown lawn and established planting behind it"
+    },
+    "owner": {
+      "src": "assets/main-sevices-photo-800.webp",
+      "srcset": "assets/main-sevices-photo-800.webp 800w",
+      "width": 800,
+      "height": 292,
+      "alt": "A dry-stone retaining wall built from coursed fieldstone in ochre, plum and grey tones",
+      "caption": "Dry-stone retaining wall"
     },
     "gallery": [
       {
-        "src": "assets/pond-view-800.webp",
-        "srcset": "assets/pond-view-800.webp 800w",
-        "width": 800,
-        "height": 292,
-        "alt": "Pond-view",
-        "full": "assets/pond-view-800.webp",
-        "caption": ""
-      },
-      {
         "src": "assets/q-800.webp",
+        "full": "assets/q-800.webp",
         "srcset": "assets/q-800.webp 800w",
         "width": 800,
         "height": 292,
-        "alt": "Q",
-        "full": "assets/q-800.webp",
-        "caption": ""
+        "caption": "Stone-and-timber bridge",
+        "detail": "Water feature, rock waterfall",
+        "alt": "A stone-and-timber bridge arching over a rock water feature, with clipped shrubs and ornamental grasses on either bank"
+      },
+      {
+        "src": "assets/front-entry-800.webp",
+        "full": "assets/front-entry-800.webp",
+        "srcset": "assets/front-entry-800.webp 800w",
+        "width": 800,
+        "height": 292,
+        "caption": "Garden entry",
+        "detail": "Fountain grass, stone steps",
+        "alt": "A garden entry path in burgundy fountain grass and stone, leading up steps past a stone water bowl"
+      },
+      {
+        "src": "assets/pond-view-800.webp",
+        "full": "assets/pond-view-800.webp",
+        "srcset": "assets/pond-view-800.webp 800w",
+        "width": 800,
+        "height": 292,
+        "caption": "Pond and retaining wall",
+        "detail": "Dry-stone wall, lawn",
+        "alt": "A dry-stone retaining wall along a garden pond, with mown lawn and established planting behind it"
       },
       {
         "src": "assets/main-sevices-photo-800.webp",
+        "full": "assets/main-sevices-photo-800.webp",
         "srcset": "assets/main-sevices-photo-800.webp 800w",
         "width": 800,
         "height": 292,
-        "alt": "",
-        "full": "assets/main-sevices-photo-800.webp",
-        "caption": ""
-      },
-      {
-        "src": "assets/mainportfolio-showcase-photo-800.webp",
-        "srcset": "assets/mainportfolio-showcase-photo-800.webp 800w",
-        "width": 800,
-        "height": 292,
-        "alt": "",
-        "full": "assets/mainportfolio-showcase-photo-800.webp",
-        "caption": ""
+        "caption": "Dry-stone retaining wall",
+        "detail": "Coursed fieldstone, close up",
+        "alt": "A dry-stone retaining wall built from coursed fieldstone in ochre, plum and grey tones"
       }
     ],
     "beforeAfter": []
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
-  "reviews": [],
-  "_todo_reviews": "Paste their Google reviews here, word for word, as {\"name\": \"...\", \"text\": \"...\"}. Never write one.",
+  "reviews": [
+    {
+      "name": "Mark G",
+      "text": "Dale and his team did a brilliant job for us. They really listened to what we wanted and worked with us without simply imposing their own ideas. The end result is something that brings us so much enjoyment and complements our house perfectly. No hesitation in recommending Dale."
+    },
+    {
+      "name": "Gary Teagle",
+      "text": "15 years ago, Dale landscaped our property & has continued to maintained the gardens ever since. He & his team have not only been very professional & courteous, but they are always happy to advise & give ideas when needed. I would recommend Dale to anyone wanting to create a special garden."
+    },
+    {
+      "name": "Elaine Connor",
+      "text": "Dale does amazing stonework and creates wonderful gardens with interesting features and shapes. His recommendation of a particular sculpture for our garden was a brilliant solution to a design flaw of the house and has given us great pleasure. Highly recommend him."
+    },
+    {
+      "name": "Sam Brewer",
+      "text": "Dale and his team have done two large scale landscaping jobs for us in Kangaroo Valley. Dale is very approachable and has an amazing eye for design, but is also flexible in terms of budget and ideas. I would not hesitate to recommend DP"
+    },
+    {
+      "name": "Bernadette Wyer",
+      "text": "Dale has worked with us for 10 years. He has done several landscaping jobs over that time. Dale is easy to work with and open to ideas. We continue to use the services of Dale, his team are very respectful and polite. We would recommend Dale's services."
+    },
+    {
+      "name": "Tim Mason",
+      "text": "Dale and his team did a great job. They were on time honest and very hard working in sometimes difficult conditions. A definite shout out for Trent Matt and James who got the job done. Highly recommended for a job of any size"
+    }
+  ],
+  "faq": [
+    {
+      "q": "What areas do you cover?",
+      "a": "We're based in Falls Creek and work across the Shoalhaven — Nowra, Berry, Kiama, Kangaroo Valley and Jamberoo. If you're nearby but not on that list, call and ask."
+    },
+    {
+      "q": "Do you design gardens as well as build them?",
+      "a": "Yes. Consultation and garden design come first, so what gets built matches what you asked for — and we work with your architect or builder if you have one."
+    },
+    {
+      "q": "Will you look after the garden once it's finished?",
+      "a": "Yes — garden maintenance is one of our core services, and several clients have kept us on for years after the original job. One client has been with us for ten years, another for fifteen."
+    },
+    {
+      "q": "What size jobs do you take on?",
+      "a": "Both large and small. Reviewers mention two separate large-scale jobs in Kangaroo Valley, and others describe smaller design and maintenance work — \"highly recommended for a job of any size.\""
+    },
+    {
+      "q": "How do I get a quote?",
+      "a": "Call or text Dale on 0402 469 118, or send the details through the form below."
+    }
+  ],
+  "sms": {
+    "label": "Text Dale a photo",
+    "body": "Hi {owner}, I'd like a quote.\nSuburb: \nWhat I'm after: \n(Happy to send photos of the space.)"
+  },
   "form": {
     "accessKey": ""
   },
@@ -110,24 +310,86 @@
     "url": "http://dplandscaping.com.au",
     "platform": "unknown",
     "pagesRead": [
-      "home",
-      "services",
-      "gallery",
-      "contact"
+      "http://dplandscaping.com.au/",
+      "http://dplandscaping.com.au/contact",
+      "http://dplandscaping.com.au/services",
+      "http://dplandscaping.com.au/gallery",
+      "data/google_reviews_top25.json"
     ],
     "aboutText": "Started in 1996 by Dale Pickering, the business employs ten members, passionate about creating and maintaining beautiful gardens and outdoor living spaces.\n\nWorking closely with both Sydney based and local architects, large construction firms and rural and residential property owners across the Shoalhaven and surrounding areas, Dale’s experience in the field of landscape gardening spans the last 20 years.\n\nOur qualified team is dedicated to producing unique landscape settings, through careful planning, professional construction, and follow up maintenance. A complete landscape service ensures each individually designed project, built to the highest standard, flourishes to its full potential.",
     "socials": {},
-    "stockLookingPhotos": []
+    "stockLookingPhotos": [],
+    "photoNote": "Exactly 4 real, non-stock photos exist for this client: front-entry-800.webp, main-sevices-photo-800.webp, pond-view-800.webp, q-800.webp — all cropped to 800x292 by the original site, well below the 1600px hero bar and an unusually wide banner-strip aspect. A 5th downloaded file, mainportfolio-showcase-photo-800.webp, is two magazine cover thumbnails, not a job photo, and is excluded entirely (not referenced anywhere in this config). Because there are only 4 usable photos, the hero image (q-800.webp) is reused as the first gallery tile so the gallery still meets the 4-photo minimum; no stock or sample photos were introduced. Flagged in BRIEF.md.",
+    "claimSources": {
+      "Business name 'DP Landscaping & Design'": {
+        "sentence": "Google Business Profile name \"DP Landscaping & Design\"; the site's own logo reads \"DP LANDSCAPING & DESIGN\".",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Owner 'Dale Pickering'": {
+        "sentence": "Started in 1996 by Dale Pickering... and every review addresses 'Dale' by name.",
+        "url": "http://dplandscaping.com.au/"
+      },
+      "Phone 0402 469 118": {
+        "sentence": "Site contact page phone number, matching the Google Business Profile phone number exactly.",
+        "url": "http://dplandscaping.com.au/contact"
+      },
+      "Base suburb 'Falls Creek' / address": {
+        "sentence": "14a Old Princes Highway, Falls Creek NSW 2540",
+        "url": "http://dplandscaping.com.au/contact"
+      },
+      "Service areas: Shoalhaven, Nowra, Berry, Kiama, Kangaroo Valley, Jamberoo": {
+        "sentence": "Shoalhaven - Nowra - Berry - Kiama - Kangaroo Valley - Jamberoo",
+        "url": "http://dplandscaping.com.au/contact"
+      },
+      "Services: Consultation, Garden Design, Construction, Garden Maintenance": {
+        "sentence": "Site navigation lists Consultation, Garden Design, Construction and Garden Maintenance as the four services.",
+        "url": "http://dplandscaping.com.au/services"
+      },
+      "Team of ten": {
+        "sentence": "Started in 1996 by Dale Pickering, the business employs ten members...",
+        "url": "http://dplandscaping.com.au/"
+      },
+      "'Qualified team' / 'careful planning, professional construction, and follow up maintenance'": {
+        "sentence": "Our qualified team is dedicated to producing unique landscape settings, through careful planning, professional construction, and follow up maintenance.",
+        "url": "http://dplandscaping.com.au/"
+      },
+      "Works with Sydney-based and local architects, construction firms and property owners": {
+        "sentence": "Working closely with both Sydney based and local architects, large construction firms and rural and residential property owners across the Shoalhaven and surrounding areas...",
+        "url": "http://dplandscaping.com.au/"
+      },
+      "Google rating 5.0 from 10 reviews": {
+        "sentence": "\"rating\": 5.0, \"review_count\": 10 for dp-landscaping.",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Angle: clients keep Dale on for years (statement section, headline, FAQ)": {
+        "sentence": "Gary Teagle: \"15 years ago, Dale landscaped our property & has continued to maintained the gardens ever since.\" Bernadette Wyer: \"Dale has worked with us for 10 years. He has done several landscaping jobs over that time.\"",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Owner body: Trent, Matt and James named": {
+        "sentence": "Tim Mason: \"A definite shout out for Trent Matt and James who got the job done.\"",
+        "url": "data/google_reviews_top25.json"
+      },
+      "FAQ: two large-scale jobs in Kangaroo Valley / 'a job of any size'": {
+        "sentence": "Sam Brewer: \"Dale and his team have done two large scale landscaping jobs for us in Kangaroo Valley.\" Tim Mason: \"Highly recommended for a job of any size.\"",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Every photo used on the page": {
+        "sentence": "front-entry-800.webp, main-sevices-photo-800.webp, pond-view-800.webp and q-800.webp are the 4 real, non-stock photos downloaded for this client; opened one by one with the Read tool. mainportfolio-showcase-photo-800.webp is excluded — it shows two magazine cover thumbnails, not a job photo.",
+        "url": "assets/"
+      },
+      "yearsInBusiness left blank": {
+        "sentence": "'Started in 1996 by Dale Pickering' and, two sentences later, 'Dale’s experience in the field of landscape gardening spans the last 20 years' — both cannot be true in 2026, so no figure is shown.",
+        "url": "http://dplandscaping.com.au/"
+      },
+      "No licence/ABN/insurance shown": {
+        "sentence": "No ABN, licence number, insurance or award claim appears anywhere on their site's home, contact, services or gallery pages.",
+        "url": "http://dplandscaping.com.au/"
+      },
+      "Email left blank": {
+        "sentence": "Contact page email is obscured behind spam-bot protection and could not be read; the scraper's guess of info@dplandscaping.com.au is unconfirmed, so no email is shown on the page.",
+        "url": "http://dplandscaping.com.au/contact"
+      }
+    }
   },
-  "_check": [
-    "business.name",
-    "business.phone.display",
-    "business.email",
-    "business.baseSuburb",
-    "services",
-    "serviceAreas",
-    "business.logo",
-    "photos.hero",
-    "photos.gallery"
-  ]
+  "_check": []
 }
