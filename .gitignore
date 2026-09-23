@@ -19,12 +19,13 @@ logs/
 # cannot delta — fourteen clients would put a quarter of a gigabyte of working
 # artefacts in the history. A passing demo keeps a small webp pair instead.
 clients/*/shots/
-clients/*/_tmp_*
-clients/*/tmp_*
-_tmp_*
-tmp_*
+# Agents' throwaway scratch scripts (screenshot/tap-target/console checks
+# written mid-task, meant to be deleted after use). Names vary — tmp_,
+# _tmp_, -tmp-, _audit_tmp etc — so this catches any filename containing
+# "tmp" rather than chasing each new spelling.
+clients/*/*tmp*
+*tmp*.mjs
 tools/.rev-*
 tools/.*.tmp.mjs
-tools/_tmp_*
-tools/tmp_*
+tools/*tmp*
 dist-demos/
