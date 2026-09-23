@@ -49,6 +49,25 @@ node --test tools/test-lib.mjs           factory unit tests
   labelled sample photos (Pat's standing approval, 2026-09-23).
 - Don't deploy or contact anyone. Screenshots at 390 and 1440 only.
 
+## Live site: Vercel project "frontline-demos"
+
+Plain static files, no build step — same as the other live sites in this repo.
+
+- **Branch:** `demos-live` (its own history, not `factory`). Contains only the
+  built output of every shipped demo, plus an index page.
+- **Link format:** `<project-domain>.vercel.app/<slug>` — e.g. `/sunset-pools`.
+- **Adding a new demo:** after a client passes review and gets `demo/<slug>`,
+  rebuild and push `demos-live`:
+  ```
+  git worktree add /tmp/wt demos-live
+  cd /tmp/wt && git rm -rq . && cp -r ../frontline-websites/dist-demos/. .
+  git add -A && git commit -m "Refresh shipped demos" && git push
+  ```
+  (`dist-demos/` comes from `node bin/build-demos-site.js` on `factory` — see
+  that file for how it decides which clients are "shipped".) The push alone
+  updates the live site; nothing else to touch in Vercel.
+- Deployment Protection is off, so links open with no login wall.
+
 ## Factory bugs found and fixed
 
 - Trust template lacked the `--fl-*` tokens: review cards unstyled.
