@@ -1,26 +1,34 @@
 # Morning report
 
-**Stopped on a usage limit at 16:45 UTC**, about two hours in. The limit killed
-all five agents that were running at once, mid-sentence. Nothing is lost — every
-step was committed and pushed to `factory` as it happened — but the queue did not
-finish. This is exactly where it got to.
+**Live status, updated after every client.** The run hit a usage limit at 16:45
+UTC yesterday and restarted this morning under your rule: keep going, no
+approvals, every demo must pass an independent review (4.5+ average, nothing
+below 4) and `npm run check` before it counts.
 
 ## The count
 
 | | |
 |---|---|
-| **Built and passing `npm run check`** | 4 — sunset-pools, utopian-landscaping, south-coast-landscapes, lmac |
-| **Passed an independent review** | 0 |
-| **Failed one and awaiting rework** | 2 — sunset-pools (4.3), utopian-landscaping (3.7) |
-| **Awaiting a first review** | 2 — south-coast-landscapes, lmac |
-| **Needs you** | 1 — arizona-roofing |
-| **Part-built when the limit hit** | 2 — greenway-landscapes, dp-landscaping |
-| **Never started** | 7 |
+| **Done — passed review and check** | 2 — sunset-pools (4.5), utopian-landscaping (4.5) |
+| **In independent review** | 1 — arizona-roofing (labelled sample photos) |
+| **Being reworked** | 2 — lmac (3.5), south-coast-landscapes (4.0) |
+| **Being built** | 1 — greenway-landscapes |
+| **Part-built** | 1 — dp-landscaping |
+| **Not started** | 7 |
 
-Pass is 4.5+ with nothing below 4. **Every demo failed its first independent
-review, and most of what they found was the factory's fault, not the demo's.**
-That is the run's real result, and it is worth more than four finished demos
-would have been.
+Each done demo has its own branch: `demo/sunset-pools`, `demo/utopian-landscaping`.
+Nothing touches `main`.
+
+## Invented facts are now impossible, not just caught
+
+`npm run check` fails any page with a fact that has no source. Every number with
+a unit, year, price, licence number, owner surname, award or body, and every
+credential word (licensed, insured, free consultation, warranty, guarantee,
+certified, qualified, fixed price, family-run) must appear word for word in the
+config's `_source` evidence or the Google review pull. Run over the four built
+demos, it stripped ten claims from South Coast and re-sourced LMAC's warranty
+from their installation page. Facts you confirm with an owner go in
+`_source.confirmed`, with who and when.
 
 ## Four factory bugs, all fixed and pushed
 
@@ -43,17 +51,13 @@ on every visible piece of text after animations have run. Writing the second one
 caught a fifth bug — a hard-coded `#8F959C` disclaimer at 2.66:1 on the dark
 panel.
 
-## What to do first this morning
+## What to do first
 
-1. **Look at the four built demos.** `npm run build && node tools/serve.mjs dist 8900`,
-   then `http://127.0.0.1:8900/<slug>/`. All four pass `check` with zero blockers
-   and an empty to-confirm list.
+1. **Look at the done demos.** `node tools/single.mjs <slug>` writes one
+   self-contained file to `dist-single/<slug>.html` that opens on a phone.
 2. **Ring Ryan at South Coast Landscapes today** — his website is hacked. Details
-   under his entry below. That is worth a call whether or not he ever buys a site.
-3. **Paste in the reviews you cannot get from the pull** — nothing is waiting on
-   that; all four have their reviews in word for word.
-4. Resume the queue when you want it. `QUEUE.csv` carries an accurate status and
-   a note for every row.
+   under his entry below. Worth a call whether or not he ever buys a site.
+3. Nothing else is waiting on you. The queue keeps going.
 
 ## What Phase 2 is waiting on
 
@@ -64,140 +68,79 @@ shots). Phase 1 was never emptied, so Phase 2 correctly did not start.
 
 ---
 
-## arizona-roofing — NEEDS PAT
+## arizona-roofing — IN REVIEW (sample photos)
 
-**Arizona Roofing Canberra** · Oscar (Asghar Khan) · 5.0 from 20 reviews · 0421 149 431
-Blocked after 12 minutes. Not built — no reviewer run.
+**Arizona Roofing** · Oscar (Asghar Khan on his site) · 5.0 from 20 · quote template
+Lighthouse 93 / 96 / 100. Passes `check`.
 
-**Why:** they have no photographs of their own work. Not one. All 40 images on
-their site are stock or WordPress theme demo content, so there is no hero and no
-gallery, and the floor is four.
+Their site has no photos of their own work — the "Our Projects" gallery is theme
+stock (a temple in Kyoto, a log cabin). Under your go-ahead the demo uses nine
+labelled sample photos of Australian roofs (Unsplash licence and CC0, each
+credited in the config), and every one carries a visible "Sample photo" tag.
 
-This was checked properly rather than taken on trust from the earlier attempt.
-The builder pulled their whole media library through `wp-json` (222 entries, 90
-unique files), walked the sitemap including all 11 project pages, and opened 40
-images at full resolution rather than judging by filename. What the "Our
-Projects" gallery actually contains: a Japanese Buddhist temple roof in Kyoto, a
-North American log cabin, US asphalt shingles, a Baltic red-metal cottage, and a
-South-East Asian steel-frame commercial build. The page titled **"Asghar Khan,
-CEO"** carries a stock studio photo of a young woman in a hard hat.
+Headline: "Over six quotes. She picked Oscar." — Pauline Okai-Davies's words.
+Do not say "all five-star": her review is four stars.
 
-The clincher: all eleven `roof_*.jpg` files share identical XMP metadata — Adobe
-Photoshop CC 2015 (Windows), document IDs in one timestamp block, every one
-exported at exactly 1200×700. That is a theme author preparing demo content.
-Newest upload of any kind in their library is June 2023. Nothing has been added.
+> **Opener.** I noticed the "Our Projects" gallery on your site shows a temple in
+> Kyoto and a log cabin, not one Canberra roof — yet one of your Google reviewers
+> got over six quotes and still picked you.
 
-The 10 stock files were deleted from `clients/arizona-roofing/assets/` so nothing
-can accidentally be built on somebody else's roof. Filenames and contents are
-preserved as evidence in `BRIEF.md`.
+**Ask Oscar for:** six or more photos of his own Canberra jobs (one wide for the
+hero); years in business; suburbs; licence and insurance numbers; price ranges
+for the six calculator jobs; reply time and hours; and whether the banner should
+say Oscar or Asghar.
 
-**Your opener:**
-> I noticed the project gallery on your site — the one meant to show your work —
-> has a Japanese temple roof and a North American log cabin in it, and the page
-> with your name on it, "Asghar Khan, CEO", has a photo of a young woman in a
-> hard hat who isn't you.
-
-**The angle, for when the photos arrive:** Oscar quotes it himself, photographs
-what is wrong, gives the options, then does the job he quoted. One customer got
-over six quotes before picking him; another had him back a second time; all 20
-reviews are five stars. Intended headline: *"Six quotes. She picked Oscar."*
-
-**What you need to get from Oscar:**
-- **6+ photos of his own finished Canberra roofs.** Phone photos are fine. At least one landscape frame 1600px or wider. This is the blocker; nothing else unblocks it.
-- A mix matching what the reviews talk about: a repointed ridge, new gutters and fascia, a valley with clips, a dektite or collar, a full restoration before/after.
-- A photo of Oscar himself, to replace the stock woman on his own CEO page.
-- Years in business — their site only says "years of industry experience", so it was left out rather than guessed.
-- The suburbs he actually covers — no review names one, so any list would be invented.
-- Any licence or insurance he can name.
-- Every calculator price: restoration, repairs, gutter replacement, gutter guards, roof painting, metal roof repairs. Nothing was invented; `calculator.jobs` is empty.
-- Whether he genuinely does commercial work. His site claims it; not one review evidences it.
-
-**More for the call.** Their site is a bought "Roofix" theme with the demo content
-left in: four fake staff are still live (Mark Willy, Mark Rocket, Samantha Riley,
-Alfred Gilbert), ten blog posts all titled *"10 reason why roofing are factmake
-easier"*, and his phone printed wrong on every page as "042 1149431". His 5.0
-from 20 reviews appears nowhere on the site — the testimonials shown are theme
-demo quotes from stock avatars. He has the best proof a Canberra roofer can have
-and is using none of it. An interstitial bot-check also delays every page load.
-
-**Requeue this the moment the photos exist.** `config.json` and `BRIEF.md` are
-ready: verified reviews, rating, owner name and phone are all in place.
-
----
-
-## sunset-pools — REWORK (4.3, needs 4.5)
+## sunset-pools — DONE (4.5)
 
 **Sunset Pools** · Ben Thompson · 4.7 from 25 · 1300 000 412 · trust template
-Lighthouse 96 / 97 / 100. Passes `check`: no blockers, nothing to confirm.
+Lighthouse 92 / 97 / 100. Branch `demo/sunset-pools`.
 
-Two independent reviews. The first scored 4.0 and found the unstyled review
-cards; the second scored 4.3 and confirmed four of five findings resolved, with
-**no unsourced claims anywhere on the page**.
+Seven independent reviews: 4.0, 4.3, 4.25, 4.08, 4.42, 4.33, **4.5**. Each round
+found a factory bug or a claim that went past the source, and each was fixed.
+The last reviewer checked every hard fact against Wayback copies of Ben's own
+pages — the 132 steps, the SPASA golds, licence 166547C, and that Sunset built
+the Strathfield and Wentworth Point pools — and all hold. "What's left is
+polish, not risk."
 
-**The one blocker left:** at 390px the pinned "Commercial and rooftop" section is
-exactly 100vh, and the headline sits at viewport y 751–824 while the sticky call
-bar starts at y 771. Two of its three lines are behind the bar the whole time the
-section is on screen. Measured at five scroll offsets.
+No text button: 1300 numbers cannot receive a text in Australia, so the page
+only offers Call.
 
-**Worth knowing for the call:** their site serves a Cloudflare challenge, so every
-word on the demo came from a Wayback capture dated around 17 April 2026. Ten
-claims are quoted page-by-page in `config._source.claimSources` — I challenged
-four of them mid-run and every one turned out to be theirs.
+> **Opener.** I noticed sunsetpools.com.au puts a Cloudflare "checking your
+> browser" screen in front of visitors, and while it does, the 132-step Bellevue
+> Hill job and your national SPASA golds are nowhere on your home page.
 
-> **Opener.** I noticed sunsetpools.com.au is putting a Cloudflare "checking your
-> browser" screen in front of visitors — I could not get in at all today from
-> three different browsers — and while it is doing that, the 132-step Bellevue
-> Hill job and your national SPASA innovation medals are nowhere on your home page.
+**Ask Ben for:** a photo of himself on a job; a mobile if he wants a text
+button; the year he started; OK to name the harbour and Manly clients; typical
+spend for a renovation and a new pool; his Google review links; and the
+ten-year guarantee in writing.
 
-**Ask Ben for:** a photo of himself on a job over 1200px; **a mobile number** if he
-wants the text-a-photo button back; the year he started; permission to name the
-harbour rooftop and Manly clients; a typical spend for a renovation and a new
-pool; his Google profile and write-a-review URLs; and confirmation of the
-ten-year guarantee that appears once on his residential page.
+**Polish left (not blocking):** the harbour-photo section scrolls dark for about
+a screen and a half on a phone; the lap-pool statement photo has blurry trees
+along the top.
 
----
-
-## utopian-landscaping — REWORK (3.7, needs 4.5)
+## utopian-landscaping — DONE (4.5)
 
 **Utopian Landscaping and Paving** · Derek · 5.0 from 25 · 0423 814 300 · trust
-Lighthouse 95 / 97 / 100. Passes `check`: no blockers, nothing to confirm.
+Lighthouse 91 / 97 / 100. Branch `demo/utopian-landscaping`.
 
-The reviewer called the copy the best thing on the page and the CTAs excellent,
-then said Derek opens it on his phone, sees his own logo with white specks and a
-grey halo, then the one gravel courtyard he has ever built — and the first two
-seconds undo the rest.
+Three reviews: 3.7, 3.58, **4.5**. Fixed along the way: the clipped "utopian"
+wordmark (the "p" now has its tail); one property used in five photo slots (now
+15 slots, 15 different jobs); promises about Derek his site never makes; and
+hidden search data that called Derek the founder and put Queanbeyan, Yass and
+Crookwell in the ACT. That last one was a factory bug, fixed for every demo.
 
-**Five claims that cannot be sourced.** This is the important part, and the
-reviewer fetched all five of their pages to check:
-- a **"boardwalk"** that appears nowhere on their site
-- thank-you notes credited to **the Year 2s** when their page shows Year 2, 4 and 6
-- **"not one of them under five stars"** — unknowable from a 5.0 average
-- **"working out of Canberra's south"** — inferred from a PO Box
-- **St Matthew's named twice**, from one Year 4 student's testimonial, when their
-  own gallery calls that job "HF Sensory Playground"
-
-Also: the logo asset is damaged (white drop-shadow squares behind every mark, a
-grey fringe on every stroke, the flourish clipped), and `slate-courtyard` is used
-as hero, gallery tile 1 and the share card.
-
-> **Opener.** I noticed the title on your homepage — the bit that shows up in
+> **Opener.** I noticed the title on your homepage — the bit that shows in
 > Google and on the browser tab — says "Building Surveyor For Government
-> Contracts", which is probably not what you want people searching for a Canberra
-> landscaper to read first.
+> Contracts", which is not what someone searching for a Canberra landscaper
+> expects to read first.
 
-**Ask Derek for:** a photo of himself (none exists anywhere); the original logo,
-vector or high-res; the year he started; his Google profile URL; the full text of
-three shortened reviews; Aaron's actual role; whether St Matthew's is right and
-whether he is happy to be named; and whether the sensory-garden photos with
-children in them could ever be cleared.
+**Ask Derek for:** a photo of himself; the original logo; the year he started;
+his Google review links; the full text of three shortened reviews; and whether
+the gallery 6 lawn is real or synthetic.
 
-**Correction to my own briefing:** I told the builder their `http://` site was a
-weakness. It checked — the site 301s to https with HSTS preload, so it is not
-insecure. Do not lead with that; Derek could disprove it in ten seconds.
+Do not lead with "your site is http" — it redirects to https, so it is secure.
 
----
-
-## south-coast-landscapes — AWAITING REVIEW (self-scored 4.7)
+## south-coast-landscapes — REWORK (review 4.0, needs 4.5)
 
 **South Coast Landscapes** · Ryan · 4.8 from 24 · 0402 130 046 · trust
 Lighthouse 94 / 97 / 100. Passes `check`: no blockers, nothing to confirm.
@@ -232,7 +175,7 @@ four shortened reviews; and his surname if he is happy for it to appear.
 
 ---
 
-## lmac — AWAITING REVIEW (self-scored 4.67)
+## lmac — REWORK (review 3.5, needs 4.5)
 
 **Lower Mountains AirConditioning** · Andrew and Anthea Strathdee · 4.8 from
 **331** reviews · (02) 4735 6411 · quote template
@@ -266,7 +209,7 @@ and first names to be published.
 
 ---
 
-## greenway-landscapes — PART-BUILT
+## greenway-landscapes — BUILDING
 
 **Greenway Landscapes** · Trent · 5.0 from 16 · 0418 607 124 · trust
 Brief written, config written, photos downloaded. Not built — the builder was
