@@ -19,6 +19,10 @@
     "address": "4/1 Albany Street, Fyshwick ACT 2609",
     "abn": "73 660 909 080",
     "currentSite": "firstpointairconditioning.com.au",
+    "brand": {
+      "accent": "#3D549B",
+      "_comment": "Sampled from the blue diamond in First Point's own logo (the largest of the three, and the one carrying the snowflake) — averaged over ~500 matching pixels of the logo file. Matches the brief's own 'cool blue for cooling' design note."
+    },
     "logoMark": {
       "src": "assets/logo-header.webp",
       "width": 195,
