@@ -37,6 +37,10 @@
   margin: 0 auto;
 }
 @media (min-width: 760px) { .fl-stats .wrap { grid-template-columns: repeat(4, 1fr); } }
+/* A strip, not a section. The trust template pads every <section> by --pad
+   (up to 168px top and bottom), which left two numbers alone in a 509px band
+   straight under the hero at 1440. Its own padding is on the list inside. */
+.fl-stats-trust { padding-block: 0; }
 /* Fewer than four stats fill the row rather than leave holes where the others
    would be. Two stats in a four-column band read as data that failed to load. */
 .fl-stats .wrap:has(li:nth-child(3):last-child) { grid-template-columns: repeat(3, 1fr); }

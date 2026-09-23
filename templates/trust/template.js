@@ -129,7 +129,7 @@ function hero(cfg, { tel, sms, copy }) {
       ${when(copy.sub, (s) => html`<p class="sub hero-sub" data-hero>${raw(s)}</p>`)}
       <div class="ctas hero-cta" data-hero>
         ${tel ? html`<a class="btn" href="${tel}">${ICON.phone}${phone.display}</a>` : ''}
-        <a class="link only-wide" href="#enquire">${copy.heroSecondary ?? 'Or send the details'}</a>
+        <a class="link${raw(sms ? ' only-wide' : '')}" href="#enquire">${copy.heroSecondary ?? 'Or send the details'}</a>
         ${sms ? html`<a class="link only-narrow" data-sms href="${sms}">${copy.heroSecondarySms ?? 'Or text us a photo'}</a>` : ''}
       </div>
       ${promise(cfg, 'hero-promise')}
@@ -208,9 +208,6 @@ function aperture(cfg, copy) {
   if (!present(p?.src)) return '';
   return html`
 <section class="ap bleed" id="aperture" aria-labelledby="apHead">
-  <!-- 150vw on a phone: this photo covers a tall frame, so it shows about 1.5x
-       the viewport width. It is below the fold, so it costs no first paint;
-       the hero keeps 100vw because the bigger file cost 7 Lighthouse points. -->
   <img src="${p.src}"${raw(p.srcset ? ` srcset="${p.srcset}" sizes="(max-width:767px) 150vw, 100vw"` : '')}${
     raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')
   } decoding="async" alt="${p.alt ?? ''}">${sampleTag(p)}
