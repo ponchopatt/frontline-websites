@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Bondi Landscapes — Landscape Design, Construction &amp; Pools, Eastern Suburbs Sydney</title>
-<meta name="description" content="Landscape design, construction and pool building in Sydney's Eastern Suburbs. Antony Aris holds a landscape contractor's licence and a pool builder's licence, with over twenty years' experience. One job at a time.">
+<meta name="description" content="Landscape design, construction and pool building in Sydney's Eastern Suburbs. A licensed landscape contractor and pool builder, with over twenty years' experience. One job at a time.">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
 <meta name="theme-color" content="#0A1418">
 <!-- Set before first paint. Anything that may only be hidden while JS can put it
@@ -105,6 +105,10 @@
 
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:clip;color-scheme:dark}
+/* The hidden attribute must always win. Without this, any rule that sets
+   display on an element (form{display:grid}) silently overrides it: both
+   forms stayed on screen above their own thank-you message. */
+[hidden]{display:none !important}
 body{
   margin:0;background:var(--bg);color:var(--fg);
   font-family:var(--font-body);font-size:var(--t-body);line-height:1.6;
@@ -654,7 +658,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     <div class="hero-in">
       <p class="t-label hero-kicker" data-hero>Eastern Suburbs, Sydney</p>
       <h1 class="t-mega" data-lines>Gardens built<br>the way they<br><em>were drawn.</em></h1>
-      <p class="sub hero-sub" data-hero>Landscape design, construction and pool building under one roof. Antony Aris holds the landscape contractor's licence <em>and</em> the pool builder's licence — so the drawing, the build and the pool all answer to one person.</p>
+      <p class="sub hero-sub" data-hero>Landscape design, construction and pool building under one roof. We hold the landscape contractor's licence <em>and</em> the pool builder's licence — so the drawing, the build and the pool all answer to one team.</p>
       <div class="ctas hero-cta" data-hero>
         <a class="btn hq" href="#quote">Get a quote</a>
         <a class="btn ghost" href="tel:+61412154594">
@@ -671,7 +675,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     <div class="wrap">
       <div class="qcard" id="quote">
         <p class="t-label">Request a quote</p>
-        <h2 class="t-h3" id="quoteHead">Tell Antony what you're planning.</h2>
+        <h2 class="t-h3" id="quoteHead">Tell us what you're planning.</h2>
         <form id="qForm" novalidate aria-labelledby="quoteHead">
           <div class="hp" aria-hidden="true"><label>Company<input id="qCompany" type="text" tabindex="-1" autocomplete="off"></label></div>
           <div class="row two">
@@ -856,7 +860,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     </div>
     <div class="railwrap" aria-hidden="true"><div class="rail" id="rail" data-draw></div></div>
     <div class="steps" data-reveal="stagger">
-      <div class="step"><span class="t-folio">01</span><h3 class="t-h3">Consultation</h3><p>Antony comes to your home and talks through the vision, the objectives and the budget. You receive a Design Fee Proposal scaled to the project.</p><p class="anchor" style="margin-top:var(--s12)" data-priceline="fee" hidden>Design fees typically start from <b data-fee></b>, scaled to the project.</p></div>
+      <div class="step"><span class="t-folio">01</span><h3 class="t-h3">Consultation</h3><p>We come to your home and talk through the vision, the objectives and the budget. You receive a Design Fee Proposal scaled to the project.</p><p class="anchor" style="margin-top:var(--s12)" data-priceline="fee" hidden>Design fees typically start from <b data-fee></b>, scaled to the project.</p></div>
       <div class="step"><span class="t-folio">02</span><h3 class="t-h3">Concept &amp; design</h3><p>A detailed landscape design, adjusted until you are completely happy. Where council approval is needed, we handle it.</p></div>
       <div class="step"><span class="t-folio">03</span><h3 class="t-h3">Quoting</h3><p>A comprehensive quotation built on the approved design. Itemised and transparent, tailored to the project rather than a rate card.</p></div>
       <div class="step"><span class="t-folio">04</span><h3 class="t-h3">Construction</h3><p>Our licensed team builds it — hardscape, softscape, planting, installation. One job at a time, project-managed by us.</p></div>
@@ -904,7 +908,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   <div class="wrap ctaband-in" data-reveal>
     <div>
       <h2 class="t-d2" id="cbReviews">Ready when you are.</h2>
-      <p>Send the details, text a photo of the space, or call Antony directly — whichever is easiest.</p>
+      <p>Send the details, text a photo of the space, or call us directly — whichever is easiest.</p>
     </div>
     <div class="ctas">
       <a class="btn" href="#enquire">Get a quote</a>
@@ -960,7 +964,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     <p class="t-label">Before you call</p>
     <h2 class="t-d1" data-lines>Questions we are asked.</h2>
     <div class="faqs">
-      <details class="faq"><summary>Do you build the pool yourselves, or subcontract it?</summary><div class="a"><p>Ourselves. Antony holds a pool builder's licence as well as a landscape contractor's licence. That is unusual — most landscapers subcontract the pool, which is where the finger-pointing starts when the pool and the garden do not meet properly. Here it is one contract and one team.</p></div></details>
+      <details class="faq"><summary>Do you build the pool yourselves, or subcontract it?</summary><div class="a"><p>Ourselves. We hold a pool builder's licence as well as a landscape contractor's licence. That is unusual — most landscapers subcontract the pool, which is where the finger-pointing starts when the pool and the garden do not meet properly. Here it is one contract and one team.</p></div></details>
       <details class="faq"><summary>How long does a project take?</summary><div class="a"><p>It depends entirely on scope, and we would rather tell you honestly after seeing the site than give you a number now. What we can promise is that we run one job at a time, so once we start we stay until it is done. One client's terrace garden — paving, fencing, a gate, lighting, irrigation and planting — was finished in three weeks.</p></div></details>
       <details class="faq"><summary>Do you handle council and DA approval?</summary><div class="a"><p>Yes. Where a project needs council approval we manage that process as part of the design phase, so you are not chasing it yourself.</p></div></details>
       <details class="faq"><summary>What does the design cost?</summary><div class="a"><p><span data-priceline="fee" hidden>Design fees typically start from <b data-fee></b>. </span>They are scaled to the size and complexity of your project rather than charged at a flat rate. You approve the Design Fee Proposal before any design work begins.</p><p>Construction is quoted separately once the design is approved.<span data-priceline="build" hidden> Most projects of this kind land between <b data-build></b>, though that depends entirely on scope.</span></p></div></details>
@@ -978,7 +982,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     <div data-reveal>
       <p class="t-label">Start a conversation</p>
       <h2 class="t-d1" data-lines>Tell us about<br>the space.</h2>
-      <p class="t-lede" style="margin-top:var(--s32)">Antony reads every enquiry. The more you can tell us about the property and what you want from it, the more useful the first conversation will be.</p>
+      <p class="t-lede" style="margin-top:var(--s32)">We read every enquiry. The more you can tell us about the property and what you want from it, the more useful the first conversation will be.</p>
       <div class="direct">
         <a href="tel:+61412154594">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
@@ -1085,7 +1089,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   <a class="btn ghost" href="tel:+61412154594">Call</a>
 </div>
 
-<a class="calldock" id="calldock" href="tel:+61412154594" aria-label="Call Antony on 0412 154 594">
+<a class="calldock" id="calldock" href="tel:+61412154594" aria-label="Call us on 0412 154 594">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
   <span class="num">0412 154 594</span>
 </a>
@@ -1139,7 +1143,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 
   /* Pre-written so the client only has to fill the blanks and hit send. A photo
      of the space is the single most useful thing a landscaper can be sent. */
-  SITE.smsBody="Hi Antony, I'd like a quote.\nSuburb: \nWhat I'm after: \n(Happy to send photos of the space.)";
+  SITE.smsBody="Hi, I'd like a quote.\nSuburb: \nWhat I'm after: \n(Happy to send photos of the space.)";
 
   SITE.areas=["Bondi","Bondi Beach","North Bondi","Bronte","Tamarama","Clovelly","Coogee",
     "Vaucluse","Double Bay","Woollahra","Paddington","Randwick","Waverley","Dover Heights",
@@ -1409,18 +1413,22 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
         $(th.head).textContent="Thank you, "+d.name.split(" ")[0]+".";
         var body=$(th.body), note=$(th.note);
         if(mode==="sent"){
-          body.textContent="Your enquiry is with Antony. He will be in touch on "+d.phone+".";
+          body.textContent="Your enquiry is with us. We will be in touch on "+d.phone+".";
           note.hidden=true;
         } else if(mode==="demo"){
           body.textContent="Your enquiry has been received.";
-          note.textContent="Demo mode — on the live site this goes straight to Antony's phone and inbox.";
+          note.textContent="Demo mode — on the live site this goes straight to our phone and inbox.";
           note.hidden=false;
         } else {
           body.textContent="We could not send that just now.";
-          note.textContent="Something went wrong on the way "+(detail?"("+detail+")":"")+". Call or text Antony on "+SITE.phoneDisplay+" and he will pick it up straight away.";
+          note.textContent="Something went wrong on the way "+(detail?"("+detail+")":"")+". Call or text us on "+SITE.phoneDisplay+" and we will pick it up straight away.";
           note.hidden=false;
         }
         f.hidden=true; $(th.box).hidden=false;
+        /* the form's own heading asks a question the thank-you has answered */
+        (o.hideOnDone||[]).forEach(function(sel){
+          document.querySelectorAll(sel).forEach(function(el){ el.hidden=true; });
+        });
         $(th.box).scrollIntoView({block:o.scrollBlock,behavior:reduce?"auto":"smooth"});
         track("generate_lead",{method:mode==="sent"?"form":mode,service:d.service,form:o.name});
       }
@@ -1446,7 +1454,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   }
 
   wireForm({name:"quote",form:"qForm",honeypot:"qCompany",err:"qErr",button:"qSend",
-    subject:"Quote request",scrollBlock:"nearest",
+    subject:"Quote request",scrollBlock:"nearest",hideOnDone:[".qcard > .t-label","#quoteHead"],
     fields:[["qName","qNameErr",filled],["qPhone","qPhoneErr",isPhone],["qSuburb","qSuburbErr",filled]],
     collect:function(){ return {name:$("qName").value.trim(),phone:$("qPhone").value.trim(),email:"",
       suburb:$("qSuburb").value.trim(),service:$("qService").value,when:"",message:""} },
