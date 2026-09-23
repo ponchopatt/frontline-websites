@@ -1,0 +1,525 @@
+{
+  "_comment": "Dimension Gardenscape demo. Built 2026-09-23. Their live site (https://dimensiongardenscape.com.au) blocks every automated request — curl, WebFetch and even the Internet Archive's own crawler — behind a SiteGround Robot Challenge Screen, so every fact and photo here comes from wayback-machine snapshots of their own pages plus data/google_reviews_top25.json. Snapshot URLs and exact sentences are in _source.claimSources below. See BRIEF.md for the photo inventory, including the stock/render images found on their site and deliberately not used.",
+  "slug": "dimension-gardenscape",
+  "template": "trust",
+  "industry": "landscaping",
+  "live": false,
+  "tagline": "Landscape design, construction and garden care across Canberra and Queanbeyan. A qualified horticultural perspective on every project, since 2007.",
+  "schemaType": "LandscapeArchitect",
+  "business": {
+    "name": "Dimension Gardenscape",
+    "ownerName": "Trevor Fuller",
+    "ownerFirstName": "Trevor",
+    "ownerTitle": "Director",
+    "phone": {
+      "display": "02 6297 9040",
+      "e164": "+61262979040"
+    },
+    "email": "enquiries@dimensiongardenscape.com.au",
+    "abn": "",
+    "baseSuburb": "Queanbeyan",
+    "region": "NSW",
+    "currentSite": "dimensiongardenscape.com.au",
+    "brand": {
+      "accent": "#289848",
+      "accent2": "#60a848",
+      "themeColor": "#173a1f",
+      "_comment": "Both greens sampled directly off their own logo PNG: #289848 is the darker green used on 'Gardenscape', #60a848 the brighter green on 'Dimension'."
+    },
+    "logo": {
+      "src": "assets/logo-dimension-gardenscape.png",
+      "width": 787,
+      "height": 352
+    }
+  },
+  "icons": {
+    "favicon": "assets/favicon.svg"
+  },
+  "share": {
+    "image": "assets/japanese-pergola-1200.webp",
+    "width": 1200,
+    "height": 800,
+    "title": "Dimension Gardenscape — Landscape Design & Construction, Canberra & Queanbeyan",
+    "description": "Landscape design, construction and garden care across Canberra and Queanbeyan. A qualified horticultural perspective on every project, since 2007.",
+    "alt": "A hand-built timber pergola roof by Dimension Gardenscape, seen from below against a clear blue sky"
+  },
+  "responsePromise": "02 6297 9040 is the number on every page of their site — Trevor reads and answers every enquiry.",
+  "copy": {
+    "title": "Dimension Gardenscape — Landscape Design & Construction, Canberra & Queanbeyan",
+    "description": "Landscape design, construction and garden care across Canberra and Queanbeyan. Members of the Australian Institute of Horticulture, the Master Builders Association ACT and The Landscape Association. Established 2007 — call Trevor on 02 6297 9040.",
+    "ctaLabel": "Get a free quote",
+    "kicker": "Canberra & Queanbeyan",
+    "headline": "A garden design<br>grounded in<br><em>horticulture.</em>",
+    "sub": "Dimension Gardenscape has offered “a qualified horticultural perspective” on landscape projects since Trevor Fuller established the business in 2007. Design, construction and plant knowledge sit in the one team — members of the Australian Institute of Horticulture, the Master Builders Association ACT and The Landscape Association.",
+    "heroSecondary": "Or send the details",
+    "heroSecondarySms": "Or send the details",
+    "navApproach": "Approach",
+    "statementLabel": "The difference",
+    "statementHeadline": "Horticulturists first,<br>builders second.",
+    "statementBody": "Most landscaping quotes come from a construction crew working out what to plant afterwards. Dimension Gardenscape's own team trained in horticulture before construction — Trevor started as an apprentice greenkeeper, moved into irrigation and horticulture, then design and build. The team's ongoing horticultural education is part of how every project is run, not an afterthought.",
+    "servicesLabel": "What we do",
+    "servicesHeadline": "Design, build<br>and grow.",
+    "servicesIntro": "Landscape design, construction, decks and pergolas, retaining walls, garden art and wicking beds — plus small, balcony and vertical-wall garden design. One team from the first sketch to the last plant.",
+    "apertureLabel": "Est. 2007",
+    "apertureLine": "Design, construction and horticulture — one team, one call.",
+    "workLabel": "Selected work",
+    "workHeadline": "Canberra and Queanbeyan<br>gardens, start to finish.",
+    "workIntro": "Award-tagged Ainslie, a curved-deck Ngunnawal build, a Deakin front garden, a Harrison courtyard and a minimalist Queanbeyan-side rebuild — real jobs, photographed as finished.",
+    "processLabel": "How it runs",
+    "processHeadline": "From first meeting<br>to finished garden.",
+    "processIntro": "The design and quoting stage runs two weeks to a month depending on complexity. You see the concept plan before anything is booked in.",
+    "ownerLabel": "Who you are dealing with",
+    "reviewsTitle": "What clients say.",
+    "reviewsIntro": "Real reviews from their Google profile — 4.5 stars from 54 reviews. Clients name Trevor and the crew directly.",
+    "recognitionLabel": "Recognition",
+    "recognitionHeadline": "Answerable to three<br>professional bodies.",
+    "recognitionIntro": "Members of the Australian Institute of Horticulture, the Master Builders Association ACT and The Landscape Association — not just a review page.",
+    "areasLabel": "Where we work",
+    "areasHeadline": "Canberra, Queanbeyan<br>and the region.",
+    "areasIntro": "Based in Queanbeyan. Servicing North and South Canberra, the ACT, Queanbeyan, Googong, Jerrabomberra, Barton, Woden, Bungendore, Belconnen and Gungahlin.",
+    "faqLabel": "Before you call",
+    "faqHeadline": "Questions we're asked.",
+    "enquireLabel": "Get a free quote",
+    "enquireHeadline": "Tell us about<br>your garden.",
+    "enquireIntro": "Every garden is different — the more you can tell us about the space and what you want from it, the more useful the first conversation will be."
+  },
+  "stats": {
+    "googleRating": 4.5,
+    "reviewCount": 54,
+    "establishedYear": 2007,
+    "_comment": "4.5 / 54 straight from data/google_reviews_top25.json — the site's own embedded reviews widget (last archived) shows a stale 4.2/31 and was not used anywhere. establishedYear 2007 is explicit and sourced: 'He established Dimension Gardenscape in its present form in 2007.' The homepage's own stat counters (2860 projects, 128 landscapers, 14 awards, 24 years) contradict the site's own prose ('over 30 years') and are not credible for a business this size — deliberately not used anywhere."
+  },
+  "pullQuote": {
+    "text": "Trevor was lovely to speak to and dealt with any issues we had. Everything was done as we expected it to be.",
+    "name": "Rachel Heffernan, Google"
+  },
+  "owner": {
+    "body": "Director. Trevor Fuller started as an apprentice greenkeeper 35 years ago, moved on to lawn care at Parliament House, then expanded into horticulture and irrigation. He ran a family landscape design and construction business on weekends from around the mid-1990s, and established Dimension Gardenscape in its present form in 2007.",
+    "team": "Head landscaper Pete Barton-Browne has been with the crew for nearly 10 years, with over 20 years in horticulture and landscape construction and a particular strength in timber construction. Clients name Trevor and the team directly in their reviews.",
+    "facts": [
+      {
+        "value": "2007",
+        "label": "Established"
+      },
+      {
+        "value": "3",
+        "label": "Professional bodies"
+      },
+      {
+        "value": "4.5",
+        "label": "From 54 Google reviews"
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "kind": "membership",
+      "label": "Australian Institute of Horticulture",
+      "body": "A current member.",
+      "strip": true
+    },
+    {
+      "kind": "membership",
+      "label": "Master Builders Association ACT — Member 12394",
+      "body": "A current member.",
+      "strip": true
+    },
+    {
+      "kind": "membership",
+      "label": "The Landscape Association — Member 11956",
+      "body": "A current member.",
+      "strip": true
+    },
+    {
+      "kind": "claim",
+      "label": "Ongoing team training",
+      "body": "Supports the ongoing education and training of all team members.",
+      "strip": false
+    }
+  ],
+  "priceLines": {
+    "fee": "",
+    "build": "",
+    "_comment": "No price appears anywhere on their site or in any review. Leave empty until Trevor gives real figures."
+  },
+  "_check": [],
+  "services": [
+    {
+      "title": "Landscape design",
+      "blurb": "A qualified horticultural perspective on every design, from small courtyards to full-property projects.",
+      "photo": {
+        "src": "assets/ainslie-pond-courtyard-800.webp",
+        "srcset": "assets/ainslie-pond-courtyard-480.webp 480w, assets/ainslie-pond-courtyard-800.webp 800w",
+        "width": 800,
+        "height": 800,
+        "alt": "A courtyard path past a raised pond feature and established planting, Ainslie"
+      }
+    },
+    {
+      "title": "Decks & pergolas",
+      "blurb": "Timber decks and pergolas, built by the same team who designed the garden around them.",
+      "photo": {
+        "src": "assets/ngunnawal-curved-deck-800.webp",
+        "srcset": "assets/ngunnawal-curved-deck-480.webp 480w, assets/ngunnawal-curved-deck-800.webp 800w, assets/ngunnawal-curved-deck-1000.webp 1000w",
+        "width": 1000,
+        "height": 1000,
+        "alt": "A curved hardwood deck with red gravel surround, Ngunnawal"
+      }
+    },
+    {
+      "title": "Retaining walls",
+      "blurb": "Block, stone or corten steel, built to hold sloping Canberra blocks and give you back usable ground.",
+      "photo": {
+        "src": "assets/ngunnawal-corten-wall-800.webp",
+        "srcset": "assets/ngunnawal-corten-wall-480.webp 480w, assets/ngunnawal-corten-wall-800.webp 800w, assets/ngunnawal-corten-wall-1000.webp 1000w",
+        "width": 1000,
+        "height": 1000,
+        "alt": "A corten-steel retaining wall holding new turf in front of a brick home, Ngunnawal"
+      }
+    },
+    {
+      "title": "Wicking beds",
+      "blurb": "Self-watering raised garden beds, built properly — liner, overflow and all — for productive veggie gardens that don't dry out.",
+      "photo": {
+        "src": "assets/wicking-bed-construction-800.webp",
+        "srcset": "assets/wicking-bed-construction-480.webp 480w, assets/wicking-bed-construction-800.webp 800w, assets/wicking-bed-construction-1200.webp 1200w",
+        "width": 1200,
+        "height": 685,
+        "alt": "A wicking garden bed under construction, with pond liner, overflow pipe and spirit level"
+      }
+    }
+  ],
+  "process": [
+    {
+      "step": "Initial meeting",
+      "detail": "We discuss your ideas, your lifestyle and use for the garden, and the style you prefer. Our designer checks site constraints and opportunities, and talks through your budget."
+    },
+    {
+      "step": "Sketch plan",
+      "detail": "A sketch plan showing the main elements of the design, followed by a second meeting for your feedback on the layout, plant species and materials."
+    },
+    {
+      "step": "Final plan & quote",
+      "detail": "The final concept plan, showing all plants and hardscape details, with any staging discussed and a quote prepared."
+    },
+    {
+      "step": "Construction",
+      "detail": "Our team builds it — site prep, structural work, paving, then topsoil, planting, turf, irrigation and mulch. A booking fee secures your place in the schedule; a materials deposit is due four weeks before construction starts, with weekly progress payments during the build."
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "Based in Queanbeyan",
+      "suburbs": [
+        "Canberra",
+        "North Canberra",
+        "South Canberra",
+        "Queanbeyan",
+        "Googong",
+        "Jerrabomberra",
+        "Barton",
+        "Woden",
+        "Bungendore",
+        "Belconnen",
+        "Gungahlin"
+      ]
+    }
+  ],
+  "photos": {
+    "hero": {
+      "src": "assets/japanese-pergola-1800.webp",
+      "srcset": "assets/japanese-pergola-480.webp 480w, assets/japanese-pergola-800.webp 800w, assets/japanese-pergola-1200.webp 1200w, assets/japanese-pergola-1800.webp 1800w",
+      "width": 1800,
+      "height": 1200,
+      "alt": "A hand-built timber pergola roof by Dimension Gardenscape, seen from below against a clear blue sky and autumn tree"
+    },
+    "statement": {
+      "src": "assets/deakin-blossom-swing-800.webp",
+      "srcset": "assets/deakin-blossom-swing-480.webp 480w, assets/deakin-blossom-swing-800.webp 800w",
+      "width": 800,
+      "height": 800,
+      "alt": "A backyard swing seat under a blossoming ornamental tree, Deakin"
+    },
+    "aperture": {
+      "src": "assets/firepit-evening-1200.webp",
+      "srcset": "assets/firepit-evening-480.webp 480w, assets/firepit-evening-800.webp 800w, assets/firepit-evening-1200.webp 1200w",
+      "width": 1200,
+      "height": 801,
+      "alt": "A corten-edged fire pit at dusk with timber Adirondack chairs and colorbond fencing",
+      "caption": "Fire pit at dusk"
+    },
+    "gallery": [
+      {
+        "src": "assets/ainslie-stone-wall-planters-800.webp",
+        "full": "assets/ainslie-stone-wall-planters-800.webp",
+        "srcset": "assets/ainslie-stone-wall-planters-480.webp 480w, assets/ainslie-stone-wall-planters-800.webp 800w",
+        "width": 800,
+        "height": 800,
+        "caption": "Ainslie",
+        "detail": "Dry-stone wall, bench seat, planters",
+        "alt": "A dry-stone retaining wall and built-in bench seat with sculptural black planters, Ainslie"
+      },
+      {
+        "src": "assets/deakin-front-garden-800.webp",
+        "full": "assets/deakin-front-garden-800.webp",
+        "srcset": "assets/deakin-front-garden-480.webp 480w, assets/deakin-front-garden-800.webp 800w",
+        "width": 800,
+        "height": 800,
+        "caption": "Deakin",
+        "detail": "Front garden bed, daffodils, native grasses",
+        "alt": "A front garden bed with daffodils and native grasses in front of a rendered home, Deakin"
+      },
+      {
+        "src": "assets/harrison-courtyard-800.webp",
+        "full": "assets/harrison-courtyard-800.webp",
+        "srcset": "assets/harrison-courtyard-480.webp 480w, assets/harrison-courtyard-800.webp 800w",
+        "width": 800,
+        "height": 800,
+        "caption": "Harrison",
+        "detail": "Paved courtyard, seating",
+        "alt": "A paved courtyard with white outdoor chairs, Harrison"
+      },
+      {
+        "src": "assets/sherlock-courtyard-800.webp",
+        "full": "assets/sherlock-courtyard-800.webp",
+        "srcset": "assets/sherlock-courtyard-480.webp 480w, assets/sherlock-courtyard-800.webp 800w",
+        "width": 800,
+        "height": 800,
+        "caption": "Rear garden",
+        "detail": "Minimalist paving, modern home",
+        "alt": "A minimalist paved courtyard in front of a modern rendered home"
+      },
+      {
+        "src": "assets/sherlock-terraces-800.webp",
+        "full": "assets/sherlock-terraces-800.webp",
+        "srcset": "assets/sherlock-terraces-480.webp 480w, assets/sherlock-terraces-800.webp 800w",
+        "width": 800,
+        "height": 800,
+        "caption": "Rear garden terraces",
+        "detail": "Terraced lawn, retaining",
+        "alt": "A terraced lawn and retaining wall behind a two-storey home"
+      },
+      {
+        "src": "assets/garden-art-statue-800.webp",
+        "full": "assets/garden-art-statue-1200.webp",
+        "srcset": "assets/garden-art-statue-480.webp 480w, assets/garden-art-statue-800.webp 800w, assets/garden-art-statue-1200.webp 1200w",
+        "width": 1200,
+        "height": 800,
+        "caption": "Garden art",
+        "detail": "Weathered stone statue feature",
+        "alt": "A weathered stone garden statue set among established backyard planting"
+      }
+    ]
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [
+    {
+      "name": "Rachel Heffernan",
+      "text": "Great experience overall! Trevor was lovely to speak to and dealt with any issues we had. Everything was done as we expected it to be. Thank you. If we need anymore landscaping, we know who to contact."
+    },
+    {
+      "name": "V&L Viclach",
+      "text": "Dimension Gardenscape installed a Japanese garden at the front of our house. They did a great job, and had a friendly and competent team. The garden plan required the installation of some very large rocks, and the entire process took 3 days. It all went like clockwork, and we were delighted with the result."
+    },
+    {
+      "name": "Mccomas Taylor",
+      "text": "Dimension did a great job of upgrading our back garden with three beautiful wicking beds and general landscaping. They were quick, efficient, friendly and did the job on budget and on time. Communication was also very smooth. I'd be very happy to use them again and certainly recommend them. McC"
+    },
+    {
+      "name": "Shobhana Khanna",
+      "text": "the team at Dimension Gardenscape did an outstanding job transforming our outdoor area. They were professional, easy to deal with and kept us informed throughout the entire project.",
+      "shortened": true
+    },
+    {
+      "name": "Lorraine Cunningham",
+      "text": "Our front yard is spectacular. A combined effort of imagination, plant knowledge and human effort has gone in to making what will become a serene, welcoming entrance.",
+      "shortened": true
+    },
+    {
+      "name": "Fiona",
+      "text": "Well done! From the moment I received the quote, every step was handled professionally. They clearly explained the materials and detailed the labor costs in the quote.",
+      "shortened": true
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can I see examples of your work?",
+      "a": "Yes. Once we have a rough idea of the garden design you're after, we can put you in touch with previous clients with similar projects, or you can view our work on this page."
+    },
+    {
+      "q": "How much will it cost?",
+      "a": "Every garden is different, with many different components and costings. Call us on 02 6297 9040 for a free quote."
+    },
+    {
+      "q": "How long will my project take?",
+      "a": "Design and quoting typically runs two weeks to a month, depending on the complexity of the project — a bespoke water feature or engineered retaining wall needs a more detailed design and quote than a small garden refresh. Construction time depends on the size and scope of the job, plus material availability and weather."
+    },
+    {
+      "q": "Who actually does the work?",
+      "a": "Our own team of experienced, qualified landscapers and designers — including qualified carpentry for decks and pergolas. Where a project needs another trade, we coordinate with a solid network of specialists such as electricians and plumbers."
+    },
+    {
+      "q": "Are you on site, or in an office somewhere?",
+      "a": "In Trevor's words: “As Chief Landscaper, I spend most of my time on site, however if I am needed elsewhere on the day I am easily contactable anytime.”"
+    },
+    {
+      "q": "Can I do some of the work myself to save money?",
+      "a": "Yes — a lot of our quotations can be changed to supply-only, letting you take on parts of the work yourself. Many clients choose to handle the planting and mulching."
+    },
+    {
+      "q": "How does billing work?",
+      "a": "A booking fee secures your place in our schedule, then a materials deposit is due four weeks before construction starts so we can order materials ahead of time. Progress payments are charged weekly during construction, followed by a finalised bill. We accept direct deposit, cash, cheque and online card payment."
+    }
+  ],
+  "sms": {
+    "label": "Send the details",
+    "body": "Hi {owner}, I'd like a quote.\nSuburb: \nWhat I'm after: \n(Happy to send photos of the space.)"
+  },
+  "form": {
+    "accessKey": ""
+  },
+  "_source": {
+    "url": "https://dimensiongardenscape.com.au",
+    "platform": "WordPress (Elementor, Getfounddigitally build)",
+    "accessNote": "The live site returns a SiteGround 'Robot Challenge Screen' (sgcaptcha JS challenge) to every non-browser request — confirmed against curl (direct and with browser headers/cookies) and WebFetch, both returning the same empty 202 redirect. The Internet Archive's own crawler hits the identical block on live re-fetches. All content and photos below are from wayback-machine snapshots of dimensiongardenscape.com.au, taken between 2021 and March 2025, read via web.archive.org.",
+    "pagesRead": [
+      "https://web.archive.org/web/20250319160832/https://dimensiongardenscape.com.au/ (home, latest full snapshot)",
+      "https://web.archive.org/web/20240713132148/https://dimensiongardenscape.com.au/about-us/",
+      "https://web.archive.org/web/20240713121145/https://dimensiongardenscape.com.au/contact-us/",
+      "https://web.archive.org/web/20240713140811/https://dimensiongardenscape.com.au/area-we-service/",
+      "https://web.archive.org/web/20240713133545/https://dimensiongardenscape.com.au/construction/",
+      "https://web.archive.org/web/20240713121053/https://dimensiongardenscape.com.au/design/",
+      "https://web.archive.org/web/20240524000545/https://dimensiongardenscape.com.au/before-after-gallery/",
+      "https://web.archive.org/web/20240524010011/https://dimensiongardenscape.com.au/faq/",
+      "web.archive.org/cdx/search/cdx (full snapshot + upload-directory listings, used to find and verify every photo used or excluded)"
+    ],
+    "socials": {
+      "facebook": "linked in site footer, not opened",
+      "instagram": "linked in site footer, not opened"
+    },
+    "stockLookingPhotos": [
+      "150610_No16_0158-1.jpg (used on the 'Landscaping' service card): English brick-walled courtyard, Hasselblad H4D-40 EXIF, stock-agency-style filename. Not Canberra, not used.",
+      "Pool-Landscaping.jpg (used on 'Pool Landscaping'): photorealistic CGI desert-pool render; its own EXIF carries copyright 'Recent Spaces'. Not used.",
+      "Decks-or-Decking-scaled.jpg: American vinyl-sided suburban deck. Not used.",
+      "Garden-Art-Canberra-scaled.jpg (despite the filename): white-picket cottage garden, non-Australian planting and architecture. Not used.",
+      "Landscaping.jpg: modern Texas-style front yard with house number '04'. Not used.",
+      "Garden-Design.jpg: generic glossy hosta-terrace stock photo. Not used.",
+      "Retaining-Walls.jpg: generic besser-block product texture shot, no context. Not used.",
+      "Pergola.jpg: French Riviera-style louvre pergola with palm tree, non-Australian. Not used.",
+      "Dubai-Fall-Balcony-Garden-With-Garden-Me-UAE-Outdoor-Plants.jpg: named for Dubai. Not used.",
+      "pexels-pixabay-158028.jpg: Pexels/Pixabay stock filename. Not used."
+    ],
+    "photoNote": "13 real, sharp, non-stock photos of their own projects were found in the archived wp-content/uploads folders and used across hero/statement/aperture/services/gallery — well above the 4-minimum / 6-ideal bar, so photos.stockApproved / sample photos were not needed. Full inventory with sizes is in BRIEF.md.",
+    "claimSources": {
+      "Business name 'Dimension Gardenscape'": {
+        "sentence": "Dimensiongardenscape (site title, and green script logo wordmark)",
+        "url": "https://web.archive.org/web/20250319160832/https://dimensiongardenscape.com.au/"
+      },
+      "Owner 'Trevor Fuller', title 'Director'": {
+        "sentence": "Meet Our Team — Trevor Fuller (Director). Trevor started as an apprentice greenkeeper for a bowling club 35 years ago... He established Dimension Gardenscape in its present form in 2007.",
+        "url": "https://web.archive.org/web/20240713132148/https://dimensiongardenscape.com.au/about-us/"
+      },
+      "Established 2007": {
+        "sentence": "He established Dimension Gardenscape in its present form in 2007.",
+        "url": "https://web.archive.org/web/20240713132148/https://dimensiongardenscape.com.au/about-us/"
+      },
+      "Phone 02 6297 9040": {
+        "sentence": "Phone: 02 6297 9040 (site-wide header on every page) — also the Google phone number in data/google_reviews_top25.json: '(02) 6297 9040'.",
+        "url": "https://web.archive.org/web/20250319160832/https://dimensiongardenscape.com.au/"
+      },
+      "Trevor's mobile 0412 437 418 (used only in FAQ copy text, not as the call/SMS button)": {
+        "sentence": "Trevor: 0412 437 418 (Make a Call section) — and in the FAQ: 'As Chief Landscaper, I spend most of my time on site, however if I am needed elsewhere on the day I am easily contactable anytime on 0412 437 418.'",
+        "url": "https://web.archive.org/web/20240713121145/https://dimensiongardenscape.com.au/contact-us/"
+      },
+      "Email enquiries@dimensiongardenscape.com.au": {
+        "sentence": "Enquiries@dimensiongardenscape.com.au",
+        "url": "https://web.archive.org/web/20250319160832/https://dimensiongardenscape.com.au/"
+      },
+      "Address / base suburb 'Queanbeyan NSW'": {
+        "sentence": "21 Downey St Queanbeyan NSW",
+        "url": "https://web.archive.org/web/20250319160832/https://dimensiongardenscape.com.au/"
+      },
+      "'Qualified horticultural perspective' angle": {
+        "sentence": "Here at Dimension Gardenscape, we provide a qualified horticultural perspective on your next landscape project.",
+        "url": "https://web.archive.org/web/20240713132148/https://dimensiongardenscape.com.au/about-us/"
+      },
+      "Ongoing team training/education claim": {
+        "sentence": "We support the ongoing education and training of all our team members and approach all our projects as an opportunity to learn and achieve more together.",
+        "url": "https://web.archive.org/web/20240713132148/https://dimensiongardenscape.com.au/about-us/"
+      },
+      "Australian Institute of Horticulture membership": {
+        "sentence": "DIMENSION GARDENSCAPE ARE MEMBERS OF: – Australian Institute Of Horticulture",
+        "url": "https://web.archive.org/web/20240713132148/https://dimensiongardenscape.com.au/about-us/"
+      },
+      "Master Builders Association ACT, member 12394": {
+        "sentence": "– Master Builders Association, ACT (MBA Member 12394)",
+        "url": "https://web.archive.org/web/20240713132148/https://dimensiongardenscape.com.au/about-us/"
+      },
+      "The Landscape Association, member 11956": {
+        "sentence": "– The Landscape Association (TLA Member 11956)",
+        "url": "https://web.archive.org/web/20240713132148/https://dimensiongardenscape.com.au/about-us/"
+      },
+      "Head landscaper Pete Barton-Browne, ~10 years, 20+ years experience": {
+        "sentence": "Peter Barton-Browne (Head Landscaper). Pete is our head landscaper. He has been with the crew for nearly 10 years now... With over 20 years of experience in horticulture and landscape construction, Pete has the required experience and an eye for detail.",
+        "url": "https://web.archive.org/web/20240713132148/https://dimensiongardenscape.com.au/about-us/"
+      },
+      "Design process: initial meeting, sketch plan, final plan": {
+        "sentence": "Step 1 - Initial Meeting ... Step 2 - Sketch Plan ... Step 3 - Final Plan ... we may discuss any staging or order of work to proceed, and we can prepare a quote.",
+        "url": "https://web.archive.org/web/20240713121053/https://dimensiongardenscape.com.au/design/"
+      },
+      "Construction process (site prep, structural work, paving, topsoil, planting, irrigation, mulch)": {
+        "sentence": "Typically, the construction process starts with site preparations... The next part of the job is usually structural work... followed by any paving areas... we would introduce topsoil for garden and lawn areas, following up with the trees, plants and turf. We finish off with irrigation... and then apply mulch.",
+        "url": "https://web.archive.org/web/20240713133545/https://dimensiongardenscape.com.au/construction/"
+      },
+      "Billing / payment terms in FAQ": {
+        "sentence": "A booking fee; to be paid upon acceptance... A materials deposit; to be paid four weeks before the beginning of construction... Progress payments are charged weekly during the construction phase. A finalised bill. We accept Direct Deposit, Cash, Cheque and online Credit Card payments.",
+        "url": "https://web.archive.org/web/20240524010011/https://dimensiongardenscape.com.au/faq/"
+      },
+      "Design/quoting timeframe (2 weeks to a month)": {
+        "sentence": "The design and quoting process ranges from two weeks to a month, depending on the complexity of the components in your landscape project.",
+        "url": "https://web.archive.org/web/20240524010011/https://dimensiongardenscape.com.au/faq/"
+      },
+      "Supply-only / DIY option": {
+        "sentence": "Yes! A lot of our quotations can be changed to supply only, letting you contribute to the work and therefore saving money. ... a lot of our clients wanting to roll up their sleeves elect to take on the planting and mulching components.",
+        "url": "https://web.archive.org/web/20240524010011/https://dimensiongardenscape.com.au/faq/"
+      },
+      "Team qualified for carpentry + specialist trade network": {
+        "sentence": "Our team are also qualified and experienced to undertake all carpentry work should your project require it. ... we have a solid network of specialists including electricians and plumbers that we can coordinate with.",
+        "url": "https://web.archive.org/web/20240524010011/https://dimensiongardenscape.com.au/faq/"
+      },
+      "Service areas (Canberra, North/South Canberra, Queanbeyan, Googong, ACT, Jerrabomberra, Barton, Woden, Bungendore, Belconnen, Gungahlin)": {
+        "sentence": "Landscaping Service Canberra / North Canberra / South Canberra / Queanbeyan / Googong / Act / Jerrabomberra / Barton / Woden / Bungendore / Belconnen / Gungahlin",
+        "url": "https://web.archive.org/web/20240713140811/https://dimensiongardenscape.com.au/area-we-service/"
+      },
+      "Projects: Award Winning – Ainslie, Ngunnawal, Harrison (play space), Deakin": {
+        "sentence": "Projects ▼ Award Winning – Ainslie makeover / Simple but effective – Ngunnawal / Play Space – Harrison / A Gardeners Garden – Deakin",
+        "url": "https://web.archive.org/web/20250319160832/https://dimensiongardenscape.com.au/"
+      },
+      "Google rating 4.5 from 54 reviews": {
+        "sentence": "\"rating\": 4.5, \"review_count\": 54 for dimension-gardenscape.",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Pull quote 'Trevor was lovely to speak to...'": {
+        "sentence": "Rachel Heffernan: \"Great experience overall! Trevor was lovely to speak to and dealt with any issues we had. Everything was done as we expected it to be. Thank you. If we need anymore landscaping, we know who to contact.\"",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Japanese garden / large rocks / 3 days (workIntro reference)": {
+        "sentence": "V&L Viclach: \"Dimension Gardenscape installed a Japanese garden at the front of our house... The garden plan required the installation of some very large rocks, and the entire process took 3 days.\"",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Wicking beds review (services > Wicking beds blurb context)": {
+        "sentence": "Mccomas Taylor: \"Dimension did a great job of upgrading our back garden with three beautiful wicking beds and general landscaping.\"",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Every photo used or excluded": {
+        "sentence": "All 13 used photos and all 10 excluded stock/render photos were opened and looked at individually; file names, sizes and what each shows are listed in clients/dimension-gardenscape/BRIEF.md.",
+        "url": "web.archive.org/cdx/search/cdx (wp-content/uploads listings, 2021–2025)"
+      },
+      "Logo colours #289848 / #60a848": {
+        "sentence": "Sampled programmatically from the two dominant non-white colours in their own logo PNG (assets/logo-dimension-gardenscape.png).",
+        "url": "https://web.archive.org/web/20230531111523/https://dimensiongardenscape.com.au/wp-content/uploads/2023/02/Dimension-Gardenscape.png"
+      }
+    }
+  }
+}
