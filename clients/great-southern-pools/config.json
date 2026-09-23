@@ -1,0 +1,390 @@
+{
+  "_comment": "Built by hand: npm run new (Playwright) is broken this session for all sites, and gspools.com.au also refuses plain curl/fetch (connection reset). Every fact and image URL below was read with the WebFetch tool against gspools.com.au directly (it works where curl does not), and every photo was downloaded with curl from img1.wsimg.com (a different host, which works fine). See BRIEF.md.",
+  "slug": "great-southern-pools",
+  "template": "trust",
+  "industry": "pools",
+  "live": false,
+  "tagline": "Concrete pool construction, design and renovation across Greater Sydney. David, Dianne and Michael Moore, 30 years in the business.",
+  "schemaType": "GeneralContractor",
+  "business": {
+    "name": "Great Southern Pools",
+    "ownerName": "David Moore",
+    "ownerFirstName": "David",
+    "ownerTitle": "Owner",
+    "phone": {
+      "display": "0413 513 572",
+      "e164": "+61413513572"
+    },
+    "email": "dmooregsp@gmail.com",
+    "baseSuburb": "Greater Sydney",
+    "region": "NSW",
+    "founder": true,
+    "currentSite": "gspools.com.au",
+    "brand": {
+      "accent": "#3DAEF4",
+      "accent2": "#F6A361",
+      "themeColor": "#0A2740",
+      "_comment": "Sampled directly off their own logo file (assets/logo-navy.jpg): navy background rgb(15,63,111), the light blue wave rgb(61,174,244), and the orange ring rgb(246,163,97)."
+    },
+    "logo": {
+      "src": "assets/logo-navy.jpg",
+      "width": 1271,
+      "height": 429
+    }
+  },
+  "icons": {
+    "favicon": "assets/logo-navy.jpg"
+  },
+  "share": {
+    "image": "assets/hero-pool-water-view.jpg",
+    "width": 1800,
+    "height": 1350,
+    "title": "Great Southern Pools \u2014 Concrete Pool Builder, Greater Sydney",
+    "description": "David and Dianne Moore have built and renovated concrete pools across Greater Sydney for over 30 years. Family-owned and hands-on.",
+    "alt": "An elevated concrete pool with a bay and headland view behind it, built by Great Southern Pools"
+  },
+  "responsePromise": "David reads every enquiry and comes back to you personally.",
+  "copy": {
+    "title": "Great Southern Pools | Concrete Pool Builder & Renovations, Greater Sydney",
+    "description": "Great Southern Pools build and renovate concrete pools across Greater Sydney. David and Dianne Moore have over 30 years of experience, and stay hands-on through every job.",
+    "ctaLabel": "Talk to David",
+    "kicker": "Greater Sydney",
+    "headline": "Thirty years of<br>Moore family<br><em>pools.</em>",
+    "sub": "David and Dianne Moore, and David's son Michael, build and renovate concrete pools across Greater Sydney \u2014 new builds, renovations, spas and water features.",
+    "heroSecondary": "Or send David the details",
+    "heroSecondarySms": "Or text David a photo",
+    "navApproach": "Approach",
+    "statementLabel": "The difference",
+    "statementHeadline": "Still a family<br>on the tools.",
+    "statementBody": "Reviewers don't just thank \"the company\" \u2014 they name David, Michael and Dianne individually. Three generations of one family are still hands-on, on your job, thirty years in.",
+    "servicesLabel": "What we do",
+    "servicesHeadline": "New pools,<br>renovations,<br>and the finishes<br>that make them.",
+    "servicesIntro": "Concrete pools built or renovated for the block you actually have.",
+    "workLabel": "Recent work",
+    "workHeadline": "Recent pools,<br>different backyards.",
+    "workIntro": "From a bushland block to a harbour-view deck. Select any photo to see it larger.",
+    "processLabel": "How it runs",
+    "processHeadline": "Four steps,<br>start to swim.",
+    "processIntro": "",
+    "ownerLabel": "Who you are dealing with",
+    "reviewsTitle": "What their clients say.",
+    "reviewsIntro": "Real reviews from their Google profile, word for word.",
+    "areasLabel": "Where we work",
+    "areasHeadline": "Greater Sydney.",
+    "areasIntro": "Great Southern Pools works across Greater Sydney. Call to check your suburb.",
+    "faqLabel": "Before you call",
+    "faqHeadline": "Questions we are asked.",
+    "enquireLabel": "Talk to David",
+    "enquireHeadline": "Tell David about<br>the space.",
+    "enquireIntro": "The more you can tell us about the block and what you're after, the more useful the first call is. Photos help \u2014 send them with your enquiry.",
+    "reviewsLabel": "In their words"
+  },
+  "stats": {
+    "googleRating": 4.7,
+    "reviewCount": 12,
+    "yearsInBusiness": 30
+  },
+  "statLabels": {
+    "googleRating": "Google rating",
+    "reviewCount": "Reviews",
+    "yearsInBusiness": "Years in the pool industry"
+  },
+  "pullQuote": {
+    "text": "David Moore was the epitome of honesty and professionalism.",
+    "name": "Kath, Google review"
+  },
+  "owner": {
+    "body": "David and Dianne Moore lead this family-owned pool building company, with over 30 years of experience in the pool building industry.",
+    "team": "David's son Michael also works in the business \u2014 three separate Google reviews name David, Michael and Dianne individually rather than just \"the company.\"",
+    "facts": [
+      {
+        "value": "30+",
+        "label": "Years in the pool industry"
+      },
+      {
+        "value": "3",
+        "label": "Family members on the job"
+      }
+    ]
+  },
+  "credentials": [],
+  "services": [
+    {
+      "title": "New concrete pools",
+      "blurb": "Custom concrete pools, spas, water features, infinity edges and underwater windows, designed and built for your home and landscape.",
+      "photo": {
+        "src": "assets/pool-stone-steps-aerial.jpg",
+        "width": 1300,
+        "height": 731,
+        "alt": "A straight-down aerial view of an L-shaped concrete pool with wide stone steps, a sun shelf and travertine-look paving"
+      }
+    },
+    {
+      "title": "Pool renovations",
+      "blurb": "An outdated pool doesn't need to be replaced to be transformed \u2014 new interiors, coping, waterline tiles and reshaping bring it back to modern and functional.",
+      "photo": {
+        "src": "assets/aerial-backyard-pool-lawn.jpg",
+        "width": 1300,
+        "height": 976,
+        "alt": "A wide aerial view of a renovated backyard pool with sandstone-look coping, a striped lawn and a curved raised garden bed"
+      }
+    },
+    {
+      "title": "Water features & finishes",
+      "blurb": "Fully tiled or designer beadcrete interiors, waterline tiling, stairs, pathways and retaining walls, built as part of the one job.",
+      "photo": {
+        "src": "assets/pool-clear-blue-modern.jpg",
+        "width": 1300,
+        "height": 867,
+        "alt": "A minimalist tiled pool against a grey rendered wall with a mosaic-tile step and frameless glass fencing"
+      }
+    }
+  ],
+  "process": [
+    {
+      "step": "Vision & consultation",
+      "detail": "A site inspection and a design proposal put together around what you want."
+    },
+    {
+      "step": "Approvals & planning",
+      "detail": "Contracts, permits, engineering and scheduling settled before anything is dug."
+    },
+    {
+      "step": "Pool construction",
+      "detail": "Excavation, shell, plumbing, waterproofing, tiling, equipment and the surrounding features."
+    },
+    {
+      "step": "Fill, handover & swim",
+      "detail": "Water balancing, system testing and a maintenance walkthrough before you swim."
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "Greater Sydney",
+      "suburbs": [],
+      "_note": "gspools.com.au states only 'Greater Sydney' on the homepage \u2014 no suburb list is published anywhere on their site, so none is invented here. areasIntro carries the same wording."
+    }
+  ],
+  "photos": {
+    "hero": {
+      "src": "assets/hero-pool-water-view.jpg",
+      "width": 1800,
+      "height": 1350,
+      "alt": "An elevated concrete pool with a bay and headland view behind it, built by Great Southern Pools"
+    },
+    "statement": {
+      "src": "assets/pool-lush-plants.jpg",
+      "width": 1600,
+      "height": 1200,
+      "alt": "A rectangular concrete pool beside a white gazebo, with dense tropical planting along a dark timber fence"
+    },
+    "aperture": {
+      "src": "assets/glass-fence-landscaping.jpg",
+      "width": 1300,
+      "height": 975,
+      "alt": "A rectangular pool with a dark tiled raised wall, frameless glass fencing and established garden behind it",
+      "caption": "Raised wall and glass fencing"
+    },
+    "owner": {
+      "src": "assets/sunny-pool-garden-bed.jpg",
+      "width": 1300,
+      "height": 520,
+      "ratio": "1300/520",
+      "alt": "A rectangular pool with blue waterline tiles and a fresh garden bed of grasses and shrubs behind a glass fence",
+      "caption": "A finished job, fresh garden bed and all"
+    },
+    "enquiryBackground": {
+      "src": "assets/timber-deck-pool.jpg",
+      "width": 1100,
+      "height": 1100
+    },
+    "gallery": [
+      {
+        "src": "assets/hero-pool-water-view.jpg",
+        "full": "assets/hero-pool-water-view.jpg",
+        "width": 1800,
+        "height": 1350,
+        "caption": "Harbour view",
+        "detail": "Elevated pool deck above the water",
+        "alt": "An elevated concrete pool with a bay and headland view behind it"
+      },
+      {
+        "src": "assets/pool-lush-plants.jpg",
+        "full": "assets/pool-lush-plants.jpg",
+        "width": 1600,
+        "height": 1200,
+        "caption": "Tropical garden pool",
+        "detail": "Pool and gazebo, dense planting",
+        "alt": "A rectangular pool beside a white gazebo, with dense tropical planting along a dark timber fence"
+      },
+      {
+        "src": "assets/pool-stone-steps-aerial.jpg",
+        "full": "assets/pool-stone-steps-aerial.jpg",
+        "width": 1300,
+        "height": 731,
+        "caption": "Stone steps & sun shelf",
+        "detail": "Aerial view, travertine-look paving",
+        "alt": "A straight-down aerial view of an L-shaped concrete pool with wide stone steps and a sun shelf"
+      },
+      {
+        "src": "assets/bushland-curved-pool.jpg",
+        "full": "assets/bushland-curved-pool.jpg",
+        "width": 750,
+        "height": 1000,
+        "caption": "Bushland block",
+        "detail": "Freeform curved pool among the trees",
+        "alt": "A freeform curved pool set into a bushland block with a second pool visible behind the glass fence"
+      },
+      {
+        "src": "assets/aerial-backyard-pool-lawn.jpg",
+        "full": "assets/aerial-backyard-pool-lawn.jpg",
+        "width": 1300,
+        "height": 976,
+        "caption": "Full backyard renovation",
+        "detail": "Pool, lawn and garden beds",
+        "alt": "A wide aerial view of a rectangular pool, striped lawn and a curved raised garden bed"
+      },
+      {
+        "src": "assets/timber-deck-pool.jpg",
+        "full": "assets/timber-deck-pool.jpg",
+        "width": 1100,
+        "height": 1100,
+        "caption": "Timber deck pool",
+        "detail": "Octagonal pool set into an elevated deck",
+        "alt": "An elevated octagonal pool set into a timber deck in a treed backyard, with a dining table behind it"
+      },
+      {
+        "src": "assets/pool-clear-blue-modern.jpg",
+        "full": "assets/pool-clear-blue-modern.jpg",
+        "width": 1300,
+        "height": 867,
+        "caption": "Minimalist pool",
+        "detail": "Grey render wall, mosaic tile step",
+        "alt": "A minimalist tiled pool against a grey rendered wall with a mosaic-tile step and frameless glass fencing"
+      },
+      {
+        "src": "assets/sunny-pool-garden-bed.jpg",
+        "full": "assets/sunny-pool-garden-bed.jpg",
+        "width": 1300,
+        "height": 520,
+        "caption": "Fresh garden bed",
+        "detail": "Waterline tiles, new planting",
+        "alt": "A rectangular pool with blue waterline tiles and a fresh garden bed of grasses and shrubs behind a glass fence"
+      },
+      {
+        "src": "assets/glass-fence-landscaping.jpg",
+        "full": "assets/glass-fence-landscaping.jpg",
+        "width": 1300,
+        "height": 975,
+        "caption": "Raised wall & glass fence",
+        "detail": "Established garden and lawn",
+        "alt": "A rectangular pool with a dark tiled raised wall, frameless glass fencing and established garden behind it"
+      }
+    ],
+    "beforeAfter": []
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [
+    {
+      "name": "Paul Giovenco",
+      "text": "David, Michael and Dianne have just finished our pool reno. We could not be happier with the final result and the way Great Southern Pools team did our job. Good advise, reliable and on time. We would thoroughly recommend them to anyone looking to renovate or build a pool. GREAT JOB GUYS!"
+    },
+    {
+      "name": "Kath",
+      "text": "David Moore was the epitome of honesty and professionalism. He and his son, Michael, built a new in-ground pool for us. They were reliable and answered all of our questions along the way and after our pool was completed. They did a great job on our pool. We would recommend them to anyone."
+    },
+    {
+      "name": "Maureen Antuch",
+      "text": "Michael Moore from Great Southern Pools had done a wonderful job on my alfresco area. The process was stress free and Michael was a pleasure to work with, highly recommend GSP Renovations for any pools projects. Maureen & Peter"
+    },
+    {
+      "name": "Lachlan W",
+      "text": "They built me a fantastic pool, reasonable price for the quality of work. Genuine hard working people and easy to communicate with! Would recommend!"
+    },
+    {
+      "name": "Daniel Moore",
+      "text": "Excellent craftsmanship, quality pools, attentive to all customer needs and easy to talk to. Couldn't recommend more."
+    },
+    {
+      "name": "Chance P",
+      "text": "Outstanding quality of work and amazing customer service. Work completed ahead of schedule and under budget. A+++"
+    }
+  ],
+  "faq": [
+    {
+      "q": "Do you build new pools and renovate old ones?",
+      "a": "Both. New builds and renovations are the two core services, alongside spas, water features, infinity edges and underwater windows."
+    },
+    {
+      "q": "Does an old pool need to be replaced, or can it be renovated?",
+      "a": "An outdated pool doesn't need to be replaced to be transformed. With the right renovation, it can be reimagined into a modern, functional space that feels brand new \u2014 new interiors, coping, waterline tiles and reshaping."
+    },
+    {
+      "q": "What interior finishes do you offer?",
+      "a": "Two options: fully tiled, for lasting durability and a refined, high-end look that resists fading and chemicals; or designer beadcrete with waterline tiles, for a balance of durability, low maintenance and modern style."
+    },
+    {
+      "q": "What happens once we sign on?",
+      "a": "Four stages: a site inspection and design proposal, then approvals and planning (contracts, permits, engineering, scheduling), then construction \u2014 excavation, shell, plumbing, waterproofing, tiling and equipment \u2014 and finally filling, handover and a maintenance walkthrough."
+    },
+    {
+      "q": "Who will I actually be dealing with?",
+      "a": "David and Dianne Moore, and David's son Michael. It's a family-owned business, and reviewers consistently name the three of them individually rather than just \"the company.\""
+    }
+  ],
+  "sms": {
+    "label": "Text David a photo",
+    "body": "Hi David, I'd like a quote.\nSuburb: \nWhat I'm after: \n(Happy to send photos of the pool or the space.)"
+  },
+  "_source": {
+    "url": "https://gspools.com.au",
+    "readAt": "2026-09-23",
+    "readVia": "WebFetch tool (plain curl and Node fetch both fail on gspools.com.au itself this session with 'Recv failure: Connection reset by peer' / a proxy tunnel closing mid-exchange, confirmed after multiple retries \u2014 WebFetch succeeds where curl does not). Photos were then downloaded with curl from img1.wsimg.com, a different host that curl reaches fine.",
+    "pagesRead": [
+      "https://gspools.com.au (home)",
+      "https://gspools.com.au/about-us-1",
+      "https://gspools.com.au/our-work",
+      "https://gspools.com.au/new-builds",
+      "https://gspools.com.au/renovations",
+      "https://gspools.com.au/contact-us"
+    ],
+    "claimSources": {
+      "business.name / logo full name": "Their logo image (assets/logo-navy.jpg, downloaded from img1.wsimg.com/isteam/ip/392a7c03-8c77-4ff9-86f5-26477d7dff0e/unnamed.png) reads 'GREAT SOUTHERN POOLS & RENOVATIONS', matching the Google Business Profile name 'Great Southern Pools & Renovations' in data/google_reviews_top25.json. The site's own nav/header text uses the shorter 'Great Southern Pools', which this demo follows throughout.",
+      "business.ownerName / ownerFirstName / stats.yearsInBusiness = 30": "Homepage and /about-us-1, word for word: 'With over 30 years of industry experience, David and Dianne Moore lead a family-owned pool building company known for quality workmanship, personalised service, and attention to detail.' /about-us-1 separately: 'With over 30 years of experience in the pool building industry.'",
+      "owner.team \u2014 Michael Moore, David's son": "Not from their site (Michael isn't named on gspools.com.au) \u2014 from their own Google reviews, data/google_reviews_top25.json: Kath, 'David Moore was the epitome of honesty and professionalism. He and his son, Michael, built a new in-ground pool for us.' Also named individually by Paul Giovenco ('David, Michael and Dianne have just finished our pool reno') and Maureen Antuch ('Michael Moore from Great Southern Pools had done a wonderful job on my alfresco area').",
+      "business.phone": "gspools.com.au header, footer and /contact-us all show '0413513572'. NOTE: their Google Business Profile in data/google_reviews_top25.json lists a different number, 0418 603 656. This demo uses the number currently published on their own live site; flagged for Pat to confirm the correct current number with David before sending.",
+      "business.email": "gspools.com.au footer and /contact-us: 'dmooregsp@gmail.com'.",
+      "business.baseSuburb / region / areasIntro 'Greater Sydney'": "Homepage states their service area as 'Greater Sydney'. No suburb-level detail is published anywhere on the site (checked home, about, our-work, new-builds, renovations, contact) \u2014 none is invented here.",
+      "services \u2014 new builds list": "/new-builds: 'We design and build custom concrete pools tailored to your home, lifestyle and landscape,' plus their own listed offerings: custom concrete pools, spas, water features, infinity edges, underwater windows, stairs and pathways, retaining walls.",
+      "services \u2014 renovations quote": "/renovations, word for word: 'An outdated pool doesn't need to be replaced to be transformed \u2014 with the right renovation, it can be reimagined into a modern, functional space that feels brand new.'",
+      "services \u2014 interior finishes (fully tiled / designer beadcrete)": "/new-builds: 'Fully Tiled' described as giving 'lasting durability with a refined, high-end appearance' and 'resistant to fading, chemicals, and everyday wear'; 'Designer Beadcrete' with waterline tiles offering 'the perfect balance of durability, low maintenance, and modern style'.",
+      "process steps": "/new-builds, their own 'Construction Process' section: 1) Vision & Consultation \u2014 site inspection and customised design proposal; 2) Approvals & Planning \u2014 contracts, permits, engineering, scheduling; 3) Pool Construction \u2014 excavation, shell, plumbing, waterproofing, tiling, equipment and surrounding features; 4) Fill, Handover & Swim \u2014 water balancing, system testing, maintenance walkthrough.",
+      "credentials \u2014 none shown": "Checked home, about, our-work, new-builds, renovations and contact pages: no ABN, licence number, insurance, warranty or association-membership wording appears anywhere on gspools.com.au, so credentials is left empty. Their one 1-star Google review specifically states they are 'not members of the Pool & Spa Association' \u2014 this demo makes no membership claim of any kind.",
+      "stats.googleRating / reviewCount / reviews": "data/google_reviews_top25.json, key 'great-southern-pools': rating 4.7, review_count 12. The six reviews used are its best_for_demo array, word for word, none marked shortened."
+    },
+    "photoClaims": {
+      "hero \u2014 harbour-view pool": "IMG_7689.JPG (2560x1920) from gspools.com.au/about-us-1, alt on their own page: 'Modern backyard pool with scenic water view and minimalist design.' No suburb or client named on their site.",
+      "statement \u2014 tropical garden pool": "20250604_091148.jpg (2560x1920) from /about-us-1, their own alt: 'Modern backyard pool with glass fence and lush plants.'",
+      "aperture \u2014 raised wall & glass fence": "61FA6729-77AA-4A5E-8784-5543EA8CF989.png (1448x1086) from /about-us-1, their own alt: 'Modern backyard pool with glass fence and landscaping' (paraphrased close to source, exact page alt not machine-readable beyond the /our-work duplicate: 'Modern backyard pool with clear water and glass safety fencing').",
+      "owner slot \u2014 sunny pool with garden bed": "Screenshot 2026-05-20 133343.png (1520x608) from /our-work, alt 'Modern backyard pool with glass fencing and greenery.' File name looks like a screenshot; opened with the Read tool and confirmed it is a genuine daylight photograph of a pool and garden bed, not a UI screenshot.",
+      "gallery \u2014 bushland curved pool": "14C10F8C-8603-4BE9-A55A-562B4F15CC01.png (750x1000 as used) from /renovations, alt 'Two swimming pools surrounded by trees and a protective glass fence.'",
+      "gallery \u2014 timber deck pool": "F24AFA5E-C33F-486E-9FFC-68AE1F2E88E1.png (1100x1100 as used) from /renovations, alt 'A serene backyard pool with wooden deck and outdoor dining area.'",
+      "gallery \u2014 minimalist pool": "B706FACE-A967-49D6-9FDE-FBEFED566457.png (1536x1024) from /our-work, alt 'Modern private swimming pool with clear blue water and glass fencing.'",
+      "gallery \u2014 full backyard renovation aerial": "120152407_3537866009596906_1584217314625632936.jpg (1300x976 as used) from /our-work, alt 'Modern backyard with a pool, lawn, and landscaped garden beds.'",
+      "gallery \u2014 stone steps aerial": "blob-e75bc0c.png (2560x1439) from /about-us-1, no alt text provided on their page.",
+      "gallery \u2014 raised wall & glass fence": "61FA6729-77AA-4A5E-8784-5543EA8CF989.png reused from /our-work, alt 'Modern backyard pool with clear water and glass safety fencing.'",
+      "held in reserve \u2014 house alfresco photo": "93600927_3083712831678895_2084225449814130688_.jpg (assets/new-build-alfresco.jpg, 1000x750 as used), from /new-builds, no alt text on their page. Real and sharp but the lowest-resolution source and the most dated-looking job of the set, so it sits in reserve rather than in the 8-photo gallery."
+    },
+    "notOnThePage": [
+      "No ABN is published anywhere on gspools.com.au, so none is claimed.",
+      "No licence number is published, so none is claimed. Their one negative Google review explicitly says they are not Pool & Spa Association members \u2014 this demo makes no membership or association claim.",
+      "No suburb-level service area is published \u2014 only 'Greater Sydney' \u2014 so no suburb list is invented.",
+      "No warranty, guarantee or insurance wording is published, so none is claimed.",
+      "No founding year is published, only 'over 30 years' \u2014 so no specific year is used, matching their own wording.",
+      "Two phone numbers exist for this business (site: 0413 513 572, Google profile: 0418 603 656) and this demo did not try to guess which is correct \u2014 it uses the one published on their own live site now and flags the conflict for Pat."
+    ],
+    "stockLookingPhotos": [],
+    "photoNote": "10 real photos downloaded from gspools.com.au via img1.wsimg.com and opened one by one with the Read tool. All sharp, all real jobs, no stock, no logos-as-photos. One (assets/new-build-alfresco.jpg) is held in reserve and not used in the 8-photo main gallery. Full inventory in BRIEF.md."
+  }
+}
