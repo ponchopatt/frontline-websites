@@ -76,16 +76,37 @@ If more of his real work is wanted, ask him for the photo folder on the call.
 
 ## Design
 
-Palette is sampled from their actual project photography — warm sandstone, deep garden
-green, pool blue — not from their current site's CSS, which is mostly theme defaults.
+Colours come from their real logo, an inline SVG in their page source: slate `#274758`,
+wave teal `#4DBFA6` and sun coral `#EF4435`. Teal is the page's single accent; coral
+appears only inside the logo. The ground is a near-black `#0A1418`.
+(`TLA-Logo-new-1.png` on their site is The Landscape Association's membership badge,
+not their logo.)
 
-Their logo (`TLA-Logo-new-1.png`) is **pure white**, so it is built for dark backgrounds.
-That drives the dark hero and header.
+Fonts are self-hosted in `fonts/`: Big Shoulders Display for headlines (condensed caps)
+and Instrument Sans for everything else.
 
-All text/background pairs verified against WCAG AA. Brass `#B08D57` passes only on dark
-grounds (2.67:1 on bone) so it is never used for text on light sections.
+All text/background pairs are verified against WCAG AA using the rendered colour.
 
-Fonts are self-hosted in `fonts/`: Fraunces (display) and Hanken Grotesk (body).
+## Lead capture
+
+Their current site opens on an enquiry form (Name, Email, Phone, Project, "Enquire Now")
+and repeats it at the foot of the page, so the form is plainly what the business runs
+on. The demo keeps that priority without giving up the hero:
+
+- **Laptop, 1100px and wider:** a quote card sits beside the headline, over the
+  photograph, visible on load. Name, Phone, Suburb, What you are after. The headline
+  only shrinks when it has to, to leave room for the card.
+- **Tablet and phone:** the hero offers *Get a quote* and *Call*, plus *Or text us a
+  photo* on a phone. The quote card is the first thing after the hero.
+- **Mid-page:** two quote bands, after the gallery and after the reviews.
+- **Header:** *Get a quote*. When the card is already on screen it just puts the cursor
+  in the first field rather than scrolling.
+- **Persistent:** the phone bar reads *Get a quote · Text us · Call*; wide screens get
+  the small call button in the corner.
+- **Foot of the page:** the full enquiry form, unchanged.
+
+Both forms share one handler. With no `formAccessKey` they run in demo mode and make
+no network call at all.
 
 ## Their Google reviews — what we actually know
 
@@ -127,23 +148,22 @@ guess can never be mistaken for a quote.
 | 1 | Design fee starting point | `designFeeFrom` | `$X,XXX` — shown in Process step 01 and the FAQ |
 | 2 | Typical construction range | `typicalBuildRange` | `$XX,XXX to $XXX,XXX` — shown in the FAQ |
 | 3 | Best of Houzz year | `houzzYear` | empty, so no year renders. **Do not invent one.** |
-| 4 | Booking link | `frontlineBookingUrl` | `#enquire` — swap for a real Calendly/Cal.com link |
-| 5 | Web3Forms key | `formAccessKey` | empty, so the form runs in demo mode |
-| 6 | Google rating and review count | — | **deliberately absent.** ~27 reviews, at least one 1-star, so it is not 5.0 |
-| 7 | Exotic Nurseries relationship | — | now phrased as a quote from their supplier rather than a year, since the "nearly 10 years" quote is itself eight years old |
-| 8 | Current lead time | — | the FAQ now answers honestly instead of carrying a placeholder |
-| 9 | Service-area list | `SITE.areas` | 18 Eastern Suburbs suburbs, also feeds the JSON-LD |
+| 4 | Web3Forms key | `formAccessKey` | empty, so both forms run in demo mode |
+| 5 | Google rating and review count | — | **deliberately absent.** ~27 reviews, at least one 1-star, so it is not 5.0 |
+| 6 | Exotic Nurseries relationship | — | now phrased as a quote from their supplier rather than a year, since the "nearly 10 years" quote is itself eight years old |
+| 7 | Current lead time | — | the FAQ now answers honestly instead of carrying a placeholder |
+| 8 | Service-area list | `SITE.areas` | 18 Eastern Suburbs suburbs, also feeds the JSON-LD |
 
 ## Lighthouse
 
-Run against the built page on 22 Sep 2026.
+Run against the built page on 23 Sep 2026, after the quote card went in.
 
 | | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|
-| **Mobile** | 92 | 100 | 100 | 66 |
+| **Mobile** | 93 | 100 | 100 | 66 |
 | **Desktop** | 100 | 100 | 100 | 66 |
 
-Mobile: FCP 1.9s · LCP 3.2s · TBT 10ms · CLS 0.
+Mobile: FCP 1.6s · LCP 3.1s · TBT 40ms · CLS 0. Desktop: LCP 0.8s · CLS 0.
 
 **SEO 66 is correct and must not be "fixed".** The only failing audit is *"Page is
 blocked from indexing"* — which is the entire point of a demo carrying someone

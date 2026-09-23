@@ -205,23 +205,6 @@ section{padding-block:var(--pad);position:relative}
 .ln{display:block;overflow:hidden}
 .ln>span{display:block;will-change:transform}
 
-/* ---------------------------------------------------------------- demo bar */
-.demobar{position:relative;z-index:80;background:var(--bg-card);
-  border-bottom:1px solid var(--line)}
-.demobar-in{display:flex;align-items:center;gap:var(--s16);
-  padding-block:10px;flex-wrap:wrap}
-.demobar p{margin:0;font-size:var(--t-cap);color:var(--fg-mute);flex:1 1 260px;line-height:1.5}
-.demobar b{color:var(--fg-soft);font-weight:600}
-.demobar-cta{font-size:var(--t-cap);font-weight:600;color:var(--teal);text-decoration:none;
-  white-space:nowrap;border-bottom:1px solid transparent;
-  min-height:44px;display:inline-flex;align-items:center}
-.demobar-cta:hover{border-color:var(--teal)}
-.demobar-x{all:unset;cursor:pointer;min-width:44px;min-height:44px;display:grid;
-  place-items:center;color:var(--fg-mute);border-radius:2px}
-.demobar-x:hover{color:var(--fg)}
-.demobar-x:focus-visible{box-shadow:0 0 0 2px var(--bg),0 0 0 5px var(--teal)}
-/* the header starts below the bar while it is showing */
-body.has-demobar .top{top:var(--demobar-h,0px)}
 
 /* ---------------------------------------------------------------- header */
 /* The header is ABSOLUTE, not fixed. It sits over the hero photograph and
@@ -246,7 +229,11 @@ body.has-demobar .top{top:var(--demobar-h,0px)}
 @media(min-width:1040px){.nav{display:flex}.top .btn{display:inline-flex}}
 
 /* ---------------------------------------------------------------- hero */
-.hero{min-height:calc(100svh - var(--demobar-h,0px));padding:0;display:flex;align-items:flex-end;overflow:hidden;background:var(--bg)}
+.hero{padding:0;display:grid;overflow:hidden;background:var(--bg);--qcard-w:min(430px,34vw)}
+/* The stage is the photograph and the headline. The quote card is a sibling,
+   not a child, so on a phone it follows the stage on solid ground instead of
+   stretching the photograph down behind a form. */
+.hero-stage{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden}
 .hero .bgwrap{position:absolute;inset:0;overflow:hidden}
 .hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   object-position:50% 62%;will-change:transform}
@@ -254,24 +241,25 @@ body.has-demobar .top{top:var(--demobar-h,0px)}
 .hero .veil{position:absolute;inset:0;background:
   linear-gradient(to top,rgba(6,13,16,.95) 0%,rgba(6,13,16,.8) 30%,rgba(6,13,16,.34) 62%,rgba(6,13,16,.06) 86%,rgba(6,13,16,.46) 100%),
   linear-gradient(to right,rgba(6,13,16,.78) 0%,rgba(6,13,16,.36) 44%,rgba(6,13,16,0) 74%)}
-.hero .wrap{position:relative;z-index:2;
+.hero-stage>.wrap{position:relative;z-index:2;
   padding-bottom:clamp(var(--s48),7vh,var(--s96));
   padding-top:calc(var(--header-h) + var(--s32))}
 .hero-in{max-width:min(1100px,100%)}
 .hero .ln{padding-bottom:.05em}
+/* The split gives each of the three lines .05em of room for descenders. Hold
+   that same .15em before the split happens, so the block is already its
+   final height on first paint and nothing shifts when the script runs. */
+.hero h1:not([data-built]){padding-bottom:.15em}
 .hero h1 em{font-style:normal;font-weight:inherit;color:var(--teal)}
 /* Before JS splits it, the headline must already be visible and correct —
    the split only adds the clipping boxes the reveal needs. */
 .t-mega em,.t-d1 em{font-style:normal;font-weight:inherit}
 @media(max-height:790px){
-  .hero .wrap{padding-top:calc(var(--header-h) + var(--s12));padding-bottom:var(--s20)}
+  .hero-stage>.wrap{padding-top:calc(var(--header-h) + var(--s12));padding-bottom:var(--s20)}
   .hero .sub{margin:var(--s16) 0 var(--s20) !important;font-size:1rem;line-height:1.45}
   .hero .t-label{margin-bottom:var(--s12)}
-  .hero .btn{min-height:48px;padding:12px 22px}
+  .hero-in .btn{min-height:48px;padding:12px 22px}
   .hero .ctas{gap:var(--s12)}
-  /* the banner is a pitch affordance, not content — it shrinks first */
-  .demobar-in{padding-block:6px;gap:var(--s12)}
-  .demobar p{font-size:.7rem}
 }
 @media(max-height:660px){
   .hero .sub{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
@@ -286,6 +274,65 @@ body.has-demobar .top{top:var(--demobar-h,0px)}
 .hero .meta span::before{content:"";width:6px;height:6px;border-radius:50%;
   background:var(--coral);flex:none;box-shadow:0 0 12px rgba(239,68,53,.9)}
 .hero .t-label,.hero .meta{text-shadow:0 1px 18px rgba(4,10,13,.9)}
+
+/* ---------------------------------------------------------------- quote card
+   Their current site opens on an enquiry form, so the lead form is plainly
+   what the business runs on. On a laptop the card sits beside the headline,
+   over the photograph, visible the moment the page loads. On a phone it is
+   the first thing after the hero. */
+.qwrap{position:relative;z-index:3;background:var(--bg-card);
+  padding-block:clamp(var(--s48),8vw,var(--s80))}
+.qcard{max-width:640px}
+.qcard .t-label{margin-bottom:var(--s12)}
+.qcard .t-h3{margin-bottom:var(--s24)}
+.qcard form{gap:var(--s12)}
+.qcard .row.two{grid-template-columns:1fr 1fr;gap:var(--s12)}
+.qcard input,.qcard select{min-height:52px;padding:13px 14px}
+.qcard .btn{width:100%;margin-top:4px}
+.qalt{margin:0;font-size:var(--t-cap);color:var(--fg-mute)}
+/* the underline hugs the text; the 44px height is only there for the thumb */
+.qalt a{color:var(--fg-soft);font-weight:600;text-decoration:underline;text-decoration-color:var(--line-2);
+  text-underline-offset:4px;text-decoration-thickness:1px;
+  display:inline-flex;min-height:44px;align-items:center;transition:color .25s,text-decoration-color .25s}
+.qalt a:hover{color:var(--fg);text-decoration-color:var(--fg)}
+.qthanks p{margin:0 0 var(--s12)}
+.qthanks .btn{margin-top:var(--s12)}
+@media(min-width:1100px){
+  /* stage and card share one grid cell, so the card rides on the photograph */
+  .hero{grid-template-areas:"stack"}
+  .hero-stage,.qwrap{grid-area:stack}
+  .qwrap{background:none;align-self:end;pointer-events:none;
+    padding-top:calc(var(--header-h) + var(--s24));
+    padding-bottom:clamp(var(--s48),7vh,var(--s96))}
+  .qwrap .wrap{display:flex;justify-content:flex-end}
+  .qcard{pointer-events:auto;width:var(--qcard-w);max-width:none;
+    background:rgba(10,20,24,.86);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+    border:1px solid var(--line-2);border-top:2px solid var(--teal);
+    padding:var(--s32);box-shadow:0 30px 80px rgba(0,0,0,.45)}
+  .hero-in{max-width:calc(100% - var(--qcard-w) - var(--s64))}
+  /* the headline gives up the width the card takes, and no more */
+  .hero h1{font-size:min(var(--t-mega),calc((min(100vw,var(--wrap)) - 2*var(--gut) - var(--qcard-w) - var(--s64)) / var(--mega-ratio,5.6)))}
+  /* the card is the primary action here, so the hero keeps only the call */
+  .hero-cta .hq{display:none}
+}
+@media(min-width:1100px) and (max-height:790px){
+  .qwrap{padding-top:calc(var(--header-h) + var(--s12));padding-bottom:var(--s20)}
+  .qcard{padding:var(--s24)}
+  .qcard .t-h3{margin-bottom:var(--s16)}
+  .qcard input,.qcard select{min-height:46px;padding:10px 12px}
+  .qcard label{gap:6px}
+}
+
+/* ---------------------------------------------------------------- cta band
+   A quiet stop between sections: one line, a quote button, and one other way
+   to get in touch. */
+.ctaband{border-block:1px solid var(--line);padding-block:clamp(var(--s48),6vw,var(--s96))}
+.ctaband-in{display:grid;gap:var(--s24) var(--s48);align-items:end}
+@media(min-width:900px){.ctaband-in{grid-template-columns:minmax(0,1fr) auto}}
+.ctaband .t-d2{margin:0}
+.ctaband p{margin:var(--s16) 0 0;color:var(--fg-soft);max-width:36em}
+/* on a phone the two buttons stack, so they share one width and line up */
+@media(max-width:599px){.ctaband .ctas{display:grid}.ctaband .btn{width:100%}}
 
 /* ---------------------------------------------------------------- marquee */
 .strip{border-block:1px solid var(--line);padding-block:var(--s32)}
@@ -494,12 +541,12 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 
 /* ---------------------------------------------------------------- sticky bar */
 .stickybar{position:fixed;left:0;right:0;bottom:0;z-index:65;display:grid;
-  grid-template-columns:1fr 1fr;gap:var(--s8);
+  grid-template-columns:1.35fr 1fr 1fr;gap:var(--s8);
   padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom,0px));
   background:rgba(10,20,24,.97);backdrop-filter:blur(16px);border-top:1px solid var(--line);
   transform:translateY(110%);transition:transform .4s var(--ease)}
 .stickybar.on{transform:none}
-.stickybar .btn{min-height:52px;padding:12px 16px;font-size:.95rem}
+.stickybar .btn{min-height:52px;padding:12px 8px;font-size:.95rem;white-space:nowrap}
 /* the sticky bar is fixed, so the document needs its height back at the bottom
    or it covers the Send button and the footer links */
 @media(max-width:767px){
@@ -561,19 +608,6 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<!-- Pitch banner. Hidden entirely with ?clean=1 so the same URL can show the
-     unbranded version during a call. -->
-<div class="demobar" id="demobar" hidden>
-  <div class="wrap demobar-in">
-    <p>Prepared for <b>Antony Aris</b> by Frontline Systems — a preview of what bondilandscapes.com.au could look like.</p>
-    <a class="demobar-cta" id="demoBook" href="#enquire">Book a 10-min walkthrough</a>
-    <button class="demobar-x" id="demoClose" type="button" aria-label="Dismiss this banner">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-  </div>
-</div>
-
-
 <header class="top" id="topbar">
   <div class="wrap topin">
     <a class="brand" href="#hero" aria-label="Bondi Landscapes, home">
@@ -590,7 +624,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
       0412 154 594
     </a>
-    <a class="btn" href="#enquire">Start a conversation</a>
+    <a class="btn" href="#quote">Get a quote</a>
   </div>
 </header>
 
@@ -598,6 +632,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 
 <!-- ============================================================ hero -->
 <section class="hero" id="hero">
+  <div class="hero-stage">
   <div class="bgwrap">
     <img class="bg" src="assets/griffith-ave-1800.webp"
       srcset="assets/griffith-ave-480.webp 480w, assets/griffith-ave-800.webp 800w, assets/griffith-ave-1200.webp 1200w, assets/griffith-ave-1800.webp 1800w"
@@ -611,12 +646,49 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
       <h1 class="t-mega" data-lines>Gardens built<br>the way they<br><em>were drawn.</em></h1>
       <p class="sub hero-sub" data-hero>Landscape design, construction and pool building under one roof. Antony Aris holds the landscape contractor's licence <em>and</em> the pool builder's licence — so the drawing, the build and the pool all answer to one person.</p>
       <div class="ctas hero-cta" data-hero>
-        <a class="btn" href="tel:+61412154594">
+        <a class="btn hq" href="#quote">Get a quote</a>
+        <a class="btn ghost" href="tel:+61412154594">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
-          0412 154 594
+          <span class="only-wide">0412 154 594</span><span class="only-narrow">Call</span>
         </a>
-        <a class="link only-wide" href="#enquire">Or send the details</a>
         <a class="link only-narrow" data-sms href="sms:+61412154594">Or text us a photo</a>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="qwrap">
+    <div class="wrap">
+      <div class="qcard" id="quote">
+        <p class="t-label">Request a quote</p>
+        <h2 class="t-h3" id="quoteHead">Tell Antony what you're planning.</h2>
+        <form id="qForm" novalidate aria-labelledby="quoteHead">
+          <div class="hp" aria-hidden="true"><label>Company<input id="qCompany" type="text" tabindex="-1" autocomplete="off"></label></div>
+          <div class="row two">
+            <label>Name<input id="qName" type="text" autocomplete="name" required><span class="err" id="qNameErr" hidden>Please tell us your name</span></label>
+            <label>Phone<input id="qPhone" type="tel" autocomplete="tel" inputmode="tel" required><span class="err" id="qPhoneErr" hidden>Please enter a contact number</span></label>
+          </div>
+          <label>Suburb<input id="qSuburb" type="text" autocomplete="address-level2" required><span class="err" id="qSuburbErr" hidden>Which suburb is the property in?</span></label>
+          <label>What you are after
+            <select id="qService">
+              <option>Landscape design and construction</option>
+              <option>Landscape design only</option>
+              <option>Pool and surrounds</option>
+              <option>Pool, garden and full transformation</option>
+              <option>Courtyard or small garden</option>
+              <option>Something else</option>
+            </select>
+          </label>
+          <p class="err" id="qErr" hidden>Please complete the highlighted fields.</p>
+          <button class="btn" id="qSend" type="submit">Get a quote</button>
+          <p class="qalt">Prefer to talk? <a href="tel:+61412154594">Call 0412 154 594</a></p>
+        </form>
+        <div class="qthanks" id="qThanks" hidden>
+          <p class="t-h3" id="qThanksHead">Thank you.</p>
+          <p id="qThanksBody"></p>
+          <p class="t-cap" id="qThanksNote" hidden></p>
+          <a class="btn" href="tel:+61412154594">Call 0412 154 594</a>
+        </div>
       </div>
     </div>
   </div>
@@ -747,6 +819,21 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   </div>
 </section>
 
+<!-- ============================================================ cta band -->
+<aside class="ctaband" aria-labelledby="cbWork">
+  <div class="wrap ctaband-in" data-reveal>
+    <div>
+      <h2 class="t-d2" id="cbWork">Have a space in mind?</h2>
+      <p>Tell us the suburb and what you are after. It takes a minute.</p>
+    </div>
+    <div class="ctas">
+      <a class="btn" href="#enquire">Get a quote</a>
+      <a class="btn ghost only-wide" href="tel:+61412154594"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>0412 154 594</a>
+      <a class="btn ghost only-narrow" data-sms href="sms:+61412154594">Text us a photo</a>
+    </div>
+  </div>
+</aside>
+
 <!-- ============================================================ process -->
 <section id="process">
   <div class="wrap above">
@@ -801,6 +888,21 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   </div>
   <div class="wrap"><div class="quotes" id="quotes" data-reveal="stagger" aria-label="Client reviews"></div></div>
 </section>
+
+<!-- ============================================================ cta band -->
+<aside class="ctaband" aria-labelledby="cbReviews">
+  <div class="wrap ctaband-in" data-reveal>
+    <div>
+      <h2 class="t-d2" id="cbReviews">Ready when you are.</h2>
+      <p>Send the details, text a photo of the space, or call Antony directly — whichever is easiest.</p>
+    </div>
+    <div class="ctas">
+      <a class="btn" href="#enquire">Get a quote</a>
+      <a class="btn ghost only-wide" href="tel:+61412154594"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>0412 154 594</a>
+      <a class="btn ghost only-narrow" data-sms href="sms:+61412154594">Text us a photo</a>
+    </div>
+  </div>
+</aside>
 
 <!-- ============================================================ recognition -->
 <section>
@@ -966,8 +1068,9 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 </footer>
 
 <div class="stickybar" id="sticky">
-  <a class="btn" data-sms href="sms:+61412154594">Text a photo</a>
-  <a class="btn ghost" href="tel:+61412154594">Call Antony</a>
+  <a class="btn" href="#enquire">Get a quote</a>
+  <a class="btn ghost" data-sms href="sms:+61412154594">Text us</a>
+  <a class="btn ghost" href="tel:+61412154594">Call</a>
 </div>
 
 <a class="calldock" id="calldock" href="tel:+61412154594" aria-label="Call Antony on 0412 154 594">
@@ -1017,9 +1120,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
        --------------------------------------------------------------------- */
     designFeeFrom:"$X,XXX",        /* the lowest Design Fee Proposal he'd write   */
     typicalBuildRange:"$XX,XXX to $XXX,XXX",  /* typical construction spend        */
-    houzzYear:"",                  /* e.g. "2024". Empty hides the year entirely. */
-
-    frontlineBookingUrl:"#enquire" /* swap for a real Calendly/Cal.com link       */
+    houzzYear:""                   /* e.g. "2024". Empty hides the year entirely. */
   };
 
   /* Pre-written so the client only has to fill the blanks and hit send. A photo
@@ -1076,31 +1177,6 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
   (function(){
     var y=$("houzzYear");
     if(y) y.textContent=SITE.houzzYear ? SITE.houzzYear : "";   /* no year invented */
-  })();
-
-  /* ---------- demo banner ----------
-     ?clean=1 shows the page exactly as a real visitor would see it. */
-  (function(){
-    var bar=$("demobar");
-    if(!bar) return;
-    var clean=new URLSearchParams(location.search).has("clean");
-    var dismissed=false;
-    try{ dismissed=sessionStorage.getItem("bl-demobar")==="off" }catch(e){}
-    if(clean||dismissed) return;
-    bar.hidden=false;
-    $("demoBook").href=SITE.frontlineBookingUrl;
-    function sizeBar(){
-      document.documentElement.style.setProperty("--demobar-h",bar.offsetHeight+"px");
-    }
-    document.body.classList.add("has-demobar");
-    sizeBar();
-    window.addEventListener("resize",sizeBar,{passive:true});
-    $("demoClose").addEventListener("click",function(){
-      bar.hidden=true;
-      document.body.classList.remove("has-demobar");
-      document.documentElement.style.setProperty("--demobar-h","0px");
-      try{ sessionStorage.setItem("bl-demobar","off") }catch(e){}
-    });
   })();
 
   document.querySelectorAll("[data-sms]").forEach(function(a){ a.href=smsHref(); });
@@ -1177,6 +1253,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
         .fromTo(".hero-kicker",{opacity:0,y:10},{opacity:1,y:0,duration:.5},0)
         .fromTo(".hero-sub",{opacity:0,y:12},{opacity:1,y:0,duration:.55},.5)
         .fromTo(".hero-cta > *",{opacity:0,y:12},{opacity:1,y:0,duration:.55,stagger:.06},.6)
+        .fromTo(".qcard",{opacity:0,y:18},{opacity:1,y:0,duration:.7},.7)
         .fromTo(".hero img.bg",{scale:1.14},{scale:1,duration:2.2},0);
 
     if(intro){
@@ -1230,7 +1307,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     });
 
     gsap.to(".hero img.bg",{yPercent:12,ease:"none",
-      scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
+      scrollTrigger:{trigger:".hero-stage",start:"top top",end:"bottom top",scrub:true}});
     gsap.to(".enq .bgimg",{yPercent:-10,ease:"none",
       scrollTrigger:{trigger:"#enquire",start:"top bottom",end:"bottom top",scrub:true}});
 
@@ -1290,42 +1367,39 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
     });
   })();
 
-  /* ---------- enquiry form ---------- */
-  (function(){
-    var f=$("enqForm");
-    function digits(v){ return (v.match(/\d/g)||[]).length }
-    function setErr(el,errEl,bad){ el.setAttribute("aria-invalid",bad?"true":"false"); errEl.hidden=!bad; }
-    var FIELDS=[
-      ["fName","fNameErr",function(v){ return !!v.trim() }],
-      ["fPhone","fPhoneErr",function(v){ return digits(v)>=8 }],
-      ["fSuburb","fSuburbErr",function(v){ return !!v.trim() }]
-    ];
-    FIELDS.forEach(function(t){
+  /* ---------- enquiry forms ----------
+     Two forms, one handler: the short quote card in the hero and the full
+     enquiry at the foot of the page. Same validation, same demo mode, same
+     Web3Forms call — only the fields and the thank-you box differ. */
+  function digits(v){ return (v.match(/\d/g)||[]).length }
+  function setErr(el,errEl,bad){ el.setAttribute("aria-invalid",bad?"true":"false"); errEl.hidden=!bad; }
+  var filled=function(v){ return !!v.trim() }, isPhone=function(v){ return digits(v)>=8 };
+
+  function wireForm(o){
+    var f=$(o.form); if(!f) return;
+    o.fields.forEach(function(t){
       $(t[0]).addEventListener("input",function(){
         if($(t[0]).getAttribute("aria-invalid")==="true"&&t[2]($(t[0]).value)) setErr($(t[0]),$(t[1]),false);
       });
     });
     f.addEventListener("submit",function(e){
       e.preventDefault();
-      if($("fCompany").value) return;
+      if($(o.honeypot).value) return;
       var first=null;
-      FIELDS.forEach(function(t){
+      o.fields.forEach(function(t){
         var el=$(t[0]), bad=!t[2](el.value);
         setErr(el,$(t[1]),bad);
         if(bad&&!first) first=el;
       });
-      var err=$("formErr");
+      var err=$(o.err);
       if(first){ err.hidden=false; first.focus(); return; }
       err.hidden=true;
 
-      var d={name:$("fName").value.trim(),phone:$("fPhone").value.trim(),
-             email:$("fEmail").value.trim(),suburb:$("fSuburb").value.trim(),
-             service:$("fService").value,when:$("fWhen").value,message:$("fMsg").value.trim()};
-      var btn=$("fSend");
+      var d=o.collect(), btn=$(o.button), th=o.thanks;
 
       function done(mode,detail){
-        $("thanksHead").textContent="Thank you, "+d.name.split(" ")[0]+".";
-        var body=$("thanksBody"), note=$("thanksNote");
+        $(th.head).textContent="Thank you, "+d.name.split(" ")[0]+".";
+        var body=$(th.body), note=$(th.note);
         if(mode==="sent"){
           body.textContent="Your enquiry is with Antony. He will be in touch on "+d.phone+".";
           note.hidden=true;
@@ -1338,9 +1412,9 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
           note.textContent="Something went wrong on the way "+(detail?"("+detail+")":"")+". Call or text Antony on "+SITE.phoneDisplay+" and he will pick it up straight away.";
           note.hidden=false;
         }
-        f.hidden=true; $("thanks").hidden=false;
-        $("thanks").scrollIntoView({block:"center",behavior:reduce?"auto":"smooth"});
-        track("generate_lead",{method:mode==="sent"?"form":mode,service:d.service});
+        f.hidden=true; $(th.box).hidden=false;
+        $(th.box).scrollIntoView({block:o.scrollBlock,behavior:reduce?"auto":"smooth"});
+        track("generate_lead",{method:mode==="sent"?"form":mode,service:d.service,form:o.name});
       }
 
       if(!SITE.formAccessKey){ done("demo"); return; }   /* no network call at all */
@@ -1350,7 +1424,7 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
       fetch(SITE.formEndpoint,{method:"POST",
         headers:{"Content-Type":"application/json",Accept:"application/json"},
         body:JSON.stringify({access_key:SITE.formAccessKey,
-          subject:"Enquiry: "+d.service+" in "+d.suburb,
+          subject:o.subject+": "+d.service+" in "+d.suburb,
           from_name:SITE.name+" website",name:d.name,phone:d.phone,email:d.email,
           suburb:d.suburb,service:d.service,when:d.when,message:d.message})})
       .then(function(r){ return r.json().catch(function(){return{}}).then(function(b){
@@ -1361,7 +1435,34 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
         done("error",err&&err.message);
       });
     });
-  })();
+  }
+
+  wireForm({name:"quote",form:"qForm",honeypot:"qCompany",err:"qErr",button:"qSend",
+    subject:"Quote request",scrollBlock:"nearest",
+    fields:[["qName","qNameErr",filled],["qPhone","qPhoneErr",isPhone],["qSuburb","qSuburbErr",filled]],
+    collect:function(){ return {name:$("qName").value.trim(),phone:$("qPhone").value.trim(),email:"",
+      suburb:$("qSuburb").value.trim(),service:$("qService").value,when:"",message:""} },
+    thanks:{box:"qThanks",head:"qThanksHead",body:"qThanksBody",note:"qThanksNote"}});
+
+  wireForm({name:"enquiry",form:"enqForm",honeypot:"fCompany",err:"formErr",button:"fSend",
+    subject:"Enquiry",scrollBlock:"center",
+    fields:[["fName","fNameErr",filled],["fPhone","fPhoneErr",isPhone],["fSuburb","fSuburbErr",filled]],
+    collect:function(){ return {name:$("fName").value.trim(),phone:$("fPhone").value.trim(),
+      email:$("fEmail").value.trim(),suburb:$("fSuburb").value.trim(),
+      service:$("fService").value,when:$("fWhen").value,message:$("fMsg").value.trim()} },
+    thanks:{box:"thanks",head:"thanksHead",body:"thanksBody",note:"thanksNote"}});
+
+  /* A quote link when the card is already fully on screen (a laptop, top of
+     the page) should not nudge the page — it should just put the cursor in
+     the first field. Anywhere else the normal jump happens. */
+  document.querySelectorAll('a[href="#quote"]').forEach(function(a){
+    a.addEventListener("click",function(e){
+      var c=$("quote"), r=c.getBoundingClientRect(), first=$("qName");
+      if(r.top>=0&&r.bottom<=window.innerHeight&&first&&!$("qForm").hidden){
+        e.preventDefault(); first.focus({preventScroll:true});
+      }
+    });
+  });
 })();
 </script>
 </body>
