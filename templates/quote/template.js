@@ -56,7 +56,11 @@ export function render(cfg, { styles, script }) {
    * in its own words.
    */
   const ctaLabel = copy.ctaLabel ?? 'Get a quote';
-  const ctaLabelShort = copy.ctaLabelShort ?? 'Get a quote';
+  // Falls back to the long label, not a second hardcoded literal — every
+  // quote-template client that sets ctaLabel (all three, currently) was
+  // showing that wording on desktop and a mismatched "Get a quote" on the
+  // compact mobile button, since none of them also set ctaLabelShort.
+  const ctaLabelShort = copy.ctaLabelShort ?? ctaLabel;
 
   return `<!doctype html>
 <html lang="en-AU">
@@ -389,12 +393,17 @@ function finalCta(cfg, { tel, sms, ctaLabel, copy }) {
 
 function footer(cfg, { tel, phone }) {
   const b = cfg.business ?? {};
+  // Same sections and labels as the header nav — the footer's own list used
+  // to disagree with it ("Price guide" vs "Pricing", "Good to know" vs
+  // "FAQ") and had no link at all for the gallery or service areas.
   const links = [
     cfg.has.services && ['#services', 'Services'],
-    cfg.has.calculator && ['#pricing', 'Price guide'],
+    cfg.has.calculator && ['#pricing', 'Pricing'],
     (cfg.colours ?? []).length && ['#colours', 'Colours'],
+    cfg.has.gallery && ['#projects', 'Our work'],
     cfg.has.reviews && ['#reviews', 'Reviews'],
-    cfg.has.faq && ['#faq', 'Good to know'],
+    cfg.has.serviceAreas && ['#areas', 'Areas'],
+    cfg.has.faq && ['#faq', 'FAQ'],
   ].filter(Boolean);
 
   return html`

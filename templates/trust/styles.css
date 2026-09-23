@@ -247,7 +247,11 @@ body.has-demobar .top{top:var(--demobar-h,0px)}
 .top::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:linear-gradient(rgba(6,12,15,.72),rgba(6,12,15,0))}
 .topin{display:flex;align-items:center;gap:var(--s24);height:var(--header-h)}
-.brand{display:flex;align-items:center;text-decoration:none;margin-right:auto;min-height:44px}
+/* Same tap-target padding trick as .foot li a — a narrow logo (any aspect
+   under ~44px wide) otherwise leaves the header's own home link too small
+   to reliably tap. */
+.brand{display:flex;align-items:center;text-decoration:none;margin-right:auto;min-height:44px;
+  padding-inline:10px;margin-inline-start:-10px}
 .brand img{width:auto;height:32px}
 .nav{display:none;gap:var(--s32);font-size:var(--t-small);font-weight:500}
 .nav a{text-decoration:none;color:var(--fg-soft);transition:color .25s;position:relative;padding-block:6px;min-height:44px;display:inline-flex;align-items:center}
@@ -519,7 +523,12 @@ footer{background:var(--bg-card);padding-block:var(--s80) var(--s40);border-top:
 .foot h2{font-family:var(--font-body);font-size:var(--t-label);letter-spacing:.14em;
   text-transform:uppercase;font-weight:500;color:var(--fg-mute);margin:0 0 var(--s20)}
 .foot ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s4);font-size:var(--t-small)}
-.foot li a{display:inline-flex;align-items:center;min-height:44px}
+/* min-height alone isn't enough for a one-word link ("Work", "Ben") — its
+   tap target stays as narrow as the text. Pad the box and cancel the visual
+   shift with a matching negative margin, so the target widens without
+   moving where the text sits in the column. */
+.foot li a{display:inline-flex;align-items:center;min-height:44px;
+  padding-inline:10px;margin-inline:-10px}
 .foot a{text-decoration:none;color:var(--fg-soft)}
 .foot a:hover{color:var(--teal)}
 .foot img{height:32px;width:auto;margin-bottom:var(--s24)}
