@@ -125,36 +125,15 @@
   "services": [
     {
       "title": "Design",
-      "blurb": "A first consultation, then a concept and a written quote, then the detailed design. You sign off the shape and the number before anyone digs.",
-      "photo": {
-        "src": "assets/thirroul-courtyard-800.webp",
-        "srcset": "assets/thirroul-courtyard-480.webp 480w, assets/thirroul-courtyard-800.webp 800w, assets/thirroul-courtyard-1200.webp 1200w",
-        "width": 1500,
-        "height": 1000,
-        "alt": "A small Thirroul courtyard: sandstone paving, a rendered retaining wall, new lawn and a planted grow wall on the timber fence"
-      }
+      "blurb": "A first consultation, then a concept and a written quote, then the detailed design. You sign off the shape and the number before anyone digs."
     },
     {
       "title": "Construction",
-      "blurb": "Retaining walls in masonry or timber, excavation, drainage, paving, pool coping and surrounds, decking, concreting, levelling and turfing. The heavy half of the job.",
-      "photo": {
-        "src": "assets/portkembla-bench-800.webp",
-        "srcset": "assets/portkembla-bench-480.webp 480w, assets/portkembla-bench-800.webp 800w, assets/portkembla-bench-1200.webp 1200w",
-        "width": 1500,
-        "height": 1000,
-        "alt": "A reinforced Besser Block retaining wall faced in sandstone stackstone with a hardwood bench seat built into it, Port Kembla"
-      }
+      "blurb": "Retaining walls in masonry or timber, excavation, drainage, paving, pool coping and surrounds, decking, concreting, levelling and turfing. The heavy half of the job."
     },
     {
       "title": "Irrigation & upkeep",
-      "blurb": "Automatic systems, driplines and SMART controllers such as SkyDrop, set from your phone. Then mowing, mulching, fertilising and pruning if you want us to keep it.",
-      "photo": {
-        "src": "assets/figtree-sprinkler-800.webp",
-        "srcset": "assets/figtree-sprinkler-480.webp 480w, assets/figtree-sprinkler-800.webp 800w, assets/figtree-sprinkler-1200.webp 1200w",
-        "width": 1500,
-        "height": 1000,
-        "alt": "A pop-up sprinkler throwing across new Matilda Buffalo turf beside a brick home in Figtree"
-      }
+      "blurb": "Automatic systems, driplines and SMART controllers such as SkyDrop, set from your phone. Then mowing, mulching, fertilising and pruning if you want us to keep it."
     }
   ],
   "process": [
@@ -201,21 +180,6 @@
       "height": 1000,
       "alt": "A finished Dapto backyard by South Coast Landscapes: granite pool coping and paving, a frameless glass fence, a river-pebble drainage strip, charcoal Tasman Block garden beds and a timber pergola over the deck"
     },
-    "statement": {
-      "src": "assets/portkembla-front-1200.webp",
-      "srcset": "assets/portkembla-front-480.webp 480w, assets/portkembla-front-800.webp 800w, assets/portkembla-front-1200.webp 1200w",
-      "width": 1500,
-      "height": 1000,
-      "alt": "A finished Hamptons-style front yard in Port Kembla at dusk: cobblestone path, merbau entry steps, sandstone-faced raised beds and new turf"
-    },
-    "aperture": {
-      "src": "assets/dapto-stonewall-1200.webp",
-      "srcset": "assets/dapto-stonewall-800.webp 800w, assets/dapto-stonewall-1200.webp 1200w, assets/dapto-stonewall-1500.webp 1500w",
-      "width": 1500,
-      "height": 1000,
-      "alt": "A raised garden bed faced in sandstone stackstone on a merbau deck in Dapto, ferns planted through it and a light set into the wall",
-      "caption": "Sandstone feature wall, Dapto"
-    },
     "owner": {
       "src": "assets/ryan-646.webp",
       "srcset": "assets/ryan-480.webp 480w, assets/ryan-646.webp 646w",
@@ -224,11 +188,6 @@
       "ratio": "646/852",
       "alt": "Ryan, founder of South Coast Landscapes, beside the company ute with the coast behind him",
       "caption": "Ryan · founder, South Coast Landscapes"
-    },
-    "enquiryBackground": {
-      "src": "assets/figtree-turf-1200.webp",
-      "width": 1200,
-      "height": 800
     },
     "gallery": [
       {

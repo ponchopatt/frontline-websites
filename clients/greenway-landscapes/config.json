@@ -1,5 +1,5 @@
 {
-  "_comment": "Greenway Landscapes demo. Built 2026-09-22 from https://www.greenwaylandscapes.com.au (WordPress/Avada). Every claim on the page is traced in _source.claimSources. Rating and reviews come from data/google_reviews_top25.json and nowhere else.",
+  "_comment": "Greenway Landscapes demo. Started 2026-09-22, verified and finished 2026-09-23 from https://www.greenwaylandscapes.com.au (WordPress/Avada). Every claim on the page is traced in _source.claimSources. Rating and reviews come from data/google_reviews_top25.json and nowhere else. Photos are grouped by property in BRIEF.md; no job appears in two slots.",
   "slug": "greenway-landscapes",
   "template": "trust",
   "industry": "landscaping",
@@ -41,45 +41,45 @@
     "description": "Retaining walls, decks, paving, turf, drainage and irrigation across The Hills District and north-west Sydney. A family business since 1987.",
     "alt": "A hardwood deck by Greenway Landscapes running to a glass pool fence and sandstone coping"
   },
-  "responsePromise": "Trent takes the calls himself on 0418 607 124.",
+  "responsePromise": "It is Trent's mobile. Call or text.",
   "copy": {
     "title": "Greenway Landscapes — Landscaping, Retaining Walls & Decking, Hills District Sydney",
     "description": "Landscaping across The Hills District and north-west Sydney. Retaining walls, timber decking, paving, lawns and turf, drainage and irrigation. A family business since 1987, licence 157365C. Free on-site quote — call Trent on 0418 607 124.",
     "ctaLabel": "Get a free quote",
     "kicker": "The Hills District, Sydney",
-    "headline": "Every trade<br>your yard needs,<br><em>on one licence.</em>",
-    "sub": "Retaining walls, decks, paving, turf, drainage and irrigation. A family business since 1987 on licence 157365C — and Trent is the one who turns up. Free on-site quote across the Hills District and north-west Sydney.",
+    "headline": "Every trade<br>your yard needs.<br><em>One call to Trent.</em>",
+    "sub": "Retaining walls, decks, paving, turf, drainage and irrigation — the whole yard, from one family business in the Hills District since 1987. Licence 157365C, and a free on-site quote.",
     "heroSecondary": "Or send the details",
     "heroSecondarySms": "Or text Trent a photo",
     "navApproach": "Approach",
     "statementLabel": "The difference",
     "statementHeadline": "One number<br>for the whole yard.",
-    "statementBody": "A deck wants a chippie. A wall wants a waller. A wet corner wants someone who can read where the water goes. One Greenway job covered drainage, mulching, steel edging and welding, a drip sprinkler system and earthworks with machinery — and it was the same crew for the lot.",
-    "servicesLabel": "What Trent does",
+    "statementBody": "A deck wants a chippie. A wall wants a waller. A wet corner wants someone who can read where the water goes. One of our jobs covered drainage, mulching, steel edging and welding, a drip sprinkler system and earthworks with machinery. Same team for the lot, and one number to ring when you have a question.",
+    "servicesLabel": "What we do",
     "servicesHeadline": "The whole yard,<br>not one part of it.",
-    "servicesIntro": "Greenway build the hard parts and the green parts. Retaining walls, decks and paving; turf, garden beds and the drainage underneath them. Water features and garden lighting as well.",
+    "servicesIntro": "The hard parts and the green parts. Retaining walls, decks and paving; turf, garden beds and the drainage underneath them. Water features and garden lighting as well.",
     "apertureLabel": "Since 1987",
-    "apertureLine": "One licence. Every trade the yard needs.",
-    "workLabel": "Their work",
-    "workHeadline": "Six yards,<br>six different trades.",
-    "workIntro": "Sandstone terraces and a herringbone driveway. A cabana in hardwood. Turf laid against a sandstone escarpment. Path lighting at dusk. All the same contractor.",
+    "apertureLine": "One contractor for the whole yard.",
+    "workLabel": "Our work",
+    "workHeadline": "Four more yards,<br>four more jobs.",
+    "workIntro": "A hardwood cabana and paver path. Sandstone-look paving past clipped hedging to a verandah. Pavers around a pool and gazebo. A deck wrapped round a weatherboard cottage.",
     "processLabel": "How it runs",
     "processHeadline": "Four steps,<br>and the quote is free.",
-    "processIntro": "Greenway quote on site, at no charge. You know the number before anything is dug.",
+    "processIntro": "We quote on site, at no charge, and the pricing is upfront. You know the number before anything is dug.",
     "ownerLabel": "Who you are dealing with",
-    "reviewsTitle": "What their customers say.",
-    "reviewsIntro": "A 5.0 average from sixteen Google reviews. Every review below names Trent, and several describe him doing the work himself.",
+    "reviewsTitle": "What our customers say.",
+    "reviewsIntro": "A 5.0 average from sixteen Google reviews. Every one below names Trent.",
     "recognitionLabel": "Recognition",
-    "recognitionHeadline": "Licensed, insured,<br>and answerable to two bodies.",
-    "recognitionIntro": "Licence 157365C sits at the foot of every page of their own site. They are current members of the Housing Industry Association and the Landscape Association NSW & ACT, and in 2004 they won the Landscape category in the Australian Achiever awards for Excellence in Customer Service.",
-    "areasLabel": "Where they work",
+    "recognitionHeadline": "Licensed. Insured.<br>HIA members.",
+    "recognitionIntro": "Licence 157365C. Current members of the Housing Industry Association and the Landscape Association NSW & ACT. And in 2004 we won the Landscape category in the Australian Achiever awards for Excellence in Customer Service.",
+    "areasLabel": "Where we work",
     "areasHeadline": "The Hills District,<br>and out from there.",
-    "areasIntro": "In Greenway's own words: serving Sydney Metro, north-west and the Hills District. Their post goes to a Castle Hill box. Ask Trent how far he travels for a job like yours.",
+    "areasIntro": "Based around Castle Hill, serving the Hills District, north-west Sydney and the Sydney metro area. Not sure you are in range? Ring Trent and ask.",
     "faqLabel": "Before you call",
     "faqHeadline": "Questions worth asking.",
     "enquireLabel": "Get a free quote",
     "enquireHeadline": "Tell Trent<br>about the yard.",
-    "enquireIntro": "The more you can say about the block — the slope, the corner that stays wet, what you actually want out there — the more useful the first visit will be. Photos help."
+    "enquireIntro": "The more you can tell us about the block — the slope, the corner that stays wet, what you actually want out there — the more useful the first visit will be. Photos help."
   },
   "stats": {
     "googleRating": 5.0,
@@ -93,8 +93,8 @@
     "name": "Ashley Blacker, Google"
   },
   "owner": {
-    "body": "Trent. Their contact page carries one name and one number — “Call Trent”, 0418 607 124 — and every one of their sixteen Google reviews names him.",
-    "team": "Reviewers write about “Trent and his team”, and they describe Trent on the tools with them: “Trent came and replaced our deck and turfed our nature strip.”",
+    "body": "His is the name on our contact page and on the end of the phone — and the name customers use when they write their Google reviews.",
+    "team": "Customers write about “Trent and his team”. He is on the tools, not only on the phone: “Trent came and replaced our deck and turfed our nature strip.”",
     "facts": [
       {
         "value": "1987",
@@ -102,7 +102,7 @@
       },
       {
         "value": "8",
-        "label": "Services, one licence"
+        "label": "Services, one contractor"
       },
       {
         "value": "5.0",
@@ -156,87 +156,87 @@
   "services": [
     {
       "title": "Garden construction",
-      "blurb": "Garden beds, edging, paths and planting. Trent will do the design with you or work to a drawing you already have.",
+      "blurb": "Garden beds, edging, paths and planting. We can be as involved in the design as you want — a little or a lot.",
       "photo": {
-        "src": "assets/cabana-paths-650.webp",
-        "srcset": "assets/cabana-paths-480.webp 480w, assets/cabana-paths-650.webp 650w",
+        "src": "assets/front-garden-650.webp",
+        "srcset": "assets/front-garden-480.webp 480w, assets/front-garden-650.webp 650w",
         "width": 650,
         "height": 870,
-        "alt": "A hardwood cabana with a slatted screen, merbau deck and a paver path through banana and palm planting"
+        "alt": "A new front garden: an edged lawn panel, a mass-planted mulched bed and red brick paving in front of a brick home with a white verandah"
       }
     },
     {
       "title": "Retaining walls",
-      "blurb": "Sandstone block, concrete sleeper and stone. Terracing a sloping block so you end up with ground you can actually use.",
+      "blurb": "Sandstone block, brick, besser block or timber sleeper. Terracing a sloping block so you get back ground you can use.",
       "photo": {
         "src": "assets/driveway-terraces-650.webp",
         "srcset": "assets/driveway-terraces-480.webp 480w, assets/driveway-terraces-650.webp 650w",
         "width": 650,
         "height": 870,
-        "alt": "Sandstone block retaining walls terracing a front garden above a red herringbone brick driveway"
+        "alt": "Terraced sandstone-look block retaining walls with capping and step lights, above a red herringbone brick driveway"
       }
     },
     {
       "title": "Timber decking",
-      "blurb": "Hardwood and composite decks, and the pergolas that go over them. One review is a deck replaced on a house Trent had already worked on.",
+      "blurb": "Natural hardwood decks, with help picking the timber for the sun, shade and rain it will get. Pergolas too. One customer had Trent replace their deck and turf the nature strip.",
       "photo": {
         "src": "assets/hardwood-deck-650.webp",
         "srcset": "assets/hardwood-deck-480.webp 480w, assets/hardwood-deck-650.webp 650w",
         "width": 650,
         "height": 870,
-        "alt": "A hardwood deck butted neatly against a capped sandstone block planter"
+        "alt": "A hardwood deck butted neatly against capped sandstone-look block planters and a bench, with a clipped conifer"
       }
     },
     {
       "title": "Paving & driveways",
-      "blurb": "Brick, sandstone and large-format pavers. Driveways, pool surrounds, paths and the steps between levels.",
+      "blurb": "Clay pavers, natural stone, travertine and concrete. Driveways, pool surrounds, paths and entertaining areas — and small repair jobs.",
       "photo": {
         "src": "assets/pergola-paving-650.webp",
         "srcset": "assets/pergola-paving-480.webp 480w, assets/pergola-paving-650.webp 650w",
         "width": 650,
         "height": 870,
-        "alt": "Large-format paving under a pergola, with steps up to a lawn and freshly mulched garden beds"
+        "alt": "Pale large-format paving under a pergola, with wide steps up to a lawn and freshly mulched garden beds"
       }
     },
     {
       "title": "Lawns & turf",
-      "blurb": "New turf on ground that has been prepared for it — back yards, front lawns and the nature strip out the front.",
+      "blurb": "Levelled, graded and laid on a proper turf underlay, because a lawn is only as good as the ground under it. Back yards, front lawns, nature strips.",
       "photo": {
         "src": "assets/poolside-turf-650.webp",
         "srcset": "assets/poolside-turf-480.webp 480w, assets/poolside-turf-650.webp 650w",
         "width": 650,
         "height": 870,
-        "alt": "Fresh turf laid in a curve of sandstone blocks beside a pool, under tree ferns and palms against a sandstone escarpment"
+        "alt": "Fresh turf inside a curved sandstone-look block wall beside a pool, under tree ferns and palms against a sandstone escarpment"
       }
     },
     {
       "title": "Drainage & irrigation",
-      "blurb": "Working out where the water actually goes before anything is planted. Drainage lines, river rock, and drip sprinkler systems.",
+      "blurb": "Stormwater drainage so the wet corner stops being wet. Drip irrigation that can run off rainwater or recycled water, split into zones.",
       "photo": {
         "src": "assets/dry-creek-drainage-650.webp",
         "srcset": "assets/dry-creek-drainage-480.webp 480w, assets/dry-creek-drainage-650.webp 650w",
         "width": 650,
         "height": 870,
-        "alt": "A dry creek bed of river rock planted with lomandra, running between concrete sleeper retaining walls"
+        "alt": "A river-rock bed planted with grasses below a capped grey block garden wall, with an old Greenway site sign in the rocks"
       }
     }
   ],
   "process": [
     {
       "step": "Call Trent",
-      "detail": "0418 607 124 is the number on every page of their site, and Trent is the name beside it. Tell him what the yard is doing and he will book a time to come and look."
+      "detail": "0418 607 124 is the number on every page of our site, and it goes to Trent. Tell him what the yard is doing and we will organise a time to come and look."
     },
     {
       "step": "Free on-site quote",
-      "detail": "Greenway organise a free on-site quotation. Trent walks the block with you and quotes on what he finds, not on what you described over the phone."
+      "detail": "The quote is free and done on site. One customer said Trent was clear and communicative during the quote, build and completion stage."
     },
     {
       "step": "Agree the price",
-      "detail": "Affordable and upfront pricing, in their own words. You know the number before anything is dug."
+      "detail": "Affordable and upfront pricing. You know the number before anything is dug."
     },
     {
       "step": "The build",
-      "detail": "Trent and his team do the work. Large or small — Greenway take both, residential and commercial, and one reviewer's job was a deck and a turfed nature strip."
+      "detail": "Trent and his team do the work. Large jobs and small ones, residential and commercial."
     }
   ],
   "serviceAreas": [
@@ -258,11 +258,11 @@
       "alt": "A Greenway Landscapes hardwood deck running to a glass pool fence and sandstone coping, with screening plants along a timber paling fence"
     },
     "statement": {
-      "src": "assets/backyard-pavilion-650.webp",
-      "srcset": "assets/backyard-pavilion-480.webp 480w, assets/backyard-pavilion-650.webp 650w",
+      "src": "assets/maple-lawn-650.webp",
+      "srcset": "assets/maple-lawn-480.webp 480w, assets/maple-lawn-650.webp 650w",
       "width": 650,
       "height": 870,
-      "alt": "A finished back yard: gabled pavilion, merbau deck, pool, lawn and hedging, all built together"
+      "alt": "A new back lawn with a sandstone block wall, edged garden beds and creepers trained up a dark fence, a red Japanese maple in the foreground"
     },
     "aperture": {
       "src": "assets/hedged-lawn-1200.webp",
@@ -270,53 +270,18 @@
       "width": 1200,
       "height": 600,
       "alt": "A lawn panel edged in clipped box under a tall screening hedge, with brick paving, concrete steppers and an urn water feature",
-      "caption": "Lawn, hedging, paving and a water feature — one job"
-    },
-    "enquiryBackground": {
-      "src": "assets/front-garden-650.webp",
-      "width": 650,
-      "height": 870
+      "caption": "Lawn, hedging and a water feature"
     },
     "gallery": [
-      {
-        "src": "assets/driveway-terraces-650.webp",
-        "full": "assets/driveway-terraces-650.webp",
-        "srcset": "assets/driveway-terraces-480.webp 480w, assets/driveway-terraces-650.webp 650w",
-        "width": 650,
-        "height": 870,
-        "caption": "Front garden and driveway",
-        "detail": "Sandstone block terraces, herringbone brick",
-        "alt": "Terraced sandstone block retaining walls above a red herringbone brick driveway, with bangalow palms behind a brick home"
-      },
-      {
-        "src": "assets/poolside-turf-650.webp",
-        "full": "assets/poolside-turf-650.webp",
-        "srcset": "assets/poolside-turf-480.webp 480w, assets/poolside-turf-650.webp 650w",
-        "width": 650,
-        "height": 870,
-        "caption": "Poolside lawn",
-        "detail": "Turf, curved block wall, paving",
-        "alt": "Fresh turf in a curved sandstone block surround beside a pool, with tree ferns and palms against a sandstone escarpment"
-      },
       {
         "src": "assets/cabana-paths-650.webp",
         "full": "assets/cabana-paths-650.webp",
         "srcset": "assets/cabana-paths-480.webp 480w, assets/cabana-paths-650.webp 650w",
         "width": 650,
         "height": 870,
-        "caption": "Cabana and paths",
-        "detail": "Hardwood, pavers, river rock",
-        "alt": "A hardwood cabana with a slatted screen over a merbau deck, with paver paths and river rock through tropical planting"
-      },
-      {
-        "src": "assets/front-garden-650.webp",
-        "full": "assets/front-garden-650.webp",
-        "srcset": "assets/front-garden-480.webp 480w, assets/front-garden-650.webp 650w",
-        "width": 650,
-        "height": 870,
-        "caption": "Front lawn and beds",
-        "detail": "Brick paving, edged lawn, mass planting",
-        "alt": "A crisp lawn panel with a concrete edge strip, red brick paved driveway and a mass-planted mulched bed in front of a verandah"
+        "caption": "Cabana and path",
+        "detail": "Hardwood posts, deck, pavers",
+        "alt": "A hardwood cabana with a slatted screen over a timber deck, with a paver path and river rock at its foot"
       },
       {
         "src": "assets/verandah-path-650.webp",
@@ -325,18 +290,28 @@
         "width": 650,
         "height": 870,
         "caption": "Verandah and front path",
-        "detail": "Sandstone flagging, clipped hedging",
-        "alt": "Random-flag sandstone paving running past clipped box hedging to the verandah of a weatherboard home"
+        "detail": "Sandstone-look paving, clipped hedging",
+        "alt": "Pale sandstone-look pavers running past clipped hedging to the verandah of a weatherboard home"
       },
       {
-        "src": "assets/garden-lighting-650.webp",
-        "full": "assets/garden-lighting-650.webp",
-        "srcset": "assets/garden-lighting-480.webp 480w, assets/garden-lighting-650.webp 650w",
+        "src": "assets/gazebo-pool-paving-650.webp",
+        "full": "assets/gazebo-pool-paving-650.webp",
+        "srcset": "assets/gazebo-pool-paving-480.webp 480w, assets/gazebo-pool-paving-650.webp 650w",
         "width": 650,
         "height": 870,
-        "caption": "Garden lighting",
-        "detail": "Path lights, lit pool, deck",
-        "alt": "A back yard at dusk under a crescent moon, with path lights through the hedging, a lit pool behind glass fencing and a deck"
+        "caption": "Pool surround",
+        "detail": "Pavers, gazebo, new planting",
+        "alt": "Pale pavers stepping around a newly mulched and planted bed, beside a white gazebo and a pool"
+      },
+      {
+        "src": "assets/cottage-deck-650.webp",
+        "full": "assets/cottage-deck-650.webp",
+        "srcset": "assets/cottage-deck-480.webp 480w, assets/cottage-deck-650.webp 650w",
+        "width": 650,
+        "height": 487,
+        "caption": "Cottage deck",
+        "detail": "Grey deck boards, weatherboard home",
+        "alt": "A wide grey-boarded deck wrapping the back of a weatherboard cottage under a flat awning"
       }
     ]
   },
@@ -352,50 +327,54 @@
       "text": "Trent and his team are phenomenal! Extremely experienced and knowledgeable. Our project involved identifying and resolving drainage issues, general garden mulching, steel edging / welding, drip sprinkler system, earthworks using machinery and more. Wide ranging skills. Extremely neat and tidy operator. Recommended."
     },
     {
-      "name": "Amanda Gray",
-      "text": "I highly recommend Trent and his team to anyone looking for landscapers who do excellent yet affordable work. From the very beginning Trent was very responsive, showed up when he said he would and was very professional."
+      "name": "Alex Dennis",
+      "text": "I’ve used Trent for all my landscaping needs over the last couple of years. …",
+      "shortened": true
     },
     {
       "name": "Nick&Amy",
-      "text": "We recently had Trent and his team install a new deck and transform our yard by replacing the existing lawn with beautifully designed paver-edged garden beds and gravel paths."
+      "text": "We recently had Trent and his team install a new deck and transform our yard by replacing the existing lawn with beautifully designed paver-edged garden beds and gravel paths. …",
+      "shortened": true
+    },
+    {
+      "name": "Amanda Gray",
+      "text": "I highly recommend Trent and his team to anyone looking for landscapers who do excellent yet affordable work. From the very beginning Trent was very responsive, showed up when he said he would and was very professional. …",
+      "shortened": true
     },
     {
       "name": "AJ Franco",
-      "text": "I'm extremely pleased with the work that Trent and his team had just completed at our place. We had a retaining wall that needed replacing and garden beds fixed up."
-    },
-    {
-      "name": "Alex Dennis",
-      "text": "I've used Trent for all my landscaping needs over the last couple of years."
+      "text": "I'm extremely pleased with the work that Trent and his team had just completed at our place. We had a retaining wall that needed replacing and garden beds fixed up. …",
+      "shortened": true
     }
   ],
   "faq": [
     {
       "q": "Do you come out and quote?",
-      "a": "Yes, and it costs nothing. Greenway's own words are that they will organise a free on-site quotation. Trent comes to the property, looks at the ground and quotes on what he finds there."
+      "a": "Yes, and it costs nothing. Book the job and we will organise a free on-site quotation."
     },
     {
       "q": "How small a job will you take?",
-      "a": "Small is fine. Their site says large and small scale projects, residential and commercial. One of their Google reviews is a replaced deck and a turfed nature strip."
+      "a": "Small is fine. We take large and small scale projects, residential and commercial. One of our Google reviews is for a replaced deck and a turfed nature strip."
     },
     {
       "q": "Our side yard floods. Can that be sorted before anything is planted?",
-      "a": "That is the order Trent works in. One client's review describes him listening to their concerns about a side area flooding, then putting in extra drainage pipes and bigger river rocks and redesigning the area around it. Another lists identifying and resolving drainage issues among the work done on their job."
+      "a": "Yes. One customer's review describes us listening to their concerns about a side area flooding, then putting in extra drainage pipes and bigger river rocks and a better design around it. Another lists identifying and resolving drainage issues among the work on their job."
     },
     {
       "q": "Are you licensed and insured?",
-      "a": "Licence 157365C, printed at the foot of every page of their own site. Their about page lists public liability, workers' compensation and eligibility for Builders Warranty Insurance, and they are current members of the Housing Industry Association and the Landscape Association NSW &amp; ACT."
+      "a": "Yes. Licence 157365C. We carry public liability and workers' compensation, and we are eligible for Builders Warranty Insurance. We are also current members of the Housing Industry Association and the Landscape Association NSW &amp; ACT."
     },
     {
       "q": "Where do you work?",
-      "a": "The Hills District, Sydney's north-west and the Sydney metro area, in their own words. Their post goes to a box at Castle Hill. If you are not sure whether you are in range, ring Trent and ask."
+      "a": "The Hills District, north-west Sydney and the Sydney metro area, from a Castle Hill base. If you are not sure whether you are in range, ring Trent and ask."
     },
     {
-      "q": "Do you do the whole yard, or just the one part of it?",
-      "a": "Either. Greenway's own list runs from paving and driveways to pool surrounds, garden design and construction, irrigation and water features, pergolas, retaining walls and excavation work. One Google review describes a single job that covered drainage, garden mulching, steel edging and welding, a drip sprinkler system and earthworks using machinery."
+      "q": "Do you do the whole yard, or just one part of it?",
+      "a": "Either. Paving and driveways, pool surrounds, garden design and construction, irrigation and water features, pergolas, retaining walls and excavation work. One Google review describes a single job that covered drainage, garden mulching, steel edging and welding, a drip sprinkler system and earthworks using machinery."
     },
     {
       "q": "How long have you been going?",
-      "a": "A family business established in 1987. Their site says over thirty years' experience, and in 2004 Greenway won the Landscape category in the Australian Achiever awards for Excellence in Customer Service."
+      "a": "We are a family business, established in 1987 — over thirty years' experience. In 2004 we won the Landscape category in the Australian Achiever awards for Excellence in Customer Service."
     }
   ],
   "sms": {
@@ -421,7 +400,9 @@
       "https://www.greenwaylandscapes.com.au/retaining-walls/",
       "https://www.greenwaylandscapes.com.au/water-features/",
       "https://www.greenwaylandscapes.com.au/blog/",
-      "https://www.greenwaylandscapes.com.au/wp-json/wp/v2/media (139 items, every image opened and looked at)"
+      "https://www.greenwaylandscapes.com.au/wp-json/wp/v2/media (139 items, every image opened and looked at)",
+      "https://www.greenwaylandscapes.com.au/retaining-walls/ (re-read 2026-09-23)",
+      "https://www.greenwaylandscapes.com.au/wp-json/wp/v2/posts (3 posts, all February 2019)"
     ],
     "aboutText": "Greenway Landscapes is a family business established in 1987. One of our priorities is quality of workmanship and we make sure the job is done properly the first time without cutting corners.\n\nWe also place great importance on communication with clients and good service which was recognized in 2004 when Greenway Landscapes won the Landscape category in the Australian Achiever awards for Excellence in Customer Service. Our business has all the required licenses and insurance in place including public liability, workers’ compensation and eligibility for Builders Warranty Insurance.\n\nWe are also current members of the Housing Industry Association and the Landscape Association NSW & ACT.\n\nGreenway Landscapes can meet your needs in all aspects of Landscape construction including paving, retaining walls, driveways, drainage and irrigation, water features, decking, pergolas, garden edging and construction and much more.\n\nWe are happy to be involved as little or as much as you would like with the design of your outdoor areas.\n\nResidential & Commercial: Paving & Driveways, Pool Surrounds, Garden Design & Construction, Irrigation & Water Features, Pergolas, Retaining Walls, Excavation Work",
     "socials": {
@@ -514,10 +495,6 @@
         "sentence": "Residential & Commercial: Paving & Driveways, Pool Surrounds, Garden Design & Construction, Irrigation & Water Features, Pergolas, Retaining Walls, Excavation Work",
         "url": "https://www.greenwaylandscapes.com.au/about/"
       },
-      "'Trent will do the design with you or work to a drawing you already have'": {
-        "sentence": "We are happy to be involved as little or as much as you would like with the design of your outdoor areas.",
-        "url": "https://www.greenwaylandscapes.com.au/about/"
-      },
       "Brand green #6ABF16": {
         "sentence": "Used 26 times in the site's own inline stylesheet (with #5AA510 as its hover state).",
         "url": "https://www.greenwaylandscapes.com.au/"
@@ -542,29 +519,77 @@
         "sentence": "Haidee Blackstock: \"They listened to our concerns with the side area flooding & created a much better area for us with extra drainage pipes bigger river rocks, also a much better design for …\"",
         "url": "data/google_reviews_top25.json"
       },
-      "'Trent is the one who turns up' (hero sub) and owner.team quote": {
-        "sentence": "graeme gill: \"Trent came and replaced our deck and turfed our nature strip.\" Amanda Gray: \"...Trent was very responsive, showed up when he said he would and was very professional.\"",
-        "url": "data/google_reviews_top25.json"
-      },
       "'Trent and his team' (owner.team, process step 4)": {
         "sentence": "Used verbatim by Ashley Blacker, Amanda Gray, Nick&Amy, AJ Franco and Pand Gopal.",
-        "url": "data/google_reviews_top25.json"
-      },
-      "'a deck replaced on a house Trent had already worked on' (decking blurb)": {
-        "sentence": "Alex Dennis: \"I’ve used Trent for all my landscaping needs over the last couple of years. He planted beautiful hedges, created a fire pit sitting area and more recently …\" — read with graeme gill's replaced deck.",
         "url": "data/google_reviews_top25.json"
       },
       "FAQ 2: 'a replaced deck and a turfed nature strip'": {
         "sentence": "graeme gill: \"Trent came and replaced our deck and turfed our nature strip.\"",
         "url": "data/google_reviews_top25.json"
       },
-      "responsePromise 'Trent takes the calls himself on 0418 607 124'": {
-        "sentence": "Call Trent: 0418 607 124 — the only name and number on their contact page.",
+      "Every photo used on the page": {
+        "sentence": "All thirteen are originals from their own WordPress media library (IMG_5836-2.jpg, Greenway-Landscapes-Paving-6.jpg and Greenway-Landscapes-Decking-5.jpg added 2026-09-23), listed file by file and grouped by property in clients/greenway-landscapes/BRIEF.md. No property appears in two slots.",
+        "url": "https://www.greenwaylandscapes.com.au/wp-json/wp/v2/media"
+      },
+      "Hero headline angle 'Every trade your yard needs. One call to Trent.'": {
+        "sentence": "Call Trent: 0418 607 124 — with the eight trades from their own navigation, and Ashley Blacker: \"Our project involved identifying and resolving drainage issues, general garden mulching, steel edging / welding, drip sprinkler system, earthworks using machinery and more. Wide ranging skills.\"",
         "url": "https://www.greenwaylandscapes.com.au/contact-us/"
       },
-      "Every photo used on the page": {
-        "sentence": "All twelve are originals from their own WordPress media library, listed file by file in clients/greenway-landscapes/BRIEF.md with what each one shows.",
-        "url": "https://www.greenwaylandscapes.com.au/wp-json/wp/v2/media"
+      "Owner 'on the tools' quote (owner.team)": {
+        "sentence": "graeme gill: \"Trent came and replaced our deck and turfed our nature strip.\"",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Garden construction blurb: 'as involved in the design as you want — a little or a lot'": {
+        "sentence": "We are happy to be involved as little or as much as you would like with the design of your outdoor areas.",
+        "url": "https://www.greenwaylandscapes.com.au/about/"
+      },
+      "Retaining walls blurb: materials and reclaiming sloping ground": {
+        "sentence": "Retaining walls are a great way to create privacy, raised garden beds and reclaim land that is unusable due to its gradient. ... from timber sleepers, treated pine, sandstone blocks, bricks, besser blocks and concrete blocks.",
+        "url": "https://www.greenwaylandscapes.com.au/retaining-walls/"
+      },
+      "Decking blurb: natural hardwood, choosing timber for sun, shade and rain": {
+        "sentence": "Is your new deck exposed to a lot of sun, shade or rain ? This is a very important factor when selecting your timber, and our team of decking specialists will help you select the best timber to suit the job.",
+        "url": "https://www.greenwaylandscapes.com.au/decking/"
+      },
+      "Decking blurb: 'One customer had Trent replace their deck and turf the nature strip'": {
+        "sentence": "graeme gill: \"Trent came and replaced our deck and turfed our nature strip.\"",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Paving blurb: clay, natural stone, travertine, concrete; driveways, pool surrounds, paths; small repairs": {
+        "sentence": "We specialise in paving all outdoor areas including large landscaped areas and smaller repair and maintenance jobs. Helping you select the right pavers is part of our job and with a wide variety to choose from including natural stone, clay pavers, travertine paving and concrete pavers.",
+        "url": "https://www.greenwaylandscapes.com.au/paving/"
+      },
+      "Lawns blurb: levelled, graded, turf underlay": {
+        "sentence": "Remember a lawn is only as good as the time and work that goes into preparing the area. This involves leveling or grading and spreading with a good turf underlay.",
+        "url": "https://www.greenwaylandscapes.com.au/lawns-turfing/"
+      },
+      "Drainage blurb: stormwater, drip irrigation, rainwater or recycled, zones": {
+        "sentence": "We specialise in watering systems that can be attached to recycled water or rainwater supplies, drip irrigation systems which can minimise the waste of water due to overflow run off and evaporation ... Irrigation systems can be divided into zones ... Storm water problems can be easily fixed by making sure that you have adequate drainage in your garden",
+        "url": "https://www.greenwaylandscapes.com.au/drainage-irrigation/"
+      },
+      "Process step 2: 'clear and communicative during the quote, build and completion stage'": {
+        "sentence": "Pand Gopal: \"Trent was clear and communicative during the quote, build and completion stage.\"",
+        "url": "data/google_reviews_top25.json"
+      },
+      "'Every one below names Trent' (reviews intro)": {
+        "sentence": "All six best_for_demo reviews (graeme gill, Ashley Blacker, Alex Dennis, Nick&Amy, Amanda Gray, AJ Franco) contain the name Trent.",
+        "url": "data/google_reviews_top25.json"
+      },
+      "'Fully insured' (credential)": {
+        "sentence": "Fully Insured — home page trust strip; and on the about page: Our business has all the required licenses and insurance in place including public liability, workers’ compensation and eligibility for Builders Warranty Insurance.",
+        "url": "https://www.greenwaylandscapes.com.au/"
+      },
+      "responsePromise 'It is Trent's mobile'": {
+        "sentence": "Call Trent: 0418 607 124 — an 04xx mobile number, and the only name and number on their contact page.",
+        "url": "https://www.greenwaylandscapes.com.au/contact-us/"
+      },
+      "'Licensed' (recognition headline)": {
+        "sentence": "Professional & Licenced — home page; License Number: 157365C — about page.",
+        "url": "https://www.greenwaylandscapes.com.au/"
+      },
+      "'Licensed. Insured. HIA members.' (recognition headline)": {
+        "sentence": "We are also current members of the Housing Industry Association and the Landscape Association NSW & ACT. — with 'Professional & Licenced' and 'Fully Insured' on the home page.",
+        "url": "https://www.greenwaylandscapes.com.au/about/"
       }
     }
   }
