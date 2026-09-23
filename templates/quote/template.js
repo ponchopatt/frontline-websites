@@ -6,7 +6,7 @@
  * takes the content out of it. If a section has no data in config it emits
  * nothing at all — no empty heading, no stray "0", no button that goes nowhere.
  */
-import { html, raw, when, each, present, telHref, smsHref, headlineLines, sentenceList } from '../../lib/render.js';
+import { html, raw, when, each, present, telHref, smsHref, headlineLines, sentenceList, sampleTag } from '../../lib/render.js';
 import { statsBar } from '../../lib/blocks/stats-bar.js';
 import { promise } from '../../lib/blocks/promise.js';
 import { heroMedia } from '../../lib/blocks/hero-media.js';
@@ -169,7 +169,7 @@ function services(cfg) {
     </div>
     <div class="tiles" data-reveal="stagger">
       ${each(cfg.services, (s) => html`<a class="tile" href="${s.href ?? (cfg.has.calculator ? '#pricing' : '#quote')}">
-        ${when(s.photo, (p) => html`<img src="${p.src}"${raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')} loading="lazy" decoding="async" alt="${p.alt ?? ''}">`)}
+        ${when(s.photo, (p) => html`<img src="${p.src}"${raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')} loading="lazy" decoding="async" alt="${p.alt ?? ''}">${sampleTag(p)}`)}
         <span class="arrow" aria-hidden="true">${ICON.arrow}</span>
         <div class="cap">
           <h3>${s.title}</h3>
@@ -194,10 +194,10 @@ function gallery(cfg) {
   </div></div>
   <div class="gallery" data-reveal="stagger">
     ${each(cfg.photos.gallery, (p) => html`<figure>
-      <button type="button" data-src="${p.full ?? p.src}" data-cap="${p.caption ?? p.alt ?? ''}">
+      <button type="button" data-src="${p.full ?? p.src}" data-cap="${p.sample ? 'Sample photo · ' : ''}${p.caption ?? p.alt ?? ''}">
         <img src="${p.src}"${raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')} loading="lazy" decoding="async" alt="${p.alt ?? ''}">
-      </button>
-      ${when(p.caption, (c) => html`<figcaption>${c}</figcaption>`)}
+      </button>${sampleTag(p)}
+      ${when(p.caption, (c) => html`<figcaption>${p.sample ? 'Sample photo · ' : ''}${c}</figcaption>`)}
     </figure>`)}
   </div>
   <p class="swipe">Swipe for more</p>

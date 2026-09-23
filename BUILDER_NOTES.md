@@ -38,7 +38,11 @@ node tools/serve.mjs dist <your port>     serve to screenshot — use your own p
 - Text buttons only render for a mobile (04xx). A 1300 or landline gets none.
 - Open every photo with the Read tool. A theme's stock image is named
   `banner.jpg` and looks like a job until you look. Fewer than 4 of their own
-  = BLOCKED.
+  = BLOCKED — unless Pat has approved stock for that client (below).
+- **Sample photos**, only where Pat approved them: set `photos.stockApproved`
+  `{ by, on, reason }`, and on each stock photo `sample: true`, `license`,
+  `sourceUrl`. The page tags each one "Sample photo" itself. Never a
+  client's old theme demo images — those are licensed to the theme, not them.
 
 ## Limits
 
