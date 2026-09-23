@@ -90,7 +90,11 @@ body:has(.draft) .hero{margin-top:calc(-1 * var(--header-h))}
 .menu a:hover{color:#F3F0E9;border-color:var(--green-2)}
 @media(min-width:1000px){.menu{display:flex;font-size:.94rem}}
 @media(max-width:1099px){.menu a[href="#areas"],.menu a[href="#projects"]{display:none}}
-.phone{font-weight:700;text-decoration:none;color:#F3F0E9;white-space:nowrap;display:inline-flex;align-items:center;gap:8px;font-size:1.05rem}
+/* min-height alone won't widen the tap target for a short text link — pad the
+   box and cancel the shift with a matching negative margin, same trick as the
+   trust template's .foot li a and .brand. Caught at the 768px breakpoint,
+   where .phone is visible but under 44px tall. */
+.phone{font-weight:700;text-decoration:none;color:#F3F0E9;white-space:nowrap;display:inline-flex;align-items:center;gap:8px;font-size:1.05rem;min-height:44px;padding-inline:8px;margin-inline:-8px}
 .phone svg{width:18px;height:18px;color:var(--green-2)}
 .nav .btn{flex:none;white-space:nowrap;background:var(--green-2);color:#1C1F23}
 .nav .btn:hover{background:var(--accent-lift-hover)}
@@ -205,6 +209,17 @@ html.gsap .hero .line>span,html.gsap .rule{transition:none!important}
 .inc{display:flex;flex-wrap:wrap;gap:8px 18px;list-style:none;margin:8px 0 0;padding:0;font-size:.9rem;color:#D9DCD8}
 .inc li{display:flex;align-items:center;gap:6px}
 .inc li::before{content:"";width:6px;height:6px;background:var(--green-2);transform:rotate(45deg);flex:none}
+
+/* brand logos */
+.brands{padding-block:clamp(32px,5vw,56px)}
+.brands-kicker{text-align:center;color:var(--mute);font-size:.85rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:0 0 28px}
+.brand-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(28px,5vw,56px);list-style:none;margin:0;padding:0}
+.brand-row li{display:flex;align-items:center}
+.brand-row img{height:34px;width:auto;filter:grayscale(1) opacity(.55);transition:filter .25s var(--fl-ease)}
+.brand-row img:hover,.brand-row img:focus-visible{filter:grayscale(0) opacity(1)}
+.brand-word{font-family:var(--display);font-weight:700;font-size:1.1rem;color:var(--mute);opacity:.7;transition:opacity .25s var(--fl-ease),color .25s var(--fl-ease)}
+.brand-word:hover{opacity:1;color:var(--fg)}
+@media(min-width:700px){.brand-row img{height:40px}}
 
 /* gallery */
 .gallery{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px var(--gut) 24px;margin-top:40px;scrollbar-width:none;-webkit-overflow-scrolling:touch}

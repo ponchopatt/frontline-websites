@@ -11,6 +11,7 @@ import { statsBar } from '../../lib/blocks/stats-bar.js';
 import { promise } from '../../lib/blocks/promise.js';
 import { heroMedia } from '../../lib/blocks/hero-media.js';
 import { beforeAfter } from '../../lib/blocks/before-after.js';
+import { brands } from '../../lib/blocks/brands.js';
 import { reviews } from '../../lib/blocks/reviews.js';
 import { enquiryForm, thanksPanel } from '../../lib/blocks/form.js';
 import { calculator } from '../../lib/blocks/calculator.js';
@@ -91,7 +92,9 @@ ${header(cfg, { nav, tel, phone, ctaLabel, ctaLabelShort })}
 ${hero(cfg, { tel, sms, ctaLabel, copy })}
 ${statsBar(cfg, 'trust dark')}
 ${services(cfg)}
+${servicesCommercial(cfg)}
 ${calculator(cfg)}
+${brands(cfg)}
 ${gallery(cfg)}
 ${colours(cfg)}
 ${beforeAfter(cfg, { title: copy.beforeAfterTitle ?? 'Before and after', intro: copy.beforeAfterIntro })}
@@ -183,6 +186,37 @@ function services(cfg) {
       </a>`)}
     </div>
     ${when(copy.servicesAlso, (t) => html`<p class="also">${raw(t)}</p>`)}
+  </div>
+</section>`;
+}
+
+/**
+ * Commercial/industrial services — same tile markup as the residential
+ * block, on a dark section so a business owner scrolling past sees at a
+ * glance that they're catered for too, not lost in a residential-only list.
+ * Only renders when a client actually sets servicesCommercial.
+ */
+function servicesCommercial(cfg) {
+  const list = cfg.servicesCommercial ?? [];
+  if (list.length === 0) return '';
+  const copy = cfg.copy ?? {};
+  return html`
+<section class="services dark" id="services-commercial">
+  <div class="wrap">
+    <div class="head" data-reveal>
+      <h2>${copy.servicesCommercialTitle ?? 'Commercial and industrial'}</h2>
+      ${when(copy.servicesCommercialIntro, (i) => html`<p class="lede">${i}</p>`)}
+    </div>
+    <div class="tiles" data-reveal="stagger">
+      ${each(list, (s) => html`<a class="tile" href="${s.href ?? (cfg.has.calculator ? '#pricing' : '#quote')}">
+        ${when(s.photo, (p) => html`<img src="${p.src}"${raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')} loading="lazy" decoding="async" alt="${p.alt ?? ''}">${sampleTag(p)}`)}
+        <span class="arrow" aria-hidden="true">${ICON.arrow}</span>
+        <div class="cap">
+          <h3>${s.title}</h3>
+          ${when(s.blurb, (t) => html`<p>${t}</p>`)}
+        </div>
+      </a>`)}
+    </div>
   </div>
 </section>`;
 }

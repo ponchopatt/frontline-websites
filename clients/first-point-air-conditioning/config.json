@@ -1,0 +1,387 @@
+{
+  "_comment": "First Point Air Conditioning, Fyshwick ACT. Built 2026-09-23 from a direct brief (not QUEUE.csv) plus their live site https://www.firstpointairconditioning.com.au/ (about, contact, split-system pages read the same day) and their Localsearch profile (address + the only 4 Google reviews found). No pricing, no team names and no licence numbers are published anywhere First Point controls, so none are invented here — see _needsConfirming. Their own site's stock hero/product photos (including a hand-holding-a-remote shot) were explicitly excluded per the brief's 'no smiling models with remote controls' rule; the hero and gallery instead reuse the same CC0 sample photos already vetted for LMAC (Openverse/Wikimedia, credited below), clearly flagged as samples. The 7 brand logos are First Point's own real dealer-logo files, downloaded from their site.",
+  "slug": "first-point-air-conditioning",
+  "template": "quote",
+  "industry": "air-conditioning",
+  "live": false,
+  "siteUrl": "https://www.firstpointairconditioning.com.au/",
+  "tagline": "Air conditioning and heating for Canberra and Queanbeyan",
+  "schemaType": "HVACBusiness",
+  "business": {
+    "name": "First Point Air Conditioning",
+    "phone": {
+      "display": "02 6100 2247",
+      "e164": "+61261002247"
+    },
+    "email": "sales@firstpointac.com",
+    "baseSuburb": "Fyshwick",
+    "region": "ACT",
+    "address": "4/1 Albany Street, Fyshwick ACT 2609",
+    "abn": "73 660 909 080",
+    "currentSite": "firstpointairconditioning.com.au",
+    "logoMark": {
+      "src": "assets/logo-header.webp",
+      "width": 195,
+      "height": 120
+    },
+    "logo": {
+      "src": "assets/logo.webp",
+      "width": 325,
+      "height": 200
+    }
+  },
+  "hours": [
+    "Monday to Friday, 7:00am to 5:00pm",
+    "Saturday, 7:00am to 12:00pm",
+    "Closed Sunday"
+  ],
+  "responsePromise": "★ 5.0 Google rating · 19+ years combined experience · 12-month workmanship warranty",
+  "copy": {
+    "title": "First Point Air Conditioning | Canberra Heating & Cooling, Fyshwick",
+    "description": "Split systems, ducted air conditioning, evaporative cooling and gas heating for Canberra and Queanbeyan. Commercial HVAC too. Free quotes, 12-month workmanship warranty. Call 02 6100 2247.",
+    "kicker": "Air conditioning & heating, Fyshwick",
+    "headline": "Sub-zero mornings.<br>Forty-degree days.<br>We keep Canberra comfortable.",
+    "sub": "First Point Air Conditioning installs, services and repairs split systems, ducted air con, evaporative cooling and gas heating across Canberra and Queanbeyan — plus commercial HVAC, mechanical install, ventilation and cool rooms. All major brands, free quotes.",
+    "anchor": "<b>Free, no-obligation quotes.</b> Open Saturdays, Fyshwick based.",
+    "ctaLabel": "Get a Free Quote",
+    "ctaLabelShort": "Free Quote",
+    "servicesTitle": "For the home",
+    "servicesIntro": "Old Canberra houses lose heat fast and cop the full 40-degree January sun. These are the jobs that fix both ends of it.",
+    "servicesCommercialTitle": "Commercial & industrial",
+    "servicesCommercialIntro": "Offices, shops, warehouses and cool rooms — installed, maintained and kept running.",
+    "galleryTitle": "The work",
+    "galleryIntro": "A look at the kind of installs we do. First Point's own completed jobs are being added here — ask to see recent Canberra work when you call.",
+    "reasonsTitle": "Why First Point",
+    "reviewsTitle": "What customers say",
+    "reviewsIntro": "First Point's Google reviews, word for word.",
+    "processTitle": "How it works",
+    "processIntro": "Three steps, no runaround.",
+    "areasTitle": "Where we work",
+    "areasIntro": "Based in Fyshwick, covering Canberra and Queanbeyan.",
+    "areasNote": "Not on the list? Give us a call — if we get there, we'll say so.",
+    "faqTitle": "Good to know",
+    "quoteTitle": "Get a free quote",
+    "quoteIntro": "Send this through and we'll call you back to arrange a free on-site look, or quote a straightforward job over the phone.",
+    "finalTitle": "Ready when you are.",
+    "finalIntro": "Call 02 6100 2247, Monday to Friday 7am–5pm or Saturday 7am–12pm.",
+    "footerArea": "Canberra and Queanbeyan"
+  },
+  "quoteSteps": [
+    "<b>Send this through.</b> Takes under a minute.",
+    "<b>We call you back</b> to arrange a free on-site look, or quote a straightforward job over the phone.",
+    "<b>A price in writing, then it's installed</b> — backed by a 12-month workmanship warranty."
+  ],
+  "demo": {
+    "formNote": "Demo mode — on the live site this goes straight to First Point's phone and inbox."
+  },
+  "form": {
+    "successBody": "Your enquiry is with First Point Air Conditioning. They'll be in touch on {phone}.",
+    "errorBody": "That did not send. Please call First Point Air Conditioning on {phone} instead."
+  },
+  "stats": {
+    "googleRating": 5,
+    "reviewCount": 4
+  },
+  "trustClaims": [
+    {
+      "value": "19+",
+      "label": "Years combined experience"
+    },
+    {
+      "value": "7",
+      "label": "Brands installed",
+      "sub": "Daikin, Mitsubishi and more"
+    }
+  ],
+  "services": [
+    {
+      "title": "Split system installation",
+      "blurb": "One room or several, wall or floor-mounted. Sized properly for the room, not guessed — an undersized unit runs flat out through a Canberra winter and still can't keep up."
+    },
+    {
+      "title": "Ducted air conditioning",
+      "blurb": "Whole-house heating and cooling, zoned so you're not heating rooms nobody's in. If your existing ducted system has died mid-winter before, this is the fix."
+    },
+    {
+      "title": "A/C service and repair",
+      "blurb": "Any brand, not just what we installed. A system that's iced up, blowing warm, or short-cycling gets diagnosed properly before anything's replaced."
+    },
+    {
+      "title": "Evaporative cooling",
+      "blurb": "Runs on Canberra's dry summer air for a fraction of the running cost of refrigerated cooling. Suits the climate here better than most people realise."
+    },
+    {
+      "title": "Gas heating",
+      "blurb": "Ducted or wall-mounted gas heating for the mornings a heat pump alone won't touch. Installed, serviced and repaired."
+    }
+  ],
+  "servicesCommercial": [
+    {
+      "title": "HVAC install, repair & maintenance",
+      "blurb": "Offices, retail and warehouses. Scheduled maintenance to keep a commercial system out of the repair queue."
+    },
+    {
+      "title": "Mechanical installation",
+      "blurb": "Mechanical services fit-out for new and refurbished commercial spaces."
+    },
+    {
+      "title": "Ventilation",
+      "blurb": "Ventilation systems sized to the space and what it's used for."
+    },
+    {
+      "title": "Cool room installation",
+      "blurb": "Cool rooms for food service and storage, installed and backed by ongoing service."
+    }
+  ],
+  "reasons": [
+    {
+      "title": "Free quotes",
+      "body": "An on-site or phone quote costs nothing and doesn't commit you to anything."
+    },
+    {
+      "title": "Appointment times that suit you",
+      "body": "Open Monday to Saturday, with scheduling that works around your day, not just ours."
+    },
+    {
+      "title": "All major brands",
+      "body": "Daikin, Mitsubishi Electric, Mitsubishi Heavy Industries, Fujitsu, Toshiba, Samsung and Temperzone — installed and serviced."
+    },
+    {
+      "title": "12-month workmanship warranty",
+      "body": "Every install is backed by a 12-month workmanship warranty, on top of whatever the manufacturer covers."
+    }
+  ],
+  "process": [
+    {
+      "step": "Call or request a quote",
+      "detail": "02 6100 2247, Monday to Friday 7am–5pm, Saturday 7am–12pm — or send the form and we'll call you back."
+    },
+    {
+      "step": "Free on-site quote",
+      "detail": "We look at the space, talk through split vs ducted (or whatever the job is), and give you a price in writing before anything's booked in."
+    },
+    {
+      "step": "Installed and backed by warranty",
+      "detail": "Installed by the team, tested, and covered by a 12-month workmanship warranty from the day it's switched on."
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "Canberra",
+      "suburbs": [
+        "Gungahlin",
+        "Belconnen",
+        "Inner North",
+        "Inner South",
+        "Woden",
+        "Weston Creek",
+        "Tuggeranong",
+        "Molonglo"
+      ]
+    },
+    {
+      "region": "Queanbeyan region",
+      "suburbs": [
+        "Queanbeyan",
+        "Jerrabomberra",
+        "Googong"
+      ]
+    }
+  ],
+  "brands": [
+    { "name": "Daikin", "logo": { "src": "assets/brand-daikin.webp", "width": 162, "height": 36 } },
+    { "name": "Mitsubishi Electric", "logo": { "src": "assets/brand-mitsubishi-electric.svg", "width": 192, "height": 45 } },
+    { "name": "Mitsubishi Heavy Industries", "logo": { "src": "assets/brand-mhi.webp", "width": 175, "height": 72 } },
+    { "name": "Fujitsu", "logo": { "src": "assets/brand-fujitsu.webp", "width": 216, "height": 72 } },
+    { "name": "Toshiba", "logo": { "src": "assets/brand-toshiba.webp", "width": 265, "height": 72 } },
+    { "name": "Samsung", "logo": { "src": "assets/brand-samsung.webp", "width": 184, "height": 72 } },
+    { "name": "Temperzone", "logo": { "src": "assets/brand-temperzone.svg", "width": 505, "height": 99 } }
+  ],
+  "photos": {
+    "hero": {
+      "src": "assets/sample-daikin-outdoor-1600.webp",
+      "srcset": "assets/sample-daikin-outdoor-800.webp 800w, assets/sample-daikin-outdoor-1600.webp 1600w",
+      "width": 1600,
+      "height": 1200,
+      "alt": "Sample photo: a tall Daikin inverter outdoor unit with two fans on brackets beside a rendered wall, autumn leaves on the ground",
+      "sample": true,
+      "license": "CC0 1.0",
+      "sourceUrl": "https://commons.wikimedia.org/w/index.php?curid=133257891",
+      "credit": "Pedalito, Wikimedia Commons"
+    },
+    "gallery": [
+      {
+        "src": "assets/sample-roof-condenser-800.webp",
+        "full": "assets/sample-roof-condenser-1600.webp",
+        "width": 800,
+        "height": 600,
+        "caption": "Outdoor unit on a metal roof",
+        "alt": "Sample photo: an air conditioner outdoor unit on a steel frame on a corrugated metal roof, pipework running to it, blue sky behind",
+        "sample": true,
+        "license": "CC0 1.0",
+        "sourceUrl": "https://wordpress.org/photos/photo/27469e3ea0/",
+        "credit": "Dylan Espinoza Pereira, WordPress Photo Directory"
+      },
+      {
+        "src": "assets/sample-brick-outdoor-unit-800.webp",
+        "full": "assets/sample-brick-outdoor-unit-1024.webp",
+        "width": 800,
+        "height": 530,
+        "caption": "Split system outdoor unit, brick house",
+        "alt": "Sample photo: a split system outdoor unit on wall brackets against a brick house, river pebbles below",
+        "sample": true,
+        "license": "CC0 1.0",
+        "sourceUrl": "https://www.flickr.com/photos/29155878@N03/26869601272",
+        "credit": "Open Grid Scheduler / Grid Engine, Flickr"
+      },
+      {
+        "src": "assets/sample-commercial-condensers-800.webp",
+        "full": "assets/sample-commercial-condensers-1024.webp",
+        "width": 800,
+        "height": 530,
+        "caption": "Commercial job: a row of outdoor units",
+        "alt": "Sample photo: four wall-mounted outdoor units in a row on a commercial building",
+        "sample": true,
+        "license": "CC0 1.0",
+        "sourceUrl": "https://www.flickr.com/photos/29155878@N03/22130133899",
+        "credit": "Open Grid Scheduler / Grid Engine, Flickr"
+      }
+    ],
+    "stockApproved": {
+      "by": "Pat (standing approval)",
+      "on": "2026-09-23",
+      "reason": "First Point has no photos of finished installs, vans or staff anywhere on firstpointairconditioning.com.au — every image on their own site is licensed stock (including a hand-holding-a-remote shot, excluded per the brief). Three labelled CC0 samples, already vetted for LMAC, stand in for the 'recent jobs' gallery until First Point sends real job photos."
+    }
+  },
+  "calculator": {
+    "_comment": "First Point publish no prices anywhere. Every job is mode 'quote' — nothing here is invented. Real ranges from the owner turn these into priced tiers.",
+    "heading": "What will it cost?",
+    "intro": "It depends on the room, the system and the site. A quote is free and takes the guesswork out — pick the job below to start one.",
+    "jobLabel": "What's the job?",
+    "included": [
+      "12-month workmanship warranty",
+      "Free, no-obligation quote",
+      "All major brands",
+      "Open Saturdays"
+    ],
+    "jobs": [
+      {
+        "id": "split",
+        "label": "Split system",
+        "sub": "One room or a few",
+        "mode": "quote",
+        "formService": "Split system installation",
+        "quoteEyebrow": "Priced on site, in writing",
+        "quoteLabel": "Get a free quote",
+        "note": "Wall or floor-mounted. <b>Sized to the room, not guessed.</b>"
+      },
+      {
+        "id": "ducted",
+        "label": "Ducted",
+        "sub": "Whole house, zoned",
+        "mode": "quote",
+        "formService": "Ducted air conditioning",
+        "quoteEyebrow": "Priced on site, in writing",
+        "quoteLabel": "Get a free quote",
+        "note": "Zoned so you're not heating or cooling empty rooms."
+      },
+      {
+        "id": "service",
+        "label": "Service or repair",
+        "sub": "Any brand",
+        "mode": "quote",
+        "formService": "A/C service and repair",
+        "quoteEyebrow": "Tell us the brand and what it's doing",
+        "quoteLabel": "Book a service",
+        "note": "We service what we install, and what we didn't."
+      }
+    ]
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [
+    {
+      "name": "Ben",
+      "text": "Professional. On time and very easy to deal with. Was able to fix our issue that 2 other trades couldn't. Highly recommend"
+    },
+    {
+      "name": "Michael",
+      "text": "Highly recommend First point air conditioning! Very easy to deal with, the staff and owner were friendly and super helpful, quick turn-around time with top quality workmanship from people that take pride in their work! I have recommended to friends and family."
+    },
+    {
+      "name": "Shawn",
+      "text": "We had First Point out on a last-minute decision to get our system updated. They came through for us, installing our system before we moved into our house and before our baby was born. Any questions we've had, they've been so prompt to get back to us and show us what we need to do. We've recommended them to all of our friends and family."
+    },
+    {
+      "name": "Drew",
+      "text": "Had these guys install a zoned ducted heating cooling system in my house, very happy with the results and how efficient they were. Will definitely use them again when my rental needs the upgrade."
+    }
+  ],
+  "faq": [
+    {
+      "q": "How much does a split system cost in Canberra?",
+      "a": "It depends on the room, the system and where the outdoor unit goes — which is exactly why we quote on site rather than over the phone. The quote is free either way."
+    },
+    {
+      "q": "How long does an install take?",
+      "a": "A single split system is usually a straightforward day. Ducted takes longer — we'll give you a realistic timeframe as part of the quote."
+    },
+    {
+      "q": "Do you service what you install?",
+      "a": "Yes, and we'll also service or repair a system someone else installed."
+    },
+    {
+      "q": "How often should I service my system?",
+      "a": "Once a year is the general rule, more often for a system that runs hard through both a Canberra summer and winter. Regular servicing is also what keeps a workmanship warranty valid."
+    },
+    {
+      "q": "Do you do commercial work?",
+      "a": "Yes — HVAC install, repair and maintenance, mechanical installation, ventilation and cool room installation for commercial and industrial sites."
+    },
+    {
+      "q": "What areas do you cover?",
+      "a": "Canberra and Queanbeyan, including Gungahlin, Belconnen, Woden, Weston Creek, Tuggeranong, the Inner North and South, Molonglo, Jerrabomberra and Googong."
+    },
+    {
+      "q": "What warranty do I get?",
+      "a": "A 12-month workmanship warranty on every install, on top of the manufacturer's own warranty on the equipment itself."
+    },
+    {
+      "q": "Which brands do you install?",
+      "a": "Daikin, Mitsubishi Electric, Mitsubishi Heavy Industries, Fujitsu, Toshiba, Samsung and Temperzone."
+    }
+  ],
+  "_source": {
+    "url": "https://www.firstpointairconditioning.com.au",
+    "pagesRead": [
+      "https://www.firstpointairconditioning.com.au/ (home)",
+      "https://www.firstpointairconditioning.com.au/about",
+      "https://www.firstpointairconditioning.com.au/contact",
+      "https://www.firstpointairconditioning.com.au/split-system-air-conditioner",
+      "https://www.localsearch.com.au/profile/first-point-air-conditioning/cm3zbotrl000e08lehdpq3a0t (address + the 4 Google reviews)"
+    ],
+    "readOn": "2026-09-23",
+    "quotedElsewhere": {
+      "experience": "19+ Years of Combined Experience",
+      "warranty": "12-Month Installation Warranty / Comprehensive 5-year warranty for long-term peace of mind",
+      "freeQuotes": "Free quotes, flexible scheduling options, all major brands (homepage claims list)",
+      "abn": "ABN 73 660 909 080",
+      "hours": "Monday-Friday: 7:00 am - 5:00 pm / Saturday: 7:00 am - 12:00 pm / Sunday: Closed",
+      "address": "4/1 Albany Street, Fyshwick ACT 2609 (Localsearch profile)",
+      "rating": "5 stars, 4 reviews, on Localsearch (which mirrors their Google Business Profile) — Ben, Michael, Shawn and Drew, quoted verbatim in reviews[]",
+      "brands": "Daikin, Toshiba, Mitsubishi Heavy Industries, Mitsubishi Electric, Fujitsu, Samsung, Temperzone — logos on their homepage and about page",
+      "services": "Residential: Split Systems, Ducted air conditioning, A/C Service & Repair, Evaporative Cooling, Gas Heating. Commercial: HVAC Install/Repair/Maintenance, Mechanical Installation, Ventilation, Cool Room Installation."
+    }
+  },
+  "_needsConfirming": {
+    "sameDayService": "The brief's seasonal urgency banner (\"Same-day repairs / call-out\") was NOT built. Nothing on First Point's own site claims same-day service, and the brief said to confirm this before using that wording. Confirm with the owner, then it can be added.",
+    "pricing": "No dollar figures anywhere — First Point publish none. The pricing guide (calculator section) is wired up in 'quote' mode with no numbers. Give real ranges (e.g. 'split install from $X') and these become priced tiers.",
+    "email": "sales@firstpointac.com is their real, current email (used on their own homepage and contact page) but it does not match their own domain, firstpointairconditioning.com.au — the same mismatch exists on their live site today, it wasn't introduced here. Confirm which is correct before publishing.",
+    "warranty": "Their own site states both a '12-Month Installation Warranty' and a 'comprehensive 5-year warranty' in the same breath, without saying what the 5-year covers (reads like the manufacturer's parts warranty, not workmanship). Used only the confirmed 12-month workmanship figure on the page; the 5-year claim needs the owner to clarify what it actually covers before it goes anywhere.",
+    "ownerName": "No owner or technician name is published anywhere — About page, team page, contact page, Localsearch or Google. Copy is written in the business's own voice ('we', 'the team') instead of a named person. If there's a name to use, the page gets more personal with it.",
+    "licensing": "No licence, certification or 'licensed & insured' claim is published anywhere on their site, so the brief's 'Licensed & insured' trust-strip item was left out rather than assumed. If they hold ARC/ACT trade licences, add the numbers and this becomes a strong trust signal.",
+    "photos": "Zero real photos of First Point's team, vans or installs exist anywhere online. Hero and gallery use CC0 stock, clearly labelled as samples. Needs real Canberra job photos before this goes anywhere near live.",
+    "reviews": "Only 4 Google reviews exist (via Localsearch, which mirrors Google) — genuinely all of them, not a curated subset. More reviews would strengthen this a lot; none were invented to pad the count.",
+    "secondPhoneNumber": "Their own site also lists a mobile, 0488 025 856, alongside 02 6100 2247. The brief said one number sitewide, no exceptions, so only 02 6100 2247 is used anywhere on this page."
+  }
+}
