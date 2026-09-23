@@ -90,3 +90,13 @@ Plain static files, no build step — same as the other live sites in this repo.
 - The claim gate reads visible text only, not the JSON-LD (LMAC's 2024 award is schema-only).
 - A service card with no photo collapses and its text overlaps the card above.
 - Usage: about 1M tokens per client; the session limit stops all agents at once.
+- **`npm run new` can fail with `ERR_CERT_AUTHORITY_INVALID` on every site**, not
+  just protected ones, in a container whose Chromium doesn't trust that
+  container's TLS-inspecting proxy (confirmed: `curl` and `WebFetch` reach the
+  same site fine, only Chromium's own root store rejects the proxy's cert).
+  Don't disable TLS verification to fix it. Workaround used this session:
+  `curl`/WebFetch to read pages and pull image URLs, `curl -o` to download
+  photos, and hand-write config.json off an existing client's shape instead of
+  running `npm run new`. If a future session hits this, check
+  `curl -sS "$HTTPS_PROXY/__agentproxy/status"` first — it may be specific to
+  this container.
