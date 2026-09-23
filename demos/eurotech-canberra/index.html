@@ -1,0 +1,1116 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Eurotech Canberra | European Car Service, Fyshwick</title>
+<meta name="description" content="Warranty-safe servicing, mechanical repair, factory diagnostics and performance upgrades for European cars, from a workshop in Fyshwick, Canberra.">
+<!-- A demo built as a proposal. It carries a real business's name and must never be indexed. -->
+<meta name="robots" content="noindex,nofollow,noarchive,noimageindex">
+<meta name="theme-color" content="#050608">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Eurotech Canberra | European Car Service, Fyshwick">
+<meta property="og:description" content="Warranty-safe servicing, repairs, factory diagnostics and performance upgrades for European cars in Canberra.">
+<meta property="og:image" content="assets/workshop-bays-1200.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/big-shoulders-var.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/instrument-sans-var.woff2">
+<link rel="preload" as="image" href="media/hero-poster.webp" fetchpriority="high">
+<style>
+@font-face{
+  font-family:'Big Shoulders Display';font-style:normal;font-weight:500 900;font-display:swap;
+  src:url(fonts/big-shoulders-var.woff2) format('woff2-variations'),
+      url(fonts/big-shoulders-var.woff2) format('woff2');
+}
+@font-face{
+  font-family:'Instrument Sans';font-style:normal;font-weight:400 700;font-display:swap;
+  src:url(fonts/instrument-sans-var.woff2) format('woff2-variations'),
+      url(fonts/instrument-sans-var.woff2) format('woff2');
+}
+
+/* ---------------------------------------------------------------- tokens
+   Imperium's system, carried over whole: the same near-black ground, the
+   same card and text greys, the same condensed display face over the same
+   sans. The one swap is the accent. Imperium's blue becomes Eurotech's lime,
+   #BBCC1A, taken from the fills in their own logo file. */
+:root{
+  --bg:#050608; --card:#0c0f14; --card-2:#11161d;
+  --fg:#f3f5f8; --fg-2:#c2c8d0; --mute:#8a909a;
+  --line:rgba(194,200,208,.12); --line-2:rgba(194,200,208,.24);
+  /* a field you type into needs a 3:1 edge; .46 composites to 3.16:1 */
+  --input:rgba(194,200,208,.46);
+  --lime:#bbcc1a; --lime-lt:#cfde3e;
+  --lime-glow:rgba(187,204,26,.34); --lime-soft:rgba(187,204,26,.12);
+  --font-d:'Big Shoulders Display','Arial Narrow','Helvetica Neue',sans-serif;
+  --font-b:'Instrument Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --wrap:1200px; --gut:clamp(1rem,4vw,3.5rem);
+  --r:.5rem; --r-xl:.75rem;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --header-h:76px;
+}
+
+/* ---------------------------------------------------------------- base */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:clip;color-scheme:dark}
+/* The hidden attribute must always win, whatever else sets display. */
+[hidden]{display:none !important}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-b);
+  font-size:17px;line-height:1.55;font-synthesis:none;-webkit-font-smoothing:antialiased;
+  overflow-x:clip}
+img,video,svg{display:block;max-width:100%}
+img,video{height:auto}
+a{color:inherit}
+p{margin:0 0 1em;text-wrap:pretty}
+h1,h2,h3,h4{margin:0;font-weight:700}
+ul,ol{margin:0;padding:0;list-style:none}
+button{font:inherit;color:inherit}
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--lime);outline-offset:3px;border-radius:4px}
+::selection{background:rgba(187,204,26,.45);color:#050608}
+.wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gut)}
+.skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--lime);color:var(--bg);
+  padding:14px 22px;font-weight:600;text-decoration:none;border-radius:var(--r)}
+.skip:focus{left:12px;top:12px}
+
+/* Film grain over everything: what makes flat dark panels read as a surface.
+   Phones skip it; a fixed full-screen layer is paint work a small GPU does not need. */
+body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opacity:.04;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px}
+@media(max-width:767px){body::after{display:none}}
+
+/* ---------------------------------------------------------------- type */
+/* Uppercase condensed display: the automotive voice, exactly as Imperium sets it. */
+.caps{font-family:var(--font-d);font-weight:800;text-transform:uppercase;
+  letter-spacing:.006em;line-height:.88;text-wrap:balance}
+.h-xl{font-size:clamp(3rem,8vw,7.4rem)}
+.h-lg{font-size:clamp(2.6rem,6.4vw,5.8rem)}
+.h-md{font-size:clamp(2rem,3.6vw,3rem)}
+.lede{font-size:clamp(1.0625rem,1.4vw,1.1875rem);color:var(--mute);max-width:58ch}
+.kicker{font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--lime);margin:0 0 18px}
+.lime{color:var(--lime)}
+.mute{color:var(--mute)}
+/* a masked line: padding for descenders, cancelled by the margin, so the
+   split never changes the height of the block it happens in */
+.ln{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+.ln>span{display:block}
+
+/* ---------------------------------------------------------------- buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:54px;padding:0 28px;border-radius:999px;border:1px solid transparent;
+  font-family:var(--font-b);font-weight:600;font-size:16px;line-height:1.2;text-decoration:none;
+  cursor:pointer;white-space:nowrap;
+  transition:transform .2s ease,box-shadow .25s ease,background-color .15s ease,border-color .15s ease,color .15s ease}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-lime{background:var(--lime);color:#050608;box-shadow:0 0 40px var(--lime-glow)}
+.btn-lime:hover{background:var(--lime-lt);transform:translateY(-2px);box-shadow:0 0 60px rgba(187,204,26,.5)}
+.btn-ghost{border-color:rgba(255,255,255,.2);background:rgba(5,6,8,.4);color:var(--fg);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.btn-ghost:hover{border-color:rgba(255,255,255,.5);transform:translateY(-2px)}
+.btn:active{transform:translateY(0) scale(.985)}
+.btn[aria-busy="true"]{opacity:.7;cursor:progress}
+.link{color:var(--fg-2);text-decoration:underline;text-underline-offset:4px;
+  text-decoration-color:var(--line-2);display:inline-flex;align-items:center;min-height:44px;
+  transition:color .2s,text-decoration-color .2s}
+.link:hover{color:var(--fg);text-decoration-color:var(--fg)}
+/* sms: opens Messages on a phone and does nothing on a desktop, so the same
+   slot is a text on a phone and the quote form on a laptop. !important
+   because these are display utilities and .btn sets display too. */
+.only-wide{display:none !important}
+@media(min-width:768px){.only-wide{display:inline-flex !important}.only-narrow{display:none !important}}
+
+/* ---------------------------------------------------------------- header
+   Absolute, not sticky: it sits over the hero and scrolls away with it.
+   The phone bar and the corner call button carry the page after that. */
+.top{position:absolute;top:0;left:0;right:0;z-index:70}
+.top::before{content:"";position:absolute;inset:0 0 -40px;z-index:-1;pointer-events:none;
+  background:linear-gradient(rgba(5,6,8,.78),rgba(5,6,8,0))}
+.topin{display:flex;align-items:center;gap:28px;height:var(--header-h)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;margin-right:auto;min-height:44px}
+.brand .mark{width:auto;height:30px}
+.brand .word{width:auto;height:13px}
+.nav{display:none;gap:28px;font-size:15px}
+.nav a{text-decoration:none;color:var(--fg-2);min-height:44px;display:inline-flex;align-items:center;
+  background-image:linear-gradient(var(--lime),var(--lime));background-repeat:no-repeat;
+  background-position:0 calc(100% - 10px);background-size:0% 1px;
+  transition:color .2s,background-size .35s var(--ease)}
+.nav a:hover{color:var(--fg);background-size:100% 1px}
+.top .tel{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;
+  font-size:15px;min-height:44px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.top .tel svg{width:17px;height:17px;color:var(--lime)}
+.top .btn{min-height:46px;padding:0 22px;font-size:15px;display:none}
+@media(min-width:1080px){.nav{display:flex}.top .btn{display:inline-flex}}
+@media(max-width:480px){.brand .word{display:none}.brand .mark{height:28px}}
+
+/* ---------------------------------------------------------------- hero
+   Imperium's hero, shape for shape: a portrait clip in a glowing panel on the
+   right, the headline overlapping its inner edge, a blurred frame of the same
+   footage as the backdrop. On a phone the clip becomes the whole background.
+   Their Instagram footage is portrait already, so it drops straight in. */
+.hero{position:relative;overflow:hidden;isolation:isolate}
+.hero-back{position:absolute;inset:0;z-index:-1;display:none}
+.hero-back img{width:100%;height:100%;object-fit:cover;opacity:.4;filter:blur(48px) saturate(1.25);transform:scale(1.25)}
+.hero-back::before{content:"";position:absolute;inset:0;z-index:1;
+  background:radial-gradient(60% 50% at 70% 40%,rgba(187,204,26,.16),transparent 70%)}
+.hero-back::after{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(to bottom,rgba(5,6,8,.55),rgba(5,6,8,.15) 35%,rgba(5,6,8,.6) 75%,#050608 100%)}
+.hero-grid{position:relative;display:grid;align-items:end;min-height:100svh;padding-bottom:40px}
+.hero-panel{position:absolute;inset:0}
+.hero-panel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--card)}
+.hero-panel .shade{position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(5,6,8,.97) 0%,rgba(5,6,8,.72) 42%,rgba(5,6,8,.25) 72%,rgba(5,6,8,.35) 100%)}
+.playbtn{position:absolute;right:16px;top:calc(var(--header-h) + 8px);z-index:3;border-radius:999px;
+  border:1px solid rgba(255,255,255,.22);background:rgba(5,6,8,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  padding:0 18px;min-height:44px;font-size:14px;cursor:pointer}
+.hero-copy{position:relative;z-index:2;padding-top:36svh}
+.hero h1{font-size:clamp(2.75rem,5.7vw,6.1rem)}
+.hero h1 .ln>span{white-space:nowrap}
+.hero-sub{margin:22px 0 0;max-width:34rem;font-size:16px;color:var(--fg-2)}
+.hero-sub b{color:var(--fg);font-weight:600}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.hero-note{margin:14px 0 0;font-size:14px;color:var(--mute)}
+@media(max-width:767px){
+  .hero-cta .btn{flex:1 1 0;padding:0 16px}
+}
+/* a phone turned sideways: headline and buttons only, so both fit */
+@media(max-height:500px) and (max-width:899px){
+  .hero-copy{padding-top:calc(var(--header-h) + 4px)}
+  .hero-kicker,.hero-sub,.hero-note{display:none}
+  .hero-grid{padding-bottom:20px}
+  .hero h1{font-size:clamp(2.4rem,11vh,3.4rem)}
+}
+@media(max-height:700px) and (max-width:767px){
+  .hero-copy{padding-top:26svh}
+  .hero-sub{font-size:15px;margin-top:16px}
+  .hero-note{display:none}
+}
+@media(min-width:900px){
+  .hero-back{display:block}
+  .hero-grid{grid-template-columns:repeat(12,minmax(0,1fr));align-items:center;
+    min-height:92svh;padding-top:calc(var(--header-h) + 12px);padding-bottom:32px}
+  .hero-panel{position:relative;inset:auto;grid-column:8 / span 5;grid-row:1;justify-self:end;
+    height:min(74vh,760px);aspect-ratio:720/1024;border-radius:var(--r-xl);overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 120px rgba(187,204,26,.2)}
+  .hero-panel .shade{display:none}
+  .playbtn{top:16px}
+  .hero-copy{grid-column:1 / span 8;grid-row:1;padding-top:0}
+  .hero-sub{font-size:18px}
+  .hero-cta{gap:14px}
+}
+.strip{position:relative;border-top:1px solid rgba(255,255,255,.1);padding-block:16px}
+
+/* ---------------------------------------------------------------- marquee */
+.marquee{overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);
+  mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent)}
+.marquee-track{display:flex;width:max-content;animation:marquee var(--dur,48s) linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee span{display:inline-flex;align-items:center;gap:22px;padding-right:22px;white-space:nowrap;
+  font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:15px;color:var(--fg-2)}
+.marquee span::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--lime)}
+@keyframes marquee{to{transform:translate3d(-50%,0,0)}}
+
+/* ---------------------------------------------------------------- sections */
+.sec{padding-block:clamp(64px,9vw,112px);position:relative}
+.sec + .sec{border-top:1px solid var(--line)}
+.head{margin-bottom:clamp(40px,5vw,56px);max-width:60rem}
+.head .lede{margin-top:22px}
+.glow-l{isolation:isolate}
+.glow-l::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(50% 40% at 15% 20%,var(--lime-soft),transparent 70%)}
+
+/* ---------------------------------------------------------------- proof band */
+.proof{border-block:1px solid var(--line);background:rgba(12,15,20,.4)}
+.proof ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 24px;padding-block:clamp(48px,6vw,64px)}
+@media(min-width:900px){.proof ul{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.proof .num{display:block;font-size:clamp(3rem,6.5vw,5.6rem);line-height:1;font-variant-numeric:tabular-nums}
+.proof .num small{font-size:.5em;margin-left:.08em;color:var(--lime)}
+.proof p{margin:12px 0 0;max-width:20ch;font-size:15px;color:var(--mute)}
+
+/* ---------------------------------------------------------------- coverflow
+   Without script this is a plain row you can scroll sideways. With script it
+   becomes Imperium's 3D carousel: the active card faces you, its neighbours
+   turn away on either side. */
+.cf{position:relative}
+.cf-stage{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px var(--gut) 24px;
+  scrollbar-width:none}
+.cf-stage::-webkit-scrollbar{display:none}
+.card{flex:0 0 min(360px,82vw);scroll-snap-align:center;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r-xl);overflow:hidden;display:flex;flex-direction:column}
+.card .ph{aspect-ratio:4/3;overflow:hidden;background:var(--card-2)}
+.card .ph img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+.card:hover .ph img{transform:scale(1.04)}
+.card .body{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1}
+.tag{align-self:flex-start;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--lime);border:1px solid rgba(187,204,26,.35);border-radius:999px;padding:5px 12px;margin-bottom:16px}
+.card h3{font-size:clamp(1.9rem,2.6vw,2.3rem)}
+.card h3 span{display:block;color:var(--mute);font-size:.58em;letter-spacing:.02em;margin-top:6px;line-height:1.05}
+.card p{margin:14px 0 18px;font-size:15px;color:var(--fg-2)}
+.card .go{margin-top:auto;color:var(--fg);font-weight:600;font-size:15px;text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;min-height:44px}
+.card .go::after{content:"→";color:var(--lime);transition:transform .25s var(--ease)}
+.card .go:hover::after{transform:translateX(4px)}
+.cf-ctrl{display:none;gap:10px;justify-content:center;margin-top:8px}
+.cf-ctrl button{width:48px;height:48px;border-radius:50%;border:1px solid var(--line-2);background:transparent;
+  cursor:pointer;display:grid;place-items:center;transition:border-color .2s,background-color .2s}
+.cf-ctrl button:hover{border-color:var(--lime);background:var(--lime-soft)}
+.cf-ctrl svg{width:18px;height:18px}
+.cf-dots{display:none;justify-content:center;gap:4px;margin-top:10px}
+/* the button is a 32px target; the pill you see is drawn inside it */
+.cf-dots button{width:32px;height:32px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center}
+.cf-dots button::before{content:"";width:8px;height:8px;border-radius:99px;background:var(--line-2);
+  transition:width .35s var(--ease),background-color .2s}
+.cf-dots button[aria-current="true"]::before{width:28px;background:var(--lime)}
+/* 3D mode, switched on by script */
+.cf.on .cf-stage{display:block;position:relative;overflow:visible;height:var(--cf-h,600px);padding:0;
+  perspective:1400px;touch-action:pan-y}
+.cf.on .card{position:absolute;left:50%;top:0;width:min(400px,78vw);margin-left:calc(min(400px,78vw) / -2);
+  transition:transform .7s var(--ease),opacity .5s ease,filter .5s ease;will-change:transform}
+.cf.on .card:not(.is-active){cursor:pointer}
+.cf.on .card:not(.is-active) .body{pointer-events:none}
+/* the cards turned away show their photograph only; their text, dimmed, would
+   be unreadable noise. It fades in as a card comes to the front. */
+.cf.on .card .body>*{transition:opacity .45s ease}
+.cf.on .card:not(.is-active) .body>*{opacity:0}
+.cf.on .cf-ctrl,.cf.on .cf-dots{display:flex}
+.cf-clip{overflow-x:clip;padding-block:12px}
+
+/* ---------------------------------------------------------------- quote */
+.quote-grid{display:grid;gap:clamp(40px,5vw,72px)}
+@media(min-width:960px){.quote-grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:start}}
+.ticks{display:grid;gap:12px;margin-top:28px}
+.ticks li{display:flex;gap:12px;align-items:center;color:var(--fg-2);font-size:16px}
+.ticks li::before{content:"";width:22px;height:22px;flex:none;border-radius:50%;
+  background:var(--lime-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23bbcc1a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L19 7'/%3E%3C/svg%3E") center/13px no-repeat;
+  border:1px solid rgba(187,204,26,.35)}
+.direct{display:grid;gap:4px;margin-top:32px;padding-top:24px;border-top:1px solid var(--line)}
+.direct a{display:inline-flex;align-items:center;gap:12px;min-height:44px;text-decoration:none;font-weight:600;
+  font-variant-numeric:tabular-nums;width:fit-content;transition:color .2s}
+.direct a:hover{color:var(--lime)}
+.direct svg{width:19px;height:19px;color:var(--lime);flex:none}
+.direct small{font-weight:400;color:var(--mute);font-size:14px}
+.formcard{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r-xl);
+  padding:clamp(22px,3vw,36px);box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 100px rgba(187,204,26,.1)}
+.formcard::before{content:"";position:absolute;left:24px;right:24px;top:-1px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,transparent,var(--lime),transparent)}
+form{display:grid;gap:16px}
+.row{display:grid;gap:16px}
+@media(min-width:560px){.row.two{grid-template-columns:1fr 1fr}}
+label{display:grid;gap:8px;font-size:14px;font-weight:600;color:var(--fg-2)}
+label .opt{font-weight:400;color:var(--mute)}
+input,select,textarea{font:inherit;font-size:16px;color:var(--fg);background:rgba(5,6,8,.6);
+  border:1px solid var(--input);border-radius:var(--r);padding:14px 16px;min-height:54px;width:100%;
+  transition:border-color .2s,box-shadow .2s}
+textarea{min-height:120px;resize:vertical;line-height:1.5}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--lime);box-shadow:0 0 0 3px rgba(187,204,26,.2)}
+input[aria-invalid="true"]{border-color:#ff8a7a}
+select{appearance:none;-webkit-appearance:none;padding-right:44px;
+  background:rgba(5,6,8,.6) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c2c8d0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 14px center/18px no-repeat}
+select option{color:#050608;background:#f3f5f8}
+.err{color:#ff8a7a;font-size:13px;font-weight:500}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+form .btn{width:100%;margin-top:4px}
+.fine{margin:0;font-size:13px;color:var(--mute);text-align:center}
+.thanks h3{font-size:clamp(2.2rem,4vw,3rem)}
+.thanks p{margin:14px 0 0;color:var(--fg-2)}
+.thanks .note{font-size:14px;color:var(--mute)}
+.thanks .btn{margin-top:22px}
+
+/* ---------------------------------------------------------------- workshop */
+.gallery{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.gallery figure{margin:0;position:relative;overflow:hidden;border-radius:var(--r-xl);background:var(--card)}
+.gallery img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+.gallery figure:hover img{transform:scale(1.04)}
+.gallery figcaption{position:absolute;left:12px;bottom:12px;right:12px;font-size:13px;font-weight:600;
+  color:var(--fg);text-shadow:0 1px 12px rgba(0,0,0,.9);opacity:.95}
+.g-wide{grid-column:1 / -1;aspect-ratio:16/8}
+.g-sq{aspect-ratio:1/1}
+@media(min-width:900px){
+  .gallery{grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-rows:clamp(160px,17vw,220px);gap:16px}
+  .gallery figure{aspect-ratio:auto}
+  .g1{grid-column:1 / span 7;grid-row:span 2}
+  .g2{grid-column:8 / span 5}
+  .g3{grid-column:8 / span 5}
+  .g4{grid-column:1 / span 4;grid-row:span 2}
+  .g5{grid-column:5 / span 4;grid-row:span 2}
+  .g6{grid-column:9 / span 4;grid-row:span 2}
+  .g7{grid-column:1 / span 12;grid-row:span 2}
+}
+
+/* ---------------------------------------------------------------- feature rows */
+.feature{display:grid;gap:clamp(32px,5vw,72px);align-items:center}
+@media(min-width:900px){
+  .feature{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+  .feature.rev{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+  .feature.rev .media{order:2}
+}
+.media{position:relative;border-radius:var(--r-xl);overflow:hidden;background:var(--card);
+  box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 110px rgba(187,204,26,.16)}
+.media img{width:100%;height:100%;object-fit:cover}
+.media.portrait{aspect-ratio:720/1024;max-height:720px;margin-inline:auto;width:100%;max-width:480px}
+.media.land{aspect-ratio:3/2}
+.specs{display:grid;gap:0;margin-top:26px;border-top:1px solid var(--line)}
+.specs li{display:flex;align-items:baseline;gap:18px;padding:16px 0;border-bottom:1px solid var(--line)}
+.specs b{font-family:var(--font-d);font-weight:800;color:var(--lime);font-size:22px;min-width:1.6em;font-variant-numeric:tabular-nums}
+.specs span{font-size:18px;font-weight:600}
+.checks{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.checks li{border:1px solid var(--line-2);border-radius:999px;padding:8px 16px;font-size:15px;color:var(--fg-2)}
+.checks li b{color:var(--lime);font-weight:600}
+.pull{margin:30px 0 0;padding-left:20px;border-left:2px solid var(--lime)}
+.pull p{margin:0;font-size:clamp(1.125rem,1.6vw,1.3rem);line-height:1.45;color:var(--fg)}
+.pull cite{display:block;margin-top:10px;font-style:normal;font-size:14px;color:var(--mute)}
+
+/* ---------------------------------------------------------------- process */
+.steps{position:relative;display:grid;gap:40px;padding-top:32px}
+.steps::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:rgba(194,200,208,.4);
+  transform-origin:left center;transform:scaleX(var(--draw,1))}
+@media(min-width:900px){.steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}}
+.steps .n{display:block;font-size:clamp(3.5rem,7vw,6rem);line-height:1;color:var(--lime)}
+.steps h3{margin-top:16px;font-size:21px;font-weight:600}
+.steps p{margin:10px 0 0;max-width:38ch;font-size:15px;color:var(--mute)}
+
+/* ---------------------------------------------------------------- reviews */
+.reviews{display:grid;gap:16px}
+@media(min-width:800px){.reviews{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}}
+.rv{margin:0;background:var(--card);border:1px solid var(--line);border-radius:var(--r-xl);padding:clamp(22px,2.6vw,32px);
+  display:flex;flex-direction:column}
+/* no stars: the site's reviews carry no confirmed rating, so none is shown */
+.rv .qm{font-family:var(--font-d);font-weight:800;color:var(--lime);font-size:64px;line-height:.6;height:28px;margin-bottom:10px}
+.rv blockquote{margin:0;font-size:clamp(1.0625rem,1.3vw,1.1875rem);line-height:1.5;color:var(--fg)}
+.rv figcaption{margin-top:auto;padding-top:20px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  font-size:14px}
+.rv figcaption b{font-weight:600}
+.rv figcaption span{color:var(--mute)}
+
+/* ---------------------------------------------------------------- brands */
+.brands{display:flex;flex-wrap:wrap;gap:6px 0;align-items:baseline}
+.brands li{font-family:var(--font-d);font-weight:800;text-transform:uppercase;line-height:1;
+  font-size:clamp(2.2rem,5.6vw,5rem);color:var(--fg);transition:color .25s}
+.brands li:hover{color:var(--lime)}
+.brands li:not(:last-child)::after{content:"/";color:rgba(187,204,26,.55);margin:0 .28em;font-weight:500}
+
+/* ---------------------------------------------------------------- visit */
+.visit dl{margin:26px 0 0;display:grid;gap:18px}
+.visit dt{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.visit dd{margin:6px 0 0;font-size:18px}
+.visit dd a{text-decoration:none;font-weight:600;font-variant-numeric:tabular-nums;
+  display:inline-flex;align-items:center;min-height:44px;word-break:break-word}
+.visit dd{margin-top:2px}
+.visit dd a:hover{color:var(--lime)}
+
+/* ---------------------------------------------------------------- footer */
+.foot{position:relative;overflow:hidden;border-top:1px solid var(--line)}
+.foot-cta{display:flex;flex-direction:column;gap:28px;padding-top:clamp(80px,9vw,112px);padding-bottom:16px}
+@media(min-width:900px){.foot-cta{flex-direction:row;align-items:flex-end;justify-content:space-between}}
+.foot-cta .lede{margin-top:20px}
+.foot-cta .btns{display:flex;flex-direction:column;gap:12px;flex:none}
+@media(min-width:560px){.foot-cta .btns{flex-direction:row}}
+.wordmark{font-family:var(--font-d);font-weight:800;text-transform:uppercase;white-space:nowrap;user-select:none;
+  font-size:min(25.5vw,calc(var(--wrap) * .262));line-height:.82;padding-top:clamp(40px,6vw,64px);
+  background:linear-gradient(180deg,rgba(243,245,248,.92) 0%,rgba(243,245,248,.16) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.foot .strip{border-bottom:1px solid var(--line);padding-block:12px}
+.cols{display:grid;gap:40px;padding-block:56px}
+@media(min-width:900px){.cols{grid-template-columns:4fr 3fr 2.5fr 2.5fr}}
+.cols h2{font-family:var(--font-b);font-size:14px;font-weight:600;margin-bottom:12px}
+.cols a,.cols span{display:flex;align-items:center;min-height:44px;word-break:break-word;font-size:15px;color:var(--fg-2);text-decoration:none}
+.cols a:hover{color:var(--fg)}
+.cols .logo{width:118px;height:auto;margin-bottom:18px}
+.cols p{font-size:15px;color:var(--mute);max-width:34ch}
+.legal{border-top:1px solid var(--line);padding-block:22px 28px;display:flex;flex-wrap:wrap;gap:8px 24px;
+  justify-content:space-between;font-size:13px;color:var(--mute)}
+
+/* ---------------------------------------------------------------- phone bar + corner call */
+.phonebar{position:fixed;left:0;right:0;bottom:0;z-index:65;display:grid;grid-template-columns:1.3fr 1fr;gap:10px;
+  padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom,0px));
+  background:rgba(5,6,8,.95);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);
+  transform:translateY(110%);transition:transform .35s var(--ease)}
+.phonebar.on{transform:none}
+.phonebar .btn{min-height:50px;padding:0 10px;font-size:15px;box-shadow:none}
+@media(max-width:767px){body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}}
+@media(min-width:768px){.phonebar{display:none}}
+.calldock{position:fixed;right:var(--gut);bottom:28px;z-index:66;display:none;align-items:center;
+  width:56px;height:56px;padding-left:18px;overflow:hidden;border-radius:999px;white-space:nowrap;
+  background:rgba(12,15,20,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border:1px solid var(--line-2);color:var(--fg);text-decoration:none;font-weight:600;font-size:15px;
+  font-variant-numeric:tabular-nums;box-shadow:0 18px 44px rgba(0,0,0,.5);
+  opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:opacity .4s var(--ease),transform .4s var(--ease),width .4s var(--ease),background-color .2s,color .2s,border-color .2s}
+.calldock.on{opacity:1;transform:none;pointer-events:auto}
+.calldock svg{width:18px;height:18px;flex:none;color:var(--lime);transition:color .2s}
+.calldock .num{margin-left:11px;opacity:0;transition:opacity .3s var(--ease)}
+.calldock:hover,.calldock:focus-visible{width:176px;background:var(--lime);color:#050608;border-color:var(--lime)}
+.calldock:hover svg,.calldock:focus-visible svg{color:#050608}
+.calldock:hover .num,.calldock:focus-visible .num{opacity:1}
+@media(min-width:768px){.calldock{display:inline-flex}}
+
+@media print{.top,.phonebar,.calldock,.strip,video{display:none!important}body::after{display:none}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important}
+  .marquee-track{animation:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap topin">
+    <a class="brand" href="#main" aria-label="Eurotech Canberra, home">
+      <img class="mark" src="assets/logo-mark.svg" width="62" height="47" alt="">
+      <img class="word" src="assets/logo-wordmark.svg" width="151" height="15" alt="">
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#services">Services</a>
+      <a href="#workshop">Workshop</a>
+      <a href="#performance">Performance</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#visit">Visit</a>
+    </nav>
+    <a class="tel" href="tel:+61261898954">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
+      02 6189 8954
+    </a>
+    <a class="btn btn-lime" href="#quote">Get a free quote</a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============================================================ hero -->
+<section class="hero" id="top" aria-label="Eurotech Canberra">
+  <div class="hero-back" aria-hidden="true">
+    <img src="media/hero-poster.webp" width="720" height="1024" alt="" decoding="async">
+  </div>
+  <div class="wrap hero-grid">
+    <div class="hero-panel">
+      <video id="heroVideo" muted loop playsinline preload="none" poster="media/hero-poster.webp"
+        aria-label="A red Porsche Cayenne GTS at the Eurotech Canberra workshop in Fyshwick after its Stage 2 upgrade: the badge, the engine bay and the exhaust"></video>
+      <div class="shade" aria-hidden="true"></div>
+      <button class="playbtn" id="heroPlay" type="button" hidden>Play the clip</button>
+    </div>
+    <div class="hero-copy">
+      <p class="kicker hero-kicker">European car specialists · Fyshwick, Canberra</p>
+      <h1 class="caps" data-lines>Built in Europe.<br>Looked after<br><span class="lime">in Canberra.</span></h1>
+      <p class="hero-sub">Warranty-safe servicing, repairs, factory diagnostics and performance upgrades, from a workshop whose master technician spent <b>12 years on ultra-exotic cars in Dubai and Bahrain</b>.</p>
+      <div class="hero-cta">
+        <a class="btn btn-lime only-wide" href="#quote">Get a free quote</a>
+        <a class="btn btn-lime only-narrow" data-sms href="sms:+61431614455">Text us your rego</a>
+        <a class="btn btn-ghost" href="tel:+61261898954">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
+          <span class="only-wide">02 6189 8954</span><span class="only-narrow">Call</span>
+        </a>
+      </div>
+      <p class="hero-note">No-commitment quotes. We reply within 2 business hours, Monday to Friday.</p>
+    </div>
+  </div>
+  <div class="strip">
+    <div class="marquee" aria-label="Brands and services">
+      <div class="marquee-track" id="heroMarquee"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ proof -->
+<section class="proof" aria-label="In numbers">
+  <div class="wrap">
+    <ul data-reveal="stagger">
+      <li><span class="caps num" data-count="12">12</span><p>years on ultra-exotic cars in Bahrain and Dubai</p></li>
+      <li><span class="caps num" data-count="9">9</span><p>European marques, from Audi to Maserati</p></li>
+      <li><span class="caps num"><span data-count="2">2</span><small>hr</small></span><p>reply to quote requests, Monday to Friday</p></li>
+      <li><span class="caps num" data-count="5">5</span><p>services under one roof, servicing to Stage 2</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ services -->
+<section class="sec" id="services">
+  <div class="wrap">
+    <div class="head">
+      <h2 class="caps h-lg" data-lines>More than<br>an oil change.</h2>
+      <p class="lede" data-reveal>Modern European cars are computers on wheels. Everything here is done on factory diagnostic software and to the manufacturer's specification. Swipe, or use the arrows.</p>
+    </div>
+  </div>
+  <div class="cf-clip">
+    <div class="cf" id="cf">
+      <div class="cf-stage" id="cfStage">
+        <article class="card">
+          <div class="ph"><img src="assets/golf-r-800.webp" srcset="assets/golf-r-480.webp 480w, assets/golf-r-800.webp 800w, assets/golf-r-1200.webp 1200w" sizes="400px" width="800" height="385" loading="lazy" decoding="async" alt="A white Volkswagen Golf R with a Eurotech number-plate surround"></div>
+          <div class="body">
+            <span class="tag">Warranty-safe</span>
+            <h3 class="caps">Servicing<span>To the manufacturer's schedule</span></h3>
+            <p>Manufacturer-specified servicing for the latest European models, so your new-car warranty stays intact. Every service includes a multi-point health check and a diagnostic scan on factory software.</p>
+            <a class="go" href="#quote" data-service="Scheduled servicing">Get a quote for a service</a>
+          </div>
+        </article>
+        <article class="card">
+          <div class="ph"><img src="assets/r8-m2-hoist-800.webp" srcset="assets/r8-m2-hoist-480.webp 480w, assets/r8-m2-hoist-800.webp 800w, assets/r8-m2-hoist-1200.webp 1200w" sizes="400px" width="800" height="468" loading="lazy" decoding="async" alt="An orange Audi R8 and a white BMW M2 on the hoists at the Eurotech workshop"></div>
+          <div class="body">
+            <span class="tag">Engine to brakes</span>
+            <h3 class="caps">Mechanical repair<span>On factory tooling</span></h3>
+            <p>Engine, transmission, suspension and brake repairs, in a workshop equipped with the latest factory diagnostic tools and machinery.</p>
+            <a class="go" href="#quote" data-service="Repair">Get a quote for a repair</a>
+          </div>
+        </article>
+        <article class="card">
+          <div class="ph"><img src="assets/vj-r8-diagnostics-800.webp" srcset="assets/vj-r8-diagnostics-480.webp 480w, assets/vj-r8-diagnostics-800.webp 800w, assets/vj-r8-diagnostics-1200.webp 1200w" sizes="400px" width="800" height="537" loading="lazy" decoding="async" alt="A technician running a diagnostic laptop from the driver's seat of an Audi R8"></div>
+          <div class="body">
+            <span class="tag">We can come to you</span>
+            <h3 class="caps">Diagnostics<span>And software updates</span></h3>
+            <p>Engine light, gearbox fault or another warning? We scan and diagnose with factory software, and our mobile mechanics can come to the car across Canberra.</p>
+            <a class="go" href="#quote" data-service="Diagnostics or a warning light">Get a quote for diagnostics</a>
+          </div>
+        </article>
+        <article class="card">
+          <div class="ph"><img src="assets/kw-coilovers-800.webp" srcset="assets/kw-coilovers-480.webp 480w, assets/kw-coilovers-800.webp 800w, assets/kw-coilovers-1200.webp 1200w" sizes="400px" width="800" height="537" loading="lazy" decoding="async" alt="KW coilovers laid out on the workshop floor, ready to fit"></div>
+          <div class="body">
+            <span class="tag">Stage 2 and beyond</span>
+            <h3 class="caps">Performance<span>Upgrades and modifications</span></h3>
+            <p>Upgrade packages for owners who want more precision, more performance or a little extra flair. We are enthusiasts too.</p>
+            <a class="go" href="#quote" data-service="Performance or modifications">Get a quote for an upgrade</a>
+          </div>
+        </article>
+        <article class="card">
+          <div class="ph"><img src="assets/diagnostic-bench-800.webp" srcset="assets/diagnostic-bench-480.webp 480w, assets/diagnostic-bench-800.webp 800w, assets/diagnostic-bench-1200.webp 1200w" sizes="400px" width="800" height="537" loading="lazy" decoding="async" alt="A diagnostic laptop on the workshop bench beside trays of tools"></div>
+          <div class="body">
+            <span class="tag">EV and MHEV</span>
+            <h3 class="caps">EV and hybrid<span>Maintenance</span></h3>
+            <p>Servicing and maintenance for electric and mild-hybrid European models.</p>
+            <a class="go" href="#quote" data-service="EV or hybrid">Get a quote for an EV</a>
+          </div>
+        </article>
+      </div>
+      <div class="cf-ctrl">
+        <button type="button" id="cfPrev" aria-label="Previous service"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button type="button" id="cfNext" aria-label="Next service"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+      <div class="cf-dots" id="cfDots" aria-label="Choose a service"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ quote -->
+<section class="sec glow-l" id="quote">
+  <div class="wrap quote-grid">
+    <div>
+      <h2 class="caps h-lg" data-lines>Get a<br>free quote.</h2>
+      <p class="lede" data-reveal style="margin-top:22px">Tell us the car and what it needs. No commitment: we reply within 2 business hours, Monday to Friday, then call to confirm a time that suits you.</p>
+      <ul class="ticks" data-reveal="stagger">
+        <li>Warranty-safe servicing</li>
+        <li>Factory diagnostic software</li>
+        <li>No obligation</li>
+      </ul>
+      <div class="direct" data-reveal>
+        <a href="tel:+61261898954"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>02 6189 8954 <small>workshop</small></a>
+        <a data-sms href="sms:+61431614455"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-8 8H8l-5 3 1.5-4.5A8 8 0 1 1 21 12z"/></svg>0431 614 455 <small>call or text</small></a>
+        <a href="mailto:service@eurotechcanberra.au"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>service@eurotechcanberra.au</a>
+      </div>
+    </div>
+
+    <div class="formcard" data-reveal>
+      <form id="qForm" novalidate aria-label="Quote request">
+        <div class="hp" aria-hidden="true"><label>Company<input id="qCompany" type="text" tabindex="-1" autocomplete="off"></label></div>
+        <div class="row two">
+          <label>Name<input id="qName" type="text" autocomplete="name" required><span class="err" id="qNameErr" hidden>Please tell us your name</span></label>
+          <label>Mobile<input id="qPhone" type="tel" autocomplete="tel" inputmode="tel" required><span class="err" id="qPhoneErr" hidden>Please enter a mobile number</span></label>
+        </div>
+        <div class="row two">
+          <label>Email <span class="opt">(optional)</span><input id="qEmail" type="email" autocomplete="email"></label>
+          <label>Registration<input id="qRego" type="text" autocomplete="off" autocapitalize="characters" required><span class="err" id="qRegoErr" hidden>Please enter the rego</span></label>
+        </div>
+        <div class="row two">
+          <label>Make
+            <select id="qMake">
+              <option>Audi</option><option>BMW</option><option>Mercedes-Benz</option><option>Porsche</option>
+              <option>Volkswagen</option><option>Škoda</option><option>Cupra</option><option>Alfa Romeo</option>
+              <option>Maserati</option><option>Something else</option>
+            </select>
+          </label>
+          <label>What it needs
+            <select id="qService">
+              <option>Scheduled servicing</option>
+              <option>Repair</option>
+              <option>Diagnostics or a warning light</option>
+              <option>Performance or modifications</option>
+              <option>EV or hybrid</option>
+              <option>Pre-purchase inspection</option>
+              <option>Not sure yet</option>
+            </select>
+          </label>
+        </div>
+        <label>Anything else <span class="opt">(optional)</span><textarea id="qMsg" placeholder="Model, year, kilometres, and what you have noticed."></textarea></label>
+        <p class="err" id="qErr" hidden>Please complete the highlighted fields.</p>
+        <button class="btn btn-lime" id="qSend" type="submit">Send my free quote</button>
+        <p class="fine">No commitment. We will call to confirm a time that suits you.</p>
+      </form>
+      <div class="thanks" id="qThanks" hidden>
+        <h3 class="caps" id="qThanksHead">Thank you.</h3>
+        <p id="qThanksBody"></p>
+        <p class="note" id="qThanksNote" hidden></p>
+        <a class="btn btn-ghost" href="tel:+61261898954">Call 02 6189 8954</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ workshop -->
+<section class="sec" id="workshop">
+  <div class="wrap">
+    <div class="head">
+      <h2 class="caps h-lg" data-lines>Inside the<br>workshop.</h2>
+      <p class="lede" data-reveal>An R8 and an M2 on the hoists, KW coilovers going in, and the factory software that finds the fault before anything comes apart. Every photo here is from the Fyshwick workshop.</p>
+    </div>
+    <div class="gallery">
+      <figure class="g1 g-wide" data-reveal="img"><img src="assets/r8-front-1200.webp" srcset="assets/r8-front-480.webp 480w, assets/r8-front-800.webp 800w, assets/r8-front-1200.webp 1200w, assets/r8-front-1600.webp 1600w" sizes="(min-width:900px) 58vw, 100vw" width="1200" height="806" loading="lazy" decoding="async" alt="An orange Audi R8 in the workshop, with a white BMW M2 on the hoist behind it"><figcaption>Audi R8 and BMW M2</figcaption></figure>
+      <figure class="g2 g-sq" data-reveal="img"><img src="assets/tool-kit-800.webp" srcset="assets/tool-kit-480.webp 480w, assets/tool-kit-800.webp 800w" sizes="(min-width:900px) 40vw, 50vw" width="800" height="427" loading="lazy" decoding="async" alt="A specialist socket kit laid out in its case"><figcaption>The right tool for each bolt</figcaption></figure>
+      <figure class="g3 g-sq" data-reveal="img"><img src="assets/r8-interior-800.webp" srcset="assets/r8-interior-480.webp 480w, assets/r8-interior-800.webp 800w" sizes="(min-width:900px) 40vw, 50vw" width="800" height="537" loading="lazy" decoding="async" alt="The cockpit of an Audi R8"><figcaption>R8 cockpit</figcaption></figure>
+      <figure class="g4 g-sq" data-reveal="img"><img src="assets/vj-laptop-tools-800.webp" srcset="assets/vj-laptop-tools-480.webp 480w, assets/vj-laptop-tools-800.webp 800w" sizes="(min-width:900px) 33vw, 50vw" width="800" height="537" loading="lazy" decoding="async" alt="A technician at a diagnostic laptop beside a tray of tools"><figcaption>Factory diagnostics</figcaption></figure>
+      <figure class="g5 g-sq" data-reveal="img"><img src="assets/kw-coilovers-800.webp" srcset="assets/kw-coilovers-480.webp 480w, assets/kw-coilovers-800.webp 800w" sizes="(min-width:900px) 33vw, 50vw" width="800" height="537" loading="lazy" decoding="async" alt="KW coilovers on the workshop floor"><figcaption>KW coilovers</figcaption></figure>
+      <figure class="g6 g-sq" data-reveal="img"><img src="assets/r8-m2-coilovers-800.webp" srcset="assets/r8-m2-coilovers-480.webp 480w, assets/r8-m2-coilovers-800.webp 800w" sizes="(min-width:900px) 33vw, 50vw" width="800" height="537" loading="lazy" decoding="async" alt="An Audi R8 and a BMW M2 with coilovers in front of them"><figcaption>Suspension day</figcaption></figure>
+      <figure class="g7 g-wide" data-reveal="img"><img src="assets/workshop-bays-1600.webp" srcset="assets/workshop-bays-480.webp 480w, assets/workshop-bays-800.webp 800w, assets/workshop-bays-1200.webp 1200w, assets/workshop-bays-1600.webp 1600w" sizes="100vw" width="1600" height="662" loading="lazy" decoding="async" alt="Two workshop bays with an Audi R8 and a BMW M2 on the hoists"><figcaption>The bays, Fyshwick</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ performance -->
+<section class="sec glow-l" id="performance">
+  <div class="wrap feature">
+    <div class="media portrait" data-reveal="img">
+      <img src="media/cayenne-rear.webp" width="720" height="1024" loading="lazy" decoding="async" alt="The rear of a red Porsche Cayenne GTS at the Eurotech workshop after its Stage 2 upgrade">
+    </div>
+    <div>
+      <p class="kicker" data-reveal>Recent build</p>
+      <h2 class="caps h-lg" data-lines>Cayenne GTS.<br><span class="lime">Stage 2.</span></h2>
+      <ul class="specs" data-reveal="stagger">
+        <li><b>01</b><span>Custom downpipes</span></li>
+        <li><b>02</b><span>High-flow filters</span></li>
+        <li><b>03</b><span>Race plugs</span></li>
+      </ul>
+      <p class="lede" data-reveal style="margin-top:26px">Let's be real: modern cars are computers on wheels. We are not just tuning the engine, we are optimising the car's whole operating system.</p>
+      <ul class="checks" data-reveal="stagger">
+        <li>Electrical? <b>Check.</b></li>
+        <li>Mechanical? <b>Check.</b></li>
+        <li>Software? <b>Triple check.</b></li>
+      </ul>
+      <div style="margin-top:30px" data-reveal><a class="btn btn-lime" href="#quote" data-service="Performance or modifications">Ask about a Stage 2</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ team -->
+<section class="sec" id="team">
+  <div class="wrap feature rev">
+    <div class="media land" data-reveal="img">
+      <img src="assets/vj-engine-1200.webp" srcset="assets/vj-engine-480.webp 480w, assets/vj-engine-800.webp 800w, assets/vj-engine-1200.webp 1200w" sizes="(min-width:900px) 56vw, 100vw" width="1200" height="567" loading="lazy" decoding="async" alt="Eurotech's master technician working on an engine">
+    </div>
+    <div>
+      <p class="kicker" data-reveal>The team</p>
+      <h2 class="caps h-lg" data-lines>Trained on<br>exotics.</h2>
+      <p class="lede" data-reveal style="margin-top:22px">Our master technician built his knowledge over 12 years on ultra-exotic cars in Bahrain and Dubai. The rest of the team is just as fastidious, across the full range of German and Italian cars.</p>
+      <figure class="pull" data-reveal>
+        <p>&ldquo;Seeing the torque wrench coming out for each bolt is sadly something rarely seen these days, but absolutely necessary for an R8 and these guys did it right!&rdquo;</p>
+        <cite>Martin, Audi R8 owner</cite>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ how -->
+<section class="sec glow-l" id="how">
+  <div class="wrap">
+    <div class="head">
+      <h2 class="caps h-lg" data-lines>How it works.</h2>
+    </div>
+    <ol class="steps" data-draw>
+      <li data-reveal><span class="caps n">1</span><h3>Send us the rego</h3><p>Use the form, text 0431 614 455 or call the workshop. No commitment, and we reply within 2 business hours, Monday to Friday.</p></li>
+      <li data-reveal><span class="caps n">2</span><h3>We confirm a time</h3><p>We call to talk the car through and book a time that suits you. For a warning light, we can often come to the car.</p></li>
+      <li data-reveal><span class="caps n">3</span><h3>Factory-level work</h3><p>A multi-point health check and a diagnostic scan on factory software, then the work itself, done to the manufacturer's specification.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============================================================ reviews -->
+<section class="sec" id="reviews">
+  <div class="wrap">
+    <div class="head">
+      <h2 class="caps h-lg" data-lines>What owners<br>say.</h2>
+      <p class="lede" data-reveal>In their own words, from the reviews on our website.</p>
+    </div>
+    <div class="reviews" data-reveal="stagger">
+      <figure class="rv">
+        <span class="qm" aria-hidden="true">&ldquo;</span>
+        <blockquote>&ldquo;EuroTech completed a major service on my Audi R8. I was very impressed by their knowledge and attention to detail. Now I&rsquo;ve found EuroTech I will not be going anywhere else. Thanks VJ! You&rsquo;re a legend.&rdquo;</blockquote>
+        <figcaption><b>Martin</b><span>Audi R8</span></figcaption>
+      </figure>
+      <figure class="rv">
+        <span class="qm" aria-hidden="true">&ldquo;</span>
+        <blockquote>&ldquo;He did a purchase inspection on my 2020 Volkswagen Golf R and I was blown away by how knowledgeable he was. He also recently changed my brakes and I couldn&rsquo;t be happier with the level of service he goes to!&rdquo;</blockquote>
+        <figcaption><b>Kayla Southwell</b><span>Volkswagen Golf R</span></figcaption>
+      </figure>
+      <figure class="rv">
+        <span class="qm" aria-hidden="true">&ldquo;</span>
+        <blockquote>&ldquo;I have watched Vijesh over several years and I appreciate that he cares for my car like it&rsquo;s his own, and he won&rsquo;t let anything go if he can improve or deal with any issue.&rdquo;</blockquote>
+        <figcaption><b>Felicity Latchford</b><span>Audi</span></figcaption>
+      </figure>
+      <figure class="rv">
+        <span class="qm" aria-hidden="true">&ldquo;</span>
+        <blockquote>&ldquo;I got another call from Vijesh saying there was a software update available for my car and if I took the car to him he could update it for me. I wasn&rsquo;t aware of any updates but Vijesh was.&rdquo;</blockquote>
+        <figcaption><b>MJ Qail</b><span>Audi R8 V10+</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ brands -->
+<section class="sec" id="brands">
+  <div class="wrap">
+    <p class="kicker" data-reveal>Brands we specialise in</p>
+    <ul class="brands" data-reveal="stagger">
+      <li>Audi</li><li>BMW</li><li>Mercedes-Benz</li><li>Porsche</li><li>Volkswagen</li><li>Škoda</li><li>Cupra</li><li>Alfa Romeo</li><li>Maserati</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ visit -->
+<section class="sec glow-l" id="visit">
+  <div class="wrap feature">
+    <div class="media portrait" data-reveal="img">
+      <img src="media/workshop-sign.webp" width="720" height="1024" loading="lazy" decoding="async" alt="The Eurotech Canberra sign above the workshop on Newcastle Street, Fyshwick, with a red Porsche parked out front">
+    </div>
+    <div class="visit">
+      <h2 class="caps h-lg" data-lines>Find the<br>workshop.</h2>
+      <dl data-reveal="stagger">
+        <div><dt>Address</dt><dd>103 Newcastle St, Fyshwick ACT 2609</dd></div>
+        <div><dt>Workshop</dt><dd><a href="tel:+61261898954">02 6189 8954</a></dd></div>
+        <div><dt>Call or text</dt><dd><a href="tel:+61431614455">0431 614 455</a></dd></div>
+        <div><dt>Email</dt><dd><a href="mailto:service@eurotechcanberra.au">service@eurotechcanberra.au</a></dd></div>
+      </dl>
+      <div style="margin-top:28px" data-reveal><a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&amp;query=103+Newcastle+St+Fyshwick+ACT+2609" target="_blank" rel="noopener">Get directions</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================ footer -->
+<footer class="foot">
+  <div class="wrap foot-cta">
+    <div>
+      <h2 class="caps h-lg" data-lines>Ready when<br>you are.</h2>
+      <p class="lede" data-reveal>No-commitment quotes, with a reply within 2 business hours, Monday to Friday.</p>
+    </div>
+    <div class="btns" id="footCta" data-reveal>
+      <a class="btn btn-lime only-narrow" data-sms href="sms:+61431614455">Text us your rego</a>
+      <a class="btn btn-lime only-wide" href="#quote">Get a free quote</a>
+      <a class="btn btn-ghost" href="tel:+61261898954">Call 02 6189 8954</a>
+    </div>
+  </div>
+  <div class="wrap" aria-hidden="true"><div class="wordmark">Eurotech</div></div>
+  <div class="strip">
+    <div class="marquee"><div class="marquee-track" id="footMarquee" style="--dur:60s"></div></div>
+  </div>
+  <div class="wrap cols">
+    <div>
+      <img class="logo" src="assets/logo-stack.svg" width="151" height="145" alt="Eurotech" loading="lazy">
+      <p>European car servicing, repairs, diagnostics and performance work in Fyshwick, Canberra.</p>
+    </div>
+    <div>
+      <h2>Contact</h2>
+      <a href="tel:+61261898954">02 6189 8954</a>
+      <a href="tel:+61431614455">0431 614 455</a>
+      <a href="mailto:service@eurotechcanberra.au">service@eurotechcanberra.au</a>
+      <span>103 Newcastle St, Fyshwick ACT 2609</span>
+    </div>
+    <div>
+      <h2>Services</h2>
+      <a href="#services">Servicing</a><a href="#services">Mechanical repair</a><a href="#services">Diagnostics</a>
+      <a href="#performance">Performance</a><a href="#services">EV and hybrid</a>
+    </div>
+    <div>
+      <h2>Follow</h2>
+      <a href="https://www.instagram.com/eurotech_canberra" rel="noopener">Instagram</a>
+      <a href="https://www.facebook.com/eurotechcanberra" rel="noopener">Facebook</a>
+      <a href="https://www.youtube.com/@eurotech_canberra" rel="noopener">YouTube</a>
+    </div>
+  </div>
+  <div class="wrap legal">
+    <span>&copy; <span id="yr">2026</span> Eurotech Canberra</span>
+    <span>A demo built by Frontline Systems as a proposal for Eurotech Canberra. Not their live site.</span>
+  </div>
+</footer>
+
+<div class="phonebar" id="phonebar">
+  <a class="btn btn-lime" data-sms href="sms:+61431614455">Text us your rego</a>
+  <a class="btn btn-ghost" href="tel:+61261898954">Call</a>
+</div>
+<a class="calldock" id="calldock" href="tel:+61261898954" aria-label="Call us on 02 6189 8954">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
+  <span class="num">02 6189 8954</span>
+</a>
+
+<script type="application/ld+json" id="ld"></script>
+<script defer src="vendor/gsap.min.js"></script>
+<script defer src="vendor/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  /* ======================================================================
+     Every value that belongs to the business lives here, once.
+     ====================================================================== */
+  var SITE={
+    name:"Eurotech Canberra",
+    phoneDisplay:"02 6189 8954", phoneE164:"+61261898954",
+    mobileDisplay:"0431 614 455", mobileE164:"+61431614455",
+    email:"service@eurotechcanberra.au",
+    street:"103 Newcastle St", suburb:"Fyshwick", region:"ACT", postcode:"2609",
+    formEndpoint:"https://api.web3forms.com/submit",
+    formAccessKey:""   /* paste a Web3Forms key to make the form email the workshop. Empty = demo mode. */
+  };
+  SITE.smsBody="Hi Eurotech, I'd like a quote.\nRego: \nCar: \nWhat it needs: ";
+  var BRANDS=["Audi","BMW","Mercedes-Benz","Porsche","Volkswagen","Škoda","Cupra","Alfa Romeo","Maserati"];
+  var SERVICES=["Warranty-safe servicing","Mechanical repair","Factory diagnostics","Software updates","Performance upgrades","EV and hybrid"];
+
+  var $=function(id){ return document.getElementById(id) };
+  var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  $("yr").textContent=new Date().getFullYear();
+
+  function smsHref(){
+    /* iOS reads "&body=", Android reads "?body=". "?&body=" satisfies both. */
+    return "sms:"+SITE.mobileE164+"?&body="+encodeURIComponent(SITE.smsBody);
+  }
+  document.querySelectorAll("[data-sms]").forEach(function(a){ a.href=smsHref(); });
+
+  /* ---------- marquees: the list twice, so the loop is seamless ---------- */
+  function fill(id,items){
+    var t=$(id); if(!t) return;
+    var one=items.map(function(s){ return "<span>"+s+"</span>" }).join("");
+    t.innerHTML='<div style="display:flex">'+one+'</div><div style="display:flex" aria-hidden="true">'+one+'</div>';
+  }
+  fill("heroMarquee",BRANDS.concat(SERVICES));
+  fill("footMarquee",["European car specialists","Fyshwick, Canberra"].concat(BRANDS));
+
+  /* ---------- structured data, from SITE ---------- */
+  $("ld").textContent=JSON.stringify({
+    "@context":"https://schema.org","@type":"AutoRepair",name:SITE.name,
+    telephone:SITE.phoneE164,email:SITE.email,
+    address:{"@type":"PostalAddress",streetAddress:SITE.street,addressLocality:SITE.suburb,
+      addressRegion:SITE.region,postalCode:SITE.postcode,addressCountry:"AU"},
+    areaServed:{"@type":"City",name:"Canberra"},
+    sameAs:["https://www.facebook.com/eurotechcanberra","https://www.instagram.com/eurotech_canberra","https://www.youtube.com/@eurotech_canberra"]
+  });
+
+  /* ---------- hero clip ----------
+     No <source> in the markup on purpose: this picks the size for the screen
+     and appends WebM then MP4. Without script the poster stands in. The clip
+     pauses when it leaves the screen, so it is not decoding the whole way
+     down the page. */
+  (function(){
+    var v=$("heroVideo"), btn=$("heroPlay"); if(!v) return;
+    var base=window.matchMedia("(min-width:900px)").matches?"media/hero-720":"media/hero-480";
+    [["webm","video/webm"],["mp4","video/mp4"]].forEach(function(p){
+      var s=document.createElement("source"); s.src=base+"."+p[0]; s.type=p[1]; v.appendChild(s);
+    });
+    v.preload="auto"; v.load();
+    var playing=false;
+    function tryPlay(){
+      var pr=v.play();
+      if(pr&&pr.then) pr.then(function(){ playing=true; btn.hidden=true; }).catch(function(){ btn.hidden=false; });
+    }
+    btn.addEventListener("click",function(){ v.currentTime=0; tryPlay(); });
+    if(reduce){ btn.hidden=false; }
+    else tryPlay();
+    if("IntersectionObserver" in window){
+      new IntersectionObserver(function(e){
+        if(!playing) return;
+        if(e[0].isIntersecting) v.play().catch(function(){}); else v.pause();
+      },{threshold:.1}).observe(v);
+    }
+  })();
+
+  /* ---------- phone bar + corner call ----------
+     Both appear once the hero has gone, and stand down while the quote form
+     or the footer's own buttons are on screen. */
+  (function(){
+    var bar=$("phonebar"), dock=$("calldock"), heroIn=true, covered=new Set();
+    function sync(){ var on=!heroIn&&covered.size===0; bar.classList.toggle("on",on); dock.classList.toggle("on",on); }
+    if(!("IntersectionObserver" in window)){ heroIn=false; sync(); return; }
+    new IntersectionObserver(function(e){ heroIn=e[0].isIntersecting; sync(); },{threshold:.05}).observe(document.querySelector(".hero"));
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(x){ if(x.isIntersecting) covered.add(x.target); else covered.delete(x.target); }); sync();
+    },{threshold:.1});
+    [$("quote"),$("footCta")].forEach(function(t){ if(t) io.observe(t); });
+  })();
+
+  /* ---------- service links pre-pick the service in the form ---------- */
+  document.querySelectorAll("[data-service]").forEach(function(a){
+    a.addEventListener("click",function(){ var s=$("qService"); if(s) s.value=a.getAttribute("data-service"); });
+  });
+
+  /* ---------- coverflow ----------
+     Imperium's 3D carousel. The markup is a plain scrollable row; this turns
+     it into the carousel, so without script nothing is lost. */
+  (function(){
+    var cf=$("cf"), stage=$("cfStage"), dots=$("cfDots"); if(!cf) return;
+    var cards=[].slice.call(stage.children), n=cards.length, idx=0, timer=null;
+    cf.classList.add("on");
+    cards.forEach(function(c,i){
+      var b=document.createElement("button"); b.type="button"; b.setAttribute("aria-label","Show "+c.querySelector("h3").firstChild.textContent);
+      b.addEventListener("click",function(){ go(i); }); dots.appendChild(b);
+      c.addEventListener("click",function(e){ if(i!==idx){ e.preventDefault(); go(i); } });
+    });
+    function size(){
+      var h=0; cards.forEach(function(c){ h=Math.max(h,c.offsetHeight); });
+      stage.style.setProperty("--cf-h",(h+10)+"px");
+    }
+    function render(){
+      var wide=window.innerWidth>=900;
+      cards.forEach(function(c,i){
+        var o=i-idx; if(o>n/2) o-=n; if(o<-n/2) o+=n;
+        var a=Math.abs(o);
+        var x=o*(wide?62:84), r=o*-28, s=1-Math.min(a,2)*.12, z=-a*120;
+        c.style.transform="translateX("+x+"%) translateZ("+z+"px) rotateY("+r+"deg) scale("+s+")";
+        c.style.zIndex=String(10-a);
+        c.style.opacity=a>2?"0":a===2?".35":a===1?".7":"1";
+        c.style.filter=a?"brightness(.55)":"none";
+        c.style.pointerEvents=a>2?"none":"";
+        c.classList.toggle("is-active",a===0);
+        c.setAttribute("aria-hidden",a===0?"false":"true");
+        c.querySelectorAll("a").forEach(function(l){ l.tabIndex=a===0?0:-1; });
+      });
+      [].forEach.call(dots.children,function(d,i){ d.setAttribute("aria-current",i===idx?"true":"false"); });
+    }
+    function go(i){ idx=(i+n)%n; render(); restart(); }
+    function restart(){ if(timer) clearInterval(timer); if(!reduce) timer=setInterval(function(){ idx=(idx+1)%n; render(); },8000); }
+    $("cfPrev").addEventListener("click",function(){ go(idx-1); });
+    $("cfNext").addEventListener("click",function(){ go(idx+1); });
+    cf.addEventListener("keydown",function(e){ if(e.key==="ArrowLeft") go(idx-1); if(e.key==="ArrowRight") go(idx+1); });
+    cf.addEventListener("mouseenter",function(){ if(timer) clearInterval(timer); });
+    cf.addEventListener("mouseleave",restart);
+    cf.addEventListener("focusin",function(){ if(timer) clearInterval(timer); });
+    var x0=null;
+    stage.addEventListener("pointerdown",function(e){ x0=e.clientX; });
+    stage.addEventListener("pointerup",function(e){ if(x0===null) return; var dx=e.clientX-x0; x0=null; if(Math.abs(dx)>40) go(idx+(dx<0?1:-1)); });
+    size(); render(); restart();
+    window.addEventListener("resize",function(){ size(); render(); },{passive:true});
+    if(document.fonts&&document.fonts.ready) document.fonts.ready.then(size);
+  })();
+
+  /* ---------- masked line reveal ----------
+     Splits a headline on its authored <br> into lines, each in a clipping
+     box. Inline markup survives. */
+  function buildLines(el){
+    if(el.dataset.built) return [].slice.call(el.querySelectorAll(".ln>span"));
+    el.innerHTML=el.innerHTML.split(/<br\s*\/?>/i).map(function(p){
+      return '<span class="ln"><span>'+p.trim()+"</span></span>";
+    }).join("");
+    el.dataset.built="1";
+    return [].slice.call(el.querySelectorAll(".ln>span"));
+  }
+
+  /* ---------- motion ----------------------------------------------------
+     THE RULE: every element's CSS default is its FINAL state. GSAP only sets
+     a temporary from-state, with immediateRender:false on anything a scroll
+     trigger drives. If a trigger never fires, GSAP never loads, or motion is
+     reduced, the content is simply there. */
+  function motion(){
+    if(!(window.gsap&&window.ScrollTrigger)||reduce) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    var heroLines=buildLines(document.querySelector(".hero h1"));
+    gsap.timeline({defaults:{ease:"expo.out"}})
+      .fromTo(".hero-panel",{opacity:0,y:28},{opacity:1,y:0,duration:1},0)
+      .fromTo(heroLines,{yPercent:110},{yPercent:0,duration:.9,stagger:.09},.1)
+      .fromTo(".hero-kicker",{opacity:0,y:10},{opacity:1,y:0,duration:.5},.05)
+      .fromTo(".hero-sub",{opacity:0,y:12},{opacity:1,y:0,duration:.55},.55)
+      .fromTo(".hero-cta > *",{opacity:0,y:12},{opacity:1,y:0,duration:.55,stagger:.06},.65)
+      .fromTo(".hero-note",{opacity:0},{opacity:1,duration:.5},.8)
+      .fromTo(".hero .strip",{opacity:0},{opacity:1,duration:.6},.85);
+
+    document.querySelectorAll("[data-lines]").forEach(function(el){
+      if(el.closest(".hero")) return;
+      gsap.fromTo(buildLines(el),{yPercent:110},{yPercent:0,duration:.9,ease:"expo.out",stagger:.08,
+        immediateRender:false,scrollTrigger:{trigger:el,start:"top 88%",once:true}});
+    });
+    document.querySelectorAll("[data-reveal]").forEach(function(el){
+      var kind=el.getAttribute("data-reveal");
+      if(kind==="img"){
+        gsap.fromTo(el,{opacity:0},{opacity:1,duration:.7,ease:"power2.out",immediateRender:false,
+          scrollTrigger:{trigger:el,start:"top 90%",once:true}});
+        var m=el.querySelector("img");
+        if(m) gsap.fromTo(m,{scale:1.08},{scale:1,duration:1.2,ease:"expo.out",immediateRender:false,
+          scrollTrigger:{trigger:el,start:"top 90%",once:true}});
+        return;
+      }
+      gsap.fromTo(kind==="stagger"?el.children:el,{opacity:0,y:16},{opacity:1,y:0,duration:.7,ease:"expo.out",
+        stagger:.07,immediateRender:false,scrollTrigger:{trigger:el,start:"top 92%",once:true}});
+    });
+    /* the process rule draws itself left to right */
+    document.querySelectorAll("[data-draw]").forEach(function(el){
+      gsap.fromTo(el,{"--draw":0},{"--draw":1,duration:1.1,ease:"power3.inOut",immediateRender:false,
+        scrollTrigger:{trigger:el,start:"top 85%",once:true}});
+    });
+    /* counters: the markup already holds the real number; this only counts up to it */
+    document.querySelectorAll("[data-count]").forEach(function(el){
+      var end=Number(el.getAttribute("data-count")), o={v:0};
+      gsap.fromTo(o,{v:0},{v:end,duration:1.6,ease:"power2.out",immediateRender:false,
+        scrollTrigger:{trigger:el,start:"top 92%",once:true},
+        onUpdate:function(){ el.textContent=String(Math.round(o.v)); },
+        onComplete:function(){ el.textContent=String(end); }});
+    });
+
+    window.addEventListener("load",function(){ ScrollTrigger.refresh(); });
+    if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ ScrollTrigger.refresh(); });
+  }
+  if(document.readyState==="complete") motion(); else window.addEventListener("load",motion);
+
+  /* ---------- quote form ---------- */
+  function digits(v){ return (v.match(/\d/g)||[]).length }
+  function setErr(el,errEl,bad){ el.setAttribute("aria-invalid",bad?"true":"false"); errEl.hidden=!bad; }
+  var filled=function(v){ return !!v.trim() }, isPhone=function(v){ return digits(v)>=8 };
+  (function(){
+    var f=$("qForm"); if(!f) return;
+    var FIELDS=[["qName","qNameErr",filled],["qPhone","qPhoneErr",isPhone],["qRego","qRegoErr",filled]];
+    FIELDS.forEach(function(t){
+      $(t[0]).addEventListener("input",function(){
+        if($(t[0]).getAttribute("aria-invalid")==="true"&&t[2]($(t[0]).value)) setErr($(t[0]),$(t[1]),false);
+      });
+    });
+    f.addEventListener("submit",function(e){
+      e.preventDefault();
+      if($("qCompany").value) return;
+      var first=null;
+      FIELDS.forEach(function(t){ var el=$(t[0]),bad=!t[2](el.value); setErr(el,$(t[1]),bad); if(bad&&!first) first=el; });
+      if(first){ $("qErr").hidden=false; first.focus(); return; }
+      $("qErr").hidden=true;
+      var d={name:$("qName").value.trim(),phone:$("qPhone").value.trim(),email:$("qEmail").value.trim(),
+             rego:$("qRego").value.trim().toUpperCase(),make:$("qMake").value,service:$("qService").value,
+             message:$("qMsg").value.trim()};
+      var btn=$("qSend");
+      function done(mode,detail){
+        $("qThanksHead").textContent="Thank you, "+d.name.split(" ")[0]+".";
+        var body=$("qThanksBody"), note=$("qThanksNote");
+        if(mode==="sent"){ body.textContent="Your quote request is with us. We will be in touch on "+d.phone+" within 2 business hours, Monday to Friday."; note.hidden=true; }
+        else if(mode==="demo"){ body.textContent="Your quote request has been received."; note.textContent="Demo mode — on the live site this goes straight to the workshop."; note.hidden=false; }
+        else { body.textContent="We could not send that just now."; note.textContent="Something went wrong on the way"+(detail?" ("+detail+")":"")+". Call or text us on "+SITE.mobileDisplay+" and we will pick it up straight away."; note.hidden=false; }
+        f.hidden=true; $("qThanks").hidden=false;
+        $("qThanks").scrollIntoView({block:"nearest",behavior:reduce?"auto":"smooth"});
+      }
+      if(!SITE.formAccessKey){ done("demo"); return; }   /* no network call at all */
+      btn.disabled=true; btn.setAttribute("aria-busy","true");
+      var label=btn.textContent; btn.textContent="Sending…";
+      fetch(SITE.formEndpoint,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},
+        body:JSON.stringify({access_key:SITE.formAccessKey,subject:"Quote: "+d.make+" ("+d.rego+"), "+d.service,
+          from_name:SITE.name+" website",name:d.name,phone:d.phone,email:d.email,rego:d.rego,make:d.make,
+          service:d.service,message:d.message})})
+      .then(function(r){ return r.json().catch(function(){return{}}).then(function(b){ if(!r.ok||b.success===false) throw new Error(b.message||("HTTP "+r.status)); }) })
+      .then(function(){ done("sent") })
+      .catch(function(err){ btn.disabled=false; btn.removeAttribute("aria-busy"); btn.textContent=label; done("error",err&&err.message); });
+    });
+  })();
+})();
+</script>
+</body>
+</html>

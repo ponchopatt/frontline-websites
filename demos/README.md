@@ -40,3 +40,4 @@ Give it a URL that does not impersonate them. `bondi-demo-frontline.vercel.app` 
 | Folder | Business | City | Status |
 |---|---|---|---|
 | `bondi-landscapes` | Bondi Landscapes | Bondi Beach, Sydney | In build, not yet sent |
+| `eurotech-canberra` | Eurotech Canberra | Fyshwick, Canberra | Built, not yet sent |
