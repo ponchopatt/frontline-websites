@@ -9,7 +9,7 @@ below 4) and `npm run check` before it counts.
 
 | | |
 |---|---|
-| **Done — passed review and check** | 9 — sunset-pools (4.5), utopian-landscaping (4.5), greenway-landscapes (4.5), south-coast-landscapes (4.5), lmac (4.5), arizona-roofing (4.67), dp-landscaping (4.5), karanda-interiors (4.83), nb-earthmoving (4.67) |
+| **Done — passed review and check** | 10 — sunset-pools (4.5), utopian-landscaping (4.5), greenway-landscapes (4.5), south-coast-landscapes (4.5), lmac (4.5), arizona-roofing (4.67), dp-landscaping (4.5), karanda-interiors (4.83), nb-earthmoving (4.67), ab-roof-tiling (4.5) |
 | **Needs Pat** | 1 — horgan-building (4.33 after one rework round — more/better photos needed) |
 | **Not started** | 4 |
 
@@ -51,12 +51,12 @@ panel.
 
 ## What to do first
 
-1. **Look at the nine done demos**, live at `frontline-demos.vercel.app/<slug>`
+1. **Look at the ten done demos**, live at `frontline-demos.vercel.app/<slug>`
    for sunset-pools, utopian-landscaping, greenway-landscapes,
    south-coast-landscapes, lmac, arizona-roofing, dp-landscaping,
-   karanda-interiors and nb-earthmoving. Or `node tools/single.mjs <slug>`
-   writes one self-contained file to `dist-single/<slug>.html` that opens
-   on a phone.
+   karanda-interiors, nb-earthmoving and ab-roof-tiling. Or
+   `node tools/single.mjs <slug>` writes one self-contained file to
+   `dist-single/<slug>.html` that opens on a phone.
 2. **Ring Ryan at South Coast Landscapes today** — his website is hacked. Details
    under his entry below. Worth a call whether or not he ever buys a site.
 3. **horgan-building needs you** — it's a good site, just short on distinct,
@@ -389,9 +389,44 @@ the header.
 
 ---
 
+## ab-roof-tiling — DONE (4.5)
+
+**AB Roof Tiling** · Tony · 4.8 from 16 · North Narrabeen NSW · quote
+Lighthouse 97 / 96 / 100. Branch `demo/ab-roof-tiling`.
+Demo: `frontline-demos.vercel.app/ab-roof-tiling`
+
+Their live site is a 2013-era template with content spread across
+`document.write` JS includes — a plain fetch of the homepage gets you a
+skeleton with no content. Found their real nav and pages by reading
+header.js/menu.js/pages.js directly, and turned up an unlinked gallery.htm
+with 15 real, sharp job photos most visitors never see. Angle: "Your whole
+roof. Done in a day." — their own site copy plus two reviews independently
+confirming one-day re-roofs. Since 1981, per the site's own meta description
+and body copy.
+
+> **Opener.** I noticed your site has a photo gallery with 15 of your own
+> finished roofs on it — but it's not linked from anywhere, so nobody finds
+> it unless they already know the URL.
+
+Review 1 (4.17) caught a real problem: the header showed "Northern Beaches"
+(a regional badge) instead of the business name, because no logo image or
+wordmark existed for this client — invisible on mobile entirely. Also the
+hero photo (a full house elevation) smeared badly when a 750px source was
+stretched to mobile hero height. Fixed: built a proper "AB Roof Tiling"
+wordmark, swapped the hero to a tighter, higher-contrast tile close-up.
+Review 2 passed 4.5. One more fix made after passing: the 4 service cards
+had no photo field at all, rendering as empty boxes — added 4 more
+previously-unused real photos from the same gallery.
+
+**Ask Tony for:** his surname (not published anywhere); an ABN (none listed);
+confirmation the one-day re-roof claim and the CSR-nominated-installer
+credential are still current.
+
+---
+
 ## Not started
 
-forest-joinery · ab-roof-tiling · dimension-gardenscape · great-southern-pools
+forest-joinery (in review) · dimension-gardenscape · great-southern-pools
 
 ---
 
