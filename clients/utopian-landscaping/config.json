@@ -67,6 +67,7 @@
     "ownerLabel": "Who you are dealing with",
     "recognitionLabel": "Beyond the reviews",
     "recognitionHeadline": "Three things a review<br>page will not tell you.",
+    "reviewsLabel": "Straight from Google",
     "reviewsTitle": "What Canberra says.",
     "reviewsIntro": "Straight off our Google profile, word for word. Twenty-five reviews, 5.0 average.",
     "areasLabel": "Where we work",
@@ -76,8 +77,7 @@
     "faqHeadline": "Questions we get asked.",
     "enquireLabel": "Tell us about the space",
     "enquireHeadline": "What do you want<br>to use it for?",
-    "enquireIntro": "That is the first thing Derek asks, and it decides everything else. Tell us what the space needs to do and roughly what you picture. Photos of it as it stands help more than anything.",
-    "_comment": "copy.reviewsLabel is deliberately left out. The shared reviews block puts the kicker, the h2 and the lede as three direct children of .head, and .head is a two-column grid above 900px, so setting a kicker throws the heading into the narrow right-hand column and orphans the kicker in the left one. Every template section wraps its kicker and h2 in a <div> first. Set it once the block does the same — see TEMPLATE CHANGE in the report."
+    "enquireIntro": "That is the first thing Derek asks, and it decides everything else. Tell us what the space needs to do and roughly what you picture. Photos of it as it stands help more than anything."
   },
   "stats": {
     "googleRating": 5,

@@ -43,7 +43,7 @@
   /* ---------- text-us links, pre-written so they only fill the blanks ---------- */
   var chosenColour = '', lastAutoNote = '';
   function smsHref(body) {
-    if (!SITE.phoneE164) return '';
+    if (!/^\+614\d{8}$/.test(SITE.phoneE164 || '')) return ''; // only a mobile takes a text
     return 'sms:' + SITE.phoneE164 + '?&body=' + encodeURIComponent(body);
   }
   function defaultSms() {

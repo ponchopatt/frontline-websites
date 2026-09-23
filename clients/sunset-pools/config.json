@@ -50,7 +50,7 @@
     "photoClaims": {
       "hero + owner — ‘Manly’ rooftop pool": "Manly-1.jpg (1920×1440) is on their homepage, /about/ and /project/; Manly-4.jpg (1000×750, the aerial) and Manly-6.jpg are in the same set, Manly-6 on /faqs/. The suburb is their own file naming; no client is named.",
       "statement — apartment lap pool at dusk": "infinitive-2-scaled.jpg (2560×1707) from their own wp-content/uploads/2024/04 library. No suburb or client is claimed for it, and the alt text describes only what is in the frame.",
-      "aperture — ‘Rooftop pool, Sydney Harbour’": "Commercial-Pool-Builder2.jpg (1700×1133), used by them on the homepage, /about/, /awards/, /contact/, /faqs/, /hydraulic-consulting/, /pool-renovations/, /project/, /residential-pools/ and /commercial-pools-water-features/. Their commercial page lists “Hotels, resorts & leisure complexes”. The file name says Park Hyatt; the page deliberately says only ‘Sydney Harbour’ because the client is not confirmed. The caption and alt say ‘pool’, not ‘pool and spa’: the frame holds one rectangular pool, cabanas, sun lounges and a mosaic surround, and no spa is visible in it. The four harbour-rooftop webp variants in assets/ carry a baked-in bottom-edge darkening gradient (transparent above 55% of the frame, 0.66 black at the very bottom) so the caption is legible over the lit pool water. Nothing in the photograph is moved, cropped further or retouched — only the bottom strip is darkened. Flagged.",
+      "aperture — ‘Rooftop pool, Sydney Harbour’": "Commercial-Pool-Builder2.jpg (1700×1133), used by them on the homepage, /about/, /awards/, /contact/, /faqs/, /hydraulic-consulting/, /pool-renovations/, /project/, /residential-pools/ and /commercial-pools-water-features/. Their commercial page lists “Hotels, resorts & leisure complexes”. The file name says Park Hyatt; the page deliberately says only ‘Sydney Harbour’ because the client is not confirmed. The caption and alt say ‘pool’, not ‘pool and spa’: the frame holds one rectangular pool, cabanas, sun lounges and a mosaic surround, and no spa is visible in it. The photograph is untouched: the caption is made legible by the template's own scrim over the image, not by editing their file.",
       "gallery — ‘Bellevue Hill · renovation, 132 steps below the road’": "Bellevue-Hill-1.jpg (1000×667) on /pool-renovations/ and /project/, beside the case study that carries the 132-steps line.",
       "gallery — ‘Strathfield · indoor lap pool and spa’": "Strathfield-5.jpg (1000×667) on /hydraulic-consulting/; the homepage portfolio item reads “Sunset indoor lap pool and spa – Filtration/Plant Room Strathfield”.",
       "gallery — ‘Hunters Hill · fully tiled pool, granite stepping stones’": "Residential-Pool-Project-Hunters-Hill-4.jpg (1200×1800) from their own uploads library; the suburb is their file naming.",
@@ -141,7 +141,6 @@
     "processHeadline": "Four steps,<br>and Ben on<br>every one.",
     "processIntro": "The same order whether it is a new pool or a renovation. You hear the site's problems before you get a price, not after.",
     "ownerLabel": "Who you are dealing with",
-    "_reviewsLabel_held": "In their words — NOT set, and deliberately. lib/blocks/reviews.js prints the kicker as a third direct child of <div class=\"head\">, which the trust stylesheet makes a two-column grid at 1000px and up. With a kicker the eyebrow takes the left column, the heading jumps to the right column and the lede drops to a second row. Restore this as copy.reviewsLabel once the block wraps the kicker and the h2 in one div, the way every trust section does.",
     "reviewsTitle": "What Ben's clients say.",
     "reviewsIntro": "Straight from their Google profile, nothing reworded. Where one is marked shortened, only its opening is here and the rest is on Google. One of them first had Ben build a pool twelve years ago and has him back now for the next stage.",
     "recognitionLabel": "Recognition",
@@ -154,7 +153,8 @@
     "faqHeadline": "Questions Ben<br>gets asked.",
     "enquireLabel": "Talk to Ben",
     "enquireHeadline": "Tell Ben about<br>the site.",
-    "enquireIntro": "The more you can say about the block — the access, the levels, what is there now — the more useful the first call is. Photos help more than anything."
+    "enquireIntro": "The more you can say about the block — the access, the levels, what is there now — the more useful the first call is. Photos help more than anything.",
+    "reviewsLabel": "In their words"
   },
   "stats": {
     "googleRating": 4.7,
@@ -177,9 +177,18 @@
     "body": "Founder and managing director. Ben started Sunset Pools to build pools that are not one of half a dozen standard shapes, and he has spent more than twenty years showing what reinforced concrete can be made to do — indoor, rooftop, infinity edge, on springs, and built into the structure of a building.",
     "team": "He is at the first site visit and he is there at handover, project-managing each trade himself. Architects, engineers and other pool builders bring him in as a consultant on the hydraulics and the plant room, and he has presented at national industry forums on pool design and construction.",
     "facts": [
-      { "value": "20+", "label": "Years building Sydney pools" },
-      { "value": "166547C", "label": "NSW pool builder's licence" },
-      { "value": "3–6", "label": "Weeks for most renovations" }
+      {
+        "value": "20+",
+        "label": "Years building Sydney pools"
+      },
+      {
+        "value": "166547C",
+        "label": "NSW pool builder's licence"
+      },
+      {
+        "value": "3–6",
+        "label": "Weeks for most renovations"
+      }
     ]
   },
   "credentials": [

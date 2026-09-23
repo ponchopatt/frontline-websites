@@ -360,9 +360,19 @@ body.has-demobar .top{top:var(--demobar-h,0px)}
 .ap .apLabel{position:absolute;left:0;right:0;top:calc(50% - 170px);z-index:2;
   text-align:center;margin:0}
 html[data-js] .ap .apLabel{opacity:clamp(0,calc((var(--ap-frame) - .5)*3),1)}
-.ap .plate{position:absolute;left:var(--gut);bottom:var(--gut);z-index:2;max-width:36em;
+/* right:var(--gut) so the plate can never run to the screen edge; and a
+   scrim behind it, so a caption over a bright photo is readable without
+   anyone editing the client's photograph. Text-shadow alone measured 1.57:1
+   at worst over Sunset's harbour rooftop. The scrim fades with the plate. */
+.ap .plate{position:absolute;left:var(--gut);right:var(--gut);bottom:var(--gut);z-index:2;max-width:36em;
   opacity:clamp(0,calc((.45 - var(--ap-frame))*3),1);
   text-shadow:0 1px 18px rgba(4,10,13,.9)}
+.ap::after{content:"";position:absolute;left:0;right:0;bottom:0;height:55%;z-index:1;pointer-events:none;
+  background:linear-gradient(to top,rgba(4,10,13,.84),rgba(4,10,13,.4) 45%,rgba(4,10,13,0));
+  opacity:clamp(0,calc((.45 - var(--ap-frame))*3),1)}
+/* On a phone the sticky call bar covers the bottom 73px for the whole time the
+   section is pinned, so the plate sits above it rather than behind it. */
+@media(max-width:767px){.ap .plate{bottom:calc(var(--gut) + 73px + env(safe-area-inset-bottom,0px))}}
 .ap .plate p{margin:var(--s8) 0 0;font-family:var(--font-display);font-weight:800;
   text-transform:uppercase;font-size:var(--t-h3);line-height:.95;letter-spacing:.01em}
 @media(max-width:767px){.ap img{object-position:56% 52%}.ap .apLabel{top:calc(50% - 120px)}}

@@ -411,7 +411,7 @@ function stickyBar(cfg, { tel, sms, phone }) {
   return html`
 <div class="stickybar" id="sticky">
   ${sms ? html`<a class="btn" data-sms href="${sms}">${cfg.sms?.label ?? 'Text a photo'}</a>` : ''}
-  ${tel ? html`<a class="btn ghost" href="${tel}">Call${owner ? ` ${owner}` : ''}</a>` : ''}
+  ${tel ? html`<a class="btn${raw(sms ? ' ghost' : '')}" href="${tel}">Call${owner ? ` ${owner}` : ''}</a>` : ''}
 </div>`;
 }
 
