@@ -43,7 +43,7 @@
     "description": "Landscape design, construction and garden care across Canberra and Queanbeyan. A qualified horticultural perspective on every project, since 2007.",
     "alt": "A hand-built timber pergola roof by Dimension Gardenscape, seen from below against a clear blue sky"
   },
-  "responsePromise": "02 6297 9040 is the number on every page of their site — Trevor reads and answers every enquiry.",
+  "responsePromise": "Call Trevor directly on 02 6297 9040 — he reads and answers every enquiry himself.",
   "copy": {
     "title": "Dimension Gardenscape — Landscape Design & Construction, Canberra & Queanbeyan",
     "description": "Landscape design, construction and garden care across Canberra and Queanbeyan. Members of the Australian Institute of Horticulture, the Master Builders Association ACT and The Landscape Association. Established 2007 — call Trevor on 02 6297 9040.",
@@ -70,7 +70,7 @@
     "processIntro": "The design and quoting stage runs two weeks to a month depending on complexity. You see the concept plan before anything is booked in.",
     "ownerLabel": "Who you are dealing with",
     "reviewsTitle": "What clients say.",
-    "reviewsIntro": "Real reviews from their Google profile — 4.5 stars from 54 reviews. Clients name Trevor and the crew directly.",
+    "reviewsIntro": "Real reviews from their Google profile — 54 of them. Clients name Trevor and the crew directly.",
     "recognitionLabel": "Recognition",
     "recognitionHeadline": "Answerable to three<br>professional bodies.",
     "recognitionIntro": "Members of the Australian Institute of Horticulture, the Master Builders Association ACT and The Landscape Association — not just a review page.",
@@ -106,8 +106,8 @@
         "label": "Professional bodies"
       },
       {
-        "value": "4.5",
-        "label": "From 54 Google reviews"
+        "value": "54",
+        "label": "Google reviews"
       }
     ]
   },
@@ -227,11 +227,12 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/japanese-pergola-1800.webp",
-      "srcset": "assets/japanese-pergola-480.webp 480w, assets/japanese-pergola-800.webp 800w, assets/japanese-pergola-1200.webp 1200w, assets/japanese-pergola-1800.webp 1800w",
-      "width": 1800,
-      "height": 1200,
-      "alt": "A hand-built timber pergola roof by Dimension Gardenscape, seen from below against a clear blue sky and autumn tree"
+      "src": "assets/sherlock-terraces-800.webp",
+      "srcset": "assets/sherlock-terraces-480.webp 480w, assets/sherlock-terraces-800.webp 800w",
+      "width": 800,
+      "height": 800,
+      "alt": "A terraced lawn and retaining wall behind a two-storey home, part of Dimension Gardenscape's Sherlock rear-garden rebuild",
+      "_comment": "Swapped in 2026-09-23 to replace japanese-pergola (moved to gallery) — the tight upward-angle pergola-roof crop read as an unclear dark shape on mobile under the standard hero overlay. This wide, bright whole-garden shot holds up better at mobile hero size. Native 800x800, below the 1600px hero ideal — flagged; it was the clearest wide/legible option in the 13-photo inventory (see BRIEF.md)."
     },
     "statement": {
       "src": "assets/deakin-blossom-swing-800.webp",
@@ -290,14 +291,14 @@
         "alt": "A minimalist paved courtyard in front of a modern rendered home"
       },
       {
-        "src": "assets/sherlock-terraces-800.webp",
-        "full": "assets/sherlock-terraces-800.webp",
-        "srcset": "assets/sherlock-terraces-480.webp 480w, assets/sherlock-terraces-800.webp 800w",
-        "width": 800,
-        "height": 800,
-        "caption": "Rear garden terraces",
-        "detail": "Terraced lawn, retaining",
-        "alt": "A terraced lawn and retaining wall behind a two-storey home"
+        "src": "assets/japanese-pergola-800.webp",
+        "full": "assets/japanese-pergola-1800.webp",
+        "srcset": "assets/japanese-pergola-480.webp 480w, assets/japanese-pergola-800.webp 800w, assets/japanese-pergola-1200.webp 1200w, assets/japanese-pergola-1800.webp 1800w",
+        "width": 1800,
+        "height": 1200,
+        "caption": "Hand-built pergola",
+        "detail": "Timber pergola roof, exposed joinery",
+        "alt": "A hand-built timber pergola roof, seen from below against a clear blue sky and autumn tree"
       },
       {
         "src": "assets/garden-art-statue-800.webp",

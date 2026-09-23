@@ -93,7 +93,7 @@ Used in the new build (13 photos, converted to `.webp`, multiple widths):
 
 | File in `assets/` | Source / project | What it shows | Native size |
 |---|---|---|---|
-| `japanese-pergola-*.webp` | `IMG_0105-scaled.jpg`, undated project | Upward angle on a hand-built timber pergola/gazebo roof, exposed joinery, blue sky | 2560×1707 — **hero** |
+| `japanese-pergola-*.webp` | `IMG_0105-scaled.jpg`, undated project | Upward angle on a hand-built timber pergola/gazebo roof, exposed joinery, blue sky | 2560×1707 — gallery (moved off hero 2026-09-23: the tight roof-corner crop read as an unclear dark shape on mobile under the hero overlay) |
 | `deakin-blossom-swing-*.webp` | Deakin project (`Deakin14.jpg`) | Backyard swing seat under a blossoming ornamental tree | 800×800 — statement |
 | `firepit-evening-*.webp` | `IMG_0277-wfire.jpg` | Corten-edged fire pit at dusk, Adirondack chairs, colorbond fencing | 1203×803 — aperture (below the 1600px ideal, flagged, cropped well) |
 | `ainslie-pond-courtyard-*.webp` | Award-tagged Ainslie project | Courtyard path past a raised pond, established planting | 800×800 — service photo (Landscape design) |
@@ -104,7 +104,7 @@ Used in the new build (13 photos, converted to `.webp`, multiple widths):
 | `deakin-front-garden-*.webp` | Deakin project | Front garden bed, daffodils and native grasses, rendered home | 800×800 — gallery |
 | `harrison-courtyard-*.webp` | Harrison "play space" project | Paved courtyard, white Adirondack chairs, pool cover | 800×800 — gallery |
 | `sherlock-courtyard-*.webp` | "Sherlock" rear-garden project | Minimalist paved courtyard, modern render home | 800×800 — gallery |
-| `sherlock-terraces-*.webp` | "Sherlock" rear-garden project | Terraced lawn and retaining, two-storey home behind | 800×800 — gallery |
+| `sherlock-terraces-*.webp` | "Sherlock" rear-garden project | Terraced lawn and retaining, two-storey home behind | 800×800 — **hero** (moved in 2026-09-23; below the 1600px hero ideal, flagged — it was the clearest wide, bright whole-garden shot available and holds up better under the dark overlay at mobile hero size than the pergola crop it replaced) |
 | `garden-art-statue-*.webp` | `IMG_0095-scaled.jpg` | Weathered stone garden statue, backyard setting | 2560×1707 — gallery |
 
 Logo: `logo-dimension-gardenscape.png` (787×352, green script wordmark, colour) and
