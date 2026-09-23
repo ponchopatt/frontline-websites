@@ -33,7 +33,7 @@
     "successHeading": "Thank you, {first}.",
     "successBody": "Your enquiry is with {owner}. He will be in touch on {phone}.",
     "errorHeading": "That did not send.",
-    "errorBody": "Call or text {owner} on {phone} and he will pick it up straight away.",
+    "errorBody": "Please call {owner} on {phone} instead.",
     "privacyNote": "We will only use your details to reply to this enquiry."
   },
 

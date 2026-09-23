@@ -43,7 +43,10 @@
       "phone / email / address": "Homepage header and /contact/: “Call: 1300 000 412”; /contact/: “Head Office: 12/3 Clyde St, Rydalmere NSW 2116”; mailto link on /awards/: info@sunsetpools.com.au. The phone also matches the number on their Google profile in data/google_reviews_top25.json.",
       "service areas": "Homepage FAQ schema: “Our core service regions include: Northern Beaches (Manly, Mosman, Palm Beach) / Eastern Suburbs (Bondi, Vaucluse, Coogee) / North Shore & Inner West / Sutherland Shire (Cronulla, Miranda)”. The remaining suburbs on the page come from their own project pages and photo file names: Avalon (homepage portfolio, “Koi Fish Water Feature Plant Room – Avalon” and “Luxury Koi Fish Pond – Avalon”), Wentworth Point, Strathfield and Sans Souci (homepage portfolio), Parramatta (“Western Sydney University – Parramatta (UWS)”), Killara (“Sophisticated Sunset WEEPING WALL FOUNTAIN Killara”), Bellevue Hill (/pool-renovations/), and Northbridge, Willoughby, Wahroonga, Gordon, Lindfield, Greenwich, Neutral Bay, Hunters Hill, Woolwich, Putney, Drummoyne, Balmain, Lilyfield and Kensington from their portfolio pages and wp-content/uploads file names.",
       "‘Sydney-only, independent, family-owned, no interstate namesakes’": "Homepage ‘Notice of Non-Affiliation’ and /faqs/: “Sunset Pools (https://www.sunsetpools.com.au/) is a strictly independent, family-owned business based in Sydney, NSW. We have no affiliation, association, or shared ownership with namesake companies located on the Gold Coast, in Queensland, or in the United States.”",
-      "‘132 steps from the road’": "/pool-renovations/, the Bellevue Hill case study: “Challenge # 1: Compromising of a total 132 steps from the road to the pool at the back of the property.”"
+      "‘132 steps from the road’": "/pool-renovations/, the Bellevue Hill case study: “Challenge # 1: Compromising of a total 132 steps from the road to the pool at the back of the property.”",
+      "Strathfield — Sunset built the 25 m indoor lap pool and spa": "/portfolio/the-ultimate-luxury-sunset-indoor-lap-pool-and-spa/ (Wayback 20260211): “residential leisure complex comprises a 25 x 3 metre lap pool and an adjoining large spa.” Verified by the loop on 2026-09-23. Earlier captions called this plant-room work, from the portfolio index label; the job page says otherwise.",
+      "Wentworth Point — Sunset built the 20 x 50 m pool, shell within 30 days": "/portfolio/beach-looking-oasis-pool-wentworth-point/ (Wayback 20260306): “Within 30 days, the pool was marked out, the site excavated, formwork constructed and the reinforced concrete shell poured.” “Ben Thompson, principal at Sunset Pools, managed the pool’s construction.” “The shell structure, measuring 20 x 50 m, is over 30 times the size of an average backyard pool.” Verified by the loop on 2026-09-23.",
+      "FAQ: send the drawings for a hydraulics review": "/hydraulic-consulting/: “Please email your drawings & we can review them to advise a price.”"
     },
     "photoClaims": {
       "hero + owner — ‘Manly’ rooftop pool": "Manly-1.jpg (1920×1440) is on their homepage, /about/ and /project/; Manly-4.jpg (1000×750, the aerial) and Manly-6.jpg are in the same set, Manly-6 on /faqs/. The suburb is their own file naming; no client is named.",
@@ -131,19 +134,19 @@
     "statementBody": "Access, levels, soil and where the water has to go decide what a Sydney pool costs and whether it lasts. Ben has built pools on rooftops and indoors.",
     "servicesLabel": "What Ben does",
     "servicesHeadline": "Three kinds of work,<br>one builder.",
-    "servicesIntro": "Renovations, new pools — including the ones on a roof or inside a building — and the hydraulics behind both.",
+    "servicesIntro": "Renovations, new pools and the hydraulics behind both.",
     "apertureLabel": "Commercial and rooftop",
     "workLabel": "Selected work",
     "workHeadline": "Six jobs,<br>six different sites.",
-    "workIntro": "Work from their own portfolio: a Bellevue Hill renovation, and the filtration and plant rooms behind pools at Wentworth Point and Strathfield. Select any photo to see it larger.",
+    "workIntro": "A 20 by 50 metre beach-entry pool at Wentworth Point, its shell poured within 30 days of marking out; a 25-metre indoor lap pool and spa at Strathfield; and a renovation at Bellevue Hill. Select any photo to see it larger.",
     "processLabel": "How it runs",
     "processHeadline": "Four steps,<br>and Ben on<br>every one.",
     "processIntro": "",
     "ownerLabel": "Who you are dealing with",
     "reviewsTitle": "What Ben's clients say.",
-    "reviewsIntro": "Straight from their Google profile, nothing reworded. Where one is marked shortened, only its opening is here and the rest is on Google. One of them first had Ben build a pool twelve years ago and has him back now for the next stage.",
+    "reviewsIntro": "Five of their 25 Google reviews, unedited. Where one is marked shortened, Google cut it off and the rest is on their profile. One of them first had Ben build a pool twelve years ago and has him back now for the next stage.",
     "recognitionLabel": "Recognition",
-    "recognitionHeadline": "Judged by the industry,<br>not by us.",
+    "recognitionHeadline": "Judged by<br>the industry.",
     "recognitionIntro": "SPASA medals from chapter level up to national, and an international award for an indoor lap pool. The full list runs from 2009 to 2016.",
     "areasLabel": "Where Ben works",
     "areasHeadline": "Sydney<br>metro.",
@@ -177,12 +180,12 @@
     "team": "He stays directly involved through every stage, project-managing each trade himself, and he has presented at national industry forums on pool design and construction.",
     "facts": [
       {
-        "value": "166547C",
-        "label": "NSW business licence"
-      },
-      {
         "value": "3–6",
         "label": "Weeks for most renovations"
+      },
+      {
+        "value": "20 × 50 m",
+        "label": "Wentworth Point pool shell"
       }
     ]
   },
@@ -380,7 +383,7 @@
         "width": 1000,
         "height": 667,
         "caption": "Strathfield",
-        "detail": "Filtration and plant room, indoor lap pool and spa",
+        "detail": "Indoor lap pool and adjoining spa, 25 metres",
         "alt": "An indoor lap pool at Strathfield, lit blue along its full length"
       },
       {
@@ -420,7 +423,7 @@
         "width": 1200,
         "height": 800,
         "caption": "Wentworth Point",
-        "detail": "Filtration and plant room, beach-entry pool",
+        "detail": "Beach-entry community pool, 20 by 50 metres",
         "alt": "A large beach-entry community pool at Wentworth Point with a sand shelf and apartment buildings behind"
       }
     ]
