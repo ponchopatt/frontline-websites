@@ -9,8 +9,10 @@ below 4) and `npm run check` before it counts.
 
 | | |
 |---|---|
-| **Done — passed review and check** | 7 — sunset-pools (4.5), utopian-landscaping (4.5), greenway-landscapes (4.5), south-coast-landscapes (4.5), lmac (4.5), arizona-roofing (4.67), dp-landscaping (4.5) |
-| **Not started** | 7 |
+| **Done — passed review and check** | 8 — sunset-pools (4.5), utopian-landscaping (4.5), greenway-landscapes (4.5), south-coast-landscapes (4.5), lmac (4.5), arizona-roofing (4.67), dp-landscaping (4.5), karanda-interiors (4.83) |
+| **Needs Pat** | 1 — horgan-building (4.33 after one rework round — more/better photos needed) |
+| **In review** | 1 — nb-earthmoving |
+| **Not started** | 4 |
 
 Each done demo has its own branch (`demo/<slug>`) and is live on the
 `frontline-demos` Vercel project at `frontline-demos.vercel.app/<slug>`.
@@ -50,14 +52,17 @@ panel.
 
 ## What to do first
 
-1. **Look at the seven done demos**, live at `frontline-demos.vercel.app/<slug>`
+1. **Look at the eight done demos**, live at `frontline-demos.vercel.app/<slug>`
    for sunset-pools, utopian-landscaping, greenway-landscapes,
-   south-coast-landscapes, lmac, arizona-roofing and dp-landscaping. Or
-   `node tools/single.mjs <slug>` writes one self-contained file to
-   `dist-single/<slug>.html` that opens on a phone.
+   south-coast-landscapes, lmac, arizona-roofing, dp-landscaping and
+   karanda-interiors. Or `node tools/single.mjs <slug>` writes one
+   self-contained file to `dist-single/<slug>.html` that opens on a phone.
 2. **Ring Ryan at South Coast Landscapes today** — his website is hacked. Details
    under his entry below. Worth a call whether or not he ever buys a site.
-3. Nothing else is waiting on you. The queue keeps going.
+3. **horgan-building needs you** — it's a good site, just short on distinct,
+   bright photos after one rework round. Ask Darryn for more before it goes
+   further.
+4. Nothing else is waiting on you. The queue keeps going.
 
 ## What Phase 2 is waiting on
 
@@ -284,14 +289,95 @@ years-in-business figure, since their own site contradicts itself ("started
 
 ---
 
+## karanda-interiors — DONE (4.83)
+
+**Karanda** · Toni Ford, F.D.I.A. · 5.0 from 15 · (02) 9525 8053 (landline) · trust
+Lighthouse 94 / 97 / 100. Branch `demo/karanda-interiors`.
+Demo: `frontline-demos.vercel.app/karanda-interiors`
+
+Queued under "kitchens-joinery", but they're an interior DESIGN studio — Toni
+is a Design Institute of Australia Fellow with 40+ years' experience, and
+Karanda designs rather than fabricates or installs cabinetry themselves. The
+template's default joinery-fabrication process/FAQ would have been false
+claims, so the builder fully replaced it with Karanda's real 4-step
+consultation process and their own FAQ.
+
+Angle: "Forty years of getting it right" — Toni's own decades of judgment,
+naming her personally rather than "the team", which matches how reviewers
+already talk about her.
+
+> **Opener.** I noticed your site doesn't lead with your 5.0 from 15 Google
+> reviews, and Toni is named personally in almost every one of them — that's
+> unusual and worth putting front and centre.
+
+Review 1 (4.33) caught leaked research notes written in third person about
+the business ("named on Karanda's own about page") and a form placeholder
+that wrongly implied fixed-price quoting — Karanda bills hourly
+($300/hr senior, $150/hr junior, inc. GST). Both fixed; review 2 passed 4.83,
+the highest score of the run.
+
+**Ask Toni for:** confirmation the industry re-tag (interior design, not
+kitchens-joinery) is fine to keep for a real send; nothing else outstanding —
+every fact used was sourced from her own site.
+
+---
+
+## horgan-building — NEEDS PAT (4.33 after rework)
+
+**Horgan Building & Renovations** · Darryn Horgan · 5.0 from 5 · Bomaderry NSW · trust
+Lighthouse 97 / 97 / 100. Passes `check`: no blockers, nothing to confirm.
+
+Owner-operated 23 years, 35 years in the industry, building licence #299409C
+(found on their site, not in the original scrape). Angle: "Built by the man
+who quotes it" — Darryn prices and runs every job himself, backed by a
+20-year repeat client (Sue Cuninghame's review) and named jobs (skylights,
+a storm-damage rebuild).
+
+Review 1: 4.17 FAIL — a mismatched stat, a duplicate photo used twice in a
+row, a too-dark mobile hero, filler copy. One rework round fixed all four
+(relabeled the stat, merged two service cards that shared the duplicate
+photo, swapped in a brighter hero, replaced filler with review-sourced
+specifics). **Review 2 (final, rework round used): 4.33, still FAIL** — the
+swapped hero photo is still too dark on mobile, the gallery reuses all 4
+service-tile photos instead of showing different work, one service card's
+photo doesn't match its caption, and some phrasing repeats.
+
+**This is genuinely a photo-supply problem, not a copy problem** — the
+17-photo inventory doesn't have enough distinct, bright, well-lit shots to
+fill hero + 4 service cards + a gallery without reuse. Per the one-rework-
+round rule, this stops here rather than a third attempt.
+
+**Ask Darryn for:** more recent job photos, ideally 10+, in good light,
+covering different jobs than what's already used (BRIEF.md has the full
+inventory of what exists and what's weak); confirmation the 23-years/
+35-years distinction reads right to him.
+
+---
+
+## nb-earthmoving — IN REVIEW
+
+**Northern Beaches Earthmoving** · Jim Brigden (wife Lynette handles admin) ·
+5.0 from 14 · 0422 929 660 · trust
+Built from scratch — `npm run new` is broken in this session (see factory
+note below), scraped via curl/WebFetch instead. Angle: nearly every review
+independently praises Jim personally handling hard sites — rock, tight or
+difficult access, hand-dug excavation. Headline: "Rock, tight sites, tricky
+access. Jim sorts it."
+
+Check initially flagged Lighthouse performance 84 (LCP 4.4s, under the 90+
+bar) — several gallery photos were saved at ~1774px and 500-800KB straight
+from full-res phone crops, well above what a gallery tile needs. A fix pass
+is in progress before this goes to its first independent review.
+
+**Ask Jim for, regardless of how review lands:** their site has no ABN, trade
+licence number, or association/award listed anywhere, so none appears on the
+demo; ask if any of those exist.
+
+---
+
 ## Not started
 
-horgan-building · nb-earthmoving · karanda-interiors · forest-joinery ·
-ab-roof-tiling · dimension-gardenscape · great-southern-pools
-
-horgan-building already exists as a client from the earlier test build and passes
-`check` with its verified 5.0 from 5 in place; it needs the full QUALITY.md
-treatment rather than a rebuild from nothing.
+forest-joinery · ab-roof-tiling · dimension-gardenscape · great-southern-pools
 
 ---
 
