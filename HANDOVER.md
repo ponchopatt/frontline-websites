@@ -11,7 +11,7 @@ Branch `factory`. **Never touch `main`.** Each passing demo also gets `demo/<slu
 | arizona-roofing | rework done, needs a fresh review (was 3.83; both blockers fixed) |
 | south-coast-landscapes | rework (review 4.0) — agent was finishing when stopped |
 | lmac | rework (review 3.5) — agent was finishing when stopped |
-| greenway-landscapes | building — agent was finishing when stopped |
+| greenway-landscapes | built, passes check — needs its first review (photos are weak: nothing over 1200px) |
 | dp-landscaping | part-built: photos and a config started, no brief |
 | 7 others | todo |
 

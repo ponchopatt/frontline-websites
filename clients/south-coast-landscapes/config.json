@@ -1,10 +1,10 @@
 {
-  "_comment": "South Coast Landscapes, Dapto. Built from their own site (read through the SiteGround bot challenge with headless Chromium) and the 24 Google reviews in data/google_reviews_top25.json. Every photo is theirs, opened and looked at. See BRIEF.md for the inventory and the rejects.",
+  "_comment": "South Coast Landscapes, Dapto. Built from their own site (read through the SiteGround bot challenge with headless Chromium) and the 24 Google reviews in data/google_reviews_top25.json. Every photo is theirs, opened and looked at. Every photo slot on the page is a different property: see BRIEF.md, 'Photo slots by property'.",
   "slug": "south-coast-landscapes",
   "template": "trust",
   "industry": "landscaping",
   "live": false,
-  "tagline": "Landscape design, construction, maintenance and irrigation across the Illawarra. Front and back, start to finish.",
+  "tagline": "Landscape design, construction, maintenance and irrigation, based in Dapto and working across the Illawarra.",
   "schemaType": "LandscapeArchitect",
   "business": {
     "name": "South Coast Landscapes",
@@ -22,7 +22,7 @@
       "accent": "#8FD24E",
       "accent2": "#E08A4B",
       "themeColor": "#0B1410",
-      "_comment": "Green sampled straight off their own logo PNG (#8FD24E, 10.4:1 on the ground). The warm second is the merbau and sandstone that runs through their photographs, not a colour off the logo."
+      "_comment": "Green sampled straight off their own logo PNG (#8FD24E, 10.4:1 on the ground). The warm second is the timber and sandstone that runs through their photographs, not a colour off the logo."
     },
     "logo": {
       "src": "assets/logo-scl.webp",
@@ -43,40 +43,38 @@
     "width": 1200,
     "height": 800,
     "title": "South Coast Landscapes — Landscaping, Retaining Walls & Turf, Illawarra",
-    "description": "Landscapers in Dapto. Retaining walls, driveways, paving, turf and irrigation — front and back yards finished start to finish.",
-    "alt": "A finished Dapto backyard by South Coast Landscapes: granite pool coping and paving, frameless glass fence, pebble strip and a timber pergola"
+    "description": "Landscapers based in Dapto. Retaining walls, paving, pool surrounds, driveways, turf and irrigation across the Illawarra.",
+    "alt": "A Dapto backyard by South Coast Landscapes: pool surrounds paved in granite tile, a frameless glass fence, a pebble strip and a timber pergola"
   },
-  "responsePromise": "Ryan does the quoting himself.",
+  "responsePromise": "We look forward to hearing from you.",
   "copy": {
     "title": "South Coast Landscapes — Landscaping, Retaining Walls & Turf, Illawarra",
-    "description": "Landscapers based in Dapto. Retaining walls, excavation and drainage, driveways, paving, pool surrounds, decking, turf and SMART irrigation across the Illawarra. Front and back yards, finished start to finish.",
-    "ctaLabel": "Get a quote from Ryan",
+    "description": "Landscapers based in Dapto. Design, construction, maintenance and irrigation: retaining walls, excavation, drainage, paving, pool coping and surrounds, decks, concreting, turf and SMART irrigation across the Illawarra.",
+    "ctaLabel": "Get a quote",
     "kicker": "Dapto · the Illawarra",
     "headline": "From mounds<br>of dirt to a<br><em>finished yard.</em>",
-    "sub": "Retaining wall, drainage, driveway, paving, turf, planting and irrigation — <em>front and back, by one crew.</em> Most of our work starts where the builder stopped.",
+    "sub": "Retaining walls, paving, pool surrounds, driveways, turf and irrigation. <em>From design stage to completion, with minimal fuss.</em>",
     "heroSecondary": "Or send the details",
     "heroSecondarySms": "Or text Ryan a photo",
     "navApproach": "How we work",
-    "statementLabel": "The difference",
-    "statementHeadline": "We clean the site<br>every night.",
-    "statementBody": "A landscaping job takes over your driveway, your side gate and your weekends. Ours ends each day with the site swept and the gear stacked, because you still have to live there while we build it. It is the thing customers mention that we never put in a quote.",
+    "statementLabel": "On site",
+    "statementHeadline": "We treat your home<br>as our own.",
+    "statementBody": "We value our relationship with our clients, and we work to minimise the disruption to your property while the job is on.",
     "servicesLabel": "What we do",
     "servicesHeadline": "Design it, build it,<br>keep it alive.",
-    "servicesIntro": "Design, construction, maintenance and irrigation sit in the same business. The crew that draws it builds it, plants it and sets the watering — nothing is handed to a stranger halfway through.",
-    "apertureLabel": "Front and back",
-    "apertureLine": "Wall. Driveway. Turf. Water. In one go.",
+    "servicesIntro": "Everything you would expect from a complete landscaping service, from design, through to construction and maintenance of your outdoor space.",
     "workLabel": "Selected work",
-    "workHeadline": "Illawarra yards,<br>start to finish.",
-    "workIntro": "Recent jobs across Dapto, Port Kembla, Flinders, Figtree and Thirroul. Every one designed, built and planted by the same crew.",
+    "workHeadline": "Finished yards,<br>Engadine to Kiama.",
+    "workIntro": "From our own portfolio and before-and-after pages: Engadine, Figtree, Flinders, Thirroul, Kiama and Wollongong.",
     "processLabel": "How it runs",
-    "processHeadline": "Four steps.<br>Start to finish.",
-    "processIntro": "Our own process, in our own order. You see a concept and a written quote before any detailed design is charged for, and you approve both before a machine comes near the block.",
+    "processHeadline": "Five steps,<br>in our order.",
+    "processIntro": "The process off our design page. It starts with understanding your vision and setting out the scope of work, with a professionally presented quote.",
     "ownerLabel": "Who you are dealing with",
     "reviewsTitle": "What customers say.",
-    "reviewsIntro": "Straight off their Google profile, word for word. Three of the six name Ryan.",
-    "recognitionLabel": "Credentials",
-    "recognitionHeadline": "Backed by<br>the trade.",
-    "recognitionIntro": "One thing you can check before you book anyone: that a real supplier stands behind their work.",
+    "reviewsIntro": "From their Google profile, in the customers' own words. Longer reviews are shortened, and marked where they are.",
+    "recognitionLabel": "Supplier",
+    "recognitionHeadline": "Our irrigation<br>supplier.",
+    "recognitionIntro": "We are a preferred supplier of Reece Irrigation.",
     "areasLabel": "Where we work",
     "areasHeadline": "The Illawarra,<br>Thirroul to Shell Cove.",
     "areasIntro": "Based in Dapto. The portfolio runs from Kiama in the south to Engadine in the north.",
@@ -84,19 +82,19 @@
     "faqHeadline": "Questions we get asked.",
     "enquireLabel": "Get a quote",
     "enquireHeadline": "Tell us about<br>the yard.",
-    "enquireIntro": "Tell us the suburb, what the yard is doing now and what you want out of it, and Ryan will come and take a look."
+    "enquireIntro": "Tell us the suburb, what the yard is doing now, what you need from it and what you want from it. We look forward to hearing from you."
   },
   "stats": {
     "googleRating": 4.8,
     "reviewCount": 24
   },
   "pullQuote": {
-    "text": "They managed to turn our backyard from a mud pit into a green oasis.",
-    "name": "BJ Hansen, Google"
+    "text": "…we were impressed with the way they cleaned up the site at the end of each work day.",
+    "name": "ron lukin, Google"
   },
   "owner": {
-    "body": "Founder of South Coast Landscapes, and the person who quotes the work. Four of their reviewers, over five years, name him rather than the company — <em style=\"color:var(--accent)\">Ryan and the team</em>, <em style=\"color:var(--accent)\">Ryan and his team</em> — which is the short version of what a family-run business actually means.",
-    "team": "Behind him is a crew of tradesmen and a horticulturist. Reviewers call them polite, hard-working and extremely punctual, and one made a point of the way they cleaned up the site at the end of each work day.",
+    "body": "Founder of South Coast Landscapes, and the one who tailors an irrigation system to your situation. Customers name him in their reviews: <em style=\"color:var(--accent)\">Ryan and the team</em>, <em style=\"color:var(--accent)\">Ryan and his team</em>.",
+    "team": "Behind him is a team of professional landscapers and a horticulturist. Reviewers call the crew “so polite”, “very professional” and “extremely punctual”.",
     "facts": [
       {
         "value": "4.8",
@@ -112,7 +110,7 @@
     {
       "kind": "supplier",
       "label": "Reece Irrigation preferred supplier",
-      "body": "The irrigation is designed and fitted by us, not left to whoever turns up with a trencher. That includes SMART controllers such as SkyDrop.",
+      "body": "Automatic systems, driplines and SMART irrigation such as SkyDrop, which connects to your home wifi so you can run it from your own lounge.",
       "strip": true
     }
   ],
@@ -125,33 +123,37 @@
   "services": [
     {
       "title": "Design",
-      "blurb": "A first consultation, then a concept and a written quote, then the detailed design. You sign off the shape and the number before anyone digs."
+      "blurb": "A stylish but functional outdoor space that reflects your family. A consultation first, then a concept and quote, then the detailed design."
     },
     {
       "title": "Construction",
-      "blurb": "Retaining walls in masonry or timber, excavation, drainage, paving, pool coping and surrounds, decking, concreting, levelling and turfing. The heavy half of the job."
+      "blurb": "Masonry and timber retaining walls, excavation, drainage, paving, pool coping and surrounds, decks, concreting, levelling and turfing, water features."
     },
     {
       "title": "Irrigation & upkeep",
-      "blurb": "Automatic systems, driplines and SMART controllers such as SkyDrop, set from your phone. Then mowing, mulching, fertilising and pruning if you want us to keep it."
+      "blurb": "Automatic systems, driplines and SMART irrigation such as SkyDrop, run over your home wifi. Then lawn mowing, weeding and pruning, mulching, fertilising and aeration."
     }
   ],
   "process": [
     {
       "step": "Consultation",
-      "detail": "Ryan comes to the property, walks the block with you and works out what the yard has to do — for the kids, the dog, the entertaining, the mower."
+      "detail": "Understanding your vision: what you need from the yard, but also what you want."
     },
     {
       "step": "Concept & quote",
-      "detail": "A concept for the space and a written quote against it, scoped to the job rather than a rate card. You see the number here, before any detailed design is charged for."
+      "detail": "A concept for the space, with the scope of work set out in a professionally presented quote."
     },
     {
       "step": "Detailed design",
-      "detail": "The concept drawn up properly — levels, retaining, drainage, materials, planting and where the water runs. Adjusted until you are happy with it."
+      "detail": "The concept worked up into the detailed design."
     },
     {
-      "step": "Build & handover",
-      "detail": "The build, in the order the site needs it: excavation and drainage, retaining, concrete and paving, decking, turf, planting, irrigation. Site swept at the end of every day, and the last thing to leave is our gear."
+      "step": "Construction & installation",
+      "detail": "Where we bring your vision to life: retaining walls, excavation, drainage, paving, decks, concreting, levelling and turfing, planting and irrigation."
+    },
+    {
+      "step": "Client handover",
+      "detail": "The finished yard handed back to you. Maintenance after that if you want it."
     }
   ],
   "serviceAreas": [
@@ -178,7 +180,14 @@
       "srcset": "assets/dapto-poolside-480.webp 480w, assets/dapto-poolside-800.webp 800w, assets/dapto-poolside-1200.webp 1200w, assets/dapto-poolside-1500.webp 1500w",
       "width": 1500,
       "height": 1000,
-      "alt": "A finished Dapto backyard by South Coast Landscapes: granite pool coping and paving, a frameless glass fence, a river-pebble drainage strip, charcoal Tasman Block garden beds and a timber pergola over the deck"
+      "alt": "A Dapto backyard by South Coast Landscapes: pool surrounds paved in granite tile, a frameless glass fence, a strip of pebbles, charcoal Tasman Block garden beds and a timber pergola over the patio behind"
+    },
+    "statement": {
+      "src": "assets/portkembla-front-1200.webp",
+      "srcset": "assets/portkembla-front-480.webp 480w, assets/portkembla-front-800.webp 800w, assets/portkembla-front-1200.webp 1200w",
+      "width": 1500,
+      "height": 1000,
+      "alt": "The Hampton Style front entry in Port Kembla: a cobblestone path from the gate to the timber front decking, raised beds faced in sandstone stackstone, and lawn either side of the path"
     },
     "owner": {
       "src": "assets/ryan-646.webp",
@@ -186,49 +195,19 @@
       "width": 646,
       "height": 852,
       "ratio": "646/852",
-      "alt": "Ryan, founder of South Coast Landscapes, beside the company ute with the coast behind him",
+      "alt": "Ryan, founder of South Coast Landscapes, in a company polo, leaning on a branded ute with the coast behind him",
       "caption": "Ryan · founder, South Coast Landscapes"
     },
     "gallery": [
       {
-        "src": "assets/dapto-poolside-800.webp",
-        "full": "assets/dapto-poolside-1500.webp",
-        "srcset": "assets/dapto-poolside-480.webp 480w, assets/dapto-poolside-800.webp 800w, assets/dapto-poolside-1200.webp 1200w",
+        "src": "assets/engadine-pool-800.webp",
+        "full": "assets/engadine-pool-1500.webp",
+        "srcset": "assets/engadine-pool-480.webp 480w, assets/engadine-pool-800.webp 800w, assets/engadine-pool-1200.webp 1200w",
         "width": 1500,
         "height": 1000,
-        "caption": "Relaxing Poolside, Dapto",
-        "detail": "Granite pool coping, Tasman Block beds",
-        "alt": "Granite pool coping and paving, a frameless glass fence and charcoal Tasman Block garden beds in Dapto"
-      },
-      {
-        "src": "assets/portkembla-wall-800.webp",
-        "full": "assets/portkembla-wall-1500.webp",
-        "srcset": "assets/portkembla-wall-480.webp 480w, assets/portkembla-wall-800.webp 800w, assets/portkembla-wall-1200.webp 1200w",
-        "width": 1500,
-        "height": 1000,
-        "caption": "Hamptons Style, Port Kembla",
-        "detail": "Sandstone stackstone, built-in bench",
-        "alt": "A Besser Block retaining wall faced in sandstone stackstone with a hardwood bench seat set into it, turf in front, Port Kembla"
-      },
-      {
-        "src": "assets/portkembla-entry-800.webp",
-        "full": "assets/portkembla-entry-1500.webp",
-        "srcset": "assets/portkembla-entry-480.webp 480w, assets/portkembla-entry-800.webp 800w, assets/portkembla-entry-1200.webp 1200w",
-        "width": 1500,
-        "height": 1000,
-        "caption": "Front entry, Port Kembla",
-        "detail": "Cobblestone path to the front decking",
-        "alt": "A cobblestone path running from the front gate to a timber-decked entry, white picket fence and raised stone garden beds, Port Kembla"
-      },
-      {
-        "src": "assets/flinders-curve-800.webp",
-        "full": "assets/flinders-curve-1500.webp",
-        "srcset": "assets/flinders-curve-480.webp 480w, assets/flinders-curve-800.webp 800w, assets/flinders-curve-1200.webp 1200w",
-        "width": 1500,
-        "height": 1000,
-        "caption": "Suburban Living, Flinders",
-        "detail": "Curved Tasman Block retaining wall",
-        "alt": "A curved Tasman Block retaining wall wrapping the front garden of a new two-storey home in Flinders, mulched beds and new turf"
+        "caption": "Backyard Centrepiece, Engadine",
+        "detail": "Himalayan Sandstone pool surrounds",
+        "alt": "A pool in Engadine edged in pale sandstone paving, with a frameless glass fence, tropical planting in a bed of pebbles and lawn either side"
       },
       {
         "src": "assets/figtree-turf-800.webp",
@@ -238,7 +217,17 @@
         "height": 1000,
         "caption": "Modern Living, Figtree",
         "detail": "Matilda Buffalo turf, SMART irrigation",
-        "alt": "New Matilda Buffalo turf in Figtree with sprinklers running, a rendered retaining wall and tropical planting behind"
+        "alt": "New lawn at a Figtree home with the sprinklers running, a retaining wall and tropical planting above it, and timber decking along the edge"
+      },
+      {
+        "src": "assets/flinders-curve-800.webp",
+        "full": "assets/flinders-curve-1500.webp",
+        "srcset": "assets/flinders-curve-480.webp 480w, assets/flinders-curve-800.webp 800w, assets/flinders-curve-1200.webp 1200w",
+        "width": 1500,
+        "height": 1000,
+        "caption": "Suburban Living, Flinders",
+        "detail": "Curved Tasman Block retaining wall",
+        "alt": "A curved block retaining wall around a mulched, planted garden bed in front of a two-storey home in Flinders, with lawn in front"
       },
       {
         "src": "assets/thirroul-growwall-800.webp",
@@ -246,9 +235,29 @@
         "srcset": "assets/thirroul-growwall-480.webp 480w, assets/thirroul-growwall-800.webp 800w, assets/thirroul-growwall-1200.webp 1200w",
         "width": 1500,
         "height": 1000,
-        "caption": "Living Walls, Thirroul",
-        "detail": "Three succulent grow walls, SkyDrop",
-        "alt": "Three planted succulent grow walls mounted on a timber fence above a rendered retaining wall and lawn in Thirroul"
+        "caption": "Wollongong Living Walls, Thirroul",
+        "detail": "Three succulent grow walls",
+        "alt": "Three planted grow walls on a timber fence above a lawn in Thirroul, with a low white retaining wall and stepping pavers set in black pebbles"
+      },
+      {
+        "src": "assets/kiama-boulder-800.webp",
+        "full": "assets/kiama-boulder-1161.webp",
+        "srcset": "assets/kiama-boulder-480.webp 480w, assets/kiama-boulder-800.webp 800w, assets/kiama-boulder-1161.webp 1161w",
+        "width": 1161,
+        "height": 774,
+        "caption": "Country Ambiance, Kiama",
+        "detail": "Sandstone boulder wall, coloured concrete driveway",
+        "alt": "A boulder wall below a charcoal concrete driveway and a new single-storey home in Kiama, with a strip of young plants along the drive and lawn to the side"
+      },
+      {
+        "src": "assets/wollongong-timberwall-800.webp",
+        "full": "assets/wollongong-timberwall-1000.webp",
+        "srcset": "assets/wollongong-timberwall-480.webp 480w, assets/wollongong-timberwall-800.webp 800w, assets/wollongong-timberwall-1000.webp 1000w",
+        "width": 1000,
+        "height": 667,
+        "caption": "Timber Retaining Wall, Wollongong",
+        "detail": "Timber retaining wall",
+        "alt": "A long timber retaining wall along a street frontage in Wollongong, with lawn in front of it and established garden on the slope above"
       }
     ]
   },
@@ -265,45 +274,44 @@
     },
     {
       "name": "BJ Hansen",
-      "text": "We highly recommend South Coast Landscaping. They managed to turn our backyard from a mud pit into a green oasis. They have a great team of profesional staff that produced quality work."
+      "text": "We highly recommend South Coast Landscaping. They managed to turn our backyard from a mud pit into a green oasis. They have a great team of profesional staff that produced quality work.",
+      "source": "Google review, shortened"
     },
     {
       "name": "Jimmy M",
-      "text": "We set the challenge to Ryan and his team to take our landscaping from mounds of dirt and turn it into our desired front and backyard. And they did not disappoint."
+      "text": "We set the challenge to Ryan and his team to take our landscaping from mounds of dirt and turn it into our desired front and backyard. And they did not disappoint.",
+      "source": "Google review, shortened"
     },
     {
       "name": "J Goucher",
-      "text": "South Coast Landscapes were professional and caring from the first consultation and quote, through to the final discussions when the job was complete."
-    },
-    {
-      "name": "Susan Oliver",
-      "text": "My dealings with South Coast Landscapes were very positive. I contact Ryan to give me a quote early 2022. My house was still being built. I have had watched South Coast Landscapes on their Facebook page."
+      "text": "South Coast Landscapes were professional and caring from the first consultation and quote, through to the final discussions when the job was complete.",
+      "source": "Google review, shortened"
     }
   ],
   "faq": [
     {
       "q": "Our house is a new build and the yard is still dirt. Can you start from that?",
-      "a": "That is most of what we do. Mounds of dirt, a mud pit, a bare graded slope — front, back and down the side. We take it from there through excavation and drainage, retaining, driveway, paving, turf, planting and irrigation, and hand back a yard you can use."
+      "a": "Yes. Our Modern Living job in Figtree was the front and back of a new home: Besser Block retaining walls, a coloured concrete driveway, tropical planting, Matilda Buffalo turf and a SMART irrigation system."
     },
     {
       "q": "Do you build retaining walls?",
-      "a": "It is the job that comes up most in our reviews. Reinforced Besser Block faced in sandstone stackstone, charcoal and curved Tasman Block, rendered, concrete sleeper and timber. Excavation and drainage go in with it, because an undrained wall is a wall that moves."
+      "a": "Yes, in masonry and timber. On our own jobs: a reinforced Besser Block wall faced with sandstone stackstone in Port Kembla, a curved Tasman Block wall in Flinders, a sandstone boulder wall in Kiama, a timber wall in Wollongong and a concrete sleeper wall in Wongawilli. Excavation and drainage are on our construction list too."
     },
     {
       "q": "What does a landscaping job cost?",
-      "a": "<p>There is no price list, and nobody who has not stood on your block should give you one. We walk the site, set out the scope, and you get a written quote against a concept before any detailed design starts.<span data-priceline=\"fee\" hidden> Design fees start from <b data-price-value></b>.</span></p><p>One customer's summary of how that held up: “Timelines and budgets were accurate.”<span data-priceline=\"build\" hidden> Most builds of this kind land between <b data-price-value></b>, though that depends entirely on scope.</span></p>"
+      "a": "<p>We do not publish a price list. We start by understanding your vision and setting out the scope of work, then you get a concept and a professionally presented quote.<span data-priceline=\"fee\" hidden> Design fees start from <b data-price-value></b>.</span></p><p>From one customer's review: “…Timelines and budgets were accurate…”<span data-priceline=\"build\" hidden> Most builds of this kind land between <b data-price-value></b>, though that depends entirely on scope.</span></p>"
     },
     {
       "q": "Will the site be a mess while you are here?",
-      "a": "You still have to live there, so no. The crew clean up the site at the end of each work day and stack the gear. That is a customer's line about us, not ours about ourselves."
+      "a": "We work to minimise the disruption to your property during the job. We treat your home as our own."
     },
     {
       "q": "Can the irrigation be run from my phone?",
-      "a": "Yes. We are a Reece Irrigation preferred supplier and fit SMART systems — SkyDrop among them — that connect to your home wifi, so the watering is set from the lounge rather than from the tap. Automatic systems and driplines as well, sized to the planting."
+      "a": "Yes. We fit SMART irrigation systems such as SkyDrop, which connect to your home wifi so you can control the watering from your own lounge. We also fit automatic systems and driplines, and we are a preferred supplier of Reece Irrigation."
     },
     {
       "q": "Do you look after it afterwards?",
-      "a": "If you want us to. Mowing, weeding and pruning, mulching, fertilising and aeration, rubbish removal — done by the crew who built it and know what was planted where and what the irrigation is set to."
+      "a": "Yes. Maintenance is one of our four services: lawn mowing, weeding and pruning, mulching, fertilising and aeration, and rubbish removal."
     }
   ],
   "sms": {
@@ -311,6 +319,85 @@
     "body": "Hi {owner}, I'd like a quote.\nSuburb: \nWhat the yard is doing now: \n(Happy to send photos.)"
   },
   "_source": {
-    "stripped": "2026-09-23: removed for want of any source. Their site is behind a SiteGround captcha and nothing they have published could be checked for these: \"fully licensed landscaper\" and the licence credential, a free first consultation (six places), \"family-run\", \"qualified tradesmen\", \"4 trades in-house\", \"most jobs within twenty minutes\", and \"six jobs\" (it is five). Put any of them back only once Ryan confirms it, recorded under _source.confirmed."
+    "stripped": "2026-09-23: removed for want of any source. Their site is behind a SiteGround captcha and nothing they have published could be checked for these: \"fully licensed landscaper\" and the licence credential, a free first consultation (six places), \"family-run\", \"qualified tradesmen\", \"4 trades in-house\", \"most jobs within twenty minutes\", and \"six jobs\" (it is five). Put any of them back only once Ryan confirms it, recorded under _source.confirmed.",
+    "site": [
+      {
+        "url": "https://southcoastlandscapes.com.au/",
+        "text": "We are a family run residential landscape design, construction, maintenance and irrigation company based in Illawarra."
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/",
+        "text": "Address: Unit 3/10 Marshall Street, Dapto NSW 2530"
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/irrigation/",
+        "text": "South Coast Landscapes are a preferred suppliers of Reece Irrigation  and let our expect Ryan tailor a system especially for your situation which you’ll benefit from for years to come."
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/irrigation/",
+        "text": "connecting to your home wifi you can control your irrigation system from the comfort of your own lounge."
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/irrigation/",
+        "text": "Types of Irrigation we specialise in: Automatic Irrigation systems, Driplines, SMART Irrigation Systems – Latest technology such as SkyDrop"
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/construction/",
+        "text": "We value our relationship with our clients and ensure that we minimise the disruption to their property during the work – we treat your home as our own."
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/construction/",
+        "text": "We are your landscaping expect in the following: Retaining Walls from Masonry Retaining Walls and Timber Retaining Walls, Excavation, Drainage Solutions, Paving, Pool Coping & Surrounds, Decks, Concreting, Leveling & Turfing, Water Features"
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/maintenance/",
+        "text": "Lawn mowing, Weeding and Pruning, Mulching, Fertilising and aeration, Rubbish Removal"
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/design/",
+        "text": "We can help design a stylish but yet functional outdoor space that reflects your family and the great Australian outdoor living. ... set out the scope of work with a professionally presented quote. OUR PROCESS 1. Free Consultation 2. Concept development and quote 3. Detailed design 4. Construction & installation 5. Client handover"
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/about-us/",
+        "text": "Our team of dedicated professional landscapers and horticulturist will be able to create a beautiful outdoor area ... Everything you’d expect from a complete landscaping service, from design, through to construction and maintenance of your outdoor space. At South Coast Landscapes we take your project from design stage to completion with minimal fuss. ... MEET RYAN Founder of South Coast Landscapes"
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/contact/",
+        "text": "If you wish to discuss a landscaping project please give us a call or drop us an email below. We look forward to hearing from you!"
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/relaxing-poolside/",
+        "text": "Relaxing Poolside, Dapto. ... we installed all the quality pool coping and paving of the pool surrounds with a granite tile. All the garden beds around the pool area was constructed with Charcoal Tasman Blocks"
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/hampton-style/",
+        "text": "Hampton Style, Port Kembla. ... we constructed a reinforced Besser Block retaining wall faced with Sandstone stackstone. ... we added a cobblestone path from the gate to the front decking."
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/modern-living/",
+        "text": "Modern Living, Figtree. Landscaping completed to the front and back of this beautiful new home. Constructed front and back Besser Block retaining walls and coloured concrete driveway. All plants supplied and planted are tropical ... Matilda Buffalo was installed along with a “SMART” irrigation system"
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/suburban-living/",
+        "text": "Suburban Living, Flinders. We were able create and construct a curved Tasman Block retaining wall ... Our preferred lawn laid was Matilda Buffalo to the front and back yards"
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/wollongong-living-walls/",
+        "text": "Wollongong Living Walls, Thirroul. ... We constructed a brick retaining wall to seperate the two spaces, paving and lawn area. We constructed and supplied all succulents to these three grow walls and fitted it out with a “SMART” irrigation system called SkyDrop"
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/backyard-centrepiece/",
+        "text": "Backyard Centrepiece, Engadine. ... We installed the pool coping and paving of the pool surrounds with Himalayan Sandstone. All plants supplied and planted are tropical high sun torrent plants, topped with Riverstone pebbles"
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/country-ambiance/",
+        "text": "Country Ambiance, Kiama. ... We were able to construct a low maintenance Sandstone boulder wall ... A long coloured concrete driveway and paths were installed to connect from the house to the street."
+      },
+      {
+        "url": "https://southcoastlandscapes.com.au/before-after/",
+        "text": "Before & After – Timber Retaining Wall, Wollongong ... Before & After – Front Yard Concrete Sleeper Retaining Wall, Wongawilli"
+      }
+    ],
+    "reviews": "data/google_reviews_top25.json, south-coast-landscapes: rating 4.8 from 24 reviews. Quotes “so polite” (Rachel Micallef), “very professional” and “cleaned up the site at the end of each work day” (ron lukin), “Timelines and budgets were accurate” and “extremely punctual” (J Goucher), “Ryan and the team” (Rachel Micallef), “Ryan and his team” (Jimmy M, Cherie Marsh-Kokles)."
   }
 }

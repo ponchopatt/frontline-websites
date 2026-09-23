@@ -4,7 +4,7 @@ arizona-roofing,https://arizonaroofing.com.au,roofing,quote,rework,"Review 1: 3.
 utopian-landscaping,http://www.utopianlandscaping.com.au,landscaping,trust,done,"PASS 4.5 (review 3, nothing below 4). Its one blocker (JSON-LD called Derek the founder and put NSW towns in the ACT) fixed in the factory. Check: Perf 91, A11y 97. Branch demo/utopian-landscaping."
 south-coast-landscapes,https://southcoastlandscapes.com.au,landscaping,trust,rework,"Ten unsourced claims stripped. Review 4.0: duplicate Port Kembla frames, thin stats band, two soft claims. Factory fixes landed."
 lmac,https://www.lmac.com.au,air-conditioning,quote,rework,"Review 3.5. Factory fixes landed (landline text button, sticky bar, stats, mobile calculator, asterisks). Six installation claims to re-source, gallery repeats team photo."
-greenway-landscapes,https://www.greenwaylandscapes.com.au,landscaping,trust,building,"Brief and config written, photos downloaded, not yet built. Builder was killed mid-run by the limit."
+greenway-landscapes,https://www.greenwaylandscapes.com.au,landscaping,trust,review,"Built, passes check (Perf 91, A11y 97). Self-score 4.5; photos weakest (largest own photo 1200x600, no photo of Trent). Needs its first independent review."
 dp-landscaping,http://dplandscaping.com.au,landscaping,trust,part-built,"Photos downloaded and config started, no brief, not built. Builder was killed mid-run by the limit."
 horgan-building,https://www.horganbuildingandrenovations.com.au,builders,trust,todo,
 nb-earthmoving,https://www.northernbeachesearthmoving.com.au,landscaping,trust,todo,

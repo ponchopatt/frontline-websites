@@ -7,17 +7,19 @@ from and the page it came from. Nothing here is inferred unless it says so.
 
 A family landscaping business in Sydney's Hills District, established 1987, that
 builds retaining walls, decks, paving, turf, drainage and irrigation — the lot —
-under one licence.
+with one phone number, Trent's.
 
 ## Owner and key names
 
 - **Trent** — the only person named anywhere on their own site.
   Contact page: “Call Trent: 0418 607 124”.
-  Every one of the sixteen Google reviews names him; several describe him doing
-  the work himself (“Trent came and replaced our deck and turfed our nature
+  All eight review texts in data/google_reviews_top25.json name him (the other
+  eight of the sixteen are not in the pull, so the page never claims all
+  sixteen do); graeme gill describes him doing the work himself (“Trent came and replaced our deck and turfed our nature
   strip… a pleasure to have around” — graeme gill).
 - “Trent and his team” is the phrase reviewers use — Nick&Amy, Amanda Gray,
-  AJ Franco, Haidee Blackstock, Pand Gopal and Ashley Blacker all use it. So a
+  AJ Franco, Pand Gopal and Ashley Blacker use it; Haidee Blackstock writes
+  “Trent & his team”. So a
   small crew exists, with Trent on site.
 - No surname, no second name, no staff names anywhere. **Pat: get the surname
   and the crew size.**
@@ -55,7 +57,8 @@ The six the demo leads with are the six with a real photo of their own behind
 them: garden construction, retaining walls, timber decking, paving & driveways,
 lawns & turf, drainage & irrigation. Water features and garden lighting are
 mentioned in the FAQ — every water-feature photo on their site is stock, and
-garden lighting has exactly one real photo, which is in the gallery.
+garden lighting's only real photos are of the hero property, so they are not
+used (see the property table).
 
 ## Job size
 
@@ -89,10 +92,15 @@ garden lighting has exactly one real photo, which is in the gallery.
 for the deck, a waller for the stone, someone who can read where the water goes,
 and a turf bloke. Trent's jobs cover all of it — one review lists drainage,
 mulching, steel edging *and welding*, a drip sprinkler system and earthworks with
-machinery on a single job — under licence 157365C, since 1987.
+machinery on a single job — and the one number on their site is Trent's
+mobile. Since 1987, licence 157365C.
 
-The hero headline comes from this: **“Every trade your yard needs, on one
-licence.”**
+The hero headline comes from this: **“Every trade your yard needs. One call to
+Trent.”**
+
+(2026-09-23 revision: the first draft said “on one licence”. Their own about
+page says “all the required licenses”, plural, so “one licence” would have been
+a claim about licence scope we cannot make. Dropped.)
 
 Why not the other candidates: “award-winning” is a 2004 customer-service award
 and reads thin in 2026; “family business since 1987” is real but it is the
@@ -108,13 +116,14 @@ eight and every drainage photo they own is stock.
    Features, Garden Lighting and Drainage & Irrigation pages are almost entirely
    watermarked stock. Meanwhile they have roughly two dozen genuinely good photos
    of their own work sitting on the same site at 650px. **This is the call.**
-2. **Trent's name appears once, on the contact page.** Sixteen five-star reviews
-   name him, and the site he pays for does not.
+2. **Trent's name appears once, on the contact page.** Every review text we
+   can read names him (5.0 from 16), and the site he pays for does not.
 3. **No reviews on the site at all.** A 5.0 from 16 is not shown anywhere.
 4. **The theme is an Avada “Movers” demo.** Removalist stock photos — moving
    boxes, a boardroom, a hallway, an aerial of a suburb — are still in the media
    library and some still render.
-5. **Blog last posted 2019**, and one post title still says “Trends for 2019”.
+5. **Blog last posted February 2019** — three posts, all within one day
+   (wp-json/wp/v2/posts), one titled “Sydney Landscaping Trends for 2020”.
 6. **Own-work photos max out at 650×870.** Nothing on the site is big enough for
    a modern hero.
 7. Contact page gives a PO box, no service-area list, no form confirmation, no
@@ -127,7 +136,7 @@ eight and every drainage photo they own is stock.
 Source: their WordPress media library (139 items), every one opened and looked at.
 Largest original of their own work anywhere on the site is **1200×600**.
 
-### Used — their own work, confirmed (12)
+### First-draft inventory (2026-09-22) — the property table above overrides the “Used as” column
 
 | File (as downloaded) | Size | What it shows | Used as |
 |---|---|---|---|
@@ -228,6 +237,43 @@ Largest original of their own work anywhere on the site is **1200×600**.
   `Greenway-Landscapes-Paving.jpg`, `Greenway-Garden-Lighting-5.jpg` — all
   genuinely theirs and all fine, but either near-duplicates of a photo already
   used, softer, or 500×319. Held in reserve, not needed.
+
+## Photos grouped by property (verified 2026-09-23, every frame opened)
+
+Frames were matched by house, fence, furniture and hardscape. **No property
+appears in two slots on the page.**
+
+| Property | Frames on their site | What ties them | Slot on the demo |
+|---|---|---|---|
+| A — Pavilion, pool and deck | `timber_decking_quote_design_build…jpg` (→ `deck-pool`), `IMG_6216-2.png` (→ `backyard-pavilion`), `Greenway-Garden-Lighting-4.jpg` (→ `garden-lighting`), `Greenway-Garden-Lighting-5.jpg`, `Greenway-Landscapes-Decking-6.png` | same gabled pavilion, cream post, wicker lounge set, glass pool fence | **Hero** (`deck-pool`) only. The other frames are not used. |
+| B — Hedged lawn and urn | `outdoor_entertainment_area…2019…jpg` (→ `hedged-lawn`), probably `Greenway-Landscapes-Paving-4.jpg` | box hedging, brick herringbone | **Aperture** |
+| C — Sandstone wall, dark fence with creepers | `IMG_5836-2.jpg` (→ `maple-lawn`, added 2026-09-23), `Greenway-Lawns-Turf-3.jpg` | sandstone block wall, black fence with trained creepers | **Statement** |
+| D — Front garden, white verandah | `Greenway-Landscapes-Paving-2.jpg` (→ `front-garden`) | | Service: Garden construction |
+| E — Front terraces and driveway | `Greenway-Landscapes-Retaining-Walls-4.jpg` = `Paving-3.jpg` (→ `driveway-terraces`), `Retaining-Walls-3.jpg` = `gardens-1.jpg` (top-down) | same capped blocks with step lights | Service: Retaining walls |
+| F — Hardwood deck, block planters | `Greenway-Landscapes-Decking-4.jpg` (→ `hardwood-deck`), probably `Decking-3.jpg` | dark brick, capped block planter | Service: Timber decking |
+| G — Pergola and large-format paving | `Greenway-Landscapes-Paving-1.jpg` (→ `pergola-paving`) | | Service: Paving & driveways |
+| H — Poolside turf, sandstone escarpment | `Greenway-Lawns-Turf-2.jpg` (→ `poolside-turf`) | | Service: Lawns & turf |
+| I — River-rock bed, tan brick house | `IMG_2914-2.jpg` (→ `dry-creek-drainage`) | their own site sign in frame | Service: Drainage & irrigation |
+| J — Cabana and paver path | `Greenway-Landscapes-Paving-5.jpg` (→ `cabana-paths`) | | Gallery 1 |
+| K — Weatherboard verandah | `IMG_1023-2-Copy.jpg` = `Retaining-Walls-5.jpg` (→ `verandah-path`) | | Gallery 2 |
+| L — Gazebo and pool paving | `Greenway-Landscapes-Paving-6.jpg` (→ `gazebo-pool-paving`, added), `Retaining-Walls-2.jpg` (mid-build, rejected) | white gazebo balustrade | Gallery 3 |
+| M — Weatherboard cottage deck | `Greenway-Landscapes-Decking-5.jpg` (→ `cottage-deck`, added; cropped to the top 650×487 to cut the bare dirt and tarp) | | Gallery 4 |
+| N — Modern white house, stepping pavers | `Greenway-Lawns-Turf-4.jpg` | | Not used: soft and dim |
+| O — Composite steps in rain | `Greenway-Landscapes-Decking-2.jpg` | | Not used: close detail, spare |
+| P — Composite deck, pool, pergola | `Greenway-Landscapes-Decking-1.jpg` | | Not used: thongs, bag, shed clutter |
+
+The gallery is **4 tiles (the minimum)**, not 6. Each of the six service cards
+needs a photo (a card without one does not render), and every strong property
+left after the hero, aperture, statement and services is in the gallery. There
+is no enquiry-section background for the same reason. `backyard-pavilion` and
+`garden-lighting` stay in assets/ but are not referenced.
+
+`Greenway-Landscapes-Retaining-Walls-6.jpg` re-checked: a Texas-style limestone
+wall below a cut-stone house with wrought-iron fencing. Treated as stock.
+
+Alt text was corrected against the frames: the verandah path is regular
+sandstone-look pavers, not random flagging; the drainage bed's wall is capped
+grey block, not concrete sleepers; the poolside fence is tubular aluminium.
 
 ### The photo problem, stated plainly
 
