@@ -37,7 +37,7 @@ dispute.
 
 ## The angle
 **"The Moore family has been building Sydney's pools for 30 years — David,
-Dianne and Michael, all still on the tools."** Three generations of one
+Dianne and Michael, all still on the tools."** Two generations of one
 family working the job personally is the one thing this business has that a
 sales-rep-and-subbies outfit can't claim, and it's said in their own reviews
 independently by three different customers, not just on their marketing.
