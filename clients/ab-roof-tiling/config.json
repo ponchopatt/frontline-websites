@@ -80,19 +80,43 @@
   "services": [
     {
       "title": "New Roofing",
-      "blurb": "Quality tiling for a new home, quoted off your plans or worked out with you on site — whether you're under contract or building it yourself."
+      "blurb": "Quality tiling for a new home, quoted off your plans or worked out with you on site — whether you're under contract or building it yourself.",
+      "photo": {
+        "src": "assets/service-new-roofing-600.webp",
+        "width": 600,
+        "height": 448,
+        "alt": "Brick home under construction, roof trusses and frame with scaffolding, before tiling"
+      }
     },
     {
       "title": "Re-Roofing",
-      "blurb": "An average size home re-roofed in just one day. AB Roof Tiling own their own roof-perimeter scaffolding and keep a 100% safety record."
+      "blurb": "An average size home re-roofed in just one day. AB Roof Tiling own their own roof-perimeter scaffolding and keep a 100% safety record.",
+      "photo": {
+        "src": "assets/service-reroofing-600.webp",
+        "width": 600,
+        "height": 448,
+        "alt": "Brick home with a newly finished dark tile roof, pool base being formed below"
+      }
     },
     {
       "title": "Extensions",
-      "blurb": "Matching your existing tiles — new or used concrete or terracotta — so the extension roofline reads as one roof, not two. No-charge, obligation-free assessment."
+      "blurb": "Matching your existing tiles — new or used concrete or terracotta — so the extension roofline reads as one roof, not two. No-charge, obligation-free assessment.",
+      "photo": {
+        "src": "assets/service-extensions-600.webp",
+        "width": 600,
+        "height": 398,
+        "alt": "Large home with a grey tile roof and portico, matching tiles across old and new sections"
+      }
     },
     {
       "title": "Roof Repairs",
-      "blurb": "Leaking roofs, storm damage, broken tiles, cracked ridges, valley irons, and gutters and downpipes cleared out. No-charge, obligation-free assessment."
+      "blurb": "Leaking roofs, storm damage, broken tiles, cracked ridges, valley irons, and gutters and downpipes cleared out. No-charge, obligation-free assessment.",
+      "photo": {
+        "src": "assets/service-repairs-600.webp",
+        "width": 600,
+        "height": 358,
+        "alt": "Portico entrance with a grey tile roof and columns, finished AB Roof Tiling job"
+      }
     }
   ],
   "reasons": [
@@ -134,11 +158,18 @@
   "serviceAreas": [
     {
       "region": "Based in North Narrabeen",
-      "suburbs": ["Northern Beaches"]
+      "suburbs": [
+        "Northern Beaches"
+      ]
     },
     {
       "region": "Also working across",
-      "suburbs": ["North Shore", "Eastern Suburbs", "Inner West", "Sydney"]
+      "suburbs": [
+        "North Shore",
+        "Eastern Suburbs",
+        "Inner West",
+        "Sydney"
+      ]
     }
   ],
   "credentials": [
