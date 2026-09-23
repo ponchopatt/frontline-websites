@@ -5,7 +5,7 @@
  * The design is the Bondi Landscapes page, unchanged. This file only takes the
  * content out of it. A section with no data in config emits nothing at all.
  */
-import { html, raw, when, each, present, telHref, smsHref, headlineLines, sentenceList } from '../../lib/render.js';
+import { html, raw, when, each, present, telHref, smsHref, headlineLines, sentenceList, sampleTag } from '../../lib/render.js';
 import { statsBar } from '../../lib/blocks/stats-bar.js';
 import { promise } from '../../lib/blocks/promise.js';
 import { heroMedia } from '../../lib/blocks/hero-media.js';
@@ -190,7 +190,7 @@ function services(cfg, copy) {
       ${each(cfg.services, (s, i) => html`<article class="svc">
         ${when(s.photo, (p) => html`<div class="ph"><img src="${p.src}"${
           raw(p.srcset ? ` srcset="${p.srcset}" sizes="(min-width:820px) 31vw, 92vw"` : '')
-        }${raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')} loading="lazy" decoding="async" alt="${p.alt ?? ''}"></div>`)}
+        }${raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')} loading="lazy" decoding="async" alt="${p.alt ?? ''}">${sampleTag(p)}</div>`)}
         <div class="cap">
           <span class="t-folio">${String(i + 1).padStart(2, '0')}</span>
           <h3 class="t-h3">${s.title}</h3>
@@ -213,7 +213,7 @@ function aperture(cfg, copy) {
        the hero keeps 100vw because the bigger file cost 7 Lighthouse points. -->
   <img src="${p.src}"${raw(p.srcset ? ` srcset="${p.srcset}" sizes="(max-width:767px) 150vw, 100vw"` : '')}${
     raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')
-  } decoding="async" alt="${p.alt ?? ''}">
+  } decoding="async" alt="${p.alt ?? ''}">${sampleTag(p)}
   <div class="frame" aria-hidden="true"></div>
   <p class="t-label apLabel" id="apHead">${copy.apertureLabel ?? ''}</p>
   ${present(p.caption) || present(copy.apertureLine) ? html`<div class="plate">
@@ -236,10 +236,10 @@ function work(cfg, copy) {
         <button data-src="${p.full ?? p.src}" data-cap="${p.caption ?? p.alt ?? ''}" aria-label="View ${p.caption ?? 'this project'} larger">
           <span class="shot"><img src="${p.src}"${
             raw(p.srcset ? ` srcset="${p.srcset}" sizes="(min-width:900px) 46vw, 92vw"` : '')
-          }${raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')} loading="lazy" decoding="async" alt="${p.alt ?? ''}"></span>
+          }${raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')} loading="lazy" decoding="async" alt="${p.alt ?? ''}">${sampleTag(p)}</span>
         </button>
         ${present(p.caption) || present(p.detail) ? html`<figcaption>
-          ${when(p.caption, (c) => html`<span class="nm">${c}</span>`)}
+          ${when(p.caption, (c) => html`<span class="nm">${p.sample ? 'Sample photo · ' : ''}${c}</span>`)}
           ${when(p.detail, (d) => html`<span class="t-cap">${d}</span>`)}
         </figcaption>` : ''}
       </figure>`)}
@@ -459,8 +459,8 @@ const head = (label, headline, intro) => html`
 const figure = (p, ratio, sizes, caption) => html`<figure class="figure" data-reveal="img" style="margin:0;aspect-ratio:${ratio}">
       <img src="${p.src}"${raw(p.srcset ? ` srcset="${p.srcset}" sizes="${sizes}"` : '')}${
         raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')
-      } loading="lazy" decoding="async" alt="${p.alt ?? ''}">
-      ${when(caption, (c) => html`<figcaption class="t-label mute" style="margin:var(--s16) 0 0">${c}</figcaption>`)}
+      } loading="lazy" decoding="async" alt="${p.alt ?? ''}">${sampleTag(p)}
+      ${when(caption, (c) => html`<figcaption class="t-label mute" style="margin:var(--s16) 0 0">${p.sample ? 'Sample photo · ' : ''}${c}</figcaption>`)}
     </figure>`;
 
 function heroPreload(cfg) {

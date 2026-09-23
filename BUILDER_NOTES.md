@@ -37,12 +37,15 @@ node tools/serve.mjs dist <your port>     serve to screenshot — use your own p
   marked on the page.
 - Text buttons only render for a mobile (04xx). A 1300 or landline gets none.
 - Open every photo with the Read tool. A theme's stock image is named
-  `banner.jpg` and looks like a job until you look. Fewer than 4 of their own
-  = BLOCKED — unless Pat has approved stock for that client (below).
-- **Sample photos**, only where Pat approved them: set `photos.stockApproved`
-  `{ by, on, reason }`, and on each stock photo `sample: true`, `license`,
+  `banner.jpg` and looks like a job until you look. Fewer than 4 of their own: fill the gap with labelled sample photos rather than block.
+  Pat gave standing approval on 2026-09-23 — nobody needs to ask.
+- **Sample photos**: set `photos.stockApproved`
+  `{ "by": "Pat (standing approval)", "on": "2026-09-23", "reason": … }`, and
+  on each stock photo `sample: true`, `license`,
   `sourceUrl`. The page tags each one "Sample photo" itself. Never a
   client's old theme demo images — those are licensed to the theme, not them.
+  Source from Openverse (`license=cc0,pdm`), Pexels or Unsplash, and pick
+  images that look like the client's region and trade.
 
 ## Limits
 

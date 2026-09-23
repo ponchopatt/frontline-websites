@@ -72,7 +72,7 @@ section{padding-block:var(--pad)}
 body:has(.draft) .top{top:calc(env(safe-area-inset-top,0px) + 0px);position:sticky}
 body:has(.draft) .hero{margin-top:calc(-1 * var(--header-h))}
 .tag{display:inline-block;font-size:.8rem;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--green-2);color:#1C1F23;letter-spacing:.01em}
-.link{display:inline-block;font-weight:700;color:var(--fg);text-decoration:none;border-bottom:2px solid var(--green);padding:8px 0 3px}
+.link{display:inline-flex;align-items:end;min-height:44px;font-weight:700;color:var(--fg);text-decoration:none;border-bottom:2px solid var(--green);padding:8px 0 3px}  /* 44px: it measured 41 */
 .link:hover{border-color:currentColor}
 
 /* header */
@@ -194,7 +194,10 @@ html.gsap .hero .line>span,html.gsap .rule{transition:none!important}
   .pg-result{order:-1;position:sticky;top:calc(var(--header-h) + 6px);z-index:3;padding:14px 18px;gap:6px;box-shadow:0 14px 30px -16px rgba(0,0,0,.85)}
   .pg-result .eyebrow{font-size:.82rem;line-height:1.3}
   .pg-price{font-size:clamp(1.9rem,9vw,2.6rem)}
-  .pg-result .pg-note,.pg-result .inc,.pg-result .pg-fine{display:none}
+  /* The note stays: with no prices published (every job in quote mode) it is
+     the only thing that changes when a job is picked, and hiding it left
+     three of four chips doing nothing visible on a phone. */
+  .pg-result .inc,.pg-result .pg-fine{display:none}
   .pg-actions{display:none}
   .pg-after{display:grid;gap:12px;margin-top:8px}
 }
