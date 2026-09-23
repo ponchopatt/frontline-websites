@@ -185,6 +185,7 @@
   "serviceAreas": [
     {
       "region": "Canberra and the ACT",
+      "state": "ACT",
       "suburbs": [
         "Macquarie",
         "Holder"
@@ -192,6 +193,7 @@
     },
     {
       "region": "Over the border",
+      "state": "NSW",
       "suburbs": [
         "Queanbeyan",
         "Yass",
@@ -296,8 +298,8 @@
         "width": 1800,
         "height": 1350,
         "caption": "Crazy paving and grass trees",
-        "detail": "Flagging, barrels, synthetic turf",
-        "alt": "Crazy paving leading to a timber cabin, with grass trees in wine barrels and synthetic turf"
+        "detail": "Flagging, barrels, turf",
+        "alt": "Crazy paving leading to a timber cabin, with grass trees in wine barrels and turf"
       }
     ]
   },
@@ -366,7 +368,7 @@
       "about-us",
       "gallery",
       "testimonials",
-      "contact-us"
+      "contact"
     ],
     "notes": "Their homepage <title> is 'Building Surveyor For Government Contracts | ACT'; about, gallery, testimonials and contact share generic titles. Their testimonials page still shows the unedited Duda placeholders 'Slide title' and 'Button', the about page has three 'Slide title / Write your caption here / Button' blocks that were never filled in, and a broken Instagram embed from 13 September 2019 with the plugin credit 'Powered by embedinstagramfeed gmailbulkemailcom' printed under it. Gallery images are served at 560px from 1920px originals.",
     "stockLookingPhotos": [
@@ -389,15 +391,15 @@
       },
       "Email utopian@utopianlandscaping.com.au": {
         "sentence": "Email utopian@utopianlandscaping.com.au",
-        "url": "https://www.utopianlandscaping.com.au/contact-us"
+        "url": "https://www.utopianlandscaping.com.au/contact"
       },
       "Region 'ACT' / footer 'Canberra, ACT'": {
         "sentence": "UTOPIAN LANDSCAPING PO Box 5032 Chisholm 2905 ACT — a PO Box only. No street address is published anywhere, and no page says where they are based, so no home suburb is claimed on the page.",
-        "url": "https://www.utopianlandscaping.com.au/contact-us"
+        "url": "https://www.utopianlandscaping.com.au/contact"
       },
       "Service area: Canberra, Queanbeyan, Yass and ACT surrounds (hero kicker, areas section, FAQ)": {
         "sentence": "Our service area incorporates Canberra, Yass, Queanbeyan and all of the ACT surrounding areas but is not limited, so don't hesitate to get in touch and discuss your dream outdoor space with us on 0423 814 300.",
-        "url": "https://www.utopianlandscaping.com.au/contact-us"
+        "url": "https://www.utopianlandscaping.com.au/contact"
       },
       "Crookwell in the service area list": {
         "sentence": "We are proud to have completed so many successful projects for happy clients in Canberra, Yass, Queanbeyan, Crookwell and their surrounding areas.",
@@ -417,7 +419,7 @@
       },
       "'7:30am' owner stat and responsePromise '7:30am to 4:30pm, Monday to Friday'": {
         "sentence": "Hours Of Operation Mon - Fri 7:30 am - 4:30 pm Sat - Sun Closed",
-        "url": "https://www.utopianlandscaping.com.au/contact-us"
+        "url": "https://www.utopianlandscaping.com.au/contact"
       },
       "'A family run and operated business, and members of the Master Builders Association ACT' (credential card and strip) — stated as membership only, no claim of backing": {
         "sentence": "Utopian Landscaping are a family run and operated business and are Members of the Master Builders Association ACT.",

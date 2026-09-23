@@ -1,7 +1,7 @@
 slug,url,industry,template,status,notes
 sunset-pools,https://www.sunsetpools.com.au,pools,trust,done,"PASS 4.5 (review 7, nothing below 4). Every hard fact checked against Wayback. Check: no blockers, Perf 92, A11y 97. Branch demo/sunset-pools."
-arizona-roofing,https://arizonaroofing.com.au,roofing,quote,building,Rebuilding with labelled sample photos (Pat standing approval 2026-09-23). Their site has no photos of their own work.
-utopian-landscaping,http://www.utopianlandscaping.com.au,landscaping,trust,review,"Reviews 3.7, 3.58. Second rework done: wordmark fixed, 15 slots from 15 properties, Derek claims cut, shortened reviews marked, new sandstone hero. Check passes (Perf 91, A11y 97). Third review running."
+arizona-roofing,https://arizonaroofing.com.au,roofing,quote,review,"Built with 9 labelled sample photos (Unsplash licence and CC0, credited). Self-score 4.5. Check: Perf 93, A11y 96. Independent review running."
+utopian-landscaping,http://www.utopianlandscaping.com.au,landscaping,trust,done,"PASS 4.5 (review 3, nothing below 4). Its one blocker (JSON-LD called Derek the founder and put NSW towns in the ACT) fixed in the factory. Check: Perf 91, A11y 97. Branch demo/utopian-landscaping."
 south-coast-landscapes,https://southcoastlandscapes.com.au,landscaping,trust,rework,"Ten unsourced claims stripped. Review 4.0: duplicate Port Kembla frames, thin stats band, two soft claims. Factory fixes landed."
 lmac,https://www.lmac.com.au,air-conditioning,quote,rework,"Review 3.5. Factory fixes landed (landline text button, sticky bar, stats, mobile calculator, asterisks). Six installation claims to re-source, gallery repeats team photo."
 greenway-landscapes,https://www.greenwaylandscapes.com.au,landscaping,trust,part-built,"Brief and config written, photos downloaded, not yet built. Builder was killed mid-run by the limit."

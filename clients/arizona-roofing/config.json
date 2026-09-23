@@ -16,7 +16,7 @@
       "e164": "+61421149431"
     },
     "email": "info@arizonaroofing.com.au",
-    "abn": "38223082867",
+    "abn": "38 223 082 867",
     "baseSuburb": "Franklin",
     "region": "ACT",
     "address": "Unit 5/293 Flemington Road, Franklin ACT 2913",
@@ -88,7 +88,7 @@
   "services": [
     {
       "title": "Roof repairs",
-      "blurb": "Leaks and damage on tile and metal roofs. Oscar finds it, photographs it and shows you what he found before you decide.<br>&nbsp;",
+      "blurb": "Leaks and damage on tile and metal roofs. Oscar finds it and photographs it, so you see it too.",
       "photo": {
         "src": "assets/sample-corrugated-iron-800.webp",
         "width": 800,
@@ -116,7 +116,7 @@
     },
     {
       "title": "Valleys, collars and dektites",
-      "blurb": "Valley clips, re-taping the valley, and new collars and dektites where pipes and vents come through. The small parts his reviews name.",
+      "blurb": "Valley clips, re-taping the valley, collars and dektites. The parts that keep water out around pipes and vents.",
       "photo": {
         "src": "assets/sample-hips-ridges-800.webp",
         "width": 800,
@@ -130,7 +130,7 @@
     },
     {
       "title": "Gutters and fascia",
-      "blurb": "New gutters and fascia together, or gutter guards on what you have. “On time, cleaned up everything and great pricing.”",
+      "blurb": "New gutters and fascia together, or gutter guards on what you already have. “On time, cleaned up everything.”",
       "photo": {
         "src": "assets/sample-gutter-800.webp",
         "width": 800,
@@ -190,7 +190,7 @@
     "_comment": "Sample photos only, all under the Unsplash License, sourced 2026-09-23 and opened one by one. Chosen because they read as Australian: the hero was shot in Clyde North VIC, the terracotta tiles in Melbourne, the hips and ridges in Hobart, the brick house in Newcastle NSW, the aerial in Australia, the corrugated iron in West Ipswich QLD (CC0, Wikimedia Commons). Crops remove number plates. Nothing from arizonaroofing.com.au is reused. Replace every one with Oscar's own photos when he sends them.",
     "hero": {
       "src": "assets/sample-metal-roofs-1800.webp",
-      "srcset": "assets/sample-metal-roofs-1800.webp 1800w, assets/sample-metal-roofs-2400.webp 2400w",
+      "srcset": "assets/sample-metal-roofs-1200.webp 1200w, assets/sample-metal-roofs-1800.webp 1800w, assets/sample-metal-roofs-2400.webp 2400w",
       "width": 1800,
       "height": 1350,
       "alt": "Sample photo: dark corrugated metal roofs on new suburban houses, meeting at hips and a valley, with a tree in front",
@@ -198,7 +198,7 @@
       "license": "Unsplash License",
       "sourceUrl": "https://unsplash.com/photos/corrugated-metal-roofs-on-suburban-houses-nhPfRVGLXaU",
       "credit": "Troy Mortier on Unsplash",
-      "_comment": "Cropped to the dark foreground roofs so the headline never sits on pale sky. The srcset lists only the 1800 and 2400 files on purpose: the template sizes the hero at 100vw, so a phone would otherwise pick the 800 file and stretch it about 3.5x to fill a portrait hero. 480/800/1200 variants exist in assets/ for reuse."
+      "_comment": "Cropped to the dark foreground roofs so the headline never sits on pale sky. The srcset starts at 1200 on purpose: the template sizes the hero at 100vw, so a phone would otherwise pick the 800 file and stretch it about 3.5x to fill a portrait hero. 1200 keeps mobile Lighthouse above 90; 480/800 exist in assets/ for reuse."
     },
     "gallery": [
       {
@@ -493,5 +493,9 @@
       "Phone printed as \"042 1149431\" on every page",
       "Home page offers a \"free consultation\" and calls itself \"The #1 Choice\" — neither used here"
     ]
+  },
+  "sms": {
+    "label": "Text a photo",
+    "body": "Hi {owner}, I’d like a quote for my roof.\nSuburb: \nWhat’s wrong: \n(I can send photos of the roof.)"
   }
 }

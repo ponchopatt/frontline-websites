@@ -14,13 +14,17 @@
 
 /* Sample photo: an approved stock image standing in for the client's own. */
 .fl-sample {
-  position: absolute; right: 10px; bottom: 10px; z-index: 3;
+  /* Top right: captions, pills and card text all sit along the bottom, and
+     at 768–1024 a bottom-right tag landed on them (Arizona: 8 collisions per
+     width). The hero keeps bottom right, below the header. */
+  position: absolute; right: 10px; top: 10px; z-index: 3;
   padding: 5px 9px; border-radius: 3px;
   background: rgba(10, 12, 14, .82); color: #fff;
   font: 600 .72rem/1 system-ui, sans-serif; letter-spacing: .04em; text-transform: uppercase;
   pointer-events: none;
 }
 *:has(> .fl-sample) { position: relative; }
+.fl-sample.fl-sample-b { top: auto; bottom: 10px; }
 
 /* ------------------------------------------------------------------- stats */
 

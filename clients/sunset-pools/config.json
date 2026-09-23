@@ -94,6 +94,7 @@
     "email": "info@sunsetpools.com.au",
     "baseSuburb": "Rydalmere",
     "region": "NSW",
+    "founder": true,
     "currentSite": "sunsetpools.com.au",
     "brand": {
       "accent": "#E87010",
