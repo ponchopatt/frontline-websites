@@ -10,8 +10,9 @@ below 4) and `npm run check` before it counts.
 | | |
 |---|---|
 | **Done — passed review and check** | 10 — sunset-pools (4.5), utopian-landscaping (4.5), greenway-landscapes (4.5), south-coast-landscapes (4.5), lmac (4.5), arizona-roofing (4.67), dp-landscaping (4.5), karanda-interiors (4.83), nb-earthmoving (4.67), ab-roof-tiling (4.5) |
-| **Needs Pat** | 1 — horgan-building (4.33 after one rework round — more/better photos needed) |
-| **Not started** | 4 |
+| **Needs Pat** | 2 — horgan-building (4.33 after one rework round), forest-joinery (4.33 after one rework round) — both need more/better photos |
+| **In review** | 1 — dimension-gardenscape |
+| **Not started** | 2 |
 
 Each done demo has its own branch (`demo/<slug>`) and is live on the
 `frontline-demos` Vercel project at `frontline-demos.vercel.app/<slug>`.
@@ -424,9 +425,59 @@ credential are still current.
 
 ---
 
+## forest-joinery — NEEDS PAT (4.33 after rework)
+
+**Forest Joinery** · Dave Gerson · 5.0 from 6 · Cromer NSW · trust
+Lighthouse 96 / 97 / 100. Passes `check`: no blockers, nothing to confirm.
+
+Licensed cabinet-maker and joinery fabricator/installer, licence 338298C.
+Angle: "Honest advice. Honest joinery." — sourced from a testimonial praising
+Dave for flagging a better alternative instead of just building to plan.
+
+Review 1: 3.83 FAIL — two gallery captions were swapped relative to what the
+photos actually showed, and photos repeated across nearby slots. Rework
+fixed the captions and moved the repeats to different slots. **Review 2
+(final, rework round used): 4.33, still FAIL** — Photos still below 4
+because the rework moved the repeats rather than eliminating them: the
+Kitchens service card now reuses the hero photo two sections down, and the
+Wardrobes card repeats the very next section's photo. The mobile hero's
+eyebrow text ("BEACHES") is also still washed out against the photo.
+
+**This is the same shape of problem as horgan-building** — the 10-photo
+inventory across 6 projects isn't quite enough to fill every hero/service/
+gallery/statement slot without some reuse. Per the one-rework-round rule,
+this stops here.
+
+**Ask Dave for:** more project photos, ideally covering different jobs than
+what's already used (BRIEF.md has the full inventory); no photo of Dave
+himself exists — a work photo stands in for the owner section, which reads
+fine but a real portrait would be better if he has one.
+
+---
+
+## dimension-gardenscape — IN REVIEW
+
+**Dimension Gardenscape** · Trevor Fuller · 4.5 from 54 · Queanbeyan NSW · trust
+Their live site is fully bot-blocked (SiteGround sgcaptcha challenge on every
+page — confirmed not a proxy/TLS issue, it blocks the Internet Archive's own
+crawler too), so every fact and photo came from Wayback Machine snapshots,
+each cited with its archive URL. Angle: "A garden design grounded in
+horticulture" — leans on 3 professional-body memberships (Australian
+Institute of Horticulture, Master Builders Association ACT, The Landscape
+Association) as the differentiator.
+
+Review 1 (3.92) caught a real factory-policy miss: their 4.5 rating is under
+this factory's 4.7 floor for displaying a number, so it should stay off the
+page — but it showed twice anyway (a stat tile and in the reviews intro),
+which the automated check didn't catch. Also a dark/unreadable mobile hero
+and a leaked builder-voice line ("their site" instead of "our site"). Rework
+in progress.
+
+---
+
 ## Not started
 
-forest-joinery (in review) · dimension-gardenscape · great-southern-pools
+great-southern-pools
 
 ---
 
