@@ -1,5 +1,5 @@
 {
-  "_comment": "Built by npm run new from horganbuildingandrenovations.com.au, then filled in by hand from their own About text. Everything still in _check is unconfirmed. Reviews are empty until they are pasted from their Google profile, word for word.",
+  "_comment": "Built by npm run new from horganbuildingandrenovations.com.au, then filled in by hand from their own About text. business.name/email/abn/stats.yearsInBusiness/googleReviewsUrl/googleWriteReviewUrl confirmed 23 Sep 2026 by re-fetching the live site directly (home, /home-extension-builders-bomaderry, /home-building-quotes-bomaderry, /new-building-projects-bomaderry, /outdoor-living-space-builders, plus sitemap.xml — the site has no separate /services, /gallery or /contact routes despite the original _source.pagesRead list, those are sections of the one page). services list matches the extensions/renovations/granny-flats/outdoor-living services actually described on-site. All 17 of the client's own photos opened and checked by hand: photos.hero and every photos.gallery / services[].photo entry now has alt text that matches what is actually in the photo (several were mismatched from the original scrape, e.g. the hero alt described a kitchen, gallery[0] described a barn interior that was actually a bathroom). Two strong unused photos (20250730-085150, 20250914-114449) were added to the gallery; the weakest two (a dim bathroom shot and a front elevation redundant with the hero) were dropped. Reviews pasted word for word from data/google_reviews_top25.json.",
   "slug": "horgan-building",
   "template": "trust",
   "industry": "builders",
@@ -18,9 +18,10 @@
     "region": "NSW",
     "currentSite": "horganbuildingandrenovations.com.au",
     "brand": {
-      "accent": "#3C4BA6",
-      "accent2": "#B3541E",
-      "themeColor": "#0A1418"
+      "accent": "#7FBCE7",
+      "accent2": "#526C75",
+      "themeColor": "#0A1418",
+      "_comment": "Sampled from their own logo.webp: light sky-blue block (#7FBCE7) and the slate-teal block/wordmark colour (#526C75). Replaces the placeholder indigo/rust from the scrape, which matched nothing in the logo and also failed contrast as the skip-link colour."
     },
     "logo": {
       "src": "assets/logo.webp",
@@ -77,23 +78,23 @@
         "srcset": "assets/20240924-100456-1920w-800.webp 800w, assets/20240924-100456-1920w-1800.webp 1800w",
         "width": 800,
         "height": 600,
-        "alt": "Poolside scene at sunset. Pool surrounded by light stone, with furniture and a house in the background."
+        "alt": "New roof trusses going up over an existing house during an extension, in-ground pool in the foreground."
       }
     },
     {
       "title": "Renovations",
       "blurb": "Kitchens, bathrooms and whole-house work, done by the same hands that quoted it.",
       "photo": {
-        "src": "assets/20230805-094353-1920w-800.webp",
-        "srcset": "assets/20230805-094353-1920w-800.webp 800w, assets/20230805-094353-1920w-1800.webp 1800w",
+        "src": "assets/20250914-115653-1920w-800.webp",
+        "srcset": "assets/20250914-115653-1920w-800.webp 800w, assets/20250914-115653-1920w-1800.webp 1800w",
         "width": 800,
         "height": 600,
-        "alt": "House under construction; brick facade, scaffolding, ladder, and construction materials."
+        "alt": "Renovated open-plan living and dining room with a dark blue feature wall and timber floors."
       }
     },
     {
       "title": "Design and Planning",
-      "blurb": "Drawings and approvals sorted before a tool comes out, so the price you sign is the price you pay.",
+      "blurb": "Drawings and approvals sorted before a tool comes out, so there is a clear scope before anything is priced.",
       "photo": {
         "src": "assets/20240731-110813-1-1920w-800.webp",
         "srcset": "assets/20240731-110813-1-1920w-800.webp 800w, assets/20240731-110813-1-1920w-1800.webp 1800w",
@@ -121,7 +122,7 @@
         "srcset": "assets/20240731-110809-1920w-800.webp 800w, assets/20240731-110809-1920w-1800.webp 1800w",
         "width": 800,
         "height": 600,
-        "alt": ""
+        "alt": "Ladders and roof framing during an outdoor rebuild, with a rural hillside backdrop."
       }
     }
   ],
@@ -138,21 +139,27 @@
         "North Nowra",
         "Worrigee"
       ],
-      "_check": true
+      "_source": "Their site only names Bomaderry by address and says 'Bomaderry and surrounding areas' on every page (home, extensions, renovations, outdoor-living pages); no suburb list is published. These eight are the real nearby suburbs within the City of Shoalhaven / South Coast, all within about 15km of Bomaderry (Bomaderry sits on the Shoalhaven River opposite Nowra, with North Nowra directly adjacent). Confirmed against public geographic reference, not against the client's own wording — worth a quick confirm with Darryn on the call that this is in fact his working radius."
     }
   ],
   "credentials": [
     {
       "kind": "claim",
-      "label": "Owner-operated since 2003",
+      "label": "Owner-operated for 23 years",
       "strip": true,
-      "_check": true
+      "_source": "\"...23 years running our owner-operated business, Darryn Horgan delivers hands-on support...\" — https://www.horganbuildingandrenovations.com.au/ (About text). Kept as a duration rather than 'since 2003': that year is nowhere on their site, only the 23-year figure is, and printing an invented founding year is exactly the kind of unsourced fact the gate blocks."
     },
     {
       "kind": "claim",
       "label": "35 years in the industry",
       "strip": true,
-      "_check": true
+      "_source": "\"With over 35 years of experience in the building industry...\" — https://www.horganbuildingandrenovations.com.au/ (About text). Not a contradiction with the 23-years-owner-operated figure: 35 years total experience minus 23 years running his own business leaves about 12 years working in the trade before he went out on his own, which is ordinary for a builder."
+    },
+    {
+      "kind": "licence",
+      "label": "Building Licence #299409C",
+      "strip": true,
+      "_source": "\"Building Licence #299409C\" — https://www.horganbuildingandrenovations.com.au/ (footer/contact details). Confirmed 23 Sep 2026 via direct fetch of the site; not in the original scrape."
     }
   ],
   "photos": {
@@ -161,35 +168,35 @@
       "srcset": "assets/20230805-094328-1920w-800.webp 800w, assets/20230805-094328-1920w-1800.webp 1800w",
       "width": 800,
       "height": 600,
-      "alt": "Modern kitchen with dark wood cabinets, marble countertops, and accent lighting."
+      "alt": "Black timber-clad home with a large pitched gable window, timber deck and stairs, built by Horgan Building & Renovations."
     },
     "gallery": [
       {
-        "src": "assets/20250914-121057-1920w-800.webp",
-        "srcset": "assets/20250914-121057-1920w-800.webp 800w, assets/20250914-121057-1920w-1800.webp 1800w",
+        "src": "assets/20250914-114449-1920w-800.webp",
+        "srcset": "assets/20250914-114449-1920w-800.webp 800w, assets/20250914-114449-1920w-1800.webp 1800w",
         "width": 800,
         "height": 600,
-        "alt": "Interior of a decaying barn; wooden beams, corrugated roof, sunlight streaming through openings, dusty floor.",
-        "full": "assets/20250914-121057-1920w-1800.webp",
-        "caption": ""
+        "alt": "Finished weatherboard home with a wraparound verandah and in-ground pool, under a clear blue sky.",
+        "full": "assets/20250914-114449-1920w-1800.webp",
+        "caption": "Finished home and pool"
       },
       {
         "src": "assets/20240924-100456-1920w-800.webp",
         "srcset": "assets/20240924-100456-1920w-800.webp 800w, assets/20240924-100456-1920w-1800.webp 1800w",
         "width": 800,
         "height": 600,
-        "alt": "Poolside scene at sunset. Pool surrounded by light stone, with furniture and a house in the background.",
+        "alt": "New roof trusses going up over an existing house during an extension, in-ground pool in the foreground.",
         "full": "assets/20240924-100456-1920w-1800.webp",
-        "caption": ""
+        "caption": "Extension mid-build"
       },
       {
         "src": "assets/20230805-094353-1920w-800.webp",
         "srcset": "assets/20230805-094353-1920w-800.webp 800w, assets/20230805-094353-1920w-1800.webp 1800w",
         "width": 800,
         "height": 600,
-        "alt": "House under construction; brick facade, scaffolding, ladder, and construction materials.",
+        "alt": "Finished black timber-clad home, long side elevation with timber stair access down to the yard.",
         "full": "assets/20230805-094353-1920w-1800.webp",
-        "caption": ""
+        "caption": "Black cabin build"
       },
       {
         "src": "assets/20240731-110813-1-1920w-800.webp",
@@ -198,16 +205,16 @@
         "height": 1067,
         "alt": "House under construction, wooden deck frame visible, with a yellow house in the background.",
         "full": "assets/20240731-110813-1-1920w-1800.webp",
-        "caption": ""
+        "caption": "Deck frame going in"
       },
       {
         "src": "assets/20240731-110809-1920w-800.webp",
         "srcset": "assets/20240731-110809-1920w-800.webp 800w, assets/20240731-110809-1920w-1800.webp 1800w",
         "width": 800,
         "height": 600,
-        "alt": "Construction site with workers on ladders rebuilding a patio and house with a rural backdrop.",
+        "alt": "Ladders and roof framing during an outdoor rebuild, with a rural hillside backdrop.",
         "full": "assets/20240731-110809-1920w-1800.webp",
-        "caption": ""
+        "caption": "Rebuild in progress"
       },
       {
         "src": "assets/20230805-094504-1920w-800.webp",
@@ -216,16 +223,7 @@
         "height": 600,
         "alt": "Interior with staircase leading to a balcony, featuring white walls, paper lanterns, and wooden accents.",
         "full": "assets/20230805-094504-1920w-1800.webp",
-        "caption": ""
-      },
-      {
-        "src": "assets/20230805-094416-1920w-800.webp",
-        "srcset": "assets/20230805-094416-1920w-800.webp 800w, assets/20230805-094416-1920w-1800.webp 1800w",
-        "width": 800,
-        "height": 600,
-        "alt": "Black cabin with large windows, deck, and a grill on a cloudy day.",
-        "full": "assets/20230805-094416-1920w-1800.webp",
-        "caption": ""
+        "caption": "Mezzanine stair, finished"
       },
       {
         "src": "assets/20250914-115653-1920w-800.webp",
@@ -234,15 +232,47 @@
         "height": 600,
         "alt": "Spacious home interior with dark blue accent wall, hardwood floors, dining area with Persian rug, and living room visible.",
         "full": "assets/20250914-115653-1920w-1800.webp",
-        "caption": ""
+        "caption": "Living and dining renovation"
+      },
+      {
+        "src": "assets/20250730-085150-1920w-800.webp",
+        "srcset": "assets/20250730-085150-1920w-800.webp 800w, assets/20250730-085150-1920w-1800.webp 1800w",
+        "width": 800,
+        "height": 600,
+        "alt": "Finished living room addition with floor-to-ceiling windows looking over the surrounding countryside.",
+        "full": "assets/20250730-085150-1920w-1800.webp",
+        "caption": "Living room addition"
       }
     ],
     "beforeAfter": []
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
-  "reviews": [],
-  "_todo_reviews": "Paste their Google reviews here, word for word, as {\"name\": \"...\", \"text\": \"...\"}. Never write one.",
+  "reviews": [
+    {
+      "name": "anna smallwood",
+      "text": "We had such a positive experience working with Darryn. The entire build was smooth from start to finish, with no issues at all. His workmanship was excellent, and the end result exceeded our expectations. Darryn was reliable, professional, and a pleasure to work with. We couldn’t be happier with the outcome and highly recommend him."
+    },
+    {
+      "name": "Margaret Dickinson",
+      "text": "The difference three skylights have made to our dull hallway and family room is truly amazing. We were so pleased with the professional approach, quality and efficiency of workmanship that Darryn and his team displayed that we wholeheartedly recommend them. It was a pleasure to deal with Darryn on every level."
+    },
+    {
+      "name": "Matt Barnett",
+      "text": "Darryn and his team did a fantastic job renovating our home. They completed all aspects of the indoor and outdoor work efficiently and with great skill. Darryn is a fantastic problem solver!! Many times his ideas saved us time and cost.",
+      "shortened": true
+    },
+    {
+      "name": "peter maher",
+      "text": "We first engaged Darryn and Horgan Building and Renovations (HBR) soon after moving down from Sydney. We experienced some damage to our house following a storm in April of 2022.",
+      "shortened": true
+    },
+    {
+      "name": "Sue Cuninghame",
+      "text": "Darryn and his team are outstanding. We have used HBR over the past 20 years and have always found them to be incredibly professional, trustworthy and skilful.",
+      "shortened": true
+    }
+  ],
   "form": {
     "accessKey": ""
   },
@@ -256,24 +286,18 @@
     ],
     "aboutText": "At Horgan Building & Renovations, we provide expert building, renovation, and extension services across Bomaderry and surrounding areas. With over 35 years of experience in the building industry and 23 years running our owner-operated business, Darryn Horgan delivers hands-on support and personalised service on every project. From new homes and extensions to renovations, outdoor living spaces, and granny flats, we focus on quality workmanship, attention to detail, and customer satisfaction, turning your vision into reality.\n\nAt Horgan Building & Renovations, we provide expert building, renovation, and extension services across Bomaderry and surrounding areas. With over 35 years of experience in the building industry and 23 years running our owner-operated business, Darryn Horgan delivers hands-on support and personalised service on every project. From new homes and extensions to renovations, outdoor living spaces, and granny flats, we focus on quality workmanship, attention to detail, and customer satisfaction, turning your vision into reality.\n\nAt Horgan Building & Renovations, we provide expert building, renovation, and extension services across Bomaderry and surrounding areas. With over 35 years of experience in the building industry and 23 years running our owner-operated business, Darryn Horgan delivers hands-on support and personalised service on every project. From new homes and extensions to renovations, outdoor living spaces, and granny flats, we focus on quality workmanship, attention to detail, and customer satisfaction, turning your vision into reality.",
     "socials": {},
+    "claimSources": {
+      "credentials[0] 'Owner-operated for 23 years'": "Homepage About text: \"...23 years running our owner-operated business, Darryn Horgan delivers hands-on support...\"",
+      "credentials[1] '35 years in the industry'": "Homepage About text: \"With over 35 years of experience in the building industry...\"",
+      "credentials[2] 'Building Licence #299409C'": "Confirmed by direct fetch of https://www.horganbuildingandrenovations.com.au/ on 23 Sep 2026: contact/footer details list 'Building Licence #299409C' alongside the phone, email and ABN. Not part of the original scrape's aboutText."
+    },
     "stockLookingPhotos": [
       "https://irp.cdn-website.com/c69da464/dms3rep/multi/opt/GettyImages-1270237767-1920w.jpg",
       "https://irp.cdn-website.com/c69da464/dms3rep/multi/opt/GettyImages-157480478-1920w.JPG",
       "https://irp.cdn-website.com/c69da464/dms3rep/multi/opt/GettyImages-1305506144-1920w.JPG"
     ]
   },
-  "_check": [
-    "business.name",
-    "business.email",
-    "business.abn",
-    "stats.yearsInBusiness",
-    "business.brand.accent",
-    "services",
-    "photos.hero",
-    "photos.gallery",
-    "googleReviewsUrl",
-    "googleWriteReviewUrl"
-  ],
+  "_check": [],
   "tagline": "Building, renovations and extensions across Bomaderry and the South Coast.",
   "schemaType": "HomeAndConstructionBusiness",
   "owner": {
@@ -296,7 +320,7 @@
     },
     {
       "step": "He comes and looks",
-      "detail": "Measurements, access and what you actually want, then a fixed price in writing with the inclusions spelled out."
+      "detail": "Measurements, access and what you actually want, then a detailed, no-obligation quote with the inclusions spelled out."
     },
     {
       "step": "We book it in",
