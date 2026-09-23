@@ -26,6 +26,7 @@ npm run new -- <slug> <url> <industry>   scrape, config, photos
 npm run build -- <slug>                  build one client to dist/<slug>/
 npm run check -- <slug>                  the gate: blockers, to-confirm, Lighthouse
 node tools/serve.mjs dist <port>         serve for screenshots
+node tools/previews.mjs <slug> [port]    the 3 reviewer screenshots (mobile hero/full/scaled, desktop hero)
 node tools/single.mjs <slug>             one self-contained file for a phone
 node tools/paint-check.mjs <url>         no-JS, no-GSAP, reduced motion, 375px
 node --test tools/test-lib.mjs           factory unit tests

@@ -5,13 +5,15 @@ UTC yesterday and restarted this morning under your rule: keep going, no
 approvals, every demo must pass an independent review (4.5+ average, nothing
 below 4) and `npm run check` before it counts.
 
+**QUEUE.csv is now fully worked through** — every row is `done` or
+`needs-pat`, nothing left `todo`.
+
 ## The count
 
 | | |
 |---|---|
-| **Done — passed review and check** | 11 — sunset-pools (4.5), utopian-landscaping (4.5), greenway-landscapes (4.5), south-coast-landscapes (4.5), lmac (4.5), arizona-roofing (4.67), dp-landscaping (4.5), karanda-interiors (4.83), nb-earthmoving (4.67), ab-roof-tiling (4.5), dimension-gardenscape (4.5+) |
+| **Done — passed review and check** | 12 — sunset-pools (4.5), utopian-landscaping (4.5), greenway-landscapes (4.5), south-coast-landscapes (4.5), lmac (4.5), arizona-roofing (4.67), dp-landscaping (4.5), karanda-interiors (4.83), nb-earthmoving (4.67), ab-roof-tiling (4.5), dimension-gardenscape (4.5+), great-southern-pools (4.5) |
 | **Needs Pat** | 2 — horgan-building (4.33 after one rework round), forest-joinery (4.33 after one rework round) — both need more/better photos |
-| **Not started** | 1 |
 
 Each done demo has its own branch (`demo/<slug>`) and is live on the
 `frontline-demos` Vercel project at `frontline-demos.vercel.app/<slug>`.
@@ -51,12 +53,13 @@ panel.
 
 ## What to do first
 
-1. **Look at the eleven done demos**, live at `frontline-demos.vercel.app/<slug>`
-   for sunset-pools, utopian-landscaping, greenway-landscapes,
-   south-coast-landscapes, lmac, arizona-roofing, dp-landscaping,
-   karanda-interiors, nb-earthmoving, ab-roof-tiling and
-   dimension-gardenscape. Or `node tools/single.mjs <slug>` writes one
-   self-contained file to `dist-single/<slug>.html` that opens on a phone.
+1. **Look at all twelve done demos** — the whole original queue is worked
+   through — live at `frontline-demos.vercel.app/<slug>` for sunset-pools,
+   utopian-landscaping, greenway-landscapes, south-coast-landscapes, lmac,
+   arizona-roofing, dp-landscaping, karanda-interiors, nb-earthmoving,
+   ab-roof-tiling, dimension-gardenscape and great-southern-pools. Or
+   `node tools/single.mjs <slug>` writes one self-contained file to
+   `dist-single/<slug>.html` that opens on a phone.
 2. **Ring Ryan at South Coast Landscapes today** — his website is hacked. Details
    under his entry below. Worth a call whether or not he ever buys a site.
 3. **horgan-building and forest-joinery both need you** — same problem on
@@ -491,9 +494,46 @@ hero-quality photo if one exists — the best available is 800px, under the
 
 ---
 
-## Not started
+## great-southern-pools — DONE (4.5)
 
-great-southern-pools
+**Great Southern Pools** · David, Dianne & Michael Moore · 4.7 from 12 ·
+Greater Sydney · trust
+Lighthouse 94 / 97 / 100. Branch `demo/great-southern-pools`.
+Demo: `frontline-demos.vercel.app/great-southern-pools`
+
+Their main site (gspools.com.au) fails for `curl` and Node's `fetch()`
+specifically — every attempt got a proxy tunnel closing mid-exchange,
+confirmed host-wide after retries, distinct from the Chromium/TLS issue
+affecting `npm run new`. WebFetch reached it fine; their photos are hosted
+on a separate CDN (img1.wsimg.com) that curl also reached without issue, so
+research and photo downloads used different tools for the same client.
+Angle: "Thirty years of Moore family pools" — reviewers independently name
+David, Michael and Dianne, not "the company".
+
+Two real technical problems fixed before this even reached a reviewer: no
+responsive images existed at all (every photo served full-size to every
+device, Lighthouse performance 81, LCP 5.1s — fixed to 95/2.9s), and severe
+gallery reuse (8 of 9 gallery slots duplicated photos already used in
+hero/statement/aperture/owner/services elsewhere on the page) — reduced to
+the one genuinely free real photo plus 3 labelled Pexels samples.
+
+Review 1 (4.08) caught a real wording error ("Three generations" — David,
+Dianne and son Michael are two) and what looked like blank rating-strip
+numbers. **The blank numbers turned out to be a bug in the review
+screenshot tool itself**, not the page: Playwright's full-page capture mode
+was silently failing to paint that one element's pixels despite completely
+correct DOM state (confirmed by direct inspection — right text, opacity 1,
+both before and after the capture call). Rebuilt the tool to tile
+individual screenshots instead of using Playwright's built-in full-page
+capture. Review 2 passed at 4.50 but flagged a second tool bug from the
+same rebuild (a scroll-clamp offset that duplicated the footer) plus two
+real content issues (a gallery-intro line promising a photo that isn't in
+the gallery, and a stock-photo approval dated two days in the future) — all
+fixed directly rather than spending a third review round.
+
+**Ask David for:** which phone number is current — the site shows
+0413 513 572, Google shows 0418 603 656; no ABN, licence or professional-
+body membership is published anywhere, worth asking about.
 
 ---
 
@@ -505,6 +545,16 @@ great-southern-pools
   downloads overwriting their own. Give each builder a private subdirectory.
 - **Four concurrent builders is the ceiling on 4 cores**, and Lighthouse run
   concurrently reports depressed numbers. Verify performance serially.
-- **`clients/*/shots/` is gitignored** — a full-page phone screenshot is 10 MB of
-  undeltable PNG. `node tools/previews.mjs <slug>` writes a small webp set
-  instead, including the whole page as a readable contact sheet.
+- **`clients/*/shots/` is gitignored** — a full-page phone screenshot is 10 MB
+  of undeltable PNG.
+- **`node tools/previews.mjs <slug>` is now built** (it wasn't when this note
+  was first written — a session finally wrote it after hand-rolling the same
+  script from scratch too many times). Writes mobile-hero.png,
+  mobile-full.png, mobile-full-scaled.png (500px wide, for a quick look) and
+  desktop-hero.png to `clients/<slug>/shots/`. Read the comment at the top of
+  the file before touching it — it emulates `reducedMotion` and tiles its own
+  full-page capture instead of using Playwright's `fullPage:true`, both to
+  work around two confirmed rendering bugs in this environment (blank
+  scroll-triggered content, duplicated sections from a scroll-clamp offset).
+  Losing that and going back to a naive screenshot script will silently
+  reintroduce both.
