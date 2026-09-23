@@ -18,3 +18,5 @@ logs/
 # cannot delta — fourteen clients would put a quarter of a gigabyte of working
 # artefacts in the history. A passing demo keeps a small webp pair instead.
 clients/*/shots/
+tools/.rev-*
+tools/.*.tmp.mjs
