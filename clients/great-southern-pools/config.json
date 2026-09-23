@@ -27,16 +27,16 @@
       "_comment": "Sampled directly off their own logo file (assets/logo-navy.jpg): navy background rgb(15,63,111), the light blue wave rgb(61,174,244), and the orange ring rgb(246,163,97)."
     },
     "logo": {
-      "src": "assets/logo-navy.jpg",
-      "width": 1271,
-      "height": 429
+      "src": "assets/logo-navy-500.webp",
+      "width": 500,
+      "height": 169
     }
   },
   "icons": {
-    "favicon": "assets/logo-navy.jpg"
+    "favicon": "assets/logo-navy-500.webp"
   },
   "share": {
-    "image": "assets/hero-pool-water-view.jpg",
+    "image": "assets/hero-pool-water-view-1800.webp",
     "width": 1800,
     "height": 1350,
     "title": "Great Southern Pools \u2014 Concrete Pool Builder, Greater Sydney",
@@ -113,7 +113,8 @@
       "title": "New concrete pools",
       "blurb": "Custom concrete pools, spas, water features, infinity edges and underwater windows, designed and built for your home and landscape.",
       "photo": {
-        "src": "assets/pool-stone-steps-aerial.jpg",
+        "src": "assets/pool-stone-steps-aerial-800.webp",
+        "srcset": "assets/pool-stone-steps-aerial-480.webp 480w, assets/pool-stone-steps-aerial-800.webp 800w, assets/pool-stone-steps-aerial-1200.webp 1200w, assets/pool-stone-steps-aerial-1300.webp 1300w",
         "width": 1300,
         "height": 731,
         "alt": "A straight-down aerial view of an L-shaped concrete pool with wide stone steps, a sun shelf and travertine-look paving"
@@ -123,7 +124,8 @@
       "title": "Pool renovations",
       "blurb": "An outdated pool doesn't need to be replaced to be transformed \u2014 new interiors, coping, waterline tiles and reshaping bring it back to modern and functional.",
       "photo": {
-        "src": "assets/aerial-backyard-pool-lawn.jpg",
+        "src": "assets/aerial-backyard-pool-lawn-800.webp",
+        "srcset": "assets/aerial-backyard-pool-lawn-480.webp 480w, assets/aerial-backyard-pool-lawn-800.webp 800w, assets/aerial-backyard-pool-lawn-1200.webp 1200w, assets/aerial-backyard-pool-lawn-1300.webp 1300w",
         "width": 1300,
         "height": 976,
         "alt": "A wide aerial view of a renovated backyard pool with sandstone-look coping, a striped lawn and a curved raised garden bed"
@@ -133,7 +135,8 @@
       "title": "Water features & finishes",
       "blurb": "Fully tiled or designer beadcrete interiors, waterline tiling, stairs, pathways and retaining walls, built as part of the one job.",
       "photo": {
-        "src": "assets/pool-clear-blue-modern.jpg",
+        "src": "assets/pool-clear-blue-modern-800.webp",
+        "srcset": "assets/pool-clear-blue-modern-480.webp 480w, assets/pool-clear-blue-modern-800.webp 800w, assets/pool-clear-blue-modern-1200.webp 1200w, assets/pool-clear-blue-modern-1300.webp 1300w",
         "width": 1300,
         "height": 867,
         "alt": "A minimalist tiled pool against a grey rendered wall with a mosaic-tile step and frameless glass fencing"
@@ -167,26 +170,30 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/hero-pool-water-view.jpg",
+      "src": "assets/hero-pool-water-view-1800.webp",
+      "srcset": "assets/hero-pool-water-view-480.webp 480w, assets/hero-pool-water-view-800.webp 800w, assets/hero-pool-water-view-1200.webp 1200w, assets/hero-pool-water-view-1800.webp 1800w",
       "width": 1800,
       "height": 1350,
       "alt": "An elevated concrete pool with a bay and headland view behind it, built by Great Southern Pools"
     },
     "statement": {
-      "src": "assets/pool-lush-plants.jpg",
+      "src": "assets/pool-lush-plants-1200.webp",
+      "srcset": "assets/pool-lush-plants-480.webp 480w, assets/pool-lush-plants-800.webp 800w, assets/pool-lush-plants-1200.webp 1200w, assets/pool-lush-plants-1600.webp 1600w",
       "width": 1600,
       "height": 1200,
       "alt": "A rectangular concrete pool beside a white gazebo, with dense tropical planting along a dark timber fence"
     },
     "aperture": {
-      "src": "assets/glass-fence-landscaping.jpg",
+      "src": "assets/glass-fence-landscaping-1100.webp",
+      "srcset": "assets/glass-fence-landscaping-480.webp 480w, assets/glass-fence-landscaping-800.webp 800w, assets/glass-fence-landscaping-1100.webp 1100w, assets/glass-fence-landscaping-1200.webp 1200w, assets/glass-fence-landscaping-1300.webp 1300w",
       "width": 1300,
       "height": 975,
       "alt": "A rectangular pool with a dark tiled raised wall, frameless glass fencing and established garden behind it",
       "caption": "Raised wall and glass fencing"
     },
     "owner": {
-      "src": "assets/sunny-pool-garden-bed.jpg",
+      "src": "assets/sunny-pool-garden-bed-800.webp",
+      "srcset": "assets/sunny-pool-garden-bed-480.webp 480w, assets/sunny-pool-garden-bed-800.webp 800w, assets/sunny-pool-garden-bed-1200.webp 1200w, assets/sunny-pool-garden-bed-1300.webp 1300w",
       "width": 1300,
       "height": 520,
       "ratio": "1300/520",
@@ -194,41 +201,16 @@
       "caption": "A finished job, fresh garden bed and all"
     },
     "enquiryBackground": {
-      "src": "assets/timber-deck-pool.jpg",
+      "src": "assets/timber-deck-pool-1100.webp",
+      "srcset": "assets/timber-deck-pool-480.webp 480w, assets/timber-deck-pool-800.webp 800w, assets/timber-deck-pool-1100.webp 1100w",
       "width": 1100,
       "height": 1100
     },
     "gallery": [
       {
-        "src": "assets/hero-pool-water-view.jpg",
-        "full": "assets/hero-pool-water-view.jpg",
-        "width": 1800,
-        "height": 1350,
-        "caption": "Harbour view",
-        "detail": "Elevated pool deck above the water",
-        "alt": "An elevated concrete pool with a bay and headland view behind it"
-      },
-      {
-        "src": "assets/pool-lush-plants.jpg",
-        "full": "assets/pool-lush-plants.jpg",
-        "width": 1600,
-        "height": 1200,
-        "caption": "Tropical garden pool",
-        "detail": "Pool and gazebo, dense planting",
-        "alt": "A rectangular pool beside a white gazebo, with dense tropical planting along a dark timber fence"
-      },
-      {
-        "src": "assets/pool-stone-steps-aerial.jpg",
-        "full": "assets/pool-stone-steps-aerial.jpg",
-        "width": 1300,
-        "height": 731,
-        "caption": "Stone steps & sun shelf",
-        "detail": "Aerial view, travertine-look paving",
-        "alt": "A straight-down aerial view of an L-shaped concrete pool with wide stone steps and a sun shelf"
-      },
-      {
-        "src": "assets/bushland-curved-pool.jpg",
-        "full": "assets/bushland-curved-pool.jpg",
+        "src": "assets/bushland-curved-pool-480.webp",
+        "full": "assets/bushland-curved-pool-750.webp",
+        "srcset": "assets/bushland-curved-pool-480.webp 480w, assets/bushland-curved-pool-750.webp 750w",
         "width": 750,
         "height": 1000,
         "caption": "Bushland block",
@@ -236,52 +218,51 @@
         "alt": "A freeform curved pool set into a bushland block with a second pool visible behind the glass fence"
       },
       {
-        "src": "assets/aerial-backyard-pool-lawn.jpg",
-        "full": "assets/aerial-backyard-pool-lawn.jpg",
-        "width": 1300,
-        "height": 976,
-        "caption": "Full backyard renovation",
-        "detail": "Pool, lawn and garden beds",
-        "alt": "A wide aerial view of a rectangular pool, striped lawn and a curved raised garden bed"
+        "src": "assets/stock-glass-fence-pool-800.webp",
+        "full": "assets/stock-glass-fence-pool-1600.webp",
+        "srcset": "assets/stock-glass-fence-pool-480.webp 480w, assets/stock-glass-fence-pool-800.webp 800w, assets/stock-glass-fence-pool-1200.webp 1200w, assets/stock-glass-fence-pool-1600.webp 1600w",
+        "width": 1600,
+        "height": 1067,
+        "caption": "Glass-fenced pool",
+        "detail": "Sample photo — frameless glass fencing and timber paling fence",
+        "alt": "A backyard concrete pool behind frameless glass fencing, palm trees and a timber paling fence behind it",
+        "sample": true,
+        "license": "Pexels License (free to use)",
+        "sourceUrl": "https://www.pexels.com/photo/19889109/"
       },
       {
-        "src": "assets/timber-deck-pool.jpg",
-        "full": "assets/timber-deck-pool.jpg",
-        "width": 1100,
-        "height": 1100,
-        "caption": "Timber deck pool",
-        "detail": "Octagonal pool set into an elevated deck",
-        "alt": "An elevated octagonal pool set into a timber deck in a treed backyard, with a dining table behind it"
+        "src": "assets/stock-modern-villa-pool-800.webp",
+        "full": "assets/stock-modern-villa-pool-1600.webp",
+        "srcset": "assets/stock-modern-villa-pool-480.webp 480w, assets/stock-modern-villa-pool-800.webp 800w, assets/stock-modern-villa-pool-1200.webp 1200w, assets/stock-modern-villa-pool-1600.webp 1600w",
+        "width": 1600,
+        "height": 1068,
+        "caption": "Rectangular pool & deck",
+        "detail": "Sample photo — modern pool, timber deck and lawn",
+        "alt": "A rectangular in-ground pool with a timber deck, a modern house behind it and a lawn beside it",
+        "sample": true,
+        "license": "Pexels License (free to use)",
+        "sourceUrl": "https://www.pexels.com/photo/8134745/"
       },
       {
-        "src": "assets/pool-clear-blue-modern.jpg",
-        "full": "assets/pool-clear-blue-modern.jpg",
-        "width": 1300,
-        "height": 867,
-        "caption": "Minimalist pool",
-        "detail": "Grey render wall, mosaic tile step",
-        "alt": "A minimalist tiled pool against a grey rendered wall with a mosaic-tile step and frameless glass fencing"
-      },
-      {
-        "src": "assets/sunny-pool-garden-bed.jpg",
-        "full": "assets/sunny-pool-garden-bed.jpg",
-        "width": 1300,
-        "height": 520,
-        "caption": "Fresh garden bed",
-        "detail": "Waterline tiles, new planting",
-        "alt": "A rectangular pool with blue waterline tiles and a fresh garden bed of grasses and shrubs behind a glass fence"
-      },
-      {
-        "src": "assets/glass-fence-landscaping.jpg",
-        "full": "assets/glass-fence-landscaping.jpg",
-        "width": 1300,
-        "height": 975,
-        "caption": "Raised wall & glass fence",
-        "detail": "Established garden and lawn",
-        "alt": "A rectangular pool with a dark tiled raised wall, frameless glass fencing and established garden behind it"
+        "src": "assets/stock-aerial-kidney-pool-800.webp",
+        "full": "assets/stock-aerial-kidney-pool-1600.webp",
+        "srcset": "assets/stock-aerial-kidney-pool-480.webp 480w, assets/stock-aerial-kidney-pool-800.webp 800w, assets/stock-aerial-kidney-pool-1200.webp 1200w, assets/stock-aerial-kidney-pool-1600.webp 1600w",
+        "width": 1600,
+        "height": 1068,
+        "caption": "Freeform pool, aerial",
+        "detail": "Sample photo — curved pool, spa and shade sails from above",
+        "alt": "An aerial view of a freeform backyard pool with an attached spa, palm trees and shade sails over the patio",
+        "sample": true,
+        "license": "Pexels License (free to use)",
+        "sourceUrl": "https://www.pexels.com/photo/36777925/"
       }
     ],
-    "beforeAfter": []
+    "beforeAfter": [],
+    "stockApproved": {
+      "by": "Pat (standing approval)",
+      "on": "2026-09-25",
+      "reason": "only 1 real photo remains unused after hero/statement/aperture/owner/services claimed the other 8"
+    }
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
@@ -368,13 +349,15 @@
       "statement \u2014 tropical garden pool": "20250604_091148.jpg (2560x1920) from /about-us-1, their own alt: 'Modern backyard pool with glass fence and lush plants.'",
       "aperture \u2014 raised wall & glass fence": "61FA6729-77AA-4A5E-8784-5543EA8CF989.png (1448x1086) from /about-us-1, their own alt: 'Modern backyard pool with glass fence and landscaping' (paraphrased close to source, exact page alt not machine-readable beyond the /our-work duplicate: 'Modern backyard pool with clear water and glass safety fencing').",
       "owner slot \u2014 sunny pool with garden bed": "Screenshot 2026-05-20 133343.png (1520x608) from /our-work, alt 'Modern backyard pool with glass fencing and greenery.' File name looks like a screenshot; opened with the Read tool and confirmed it is a genuine daylight photograph of a pool and garden bed, not a UI screenshot.",
-      "gallery \u2014 bushland curved pool": "14C10F8C-8603-4BE9-A55A-562B4F15CC01.png (750x1000 as used) from /renovations, alt 'Two swimming pools surrounded by trees and a protective glass fence.'",
-      "gallery \u2014 timber deck pool": "F24AFA5E-C33F-486E-9FFC-68AE1F2E88E1.png (1100x1100 as used) from /renovations, alt 'A serene backyard pool with wooden deck and outdoor dining area.'",
-      "gallery \u2014 minimalist pool": "B706FACE-A967-49D6-9FDE-FBEFED566457.png (1536x1024) from /our-work, alt 'Modern private swimming pool with clear blue water and glass fencing.'",
-      "gallery \u2014 full backyard renovation aerial": "120152407_3537866009596906_1584217314625632936.jpg (1300x976 as used) from /our-work, alt 'Modern backyard with a pool, lawn, and landscaped garden beds.'",
-      "gallery \u2014 stone steps aerial": "blob-e75bc0c.png (2560x1439) from /about-us-1, no alt text provided on their page.",
-      "gallery \u2014 raised wall & glass fence": "61FA6729-77AA-4A5E-8784-5543EA8CF989.png reused from /our-work, alt 'Modern backyard pool with clear water and glass safety fencing.'",
-      "held in reserve \u2014 house alfresco photo": "93600927_3083712831678895_2084225449814130688_.jpg (assets/new-build-alfresco.jpg, 1000x750 as used), from /new-builds, no alt text on their page. Real and sharp but the lowest-resolution source and the most dated-looking job of the set, so it sits in reserve rather than in the 8-photo gallery."
+      "gallery \u2014 bushland curved pool (real, only unused job photo)": "14C10F8C-8603-4BE9-A55A-562B4F15CC01.png (750x1000 as used) from /renovations, alt 'Two swimming pools surrounded by trees and a protective glass fence.'",
+      "gallery \u2014 timber deck pool": "F24AFA5E-C33F-486E-9FFC-68AE1F2E88E1.png (1100x1100 as used) from /renovations, alt 'A serene backyard pool with wooden deck and outdoor dining area.' \u2014 moved out of the gallery, now used as photos.enquiryBackground only (each real photo appears in exactly one slot).",
+      "minimalist pool": "B706FACE-A967-49D6-9FDE-FBEFED566457.png (1536x1024) from /our-work, alt 'Modern private swimming pool with clear blue water and glass fencing.' \u2014 used as services[2].photo only.",
+      "full backyard renovation aerial": "120152407_3537866009596906_1584217314625632936.jpg (1300x976 as used) from /our-work, alt 'Modern backyard with a pool, lawn, and landscaped garden beds.' \u2014 used as services[1].photo only.",
+      "stone steps aerial": "blob-e75bc0c.png (2560x1439) from /about-us-1, no alt text provided on their page. \u2014 used as services[0].photo only.",
+      "raised wall & glass fence": "61FA6729-77AA-4A5E-8784-5543EA8CF989.png from /our-work, alt 'Modern backyard pool with clear water and glass safety fencing.' \u2014 used as photos.aperture only.",
+      "held in reserve \u2014 house alfresco photo": "93600927_3083712831678895_2084225449814130688_.jpg (assets/new-build-alfresco.jpg, 1000x750 as used), from /new-builds, no alt text on their page. Real and sharp but the lowest-resolution source and the most dated-looking job of the set, so it sits in reserve, unused.",
+      "2026-09-25 gallery rebuild": "The 9 real photos give exactly 9 usable images once you count new-build-alfresco.jpg, but 8 of them are already each spoken for by hero/statement/aperture/owner/enquiryBackground/services[0..2] \u2014 none repeated across those 8 slots. That leaves only bushland-curved-pool.jpg free for the gallery (new-build-alfresco.jpg was already held in reserve as the weakest photo, so it wasn't added either). One real photo is below QUALITY.md's 4-photo gallery minimum, so per BUILDER_NOTES.md's standing approval (Pat, 2026-09-23) the other 3 gallery slots are labelled sample photos \u2014 see photos.stockApproved and stockLookingPhotos below. The previous build had reused all 8 non-gallery photos a second time inside the gallery, which this rebuild removes.",
+      "responsive images (2026-09-25)": "Every photo referenced above, plus the 3 gallery sample photos, was regenerated with sharp into webp derivatives (480/800/1200w plus each image's native width, never upscaled) and wired up with src/srcset to match the sunset-pools/bondi-landscapes convention. The original single full-size .jpg files are left in assets/ unreferenced (could not be deleted under this session's permissions) but nothing in config.json points at them any more."
     },
     "notOnThePage": [
       "No ABN is published anywhere on gspools.com.au, so none is claimed.",
@@ -384,7 +367,11 @@
       "No founding year is published, only 'over 30 years' \u2014 so no specific year is used, matching their own wording.",
       "Two phone numbers exist for this business (site: 0413 513 572, Google profile: 0418 603 656) and this demo did not try to guess which is correct \u2014 it uses the one published on their own live site now and flags the conflict for Pat."
     ],
-    "stockLookingPhotos": [],
-    "photoNote": "10 real photos downloaded from gspools.com.au via img1.wsimg.com and opened one by one with the Read tool. All sharp, all real jobs, no stock, no logos-as-photos. One (assets/new-build-alfresco.jpg) is held in reserve and not used in the 8-photo main gallery. Full inventory in BRIEF.md."
+    "stockLookingPhotos": [
+      "assets/stock-glass-fence-pool-*.webp — Pexels photo 19889109, Pexels License (free to use, no attribution required). https://www.pexels.com/photo/19889109/. Frameless-glass-fenced backyard pool, palm trees, timber paling fence — picked to read as a Sydney backyard.",
+      "assets/stock-modern-villa-pool-*.webp — Pexels photo 8134745, Pexels License (free to use, no attribution required). https://www.pexels.com/photo/8134745/. Rectangular in-ground pool, timber deck, modern house and lawn.",
+      "assets/stock-aerial-kidney-pool-*.webp — Pexels photo 36777925, Pexels License (free to use, no attribution required). https://www.pexels.com/photo/36777925/. Aerial view of a freeform pool with an attached spa and shade sails."
+    ],
+    "photoNote": "10 real photos downloaded from gspools.com.au via img1.wsimg.com and opened one by one with the Read tool. All sharp, all real jobs, no stock, no logos-as-photos. One (assets/new-build-alfresco.jpg) is held in reserve and unused. Of the other 9, 8 are each used exactly once outside the gallery (hero, statement, aperture, owner, enquiryBackground, 3x services) and the 9th (bushland-curved-pool) is the only one left for the gallery — see the '2026-09-25 gallery rebuild' note in photoClaims and photos.stockApproved for the 3 labelled sample photos that fill the rest of the gallery."
   }
 }
