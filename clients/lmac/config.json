@@ -1,5 +1,5 @@
 {
-  "_comment": "LMAC — Lower Mountains Air Conditioning, Emu Plains NSW. Scaffolded by \"npm run new\" from https://www.lmac.com.au on 2026-09-22, then filled by hand. Every factual claim on this page is traced to a sentence on their own site or to data/google_reviews_top25.json — see clients/lmac/BRIEF.md. No prices are set anywhere: LMAC publish none, so every calculator job is quote-mode and no dollar figure is printed.",
+  "_comment": "LMAC — Lower Mountains Air Conditioning, Emu Plains NSW. Scaffolded by \"npm run new\" from https://www.lmac.com.au on 2026-09-22, reworked 2026-09-23. Every factual claim on the page is traced to a sentence stored in _source (their own site, read 2026-09-23) or to data/google_reviews_top25.json. No prices are set: LMAC publish none, so every calculator job is quote-mode. They have no photos of finished installs anywhere on their site, so the four install shots in the gallery are labelled sample photos under Pat's standing approval; hero, quote background and the two team shots are their own.",
   "slug": "lmac",
   "template": "quote",
   "industry": "air-conditioning",
@@ -42,16 +42,16 @@
     "brandMark": "Since<br>1988",
     "kicker": "Heating and cooling specialists, Emu Plains",
     "headline": "331 reviews.<br>4.8 stars.<br>Since 1988.",
-    "sub": "Andrew and Anthea Strathdee have been putting air conditioning into Penrith and Blue Mountains homes since 1988, with a showroom you can walk into and fourteen staff behind them.",
+    "sub": "Lower Mountains Air Conditioning has been operating since 1988, with a showroom in Emu Plains you can walk into. Andrew and Anthea Strathdee do the on-site quotes themselves, with a team of 14 staff behind them.",
     "anchor": "<b>4.8 out of 5 from 331 Google reviews</b> and a five-year workmanship warranty on domestic installations.",
     "ctaLabel": "Book a quote",
     "servicesTitle": "What we do",
     "servicesIntro": "Sales, installation, service and maintenance, domestic and commercial. We are dealers for six major brands, and we service any brand, even if it wasn't our installation.",
     "servicesAlso": "We're also the sole authorised stockist for Air Clean Filters in Western Sydney, and an approved supplier for the NSW Energy Savings Scheme rebate. <a class=\"link\" href=\"#faq\">How we install, in detail</a>",
-    "galleryTitle": "The people who do the work",
-    "galleryIntro": "Fourteen staff, a fleet of branded vans and a showroom in Russell Street, Emu Plains. Every photo here is theirs — no stock, no catalogue shots.",
+    "galleryTitle": "The work, and who turns up",
+    "galleryIntro": "Split systems, ducted and commercial, across Penrith and the Blue Mountains. Kurt and the office are LMAC's own photos; the install shots are marked as samples.",
     "reasonsTitle": "Why people pick LMAC",
-    "reasonsIntro": "Five things the reviews and the fine print keep coming back to.",
+    "reasonsIntro": "What the reviews and the fine print keep coming back to.",
     "reviewsTitle": "What customers say",
     "reviewsIntro": "Real Google reviews, word for word. There are 331 of them.",
     "processTitle": "How it works",
@@ -76,7 +76,7 @@
     "googleRating": 4.8,
     "reviewCount": 331,
     "yearsInBusiness": 38,
-    "_comment": "4.8 from 331 (data/google_reviews_top25.json) and 38 years (operating since 1988) are BOTH true and BOTH on the page — in the hero headline, the hero anchor and the reviews intro. They are null here on purpose: the quote template renders the counter bar inside a .dark section, but its CSS binds --fl-ink to the light-theme --fg and --fl-accent to the light-theme --btn at :root, so every label comes out #1C1F23 on a #22252A background (1.06:1) and every number comes out in the dark brand navy (1.46:1). Nothing in a client config can reach those variables. Rather than ship a half-invisible band, the bar is hidden and the numbers live in readable copy. Fix the template variables and put 4.8 / 331 / 38 straight back."
+    "_comment": "4.8 from 331 matches data/google_reviews_top25.json (\"lmac\"). 38 years = 2026 − 1988, from \"we have been operating since 1988\" (_source.aboutText). The bar renders as-is since the factory stats-layout fix."
   },
   "credentials": [
     {
@@ -86,7 +86,7 @@
     },
     {
       "kind": "licence",
-      "label": "ARCTick CFC Purchaser",
+      "label": "ARCTick (Air Conditioning Refrigeration CFC Purchaser)",
       "number": "AU 16525"
     },
     {
@@ -108,41 +108,45 @@
   "services": [
     {
       "title": "Split systems",
-      "blurb": "One room or an open living area, with or without an inverter. Wall-mounted, floor-mounted or a ceiling cassette — Andrew or Anthea works out which suits the room, where the outdoor unit can legally sit and which of the six brands makes sense. Usually installed within a day."
+      "blurb": "For one room or an open living area, with or without an inverter. Wall-mounted, floor-mounted or a ceiling cassette — the on-site consultation works out which suits, and which of the six brands. A wall-hung split can usually be installed within a day."
     },
     {
       "title": "Ducted systems",
-      "blurb": "The indoor fan coil is suspended in the roof space on perforated straps, out of sight and away from the ceiling. A zone controller gives you four or eight zones, so you are not paying to cool empty rooms. Larger systems take two days."
+      "blurb": "The indoor fan coil hangs on perforated straps in the roof cavity, to cut vibration and help drainage. A zone controller gives you up to 4 or 8 zones, so each room can be controlled on its own. A larger ducted system may take two days."
     },
     {
       "title": "Multi-split systems",
-      "blurb": "Several rooms off a single outdoor unit, each head set and scheduled on its own. This is the answer when there is no room outside for three condensers and no way to run ducting through the roof space."
+      "blurb": "When outdoor space is limited or ceiling ducting isn't feasible: several indoor units off just one outdoor unit. Each indoor unit is managed on its own, with its own settings, schedule and temperature."
     },
     {
       "title": "Service and repairs",
-      "blurb": "We service any brand, even if it wasn't our installation — filters, gas, drains, controllers, the lot. Seniors get 10% off general servicing. That's the service itself, not parts or repairs. After-hours service is available."
+      "blurb": "We service any brand, even if it wasn't our installation, and you get a written report on any service or repair. Seniors get 10% off general servicing — the service itself, not parts or repairs. After-hours service is available."
     }
   ],
   "reasons": [
     {
       "title": "You can walk in and look at it",
-      "body": "There's a showroom in Russell Street, Emu Plains. Come in, talk through the options and ask whatever you like. Nobody will chase you out."
+      "body": "There's a showroom in Russell Street, Emu Plains. Come in, talk through the options and ask any questions you have."
     },
     {
       "title": "Andrew or Anthea quotes it",
-      "body": "The two owners do the on-site sales and quotations themselves. Andrew is a qualified electrician and refrigeration technician, so the person pricing it is the person who knows what it takes."
+      "body": "The two owners do the on-site sales and quotations themselves. Andrew is a qualified electrician and an experienced refrigeration, air conditioning and electrical technician."
+    },
+    {
+      "title": "Licensed for the whole job",
+      "body": "Contractor Licence 127921C, ARCTick CFC Purchaser AU 16525, ARCTick Handling Licence L008697 and Austel Licence 16079. The electrical side is done by their own Strathdee Electrical, Lic. 127921C."
     },
     {
       "title": "Five years on the workmanship",
-      "body": "Five years' workmanship warranty on domestic installations, twelve months on commercial, on top of the manufacturer's five-year parts and labour. It stays valid as long as we do the yearly general maintenance."
+      "body": "Five years' workmanship warranty on domestic installations, 12 months on commercial, on top of the manufacturer's five years on parts and labour. It stays valid as long as our technicians do the yearly general maintenance."
     },
     {
-      "title": "We'll fix a unit we didn't install",
-      "body": "We service any brand, even if it wasn't our installation. Plenty of our service work started as somebody else's job."
+      "title": "We'll look at a unit we didn't install",
+      "body": "We service any brand, even if it wasn't our installation. The service team assesses any system, third-party installs included, and if parts are needed you get a written quote by email to approve first."
     },
     {
       "title": "Where it goes matters",
-      "body": "Customers tell us we “problem solved the best way to install them in a way that was aesthetic to the house”. Pipe and wiring down an outside wall gets encased and colour-matched to your downpipe."
+      "body": "One customer put it this way: “…They problem solved the best way to install them in a way that was aesthetic to the house.” Pipe and wiring down an outside wall are encased in colour bonding, matched as close as possible to your downpipe or wall colour."
     }
   ],
   "process": [
@@ -152,11 +156,11 @@
     },
     {
       "step": "Andrew or Anthea comes and quotes",
-      "detail": "On site, and they'll talk through where the indoor and outdoor units should go, what size the room needs and whether you qualify for the NSW Energy Savings Scheme rebate."
+      "detail": "On site. They'll talk through where the indoor and outdoor units should go, which system suits, and the NSW Energy Savings Scheme rebate — every residential property is eligible."
     },
     {
       "step": "The team installs it",
-      "detail": "A wall-hung split or a small ducted system is usually a day; a larger ducted system can take two. The old system goes with us, and the site gets a proper clean-up."
+      "detail": "A wall-hung split or a small ducted system can usually be installed within a day; a larger ducted system may take two. Old systems are removed and disposed of, and the site gets a thorough clean-up."
     }
   ],
   "serviceAreas": [
@@ -229,26 +233,42 @@
       "alt": "The Lower Mountains Air Conditioning team lined up in front of five branded vans outside their Emu Plains showroom"
     },
     "quoteBackground": {
-      "src": "assets/team-2025-1600.webp",
+      "src": "assets/owners-showroom-1600.webp",
       "width": 1600,
-      "height": 973
+      "height": 1099
     },
     "gallery": [
       {
-        "src": "assets/team-2025-800.webp",
-        "full": "assets/team-2025-1600.webp",
-        "width": 800,
-        "height": 486,
-        "caption": "The whole team",
-        "alt": "The Lower Mountains Air Conditioning team standing in front of four branded vans at the Emu Plains showroom"
-      },
-      {
-        "src": "assets/andrew-800.webp",
-        "full": "assets/andrew-1600.webp",
+        "src": "assets/kurt-800.webp",
+        "full": "assets/kurt-1600.webp",
         "width": 800,
         "height": 513,
-        "caption": "Andrew, director and sales",
-        "alt": "Andrew Strathdee, director of Lower Mountains Air Conditioning, in front of a company van"
+        "caption": "Kurt, refrigeration and service technician",
+        "alt": "Kurt, refrigeration and service technician at Lower Mountains Air Conditioning, in front of a company van"
+      },
+      {
+        "src": "assets/sample-roof-condenser-800.webp",
+        "full": "assets/sample-roof-condenser-1600.webp",
+        "width": 800,
+        "height": 600,
+        "caption": "Outdoor unit on a metal roof",
+        "alt": "Sample photo: an air conditioner outdoor unit on a steel frame on a corrugated metal roof, pipework running to it, blue sky behind",
+        "sample": true,
+        "license": "CC0 1.0",
+        "sourceUrl": "https://wordpress.org/photos/photo/27469e3ea0/",
+        "credit": "Dylan Espinoza Pereira, WordPress Photo Directory"
+      },
+      {
+        "src": "assets/sample-brick-outdoor-unit-800.webp",
+        "full": "assets/sample-brick-outdoor-unit-1024.webp",
+        "width": 800,
+        "height": 530,
+        "caption": "Split system outdoor unit, brick house",
+        "alt": "Sample photo: a split system outdoor unit on wall brackets against a brick house, river pebbles below",
+        "sample": true,
+        "license": "CC0 1.0",
+        "sourceUrl": "https://www.flickr.com/photos/29155878@N03/26869601272",
+        "credit": "Open Grid Scheduler / Grid Engine, Flickr"
       },
       {
         "src": "assets/office-team-800.webp",
@@ -259,58 +279,47 @@
         "alt": "Four Lower Mountains Air Conditioning office staff in branded navy shirts outside the showroom"
       },
       {
-        "src": "assets/owners-showroom-800.webp",
-        "full": "assets/owners-showroom-1600.webp",
+        "src": "assets/sample-daikin-outdoor-800.webp",
+        "full": "assets/sample-daikin-outdoor-1600.webp",
         "width": 800,
-        "height": 550,
-        "caption": "Andrew and Anthea at the shop",
-        "alt": "Andrew and Anthea Strathdee beside a branded van outside the Russell Street showroom, the window sign listing sales, installation, service, ducted and split systems"
+        "height": 600,
+        "caption": "Daikin inverter outdoor unit, autumn leaves",
+        "alt": "Sample photo: a tall Daikin inverter outdoor unit with two fans on brackets beside a rendered wall, autumn leaves on the ground",
+        "sample": true,
+        "license": "CC0 1.0",
+        "sourceUrl": "https://commons.wikimedia.org/w/index.php?curid=133257891",
+        "credit": "Pedalito, Wikimedia Commons"
       },
       {
-        "src": "assets/anthea-800.webp",
-        "full": "assets/anthea-1600.webp",
+        "src": "assets/sample-commercial-condensers-800.webp",
+        "full": "assets/sample-commercial-condensers-1024.webp",
         "width": 800,
-        "height": 544,
-        "caption": "Anthea, sales and accounts",
-        "alt": "Anthea Strathdee of Lower Mountains Air Conditioning in front of a company van"
-      },
-      {
-        "src": "assets/kurt-800.webp",
-        "full": "assets/kurt-1600.webp",
-        "width": 800,
-        "height": 513,
-        "caption": "Kurt, refrigeration and service",
-        "alt": "Kurt, refrigeration and service technician at Lower Mountains Air Conditioning, in front of a company van"
-      },
-      {
-        "src": "assets/trevor-800.webp",
-        "full": "assets/trevor-1600.webp",
-        "width": 800,
-        "height": 529,
-        "caption": "Trevor, refrigeration and service",
-        "alt": "Trevor, refrigeration and service tradesman at Lower Mountains Air Conditioning, in front of a company van"
-      },
-      {
-        "src": "assets/owners-vans-800.webp",
-        "full": "assets/owners-vans-1366.webp",
-        "width": 800,
-        "height": 534,
-        "caption": "Outside the Russell Street showroom",
-        "alt": "Andrew and Anthea Strathdee between two company vans under the Lower Mountains Air Conditioning showroom sign"
+        "height": 530,
+        "caption": "Commercial job: a row of outdoor units",
+        "alt": "Sample photo: four wall-mounted Fujitsu outdoor units in a row on a commercial building",
+        "sample": true,
+        "license": "CC0 1.0",
+        "sourceUrl": "https://www.flickr.com/photos/29155878@N03/22130133899",
+        "credit": "Open Grid Scheduler / Grid Engine, Flickr"
       }
-    ]
+    ],
+    "stockApproved": {
+      "by": "Pat (standing approval)",
+      "on": "2026-09-23",
+      "reason": "LMAC have no photos of a finished installation anywhere on lmac.com.au (all 478 media items checked; the suburb-page images are stock/AI renders licensed to nobody useful). Four labelled CC0 samples stand in until Andrew sends job photos."
+    }
   },
   "calculator": {
     "_comment": "Every job is mode 'quote', so not one dollar figure is printed anywhere. LMAC publish no prices — not per kW, not per system, not for ducted — and nothing here is invented. Give Andrew's ranges to whoever builds v2 and these become per-unit jobs with real numbers.",
     "heading": "What will it cost?",
-    "intro": "Honestly, it depends — on the room, the system, the run of the pipe and what rebate it attracts. So Andrew or Anthea comes out, measures up and puts the price in writing before anything is ordered. Pick the job below and we'll start there.",
+    "intro": "It depends on the room, the system, the run of the pipe and what rebate it attracts. So Andrew or Anthea comes out, measures up and gives you a written quotation to accept. Pick the job below and we'll start there.",
     "jobLabel": "What's the job?",
     "fine": "",
     "included": [
       "Five-year workmanship warranty",
-      "Old system taken away",
+      "Old system removed and disposed of",
       "Six brands to choose from",
-      "Fully insured",
+      "Comprehensive insurance cover",
       "Licence 127921C"
     ],
     "jobs": [
@@ -319,7 +328,7 @@
         "label": "Split system",
         "sub": "One room",
         "mode": "quote",
-        "formService": "Split system",
+        "formService": "Split systems",
         "quoteEyebrow": "Priced on site, in writing",
         "quoteLabel": "Book a quote",
         "note": "Wall-mounted, floor-mounted or a ceiling cassette. <b>Usually installed within a day.</b>"
@@ -329,20 +338,20 @@
         "label": "Multi-split",
         "sub": "A few rooms, one outdoor unit",
         "mode": "quote",
-        "formService": "Multi-split system",
+        "formService": "Multi-split systems",
         "quoteEyebrow": "Priced on site, in writing",
         "quoteLabel": "Book a quote",
-        "note": "Several heads off one outdoor unit, each controlled on its own. <b>The answer when there's no room outside.</b>"
+        "note": "Several indoor units off one outdoor unit, each controlled on its own. <b>For when outdoor space is limited.</b>"
       },
       {
         "id": "ducted",
         "label": "Ducted",
         "sub": "Whole house, zoned",
         "mode": "quote",
-        "formService": "Ducted system",
+        "formService": "Ducted systems",
         "quoteEyebrow": "Priced on site, in writing",
         "quoteLabel": "Book a quote",
-        "note": "Indoor unit up in the roof space, four or eight zones on the controller. <b>A larger ducted system can take two days.</b>"
+        "note": "Indoor unit up in the roof cavity, up to 4 or 8 zones on the controller. <b>A larger ducted system may take two days.</b>"
       },
       {
         "id": "service",
@@ -374,8 +383,9 @@
     },
     {
       "name": "Philippa Micallef",
-      "text": "I recently had Lower Mountains Air Conditioning install three fixed units in my mountains home . They problem solved the best way to install them in a way that was aesthetic to the house . …",
-      "shortened": true
+      "text": "I recently had Lower Mountains Air Conditioning install three fixed units in my mountains home . They problem solved the best way to install them in a way that was aesthetic to the house .",
+      "shortened": true,
+      "source": "Google review, shortened"
     },
     {
       "name": "Robert Ogilvie-Mitchell",
@@ -383,22 +393,27 @@
     },
     {
       "name": "Greg Court",
-      "text": "The team at Lower Mountains Air Conditioning were very helpful in all aspects in the replacement of our ageing A/C. …",
-      "shortened": true
+      "text": "The team at Lower Mountains Air Conditioning were very helpful in all aspects in the replacement of our ageing A/C.",
+      "shortened": true,
+      "source": "Google review, shortened"
     }
   ],
   "faq": [
     {
       "q": "Will you service a system you didn't install?",
-      "a": "Yes. We service any brand, even if it wasn't our installation. You get a written report on any service or repair, and if parts are needed we email you a written quote for your approval before we go ahead."
+      "a": "Yes. We service any brand, even if it wasn't our installation. You get a written report on any service or repair, and if parts are needed we email you a written quote for your approval."
     },
     {
       "q": "Which brands do you sell?",
       "a": "We're dealers for six major brands: Mitsubishi Electric, Panasonic, LG, Daikin, Actron Air and Braemar. Which one suits you depends on the room, the budget and what rebate the system attracts — come and see them in the showroom."
     },
     {
+      "q": "What licences do you hold?",
+      "a": "Contractor Licence No. 127921C; ARCTick (Air Conditioning Refrigeration CFC Purchaser) AU 16525; ARCTick Handling Licence No. L008697; and Austel Licence No. 16079. We're dealers for six major brands — Mitsubishi Electric, Panasonic, LG, Daikin, Actron Air and Braemar — and the sole authorised stockist for Air Clean Filters in Western Sydney."
+    },
+    {
       "q": "How long does an installation take?",
-      "a": "As a guide, a wall-hung split system or a small ducted unit is usually in within a day. A larger ducted system can take two. Weather and the state of the roof space can move that, and we'll tell you at the quote, not afterwards."
+      "a": "As a guide, a wall-hung split system or a small ducted unit can usually be installed within a day; a larger ducted system may take two. That depends on local weather, and it covers electrical work from the unit to the switchboard only — it excludes a power upgrade. We'll advise the estimated time on your quotation."
     },
     {
       "q": "What warranty do I get?",
@@ -406,27 +421,27 @@
     },
     {
       "q": "Is there a rebate?",
-      "a": "The NSW Energy Savings Scheme gives homeowners a cash rebate on energy-efficient air conditioners, with no income threshold, and LMAC is an approved supplier for the scheme in the Penrith and Blue Mountains area. What comes back depends on the brand, the size of the system, whether it's new or a replacement, and your suburb's climate zone."
+      "a": "Yes. Through the NSW Energy Savings Scheme the NSW Government gives homeowners a cash rebate for installing energy-efficient air conditioners. All residential properties are eligible, with no income threshold, and LMAC is an approved supplier for the scheme in the Penrith and Blue Mountains area. The amount depends on four things: the brand, the size of the system, whether it's a new installation or a replacement, and your suburb's climate zone."
     },
     {
       "q": "Who does the electrical work?",
-      "a": "Strathdee Electrical Pty Ltd, Licence 127921C. Andrew and Anthea own that too — a family business handed down from Andrew's grandfather since 1956. It covers the electrical controls, the wiring between the indoor and outdoor units, and the sub-mains from the unit back to your switchboard."
+      "a": "Strathdee Electrical Pty Ltd, Lic. 127921C. That covers all the electrical controls, the interconnecting wiring between the indoor and outdoor units, and the electrical sub-mains from the air conditioner to your switchboard. Andrew and Anthea own Strathdee Electrical too — a family business now in its third generation, handed down from Andrew's grandfather since 1956."
     },
     {
       "q": "What pipe do you run, and will I see it?",
-      "a": "Refrigeration-grade copper that meets both the manufacturer's standard and Australian Standard AS1571, with the suction and liquid lines both insulated. Where pipe and wiring run down an outside wall they're encased in colour bonding, matched as close as we can to your existing downpipe or wall colour."
+      "a": "Quality refrigeration-grade copper that complies with both the manufacturer's standards and Australian Standard AS1571, with the suction and liquid lines both insulated. Where pipe and wiring run down an outside wall they're encased in colour bonding insulation, matched as close as possible to your existing downpipe or wall colour."
     },
     {
       "q": "Where does the outdoor unit go?",
-      "a": "On a poly slab beside the building, with about 100mm of breathing space behind it. Council rules and the Noise Pollution Act have a say in where it can sit, so we recommend the spot and the final call is yours. Reviewers say we “problem solved the best way to install them in a way that was aesthetic to the house”."
+      "a": "Next to the building, mounted on a poly slab, with about 100mm (4\") of breathing space behind it. Council regulations and the Noise Pollution Act make the final location critical, so we take care with the recommendation — and the final decision is yours."
     },
     {
       "q": "What happens if the drain ever blocks?",
-      "a": "Condensate normally runs out through PVC into the roof gutter. We also fit a galvanised drip tray under the indoor fan coil that drains separately through the eaves. So if a drain ever blocks you see water at the eaves, usually near the front door, instead of through your ceiling. If you see that, ring us without delay."
+      "a": "Condensate from the indoor fan coil runs out through a PVC drain into the roof gutter. As a safety measure we fit a galvanised drip tray under the fan coil that drains separately through the eaves, usually near the front entrance. If you ever see water coming out of that eaves drain, the main drain is blocked — call for service without delay to avoid possible ceiling damage."
     },
     {
       "q": "Can I come and see the units first?",
-      "a": "Please do. The showroom is at Unit 2/129 Russell St, Emu Plains, open Monday to Friday 8:30am to 4:30pm. Come in and ask whatever you like — that's what it's there for."
+      "a": "Please do. The showroom is at Unit 2/129 Russell St, Emu Plains, open Monday to Friday 8:30am to 4:30pm. Come in to discuss options and ask any questions you have."
     },
     {
       "q": "Is there a discount for seniors?",
@@ -455,10 +470,14 @@
       "award": "Local Business Awards medallion captioned 'Finalist 2024' on the home page",
       "seniors": "10% discount applies for general servicing only (Does not apply to parts required and/or repairs). Available only for seniors",
       "teamPage": "'Anthea and Andrew Strathdee'; 'Andrew — Director / Sales Consultant'; 'Anthea — Admin / Sales consultant / Accounts / Payroll'",
-      "installation": "Electrical work is carried out by Strathdee Electrical Pty. Ltd Lic. 127921C. / We use quality refrigeration-grade copper piping to comply with both the manufacturer's standards and Australian standard AS1571. Both the suction and liquid refrigeration pipes will be insulated with industry-approved insulation. / Copper piping and electrical wiring running down external walls are encased in colour bonding insulation, where the colour is matched as close as possible to your existing down pipe or wall colour. / Rest assured, our installation adheres to all necessary standards, comes with comprehensive insurance coverage, and includes a thorough cleanup with removal and disposal of any old systems. / Small ducted air conditioning units OR wall-hung split systems can usually be installed within a day; larger ducted system may require two days. / The outdoor condenser will be located adjacent to the building mounted on a poly slab. We allow suitable 'breathing' space of approximately 100mm (4\") behind this unit. / As a safety measure we will install a galvanised drip tray beneath the fan coil which will drain separately through the eaves.",
       "ducted": "Upgrading to a zone controller gives the option of up to 4 or 8 zones, to provide control to different rooms of the home.",
       "airCleanFilters": "We are the sole authorised stockist for Air Clean Filters in Western Sydney. These high-efficiency G4, V-pleat disposable filters keep your unit clean… They are 25mm thick.",
-      "ess": "LMAC is approved supplier for this scheme in the Penrith and Blue Mountains area. / All residential properties are eligible for this opportunity, with no income threshold to consider. / Four Factors to Determine Rebate Amount: 1) Brand of system 2) Size/capacity of system 3) New installation or upgrade/replacement 4) Climate zone (suburb)"
+      "ess": "In collaboration with the Energy Savings Scheme (ESS), the New South Wales Government is providing homeowners with a cash rebate for installing energy-efficient air conditioners. All residential properties are eligible for this opportunity, with no income threshold to consider. / LMAC is approved supplier for this scheme in the Penrith and Blue Mountains area. / Four Factors to Determine Rebate Amount: 1) Brand of system 2) Size/capacity of system 3) New installation or upgrade/replacement 4) Climate zone (suburb)",
+      "showroom": "Please feel welcome to come visit our showroom to discuss options and ask any questions you may have.",
+      "splitSystems": "Split System air conditioners have emerged as frontrunners for cooling or heating individual rooms and open spaces, homes or offices. With or without inverters, these systems are ideal for precise and flexible temperature control without excessive energy consumption, keeping a room comfortable as per the outside climate and saving you money. It is designed to fit seamlessly with an indoor unit that is usually wall-mounted and an outdoor condenser unit. Whether you prefer a wall-mounted unit, a floor-mounted unit, or a ceiling cassette, our on-site professional consultation will help you decide on an ideal Split System option to suit your needs.",
+      "multiSplit": "When outdoor space is limited or ceiling ducting is not feasible, multi-split air conditioners provide efficient cooling and heating for homes, offices, or multiple rooms while relying on just one outdoor unit. This design saves outdoor space and simplifies installation. What makes multisplit systems shine is their control capabilities. Each indoor unit can be managed independently, allowing you to customise settings, create schedules, and set the desired room temperature for each space.",
+      "dealers": "We are proud to be dealers of six major brands: Mitsubishi Electric, Panasonic, LG, Daikin, Actron Air and Braemar. (home page) / We are specialized in sales, installation and service of 6 major brands (ducted-systems page)",
+      "teamPhotos": "Meet Our Team page flip-boxes: 'Kurt — Refrigeration/Service Technician' uses wp-content/uploads/2025/04/kurt.jpg (the same photo as assets/kurt-*.webp, compared by eye 2026-09-23)."
     },
     "socials": {
       "facebook": "https://www.facebook.com/lowermountainsairconditioning/"
@@ -484,7 +503,56 @@
         "Please note that the workmanship warranty remains valid only if our technicians perform yearly general maintenance on the unit.",
         "Ductwork & Fittings: National Air Parts comes with a 20-year warranty that covers all R1.0/R1.5 flexible ducting against manufacturing defects and the breakdown of materials through natural aging.",
         "From the installation date, we will send an Annual Maintenance Letter to you, where you can have your maintenance call out at a discounted rate for your ongoing loyalty."
+      ],
+      "text": [
+        "Rest assured, our installation adheres to all necessary standards, comes with comprehensive insurance coverage, and includes a thorough cleanup with removal and disposal of any old systems.",
+        "Electrical work is carried out by Strathdee Electrical Pty. Ltd Lic. 127921C.",
+        "This includes the installation of all electrical controls, interconnecting wiring between the indoor and outdoor units and installation of electrical sub mains connecting the air conditioning unit to the domestic switchboard.",
+        "We use quality refrigeration-grade copper piping to comply with both the manufacturer’s standards and Australian standard AS1571. Both the suction and liquid refrigeration pipes will be insulated with industry-approved insulation.",
+        "Copper piping and electrical wiring running down external walls are encased in colour bonding insulation, where the colour is matched as close as possible to your existing down pipe or wall colour.",
+        "The indoor fan coil will be suspended by perforated straps within the roof cavity to minimise structural vibration and facilitate drainage.",
+        "The outdoor condenser will be located adjacent to the building mounted on a poly slab. We allow suitable “breathing” space of approximately 100mm (4″) behind this unit.",
+        "*Please Note: Due to varying council regulations and the Noise Pollution Act the final location of the unit is critical. Whilst all care is taken with a recommendation, the final decision is yours.",
+        "Condensate water from the indoor fan coil unit will be disposed via a PVC drain terminating in the roof gutter. As a safety measure (in the event of this drain becoming blocked) we will install a galvanised drip tray beneath the fan coil which will drain separately through the eaves. (Usually near the front entrance)",
+        "*Please Note: If water is visible through the eaves drain, it indicates that the main drain is blocked and you need to call for service without delay to avoid possible ceiling damage.",
+        "Small ducted air conditioning units OR wall-hung split systems can usually be installed within a day; larger ducted system may require two days.",
+        "N.B: The above guidelines depend upon local weather conditions and only include electrical work from the unit to the switch board (excludes power upgrade). Please refer to your individual quotation when accepting. We will advise you of estimated time required.",
+        "Upon completion of your installation, our technicians will conduct a comprehensive test and start-up procedure that will ensure your system is operating at peak performance from day one and for many days to come.",
+        "We have highly experienced and full time service team we assess any system even third party installations provide professional written report during any service/repair if parts required we provide written quote on email for your approval."
       ]
+    },
+    "samplePhotos": [
+      {
+        "file": "assets/sample-roof-condenser-*.webp",
+        "sourceUrl": "https://wordpress.org/photos/photo/27469e3ea0/",
+        "license": "CC0 1.0",
+        "via": "Openverse"
+      },
+      {
+        "file": "assets/sample-brick-outdoor-unit-*.webp",
+        "sourceUrl": "https://www.flickr.com/photos/29155878@N03/26869601272",
+        "license": "CC0 1.0",
+        "via": "Openverse"
+      },
+      {
+        "file": "assets/sample-daikin-outdoor-*.webp",
+        "sourceUrl": "https://commons.wikimedia.org/w/index.php?curid=133257891",
+        "license": "CC0 1.0",
+        "via": "Openverse"
+      },
+      {
+        "file": "assets/sample-commercial-condensers-*.webp",
+        "sourceUrl": "https://www.flickr.com/photos/29155878@N03/22130133899",
+        "license": "CC0 1.0",
+        "via": "Openverse"
+      }
+    ]
+  },
+  "trustClaims": [
+    {
+      "value": "4",
+      "label": "Trade licences",
+      "sub": "Contractor Lic. 127921C"
     }
-  }
+  ]
 }

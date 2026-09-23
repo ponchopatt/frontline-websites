@@ -67,14 +67,14 @@
     "workHeadline": "Finished yards,<br>Engadine to Kiama.",
     "workIntro": "From our own portfolio and before-and-after pages: Engadine, Figtree, Flinders, Thirroul, Kiama and Wollongong.",
     "processLabel": "How it runs",
-    "processHeadline": "Five steps,<br>in our order.",
+    "processHeadline": "Design stage<br>to completion.",
     "processIntro": "The process off our design page. It starts with understanding your vision and setting out the scope of work, with a professionally presented quote.",
     "ownerLabel": "Who you are dealing with",
     "reviewsTitle": "What customers say.",
     "reviewsIntro": "From their Google profile, in the customers' own words. Longer reviews are shortened, and marked where they are.",
     "recognitionLabel": "Supplier",
-    "recognitionHeadline": "Our irrigation<br>supplier.",
-    "recognitionIntro": "We are a preferred supplier of Reece Irrigation.",
+    "recognitionHeadline": "The irrigation<br>side.",
+    "recognitionIntro": "Types of irrigation we specialise in: automatic systems, driplines and SMART systems such as SkyDrop.",
     "areasLabel": "Where we work",
     "areasHeadline": "The Illawarra,<br>Thirroul to Shell Cove.",
     "areasIntro": "Based in Dapto. The portfolio runs from Kiama in the south to Engadine in the north.",
@@ -82,7 +82,7 @@
     "faqHeadline": "Questions we get asked.",
     "enquireLabel": "Get a quote",
     "enquireHeadline": "Tell us about<br>the yard.",
-    "enquireIntro": "Tell us the suburb, what the yard is doing now, what you need from it and what you want from it. We look forward to hearing from you."
+    "enquireIntro": "Tell us the suburb, what the yard is doing now, what you need from it and what you want from it."
   },
   "stats": {
     "googleRating": 4.8,
@@ -110,7 +110,7 @@
     {
       "kind": "supplier",
       "label": "Reece Irrigation preferred supplier",
-      "body": "Automatic systems, driplines and SMART irrigation such as SkyDrop, which connects to your home wifi so you can run it from your own lounge.",
+      "body": "SMART systems connect to your home wifi, so you can control the watering from your own lounge.",
       "strip": true
     }
   ],
@@ -123,15 +123,36 @@
   "services": [
     {
       "title": "Design",
-      "blurb": "A stylish but functional outdoor space that reflects your family. A consultation first, then a concept and quote, then the detailed design."
+      "blurb": "A stylish but functional outdoor space that reflects your family. A consultation first, then a concept and quote, then the detailed design.",
+      "photo": {
+        "src": "assets/shellcove-pool-680.webp",
+        "srcset": "assets/shellcove-pool-480.webp 480w, assets/shellcove-pool-680.webp 680w",
+        "width": 680,
+        "height": 720,
+        "alt": "A pool at a Shell Cove home: glass pool fencing, pale coping and paving around the pool, and a block retaining wall with new planting behind it"
+      }
     },
     {
       "title": "Construction",
-      "blurb": "Masonry and timber retaining walls, excavation, drainage, paving, pool coping and surrounds, decks, concreting, levelling and turfing, water features."
+      "blurb": "Masonry and timber retaining walls, excavation, drainage, paving, pool coping and surrounds, decks, concreting, levelling and turfing, water features.",
+      "photo": {
+        "src": "assets/wongawilli-wall-750.webp",
+        "srcset": "assets/wongawilli-wall-480.webp 480w, assets/wongawilli-wall-750.webp 750w",
+        "width": 750,
+        "height": 744,
+        "alt": "Two tiers of large concrete retaining wall along a front yard in Wongawilli, with a lawn terrace between them and a concrete path beside a mulched bed"
+      }
     },
     {
       "title": "Irrigation & upkeep",
-      "blurb": "Automatic systems, driplines and SMART irrigation such as SkyDrop, run over your home wifi. Then lawn mowing, weeding and pruning, mulching, fertilising and aeration."
+      "blurb": "Automatic systems, driplines and SMART irrigation such as SkyDrop, run over your home wifi. Then lawn mowing, weeding and pruning, mulching, fertilising and aeration.",
+      "photo": {
+        "src": "assets/horsley-pool-750.webp",
+        "srcset": "assets/horsley-pool-480.webp 480w, assets/horsley-pool-750.webp 750w",
+        "width": 750,
+        "height": 744,
+        "alt": "Pool surrounds at a Horsley home: pale paving around the pool, a lawn, a slatted screen and a garden bed edged in charcoal blocks"
+      }
     }
   ],
   "process": [
@@ -148,12 +169,8 @@
       "detail": "The concept worked up into the detailed design."
     },
     {
-      "step": "Construction & installation",
-      "detail": "Where we bring your vision to life: retaining walls, excavation, drainage, paving, decks, concreting, levelling and turfing, planting and irrigation."
-    },
-    {
-      "step": "Client handover",
-      "detail": "The finished yard handed back to you. Maintenance after that if you want it."
+      "step": "Construction & handover",
+      "detail": "Where we bring your vision to life: retaining walls, excavation, drainage, paving, decks, concreting, levelling and turfing, planting and irrigation. Then the client handover, and maintenance after that if you want it."
     }
   ],
   "serviceAreas": [
@@ -250,14 +267,14 @@
         "alt": "A boulder wall below a charcoal concrete driveway and a new single-storey home in Kiama, with a strip of young plants along the drive and lawn to the side"
       },
       {
-        "src": "assets/wollongong-timberwall-800.webp",
-        "full": "assets/wollongong-timberwall-1000.webp",
-        "srcset": "assets/wollongong-timberwall-480.webp 480w, assets/wollongong-timberwall-800.webp 800w, assets/wollongong-timberwall-1000.webp 1000w",
-        "width": 1000,
-        "height": 667,
-        "caption": "Timber Retaining Wall, Wollongong",
-        "detail": "Timber retaining wall",
-        "alt": "A long timber retaining wall along a street frontage in Wollongong, with lawn in front of it and established garden on the slope above"
+        "src": "assets/wollongong-firepit-712.webp",
+        "full": "assets/wollongong-firepit-712.webp",
+        "srcset": "assets/wollongong-firepit-480.webp 480w, assets/wollongong-firepit-712.webp 712w",
+        "width": 712,
+        "height": 475,
+        "caption": "Retaining Walls, Turfing & Fire Pit, Wollongong",
+        "detail": "Block retaining walls, lawn, sunken fire pit",
+        "alt": "A Wollongong backyard: tiered lawn, block retaining walls with steps up to the house, and a sunken fire pit set in gravel"
       }
     ]
   },

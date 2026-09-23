@@ -32,7 +32,7 @@ renovation has left as bare dirt.
   (they name SkyDrop).
 - **Job size:** whole-yard jobs, not garden tidy-ups. Their published projects are complete
   front-and-back landscapes: Besser Block and Tasman Block retaining walls, coloured concrete
-  driveways, granite and Himalayan Sandstone pool surrounds, cobblestone paths, merbau
+  driveways, granite and Himalayan Sandstone pool surrounds, cobblestone paths, hardwood
   decking and bench seats, Matilda Buffalo turf, SMART irrigation. No prices published
   anywhere. **No price is shown on the demo.**
 
@@ -99,73 +99,106 @@ Read these in order; the first one is the call.
 
 ## Photo inventory
 
-**Source:** their own WordPress media library and the eight project pages under /portfolio/,
-pulled through the challenge with headless Chromium. 252 files downloaded, 148 at 700px or
-wider. Every candidate below was opened and looked at, not judged on its filename.
+**Source:** their own WordPress media library, the eight project pages under /portfolio/ and
+the /before-after/ page, pulled through the SiteGround challenge with headless Chromium. Every
+candidate was opened and looked at, not judged on its filename. Captions use the project name
+their own site gives each job; suburbs come only from their own page titles. Materials are
+named only where their project text names them; everything else describes what is visible.
 
-**Ceiling on size:** their largest professional photographs are 1500px wide. The only images
-wider than 1600px are phone snaps of jobs in progress (see rejects). **The hero is therefore
-1500px, not the 1600px the bar asks for — flagged.** It is sharp at that size and the demo
-never asks it to render wider than 1500.
+**Ceiling on size:** their largest professional photographs are 1500px wide. **The hero is
+1500px, not the 1600px the bar asks for — flagged.** It is sharp at that size.
 
-### Used — hero
+### Frames grouped by property
 
-| File | Source | Size | What it shows |
-|---|---|---|---|
-| `dapto-poolside-1500.webp` | SCL_230PrincessHwyDapto_IMG_2794.jpg | 1500×1000 | **HERO.** Relaxing Poolside, Dapto. Granite pool coping and paving, frameless glass fence, river-pebble drainage strip, charcoal Tasman Block garden bed, timber pergola and merbau deck behind, turf to the left. Professional shoot, sharp, late afternoon light. |
+Each block is one property (one job). Frames in the same block are the same yard.
 
-### Used — gallery (6)
+| Property (their page) | Frames on file | Notes |
+|---|---|---|
+| **P1 · Relaxing Poolside, Dapto** (/relaxing-poolside/) — 230 Princess Hwy | `dapto-poolside` (IMG_2794), `dapto-stonewall` (IMG_2784), `dapto-pergola` | Pro shoot, 1500px. Their text: granite tile pool coping and paving, Charcoal Tasman Block beds, sandstone-faced raised beds and feature wall. |
+| **P2 · Hampton Style, Port Kembla** (/hampton-style/) — 207 Wentworth | `portkembla-front` (049), `portkembla-entry` (056), `portkembla-wall` (057), `portkembla-bench` (077) | Pro shoot. Their text: reinforced Besser Block wall faced with sandstone stackstone, cobblestone path gate to front decking, hardwood bench seat. **Four frames, one job — only one may be on the page.** |
+| **P3 · Modern Living, Figtree** (/modern-living/) — 55 Redgum | `figtree-turf` (003), `figtree-sprinkler` (007) | Pro shoot. Their text: front and back Besser Block retaining walls, coloured concrete driveway, tropical plants, Matilda Buffalo, SMART irrigation. |
+| **P4 · Suburban Living, Flinders** (/suburban-living/) — 1 Elizabeth | `flinders-curve` (003) | Pro shoot. Their text: curved Tasman Block retaining wall, Matilda Buffalo, mulch. |
+| **P5 · Wollongong Living Walls, Thirroul** (/wollongong-living-walls/) | `thirroul-growwall` (13), `thirroul-courtyard` (25) | Pro shoot. Their text: brick retaining wall between paving and lawn, three succulent grow walls, SkyDrop, Matilda Buffalo. |
+| **P6 · Backyard Centrepiece, Engadine** (/backyard-centrepiece/) | `engadine-pool` (IMG_8295) | Pro shoot, 1500×1000. Not in the first inventory. Their text: Himalayan Sandstone pool coping and paving, tropical plants, Riverstone pebbles. |
+| **P7 · Country Ambiance, Kiama** (/country-ambiance/) | `kiama-boulder` (fixed-height.jpg, 1161×871, cropped 3:2 to 1161×774 off the sky) | Their text: sandstone boulder wall, long coloured concrete driveway and paths. |
+| **P8 · Retaining Walls, turfing, planting and fire pit, Wollongong** (/before-after/, "after" frame) | `wollongong-firepit` (image8.jpg, 800×475, cropped 3:2 to 712×475) | Their alt text: "Backyard Fire Pit". |
+| **P9 · Front Yard Concrete Sleeper Retaining Wall, Wongawilli** (/before-after/, "after") | `wongawilli-wall` (IMG_0175, 750×744) | Their alt: "After Photo Concrete Retaining Wall". Phone photo. |
+| **P10 · Pool Surrounds, Horsley** (/before-after/, "after") | `horsley-pool` (IMG_0179, 750×744) | Their alt: "After - Pool Surrounds Horsley". Phone photo. |
+| **P11 · Retaining Wall, pool coping and paving and pool fencing, Shell Cove** (/before-after/, "after") | `shellcove-pool` (IMG_0843-2, 1000×750, cropped to 680×720 to lose a hose and a pool toy at the left edge) | Phone photo. |
 
-| File | Source | Size | What it shows |
-|---|---|---|---|
-| `dapto-poolside-*` | IMG_2794 | 1500×1000 | Dapto: pool surrounds in granite tile, glass fence, pebble strip, Tasman Block beds. |
-| `portkembla-wall-*` | SCL_207Wentworth_057_low.jpg | 1500×1000 | Port Kembla: reinforced Besser Block retaining wall faced in sandstone stackstone with a hardwood bench seat built into it, turf and cobblestone edge. |
-| `portkembla-entry-*` | SCL_207Wentworth_056_low.jpg | 1500×1000 | Port Kembla: the finished Hamptons front — cobblestone path from the gate to the front decking, white picket fence, raised stone beds, turf. |
-| `flinders-curve-*` | SCLandscape_1Elizabeth_003.jpg | 1500×1000 | Flinders: curved Tasman Block retaining wall wrapping the front of a new two-storey home, mulched beds, Matilda Buffalo turf. |
-| `figtree-turf-*` | SCLandscape_55Redgum_003.jpg | 1500×1000 | Figtree: new Matilda Buffalo lawn with the SMART irrigation running, rendered retaining wall and tropical planting above it. |
-| `thirroul-growwall-*` | Thirroul-13.jpg | 1500×1000 | Thirroul: three succulent grow walls mounted on the timber fence, rendered retaining wall, paving and lawn. |
+The before/after page puts each caption directly after its before and after frames; the mapping
+above was read off the page in DOM order, not guessed.
 
-### Used — elsewhere on the page
+### Photo slots by property — every slot is a different job
 
-| File | Source | Size | Where / what it shows |
-|---|---|---|---|
-| `portkembla-front-*` | SCL_207Wentworth_049_low.jpg | 1500×1000 | Statement section. Port Kembla at dusk: the whole finished front — cobblestone path, merbau entry steps, sandstone-faced raised beds, white picket fence, new turf. |
-| `dapto-stonewall-*` | SCL_230PrincessHwyDapto_IMG_2784.jpg | 1500×1000 | Aperture band, full-bleed. Dapto: a raised bed faced in sandstone stackstone on a merbau deck, ferns planted through it, a light set into the wall. Chosen over the Figtree turf shot because the caption sits over dark decking rather than bright lawn. |
-| `portkembla-bench-*` | SCL_207Wentworth_077_low.jpg | 1500×1000 | Construction service card. Close on the stackstone wall and the merbau bench top. |
-| `thirroul-courtyard-*` | Thirroul-25.jpg | 1500×1000 | Design service card. Thirroul: paved courtyard, rendered wall, lawn, grow wall. |
-| `figtree-sprinkler-*` | SCLandscape_55Redgum_007.jpg | 1500×1000 | Irrigation & upkeep service card. Sprinkler head throwing over new turf against a brick home. |
-| `figtree-turf-1200` | SCLandscape_55Redgum_003.jpg | 1500×1000 | Also the enquiry-form background, heavily darkened behind the form. |
-| `ryan-646.webp` | ryan.jpg | 646×852 | Ryan, leaning on the branded ute with the coast behind him. Their own about-page photo. Under 1000px wide — fine at the size the template renders a portrait, flagged anyway. |
-| `logo-scl.webp` | newlogo.png | 400×104 | Their wordmark, white with the green tree mark, already transparent. Brand green `#8FD24E` sampled from it. |
+| Slot | Frame | Property |
+|---|---|---|
+| Hero | `dapto-poolside-1500` | P1 Dapto |
+| Statement | `portkembla-front-1200` | P2 Port Kembla |
+| Service card 1 · Design | `shellcove-pool-680` | P11 Shell Cove |
+| Service card 2 · Construction | `wongawilli-wall-750` | P9 Wongawilli |
+| Service card 3 · Irrigation & upkeep | `horsley-pool-750` | P10 Horsley |
+| Gallery 1 | `engadine-pool` | P6 Engadine |
+| Gallery 2 | `figtree-turf` | P3 Figtree |
+| Gallery 3 | `flinders-curve` | P4 Flinders |
+| Gallery 4 | `thirroul-growwall` | P5 Thirroul |
+| Gallery 5 | `kiama-boulder` | P7 Kiama |
+| Gallery 6 | `wollongong-firepit` | P8 Wollongong |
+| Owner portrait | `ryan-646` | Ryan, their about page (not a job) |
+
+**Slots dropped rather than repeat a job:** the full-bleed aperture band and the enquiry-form
+background. Both were a second frame of a job already on the page (Dapto stone wall, Figtree
+turf). With them gone the section and the background simply do not render.
+
+Share image (`dapto-poolside-1200`, og:image only, not on the page) is the hero's job.
+
+**Not used, and why:** the other Port Kembla, Dapto, Figtree and Thirroul frames (same job as a
+slot already on the page); `kiama` 4.jpg / 2.jpg / 3.jpg (same Kiama page — phone snaps, bare
+mulch); the Wollongong timber retaining wall (IMG_0474-2, fine, but a second Wollongong job next
+to the fire pit would read as a duplicate); Corrimal pool coping (wet, leaves floating); the
+Figtree swim-spa renovation (IMG_0177, a different Figtree property, left out so two Figtree
+frames do not look like one job).
 
 ### Rejected, with the reason — every one was opened and looked at
 
 | File | Size | What it actually showed → why rejected |
 |---|---|---|
-| `cannabis-dispensary-toronto1.jpg` | 1280×850 | A close-up of a cannabis leaf with water droplets. Stock, and not theirs — uploaded by whatever compromised the site. |
-| `car-on-landscape-of-the-desert.jpg` | 870×580 | A 4WD on an orange sand dune. Stock, same hack, nothing to do with landscaping. |
-| `IMG_0544-3.jpg` | 3264×2448 | Their widest image. A coastal block mid-job — spread topsoil, rock edging, stepping stones not yet bedded, their ute parked in the middle. Unfinished work. |
-| `Screenshot_3.jpg` | 2880×1920 | Second widest. A narrow side courtyard shot from under a carport, with a rendered pillar cutting the frame in half. Real work, bad composition. |
-| `IMG_0302.jpg` | 2592×1936 | Third widest. A circular sandstone garden ring in a lawn, with parked cars and neighbours' rooflines across the top. Real, ordinary, no hero. |
-| `IMG_1658-e1526442131887.jpg` | 2448×3264 | Portrait. A red stamped-concrete side path with corrugated retaining and bonsai pots. Real, dated-looking, too narrow a subject. |
-| `IMG_1062.jpg` | 2291×3055 | Same side path, other end. Same reason. |
-| `IMG_4036-e1525236485949.jpg` | 1458×2016 | A fiddle-leaf fig in a pot on a floorboard against a white wall. A blog illustration, not a job. |
-| `Fire-Pics.jpg` | 800×800 | A four-up collage of fire-pit photos with visible seams. Composite, not a photograph. |
-| `scl.jpg` | 1080×1080 | A four-up collage of garden-lighting images, at least two of them product shots on white. Composite, part stock. |
-| `back-edited.jpg` | 1240×827 | Blown out to near-white; the image is gone. |
-| `bottom_shadow.png` | 960×6 | A theme gradient strip. |
-| `beforejob.jpg`, `IMG_0174`, `IMG_0176`, `IMG_0178` | 713–750px | Genuine "before" photos — bare lawn, a dirt slope, a trampoline on patchy grass, a half-dug pool surround with a wheelbarrow in it. Their work, but they are the problem, not the result. Not used; worth a before/after strip if Ryan wants one. |
-| `IMG_0411`, `IMG_0442-2`, `IMG_0522-2`, `IMG_0565-2`, `IMG_0620` | 1000×750 | Jobs in progress — scaffolded pool shell, excavator on a stripped block, fresh concrete pour with the site still a mess, formwork. Real, unfinished. |
-| `IMG_0582-2.jpg` | 1000×750 | A finished paved driveway, but their own advertising signboard is planted in the foreground. |
-| `Slider-Background-1/2`, `Home3`, `portfolio-top-image`, `top-image-for-about-us` | 1240×350–500 | Their own theme's letterbox banner crops of real jobs — 350–500px tall, already cropped past use. `top-image-for-about-us` is the nicest of them (three branded utes and trailers lined up on a headland) and is worth re-shooting or re-cropping from the original if Ryan still has it. |
-| `1.jpg`–`5.jpg` (2019/11) | 285–960px | Small portfolio thumbnails of real jobs — front garden edging, a curved mulch bed. Too small. |
-| `About-us-Pic2updated.jpg`, `image8.jpg`, `IMG_0860` | 710–800px | Real finished yards (fire pit and turf; a small plunge pool in a hedge). Under the size a gallery tile needs. Good candidates if Ryan has the originals. |
-| `newlogo.png` derivatives, `icons8-*.png`, `default.jpg` | ≤48–600px | Logo and theme furniture. |
-| All `-1024x683` / `-768x512` files | — | WordPress's own downsized copies of images already used at full size. |
+| `cannabis-dispensary-toronto1.jpg` | 1280×850 | A close-up of a cannabis leaf. Stock, uploaded by whatever compromised the site. |
+| `car-on-landscape-of-the-desert.jpg` | 870×580 | A 4WD on a sand dune. Stock, same hack. |
+| `IMG_0544-3.jpg` | 3264×2448 | A coastal block mid-job, their ute parked in the middle. Unfinished work. |
+| `Screenshot_3.jpg` | 2880×1920 | A side courtyard cut in half by a rendered pillar. Bad composition. |
+| `IMG_0302.jpg` | 2592×1936 | A sandstone garden ring with parked cars across the top. Ordinary. |
+| `IMG_1658`, `IMG_1062` | portrait | A stamped-concrete side path. Dated, narrow subject. |
+| `IMG_4036` | 1458×2016 | A potted fiddle-leaf fig indoors. Blog illustration, not a job. |
+| `Fire-Pics.jpg`, `scl.jpg` | 800–1080 | Four-up collages, part stock. |
+| `back-edited.jpg` | 1240×827 | Blown out to near-white. |
+| `beforejob`, `IMG_0174/0176/0178` | 713–750px | "Before" photos — the problem, not the result. |
+| `IMG_0411`, `IMG_0442-2`, `IMG_0522-2`, `IMG_0565-2`, `IMG_0620` | 1000×750 | Jobs in progress. |
+| `IMG_0582-2.jpg` | 1000×750 | A driveway with their signboard planted in the foreground. |
+| Theme banners (`Slider-Background-*`, `Home3`, `portfolio-top-image`, `top-image-for-about-us`) | 1240×350–500 | Letterbox crops, too short. |
+| `1.jpg`–`5.jpg` (2019/11), `About-us-Pic2updated`, `IMG_0860` | 285–800px | Too small. |
+| Logo derivatives, icons, `default.jpg` | — | Theme furniture. |
 
-**Count: 13 photographs of their own work on the page — 6 in the gallery, plus hero, statement,
-aperture, three service cards and Ryan's portrait — drawn from 5 separate jobs (Dapto, Port Kembla,
-Flinders, Figtree, Thirroul) and their about page. Hero at 1500px against a 1600px bar, flagged.**
+**Count: 11 job photos on the page, from 11 different properties, plus Ryan's portrait. Hero at
+1500px against a 1600px bar, flagged. Three service-card photos are 680–750px phone photos from
+their before/after page; they render at card size only.**
+
+## Copy rules applied (2026-09-23 rework)
+
+- Every sentence about how they work is their own site's wording: "we treat your home as our
+  own", "minimise the disruption to their property", "from design stage to completion with
+  minimal fuss", "set out the scope of work with a professionally presented quote", "let our
+  expert Ryan tailor a system", "control your irrigation system from the comfort of your own
+  lounge". Sentences that promised a way of working, gave a reason, or claimed a reputation
+  their site never states were cut (e.g. "Ryan does the quoting himself", "Most of our work
+  starts where the builder stopped", "nothing is handed to a stranger halfway through", "the
+  job that comes up most in our reviews", "because an undrained wall is a wall that moves",
+  "stack the gear", "which is what a family-run business actually means").
+- Their site does say "fully licensed", "family run" and "highly qualified tradesmen". They
+  stay off the page under the earlier strip until Pat confirms them with Ryan.
+- Reviews: five of the six `best_for_demo`, word for word; the three marked shortened carry
+  "Google review, shortened". Susan Oliver's excerpt was dropped — it ends mid-thought.
+- Pull quote and any lift from mid-review start with "…".
 
 ## Call opener
 
