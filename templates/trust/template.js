@@ -74,7 +74,7 @@ ${work(cfg, copy)}
 ${beforeAfter(cfg, { title: copy.beforeAfterTitle, intro: copy.beforeAfterIntro })}
 ${process(cfg, copy)}
 ${owner(cfg, copy)}
-${reviews(cfg, { title: copy.reviewsTitle ?? 'What clients say.', intro: copy.reviewsIntro, headClass: 't-d1', kicker: copy.reviewsLabel, kickerClass: 't-label' })}
+${reviews(cfg, { title: copy.reviewsTitle ?? 'What clients say.', intro: copy.reviewsIntro, headClass: 't-d1', kicker: copy.reviewsLabel, kickerClass: 't-label', introClass: 't-lede' })}
 ${recognition(cfg, copy)}
 ${areas(cfg, copy)}
 ${faq(cfg, copy)}
@@ -208,7 +208,10 @@ function aperture(cfg, copy) {
   if (!present(p?.src)) return '';
   return html`
 <section class="ap bleed" id="aperture" aria-labelledby="apHead">
-  <img src="${p.src}"${raw(p.srcset ? ` srcset="${p.srcset}" sizes="100vw"` : '')}${
+  <!-- 150vw on a phone: this photo covers a tall frame, so it shows about 1.5x
+       the viewport width. It is below the fold, so it costs no first paint;
+       the hero keeps 100vw because the bigger file cost 7 Lighthouse points. -->
+  <img src="${p.src}"${raw(p.srcset ? ` srcset="${p.srcset}" sizes="(max-width:767px) 150vw, 100vw"` : '')}${
     raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')
   } decoding="async" alt="${p.alt ?? ''}">
   <div class="frame" aria-hidden="true"></div>

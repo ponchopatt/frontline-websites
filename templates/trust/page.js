@@ -298,7 +298,7 @@
           note.hidden = mode!=="demo";
           if(mode==="demo") note.textContent=tmpl((CFG.demo||{}).formNote,{owner:OWNER});
         }
-        if($("thanksSmsWrap")) $("thanksSmsWrap").hidden=(mode==="demo");
+        if($("thanksSmsWrap")) $("thanksSmsWrap").hidden=(mode==="demo")||!smsHref();
         f.hidden=true;
         var thanks=$("thanks");
         if(thanks){

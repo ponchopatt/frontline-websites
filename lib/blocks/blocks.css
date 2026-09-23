@@ -8,6 +8,10 @@
    without either being touched.
    --------------------------------------------------------------------------- */
 
+/* The hidden attribute always wins. A template's form{display:grid} used to
+   override it, leaving the sent form on screen under its own thank-you. */
+[hidden] { display: none !important; }
+
 /* ------------------------------------------------------------------- stats */
 
 .fl-stats .wrap {
@@ -119,6 +123,7 @@
 .fl-reviews-rows:focus-within .fl-rv-row { animation-play-state: paused; }
 .fl-rv {
   flex: 0 0 min(88vw, 400px);
+  display: flex; flex-direction: column;
   margin: 0; padding: 22px;
   border-radius: var(--fl-radius);
   background: var(--fl-surface);
@@ -127,7 +132,14 @@
 .fl-rv p { margin: 12px 0 16px; line-height: 1.6; }
 .fl-rv .stars { display: flex; gap: 3px; }
 .fl-rv .stars svg { width: 16px; height: 16px; color: #E9B430; }
-.fl-rv footer { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.fl-rv footer {
+  display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap;
+  /* Reset, because the trust template styles every <footer> as the page
+     footer — background, 80px top padding, a rule — and that landed inside
+     each card as a divider, a gap and names at different heights. */
+  background: none; border: 0; padding: 14px 0 0; margin-top: auto;
+  border-top: 1px solid var(--fl-line);
+}
 .fl-rv footer b { font-weight: 700; }
 .fl-rv footer span { color: var(--fl-mute); font-size: .85rem; }
 
@@ -192,7 +204,9 @@
 @media (max-width: 640px) {
   .fl-demobar { font-size: .82rem; }
   .fl-demobar-in { flex-wrap: nowrap; padding-block: 6px; }
-  .fl-demobar p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* A complete short sentence, never one cut off mid-word: the trailing
+     "a preview of what…" clause drops and the rest may wrap. */
+  .fl-demobar-more { display: none; }
   .fl-demobar-cta { display: none; }
 }
 
