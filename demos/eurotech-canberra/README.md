@@ -36,10 +36,13 @@ section for section, with Imperium's blue swapped for Eurotech's lime.
 
 | File | Source |
 |---|---|
-| `assets/logo-*.svg` | Their logo files from eurotechcanberra.au (`hero-logo.svg`, `eurotech-footer-logo.svg`, `logo.svg`). The same artwork as the PNG Pat supplied, in vector. `logo-wordmark.svg` is the stacked file cropped to the wordmark, not redrawn. Lime is their own fill, `#BBCC1A`. |
-| `assets/*-{480,800,1200,1600}.webp` | Their website gallery (the R8, M2, coilovers, tool kits, diagnostics), the Golf R with their plate surround, and the master technician at an engine. |
-| `media/hero-*.{webm,mp4}` | Their Instagram reel of a Porsche Cayenne GTS Stage 2 build, supplied by Pat. Cut to 18.4s with the black title cards removed, cropped above the "@eurotech_canberra" sticker. WebM first, MP4 fallback; 720 wide on laptops, 480 on phones. |
-| `media/hero-poster.webp`, `cayenne-rear.webp`, `workshop-sign.webp` | Stills from the same reel. |
+| `assets/logo-ring.svg`, `logo-mark.svg` | Their logo files from eurotechcanberra.au. `logo-ring.svg` is the same artwork as the PNG Pat supplied, in vector, and sits in the footer. The header uses the mark. |
+| `assets/logo-wordmark.svg` | Their stacked logo file (`eurotech-footer-logo.svg`) with its viewBox cropped to the wordmark. Cropped, not redrawn. Lime is their own fill, `#BBCC1A`. |
+| `assets/huracan-graded-*`, `huracan-front-*`, `og-eurotech.jpg` | Photos of an orange Huracán under their sign, supplied by Pat. The graded shot leads the gallery and is the link preview; the front-on shot with the Eurotech plate sits beside the address. |
+| `assets/*-{480,800,1200}.webp` (the rest) | Their website gallery (the R8, M2, coilovers, tool kits, diagnostics), the Golf R with their plate surround, and the master technician at an engine. |
+| `media/hero-{1080,720}.{webm,mp4}` | A 6-second iPhone pass along the Huracán under the sign, supplied by Pat. Cropped to the panel's shape, played forward then reversed so the 11.8s loop never jumps. 1080 for a sharp laptop screen, 720 otherwise; fetched only after the page has loaded. |
+| `media/hero-poster.webp`, `hero-blur.webp` | The clip's first frame; `hero-blur` is a 96px copy for the blurred backdrop, which looks identical at 48px blur and weighs 2KB. |
+| `media/cayenne-{720,480}.{webm,mp4}`, `cayenne-poster.webp` | Their Instagram reel of a Porsche Cayenne GTS Stage 2 build, supplied by Pat. Cut to 18.4s without the black title cards, cropped above the "@eurotech_canberra" sticker. Plays in the Stage 2 section, fetched only as it nears the screen. |
 
 **Deliberately not used:** every stock photo on their site (see above), the manufacturer
 logos (trademarks), the reviewers' profile pictures.
@@ -75,10 +78,11 @@ Run on 23 Sep 2026.
 
 | | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|
-| **Mobile** | 94 | 100 | 100 | 66 |
+| **Mobile** | 91–93 | 100 | 100 | 66 |
 | **Desktop** | 100 | 100 | 100 | 66 |
 
-Mobile: FCP 1.7s · LCP 2.9s · TBT 10ms · CLS 0. **SEO 66 is correct**: the only failing
+Mobile varies between runs; LCP 3.1–3.4s (the hero paragraph), TBT 10ms, CLS 0. Desktop LCP 0.7s.
+**SEO 66 is correct**: the only failing
 audit is "Page is blocked from indexing", which is the point of a demo.
 
 `tools/paint-check.mjs` passes all six conditions (1440, 390, 375, no JS, GSAP blocked,

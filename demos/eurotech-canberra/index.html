@@ -11,12 +11,13 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Eurotech Canberra | European Car Service, Fyshwick">
 <meta property="og:description" content="Warranty-safe servicing, repairs, factory diagnostics and performance upgrades for European cars in Canberra.">
-<meta property="og:image" content="assets/workshop-bays-1200.webp">
+<meta property="og:image" content="assets/og-eurotech.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/big-shoulders-var.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/instrument-sans-var.woff2">
-<link rel="preload" as="image" href="media/hero-poster.webp" fetchpriority="high">
 <style>
 @font-face{
   font-family:'Big Shoulders Display';font-style:normal;font-weight:500 900;font-display:swap;
@@ -325,6 +326,7 @@ form .btn{width:100%;margin-top:4px}
   color:var(--fg);text-shadow:0 1px 12px rgba(0,0,0,.9);opacity:.95}
 .g-wide{grid-column:1 / -1;aspect-ratio:16/8}
 .g-sq{aspect-ratio:1/1}
+.g-43{grid-column:1 / -1;aspect-ratio:4/3}
 @media(min-width:900px){
   .gallery{grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-rows:clamp(160px,17vw,220px);gap:16px}
   .gallery figure{aspect-ratio:auto}
@@ -346,7 +348,8 @@ form .btn{width:100%;margin-top:4px}
 }
 .media{position:relative;border-radius:var(--r-xl);overflow:hidden;background:var(--card);
   box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 110px rgba(187,204,26,.16)}
-.media img{width:100%;height:100%;object-fit:cover}
+.media img,.media video{width:100%;height:100%;object-fit:cover}
+.media.four3{aspect-ratio:4/3}
 .media.portrait{aspect-ratio:720/1024;max-height:720px;margin-inline:auto;width:100%;max-width:480px}
 .media.land{aspect-ratio:3/2}
 .specs{display:grid;gap:0;margin-top:26px;border-top:1px solid var(--line)}
@@ -415,7 +418,7 @@ form .btn{width:100%;margin-top:4px}
 .cols h2{font-family:var(--font-b);font-size:14px;font-weight:600;margin-bottom:12px}
 .cols a,.cols span{display:flex;align-items:center;min-height:44px;word-break:break-word;font-size:15px;color:var(--fg-2);text-decoration:none}
 .cols a:hover{color:var(--fg)}
-.cols .logo{width:118px;height:auto;margin-bottom:18px}
+.cols .logo{width:132px;height:auto;margin:-10px 0 14px -10px}
 .cols p{font-size:15px;color:var(--mute);max-width:34ch}
 .legal{border-top:1px solid var(--line);padding-block:22px 28px;display:flex;flex-wrap:wrap;gap:8px 24px;
   justify-content:space-between;font-size:13px;color:var(--mute)}
@@ -482,12 +485,12 @@ form .btn{width:100%;margin-top:4px}
 <!-- ============================================================ hero -->
 <section class="hero" id="top" aria-label="Eurotech Canberra">
   <div class="hero-back" aria-hidden="true">
-    <img src="media/hero-poster.webp" width="720" height="1024" alt="" decoding="async">
+    <img src="media/hero-blur.webp" width="96" height="136" alt="" decoding="async">
   </div>
   <div class="wrap hero-grid">
     <div class="hero-panel">
       <video id="heroVideo" muted loop playsinline preload="none" poster="media/hero-poster.webp"
-        aria-label="A red Porsche Cayenne GTS at the Eurotech Canberra workshop in Fyshwick after its Stage 2 upgrade: the badge, the engine bay and the exhaust"></video>
+        aria-label="The camera tracks past an orange Lamborghini Huracán parked under the Eurotech Canberra sign at the workshop in Fyshwick"></video>
       <div class="shade" aria-hidden="true"></div>
       <button class="playbtn" id="heroPlay" type="button" hidden>Play the clip</button>
     </div>
@@ -660,12 +663,12 @@ form .btn{width:100%;margin-top:4px}
   <div class="wrap">
     <div class="head">
       <h2 class="caps h-lg" data-lines>Inside the<br>workshop.</h2>
-      <p class="lede" data-reveal>An R8 and an M2 on the hoists, KW coilovers going in, and the factory software that finds the fault before anything comes apart. Every photo here is from the Fyshwick workshop.</p>
+      <p class="lede" data-reveal>A Huracán out front, an R8 and an M2 on the hoists, KW coilovers going in, and the factory software that finds the fault before anything comes apart. Every photo here is from the Fyshwick workshop.</p>
     </div>
     <div class="gallery">
-      <figure class="g1 g-wide" data-reveal="img"><img src="assets/r8-front-1200.webp" srcset="assets/r8-front-480.webp 480w, assets/r8-front-800.webp 800w, assets/r8-front-1200.webp 1200w, assets/r8-front-1600.webp 1600w" sizes="(min-width:900px) 58vw, 100vw" width="1200" height="806" loading="lazy" decoding="async" alt="An orange Audi R8 in the workshop, with a white BMW M2 on the hoist behind it"><figcaption>Audi R8 and BMW M2</figcaption></figure>
+      <figure class="g1 g-43" data-reveal="img"><img src="assets/huracan-graded-1200.webp" srcset="assets/huracan-graded-480.webp 480w, assets/huracan-graded-800.webp 800w, assets/huracan-graded-1200.webp 1200w, assets/huracan-graded-1600.webp 1600w" sizes="(min-width:900px) 58vw, 100vw" width="1200" height="900" loading="lazy" decoding="async" alt="An orange Lamborghini Huracán outside the Eurotech Canberra workshop on Newcastle Street, Fyshwick"><figcaption>Huracán, out front</figcaption></figure>
       <figure class="g2 g-sq" data-reveal="img"><img src="assets/tool-kit-800.webp" srcset="assets/tool-kit-480.webp 480w, assets/tool-kit-800.webp 800w" sizes="(min-width:900px) 40vw, 50vw" width="800" height="427" loading="lazy" decoding="async" alt="A specialist socket kit laid out in its case"><figcaption>The right tool for each bolt</figcaption></figure>
-      <figure class="g3 g-sq" data-reveal="img"><img src="assets/r8-interior-800.webp" srcset="assets/r8-interior-480.webp 480w, assets/r8-interior-800.webp 800w" sizes="(min-width:900px) 40vw, 50vw" width="800" height="537" loading="lazy" decoding="async" alt="The cockpit of an Audi R8"><figcaption>R8 cockpit</figcaption></figure>
+      <figure class="g3 g-sq" data-reveal="img"><img src="assets/r8-front-800.webp" srcset="assets/r8-front-480.webp 480w, assets/r8-front-800.webp 800w" sizes="(min-width:900px) 40vw, 50vw" width="800" height="537" loading="lazy" decoding="async" alt="An orange Audi R8 in the workshop, with a white BMW M2 on the hoist behind it"><figcaption>Audi R8 and BMW M2</figcaption></figure>
       <figure class="g4 g-sq" data-reveal="img"><img src="assets/vj-laptop-tools-800.webp" srcset="assets/vj-laptop-tools-480.webp 480w, assets/vj-laptop-tools-800.webp 800w" sizes="(min-width:900px) 33vw, 50vw" width="800" height="537" loading="lazy" decoding="async" alt="A technician at a diagnostic laptop beside a tray of tools"><figcaption>Factory diagnostics</figcaption></figure>
       <figure class="g5 g-sq" data-reveal="img"><img src="assets/kw-coilovers-800.webp" srcset="assets/kw-coilovers-480.webp 480w, assets/kw-coilovers-800.webp 800w" sizes="(min-width:900px) 33vw, 50vw" width="800" height="537" loading="lazy" decoding="async" alt="KW coilovers on the workshop floor"><figcaption>KW coilovers</figcaption></figure>
       <figure class="g6 g-sq" data-reveal="img"><img src="assets/r8-m2-coilovers-800.webp" srcset="assets/r8-m2-coilovers-480.webp 480w, assets/r8-m2-coilovers-800.webp 800w" sizes="(min-width:900px) 33vw, 50vw" width="800" height="537" loading="lazy" decoding="async" alt="An Audi R8 and a BMW M2 with coilovers in front of them"><figcaption>Suspension day</figcaption></figure>
@@ -678,7 +681,8 @@ form .btn{width:100%;margin-top:4px}
 <section class="sec glow-l" id="performance">
   <div class="wrap feature">
     <div class="media portrait" data-reveal="img">
-      <img src="media/cayenne-rear.webp" width="720" height="1024" loading="lazy" decoding="async" alt="The rear of a red Porsche Cayenne GTS at the Eurotech workshop after its Stage 2 upgrade">
+      <video id="stageVideo" muted loop playsinline preload="none" poster="media/cayenne-poster.webp" data-base="media/cayenne"
+        aria-label="A red Porsche Cayenne GTS at the Eurotech workshop, badged Eurotech Stage 2: custom downpipes, high-flow filters and race plugs"></video>
     </div>
     <div>
       <p class="kicker" data-reveal>Recent build</p>
@@ -775,9 +779,9 @@ form .btn{width:100%;margin-top:4px}
 
 <!-- ============================================================ visit -->
 <section class="sec glow-l" id="visit">
-  <div class="wrap feature">
-    <div class="media portrait" data-reveal="img">
-      <img src="media/workshop-sign.webp" width="720" height="1024" loading="lazy" decoding="async" alt="The Eurotech Canberra sign above the workshop on Newcastle Street, Fyshwick, with a red Porsche parked out front">
+  <div class="wrap feature rev">
+    <div class="media four3" data-reveal="img">
+      <img src="assets/huracan-front-1200.webp" srcset="assets/huracan-front-480.webp 480w, assets/huracan-front-800.webp 800w, assets/huracan-front-1200.webp 1200w, assets/huracan-front-1600.webp 1600w" sizes="(min-width:900px) 56vw, 100vw" width="1200" height="900" loading="lazy" decoding="async" alt="An orange Lamborghini Huracán with a Eurotech plate surround, parked under the Eurotech Canberra sign on Newcastle Street, Fyshwick">
     </div>
     <div class="visit">
       <h2 class="caps h-lg" data-lines>Find the<br>workshop.</h2>
@@ -813,7 +817,7 @@ form .btn{width:100%;margin-top:4px}
   </div>
   <div class="wrap cols">
     <div>
-      <img class="logo" src="assets/logo-stack.svg" width="151" height="145" alt="Eurotech" loading="lazy">
+      <img class="logo" src="assets/logo-ring.svg" width="500" height="500" alt="Eurotech" loading="lazy">
       <p>European car servicing, repairs, diagnostics and performance work in Fyshwick, Canberra.</p>
     </div>
     <div>
@@ -904,30 +908,61 @@ form .btn{width:100%;margin-top:4px}
 
   /* ---------- hero clip ----------
      No <source> in the markup on purpose: this picks the size for the screen
-     and appends WebM then MP4. Without script the poster stands in. The clip
+     (1080 for a sharp laptop screen, 720 otherwise) and appends WebM then MP4.
+     The clip is one slow pass played forward then reversed, so it loops
+     without a jump. Without script the poster stands in. The clip
      pauses when it leaves the screen, so it is not decoding the whole way
      down the page. */
   (function(){
     var v=$("heroVideo"), btn=$("heroPlay"); if(!v) return;
-    var base=window.matchMedia("(min-width:900px)").matches?"media/hero-720":"media/hero-480";
-    [["webm","video/webm"],["mp4","video/mp4"]].forEach(function(p){
-      var s=document.createElement("source"); s.src=base+"."+p[0]; s.type=p[1]; v.appendChild(s);
-    });
-    v.preload="auto"; v.load();
-    var playing=false;
+    var sharp=window.matchMedia("(min-width:900px)").matches&&(window.devicePixelRatio||1)>1.25;
+    var base=sharp?"media/hero-1080":"media/hero-720";
+    var loaded=false, playing=false;
+    /* The clip is fetched once the page itself has loaded, so on a slow phone
+       it never competes with the headline, the fonts or the scripts. The
+       poster is there in the meantime. */
+    function load(){
+      if(loaded) return; loaded=true;
+      [["webm","video/webm"],["mp4","video/mp4"]].forEach(function(p){
+        var s=document.createElement("source"); s.src=base+"."+p[0]; s.type=p[1]; v.appendChild(s);
+      });
+      v.preload="auto"; v.load();
+    }
     function tryPlay(){
+      load();
       var pr=v.play();
       if(pr&&pr.then) pr.then(function(){ playing=true; btn.hidden=true; }).catch(function(){ btn.hidden=false; });
     }
     btn.addEventListener("click",function(){ v.currentTime=0; tryPlay(); });
     if(reduce){ btn.hidden=false; }
-    else tryPlay();
+    else if(document.readyState==="complete") tryPlay();
+    else window.addEventListener("load",tryPlay);
     if("IntersectionObserver" in window){
       new IntersectionObserver(function(e){
         if(!playing) return;
         if(e[0].isIntersecting) v.play().catch(function(){}); else v.pause();
       },{threshold:.1}).observe(v);
     }
+  })();
+
+  /* ---------- the Stage 2 clip ----------
+     Fetched only as it nears the screen, played while it is on screen and
+     paused when it leaves. Under reduced motion it stays on its poster. */
+  (function(){
+    var v=$("stageVideo"); if(!v||reduce||!("IntersectionObserver" in window)) return;
+    var loaded=false;
+    new IntersectionObserver(function(e){
+      if(e[0].isIntersecting){
+        if(!loaded){
+          var base=v.getAttribute("data-base")+(window.innerWidth>=600?"-720":"-480");
+          [["webm","video/webm"],["mp4","video/mp4"]].forEach(function(p){
+            var src=document.createElement("source"); src.src=base+"."+p[0]; src.type=p[1]; v.appendChild(src);
+          });
+          v.load(); loaded=true;
+        }
+        v.play().catch(function(){});
+      } else if(loaded) v.pause();
+    },{rootMargin:"150px 0px"}).observe(v);
   })();
 
   /* ---------- phone bar + corner call ----------
@@ -1039,7 +1074,7 @@ form .btn{width:100%;margin-top:4px}
       if(kind==="img"){
         gsap.fromTo(el,{opacity:0},{opacity:1,duration:.7,ease:"power2.out",immediateRender:false,
           scrollTrigger:{trigger:el,start:"top 90%",once:true}});
-        var m=el.querySelector("img");
+        var m=el.querySelector("img,video");
         if(m) gsap.fromTo(m,{scale:1.08},{scale:1,duration:1.2,ease:"expo.out",immediateRender:false,
           scrollTrigger:{trigger:el,start:"top 90%",once:true}});
         return;
