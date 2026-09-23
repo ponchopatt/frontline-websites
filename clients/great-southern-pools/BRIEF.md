@@ -111,5 +111,8 @@ performance up from the high 70s into the 80s — see _source in config.json.
     still usable renovation photo, lowest resolution of the set. Held in
     reserve, not used in the 8-photo gallery.
 
-That's 10 usable photos, well above the 4-minimum / 6-ideal bar. No stock or
-sample photos needed.
+That's 10 usable photos, well above the 4-minimum / 6-ideal bar. But 8 of
+them are already spoken for by the hero, statement, aperture, owner and 3
+service-card slots — with no repeats allowed across slots, that leaves only
+1 real photo free for the gallery. Rework added 3 labelled Pexels sample
+photos (Pat's standing approval) to bring the gallery to 4.
