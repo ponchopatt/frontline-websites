@@ -9,9 +9,8 @@ below 4) and `npm run check` before it counts.
 
 | | |
 |---|---|
-| **Done — passed review and check** | 8 — sunset-pools (4.5), utopian-landscaping (4.5), greenway-landscapes (4.5), south-coast-landscapes (4.5), lmac (4.5), arizona-roofing (4.67), dp-landscaping (4.5), karanda-interiors (4.83) |
+| **Done — passed review and check** | 9 — sunset-pools (4.5), utopian-landscaping (4.5), greenway-landscapes (4.5), south-coast-landscapes (4.5), lmac (4.5), arizona-roofing (4.67), dp-landscaping (4.5), karanda-interiors (4.83), nb-earthmoving (4.67) |
 | **Needs Pat** | 1 — horgan-building (4.33 after one rework round — more/better photos needed) |
-| **In review** | 1 — nb-earthmoving |
 | **Not started** | 4 |
 
 Each done demo has its own branch (`demo/<slug>`) and is live on the
@@ -52,11 +51,12 @@ panel.
 
 ## What to do first
 
-1. **Look at the eight done demos**, live at `frontline-demos.vercel.app/<slug>`
+1. **Look at the nine done demos**, live at `frontline-demos.vercel.app/<slug>`
    for sunset-pools, utopian-landscaping, greenway-landscapes,
-   south-coast-landscapes, lmac, arizona-roofing, dp-landscaping and
-   karanda-interiors. Or `node tools/single.mjs <slug>` writes one
-   self-contained file to `dist-single/<slug>.html` that opens on a phone.
+   south-coast-landscapes, lmac, arizona-roofing, dp-landscaping,
+   karanda-interiors and nb-earthmoving. Or `node tools/single.mjs <slug>`
+   writes one self-contained file to `dist-single/<slug>.html` that opens
+   on a phone.
 2. **Ring Ryan at South Coast Landscapes today** — his website is hacked. Details
    under his entry below. Worth a call whether or not he ever buys a site.
 3. **horgan-building needs you** — it's a good site, just short on distinct,
@@ -354,24 +354,38 @@ inventory of what exists and what's weak); confirmation the 23-years/
 
 ---
 
-## nb-earthmoving — IN REVIEW
+## nb-earthmoving — DONE (4.67)
 
 **Northern Beaches Earthmoving** · Jim Brigden (wife Lynette handles admin) ·
 5.0 from 14 · 0422 929 660 · trust
-Built from scratch — `npm run new` is broken in this session (see factory
-note below), scraped via curl/WebFetch instead. Angle: nearly every review
+Lighthouse 91 / 97 / 100. Branch `demo/nb-earthmoving`.
+Demo: `frontline-demos.vercel.app/nb-earthmoving`
+
+Built from scratch — `npm run new` is broken in this session (Chromium
+doesn't trust the environment's TLS proxy; see the factory note in
+HANDOVER.md), scraped via curl/WebFetch instead. Angle: nearly every review
 independently praises Jim personally handling hard sites — rock, tight or
 difficult access, hand-dug excavation. Headline: "Rock, tight sites, tricky
 access. Jim sorts it."
 
-Check initially flagged Lighthouse performance 84 (LCP 4.4s, under the 90+
-bar) — several gallery photos were saved at ~1774px and 500-800KB straight
-from full-res phone crops, well above what a gallery tile needs. A fix pass
-is in progress before this goes to its first independent review.
+Two things fixed before it could even reach review: Lighthouse performance
+84 (LCP 4.4s) from oversized gallery images saved straight from full-res
+phone crops — recompressed, now 91. Then review 1 (4.17, Photos at 3) caught
+heavy photo reuse — 5 of 6 gallery photos each repeated a photo used
+elsewhere on the page. Reworked using 6 previously-unused real photos
+already on disk so all 16 photo slots are now distinct, and re-cropped the
+hero for better contrast. Review 2 passed 4.67.
 
-**Ask Jim for, regardless of how review lands:** their site has no ABN, trade
-licence number, or association/award listed anywhere, so none appears on the
-demo; ask if any of those exist.
+> **Opener.** I noticed your reviews all say the same thing in different
+> words — that you personally turn up for the hard sites, the rock and the
+> tight access other outfits won't touch — and that's not on your homepage
+> anywhere.
+
+**Ask Jim for:** their site has no ABN, trade licence number, or
+association/award listed anywhere, so none appears on the demo — ask if any
+exist; and a bigger logo file if he has one — the two on file are both only
+264×118px, the ceiling of what's usable, and it shows as slightly soft in
+the header.
 
 ---
 
