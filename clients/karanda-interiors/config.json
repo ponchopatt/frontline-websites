@@ -1,0 +1,488 @@
+{
+  "_comment": "Karanda Interiors, Sylvania Heights NSW. Built 2026-09-23 from https://karanda.com.au (WordPress/Elementor, RevSlider hero). Every specific fact on the page is quoted in _source.claimSources with the page it came from, or comes from data/google_reviews_top25.json. Nothing is inferred. INDUSTRY MISMATCH FLAGGED IN BRIEF.md: Karanda Interiors is an interior design studio (Google category 'Interior designer'), not a kitchen/joinery fabricator. They design; they do not build or install cabinetry themselves. The kitchens-joinery preset's default process/faq describe a made-to-measure joinery workshop and coordinating plumbing/electrical trades, which would be false claims about this business, so both are fully overridden below with Karanda's own real process and FAQ content. See BRIEF.md for the full explanation.",
+  "slug": "karanda-interiors",
+  "template": "trust",
+  "industry": "kitchens-joinery",
+  "live": false,
+  "tagline": "Interior design for Sydney's south, from a Design Institute of Australia Fellow with over 40 years in the industry.",
+  "schemaType": "HomeAndConstructionBusiness",
+  "business": {
+    "name": "Karanda Interiors",
+    "ownerName": "Toni Ford",
+    "ownerFirstName": "Toni",
+    "ownerTitle": "Interior Designer F.D.I.A.",
+    "phone": {
+      "display": "(02) 9525 8053",
+      "e164": "+61295258053"
+    },
+    "email": "design@karanda.com.au",
+    "baseSuburb": "Sylvania Heights",
+    "region": "NSW",
+    "currentSite": "karanda.com.au",
+    "brand": {
+      "accent": "#8BCAD3",
+      "accent2": "#C98F52",
+      "themeColor": "#14201F",
+      "_comment": "Accent #8BCAD3 is sampled directly from the background of their own logo (logo1.png). Accent2 is a warm timber gold lifted from the oak flooring and joinery in their own project photos (e.g. sylvania-villa.jpg) — a design choice to complement the teal, not a stated brand colour of theirs."
+    },
+    "logo": {
+      "src": "assets/logo1.png",
+      "width": 646,
+      "height": 646,
+      "_comment": "Their own logo artwork, used as downloaded (karanda.com.au/wp-content/uploads/2021/12/logo1.png) — a white 'ki' monogram and wordmark on a solid teal square. Not recreated or recoloured."
+    }
+  },
+  "share": {
+    "image": "assets/share-1200.webp",
+    "width": 1200,
+    "height": 804,
+    "title": "Karanda Interiors — Interior Design, Sydney's South",
+    "description": "Interior design for Sydney's south, from a Design Institute of Australia Fellow with over 40 years in the industry.",
+    "alt": "A navy-blue kitchen island with an integrated wine fridge and white marble benchtop, Alkira Place Waterfront, Caringbah"
+  },
+  "responsePromise": "Karanda's studio is open Tuesday to Friday, 9:30am to 4:30pm. Monday and Saturday are by appointment only.",
+  "copy": {
+    "title": "Karanda Interiors — Interior Design, Sutherland Shire & Sydney",
+    "description": "Interior design for homes and businesses across Sydney's south. Residential, commercial and hospitality interiors, renovations, new builds and floor plan redesign, led by Toni Ford F.D.I.A. 5.0 from 15 Google reviews.",
+    "ctaLabel": "Talk to Toni",
+    "kicker": "Sylvania Heights, Sydney",
+    "headline": "Forty years of<br>getting it<br><em>right.</em>",
+    "sub": "Toni Ford has over 40 years' experience in the design industry and holds a Fellowship of the Design Institute of Australia. She works your project personally, from the first floor plan to the last cushion — not handed to a junior halfway through.",
+    "heroSecondary": "Or send the details",
+    "heroSecondarySms": "Or text a photo of the space",
+    "navApproach": "Approach",
+    "statementLabel": "The difference",
+    "statementHeadline": "One designer.<br>Every decision.",
+    "statementBody": "A lot of design studios hand your project to whoever is free that week. At Karanda, Toni's own training in interior architecture and construction resolves the complex floor plan issues herself, and her name is the one clients mention, unprompted, in review after review.",
+    "servicesLabel": "What we do",
+    "servicesHeadline": "Residential, commercial<br>and everything<br>in between.",
+    "servicesIntro": "Renovations, new builds and floor plan redesign. Furniture, lighting, blinds, shutters and custom upholstery from our in-house fabric library. Commercial and hospitality interiors, including joint projects with The Company of Fire.",
+    "apertureLabel": "A one-stop studio",
+    "apertureLine": "We work with you from the blueprint. No legwork, no chasing suppliers.",
+    "workLabel": "Selected work",
+    "workHeadline": "Homes across<br>Sydney's south.",
+    "workIntro": "Real projects from Cronulla, Sylvania, Caringbah, Double Bay and beyond — kitchens, living spaces and full homes, designed and styled by Karanda.",
+    "processLabel": "How it runs",
+    "processHeadline": "Four steps,<br>your plan.",
+    "processIntro": "From the first look at your space to a tailored plan of action, before anything is booked in.",
+    "ownerLabel": "Who you are dealing with",
+    "reviewsTitle": "What clients say.",
+    "reviewsIntro": "Real reviews from their Google profile: 5.0 from 15 reviews. Toni is named personally in almost every one.",
+    "recognitionLabel": "Beyond the reviews",
+    "recognitionHeadline": "A Fellow of the Design Institute of Australia.",
+    "recognitionIntro": "Toni's credentials and industry standing, alongside the trade partners and platforms that know her work.",
+    "areasLabel": "Where we've worked",
+    "areasHeadline": "Sutherland Shire,<br>and across Sydney.",
+    "areasIntro": "Based in Sylvania Heights. These are suburbs where Karanda's own published projects are — not a stated service boundary, so if you're further out, ask.",
+    "faqLabel": "Before you call",
+    "faqHeadline": "Questions we are asked.",
+    "enquireLabel": "Talk to Toni",
+    "enquireHeadline": "Tell us about<br>the space.",
+    "enquireIntro": "The more you can tell us about the property, the budget and what you want from it, the more useful the first conversation will be."
+  },
+  "stats": {
+    "googleRating": 5,
+    "reviewCount": 15,
+    "_comment": "5.0 from 15 reviews, confirmed against data/google_reviews_top25.json (slug karanda-interiors). No founding year is published anywhere, so no years-in-business figure is shown — only the experience figures Toni and the business state about themselves (see owner.facts)."
+  },
+  "pullQuote": {
+    "text": "We recently engaged Karanda Interiors for advice on painting our unit block. Toni was very professional, and her expertise and guidance was well received by everyone on the strata committee, and worth every cent! The results look nothing short of exceptional.",
+    "name": "Adel Miskovich, Google"
+  },
+  "owner": {
+    "body": "Interior Designer F.D.I.A. — a Fellow of the Design Institute of Australia. Toni has over 40 years' experience in the design industry, and her interior architecture and design training, alongside comprehensive construction knowledge, let her resolve complex floor plan issues herself rather than referring them on.",
+    "team": "She gives back to the industry as a Counselor with the Design Institute of Australia. Behind her, Jelena Bruce (a graduate of Design Centre Enmore), Kasey Pogson and Jannelle Peck round out the studio — named on Karanda's own about page.",
+    "facts": [
+      {
+        "value": "40+",
+        "label": "Years' experience, Toni personally"
+      },
+      {
+        "value": "F.D.I.A.",
+        "label": "Design Institute of Australia Fellow"
+      },
+      {
+        "value": "4",
+        "label": "Team members named on their site"
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "kind": "membership",
+      "label": "Design Institute of Australia — Counselor",
+      "body": "Toni's passion is design and she gives back to the industry she loves by serving as a Counselor with the Design Institute of Australia.",
+      "strip": true
+    },
+    {
+      "kind": "partner",
+      "label": "Joint projects with The Company of Fire",
+      "body": "Their residential interior design page credits joint projects with The Company of Fire — and The Company Of Fire's own Google review calls Karanda's work 'second to none.'",
+      "strip": false
+    },
+    {
+      "kind": "profile",
+      "label": "Houzz professional profile",
+      "body": "Listed as a professional on Houzz, linked from every page of their site.",
+      "strip": false
+    }
+  ],
+  "priceLines": {
+    "fee": "$300 (inc. GST) an hour for a senior designer, or $150 (inc. GST) an hour for a junior designer",
+    "build": "",
+    "_comment": "Karanda's design-services page states this hourly rate for 'all face to face consultations, drafting and sourcing work.' 'build' is left empty and hidden — Karanda designs, they do not quote construction costs, and no page states one."
+  },
+  "services": [
+    {
+      "title": "Residential interior design",
+      "blurb": "Renovations and developments, new builds and floor plan redesign. Toni's own construction knowledge resolves complex layout problems before they become expensive ones.",
+      "photo": {
+        "src": "assets/shell-rd-burraneer-1200.webp",
+        "srcset": "assets/shell-rd-burraneer-480.webp 480w, assets/shell-rd-burraneer-800.webp 800w, assets/shell-rd-burraneer-1200.webp 1200w",
+        "width": 1300,
+        "height": 892,
+        "alt": "A living room with a stone-clad fireplace wall, leather armchairs and a wool rug, Shell Road, Burraneer"
+      }
+    },
+    {
+      "title": "Furniture, lighting & window furnishings",
+      "blurb": "Furniture curation, lighting and art specification, and our in-house Blinds & Shutter Studio with custom upholstery from our own fabric library.",
+      "photo": {
+        "src": "assets/coast-ave-penthouse-1200.webp",
+        "srcset": "assets/coast-ave-penthouse-480.webp 480w, assets/coast-ave-penthouse-800.webp 800w, assets/coast-ave-penthouse-1200.webp 1200w, assets/coast-ave-penthouse-1800.webp 1800w",
+        "width": 1920,
+        "height": 1741,
+        "alt": "A breakfast nook with patterned armchairs, roller blinds and a marble kitchen island, Coast Ave, Cronulla"
+      }
+    },
+    {
+      "title": "Commercial & multi-residential interiors",
+      "blurb": "Commercial and hospitality interiors, and strata and apartment common areas — including the foyer refurbishment clients mention by name in their reviews.",
+      "photo": {
+        "src": "assets/westbourne-miranda-1200.webp",
+        "srcset": "assets/westbourne-miranda-480.webp 480w, assets/westbourne-miranda-800.webp 800w, assets/westbourne-miranda-1200.webp 1200w, assets/westbourne-miranda-1800.webp 1800w",
+        "width": 1920,
+        "height": 1280,
+        "alt": "A double-height apartment foyer with a curated art wall and granite-clad balustrades, Westbourne Apartments, Miranda"
+      }
+    }
+  ],
+  "process": [
+    {
+      "step": "Assess",
+      "detail": "At the initial consultation we assess your current interior, or your architectural plans, to see what changes and additions need to be considered."
+    },
+    {
+      "step": "Goals and budget",
+      "detail": "We thoroughly discuss both the aims of the design and a budget you're comfortable with."
+    },
+    {
+      "step": "A tailored plan",
+      "detail": "From there, we create a tailored plan of action for your individual project. Time estimates to complete it are available on request."
+    },
+    {
+      "step": "One studio, start to finish",
+      "detail": "We work with you right from the blueprint phase — there's no need for you to do the legwork, chase suppliers or manage separate trades yourself."
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "Sutherland Shire",
+      "suburbs": [
+        "Sylvania Heights",
+        "Sylvania",
+        "Cronulla",
+        "Caringbah",
+        "Miranda",
+        "Oyster Bay",
+        "Kangaroo Point",
+        "Burraneer"
+      ]
+    },
+    {
+      "region": "Further afield",
+      "suburbs": [
+        "Double Bay",
+        "Maroubra"
+      ]
+    }
+  ],
+  "photos": {
+    "hero": {
+      "src": "assets/alkira-place-waterfront-1800.webp",
+      "srcset": "assets/alkira-place-waterfront-480.webp 480w, assets/alkira-place-waterfront-800.webp 800w, assets/alkira-place-waterfront-1200.webp 1200w, assets/alkira-place-waterfront-1800.webp 1800w",
+      "width": 1920,
+      "height": 1286,
+      "alt": "A navy-blue kitchen island with an integrated wine fridge, white marble benchtop and black pendant light, Alkira Place Waterfront, Caringbah",
+      "_comment": "Alkira Place Waterfront (Smith, Caringbah), from karanda.com.au/wp-content/uploads/2022/06/Smith-Caringbah-Banner-Karanda-Interiors.jpg. Chosen as hero because it's a real kitchen (relevant to the kitchens-joinery industry tag) as well as a strong, sharp, well-composed interior shot at full 1920px width."
+    },
+    "statement": {
+      "src": "assets/sylvania-villa-1200.webp",
+      "srcset": "assets/sylvania-villa-480.webp 480w, assets/sylvania-villa-800.webp 800w, assets/sylvania-villa-1200.webp 1200w, assets/sylvania-villa-1800.webp 1800w",
+      "width": 1920,
+      "height": 2550,
+      "alt": "A shaker-style white kitchen with black tapware, integrated wine fridge and oak flooring, Sylvania Villa"
+    },
+    "aperture": {
+      "src": "assets/home1-1800.webp",
+      "srcset": "assets/home1-800.webp 800w, assets/home1-1200.webp 1200w, assets/home1-1800.webp 1800w",
+      "width": 1920,
+      "height": 1257,
+      "alt": "A living room with a fireplace and TV feature wall, sectional sofa and floor-to-ceiling glass over the water, Kangaroo Point",
+      "caption": "Kangaroo Point living room"
+    },
+    "owner": {
+      "src": "assets/toni.webp",
+      "width": 525,
+      "height": 788,
+      "ratio": "525/788",
+      "alt": "Toni Ford, Interior Designer F.D.I.A., founder of Karanda Interiors",
+      "caption": "Toni Ford, Interior Designer F.D.I.A.",
+      "_comment": "Their own professional portrait, karanda.com.au/wp-content/uploads/2021/12/toni.jpg. Used at its native 525px width — no upscaling."
+    },
+    "enquiryBackground": {
+      "src": "assets/oyster-bay-1200.webp",
+      "width": 1200,
+      "height": 840
+    },
+    "gallery": [
+      {
+        "src": "assets/russo-cronulla-1200.webp",
+        "full": "assets/russo-cronulla.jpg",
+        "srcset": "assets/russo-cronulla-480.webp 480w, assets/russo-cronulla-800.webp 800w, assets/russo-cronulla-1200.webp 1200w",
+        "width": 1300,
+        "height": 867,
+        "caption": "Russo, Cronulla",
+        "detail": "Dining room, statement pendants",
+        "alt": "A dining room with a cluster of black pendant lights over a ten-seat table and a marble waterfall-edge island beyond"
+      },
+      {
+        "src": "assets/via-mare-cronulla-1200.webp",
+        "full": "assets/via-mare-cronulla.jpg",
+        "srcset": "assets/via-mare-cronulla-480.webp 480w, assets/via-mare-cronulla-800.webp 800w, assets/via-mare-cronulla-1200.webp 1200w, assets/via-mare-cronulla-1800.webp 1800w",
+        "width": 1920,
+        "height": 1133,
+        "caption": "Via Mare, Cronulla",
+        "detail": "Period home, glazed addition",
+        "alt": "A period weatherboard home with a glazed conservatory-style addition and outdoor dining pergola"
+      },
+      {
+        "src": "assets/ella-ave-1200.webp",
+        "full": "assets/ella-ave.jpg",
+        "srcset": "assets/ella-ave-480.webp 480w, assets/ella-ave-800.webp 800w, assets/ella-ave-1200.webp 1200w, assets/ella-ave-1800.webp 1800w",
+        "width": 1920,
+        "height": 1318,
+        "caption": "Ella Ave",
+        "detail": "Federation home, glazed pavilion",
+        "alt": "A renovated Federation-style home with a glazed pavilion addition and outdoor entertaining area"
+      },
+      {
+        "src": "assets/monochrome-house-1200.webp",
+        "full": "assets/monochrome-house.jpg",
+        "srcset": "assets/monochrome-house-480.webp 480w, assets/monochrome-house-800.webp 800w, assets/monochrome-house-1200.webp 1200w, assets/monochrome-house-1800.webp 1800w",
+        "width": 1920,
+        "height": 1280,
+        "caption": "Monochrome House",
+        "detail": "Living room, textured feature wall",
+        "alt": "A black-and-white living room with a textured wallpaper feature wall and a built-in gas fireplace"
+      },
+      {
+        "src": "assets/double-bay-apartments-1200.webp",
+        "full": "assets/double-bay-apartments.jpg",
+        "srcset": "assets/double-bay-apartments-480.webp 480w, assets/double-bay-apartments-800.webp 800w, assets/double-bay-apartments-1200.webp 1200w, assets/double-bay-apartments-1800.webp 1800w",
+        "width": 1920,
+        "height": 1339,
+        "caption": "Double Bay Apartments",
+        "detail": "Living room, balcony outlook",
+        "alt": "A living room with a neutral sectional sofa, roller blinds and a balcony view over Double Bay"
+      }
+    ],
+    "_comment": "5 gallery tiles, each a different property — below the 6-ideal but above the 4-minimum. 13 distinct real photos are used across the whole page (hero, statement, aperture, owner, enquiry background, 3 services, 5 gallery), all pulled at full resolution from karanda.com.au's own CDN. None are stock, none are upscaled beyond their native width. bgtoni.jpg (their own faded slider background) and hero-l1050510.jpg (likely the same Shell Road Burraneer shoot as the service-1 photo, by file sequence) were deliberately left out — see BRIEF.md photo inventory."
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [
+    {
+      "name": "Adel Miskovich",
+      "text": "We recently engaged Karanda Interiors for advice on painting our unit block. Toni was very professional, and her expertise and guidance was well received by everyone on the strata committee, and worth every cent! The results look nothing short of exceptional."
+    },
+    {
+      "name": "David Murray",
+      "text": "Karanda Interiors designed and assisted with the refurbishment of the foyer entry area of our apartment complex in Miranda. A very professional service and the end result was everything we hoped for. Well done. We would highly recommend them."
+    },
+    {
+      "name": "Ammar Alruhaimi",
+      "text": "Toni assisted us in designing our dream home. She is very professional and has extensive experience in choosing perfect furniture and colors"
+    },
+    {
+      "name": "The Company Of Fire",
+      "text": "Worked on many projects with the team at Karanda Interiors. The creative and professionalism of the team is second to none. Highly recommend."
+    },
+    {
+      "name": "Howard Horne",
+      "text": "Using karanda helps me from making big mistakes. Very good value for money."
+    },
+    {
+      "name": "Diana Boules",
+      "text": "Toni helped us completely re-design the floor plan of our house. She was a delight to deal with. She was very professional and her input dramatically improved/modernised our house.",
+      "source": "Google review, shortened"
+    }
+  ],
+  "faq": [
+    {
+      "q": "What does a consultation cost?",
+      "a": "Face-to-face consultations, drafting and sourcing work are charged at $300 (inc. GST) an hour with a senior designer, or $150 (inc. GST) an hour with a junior designer. Commercial packages are available after an initial consultation. All pricing quoted is RRP."
+    },
+    {
+      "q": "Do you handle new builds, or only renovations?",
+      "a": "Both. New Builds and Renovations and Developments are both on our services list, alongside Floor Plan Redesign for existing homes that just need the layout fixed."
+    },
+    {
+      "q": "Will I have to source materials and suppliers myself?",
+      "a": "No. We're a one-stop solution studio — there's no legwork for you to do. We work with you right from the blueprint phase, and our strength is in offering materials that aren't visible on the market elsewhere."
+    },
+    {
+      "q": "Do you only do homes, or commercial work too?",
+      "a": "Both. Commercial and Hospitality Interior design are on our services list, and we've worked on multi-residential common areas too — David Murray's review describes us designing the refurbishment of his apartment complex's foyer in Miranda."
+    },
+    {
+      "q": "Can you help with just furniture, blinds or upholstery — not a full renovation?",
+      "a": "Yes. Furniture curation, our Blinds & Shutter Studio, custom upholstery and our in-house fabric library are each their own service, separate from a full interior design project."
+    },
+    {
+      "q": "How experienced is Toni?",
+      "a": "Over 40 years in the design industry. She's an Interior Designer F.D.I.A. — a Fellow of the Design Institute of Australia — and serves the industry as a DIA Counselor. Her interior architecture and construction training let her resolve complex floor plan issues herself."
+    }
+  ],
+  "sms": {
+    "label": "Text a photo",
+    "body": "Hi {owner}, I'd like a quote.\nSuburb: \nWhat I'm after: \n(Happy to send photos of the space.)"
+  },
+  "_source": {
+    "url": "https://karanda.com.au/",
+    "platform": "WordPress / Elementor, RevSlider hero slider, web design credited to 'mobilise solutions' in the footer",
+    "pagesRead": [
+      "home",
+      "about",
+      "design-services",
+      "projects",
+      "contact"
+    ],
+    "notes": "Pulled by curl (raw HTML, for image URLs and exact text) and WebFetch (readable summaries) on 2026-09-23, since Playwright/Chromium cannot reach external HTTPS sites in this session. The 'Click here to Watch it on 9NOW' link (to 9now.com.au/dream-homes-revealed) sits in the header of every page with no further detail (no episode, date or clip named), so it is not used as a headline claim on the demo — see BRIEF.md.",
+    "claimSources": {
+      "Business name 'Karanda Interiors'": {
+        "sentence": "<title>Home - Karanda Interiors Design</title> and the Organization schema name 'Karanda Interiors Design' on every page.",
+        "url": "https://karanda.com.au/"
+      },
+      "Industry mismatch note (kitchens-joinery vs interior design)": {
+        "sentence": "Karanda Interiors Design, google_name 'Karanda Interiors', category 'Interior designer'. Their own services list (design-services page) is Residential/Commercial/Hospitality Interior Design, New Builds, Renovations and Developments, Floor Plan Redesign, Furniture, Lighting & Art Specification, Concept Design, Blinds & Shutter Studio, Custom Upholstery, In-house Fabric Library — no kitchen fabrication or joinery installation service is listed anywhere.",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Owner 'Toni Ford', title 'Interior Designer F.D.I.A.'": {
+        "sentence": "Interior Designer F.D.I.A. With over 40 years' experience in the design industry Toni can help you with all aspects of your project.",
+        "url": "https://karanda.com.au/about/"
+      },
+      "Owner's surname 'Ford'": {
+        "sentence": "Our promise is to bring the best level of expertise to your project, and for that Toni Ford has chosen to deploy a team with excellent credentials.",
+        "url": "https://karanda.com.au/about/"
+      },
+      "'Toni's interior architecture and design training, and comprehensive construction knowledge, enable her to resolve your complex floor plan issues' (owner body, statement section)": {
+        "sentence": "Toni's interior architecture and design training, and comprehensive construction knowledge, enable her to resolve your complex floor plan issues. Toni will guide you through the design process, and can work with your builder, to ensure your dream becomes a reality.",
+        "url": "https://karanda.com.au/about/"
+      },
+      "'40+' years' experience (owner facts, headline 'Forty years')": {
+        "sentence": "With over 40 years' experience in the design industry Toni can help you with all aspects of your project.",
+        "url": "https://karanda.com.au/about/"
+      },
+      "'Karanda Interiors brings over 45 years of uncompromising Interior Design experience to Sydney' — NOT used as a specific claimed figure on the page, kept as context only; the 40-year figure used is Toni's own, personally stated": {
+        "sentence": "Karanda Interiors brings over 45 years of uncompromising Interior Design experience to Sydney.",
+        "url": "https://karanda.com.au/about/"
+      },
+      "'F.D.I.A.' credential and DIA Counselor credential card": {
+        "sentence": "Toni's passion is design and she gives back to the industry she loves by serving as a Counselor with the Design Institute of Australia.",
+        "url": "https://karanda.com.au/about/"
+      },
+      "Team names: Jelena Bruce, Kasey Pogson, Jannelle Peck": {
+        "sentence": "As a graduate of Design Centre Enmore, Jelena has always been inspired by well-considered interiors that bring warmth and joy to clients. / Kaseys love for interiors and long-standing career as an Executive Assistant combine perfectly in managing our clients, suppliers and trades. / Jannelle's background in design, visual arts and management combine perfectly in her love of creating functional, organised and beautiful spaces. Surnames Bruce, Pogson and Peck are from the site's own image filenames/alt text (karanda-kasey.jpg is Kasey's photo; 'Jannelle Peck Design Consultant Karanda Interiors' is stated in image alt text); Jelena's surname is not published in body copy or filenames and is not used on the demo.",
+        "url": "https://karanda.com.au/about/"
+      },
+      "Phone (02) 9525 8053 / 0295258053": {
+        "sentence": "tel:(02)%209525%208053 and tel:0295258053 in the site header on every page; also listed as google_phone '(02) 9525 8053' for slug karanda-interiors.",
+        "url": "https://karanda.com.au/"
+      },
+      "Email design@karanda.com.au": {
+        "sentence": "Obfuscated mailto on the contact and design-services pages, decoding to design@karanda.com.au.",
+        "url": "https://karanda.com.au/contact/"
+      },
+      "Address / baseSuburb 'Sylvania Heights'": {
+        "sentence": "206 Princes Highway, Sylvania Heights NSW 2224",
+        "url": "https://karanda.com.au/contact/"
+      },
+      "Trading hours (responsePromise)": {
+        "sentence": "trading hours: tuesday - friday 9:30am - 4:30pm. monday & saturday: by appointment only.",
+        "url": "https://karanda.com.au/contact/"
+      },
+      "Services list (services section, servicesIntro)": {
+        "sentence": "Residential Interior Design, Commercial Interior Design, Hospitality Interior, New Builds, Renovation & Developments, Floor Plan Redesign, Furniture, Lighting & Art Specification, Concept Design, Blinds & Shutter Studio, Custom Upholstery, In-house Fabric Library.",
+        "url": "https://karanda.com.au/design-services/"
+      },
+      "Pricing: $300/hr senior, $150/hr junior, commercial packages, RRP/supplier names undisclosed": {
+        "sentence": "A rate of $300(Inc GST) per hour or part thereof will be charged for all face to face consultations, drafting and sourcing work with a senior designer and $150(inc GST) with [a junior designer]. Commercial packages are available after the initial consultation. All pricing quoted is RRP and our supplier names will not be disclosed.",
+        "url": "https://karanda.com.au/design-services/"
+      },
+      "Process steps 1-3 (assess, goals/budget, tailored plan, time estimates)": {
+        "sentence": "At the initial consultation we will assess your current interior (or architectural plans) to see what changes and additions need to be considered. We will then thoroughly discuss both the aims of the design and a budget that you are comfortable with. From there, we will be able to create a tailored plan of action for your individual project.",
+        "url": "https://karanda.com.au/design-services/"
+      },
+      "Process step 4 / apertureLine / FAQ 'one-stop solution studio', 'no legwork', 'work with you right from the blueprint phase'": {
+        "sentence": "Our biggest advantage is that we offer a one-stop solution studio for all interior decor needs. There is no need for the client to do any of the leg work. We work with you right from the blueprint phase.",
+        "url": "https://karanda.com.au/about/"
+      },
+      "'Our strength is that we can offer unknown or new materials that are not visible on the market' (FAQ)": {
+        "sentence": "OUR STRENGTH is that we can offer unknown or new materials that are not visible on the market.",
+        "url": "https://karanda.com.au/about/"
+      },
+      "Credential 'Joint projects with The Company of Fire'": {
+        "sentence": "JOINT PROJECTS WITH THE COMPANY OF FIRE",
+        "url": "https://karanda.com.au/design-services/"
+      },
+      "'The Company Of Fire' review — 'second to none'": {
+        "sentence": "The Company Of Fire, 5 stars: 'Worked on many projects with the team at Karanda Interiors. The creative and professionalism of the team is second to none. Highly recommend.'",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Houzz professional profile": {
+        "sentence": "Link to https://www.houzz.com.au/pro/karandainteriors/karanda-interiors in the site footer/header on every page, with Houzz badge images (badge alt text is empty, so no specific Houzz distinction — e.g. 'Best Of Houzz' year — is claimed, only that they have a professional profile).",
+        "url": "https://karanda.com.au/"
+      },
+      "Rating 5.0 and 15 reviews (stats, reviewsIntro, meta description)": {
+        "sentence": "rating 5.0, review_count 15 for slug karanda-interiors.",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Pull quote (Adel Miskovich) and reviews shown": {
+        "sentence": "The six reviews on the page are best_for_demo, word for word, names as published. Diana Boules's is marked shortened ('shortened': true in the source data) and carries the 'Google review, shortened' source line on the page.",
+        "url": "data/google_reviews_top25.json"
+      },
+      "'Toni is named personally in almost every review' (reviewsIntro)": {
+        "sentence": "Of the six best_for_demo reviews, Toni is named by Adel Miskovich, Ammar Alruhaimi and Diana Boules directly; David Murray, The Company Of Fire and Howard Horne name 'Karanda'/'the team' without her first name. Across the full eight-review pull (including Kerrie Kauter and cm, not shown on the demo), Toni is named by five of eight.",
+        "url": "data/google_reviews_top25.json"
+      },
+      "David Murray review / Westbourne Apartments Miranda foyer pairing": {
+        "sentence": "David Murray, 5 stars: 'Karanda Interiors designed and assisted with the refurbishment of the foyer entry area of our apartment complex in Miranda.' Paired with the project photo from karanda.com.au/wp-content/uploads/2021/12/L1030886-HDR.jpg, captioned 'Westbourne Apartments Miranda' on their projects page — the only Miranda project published.",
+        "url": "https://karanda.com.au/projects/"
+      },
+      "Service area suburbs (Sutherland Shire and further afield lists)": {
+        "sentence": "Project titles on the projects page: Shell Road Burraneer, Russo Cronulla, Via Mare Cronulla, Sylvania Villa, Coast Ave Penthouse (Cronulla), Alkira Place Waterfront (Caringbah), Westbourne Apartments Miranda, Oyster Bay Family Home, Maroubra Family Home, Caringbah Duplex, Ewos Pde Cronulla, Double Bay Apartments, Sylvania Townhouse, Kangaroo Point. No page states a service-area boundary; these are documented project locations only, described on the demo as such rather than as a coverage claim.",
+        "url": "https://karanda.com.au/projects/"
+      },
+      "Every photo on the page": {
+        "sentence": "All 13 photos used (hero, statement, aperture, owner, enquiry background, 3 services, 5 gallery) are pulled at full resolution from karanda.com.au's own CDN (wp-content/uploads/...), the same files served in their own page srcsets at up to 1920px. No stock photography, no upscaling beyond native resolution. See BRIEF.md photo inventory for the file-by-file breakdown and what was left out.",
+        "url": "https://karanda.com.au/projects/"
+      },
+      "Logo": {
+        "sentence": "Their own logo file, karanda.com.au/wp-content/uploads/2021/12/logo1.png (646x646), used unmodified.",
+        "url": "https://karanda.com.au/"
+      }
+    }
+  },
+  "_check": []
+}
