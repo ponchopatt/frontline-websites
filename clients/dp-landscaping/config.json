@@ -1,5 +1,5 @@
 {
-  "_comment": "DP Landscaping & Design demo. Finished 2026-09-23 from http://dplandscaping.com.au and data/google_reviews_top25.json. Only 4 real job photos exist (all downloaded already, all cropped to 800x292 banner strips by the original site) — the hero photo is reused as the first gallery tile so the gallery still shows 4. No stock or sample photos used. Every fact on the page is traced in _source.claimSources or comes straight from the review pull. 'Started in 1996' and '20 years' experience' in their own about text contradict each other, so no years-in-business figure is shown anywhere — flagged in BRIEF.md for Pat.",
+  "_comment": "DP Landscaping & Design demo. Finished 2026-09-23 from http://dplandscaping.com.au and data/google_reviews_top25.json. Rework pass 2026-09-23 after independent review (3.67/5): only 4 real job photos exist, all pre-cropped to 800x292 banner strips by the original site, and each now appears in exactly one slot (bridge -> hero, the other 3 -> gallery) instead of being repeated across hero/services/owner/gallery. The shortfall (owner card, 1 gallery tile, statement image, all 3 service images) is filled with labelled sample photos under photos.stockApproved, per BUILDER_NOTES' standing approval. The owner card has no photo at all rather than a stand-in for Dale. Every fact on the page is traced in _source.claimSources or comes straight from the review pull. 'Started in 1996' and '20 years' experience' in their own about text contradict each other, so no years-in-business figure is shown anywhere — flagged in BRIEF.md for Pat.",
   "slug": "dp-landscaping",
   "template": "trust",
   "industry": "landscaping",
@@ -46,7 +46,7 @@
     "description": "Landscape design, construction and garden maintenance across the Shoalhaven, NSW South Coast. Based in Falls Creek. Call Dale on 0402 469 118.",
     "alt": "A stone-and-timber bridge arching over a rock water feature, with clipped shrubs and ornamental grasses on either bank"
   },
-  "responsePromise": "We look forward to hearing from you. Landscape design, construction and garden maintenance across the Shoalhaven, NSW South Coast.",
+  "responsePromise": "Landscape design, construction and garden maintenance across the Shoalhaven, NSW South Coast.",
   "copy": {
     "title": "DP Landscaping & Design — Landscape Design, Construction & Maintenance, Shoalhaven",
     "description": "Landscape design, construction and garden maintenance across the Shoalhaven, NSW South Coast. Based in Falls Creek. Call Dale on 0402 469 118.",
@@ -121,33 +121,48 @@
       "title": "Garden design",
       "blurb": "A consultation first, then a design for the property — working with your architect or builder, or directly with you.",
       "photo": {
-        "src": "assets/front-entry-800.webp",
-        "srcset": "assets/front-entry-800.webp 800w",
-        "width": 800,
-        "height": 292,
-        "alt": "A garden entry path in burgundy fountain grass and stone, leading up steps past a stone water bowl"
+        "src": "assets/sample-garden-path-1600.webp",
+        "srcset": "assets/sample-garden-path-800.webp 800w, assets/sample-garden-path-1600.webp 1600w",
+        "width": 1600,
+        "height": 1069,
+        "alt": "Sample photo: a layered garden bed of clipped hedging, a Japanese maple and a stone path against a stone-faced house",
+        "sample": true,
+        "license": "Pexels License",
+        "sourceUrl": "https://www.pexels.com/photo/tranquil-garden-with-colorful-foliage-and-stone-path-32172798/",
+        "credit": "Takudzwa Munyoro on Pexels",
+        "_comment": "front-entry-800.webp (the client's real entry-path photo) is used once already, in the gallery — this service photo is a labelled sample under the standing stockApproved rather than a second appearance of the same file."
       }
     },
     {
       "title": "Construction",
-      "blurb": "Stonework, retaining walls, water features and planting, built by the qualified team to the design.",
+      "blurb": "Stonework, retaining walls, water features and planting, built by the team to the design.",
       "photo": {
-        "src": "assets/main-sevices-photo-800.webp",
-        "srcset": "assets/main-sevices-photo-800.webp 800w",
-        "width": 800,
-        "height": 292,
-        "alt": "A dry-stone retaining wall built from coursed fieldstone in ochre, plum and grey tones"
+        "src": "assets/sample-paving-construction-1600.webp",
+        "srcset": "assets/sample-paving-construction-800.webp 800w, assets/sample-paving-construction-1600.webp 1600w",
+        "width": 1600,
+        "height": 1067,
+        "alt": "Sample photo: a tradesperson laying garden paving stones by hand",
+        "sample": true,
+        "license": "Pexels License",
+        "sourceUrl": "https://www.pexels.com/photo/worker-working-on-pavement-in-rain-16239805/",
+        "credit": "Marianna Zuzanna on Pexels",
+        "_comment": "main-sevices-photo-800.webp (the client's real stone-wall photo) is used once already, in the gallery — this service photo is a labelled sample under the standing stockApproved rather than a second appearance of the same file."
       }
     },
     {
       "title": "Garden maintenance",
       "blurb": "Ongoing care once it's built. Several clients have kept Dale on for years after the first job finished.",
       "photo": {
-        "src": "assets/pond-view-800.webp",
-        "srcset": "assets/pond-view-800.webp 800w",
-        "width": 800,
-        "height": 292,
-        "alt": "A dry-stone wall along a garden pond, with mown lawn and established planting behind it"
+        "src": "assets/sample-hedge-trim-1600.webp",
+        "srcset": "assets/sample-hedge-trim-800.webp 800w, assets/sample-hedge-trim-1600.webp 1600w",
+        "width": 1600,
+        "height": 1067,
+        "alt": "Sample photo: a gardener trimming a hedge with a powered trimmer",
+        "sample": true,
+        "license": "Pexels License",
+        "sourceUrl": "https://www.pexels.com/photo/man-cutting-a-hedge-with-a-trimmer-in-the-garden-24595769/",
+        "credit": "Aleksander Dumała on Pexels",
+        "_comment": "pond-view-800.webp (the client's real pond/wall photo) is used once already, in the gallery — this service photo is a labelled sample under the standing stockApproved rather than a second appearance of the same file."
       }
     }
   ],
@@ -162,7 +177,7 @@
     },
     {
       "step": "Construction",
-      "detail": "The qualified team builds it — stonework, planting, water features and more — to the design."
+      "detail": "The team builds it — stonework, planting, water features and more — to the design."
     },
     {
       "step": "Garden maintenance",
@@ -184,38 +199,26 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/q-800.webp",
-      "srcset": "assets/q-800.webp 800w",
-      "width": 800,
+      "src": "assets/q-bridge-hero-440.webp",
+      "srcset": "assets/q-bridge-hero-440.webp 440w",
+      "width": 440,
       "height": 292,
-      "alt": "A stone-and-timber bridge arching over a rock water feature, with clipped shrubs and ornamental grasses on either bank"
+      "alt": "A stone-and-timber bridge arching over a rock water feature, with clipped shrubs and ornamental grasses on either bank",
+      "_comment": "Cropped from assets/q-800.webp (left 60px, 440x292, sharp) to put the bridge in the horizontal centre of the frame. The original 800x292 crop had the bridge left-of-centre with the waterfall on the right, so a narrow mobile viewport's centred cover-crop showed mostly hillside and grass — read as a murky green blur with no bridge in it. No object-position/focal-point or hero-overlay-opacity setting exists in this template's config surface (checked every client config in the factory, including arizona-roofing's sample hero and utopian-landscaping's cropped hero — neither exposes one), so re-cropping the source file was the only lever available here. This file is now the only place q-800.webp's content is used on the page — it is no longer also the first gallery tile. Resolution is still capped by the source: only 4 real, low-res photos exist for this client (flagged in BRIEF.md)."
     },
     "statement": {
-      "src": "assets/pond-view-800.webp",
-      "srcset": "assets/pond-view-800.webp 800w",
-      "width": 800,
-      "height": 292,
-      "alt": "A dry-stone retaining wall along a garden pond, with mown lawn and established planting behind it"
-    },
-    "owner": {
-      "src": "assets/main-sevices-photo-800.webp",
-      "srcset": "assets/main-sevices-photo-800.webp 800w",
-      "width": 800,
-      "height": 292,
-      "alt": "A dry-stone retaining wall built from coursed fieldstone in ochre, plum and grey tones",
-      "caption": "Dry-stone retaining wall"
+      "src": "assets/sample-garden-wall-pond-1600.webp",
+      "srcset": "assets/sample-garden-wall-pond-800.webp 800w, assets/sample-garden-wall-pond-1600.webp 1600w",
+      "width": 1600,
+      "height": 1067,
+      "alt": "Sample photo: a coral-stone retaining wall along a still pond, capped by a clipped green hedge",
+      "sample": true,
+      "license": "Pexels License",
+      "sourceUrl": "https://www.pexels.com/photo/stone-wall-surrounding-an-edge-of-a-pond-12763046/",
+      "credit": "Muhammed Zahid Bulut on Pexels",
+      "_comment": "pond-view-800.webp (the client's real pond/wall photo) is used once already, in the gallery — this is a labelled sample under the standing stockApproved rather than a second appearance of the same file."
     },
     "gallery": [
-      {
-        "src": "assets/q-800.webp",
-        "full": "assets/q-800.webp",
-        "srcset": "assets/q-800.webp 800w",
-        "width": 800,
-        "height": 292,
-        "caption": "Stone-and-timber bridge",
-        "detail": "Water feature, rock waterfall",
-        "alt": "A stone-and-timber bridge arching over a rock water feature, with clipped shrubs and ornamental grasses on either bank"
-      },
       {
         "src": "assets/front-entry-800.webp",
         "full": "assets/front-entry-800.webp",
@@ -245,9 +248,29 @@
         "caption": "Dry-stone retaining wall",
         "detail": "Coursed fieldstone, close up",
         "alt": "A dry-stone retaining wall built from coursed fieldstone in ochre, plum and grey tones"
+      },
+      {
+        "src": "assets/sample-terraced-wall-800.webp",
+        "full": "assets/sample-terraced-wall-1600.webp",
+        "srcset": "assets/sample-terraced-wall-800.webp 800w, assets/sample-terraced-wall-1600.webp 1600w",
+        "width": 1600,
+        "height": 2400,
+        "caption": "Terraced stone walling",
+        "detail": "Sample photo",
+        "alt": "Sample photo: dry-stone terraced retaining walls stepping down a grassed, wooded slope",
+        "sample": true,
+        "license": "Pexels License",
+        "sourceUrl": "https://www.pexels.com/photo/lush-terraced-landscape-with-stone-walls-33277655/",
+        "credit": "Eren Arıcı on Pexels",
+        "_comment": "Only 4 real photos exist and the other 3 are already used above — this 4th gallery tile (QUALITY.md's 4-photo minimum) is a labelled sample under the standing stockApproved rather than repeating one of the 3 real photos or the hero."
       }
     ],
-    "beforeAfter": []
+    "beforeAfter": [],
+    "stockApproved": {
+      "by": "Pat (standing approval)",
+      "on": "2026-09-23",
+      "reason": "only 4 real photos exist, avoiding repeats across slots"
+    }
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
