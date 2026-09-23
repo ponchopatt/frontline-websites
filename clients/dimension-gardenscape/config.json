@@ -64,7 +64,7 @@
     "apertureLine": "Design, construction and horticulture — one team, one call.",
     "workLabel": "Selected work",
     "workHeadline": "Canberra and Queanbeyan<br>gardens, start to finish.",
-    "workIntro": "Award-tagged Ainslie, a curved-deck Ngunnawal build, a Deakin front garden, a Harrison courtyard and a minimalist Queanbeyan-side rebuild — real jobs, photographed as finished.",
+    "workIntro": "Ainslie, a curved-deck Ngunnawal build, a Deakin front garden, a Harrison courtyard and a minimalist rear-garden rebuild — real jobs, photographed as finished.",
     "processLabel": "How it runs",
     "processHeadline": "From first meeting<br>to finished garden.",
     "processIntro": "The design and quoting stage runs two weeks to a month depending on complexity. You see the concept plan before anything is booked in.",
@@ -515,6 +515,10 @@
       "Every photo used or excluded": {
         "sentence": "All 13 used photos and all 10 excluded stock/render photos were opened and looked at individually; file names, sizes and what each shows are listed in clients/dimension-gardenscape/BRIEF.md.",
         "url": "web.archive.org/cdx/search/cdx (wp-content/uploads listings, 2021–2025)"
+      },
+      "'Free quote' (ctaLabel, enquireLabel, FAQ)": {
+        "sentence": "Free Quote (home page button); For experienced landscape gardeners in Canberra or for a free quote on all of our gardening and design services, contact Dimension Gardenscape today on 02 6297 9040.",
+        "url": "https://web.archive.org/web/20240713132148/https://dimensiongardenscape.com.au/about-us/"
       },
       "Logo colours #289848 / #60a848": {
         "sentence": "Sampled programmatically from the two dominant non-white colours in their own logo PNG (assets/logo-dimension-gardenscape.png).",
