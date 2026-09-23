@@ -51,28 +51,32 @@ Only 4 real, usable photos exist for this client (downloaded already); all are t
 photos, all pre-cropped by the original site to 800×292px (an unusually wide, short
 "banner strip" aspect, well below the 1600px hero-image bar). Opened one by one:
 
-1. **assets/q-800.webp** — a stone-and-timber bridge arching over a rock water feature/
-   waterfall, clipped shrubs and ornamental grasses either bank. Sharpest and most striking
-   of the four — **used as the hero** and reused as the first gallery tile.
+1. **assets/q-bridge-hero-440.webp** (cropped from q-800.webp) — a stone-and-timber bridge
+   arching over a rock water feature/waterfall, clipped shrubs and ornamental grasses either
+   bank. Sharpest and most striking of the four — **used as the hero only**, re-cropped to
+   keep the bridge in frame on mobile.
 2. **assets/pond-view-800.webp** — a dry-stone retaining wall along a garden pond, mown lawn,
-   established planting, a wheelbarrow. Used as the "statement" section image, a services
-   photo, and a gallery tile.
+   established planting, a wheelbarrow. Used as a gallery tile only.
 3. **assets/main-sevices-photo-800.webp** — a dry-stone retaining wall close up, coursed
-   fieldstone in ochre/plum/grey. Used as a services photo, the owner-card image, and a
-   gallery tile.
+   fieldstone in ochre/plum/grey. Used as a gallery tile only.
 4. **assets/front-entry-800.webp** — a garden entry path in burgundy fountain grass and stone,
    leading up steps past a stone water bowl (red rendered wall and building edge in the
-   background). Used as a services photo and a gallery tile.
+   background). Used as a gallery tile only.
 5. **assets/mainportfolio-showcase-photo-800.webp** — **excluded entirely.** Not a job photo:
    two magazine cover thumbnails (House & Garden style). Not referenced anywhere in
    `config.json`.
 6. **assets/logo.webp** — their logo, 175×117, used as-is.
 
-**Flag for Pat:** because there are only 4 real photos, the hero image is reused as the first
-gallery tile so the gallery still hits the 4-photo minimum — no stock or sample photos were
-introduced. The hero is well under the 1600px bar and stretched taller than its native crop
-on mobile. Ask Dale for higher-resolution originals (or a phone photo dump) of these same
-jobs, and any other finished jobs, before this goes to a real send.
+**Rework note:** the first build reused these 4 photos across 2-3 slots each (a stone wall
+even stood in for a photo of Dale on the owner card). Reworked so each real photo appears in
+exactly one place; the statement section, service cards, one gallery slot and the owner card
+now use 5 labelled sample photos instead (Pat's standing stock-photo approval, since only 4
+real photos exist), and the owner card dropped its photo rather than mislabel one.
+
+**Flag for Pat:** only 4 real photos exist, well under the 1600px hero bar and an unusual
+800×292 crop. Ask Dale for higher-resolution originals (or a phone photo dump) of these same
+jobs, and any other finished jobs, before this goes to a real send — the 5 sample photos
+should come out as real ones come in.
 
 ## Other things to confirm with Dale before sending
 - The real founding year / years of experience (see above — nothing shown until confirmed).
