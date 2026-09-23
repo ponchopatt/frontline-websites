@@ -1,0 +1,494 @@
+{
+  "_comment": "Forest Joinery, Cromer NSW (Sydney's Northern Beaches). Built 2026-09-23 from https://www.forestjoinery.com.au (a Houzz 'Pro Website' — Next.js server-rendered, hosted on st.hzcdn.com). Every specific fact on the page is quoted in _source.claimSources with the page it came from, or comes from data/google_reviews_top25.json. Nothing is inferred. INDUSTRY CHECKED, NOT MISMATCHED: unlike karanda-interiors, Forest Joinery is a genuine kitchens-joinery fabricator/installer — Google category 'Cabinet maker', and their own site describes founder Dave personally quoting, drawing, building and installing kitchens, bathrooms, laundries, wardrobes and cabinetry (not a design-only studio). No years in business, no ABN and no trading hours are published anywhere, so none are claimed. See BRIEF.md.",
+  "slug": "forest-joinery",
+  "template": "trust",
+  "industry": "kitchens-joinery",
+  "live": false,
+  "tagline": "Custom kitchens, bathrooms and built-in joinery across Sydney's Northern Beaches, quoted, built and installed personally by Dave Gerson.",
+  "schemaType": "HomeAndConstructionBusiness",
+  "business": {
+    "name": "Forest Joinery",
+    "ownerName": "Dave Gerson",
+    "ownerFirstName": "Dave",
+    "phone": {
+      "display": "0472 507 755",
+      "e164": "+61472507755"
+    },
+    "email": "info@forestjoinery.com.au",
+    "baseSuburb": "Cromer",
+    "region": "NSW",
+    "currentSite": "forestjoinery.com.au",
+    "brand": {
+      "accent": "#6B705C",
+      "accent2": "#8C9394",
+      "themeColor": "#1F211C",
+      "_comment": "Both colours are lifted directly from their own site: #6b705c is the exact --logo-title-color / --navigation-link-color sage-grey used for their logo text and nav links, and #8C9394 is their own --button-background-color. Not invented — see forestjoinery.com.au page source."
+    },
+    "logo": {
+      "src": "assets/logo.png",
+      "width": 296,
+      "height": 126,
+      "_comment": "Their own logo artwork (st.hzcdn.com/siteuploads/site_66561209/Artwork-4.png), downloaded at its only published size, 148x63px, and scaled up 2x with Lanczos resampling to 296x126 — within the 'max 2x' upscale limit, and safe here because the mark is a flat two-colour icon + wordmark with no photographic detail to smear. It is a small file; ask Dave for the original vector or a larger export before this goes live."
+    }
+  },
+  "share": {
+    "image": "assets/share-1200.webp",
+    "width": 1200,
+    "height": 900,
+    "title": "Forest Joinery — Kitchens & Custom Joinery, Sydney's Northern Beaches",
+    "description": "Custom kitchens, bathrooms and built-in joinery across Sydney's Northern Beaches, quoted, built and installed personally by Dave Gerson.",
+    "alt": "A curved fluted kitchen island with a white stone benchtop, opening onto a living room with a built-in bookshelf, Bayview"
+  },
+  "responsePromise": "Call or text Dave direct on 0472 507 755, or send the details below and he'll come back to you.",
+  "copy": {
+    "title": "Forest Joinery — Kitchens & Custom Joinery, Northern Beaches Sydney",
+    "description": "Custom kitchens, bathrooms, laundries, wardrobes and bespoke joinery across Sydney's Northern Beaches. Fully licensed and insured, quoted and built personally by Dave Gerson. 5.0 from 6 Google reviews.",
+    "ctaLabel": "Talk to Dave",
+    "kicker": "Cromer, Sydney's Northern Beaches",
+    "headline": "Honest advice.<br>Honest<br><em>joinery.</em>",
+    "sub": "Dave Gerson runs every Forest Joinery job himself, from the first quote to the final fix. Send him your plans and, if there's a better way to build them, he'll tell you before he starts — not after.",
+    "heroSecondary": "Or send the details",
+    "heroSecondarySms": "Or text a photo of the space",
+    "navApproach": "Process",
+    "statementLabel": "The difference",
+    "statementHeadline": "Ask before you<br>build, not after.",
+    "statementBody": "One kitchen client wrote that Dave 'wasn't afraid to tell us if something wasn't the best idea or the most practical solution' — and suggested better alternatives instead of just building to the plans. That's the whole approach: Dave is personally involved in every stage of your project, from the first meeting to the final finish.",
+    "servicesLabel": "What we build",
+    "servicesHeadline": "Kitchens, bathrooms<br>and everything<br>built-in.",
+    "servicesIntro": "Domestic joinery: kitchens, bathrooms, laundries and wardrobes, through to home offices, entertainment units and bespoke pieces.",
+    "apertureLabel": "Fully licensed and insured",
+    "apertureLine": "NSW Licence Number 338298C. Dave personally checks the finish before any job is called done.",
+    "workLabel": "Recent projects",
+    "workHeadline": "Real jobs, across<br>the Northern Beaches<br>and beyond.",
+    "workIntro": "A selection of finished kitchens, bathrooms and built-in joinery from Forest Joinery's own project gallery.",
+    "processLabel": "How it runs",
+    "processHeadline": "Six steps, one<br>person accountable.",
+    "processIntro": "From the first meeting to the final finish, Dave is hands-on at every stage.",
+    "ownerLabel": "Who you are dealing with",
+    "reviewsLabel": "Google reviews",
+    "reviewsTitle": "What clients say.",
+    "reviewsIntro": "From Forest Joinery's Google profile: 5.0 from 6 reviews. Dave is named personally in almost every one.",
+    "recognitionLabel": "Beyond the reviews",
+    "recognitionHeadline": "Licensed, insured, and 50+ reviews on Houzz.",
+    "recognitionIntro": "Credentials and trade partners beyond the Google reviews on this page.",
+    "areasLabel": "Where we work",
+    "areasHeadline": "Cromer, and across<br>Sydney's north.",
+    "areasIntro": "Based in Cromer on the Northern Beaches. These are the suburbs Forest Joinery's own project gallery names — not a strict boundary, so if you're further out, just ask.",
+    "faqLabel": "Before you call",
+    "faqHeadline": "Questions we're asked.",
+    "enquireLabel": "Talk to Dave",
+    "enquireHeadline": "Tell us about<br>the job.",
+    "enquireIntro": "The more you can tell us about the space and what you're after, the more useful the first conversation will be. Photos help."
+  },
+  "stats": {
+    "googleRating": 5,
+    "reviewCount": 6,
+    "yearsInBusiness": null,
+    "_comment": "5.0 from 6 reviews, confirmed against data/google_reviews_top25.json (slug forest-joinery). No founding year, ABN or years-in-business figure is published anywhere on forestjoinery.com.au, so none is shown. Their testimonials page separately states 'See all 50+ reviews on Houzz' — a different platform and a different, larger count, used only as its own credential card (recognitionHeadline / credentials), never merged into the Google rating/count above."
+  },
+  "pullQuote": {
+    "text": "Dave Gerson from Forest Joinery was recommended to me by a friend and I could not be happier with Dave's work. I needed a new wardrobe built and installed on a tight timeframe. He delivered a great product on time and well priced. Thank you so much Dave",
+    "name": "Pamela Carr, Google"
+  },
+  "owner": {
+    "body": "Dave Gerson founded Forest Joinery and is personally involved in every stage of the process — from the first meeting and the quote, through drawings and consultation, to the finished install. He brings his years of industry experience and insight to each project.",
+    "team": "Forest Joinery's install team does the cutting, assembly and fitting, but Dave personally checks that the finish meets his standard before any job is signed off.",
+    "facts": [
+      {
+        "value": "338298C",
+        "label": "NSW joinery licence number"
+      },
+      {
+        "value": "50+",
+        "label": "Reviews on Houzz"
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "kind": "licence",
+      "label": "Fully licensed and insured — Licence Number 338298C",
+      "body": "We are fully licensed and insured, so you can put your trust in us to get the job done right.",
+      "strip": true
+    },
+    {
+      "kind": "profile",
+      "label": "50+ reviews on Houzz",
+      "body": "Forest Joinery's testimonials page links through to their full Houzz review history, alongside the reviews shown on this page.",
+      "strip": false
+    },
+    {
+      "kind": "partner",
+      "label": "Blum, Festool and Polytec",
+      "body": "We invest in industry-leading brands and suppliers to guarantee a high-quality finish — Blum hardware, Festool power tools and Polytec decorative surfaces.",
+      "strip": false
+    }
+  ],
+  "priceLines": {
+    "fee": "",
+    "build": "",
+    "_comment": "Forest Joinery publish no prices anywhere and no reviewer quotes one, so both are left empty and the sentences that would carry a number stay hidden. Ask Dave before filling them in."
+  },
+  "services": [
+    {
+      "title": "Kitchens",
+      "blurb": "New kitchens and renovations, custom-built and installed — from cabinetry and benchtops to fully fitted joinery.",
+      "photo": {
+        "src": "assets/forestville-new-kitchen-1200.webp",
+        "srcset": "assets/forestville-new-kitchen-480.webp 480w, assets/forestville-new-kitchen-800.webp 800w, assets/forestville-new-kitchen-1200.webp 1200w, assets/forestville-new-kitchen-1800.webp 1800w",
+        "width": 2560,
+        "height": 1708,
+        "alt": "A matte black and light-timber kitchen with a picture window over the sink looking onto a garden, Forestville"
+      }
+    },
+    {
+      "title": "Bathrooms & laundries",
+      "blurb": "Vanities, storage and cabinetry for bathrooms, ensuites and laundries, built to fit the room — including rooms that aren't quite level.",
+      "photo": {
+        "src": "assets/waverton-vanity-480.webp",
+        "srcset": "assets/waverton-vanity-480.webp 480w",
+        "width": 756,
+        "height": 1008,
+        "alt": "A timber-veneer double vanity with two vessel basins under a large asymmetric mirror, Waverton"
+      }
+    },
+    {
+      "title": "Wardrobes & bespoke joinery",
+      "blurb": "Wardrobes, home offices, entertainment units and bespoke pieces — plus curved and fluted cabinetry for a feature finish.",
+      "photo": {
+        "src": "assets/bayview-corner-display-1200.webp",
+        "srcset": "assets/bayview-corner-display-480.webp 480w, assets/bayview-corner-display-800.webp 800w, assets/bayview-corner-display-1200.webp 1200w, assets/bayview-corner-display-1800.webp 1800w",
+        "width": 1920,
+        "height": 2560,
+        "alt": "A curved, fluted corner display cabinet with three glass shelves, Bayview"
+      }
+    }
+  ],
+  "process": [
+    {
+      "step": "Personal meeting",
+      "detail": "Meet with our founder, Dave, who will be hands-on and involved in your project from start to finish, to discuss your specific needs and explore the possibilities."
+    },
+    {
+      "step": "Detailed quotation",
+      "detail": "Receive a clear, itemised quotation covering every element of our plan for your project. Know exactly what we promise to deliver before anything is booked in."
+    },
+    {
+      "step": "Drawings and consultation",
+      "detail": "See your design come to life through detailed project drawings. We confirm the final job specifications during a one-on-one consultation to match your taste and requirements."
+    },
+    {
+      "step": "Expert craftsmanship",
+      "detail": "Our team gets to work on your project, balancing creativity, skill and efficiency to keep the job on-brief and on time."
+    },
+    {
+      "step": "Flawless installation",
+      "detail": "Your bespoke joinery or cabinets are installed with care, attention to detail and respect for your home or workspace."
+    },
+    {
+      "step": "Quality finish",
+      "detail": "Dave personally ensures the finish meets our standards, exceeds your expectations and leaves you happy with the end result."
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "Northern Beaches",
+      "suburbs": [
+        "Cromer",
+        "Warriwood",
+        "Bayview",
+        "Beacon Hill",
+        "Forestville",
+        "Allambie Heights",
+        "Manly",
+        "Seaforth",
+        "North Balgowlah"
+      ]
+    },
+    {
+      "region": "Also across Sydney's north",
+      "suburbs": [
+        "Waverton",
+        "Castlecrag",
+        "Turramurra",
+        "St Ives",
+        "West Pymble",
+        "Carlingford",
+        "Kingsford"
+      ]
+    }
+  ],
+  "photos": {
+    "hero": {
+      "src": "assets/bayview-kitchen-island-1800.webp",
+      "srcset": "assets/bayview-kitchen-island-480.webp 480w, assets/bayview-kitchen-island-800.webp 800w, assets/bayview-kitchen-island-1200.webp 1200w, assets/bayview-kitchen-island-1800.webp 1800w",
+      "width": 2560,
+      "height": 1920,
+      "alt": "A curved fluted kitchen island with a white stone benchtop, black tapware and a built-in bookshelf wall beyond, Bayview",
+      "_comment": "From the 'Bayview Kitchen and Entry' project (st.hzcdn.com/simgs/9df1704805d591b1_14-5286), downloaded at Houzz's largest served size (2560x1920, well over the 1600px minimum). Chosen as hero because it's a real, sharp, well-lit photo of their own finished cabinetry (the fluted island panels) rather than a generic room shot."
+    },
+    "statement": {
+      "src": "assets/forestville-new-kitchen-1800.webp",
+      "srcset": "assets/forestville-new-kitchen-480.webp 480w, assets/forestville-new-kitchen-800.webp 800w, assets/forestville-new-kitchen-1200.webp 1200w, assets/forestville-new-kitchen-1800.webp 1800w",
+      "width": 2560,
+      "height": 1708,
+      "alt": "A matte black and light-timber kitchen with a picture window over the sink looking onto a garden, Forestville"
+    },
+    "aperture": {
+      "src": "assets/family-home-tv-unit-1800.webp",
+      "srcset": "assets/family-home-tv-unit-800.webp 800w, assets/family-home-tv-unit-1200.webp 1200w, assets/family-home-tv-unit-1800.webp 1800w",
+      "width": 2560,
+      "height": 1708,
+      "alt": "A built-in oak veneer bookshelf and TV cabinet against a navy blue wall",
+      "caption": "Custom Family Home Fit Out"
+    },
+    "owner": {
+      "src": "assets/beacon-hill-fitout-1200.webp",
+      "srcset": "assets/beacon-hill-fitout-480.webp 480w, assets/beacon-hill-fitout-800.webp 800w, assets/beacon-hill-fitout-1200.webp 1200w",
+      "width": 1280,
+      "height": 960,
+      "ratio": "1280/960",
+      "alt": "A white shiplap-panelled TV and fireplace wall unit with floating timber shelves, Beacon Hill",
+      "caption": "Beacon Hill — House Fitout",
+      "_comment": "No photograph of Dave exists anywhere on forestjoinery.com.au, their Houzz profile or the reviews, so a finished job stands in for the owner section, as with other solo-operator trades in this factory. Getting a photo of Dave is the first thing to ask for."
+    },
+    "enquiryBackground": {
+      "src": "assets/bayview-twin-cabinets-1200.webp",
+      "width": 1200,
+      "height": 1600
+    },
+    "gallery": [
+      {
+        "src": "assets/bayview-corner-display-800.webp",
+        "full": "assets/bayview-corner-display.jpg",
+        "srcset": "assets/bayview-corner-display-480.webp 480w, assets/bayview-corner-display-800.webp 800w, assets/bayview-corner-display-1200.webp 1200w",
+        "width": 1920,
+        "height": 2560,
+        "caption": "Bayview Kitchen and Entry",
+        "detail": "Curved fluted display cabinet",
+        "alt": "A curved, fluted corner display cabinet with three glass shelves"
+      },
+      {
+        "src": "assets/bayview-twin-cabinets-800.webp",
+        "full": "assets/bayview-twin-cabinets.jpg",
+        "srcset": "assets/bayview-twin-cabinets-480.webp 480w, assets/bayview-twin-cabinets-800.webp 800w, assets/bayview-twin-cabinets-1200.webp 1200w",
+        "width": 1920,
+        "height": 2560,
+        "caption": "Bayview Kitchen and Entry",
+        "detail": "Matching fluted entry cabinets",
+        "alt": "Two matching curved fluted cabinets with glass shelving either side of a hallway door"
+      },
+      {
+        "src": "assets/forestville-pullout-storage-800.webp",
+        "full": "assets/forestville-pullout-storage.jpg",
+        "srcset": "assets/forestville-pullout-storage-480.webp 480w, assets/forestville-pullout-storage-800.webp 800w, assets/forestville-pullout-storage-1200.webp 1200w",
+        "width": 2560,
+        "height": 1708,
+        "caption": "Forestville — New Kitchen",
+        "detail": "Pull-out pot and appliance storage",
+        "alt": "A black cabinet with pull-out shelving for pots, pans and a slow cooker, fully extended"
+      },
+      {
+        "src": "assets/family-home-staircase-800.webp",
+        "full": "assets/family-home-staircase.jpg",
+        "srcset": "assets/family-home-staircase-480.webp 480w, assets/family-home-staircase-800.webp 800w, assets/family-home-staircase-1200.webp 1200w",
+        "width": 1708,
+        "height": 2560,
+        "caption": "Custom Family Home Fit Out",
+        "detail": "Timber battening and glass balustrade",
+        "alt": "A stairwell with vertical oak timber battening, an oak handrail and a glass balustrade panel"
+      },
+      {
+        "src": "assets/warriwood-ensuite-800.webp",
+        "full": "assets/warriwood-ensuite.jpg",
+        "srcset": "assets/warriwood-ensuite-480.webp 480w, assets/warriwood-ensuite-800.webp 800w, assets/warriwood-ensuite-1200.webp 1200w",
+        "width": 1920,
+        "height": 2560,
+        "caption": "Warriwood Makeover",
+        "detail": "Ensuite vanity",
+        "alt": "A curved fluted vanity unit with a black tapware pillar tap and vessel basin below an arched mirror"
+      },
+      {
+        "src": "assets/waverton-vanity-480.webp",
+        "full": "assets/waverton-vanity.jpg",
+        "srcset": "assets/waverton-vanity-480.webp 480w",
+        "width": 756,
+        "height": 1008,
+        "caption": "Waverton Bathroom",
+        "detail": "Double vanity",
+        "alt": "A timber-veneer double vanity with two vessel basins under a large asymmetric mirror"
+      }
+    ],
+    "_comment": "10 distinct real photos used across the whole page (hero, statement, aperture, owner, enquiry background, 3 services reusing hero/gallery images, 6 gallery tiles), all pulled at Houzz's own largest served resolution (st.hzcdn.com/simgs/..._14-... or _16-...) from four different finished projects (Bayview Kitchen and Entry, Forestville New Kitchen, Beacon Hill House Fitout, Custom Family Home Fit Out) plus Warriwood Makeover and Waverton Bathroom. waverton-vanity is smaller (756px wide, no larger size served) — used only as a small gallery tile, not upscaled. Two 'before' photos from the Warriwood Makeover project (an old cream laminate kitchen, pre-renovation) were deliberately excluded — they show the client's old kitchen, not Forest Joinery's work. No stock photography is used anywhere; photos.stockApproved is intentionally absent."
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [
+    {
+      "name": "Pamela Carr",
+      "text": "Dave Gerson from Forest Joinery was recommended to me by a friend and I could not be happier with Dave's work. I needed a new wardrobe built and installed on a tight timeframe. He delivered a great product on time and well priced. Thank you so much Dave"
+    },
+    {
+      "name": "Jeremy Ungar",
+      "text": "Outstanding job done in our apartment. Dave completed the highest quality work at a reasonable fee. I highly recommend using Forest Joinery."
+    },
+    {
+      "name": "Lynda Tate",
+      "text": "Thank you Dave for doing a great job, with a professional and patient approach. I'm so happy with the outcome and all of the extra storage space I've now achieved!"
+    },
+    {
+      "name": "Andrew Whitten",
+      "text": "Used them a few times, always great quality and service, no hesitation in recommending."
+    },
+    {
+      "name": "Anthony Bass",
+      "text": "Outstanding service and finished product. Great experience - highly recommended"
+    },
+    {
+      "name": "Phillip W",
+      "text": "We couldn't be happier with the work Forest Joinery did on our renovation.",
+      "source": "Google review, shortened"
+    }
+  ],
+  "faq": [
+    {
+      "q": "Are you licensed and insured?",
+      "a": "Yes. We are fully licensed and insured, so you can put your trust in us to get the job done right — NSW Licence Number 338298C."
+    },
+    {
+      "q": "What sort of jobs do you take on?",
+      "a": "Domestic joinery: kitchens, bathrooms, laundries and wardrobes, through to home offices, entertainment units and bespoke pieces. Our gallery includes everything from full kitchen renovations to a custom stereo unit and storage built under a staircase."
+    },
+    {
+      "q": "Will I get a fixed price before you start?",
+      "a": "Yes. You'll receive a clear, itemised quotation covering every element of the plan for your project, so you know exactly what's being delivered before anything is booked in."
+    },
+    {
+      "q": "Do I deal with Dave the whole way through, or get handed to someone else?",
+      "a": "Dave is personally involved in every stage — the first meeting, the quote, the drawings and consultation, and he personally checks the finish before any job is signed off. One reviewer said he wasn't afraid to suggest a better alternative instead of just building to the plans."
+    },
+    {
+      "q": "What areas do you cover?",
+      "a": "We're based in Cromer on the Northern Beaches. Our project gallery covers Warriwood, Bayview, Forestville, Beacon Hill, Manly, Seaforth and North Balgowlah, plus jobs further out including Waverton, Castlecrag, Turramurra, St Ives, West Pymble, Carlingford and Kingsford. If you're not sure we cover your suburb, just ask."
+    },
+    {
+      "q": "What brands and materials do you use?",
+      "a": "We invest in industry-leading brands and suppliers for a high-quality finish: Blum hardware, Festool power tools and Polytec decorative surfaces."
+    }
+  ],
+  "form": {
+    "notesHint": "What the job involves, and roughly when you're hoping to start."
+  },
+  "sms": {
+    "label": "Text a photo",
+    "body": "Hi Dave, I'd like a quote.\nSuburb: \nWhat I'm after: \n(Happy to send photos of the space.)"
+  },
+  "_source": {
+    "url": "https://www.forestjoinery.com.au/",
+    "platform": "Houzz 'Pro Website' (Next.js, server-rendered from st.hzcdn.com/fe/next-pro-site) — canonical domain forestjoinery.com.au, live at www.forestjoinery.com.au",
+    "pagesRead": [
+      "home",
+      "about",
+      "gallery",
+      "testimonials",
+      "process",
+      "bespoke-furniture",
+      "tools",
+      "connect",
+      "projects/7717676-warriwood-makeover",
+      "projects/7385742-bayview-kitchen-and-entry",
+      "projects/7385726-beacon-hill-house-fitout",
+      "projects/7261170-forestville-new-kitchen",
+      "projects/7169597-waverton-bathroom",
+      "projects/6917686-custom-family-home-fit-out"
+    ],
+    "notes": "Pulled by curl (raw HTML, for image URLs and exact text) on 2026-09-23, since Playwright/Chromium cannot reach external HTTPS sites in this session. The site is server-rendered (unlike a typical client-side SPA) so curl returned full text content directly. No ABN, no trading hours and no founding/years-in-business figure appear anywhere on the site, so none are claimed.",
+    "claimSources": {
+      "Business name 'Forest Joinery'": {
+        "sentence": "<title>Forest Joinery</title> and <meta content=\"Forest Joinery\" itemProp=\"name\"/> in the page header schema on every page.",
+        "url": "https://www.forestjoinery.com.au/"
+      },
+      "Industry check: genuine kitchens-joinery fabricator/installer, not design-only": {
+        "sentence": "google_name 'Forest Joinery', category 'Cabinet maker'. Their own Bespoke Furniture page: 'At Forest Joinery, we specialise in domestic joinery; from kitchens, bathrooms, laundries, and wardrobes to home offices, entertainment units, bespoke pieces, and everything in between.' The Process page describes Dave personally quoting, drawing, building ('Expert Craftsmanship... our talented team') and installing ('Flawless Installation... your bespoke joinery or cabinets are installed') — a full fabrication and installation service, not design consulting only.",
+        "url": "https://www.forestjoinery.com.au/bespoke-furniture"
+      },
+      "Owner 'Dave Gerson', first name 'Dave'": {
+        "sentence": "Dave Gerson from Forest Joinery was recommended to me by a friend and I could not be happier with Dave's work. […] Thank you so much Dave (Pamela Carr, Google review). Also: 'Dave Gerson provided excellent advice and his attention to detail is outstanding' (Elayne White, Forest Joinery's own testimonials page). Their own site refers to him only as 'our founder, Dave' throughout (About, Process pages).",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Phone 0472 507 755 (mobile, primary CTA)": {
+        "sentence": "<a href=\"tel:0472 507 755\" class=\"button button--primary\">CALL 0472 507 755</a> — the site's own primary call-to-action button on the homepage. Matches google_phone '0472 507 755' for slug forest-joinery.",
+        "url": "https://www.forestjoinery.com.au/"
+      },
+      "Phone (02) 9159 6229 (landline, footer contact block) — not used as the primary number since 04xx is needed for the text button, but real and theirs": {
+        "sentence": "<a href=\"tel:02-9159-6229\">(02) 9159 6229</a> in the footer contact block on every page.",
+        "url": "https://www.forestjoinery.com.au/"
+      },
+      "Email info@forestjoinery.com.au": {
+        "sentence": "<a href=\"mailto:info@forestjoinery.com.au\">info@forestjoinery.com.au</a> in the footer contact block on every page.",
+        "url": "https://www.forestjoinery.com.au/"
+      },
+      "Address / baseSuburb 'Cromer'": {
+        "sentence": "36/1-5 Thew Parade, Cromer, NSW 2099 — footer address block, linked to Google Maps, on every page.",
+        "url": "https://www.forestjoinery.com.au/"
+      },
+      "Licence Number 338298C, 'fully licensed and insured'": {
+        "sentence": "We are also fully licensed and insured, so you can put your trust in us to get the job done right. […] License Number 338298C",
+        "url": "https://www.forestjoinery.com.au/about"
+      },
+      "'Our founder, Dave, is personally involved in every stage of the process' (owner body, statement)": {
+        "sentence": "Our founder, Dave, is personally involved in every stage of the process. He brings his years of industry experience and insight to your project, helping you feel confident in our high standards and the beautiful results that you will enjoy for years to come.",
+        "url": "https://www.forestjoinery.com.au/"
+      },
+      "'Meticulous joinery work and cabinets that are built to last' (context for statement section, not quoted verbatim on page)": {
+        "sentence": "In a world filled with fast-fashion and disposable goods, we stand proud of our unwavering commitment to meticulous joinery work and cabinets that are built to last.",
+        "url": "https://www.forestjoinery.com.au/"
+      },
+      "Statement quote: 'wasn't afraid to tell us if something wasn't the best idea or the most practical solution', suggested better alternatives instead of building to the plans": {
+        "sentence": "What really stood out was that Dave wasn't afraid to tell us if something wasn't the best idea or the most practical solution. Instead of just building what was on the plans, he suggested better alternatives. After living in the house for a month now, we've realised just how valuable his advice was. — Phillip, Forest Joinery's own testimonials page (the fuller, unshortened version of the 'Phillip W' review also in data/google_reviews_top25.json).",
+        "url": "https://www.forestjoinery.com.au/testimonials"
+      },
+      "Process steps (all six, word for word)": {
+        "sentence": "Personal Meeting: Meet with our founder, Dave, who will be hands-on and involved in your project from start to finish, to discuss your specific needs and explore the possibilities. Detailed Quotation: Receive a clear, itemised quotation covering every element of our bespoke plan for your vision. […] Drawings and Consultation […] Expert Craftsmanship […] Flawless Installation […] Quality Finish: Our founder, Dave, will personally ensure that the finish meets our impeccable standards, exceeds your expectations and leaves you feeling more than happy with the end result.",
+        "url": "https://www.forestjoinery.com.au/process"
+      },
+      "Services list (bespoke-furniture page, servicesIntro)": {
+        "sentence": "At Forest Joinery, we specialise in domestic joinery; from kitchens, bathrooms, laundries, and wardrobes to home offices, entertainment units, bespoke pieces, and everything in between.",
+        "url": "https://www.forestjoinery.com.au/bespoke-furniture"
+      },
+      "Brands: Blum, Festool, Polytec": {
+        "sentence": "Blum: World-renowned for producing a comprehensive range of high-quality, industry-leading kitchen and home products. […] Festool: Global manufacturer of award-winning power tools for over 90 years. […] Polytec: A trusted Australian distributor of decorative surfaces.",
+        "url": "https://www.forestjoinery.com.au/tools"
+      },
+      "'50+ reviews on Houzz'": {
+        "sentence": "See all 50+ reviews on Houzz >>",
+        "url": "https://www.forestjoinery.com.au/testimonials"
+      },
+      "Houzz profile link": {
+        "sentence": "Social link to https://www.houzz.com/pro/forestjoinerysyd in the footer on every page.",
+        "url": "https://www.forestjoinery.com.au/"
+      },
+      "Rating 5.0 and 6 reviews (stats, reviewsIntro, meta description, pull quote)": {
+        "sentence": "google_name 'Forest Joinery', rating 5.0, review_count 6 for slug forest-joinery. best_for_demo used word for word for the six reviews on the page.",
+        "url": "data/google_reviews_top25.json"
+      },
+      "'Dave is named personally in almost every one' (reviewsIntro)": {
+        "sentence": "Of the six best_for_demo reviews shown: Dave is named directly by Pamela Carr, Jeremy Ungar and Lynda Tate; Andrew Whitten, Anthony Bass and Phillip W refer to 'them'/'Forest Joinery'/'the work' without his first name in the shortened text shown.",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Project/suburb names used as photo captions and service-area suburbs (Warriwood Makeover, Bayview Kitchen and Entry, Beacon Hill - House Fitout, Custom Family Home Fit Out, Bright & Spacious Manly Apartment Fitout, Forestville - New Kitchen, Seaforth - Lounge Unit, St Ives - Laundry, West Pymble - BBQ, North Balgowlah - Fireplace Joinery, Waverton Bathroom, Kingsford - Bedroom Cupboard and Desk, Kitchen Refresh in Allambie Heights, Kingsford - Banquette Seating Conversion, Custom Walk-In Wardrobe in Turramurra, Entertainment Storage in Bayview, Custom Stereo Unit in Castlecrag, Custom Vanity, Storage Under the Stairs in Carlingford)": {
+        "sentence": "The full project title list from the Gallery page, used as-is; no page states a service-area boundary, so these are documented project locations only, described on the demo as such rather than as a coverage claim.",
+        "url": "https://www.forestjoinery.com.au/gallery"
+      },
+      "Every photo on the page": {
+        "sentence": "All 10 photos used (hero, statement, aperture, owner, enquiry background, 3 services reusing hero/gallery images, 6 gallery tiles) are pulled from st.hzcdn.com's own CDN at Houzz's largest served size for each image (the '_14-' or '_16-' size code, up to 2560px), from six of Forest Joinery's own finished projects. Two 'before' photos of the client's old kitchen (from the Warriwood Makeover project page) were identified and excluded. No stock photography is used.",
+        "url": "https://www.forestjoinery.com.au/gallery"
+      },
+      "Logo": {
+        "sentence": "Their own logo file, st.hzcdn.com/siteuploads/site_66561209/Artwork-4.png (148x63 natively — their only published size), scaled 2x. See business.logo._comment.",
+        "url": "https://www.forestjoinery.com.au/"
+      }
+    }
+  },
+  "_check": []
+}
