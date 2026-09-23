@@ -9,8 +9,7 @@ below 4) and `npm run check` before it counts.
 
 | | |
 |---|---|
-| **Done — passed review and check** | 6 — sunset-pools (4.5), utopian-landscaping (4.5), greenway-landscapes (4.5), south-coast-landscapes (4.5), lmac (4.5), arizona-roofing (4.67) |
-| **Being reworked** | 1 — dp-landscaping (review 1: 3.67, one rework round in progress) |
+| **Done — passed review and check** | 7 — sunset-pools (4.5), utopian-landscaping (4.5), greenway-landscapes (4.5), south-coast-landscapes (4.5), lmac (4.5), arizona-roofing (4.67), dp-landscaping (4.5) |
 | **Not started** | 7 |
 
 Each done demo has its own branch (`demo/<slug>`) and is live on the
@@ -51,9 +50,9 @@ panel.
 
 ## What to do first
 
-1. **Look at the six done demos**, live at `frontline-demos.vercel.app/<slug>`
+1. **Look at the seven done demos**, live at `frontline-demos.vercel.app/<slug>`
    for sunset-pools, utopian-landscaping, greenway-landscapes,
-   south-coast-landscapes, lmac and arizona-roofing. Or
+   south-coast-landscapes, lmac, arizona-roofing and dp-landscaping. Or
    `node tools/single.mjs <slug>` writes one self-contained file to
    `dist-single/<slug>.html` that opens on a phone.
 2. **Ring Ryan at South Coast Landscapes today** — his website is hacked. Details
@@ -251,30 +250,37 @@ HANDOVER.md — real visitors see it as a scroll animation, not a blank page.
 
 ---
 
-## dp-landscaping — REWORK (review 3.67, needs 4.5)
+## dp-landscaping — DONE (4.5)
 
 **DP Landscaping & Design** · Dale · 5.0 from 10 · 0402 469 118 · trust
-Lighthouse 98 / 97 / 100. Passes `check`: no blockers, nothing to confirm.
+Lighthouse 99 / 97 / 100. Branch `demo/dp-landscaping`.
+Demo: `frontline-demos.vercel.app/dp-landscaping`
 
-Built and briefed. The angle: his customers keep him for years, no competitor
-can copy it. *"15 years ago, Dale landscaped our property & has continued to
-maintain the gardens ever since."* *"Dale has worked with us for 10 years."*
-Neither is a years-in-business number and neither became one.
+The angle: his customers keep him for years, no competitor can copy it.
+*"15 years ago, Dale landscaped our property & has continued to maintain the
+gardens ever since."* *"Dale has worked with us for 10 years."* Neither is a
+years-in-business number and neither became one.
 
 **The real constraint: only 4 photos of their own exist**, all pre-cropped by
 their old site to an unusual 800×292 banner strip, none reaching the 1600px
-hero bar. First review (3.67) caught real reuse: the pond and stone-wall
-photos each shown 3 times, the "Dale Pickering" section showing a wall instead
-of Dale, and the mobile hero cropping out the job's best feature (a stone
-bridge) under a heavy overlay. One rework round is in progress: stop repeating
-photos across slots, fill the gap with labelled sample photos rather than
-reusing, and fix the mobile crop.
+hero bar. Review 1 (3.67) caught real reuse: the pond and stone-wall photos
+each shown 3 times, the "Dale Pickering" section showing a wall instead of
+Dale, and the mobile hero cropping out the job's best feature (a stone
+bridge) under a heavy overlay. Reworked: each real photo now appears in
+exactly one slot, 5 labelled sample photos fill the rest (Pat's standing
+approval), the owner card dropped its photo rather than mislabel one, and the
+hero was re-cropped to keep the bridge in frame. Review 2 passed at 4.5.
 
-**Pat needs to supply, regardless of how the rework lands:** more/higher-res
-photos (ideally phone originals, not the 800px web crops); a real contact
-email (theirs is spam-bot-hidden); any licence/insurance/ABN info (none is
-published anywhere); and a years-in-business figure, since their own site
-contradicts itself ("started 1996" vs "20 years' experience").
+> **Opener.** I noticed dplandscaping.com.au never mentions your 5.0 rating
+> from Google, and clients who've kept you on for 10 and 15 years say so in
+> their reviews — that kind of loyalty is worth leading with.
+
+**Ask Dale for:** more/higher-res photos (ideally phone originals, not the
+800px web crops, to replace the 5 sample photos and get a photo of Dale
+himself); a real contact email (theirs is spam-bot-hidden); any
+licence/insurance/ABN info (none is published anywhere); and a
+years-in-business figure, since their own site contradicts itself ("started
+1996" vs "20 years' experience").
 
 ---
 
