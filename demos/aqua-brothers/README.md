@@ -108,9 +108,45 @@ Carried over and reworked from the original build:
   a real submit fails, rather than saying "Got it" when it didn't send.
 - **A "Pause motion" toggle** (in the hero's services strip) pauses every marquee, the
   caustic light and both videos in one tap, for WCAG 2.2.2.
-- **Recent work**: the Instagram reel as a tall tile beside a 2×2 photo grid (four photos not
+- **Our work**: the Instagram reel as a tall tile beside a 2×2 photo grid (four photos not
   repeated from Services), with a keyboard-and-click `<dialog>` lightbox (Esc, close button,
   click outside, arrow keys, a "1 of 4" counter, focus returns to the thumbnail on close).
+
+## What changed in round 2 (final round)
+
+A second design pass and a second technical QA pass came back on the round-1 build. Both
+reviews' P0s and P1s are done, and P2s are done except the few noted as skipped below (all
+bigger than a one-liner, or explicitly optional in the review itself). Highlights:
+
+- **The picker now looks like the showpiece before anyone taps it.** The resting state is a
+  console showing the live SMS preview with its default text, not a plain hint line; picking
+  a tile animates the panel in (opacity/transform, `prefers-reduced-motion`-safe) and a small
+  caret now visibly links the tile to its panel (it was clipped before).
+- **The SMS preview bubbles never start empty and never shift layout while typing.** Each
+  bubble carries a ghost layer holding the final text (so the box is the right height before
+  typing starts, and a no-JS reader gets real copy, not an empty aqua box).
+- **"The pipe" lines up with the drops exactly** at every width from 900 to 2560, and no
+  longer flashes full → empty → refill on desktop or on phones.
+- **The King review's underline is now animated** — a `background-size` draw-on on the inline
+  `<mark>` with `box-decoration-break:clone`, so it can never fragment or hide the text it
+  sits under (it's still the safe, static underline if motion is off).
+- **The tiler credit on the reel sits below the clip, not overlaid on it** — it was being
+  covered by the playing video at every width; now it's a separate block under the media, so
+  it can never be covered again.
+- **The phone bar carries three buttons** (Text · Call, primary and widest · Free quote),
+  with short "Text/Call/Quote" + icon labels below 361px so it still fits at 320px; the gas
+  tile still drops it to Call only.
+- **Performance regressions from round 1's own new features are fixed**: the trade cards,
+  water-meter boxes, footer CTA numbers and hero headline no longer collide or overflow at
+  desktop widths, the mobile services grid is about 500px shorter, and the digit rollers,
+  reel z-index and mobile menu (scroll lock, focus trap, tap-to-close) all work correctly —
+  see the tech review's P0/P1 list.
+- Copy fixes throughout (About/Area ledes, FAQ licence-question merge, SMS body wording,
+  emergency-tile and gas-panel safety copy) and a security fix (the success message no longer
+  builds HTML from the visitor's own phone-number input).
+
+Full item-by-item status (every P0/P1/P2 from both round-2 reviews, done/skipped and why) is
+in `scratchpad/aqua/reviews/r2-done.md`.
 
 ## Judgement calls
 
@@ -163,32 +199,41 @@ Carried over and reworked from the original build:
 
 ## Lighthouse
 
-Run on 23 Sep 2026, against `python3 -m http.server` (uncompressed — Vercel serves this
-brotli-compressed, which the tech review measured as roughly 21 KiB against this server's
-103 KiB at round 0; the page has grown since, see below).
+Round 2 (final), run 23 Sep 2026, against `python3 -m http.server` (uncompressed — Vercel
+serves this brotli-compressed; this server's index.html is 164 KB, 37.5 KB gzip). This is a
+**shared sandbox** — Lighthouse mobile runs taken back-to-back on it swing roughly ±5
+Performance points and 40–130 ms TBT purely from other processes' CPU contention (confirmed
+by re-testing the pre-round-2 file, which reproduced the reviewers' own 86–89 baseline under
+the same conditions). The numbers below are three representative consecutive runs at a load
+average under 1.2; if Pat wants a tighter guarantee before the call, re-run
+`node tools/lh.mjs` a couple of times on a quiet machine — Accessibility/Best Practices are
+stable at 100/100 regardless of load.
 
 | | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|
-| **Mobile** (3 runs) | 90 · 91 · 90 | 100 · 100 · 100 | 100 · 100 · 100 | 66 |
+| **Mobile** (3 runs) | 94 · 93 · 93 | 100 · 100 · 100 | 100 · 100 · 100 | 66 |
 | **Desktop** | 100 | 100 | 100 | 66 |
 
-Mobile (typical run): FCP ~2.5s, LCP ~3.0s, TBT 60–90ms, CLS 0. Desktop: FCP 0.4s, LCP
-0.7s, TBT 0ms, CLS 0. **SEO 66 is correct**: the only failing audit is "Page is blocked from
-indexing", which is the point of a demo.
+Mobile: FCP 1.7s, LCP 3.0–3.1s, TBT 50/70/50 ms, CLS 0 on every run. Desktop: FCP 0.4s,
+LCP 0.6s, TBT 0ms, CLS 0. **SEO 66 is correct**: the only failing audit is "Page is blocked
+from indexing", which is the point of a demo. An earlier batch taken at higher sandbox
+contention read 93/90/93 with TBT touching 120ms on one run — still all ≥90, and CLS stayed
+0 throughout every batch; see the shared-sandbox note above if Pat wants a second opinion on
+a quiet machine before the call.
 
-Round 1 added five big ideas and rebuilt several sections, which grew the page from 105 KB
-to 155 KB (25 KB to 34.5 KB gzip) and moved mobile Performance from 94 down into the high
-80s/low 90s on this uncompressed local server — on Vercel's brotli it should read closer to
-the desktop figures. If Pat wants the score pinned back at 94+ before the call, the next
-round's easiest lever is trimming unused CSS (Lighthouse estimates ~24 KB unused) rather
-than cutting features.
+Round 1 grew the page from 105 KB to 155 KB and moved mobile Performance down from 94 into
+the high 80s/low 90s. Round 2's fixes (deferring the marquee's forced-reflow work off the
+critical path, preloading Michroma, plus the round-2 design/picker/meter work added on top)
+land back at 90–94 mobile on this same uncompressed local server — on Vercel's brotli it
+should read closer to the desktop figures.
 
 `tools/paint-check.mjs` passes all six conditions (desktop, 390, 375, no JS, GSAP blocked,
 reduced motion) — no missing content, no horizontal scroll, no console errors, no failed
 requests at any of them. A stricter clipping check (any element whose right edge exceeds
 the viewport and isn't inside an `overflow:hidden`/`clip` ancestor — real content, not the
 marquees or the caustic glow, which are meant to bleed past their box) also passes at 320,
-360, 375, 390, 768, 1024, 1440 and 1920.
+360, 375, 390, 768, 1024, 1440, 1920 and 2560, including through a 1440→390→1440→320→2560
+resize.
 
 ## To confirm with Aqua Brothers
 
@@ -216,3 +261,10 @@ marquees or the caustic glow, which are meant to bleed past their box) also pass
 Vercel, Root Directory `demos/aqua-brothers`, no build step. `robots.txt` and
 `vercel.json` send noindex on every file. Name the project something that does not
 impersonate them, e.g. `aqua-brothers-demo-frontline`.
+
+**The project must be named `aqua-brothers-demo-frontline`** (or every hard-coded
+absolute URL needs updating to match): the OG/Twitter tags (`og:url`, `og:image`,
+`twitter:image` — 3 URLs in `<head>`) and the JSON-LD `Plumber` block (`url`, `logo`,
+`image` — 3 more) all hard-code `https://aqua-brothers-demo-frontline.vercel.app/…`.
+If the Vercel project ever gets a different name, every share-card preview silently
+loses its image until those 6 URLs are updated by hand.
