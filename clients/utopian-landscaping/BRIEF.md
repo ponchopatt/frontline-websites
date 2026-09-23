@@ -37,8 +37,12 @@ nothing more. **No "years in business" number is claimed anywhere.**
 
 Canberra, Queanbeyan, Yass "and all of ACT surrounding areas" (their words,
 homepage and contact page), and their contact page adds it "is not limited".
-Suburbs named in their own published letters: **Macquarie**, **Holder**,
-**Belconnen**. Their postal address is PO Box 5032, **Chisholm** 2905 ACT.
+Their gallery page adds **Crookwell**. Suburbs named as completed jobs in their
+own published letters: **Macquarie** (John & Val, 2007) and **Holder** (Paul &
+Judy Perkins, 2009). **Belconnen** appears only as where a client recommended
+them to friends, not as a job, so it is off the demo. Their postal address is
+PO Box 5032, **Chisholm** 2905 ACT — a PO Box, not a base. Nothing anywhere
+states where they work out of, so the demo claims no home suburb.
 No street address is published.
 
 ## Main services
@@ -60,8 +64,12 @@ a rural property" (their homepage). The reviews bear it out at both ends:
 Michael Forsythe's was "a small paving job… a soggy dying townhouse lawn" and
 Charlie Stephenson's took in "rockeries, paving, turf, irrigation and other
 features". Their biggest published job is a school sensory garden and
-playground with a boardwalk, sandpit, roly-poly slopes, stepping stones and
-artificial turf. No prices anywhere — nothing on the page claims one.
+playground: a sandpit, roly-poly slopes, stepping stones and artificial turf,
+all of them named in the children's own notes on their testimonials page. The
+word "boardwalk" is on none of their pages and is not used on the demo, and no
+school is named — their gallery carries three school albums (HF, STA and STM
+Sensory Playground) and the only school name published anywhere is a child's
+aside in one Year 4 note. No prices anywhere — nothing on the page claims one.
 
 ## What customers praise, in their words
 
@@ -116,7 +124,7 @@ themselves, so there is one quote, one crew and one person to ring.
 3. **Their gallery is served at 560px.** Every one of ~150 gallery images is
    scaled down to 560px wide when the originals on their own CDN are 1920px.
    The work looks smaller and softer than it is.
-4. **Twenty-five five-star Google reviews appear nowhere on the site.** The
+4. **Twenty-five Google reviews at a 5.0 average appear nowhere on the site.** The
    testimonials page is a slider of pasted letters, several undated in the
    carousel, the newest from 2020, each headed with the unedited template text
    "Slide title" and a dead "Button". The About page has three more "Slide
@@ -163,25 +171,39 @@ was opened and looked at. 148 were candidates; 143 are 1920px wide.
 
 ### Used
 
+Fifteen images, fifteen different jobs. No file is used in two slots and no two
+slots show the same job — checked frame by frame, since several of these
+properties were shot from four or five angles.
+
 | Slot | File | Size | What it shows |
 |---|---|---|---|
-| **Hero** | `IMG_0043.JPG` | **1920×1434** | Slate-faced raised beds with bluestone caps, white pebble, planted bowls, a standing feature stone and real turf. Sharp at 100%. The most obviously *designed* garden they own. |
-| Statement | `IMG_0130.JPG` | 1920×1434 | Stone steps built up through a granite rockery, brick paving at the foot, grass trees and a birch. Cropped 4:5. |
+| **Hero** | `IMG_0130.JPG` | **1920×1434** | Stone steps built up through a granite boulder rockery to a birch and grass trees, brick paving laid across the foot. Full frame, no crop. Reads as paving, walls and stone at both widths, which a field of white pebble did not. |
+| Statement (4:5) | `IMG_2197.JPEG` | 1536×2048 | Stone-faced garden wall with a bluestone capping and a long water channel along the top, holding a newly planted bed and feature boulders. Sharpest image they own (Laplacian 3086). Four trades in one frame, which is what the section is about. |
 | Aperture | `IMG_0117.JPG` | 1920×1434 | Cobble path curving past a new rockery to a pool and pergola. Bright, deep. |
-| Service — paving & stone | `IMG_0004.JPG` | 1920×1434 | Herringbone brick paving, sandstone block garden wall, fresh turf. Sharpest image they own. Cropped 3:4. |
-| Service — lawns & gardens | `2014_UTOPIAN_HILTON_LENARDS_001.JPG` | 1920×1434 | Synthetic lawn with a brick mowing strip against a boulder rockery. Cropped 3:4. |
-| Service — decks & pergolas | `IMG_0267.JPG` | 1920×1434 | Timber pergola over a paved terrace, outdoor lounge, dry-stone wall behind. Cropped 3:4. |
-| Gallery 1 | `IMG_0043.JPG` | 1920×1434 | As hero. |
+| Service 01 — paving & stonework | `IMG_0396.JPG` | 1920×2571 | Sandstone flagging laid the length of a side garden between a dark slat screen and a mulched bed. Paving fills the frame top to bottom, so the caption scrim cannot hide it. Replaces `IMG_0004.JPG`, whose herringbone sat in the bottom fifth. |
+| Service 02 — lawns & gardens | `IMG_0233.JPG` | 1920×1434 | Synthetic lawn running back to stepped sleeper garden beds and a timber deck. Replaces the HILTON frame, which was the same job as gallery 2. |
+| Service 03 — decks & pergolas | `IMG_0267.JPG` | 1920×1434 | Timber pergola over a paved terrace, outdoor lounge, dry-stone wall behind. Cropped 3:4. |
+| Gallery 1 | `IMG_0043.JPG` | 1920×1434 | Slate-faced raised beds with bluestone caps, white pebble, planted bowls, a standing feature stone. Their most obviously *designed* garden — good here, wrong as a hero. |
 | Gallery 2 | `2014_UTOPIAN_HILTON_LENARDS_003.JPG` | 1920×1434 | Rockery and running water course beside a synthetic lawn, brick edge, timber posts. |
-| Gallery 3 | `IMG_0135.JPG` | 1920×1434 | Native front garden: granite boulders, groundcovers, lawn, gravel path. |
+| Gallery 3 | `IMG_0321.JPG` | 1920×1434 | Raised corten steel pond with a stone coping and a fountain jet, set in large-format stone paving. Corten is on their own services list. Replaces `IMG_0135.JPG`, which is the same hillside property as the hero. |
 | Gallery 4 | `IMG_0009.JPG` | 1920×1440 | Curved sandstone block wall, new turf, brick path, deck and pool beyond. |
 | Gallery 5 | `IMG_0104.JPG` | 1920×1434 | Timber deck and gabled pergola around a pool, hills behind. |
 | Gallery 6 | `IMG_6467.JPG` | 1920×1440 | Crazy paving, timber cabin, grass trees in wine barrels, synthetic turf. |
-| Enquiry background | `IMG_0253.JPG` | 1920×1434 | Stone water bowl spilling onto white pebble with a slate standing stone. |
-| Owner slot | `utopianaugust2010_025.JPG` | 1920×1440 → 1080×648 | Their own ute at the kerb with the Utopian logo on the door and their sign board beside it, behind a finished front garden of sandstone walls and brick steps. Softest image used (Laplacian 268) — it renders at ~700px so the softness does not show, but it is the weakest of the set. |
-| Share card | `IMG_0043.JPG` | 1200×857 crop | As hero. |
-| Logo | `logo2-280x120.png` → `logo-utopian-light.png` | 280×120 → 506×190 | Their only published logo. White plate knocked out, black subline turned off-white for a dark page, red kept, handwritten "Only Limited By Your Imagination" line cropped off because it is illegible at the 32px the header renders it at. Nothing redrawn. |
+| Enquiry background | `IMG_0099__283_29.JPG` | 1920×1361 | Curved random-stone wall under uplighting with recycled brick paving at its foot. Quiet and dark, which is what a form background wants. Laplacian 325 — soft for a full-bleed slot, fine behind a form at 1200px. Replaces `IMG_0253.JPG`, a third angle on the gallery 1 courtyard. |
+| Owner slot | `IMG_0415.JPG` | 1920×1434 → 1080×648 | Random-stone retaining wall with a concrete capping holding a planted bed above freshly laid turf. Clean and quiet so the copy carries the section. Replaces `utopianaugust2010_025.JPG` — their ute, but with yellow hazard tape, a blue tipper, a ladder and the door logo cut in half by a stone pier. |
+| Share card | `IMG_0265.JPG` | 1200×857 crop | Dry-stone terrace wall holding a planted bed above lawn, with an established gum behind. A finished garden rather than a detail. |
+| Logo | **type-set, none of their artwork** | 1044×350 | `logo2-280x120.png` is the only logo published anywhere: 280×120, JPEG-artefacted, with a grey halo and a white plate baked into the pixels and black drop-shadow squares behind the red confetti. A knockout at that size left white specks around every confetti mark, a grey fringe on every stroke and the bottom-left flourish clipped by the canvas, all of it visible at the 32px the header renders it at, and the subline was illegible mush. So nothing of theirs is used: the header and footer wordmark is "utopian" set in the page's own display face (Big Shoulders 700, lowercase) in the site accent #F0483A. Note that accent is **not** their red — theirs samples #D80000–#E00000, which only clears 3.7:1 on a dark page, so the wordmark has been recoloured to the site's lifted red. It is a stand-in. Get the vector from Derek. |
 
 **No photo of Derek exists anywhere on their site, their socials or in the
-reviews.** The owner section runs with their branded ute on a finished job
-instead, and getting a photo of Derek is the first thing on Pat's supply list.
+reviews.** The owner section runs one of their own finished walls instead and
+lets the copy do the work. Getting a photo of Derek is the first thing on Pat's
+supply list, and the original logo vector is the second.
+
+### Held in reserve
+
+Roughly 120 more vetted frames, including `IMG_0053` (block wall, wide steps,
+curved lawn), `IMG_0223` (travertine pool terrace), `IMG_0424` (charcoal
+herringbone paving against a curved block wall), `IMG_0282`, `IMG_0263/0264`,
+`IMG_0177/0178` (brick water feature), `IMG_0094` (the uplit wall from the
+other side), `IMG_0002/0001` (curved brick paths) and `IMG_0157.PNG` (pool
+surround). Plenty to swap from if Derek dislikes any of the fifteen.

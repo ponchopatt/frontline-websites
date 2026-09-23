@@ -50,7 +50,7 @@
     "photoClaims": {
       "hero + owner — ‘Manly’ rooftop pool": "Manly-1.jpg (1920×1440) is on their homepage, /about/ and /project/; Manly-4.jpg (1000×750, the aerial) and Manly-6.jpg are in the same set, Manly-6 on /faqs/. The suburb is their own file naming; no client is named.",
       "statement — apartment lap pool at dusk": "infinitive-2-scaled.jpg (2560×1707) from their own wp-content/uploads/2024/04 library. No suburb or client is claimed for it, and the alt text describes only what is in the frame.",
-      "aperture — ‘Pool and spa, Sydney Harbour’": "Commercial-Pool-Builder2.jpg (1700×1133), used by them on the homepage, /about/, /awards/, /contact/, /faqs/, /hydraulic-consulting/, /pool-renovations/, /project/, /residential-pools/ and /commercial-pools-water-features/. Their commercial page lists “Hotels, resorts & leisure complexes”. The file name says Park Hyatt; the page deliberately says only ‘Sydney Harbour’ because the client is not confirmed. The four harbour-rooftop webp variants in assets/ carry a baked-in bottom-edge darkening gradient (transparent above 55% of the frame, 0.66 black at the very bottom) so the caption is legible over the lit pool water. Nothing in the photograph is moved, cropped further or retouched — only the bottom strip is darkened. Flagged.",
+      "aperture — ‘Rooftop pool, Sydney Harbour’": "Commercial-Pool-Builder2.jpg (1700×1133), used by them on the homepage, /about/, /awards/, /contact/, /faqs/, /hydraulic-consulting/, /pool-renovations/, /project/, /residential-pools/ and /commercial-pools-water-features/. Their commercial page lists “Hotels, resorts & leisure complexes”. The file name says Park Hyatt; the page deliberately says only ‘Sydney Harbour’ because the client is not confirmed. The caption and alt say ‘pool’, not ‘pool and spa’: the frame holds one rectangular pool, cabanas, sun lounges and a mosaic surround, and no spa is visible in it. The four harbour-rooftop webp variants in assets/ carry a baked-in bottom-edge darkening gradient (transparent above 55% of the frame, 0.66 black at the very bottom) so the caption is legible over the lit pool water. Nothing in the photograph is moved, cropped further or retouched — only the bottom strip is darkened. Flagged.",
       "gallery — ‘Bellevue Hill · renovation, 132 steps below the road’": "Bellevue-Hill-1.jpg (1000×667) on /pool-renovations/ and /project/, beside the case study that carries the 132-steps line.",
       "gallery — ‘Strathfield · indoor lap pool and spa’": "Strathfield-5.jpg (1000×667) on /hydraulic-consulting/; the homepage portfolio item reads “Sunset indoor lap pool and spa – Filtration/Plant Room Strathfield”.",
       "gallery — ‘Hunters Hill · fully tiled pool, granite stepping stones’": "Residential-Pool-Project-Hunters-Hill-4.jpg (1200×1800) from their own uploads library; the suburb is their file naming.",
@@ -67,7 +67,9 @@
       "No founding year is published anywhere, so no year is claimed — only their own ‘over 20 years’.",
       "No prices are published anywhere, so priceLines are absent and no figure is claimed.",
       "‘over 500+ happy clients’ appears on their homepage and was deliberately left off this demo as an unverifiable round number.",
-      "A 10-year guarantee is mentioned once on /residential-pools/ (‘premium materials, guaranteed for ten years’) and was left off until Ben confirms it in writing."
+      "A 10-year guarantee is mentioned once on /residential-pools/ (‘premium materials, guaranteed for ten years’) and was left off until Ben confirms it in writing.",
+      "No SMS button is on the page. The only number they publish is 1300 000 412, and an Australian 1300 cannot receive a text, so a “text Ben a photo” button would be a dead control. The message body is kept in `sms` so the buttons return the moment a mobile is added — see BRIEF.md, Ask Ben 7.",
+      "Anna Perrin’s Google review is the sixth in `best_for_demo` and is deliberately not on the page. Five reviews keep the marquee to a single row, which is what stops the same review being on screen twice at 1440; hers is the most general of the six, and the detail that carried it — that the job was ten years ago and they still look after it — is the part Google cuts off."
     ],
     "stockLookingPhotos": [],
     "photoNote": "85 images were downloaded from their own wp-content/uploads library and opened one by one. Nothing from a stock library, no logos, no screenshots and no schematics are used on the page. Full inventory in BRIEF.md."
@@ -139,7 +141,7 @@
     "processHeadline": "Four steps,<br>and Ben on<br>every one.",
     "processIntro": "The same order whether it is a new pool or a renovation. You hear the site's problems before you get a price, not after.",
     "ownerLabel": "Who you are dealing with",
-    "reviewsLabel": "In their words",
+    "_reviewsLabel_held": "In their words — NOT set, and deliberately. lib/blocks/reviews.js prints the kicker as a third direct child of <div class=\"head\">, which the trust stylesheet makes a two-column grid at 1000px and up. With a kicker the eyebrow takes the left column, the heading jumps to the right column and the lede drops to a second row. Restore this as copy.reviewsLabel once the block wraps the kicker and the h2 in one div, the way every trust section does.",
     "reviewsTitle": "What Ben's clients say.",
     "reviewsIntro": "Straight from their Google profile, nothing reworded. Where one is marked shortened, only its opening is here and the rest is on Google. One of them first had Ben build a pool twelve years ago and has him back now for the next stage.",
     "recognitionLabel": "Recognition",
@@ -339,8 +341,8 @@
       "srcset": "assets/harbour-rooftop-800.webp 800w, assets/harbour-rooftop-1200.webp 1200w, assets/harbour-rooftop-1700.webp 1700w",
       "width": 1700,
       "height": 1133,
-      "alt": "A rooftop pool and spa above Sydney Harbour at dusk, sun lounges along the mosaic-tiled edge",
-      "caption": "Pool and spa, Sydney Harbour"
+      "alt": "A rooftop pool above Sydney Harbour at dusk, cabanas and sun lounges along the mosaic-tiled edge",
+      "caption": "Rooftop pool, Sydney Harbour"
     },
     "owner": {
       "src": "assets/manly-aerial-800.webp",
@@ -365,7 +367,7 @@
         "height": 667,
         "caption": "Bellevue Hill",
         "detail": "Renovation, 132 steps below the road",
-        "alt": "A renovated Bellevue Hill pool with travertine coping, glass fencing and a glimpse of the sea"
+        "alt": "A renovated Bellevue Hill pool with travertine coping, dark waterline tiles and frameless glass fencing, the house behind it"
       },
       {
         "src": "assets/strathfield-indoor-800.webp",

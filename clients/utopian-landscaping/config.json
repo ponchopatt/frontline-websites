@@ -1,5 +1,5 @@
 {
-  "_comment": "Utopian Landscaping and Paving Solutions, Canberra. Built 2026-09-22 from www.utopianlandscaping.com.au. Every fact here is on their own site, in their own published client letters, or in data/google_reviews_top25.json. Nothing is inferred. No years in business, no prices, no awards, no licences are claimed anywhere — they publish none. See BRIEF.md.",
+  "_comment": "Utopian Landscaping and Paving Solutions, Canberra. Built 2026-09-22, revised 2026-09-23, from www.utopianlandscaping.com.au. Every specific fact on the page is quoted in _source.claimSources with the page it came from, or comes from data/google_reviews_top25.json. Nothing is inferred. No years in business, no prices, no awards, no licences and no home suburb are claimed — they publish none. See BRIEF.md.",
   "slug": "utopian-landscaping",
   "template": "trust",
   "industry": "landscaping",
@@ -22,7 +22,13 @@
       "accent": "#F0483A",
       "accent2": "#E9B872",
       "themeColor": "#12100F",
-      "_comment": "Their logo is a red script wordmark on white. Sampled red is #E00000, which only clears 3.7:1 on a dark page, so it is lifted to #F0483A (~4.9:1) to keep small accent text legible. The second colour is a sandstone gold taken off the Canberra stone in their own photos — a design choice, not a brand asset."
+      "_comment": "Their logo's red samples at #D80000-#E00000, which only clears 3.7:1 on a dark page. The site accent is #F0483A (~4.9:1), so the wordmark is set in that lifted red, not their original red — it has been recoloured to match the site. The second colour is a sandstone gold taken off the Canberra stone in their own photos: a design choice, not a brand asset. Ask Derek for the brand red from his vector."
+    },
+    "logo": {
+      "src": "assets/logo-utopian-type.png",
+      "width": 1044,
+      "height": 350,
+      "_comment": "NOT their artwork. The only logo published anywhere is logo2-280x120.png: 280x120, JPEG-artefacted, with a grey halo and a white plate baked into the pixels and black drop-shadow squares behind the red confetti. Knocking it out left white specks and a grey fringe at the 32px the header renders it at, and the 'LANDSCAPING & PAVING SOLUTIONS' subline was illegible mush at that size, so nothing of theirs is used here. This is their name set in the page's own display face (Big Shoulders 700, lowercase) in the site accent red. It is a stand-in. Get the original vector from Derek and replace it before this goes live."
     }
   },
   "share": {
@@ -31,14 +37,14 @@
     "height": 857,
     "title": "Utopian Landscaping and Paving Solutions — Canberra",
     "description": "Landscaping and paving across Canberra, Queanbeyan and Yass. Every part of the job by the one team.",
-    "alt": "A Canberra courtyard by Utopian: slate-faced raised beds, white pebble, planted bowls and a standing feature stone"
+    "alt": "A Canberra garden by Utopian: a dry-stone terrace wall holding a planted bed above new lawn, with an established gum behind"
   },
-  "responsePromise": "Ring Derek on 0423 814 300. We are on site from 7:30am, Monday to Friday.",
+  "responsePromise": "Ring Derek on 0423 814 300. We are open 7:30am to 4:30pm, Monday to Friday.",
   "copy": {
     "title": "Utopian Landscaping and Paving Solutions — Landscaping & Paving, Canberra",
     "description": "Landscaping and paving in Canberra, Queanbeyan and Yass. Retaining walls, paving, decks, turf, irrigation and rockeries, all built by the one team. 5.0 from 25 Google reviews.",
     "ctaLabel": "Talk to Derek",
-    "kicker": "Canberra · Queanbeyan · Yass",
+    "kicker": "Canberra and the ACT",
     "headline": "Rough ideas<br>turned into<br><em>real gardens.</em>",
     "sub": "You do not need a plan drawn up. Tell Derek what you want the space to do, and his crew works out how to build it — then builds <em>all</em> of it. Paving, walls, decks, turf, irrigation and planting.",
     "heroSecondary": "Or send the details",
@@ -48,21 +54,21 @@
     "statementHeadline": "One business.<br>The whole job.",
     "statementBody": "Most yards get carved up between a paver, a chippy, a fencer and a turf bloke, and you end up in the middle chasing all four. We do every part of it ourselves. One quote, one crew on site, and one number to ring when you have a question.",
     "servicesLabel": "What we do",
-    "servicesHeadline": "Everything that goes<br>into a garden.",
+    "servicesHeadline": "Everything<br>that goes into<br>a garden.",
     "servicesIntro": "Retaining and feature walls in stone, brick, sleeper or corten steel. Paving, pool coping, garden edging and concreting. Decks, pergolas, fencing and privacy screens. Rockeries, garden beds, turf, synthetic grass, irrigation, lighting, water features and ponds. School playgrounds and sensory gardens too.",
     "apertureLabel": "Only limited by your imagination",
     "apertureLine": "Bring the idea. We will work out how to build it.",
     "workLabel": "Selected work",
     "workHeadline": "Canberra gardens.<br>Start to finish.",
-    "workIntro": "Six jobs from around Canberra and the ACT. Stone, paving, turf, rockeries, decks and water — every one of them built by the same team that quoted it.",
+    "workIntro": "Six jobs from around Canberra and the ACT, six different sites. Stone, paving, turf, rockeries, decks and water — every one of them built by the same team that quoted it.",
     "processLabel": "How it runs",
     "processHeadline": "Four steps.<br>No chasing.",
     "processIntro": "From the first look at the space to the last plant in the ground, you are dealing with the same people the whole way.",
     "ownerLabel": "Who you are dealing with",
     "recognitionLabel": "Beyond the reviews",
-    "recognitionHeadline": "Two things a review<br>page will not tell you.",
+    "recognitionHeadline": "Three things a review<br>page will not tell you.",
     "reviewsTitle": "What Canberra says.",
-    "reviewsIntro": "Straight off our Google profile, word for word. Twenty-five reviews and a 5.0 average — not one of them under five stars.",
+    "reviewsIntro": "Straight off our Google profile, word for word. Twenty-five reviews, 5.0 average.",
     "areasLabel": "Where we work",
     "areasHeadline": "Canberra.<br>Queanbeyan.<br>Yass.",
     "areasIntro": "And the ACT surrounding areas. It is not a hard boundary either — if you are a bit further out than that, ring anyway and ask.",
@@ -70,7 +76,8 @@
     "faqHeadline": "Questions we get asked.",
     "enquireLabel": "Tell us about the space",
     "enquireHeadline": "What do you want<br>to use it for?",
-    "enquireIntro": "That is the first thing Derek asks, and it decides everything else. Tell us what the space needs to do and roughly what you picture. Photos of it as it stands help more than anything."
+    "enquireIntro": "That is the first thing Derek asks, and it decides everything else. Tell us what the space needs to do and roughly what you picture. Photos of it as it stands help more than anything.",
+    "_comment": "copy.reviewsLabel is deliberately left out. The shared reviews block puts the kicker, the h2 and the lede as three direct children of .head, and .head is a two-column grid above 900px, so setting a kicker throws the heading into the narrow right-hand column and orphans the kicker in the left one. Every template section wraps its kicker and h2 in a <div> first. Set it once the block does the same — see TEMPLATE CHANGE in the report."
   },
   "stats": {
     "googleRating": 5,
@@ -80,12 +87,12 @@
     "_comment": "5.0 from 25 reviews, confirmed against data/google_reviews_top25.json. Years in business is deliberately null — nothing on their site states it, and the only hard date is a client letter dated 19 November 2007, which is carried as a fact instead of a guessed number."
   },
   "pullQuote": {
-    "text": "Aaron was really helpful, turning my rough ideas into a practical reality.",
-    "name": "Patrick Foley, Google"
+    "text": "Derek was able to integrate our native garden into the new landscaping project which included rockeries, paving, turf, irrigation and other features.",
+    "name": "Charlie Stephenson, Google"
   },
   "owner": {
-    "body": "Derek is the one you ring, and the one who turns up to look at the space. Utopian Landscaping and Paving Solutions is a family-run business working out of Canberra's south, and Derek is named by name in almost every review we have.",
-    "team": "Aaron is named in the reviews too — one client wrote that he turned his rough ideas into a practical reality, and worked through <em>awful</em> weather to finish on time and on budget. The crew gets described the same way over and over: reliable, energetic, courteous, trustworthy, and quick with a good idea for the space.",
+    "body": "Derek is the one you ring, and the one who turns up to look at the space. Utopian Landscaping and Paving Solutions is a family run and operated business, and Derek is named by name in almost every review we have.",
+    "team": "Aaron is named in the reviews too — one client wrote that he worked through <em>awful</em> weather to get the job done on time and on budget. The crew gets described the same way over and over: reliable, energetic, courteous, trustworthy, and quick with a good idea for the space.",
     "facts": [
       {
         "value": "2007",
@@ -93,11 +100,7 @@
       },
       {
         "value": "7:30am",
-        "label": "On site, weekdays"
-      },
-      {
-        "value": "1",
-        "label": "Business for the whole job"
+        "label": "Open, Monday to Friday"
       }
     ]
   },
@@ -110,8 +113,14 @@
     },
     {
       "kind": "membership",
-      "label": "A school playground, built and used daily",
-      "body": "The sensory garden at St Matthew's — boardwalk, sandpit, roly-poly slopes, stepping stones and artificial turf. The thank-you notes for that job were written by the Year 2s.",
+      "label": "A school sensory garden and playground",
+      "body": "We built the sensory garden and playground at a Canberra school — a sandpit, roly-poly slopes, stepping stones and artificial turf. The thank-you notes for that job came from Year 2 right through to Year 6.",
+      "strip": false
+    },
+    {
+      "kind": "membership",
+      "label": "Client letters, 2007 to 2020",
+      "body": "Alongside the Google reviews there are the letters clients have written. The oldest is dated 19 November 2007, from John and Val in Macquarie; the most recent are from 2020. Retaining walls, whole front yards, and the school sensory garden.",
       "strip": false
     }
   ],
@@ -125,22 +134,22 @@
       "title": "Paving and stonework",
       "blurb": "Brick, stone, sleeper and corten steel. Paths, patios, pool coping, retaining and feature walls, steps, and the edging that keeps it all in line.",
       "photo": {
-        "src": "assets/brick-paving-800.webp",
-        "srcset": "assets/brick-paving-480.webp 480w, assets/brick-paving-800.webp 800w, assets/brick-paving-1200.webp 1200w",
-        "width": 1080,
-        "height": 1440,
-        "alt": "Herringbone brick paving running up to a sandstone block garden wall and freshly laid turf"
+        "src": "assets/stone-path-800.webp",
+        "srcset": "assets/stone-path-480.webp 480w, assets/stone-path-800.webp 800w, assets/stone-path-1200.webp 1200w",
+        "width": 1200,
+        "height": 1600,
+        "alt": "A sandstone flagged path laid the length of a side garden between a dark slat screen and a mulched bed"
       }
     },
     {
       "title": "Lawns, gardens and irrigation",
       "blurb": "Turf or synthetic grass over proper prep, with irrigation under it. Rockeries, garden beds, native planting, mulch and garden lighting.",
       "photo": {
-        "src": "assets/lawn-rockery-800.webp",
-        "srcset": "assets/lawn-rockery-480.webp 480w, assets/lawn-rockery-800.webp 800w, assets/lawn-rockery-1200.webp 1200w",
-        "width": 1076,
-        "height": 1434,
-        "alt": "A synthetic lawn edged with a brick mowing strip, running alongside a granite boulder rockery"
+        "src": "assets/lawn-beds-800.webp",
+        "srcset": "assets/lawn-beds-480.webp 480w, assets/lawn-beds-800.webp 800w, assets/lawn-beds-1200.webp 1200w",
+        "width": 1200,
+        "height": 1599,
+        "alt": "A synthetic lawn running back to stepped sleeper garden beds and a timber deck"
       }
     },
     {
@@ -149,8 +158,8 @@
       "photo": {
         "src": "assets/pergola-terrace-800.webp",
         "srcset": "assets/pergola-terrace-480.webp 480w, assets/pergola-terrace-800.webp 800w, assets/pergola-terrace-1200.webp 1200w",
-        "width": 1076,
-        "height": 1434,
+        "width": 1200,
+        "height": 1599,
         "alt": "A timber pergola over a paved terrace with outdoor seating and a dry-stone wall behind"
       }
     }
@@ -177,65 +186,64 @@
     {
       "region": "Canberra and the ACT",
       "suburbs": [
-        "Belconnen",
         "Macquarie",
-        "Holder",
-        "Chisholm"
+        "Holder"
       ]
     },
     {
-      "region": "Just over the border",
+      "region": "Over the border",
       "suburbs": [
         "Queanbeyan",
-        "Yass"
+        "Yass",
+        "Crookwell"
       ]
     }
   ],
   "photos": {
     "hero": {
-      "src": "assets/slate-courtyard-1800.webp",
-      "srcset": "assets/slate-courtyard-480.webp 480w, assets/slate-courtyard-800.webp 800w, assets/slate-courtyard-1200.webp 1200w, assets/slate-courtyard-1800.webp 1800w",
+      "src": "assets/rockery-steps-1800.webp",
+      "srcset": "assets/rockery-steps-480.webp 480w, assets/rockery-steps-800.webp 800w, assets/rockery-steps-1200.webp 1200w, assets/rockery-steps-1800.webp 1800w",
       "width": 1920,
       "height": 1434,
-      "alt": "A Canberra courtyard by Utopian: slate-faced raised beds with bluestone caps, white pebble, planted bowls, a standing feature stone and lawn"
+      "alt": "Stone steps built up through a granite boulder rockery to a birch and grass trees, with brick paving laid at the foot"
     },
     "statement": {
-      "src": "assets/rockery-steps-1200.webp",
-      "srcset": "assets/rockery-steps-480.webp 480w, assets/rockery-steps-800.webp 800w, assets/rockery-steps-1200.webp 1200w",
-      "width": 1147,
-      "height": 1434,
-      "alt": "Stone steps built up through a granite rockery to a birch and grass trees, with brick paving at the foot"
+      "src": "assets/water-wall-1200.webp",
+      "srcset": "assets/water-wall-480.webp 480w, assets/water-wall-800.webp 800w, assets/water-wall-1200.webp 1200w",
+      "width": 1200,
+      "height": 1500,
+      "alt": "A stone-faced garden wall with a bluestone capping and a long water channel along the top, holding a newly planted bed and feature boulders"
     },
     "aperture": {
       "src": "assets/pool-path-1800.webp",
       "srcset": "assets/pool-path-800.webp 800w, assets/pool-path-1200.webp 1200w, assets/pool-path-1800.webp 1800w",
-      "width": 1920,
-      "height": 1280,
+      "width": 1800,
+      "height": 1200,
       "alt": "A cobble path curving past a new rockery to a pool and timber pergola",
       "caption": "Cobble path and rockery, Canberra"
     },
     "owner": {
-      "src": "assets/utopian-ute-1080.webp",
-      "srcset": "assets/utopian-ute-480.webp 480w, assets/utopian-ute-800.webp 800w, assets/utopian-ute-1080.webp 1080w",
+      "src": "assets/stone-wall-lawn-1080.webp",
+      "srcset": "assets/stone-wall-lawn-480.webp 480w, assets/stone-wall-lawn-800.webp 800w, assets/stone-wall-lawn-1080.webp 1080w",
       "width": 1080,
       "height": 648,
       "ratio": "1080/648",
-      "alt": "A Utopian Landscaping ute parked at the kerb behind a finished front garden of sandstone walls and brick steps, the company sign board standing beside it",
-      "caption": "Their ute at the kerb, Canberra",
-      "_comment": "No photograph of Derek exists on their website, their socials or in the reviews. This stands in: their own ute, their own sign, one of their own front gardens. Ask Derek for a photo of himself before this goes anywhere near a customer."
+      "alt": "A random-stone retaining wall with a concrete capping holding back a planted bed, with fresh turf laid below it",
+      "caption": "Retaining wall and new turf, Canberra",
+      "_comment": "No photograph of Derek exists on their website, their socials or in the reviews, so one of their own finished jobs stands in and the copy carries the section. The previous stand-in — their ute at the kerb — had hazard tape, a tipper, a ladder and the door logo cut off mid-word in it. Getting a photo of Derek is the first thing on the supply list."
     },
     "enquiryBackground": {
-      "src": "assets/water-bowl-1200.webp",
-      "width": 1920,
-      "height": 1280
+      "src": "assets/lit-stone-wall-1200.webp",
+      "width": 1200,
+      "height": 800
     },
     "gallery": [
       {
         "src": "assets/slate-courtyard-800.webp",
         "full": "assets/slate-courtyard-1800.webp",
         "srcset": "assets/slate-courtyard-480.webp 480w, assets/slate-courtyard-800.webp 800w, assets/slate-courtyard-1200.webp 1200w",
-        "width": 1920,
-        "height": 1434,
+        "width": 1800,
+        "height": 1350,
         "caption": "Slate and pebble courtyard",
         "detail": "Raised beds, water bowls, turf",
         "alt": "Slate-faced raised beds with bluestone caps, white pebble, planted bowls and a standing feature stone"
@@ -244,28 +252,28 @@
         "src": "assets/water-course-800.webp",
         "full": "assets/water-course-1800.webp",
         "srcset": "assets/water-course-480.webp 480w, assets/water-course-800.webp 800w, assets/water-course-1200.webp 1200w",
-        "width": 1912,
-        "height": 1434,
+        "width": 1800,
+        "height": 1350,
         "caption": "Rockery and water course",
         "detail": "Boulders, running water, synthetic lawn",
         "alt": "A granite boulder rockery with a running water course beside a synthetic lawn edged in brick"
       },
       {
-        "src": "assets/native-front-800.webp",
-        "full": "assets/native-front-1800.webp",
-        "srcset": "assets/native-front-480.webp 480w, assets/native-front-800.webp 800w, assets/native-front-1200.webp 1200w",
-        "width": 1912,
-        "height": 1434,
-        "caption": "Native front garden",
-        "detail": "Boulders, groundcovers, gravel path",
-        "alt": "A front garden of granite boulders and native groundcovers with a gravel path and lawn"
+        "src": "assets/pond-paving-800.webp",
+        "full": "assets/pond-paving-1800.webp",
+        "srcset": "assets/pond-paving-480.webp 480w, assets/pond-paving-800.webp 800w, assets/pond-paving-1200.webp 1200w",
+        "width": 1800,
+        "height": 1350,
+        "caption": "Corten pond and stone paving",
+        "detail": "Corten steel, stone coping, fountain",
+        "alt": "A raised corten steel pond with a stone coping and a fountain jet, set in large-format stone paving"
       },
       {
         "src": "assets/sandstone-lawn-800.webp",
         "full": "assets/sandstone-lawn-1800.webp",
         "srcset": "assets/sandstone-lawn-480.webp 480w, assets/sandstone-lawn-800.webp 800w, assets/sandstone-lawn-1200.webp 1200w",
-        "width": 1920,
-        "height": 1440,
+        "width": 1800,
+        "height": 1350,
         "caption": "New lawn, sandstone wall",
         "detail": "Turf, block wall, brick path",
         "alt": "A curved sandstone block garden wall with freshly laid turf and a brick path"
@@ -274,8 +282,8 @@
         "src": "assets/deck-pergola-800.webp",
         "full": "assets/deck-pergola-1800.webp",
         "srcset": "assets/deck-pergola-480.webp 480w, assets/deck-pergola-800.webp 800w, assets/deck-pergola-1200.webp 1200w",
-        "width": 1912,
-        "height": 1434,
+        "width": 1800,
+        "height": 1350,
         "caption": "Pool deck and pergola",
         "detail": "Hardwood deck, gabled pergola",
         "alt": "A hardwood pool deck with a gabled timber pergola looking out over the hills"
@@ -284,8 +292,8 @@
         "src": "assets/grass-trees-800.webp",
         "full": "assets/grass-trees-1800.webp",
         "srcset": "assets/grass-trees-480.webp 480w, assets/grass-trees-800.webp 800w, assets/grass-trees-1200.webp 1200w",
-        "width": 1920,
-        "height": 1440,
+        "width": 1800,
+        "height": 1350,
         "caption": "Crazy paving and grass trees",
         "detail": "Flagging, barrels, synthetic turf",
         "alt": "Crazy paving leading to a timber cabin, with grass trees in wine barrels and synthetic turf"
@@ -323,7 +331,7 @@
   "faq": [
     {
       "q": "Do I need a design before I ring?",
-      "a": "No. If you have plans drawn up, we build to them — that is exactly what we do. If all you have is a rough idea and a yard you are sick of looking at, that is enough to start with. One client put it plainly in his review: Aaron turned his rough ideas into a practical reality."
+      "a": "No. If you have plans drawn up, we build to them — that is exactly what we do. If all you have is a rough idea and a yard you are sick of looking at, that is enough to start with. Bradley Wood's review puts it plainly: “receptive to our ideas as well as communicating well to us on ideas of their own”."
     },
     {
       "q": "Do you take small jobs, or only big ones?",
@@ -335,7 +343,7 @@
     },
     {
       "q": "Do you do schools and commercial work?",
-      "a": "Yes. We built the sensory garden and playground at St Matthew's — a boardwalk, sandpit, roly-poly slopes, stepping stones and artificial turf. The thank-you notes for that one were written by the Year 2s."
+      "a": "Yes. School playgrounds and sensory gardens are on our list, and one of the biggest jobs we have done is a school sensory garden and playground — a sandpit, roly-poly slopes, stepping stones and artificial turf. The children wrote the thank-you notes for that one themselves, Year 2 right through to Year 6."
     },
     {
       "q": "Where do you work?",
@@ -345,6 +353,145 @@
   "sms": {
     "label": "Text a photo",
     "body": "Hi {owner}, I'm after a quote.\nSuburb: \nWhat I'd like done: \n(Happy to send photos of the space.)"
+  },
+  "_source": {
+    "url": "https://www.utopianlandscaping.com.au/",
+    "platform": "Duda — footer reads 'Website by Melbourne IT'",
+    "pagesRead": [
+      "home",
+      "about-us",
+      "gallery",
+      "testimonials",
+      "contact-us"
+    ],
+    "notes": "Their homepage <title> is 'Building Surveyor For Government Contracts | ACT'; about, gallery, testimonials and contact share generic titles. Their testimonials page still shows the unedited Duda placeholders 'Slide title' and 'Button', the about page has three 'Slide title / Write your caption here / Button' blocks that were never filled in, and a broken Instagram embed from 13 September 2019 with the plugin credit 'Powered by embedinstagramfeed gmailbulkemailcom' printed under it. Gallery images are served at 560px from 1920px originals.",
+    "stockLookingPhotos": [
+      "utopian-landscaping-005.jpg — stock: hands potting a marigold seedling",
+      "utopian-landscaping-008.jpg — stock: North American limestone flagstone steps with daylilies and coral bells",
+      "utopian-landscaping-009.jpg — stock: hostas, ferns and a granite sett path, northern hemisphere"
+    ],
+    "claimSources": {
+      "Business name 'Utopian Landscaping and Paving Solutions'": {
+        "sentence": "Utopian Landscaping and Paving Solutions are highly qualified and experienced professional landscapers that operate across Canberra, Queanbeyan, Yass and all of ACT surrounding areas.",
+        "url": "https://www.utopianlandscaping.com.au/"
+      },
+      "Owner first name 'Derek' (nav item, owner section, CTAs, SMS)": {
+        "sentence": "Give Derek A Call On! 0423 814 300 — in the site header on every page.",
+        "url": "https://www.utopianlandscaping.com.au/"
+      },
+      "Phone 0423 814 300": {
+        "sentence": "Give Derek A Call On! 0423 814 300 — header on every page, and again in the footer as 'UTOPIAN LANDSCAPING PO Box 5032 Chisholm 2905 ACT 0423 814 300'. Listed as google_phone in data/google_reviews_top25.json.",
+        "url": "https://www.utopianlandscaping.com.au/"
+      },
+      "Email utopian@utopianlandscaping.com.au": {
+        "sentence": "Email utopian@utopianlandscaping.com.au",
+        "url": "https://www.utopianlandscaping.com.au/contact-us"
+      },
+      "Region 'ACT' / footer 'Canberra, ACT'": {
+        "sentence": "UTOPIAN LANDSCAPING PO Box 5032 Chisholm 2905 ACT — a PO Box only. No street address is published anywhere, and no page says where they are based, so no home suburb is claimed on the page.",
+        "url": "https://www.utopianlandscaping.com.au/contact-us"
+      },
+      "Service area: Canberra, Queanbeyan, Yass and ACT surrounds (hero kicker, areas section, FAQ)": {
+        "sentence": "Our service area incorporates Canberra, Yass, Queanbeyan and all of the ACT surrounding areas but is not limited, so don't hesitate to get in touch and discuss your dream outdoor space with us on 0423 814 300.",
+        "url": "https://www.utopianlandscaping.com.au/contact-us"
+      },
+      "Crookwell in the service area list": {
+        "sentence": "We are proud to have completed so many successful projects for happy clients in Canberra, Yass, Queanbeyan, Crookwell and their surrounding areas.",
+        "url": "https://www.utopianlandscaping.com.au/gallery"
+      },
+      "Suburb 'Macquarie'": {
+        "sentence": "Dear Derek, Val and I would-like to thank you and your team very much for the wonderful garden makeover you accomplished for us. […] -John & Val 19 November 2007 Macquarie ACT",
+        "url": "https://www.utopianlandscaping.com.au/testimonials"
+      },
+      "Suburb 'Holder'": {
+        "sentence": "Utopian Landscaping and Paving Solutions makeover of our suburban garden has been an extra-ordinary success. […] -Paul & Judy Perkins, Holder ACT. 25th May 2009",
+        "url": "https://www.utopianlandscaping.com.au/testimonials"
+      },
+      "'2007' — owner stat 'Earliest client letter', and process step 3 'the client who wrote to us in 2007'": {
+        "sentence": "Dear Derek, […] Right from the start, regardless of the number of times we had changed our design and you had to requote, nothing was too much trouble. […] -John & Val 19 November 2007 Macquarie ACT. This is the oldest dated letter on the page; the rest run 2009, 2012, 2014, 2017, 2018, 2019, 2020. It is carried as 'earliest client letter' and nowhere as a founding year or a years-in-business figure.",
+        "url": "https://www.utopianlandscaping.com.au/testimonials"
+      },
+      "'7:30am' owner stat and responsePromise '7:30am to 4:30pm, Monday to Friday'": {
+        "sentence": "Hours Of Operation Mon - Fri 7:30 am - 4:30 pm Sat - Sun Closed",
+        "url": "https://www.utopianlandscaping.com.au/contact-us"
+      },
+      "'Members of the Master Builders Association ACT' (credential card and strip)": {
+        "sentence": "Utopian Landscaping are a family run and operated business and are Members of the Master Builders Association ACT.",
+        "url": "https://www.utopianlandscaping.com.au/"
+      },
+      "'family run and operated' / 'family-run business' (owner section)": {
+        "sentence": "Utopian Landscaping are a family run and operated business and are Members of the Master Builders Association ACT.",
+        "url": "https://www.utopianlandscaping.com.au/"
+      },
+      "Services list: retaining and feature walls in stone, brick, sleeper and corten steel; paving, pool coping, garden edging, concreting; decks, pergolas, fencing, privacy screens; rockeries, garden beds, irrigation, turf, synthetic grass, lawns, garden lighting, water features, ponds; school playgrounds and sensory gardens": {
+        "sentence": "We can construct retaining walls and feature walls made with various materials of your choice including stone, brick, sleeper and corten steel, and deliver services in paving, pool coping and paving, decks, pergolas, garden edging, rockeries, garden beds, irrigation, fencing, paving, synthetic grass, turf, concreting, lawns, water features, ponds, garden lighting, school playgrounds and sensory gardens.",
+        "url": "https://www.utopianlandscaping.com.au/"
+      },
+      "'One business. The whole job.' / 'one quote, one crew' / FAQ 'the whole job, not subcontracted'": {
+        "sentence": "Covering both small and large landscaping projects from a small courtyard to a rural property, we pride ourselves in completing all aspects of your landscaping project ourselves, so you only have to liaise with one business.",
+        "url": "https://www.utopianlandscaping.com.au/"
+      },
+      "FAQ 'Anything from a small courtyard to a rural property'": {
+        "sentence": "Covering both small and large landscaping projects from a small courtyard to a rural property",
+        "url": "https://www.utopianlandscaping.com.au/"
+      },
+      "Hero headline 'Rough ideas turned into real gardens', aperture line 'Bring the idea. We will work out how to build it.', aperture label 'Only limited by your imagination', FAQ 'if you have plans we build to them'": {
+        "sentence": "Only Limited By Your Imagination (homepage hero line, also the line in their logo). We specialise in creating beautiful outdoor spaces based on your designs and ideas, providing the expertise to reproduce your plans and ideas and make your dream outdoor space a reality.",
+        "url": "https://www.utopianlandscaping.com.au/"
+      },
+      "Process step 1 'Derek comes out and asks what you want to use the area for'": {
+        "sentence": "We feel that talking with our clients is the most important aspect, seeing what our clients want to use the area for and liaising with them all the way to completion is imperative.",
+        "url": "https://www.utopianlandscaping.com.au/about-us"
+      },
+      "Process step 3 'Changed your mind? […] re-quoting again and again, and none of it ever being a problem'": {
+        "sentence": "Right from the start, regardless of the number of times we had changed our design and you had to requote, nothing was too much trouble. […] -John & Val 19 November 2007 Macquarie ACT",
+        "url": "https://www.utopianlandscaping.com.au/testimonials"
+      },
+      "School sensory garden and playground: sandpit, roly-poly slopes, stepping stones, artificial turf": {
+        "sentence": "I love the Sensory Garden because it has so many cool things like… A sandpit so you can make tall sandcastles Roly poly slopes Stepping stones Orange things to step on. -Abbey YR2. And: The artificial turf is a great place to sit and chat. -Bernie YR4 and Sophie YR4. Their gallery carries three school albums: 'HF Sensory Playground', 'STA Sensory Playground', 'STM Sensory Playground'. No school is named on the page — one Year 4 note signs off '…this beautiful school…St Matthew's', which is a child's aside about one of three schools, not a client list, so the name is left off.",
+        "url": "https://www.utopianlandscaping.com.au/testimonials"
+      },
+      "'The thank-you notes came from Year 2 right through to Year 6'": {
+        "sentence": "The thank-you notes published on the testimonials page are signed -Alex YR2, -Abbey YR2, -Bernie YR4 and Sophie YR4, -Iris YR4, -Alex and Ted YR6, and -Mia and Sophie YR6, plus a teacher's note dated 28th May 2019: 'Dear Derek, Year Two were the first class in the Sensory Garden today.'",
+        "url": "https://www.utopianlandscaping.com.au/testimonials"
+      },
+      "Rating 5.0 and 25 reviews (stats band, reviews intro, meta description)": {
+        "sentence": "rating 5.0, review_count 25 for slug utopian-landscaping. The six reviews on the page are best_for_demo, word for word, names as published. Three are marked shortened (Bradley Wood, Michael Forsythe, Kathleen Cross) — Google truncated them; replace with the full text before go-live.",
+        "url": "data/google_reviews_top25.json"
+      },
+      "'Aaron' (owner section)": {
+        "sentence": "Patrick Foley, 5 stars: 'Aaron was really helpful, turning my rough ideas into a practical reality. He was very committed, working through awful weather to get my landscaping done on time and on budget. Im very happy with the finished product, well done Aaron.' No page states Aaron's role, so none is given.",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Pull quote (Charlie Stephenson) and FAQ quote (Bradley Wood)": {
+        "sentence": "Charlie Stephenson, 5 stars: 'Derek was able to integrate our native garden into the new landscaping project which included rockeries, paving, turf, irrigation and other features.' Bradley Wood, 5 stars: 'they were receptive to our ideas as well as communicating well to us on ideas of their own.'",
+        "url": "data/google_reviews_top25.json"
+      },
+      "FAQ 'a townhouse lawn that was soggy and dying and is now tightly paved'": {
+        "sentence": "Michael Forsythe, 5 stars: 'They came and did a small paving job for me, converting a soggy dying townhouse lawn into crisp tightly-paved space.'",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Owner copy 'reliable, energetic, courteous, trustworthy, and quick with a good idea for the space'": {
+        "sentence": "Kelli Hughes, 5 stars: 'Derek and his team were a pleasure to have on site. Reliable, energetic […] They were courteous and trustworthy and came up with good ideas for improving the space.'",
+        "url": "data/google_reviews_top25.json"
+      },
+      "'Six jobs from around Canberra and the ACT, six different sites' (work section intro)": {
+        "sentence": "A count of the gallery on this page, not a claim about their business. The six tiles are six different jobs: IMG_0043 (slate courtyard), 2014_UTOPIAN_HILTON_LENARDS_003 (rockery water course), IMG_0321 (corten pond), IMG_0009 (sandstone wall and turf), IMG_0104 (pool deck and pergola), IMG_6467 (crazy paving and grass trees). No photo is used in two slots anywhere on the page.",
+        "url": "https://www.utopianlandscaping.com.au/gallery"
+      },
+      "Every photo on the page": {
+        "sentence": "All 15 images are their own, pulled at full resolution from their own CDN behind the 560px versions their gallery serves. No stock, no upscaling, no photo used twice, and no two slots showing the same job. The three stock photos on their live site (a marigold potting close-up, a North American flagstone border, a European hosta garden) are not used.",
+        "url": "https://www.utopianlandscaping.com.au/gallery"
+      },
+      "Logo wordmark": {
+        "sentence": "Their only published logo is logo2-280x120.png (280x120, JPEG-artefacted, grey halo and white plate baked in). Nothing of it is used: the header and footer wordmark is their name set in type. See business.logo._comment.",
+        "url": "https://www.utopianlandscaping.com.au/"
+      },
+      "'Client letters, 2007 to 2020' (third recognition card)": {
+        "sentence": "Their testimonials page publishes client letters dated 19 November 2007 (John & Val, Macquarie ACT), 25th May 2009 (Paul & Judy Perkins, Holder ACT), 7th March 2012 (Trish & Mark B. — 'We love our new wall and front yard'), 18th December 2014 (James & Maddy — 'the front yard definitely wasn't useful'), 18th July 2017 (Jennie — 'the retaining wall has come up better than we ever expected'), 10th April 2018 (Matt), 28th May 2019 (the school's Sensory Garden note), 13th January 2020 (Therese), 10th March 2020 (Philippa) and 14th April 2020 (Marie-Anne & Bob). 2007 and 2020 are the oldest and newest dates published.",
+        "url": "https://www.utopianlandscaping.com.au/testimonials"
+      }
+    }
   },
   "_check": []
 }
