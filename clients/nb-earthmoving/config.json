@@ -1,0 +1,511 @@
+{
+  "_comment": "Northern Beaches Earthmoving demo. Built 2026-09-23 from https://www.northernbeachesearthmoving.com.au (WordPress). No npm run new — Playwright/Chromium in this session can't reach external HTTPS, so all research was plain curl + WebFetch against the live site, and photos were pulled directly with curl. Every claim on the page is traced in _source.claimSources. Rating and reviews come from data/google_reviews_top25.json (key 'nb-earthmoving') and nowhere else. All photos are the client's own job photos, downloaded from their own wp-content/uploads folder — no stock.",
+  "slug": "nb-earthmoving",
+  "template": "trust",
+  "industry": "landscaping",
+  "live": false,
+  "tagline": "Owner-operator excavation for Sydney's Northern Beaches. Jim Brigden runs every job himself.",
+  "schemaType": "GeneralContractor",
+  "business": {
+    "name": "Northern Beaches Earthmoving",
+    "ownerName": "Jim Brigden",
+    "ownerFirstName": "Jim",
+    "ownerTitle": "Owner and Operator",
+    "phone": {
+      "display": "0422 929 660",
+      "e164": "+61422929660"
+    },
+    "email": "jim@northernbeachesearthmoving.com.au",
+    "abn": "",
+    "baseSuburb": "Manly",
+    "region": "NSW",
+    "currentSite": "northernbeachesearthmoving.com.au",
+    "brand": {
+      "accent": "#F5464C",
+      "accent2": "#F2B705",
+      "themeColor": "#1A1A1A",
+      "_comment": "Their logo's own red is #ED1C24 and near-black is #1A1A1A (sampled directly from NBElogo.png), but #ED1C24 fails WCAG contrast against the template's fixed dark background on UI elements like the skip-link (4.26:1, under the 4.5 floor). #F5464C is the same red hue brightened just enough to clear that floor (5.3:1) while still reading as their red. #F2B705 approximates the yellow highlight behind 'Earthmoving' in the same logo."
+    },
+    "logo": {
+      "src": "assets/logo-nbe.webp",
+      "width": 264,
+      "height": 118
+    }
+  },
+  "fonts": [],
+  "icons": {
+    "favicon": "assets/favicon-nbe.png"
+  },
+  "share": {
+    "image": "assets/nb-share-1200.webp",
+    "width": 1200,
+    "height": 630,
+    "title": "Northern Beaches Earthmoving — Excavation Contractors, Manly & Northern Beaches Sydney",
+    "description": "Owner-operator excavation contractor based in Manly. Jim Brigden handles rock excavation, sandstone walls, pool digs, driveways and more — family-run for over 25 years.",
+    "alt": "A large sawn sandstone retaining wall built by Northern Beaches Earthmoving against a house in Manly"
+  },
+  "responsePromise": "Jim reads every enquiry himself, and often quotes the same day.",
+  "copy": {
+    "title": "Northern Beaches Earthmoving — Excavation Contractors, Manly & Northern Beaches Sydney",
+    "description": "Owner-operator excavation contractor based in Manly. Rock excavation, sandstone block walls, pool digs, driveways, under-house excavation and more. Family-run for over 25 years — free quotes, fully insured.",
+    "ctaLabel": "Get a free quote",
+    "kicker": "Northern Beaches, Sydney",
+    "headline": "Rock, tight sites,<br>tricky access.<br><em>Jim sorts it.</em>",
+    "sub": "Northern Beaches Earthmoving is family-run, and Jim Brigden — the owner — turns up and runs the machine himself, from the first site visit to the last load out. No salesperson, no subcontractor, no surprises.",
+    "heroSecondary": "Or send the details",
+    "heroSecondarySms": "Or text us a photo",
+    "navApproach": "Approach",
+    "statementLabel": "The difference",
+    "statementHeadline": "One owner.<br>One machine.<br>Every job himself.",
+    "statementBody": "Jim is the owner and the operator. He quotes the job, visits the site, and runs the digger himself — so the person who priced it is the same person doing it. Behind him, his wife Lynette runs the office and admin.",
+    "servicesLabel": "What we do",
+    "servicesHeadline": "Every kind of dig,<br>one crew.",
+    "servicesIntro": "Residential excavation, start to finish — driveways, rock, pool and spa digs, footings, sandstone walls, and fill or rubbish removal. No job is too small.",
+    "apertureLabel": "Signature job",
+    "apertureLine": "Rock saw, cutting sandstone under a house.",
+    "workLabel": "Recent work",
+    "workHeadline": "Sandstone, rock<br>and tight sites.",
+    "workIntro": "Real jobs from around Sydney's Northern Beaches — sandstone retaining walls, rock excavation, pool digs and driveways.",
+    "processLabel": "How it runs",
+    "processHeadline": "Four steps.<br>Jim on all of them.",
+    "processIntro": "From the first call to the last load of spoil, you're dealing with the same person.",
+    "ownerLabel": "Who you're dealing with",
+    "reviewsTitle": "What clients say.",
+    "reviewsIntro": "Real reviews from their Google profile — a perfect 5.0 from 14 reviews, and nearly every one names Jim directly.",
+    "recognitionLabel": "Standards",
+    "recognitionHeadline": "Insured, compliant,<br>and accountable.",
+    "recognitionIntro": "Fully insured, and compliant with WorkCover and OHS requirements — on paper and on site.",
+    "areasLabel": "Where we work",
+    "areasHeadline": "Manly, and the<br>Northern Beaches.",
+    "areasIntro": "Based in Manly. Most jobs are across the Northern Beaches, with Jim travelling further into Sydney for the right project.",
+    "faqLabel": "Before you call",
+    "faqHeadline": "Questions people ask.",
+    "enquireLabel": "Get a free quote",
+    "enquireHeadline": "Tell us about<br>the site.",
+    "enquireIntro": "Jim reads every enquiry himself, and often quotes the same day. Tell us what needs digging, moving or removing, and where."
+  },
+  "stats": {
+    "googleRating": 5.0,
+    "reviewCount": 14,
+    "jobsDone": null,
+    "yearsInBusiness": null,
+    "_comment": "5.0 from 14 confirmed in data/google_reviews_top25.json (key nb-earthmoving). yearsInBusiness deliberately null: the home page states two different explicit figures side by side — 'over 25 years' for the business and '21 years experience' for Jim personally — and never reconciles them, so neither is used as a single site-wide number. Both appear, separately and correctly attributed, in owner.facts and the statement copy."
+  },
+  "pullQuote": {
+    "text": "One of the best excavation contractors I have come across. Would highly recommend",
+    "name": "Tim Beattie, Google"
+  },
+  "owner": {
+    "body": "Jim Brigden is the owner and operator of Northern Beaches Earthmoving. He is hands-on with every project, and clients deal directly with him from the first site visit through to completion.",
+    "team": "Behind the scenes, Jim's wife Lynette runs the business's administration. Reviewers name Jim directly and repeatedly — one job had \"Jim & his daughter\" building a sandstone wall together.",
+    "facts": [
+      {
+        "value": "25+",
+        "label": "Years family-run"
+      },
+      {
+        "value": "21",
+        "label": "Jim's years operating"
+      },
+      {
+        "value": "5.0",
+        "label": "From 14 Google reviews"
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "kind": "claim",
+      "label": "Fully insured",
+      "strip": true
+    },
+    {
+      "kind": "claim",
+      "label": "WorkCover & OHS compliant",
+      "body": "Complies with WorkCover and OHS requirements on every site.",
+      "strip": true
+    },
+    {
+      "kind": "claim",
+      "label": "Family-owned and operated",
+      "body": "Serving the local community for over 25 years.",
+      "strip": true
+    },
+    {
+      "kind": "claim",
+      "label": "Free quotes",
+      "body": "Jim gives free quotes and advice — often the same day.",
+      "strip": false
+    }
+  ],
+  "priceLines": {
+    "fee": "",
+    "build": "",
+    "_comment": "Their own Rates page lists detailed hourly machine and attachment rates (e.g. 8 Tonne excavator $170/hr, float $500 each way), not a single job fee or build-cost figure, so there is nothing that fits the fee/build shape this template expects. Left empty rather than forcing their equipment rate card into it. Ask Jim if he wants a simple 'jobs typically run between $X and $Y' line instead."
+  },
+  "_check": [],
+  "services": [
+    {
+      "title": "Rock Sawing & Rock Excavation",
+      "blurb": "Cutting and removing solid rock with a diamond blade saw and excavator-mounted hammers, for site cuts, trenches and footings a normal dig can't get through.",
+      "photo": {
+        "src": "assets/nb-gallery-rock-saw-800.webp",
+        "srcset": "assets/nb-gallery-rock-saw-480.webp 480w, assets/nb-gallery-rock-saw-800.webp 800w, assets/nb-gallery-rock-saw-1200.webp 1200w, assets/nb-gallery-rock-saw-1536.webp 1536w",
+        "width": 1536,
+        "height": 1495,
+        "alt": "A worker operating a mini excavator fitted with a diamond blade rock saw, cutting sandstone under a house"
+      }
+    },
+    {
+      "title": "Sandstone Block Walls",
+      "blurb": "Retaining and garden walls built from cut sandstone blocks. Jim plans, orders and cuts the blocks, and uses specialty lifters so nothing gets damaged going in.",
+      "photo": {
+        "src": "assets/nb-gallery-wall-build-800.webp",
+        "srcset": "assets/nb-gallery-wall-build-480.webp 480w, assets/nb-gallery-wall-build-800.webp 800w, assets/nb-gallery-wall-build-1200.webp 1200w, assets/nb-gallery-wall-build-1774.webp 1774w",
+        "width": 1774,
+        "height": 1774,
+        "alt": "A mini excavator placing large cut sandstone blocks to build a retaining wall"
+      }
+    },
+    {
+      "title": "Swimming Pool Excavation",
+      "blurb": "Pool and spa digs, including sites with heavy rock. One contractor for the excavation and any extra works, rather than a pool company that only digs the pool.",
+      "photo": {
+        "src": "assets/nb-gallery-pool-completed-600.webp",
+        "srcset": "assets/nb-gallery-pool-completed-480.webp 480w, assets/nb-gallery-pool-completed-600.webp 600w",
+        "width": 600,
+        "height": 400,
+        "alt": "A finished in-ground pool with glass fencing and a timber deck, following pool excavation by Northern Beaches Earthmoving"
+      }
+    },
+    {
+      "title": "Driveways",
+      "blurb": "New driveway excavation and site preparation, including sloped and tight-access blocks.",
+      "photo": {
+        "src": "assets/nb-service-driveway-600.webp",
+        "srcset": "assets/nb-service-driveway-480.webp 480w, assets/nb-service-driveway-600.webp 600w",
+        "width": 600,
+        "height": 480,
+        "alt": "A finished paved driveway leading to a two-storey house"
+      }
+    },
+    {
+      "title": "Under House Excavation",
+      "blurb": "Digging out under an existing house for a garage, storage or extra room — tight headroom and tight access, done carefully.",
+      "photo": {
+        "src": "assets/nb-service-underhouse-600.webp",
+        "srcset": "assets/nb-service-underhouse-480.webp 480w, assets/nb-service-underhouse-600.webp 600w",
+        "width": 600,
+        "height": 450,
+        "alt": "A rock saw cutting sandstone in the confined space under an existing house"
+      }
+    },
+    {
+      "title": "Difficult Access Excavation",
+      "blurb": "Sites a bigger machine can't reach. The right-sized gear, run personally by Jim, for tight side accesses and awkward blocks.",
+      "photo": {
+        "src": "assets/nb-gallery-truck-dog-800.webp",
+        "srcset": "assets/nb-gallery-truck-dog-480.webp 480w, assets/nb-gallery-truck-dog-800.webp 800w",
+        "width": 800,
+        "height": 600,
+        "alt": "A Northern Beaches Earthmoving branded tip truck and dog trailer parked beside a mini excavator on site"
+      }
+    }
+  ],
+  "process": [
+    {
+      "step": "Call or text",
+      "detail": "Jim gives free quotes and advice, often the same day — one customer had a quote that night and the job done the next morning."
+    },
+    {
+      "step": "Site visit",
+      "detail": "Jim visits the site himself before anything is booked in. No salesperson, and no quote from photos alone."
+    },
+    {
+      "step": "The dig",
+      "detail": "Jim runs the machine himself. Fully insured, and compliant with WorkCover and OHS requirements on site."
+    },
+    {
+      "step": "Clean handover",
+      "detail": "Fill, rubbish or excess spoil removed if you need it, and the site left ready for the next trade."
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "From a Manly base",
+      "suburbs": [
+        "Northern Beaches",
+        "Sydney"
+      ]
+    }
+  ],
+  "photos": {
+    "hero": {
+      "src": "assets/nb-hero-sandstone-wall-1800.webp",
+      "srcset": "assets/nb-hero-sandstone-wall-480.webp 480w, assets/nb-hero-sandstone-wall-800.webp 800w, assets/nb-hero-sandstone-wall-1200.webp 1200w, assets/nb-hero-sandstone-wall-1800.webp 1800w",
+      "width": 1800,
+      "height": 1520,
+      "alt": "A large sawn sandstone retaining wall built hard against a brick house in Manly by Northern Beaches Earthmoving"
+    },
+    "statement": {
+      "src": "assets/nb-gallery-wall-build-800.webp",
+      "srcset": "assets/nb-gallery-wall-build-480.webp 480w, assets/nb-gallery-wall-build-800.webp 800w, assets/nb-gallery-wall-build-1200.webp 1200w",
+      "width": 1200,
+      "height": 1200,
+      "alt": "A mini excavator placing large cut sandstone blocks to build a retaining wall"
+    },
+    "aperture": {
+      "src": "assets/nb-gallery-rock-saw-1200.webp",
+      "srcset": "assets/nb-gallery-rock-saw-480.webp 480w, assets/nb-gallery-rock-saw-800.webp 800w, assets/nb-gallery-rock-saw-1200.webp 1200w, assets/nb-gallery-rock-saw-1536.webp 1536w",
+      "width": 1536,
+      "height": 1495,
+      "alt": "A worker operating a mini excavator fitted with a diamond blade rock saw, cutting sandstone under a house",
+      "caption": "Rock saw, under-house excavation"
+    },
+    "owner": {
+      "src": "assets/nb-gallery-truck-dog-800.webp",
+      "srcset": "assets/nb-gallery-truck-dog-480.webp 480w, assets/nb-gallery-truck-dog-800.webp 800w",
+      "width": 800,
+      "height": 600,
+      "ratio": "800/600",
+      "alt": "A Northern Beaches Earthmoving branded tip truck and dog trailer parked beside a mini excavator on a bush block",
+      "caption": "Northern Beaches Earthmoving, on site"
+    },
+    "enquiryBackground": {
+      "src": "assets/nb-gallery-wall-bush-1200.webp",
+      "width": 1200,
+      "height": 1200
+    },
+    "gallery": [
+      {
+        "src": "assets/nb-hero-sandstone-wall-800.webp",
+        "full": "assets/nb-hero-sandstone-wall-1800.webp",
+        "srcset": "assets/nb-hero-sandstone-wall-480.webp 480w, assets/nb-hero-sandstone-wall-800.webp 800w, assets/nb-hero-sandstone-wall-1200.webp 1200w",
+        "width": 1800,
+        "height": 1520,
+        "caption": "Sandstone retaining wall, Manly",
+        "detail": "Sawn sandstone blocks, house wall",
+        "alt": "A large sawn sandstone retaining wall built hard against a brick house in Manly"
+      },
+      {
+        "src": "assets/nb-gallery-wall-bush-800.webp",
+        "full": "assets/nb-gallery-wall-bush-1774.webp",
+        "srcset": "assets/nb-gallery-wall-bush-480.webp 480w, assets/nb-gallery-wall-bush-800.webp 800w, assets/nb-gallery-wall-bush-1200.webp 1200w",
+        "width": 1774,
+        "height": 1774,
+        "caption": "Sandstone retaining wall",
+        "detail": "Cut blocks, natural bush setting",
+        "alt": "A sandstone block retaining wall built into a natural bush embankment"
+      },
+      {
+        "src": "assets/nb-gallery-wall-build-800.webp",
+        "full": "assets/nb-gallery-wall-build-1774.webp",
+        "srcset": "assets/nb-gallery-wall-build-480.webp 480w, assets/nb-gallery-wall-build-800.webp 800w, assets/nb-gallery-wall-build-1200.webp 1200w",
+        "width": 1774,
+        "height": 1774,
+        "caption": "Sandstone wall, mid-build",
+        "detail": "Excavator placing cut sandstone blocks",
+        "alt": "A mini excavator placing large cut sandstone blocks to build a retaining wall"
+      },
+      {
+        "src": "assets/nb-gallery-rock-saw-800.webp",
+        "full": "assets/nb-gallery-rock-saw-1536.webp",
+        "srcset": "assets/nb-gallery-rock-saw-480.webp 480w, assets/nb-gallery-rock-saw-800.webp 800w, assets/nb-gallery-rock-saw-1200.webp 1200w",
+        "width": 1536,
+        "height": 1495,
+        "caption": "Rock saw, under-house excavation",
+        "detail": "Diamond blade rock saw cutting sandstone",
+        "alt": "A worker operating a mini excavator fitted with a diamond blade rock saw, cutting sandstone under a house"
+      },
+      {
+        "src": "assets/nb-gallery-truck-dog-800.webp",
+        "full": "assets/nb-gallery-truck-dog-800.webp",
+        "srcset": "assets/nb-gallery-truck-dog-480.webp 480w, assets/nb-gallery-truck-dog-800.webp 800w",
+        "width": 800,
+        "height": 600,
+        "caption": "Truck and dog, on site",
+        "detail": "Northern Beaches Earthmoving fleet",
+        "alt": "A Northern Beaches Earthmoving branded tip truck and dog trailer parked beside a mini excavator on a bush block"
+      },
+      {
+        "src": "assets/nb-gallery-pool-completed-600.webp",
+        "full": "assets/nb-gallery-pool-completed-600.webp",
+        "srcset": "assets/nb-gallery-pool-completed-480.webp 480w, assets/nb-gallery-pool-completed-600.webp 600w",
+        "width": 600,
+        "height": 400,
+        "caption": "Pool excavation, completed — Manly",
+        "detail": "Finished pool and timber deck",
+        "alt": "A finished in-ground pool with glass fencing and timber deck, following pool excavation by Northern Beaches Earthmoving"
+      }
+    ]
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [
+    {
+      "name": "Andrew Jamieson",
+      "text": "I’ve engaged Jim from Northern Beaches Earthmoving twice, most recently for a complex pool excavation involving a lot of rock. His commitment, precision and work ethic were exceptional. He is meticulous, reliable and delivers work of the highest quality. I recommend him with complete confidence."
+    },
+    {
+      "name": "Tim Beattie",
+      "text": "Jim is a great contractor. Our site had limited space and was difficult to access. Jim works hard, treats the property as if it’s his own, always thinking ahead solving problems proactively. One of the best excavation contractors I have come across. Would highly recommend"
+    },
+    {
+      "name": "Jeff Stewart",
+      "text": "Don't look any further than Jim at Northern Beaches Earthmoving for any earthmoving work on the Northern Beaches. I had some earthmoving work done in Manly and Jim had all the right equipment, was very professional and was able to get the job completed on time. Highly recommended"
+    },
+    {
+      "name": "Nicola Sparkes",
+      "text": "Jim & his daughter did a fantastic job excavating and building a sandstone wall for us. Also referred a great concreter to finish our job. 10/10 Great to work with. Highly recommended."
+    },
+    {
+      "name": "Richard Hutchings",
+      "text": "Jim's communication was excellent, he was punctual and patiently worked with us to come up with the best solution to fit our needs. We're very happy with the result and I would highly recommend Jim to anyone in need of an excellent operator."
+    },
+    {
+      "name": "John Hoyle",
+      "text": "We had a driveway full of excess soil ( from a Landscaping job ) and contacted Jim, he quoted that night and removed the soil the next morning ( Saturday !! ) . He was responsive, punctual and professional and a very reasonable price - definitely would use again ."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Do you do free quotes?",
+      "a": "Yes. Jim is happy to give free quotes and advice, and often quotes the same day — one customer's review describes getting a quote that night and the job done the next morning."
+    },
+    {
+      "q": "What's the minimum charge once I sign up for a job?",
+      "a": "Usually four hours, plus the float. The float is a standard charge covering transport of the machine from the yard to your site and back again once the job is done."
+    },
+    {
+      "q": "I'm putting in a pool. Why use Northern Beaches Earthmoving for the excavation?",
+      "a": "Savings can be made using one contractor for the pool excavation plus any additional works, rather than the pool company, which will only dig the pool itself."
+    },
+    {
+      "q": "Do I need council or DA approval?",
+      "a": "You should check with your local council before undertaking excavation works."
+    },
+    {
+      "q": "What is Dial Before You Dig, and is it my responsibility?",
+      "a": "It's a free service for locating underground utilities before excavation starts, at 1100.com.au. It's the customer's or builder's responsibility to identify where the utilities are before work begins."
+    },
+    {
+      "q": "I want to dig a garage under my house, but it's all rock. Can you do this?",
+      "a": "Yes — Jim is experienced in all types of rock excavation, including tight, hand-dug rock jobs in confined spaces."
+    }
+  ],
+  "sms": {
+    "label": "Text a photo",
+    "body": "Hi {owner}, I'd like a quote.\nSuburb: \nWhat I'm after: \n(Happy to send photos of the site.)"
+  },
+  "form": {
+    "accessKey": ""
+  },
+  "_source": {
+    "url": "https://www.northernbeachesearthmoving.com.au",
+    "platform": "WordPress (Impreza theme, WPBakery)",
+    "pagesRead": [
+      "https://www.northernbeachesearthmoving.com.au/",
+      "https://www.northernbeachesearthmoving.com.au/gallery/",
+      "https://www.northernbeachesearthmoving.com.au/contact-us/",
+      "https://www.northernbeachesearthmoving.com.au/faq/",
+      "https://www.northernbeachesearthmoving.com.au/rates/",
+      "https://www.northernbeachesearthmoving.com.au/equipments/",
+      "https://www.northernbeachesearthmoving.com.au/rock-sawing-rock-excavation/",
+      "https://www.northernbeachesearthmoving.com.au/swimming-pool-excavation/",
+      "https://www.northernbeachesearthmoving.com.au/driveways/",
+      "https://www.northernbeachesearthmoving.com.au/retaining-walls/",
+      "https://www.northernbeachesearthmoving.com.au/under-house-excavation/",
+      "https://www.northernbeachesearthmoving.com.au/yard-levelling-landscaping/",
+      "https://www.northernbeachesearthmoving.com.au/difficult-access-excavation/",
+      "https://www.northernbeachesearthmoving.com.au/fill-and-rubbish-removal/",
+      "https://www.northernbeachesearthmoving.com.au/detailed-excavation/",
+      "https://www.northernbeachesearthmoving.com.au/bulk-excavation/",
+      "https://www.northernbeachesearthmoving.com.au/sandstone-block-walls/"
+    ],
+    "aboutText": "Northern Beaches Earthmoving is a proudly family-owned and operated business, serving the local community for over 25 years. As both the owner and operator, Jim Brigden is hands-on with every project. This personal approach means clients deal directly with him from the initial site visit through to completion of the job — ensuring honest communication, attention to detail, and a consistent, high quality result. Behind the scenes, Jim's wife Lynette plays a key role in running the business, managing all administration with care and efficiency. Together they are committed to delivering friendly, reliable service with values you'd expect from a true family-run company. Northern Beaches Earthmoving specialises in all types of residential excavation work, including driveways, rock excavation, pool and spa digs, detailed footings, house site preparation, sandstone block retaining walls, and rubbish or fill removal. No job is too small — just honest, hard work from a trusted local family business.",
+    "statsBlock": "Owner Operator. 21 years experience. From initial estimate or quote through to completion of job. Professional, reliable and friendly. Finds practical solutions to site problems. Good communication with owners, builders and tradesmen. Complies with Workcover and OHS requirements. Fully insured.",
+    "photoNote": "No stock or theme demo images found anywhere on the site — every image is the client's own job photo, served from their own wp-content/uploads folders (2013, 2016 and 2023). Most are small (500-800px) WordPress-optimised web copies; a handful of full-resolution phone-camera originals also exist unresized (the ones used for the hero and three gallery shots, all 1536-3024px wide). The hero is a crop of Manly-Sandstone-Block-Wall-1.jpg (3024x4032 original) cropped to 1814x1532 to remove a wheelie bin from frame and to get a usable landscape hero above the 1600px-wide bar; nothing was upscaled.",
+    "claimSources": {
+      "Business name 'Northern Beaches Earthmoving'": {
+        "sentence": "Excavation Contractors in Sydney | Northern Beaches Earthmoving (page title); Northern Beaches Earthmoving Sydney (og:site_name)",
+        "url": "https://www.northernbeachesearthmoving.com.au/"
+      },
+      "Owner name 'Jim Brigden'": {
+        "sentence": "As both the owner and operator, Jim Brigden is hands-on with every project.",
+        "url": "https://www.northernbeachesearthmoving.com.au/"
+      },
+      "Wife 'Lynette' runs admin": {
+        "sentence": "Behind the scenes, Jim's wife Lynette plays a key role in running the business, managing all administration with care and efficiency.",
+        "url": "https://www.northernbeachesearthmoving.com.au/"
+      },
+      "Phone 0422 929 660": {
+        "sentence": "Shown in the site header on every page, e.g. 0422 929 660 next to the phone icon, and confirmed as the Google phone number in data/google_reviews_top25.json.",
+        "url": "https://www.northernbeachesearthmoving.com.au/contact-us/"
+      },
+      "Email jim@northernbeachesearthmoving.com.au": {
+        "sentence": "jim@northernbeachesearthmoving.com.au",
+        "url": "https://www.northernbeachesearthmoving.com.au/contact-us/"
+      },
+      "Base suburb 'Manly'": {
+        "sentence": "Northern Beaches Earthmoving 53-55 Wood Street, Manly NSW 2095 Australia",
+        "url": "https://www.northernbeachesearthmoving.com.au/contact-us/"
+      },
+      "'Over 25 years' (family-run, business tenure)": {
+        "sentence": "Northern Beaches Earthmoving is a proudly family-owned and operated business, serving the local community for over 25 years.",
+        "url": "https://www.northernbeachesearthmoving.com.au/"
+      },
+      "'21 years' (Jim's personal operating experience)": {
+        "sentence": "Owner Operator. 21 years experience.",
+        "url": "https://www.northernbeachesearthmoving.com.au/"
+      },
+      "'Fully insured'": {
+        "sentence": "Fully insured.",
+        "url": "https://www.northernbeachesearthmoving.com.au/"
+      },
+      "'Complies with WorkCover and OHS requirements'": {
+        "sentence": "Complies with Workcover and OHS requirements.",
+        "url": "https://www.northernbeachesearthmoving.com.au/"
+      },
+      "'No job is too small'": {
+        "sentence": "No job is too small – just honest, hard work from a trusted local family business.",
+        "url": "https://www.northernbeachesearthmoving.com.au/"
+      },
+      "Free quotes": {
+        "sentence": "Yes, I am happy to give free quotes and advice.",
+        "url": "https://www.northernbeachesearthmoving.com.au/faq/"
+      },
+      "Minimum charge '4 hours plus the float'": {
+        "sentence": "This is usually 4 hours plus the float. ... The float is a standard charge to pay for the transportation of the machine from the yard to the worksite and back again on the completion of the job.",
+        "url": "https://www.northernbeachesearthmoving.com.au/faq/"
+      },
+      "One contractor for pool excavation plus extras (FAQ 2)": {
+        "sentence": "Savings can be made using Northern Beaches Earthmoving and the advantage of having one contractor to do the pool plus any additional works that may be required. The pool company will only dig the pool.",
+        "url": "https://www.northernbeachesearthmoving.com.au/faq/"
+      },
+      "Rock excavation experience (FAQ 13)": {
+        "sentence": "I want to dig a garage under my house, but its all rock. Can you do this? ... Yes, we are experienced in all types of rock excavation.",
+        "url": "https://www.northernbeachesearthmoving.com.au/faq/"
+      },
+      "Dial Before You Dig / 1100.com.au": {
+        "sentence": "What is Dial Before You Dig and is it my responsibility? ... This is a free service for information on locating underground utilities. It is the customer's or builder's responsibility to identify where the utilities are before excavation commences. See: http://1100.com.au/",
+        "url": "https://www.northernbeachesearthmoving.com.au/faq/"
+      },
+      "Sandstone block wall process (planning, ordering, cutting, lifters)": {
+        "sentence": "Northern Beaches Earthmoving has extensive experience in building sandstone block walls and offers services including planning, ordering and storage, and cutting blocks to ensure a smooth building process. Jim uses excavators and specialty sandstone block lifters to eliminate damage and allow for quicker and safer transportation of the blocks.",
+        "url": "https://www.northernbeachesearthmoving.com.au/sandstone-block-walls/"
+      },
+      "Services list (11 nav items)": {
+        "sentence": "Rock Sawing / Rock Excavation, Swimming Pool Excavation, Driveways, Retaining Walls, Under House Excavation, Yard Levelling / Landscaping, Difficult Access Excavation / Tight Access Excavation, Fill and Rubbish Removal, Detailed Excavation, Bulk Excavation, Sandstone Block Walls — all separate pages in the site's own navigation.",
+        "url": "https://www.northernbeachesearthmoving.com.au/"
+      },
+      "Brand colours (red/black/yellow from logo)": {
+        "sentence": "Sampled directly from the site's own favicon/logo file, wp-content/uploads/2026/09/NBElogo.png.",
+        "url": "https://www.northernbeachesearthmoving.com.au/"
+      },
+      "Google rating 5.0 and 14 reviews": {
+        "sentence": "rating: 5.0, review_count: 14, google_name: 'Northern Beaches Earthmoving'",
+        "url": "data/google_reviews_top25.json (key: nb-earthmoving)"
+      }
+    }
+  }
+}
