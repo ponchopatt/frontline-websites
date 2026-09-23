@@ -20,6 +20,8 @@ logs/
 # artefacts in the history. A passing demo keeps a small webp pair instead.
 clients/*/shots/
 clients/*/_tmp_*
+_tmp_*
 tools/.rev-*
 tools/.*.tmp.mjs
+tools/_tmp_*
 dist-demos/
