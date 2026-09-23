@@ -69,7 +69,8 @@
       "‘over 500+ happy clients’ appears on their homepage and was deliberately left off this demo as an unverifiable round number.",
       "A 10-year guarantee is mentioned once on /residential-pools/ (‘premium materials, guaranteed for ten years’) and was left off until Ben confirms it in writing.",
       "No SMS button is on the page. The only number they publish is 1300 000 412, and an Australian 1300 cannot receive a text, so a “text Ben a photo” button would be a dead control. The message body is kept in `sms` so the buttons return the moment a mobile is added — see BRIEF.md, Ask Ben 7.",
-      "Anna Perrin’s Google review is the sixth in `best_for_demo` and is deliberately not on the page. Five reviews keep the marquee to a single row, which is what stops the same review being on screen twice at 1440; hers is the most general of the six, and the detail that carried it — that the job was ten years ago and they still look after it — is the part Google cuts off."
+      "Anna Perrin’s Google review is the sixth in `best_for_demo` and is deliberately not on the page. Five reviews keep the marquee to a single row, which is what stops the same review being on screen twice at 1440; hers is the most general of the six, and the detail that carried it — that the job was ten years ago and they still look after it — is the part Google cuts off.",
+      "Fourth review pass (2026-09-23): cut or reworded every line that promised how Ben works, gave a reason for it, claimed a reputation, or overstated a job’s scope. Master Builders is a membership on their site, never a medal, so the recognition line names SPASA only. The licence is the business’s, not Ben’s personally. Strathfield, like Wentworth Point, is captioned as the filtration and plant room because that is how their portfolio labels it."
     ],
     "stockLookingPhotos": [],
     "photoNote": "85 images were downloaded from their own wp-content/uploads library and opened one by one. Nothing from a stock library, no logos, no screenshots and no schematics are used on the page. Full inventory in BRIEF.md."
@@ -123,13 +124,13 @@
     "ctaLabel": "Talk to Ben",
     "kicker": "Based in Sydney",
     "headline": "The pools other<br>builders call<br><em>too hard.</em>",
-    "sub": "Ben Thompson builds and renovates concrete pools around Sydney — on rooftops, inside buildings, and 132 steps from the road. He is known for his attention to the structural and hydraulic engineering, and he stays directly involved through every stage of the job.",
+    "sub": "Ben Thompson builds and renovates concrete pools around Sydney — on rooftops, inside buildings, and 132 steps from the road. He brings meticulous attention to the structural and hydraulic engineering, and stays directly involved through every stage of the job.",
     "heroSecondary": "Or send Ben the details",
     "heroSecondarySms": "Or text Ben a photo",
     "navApproach": "Approach",
     "statementLabel": "The difference",
     "statementHeadline": "Anyone can<br>quote a pool.<br><em>The site is<br>the hard part.</em>",
-    "statementBody": "Access, levels, soil and where the water has to go decide what a Sydney pool costs and whether it lasts. Ben has put pools on roofs, inside houses, and 132 steps from the road at Bellevue Hill.",
+    "statementBody": "Access, levels, soil and where the water has to go decide what a Sydney pool costs and whether it lasts. Ben has built pools on rooftops and indoors, and renovated one 132 steps from the road at Bellevue Hill.",
     "servicesLabel": "What Ben does",
     "servicesHeadline": "Three kinds of work,<br>one builder.",
     "servicesIntro": "Renovations, new pools — including the ones on a roof or inside a building — and the hydraulics behind both. On a rooftop the pool is the easy part; getting the weight, the water and the plant room up there is not. Ben project-manages each trade himself.",
@@ -139,13 +140,13 @@
     "workIntro": "The filtration and plant room for a beach-entry pool at Wentworth Point, a lap pool inside a house at Strathfield, and a renovation 132 steps from the road. Tap any photo to see it larger.",
     "processLabel": "How it runs",
     "processHeadline": "Four steps,<br>and Ben on<br>every one.",
-    "processIntro": "The same order whether it is a new pool or a renovation.",
+    "processIntro": "",
     "ownerLabel": "Who you are dealing with",
     "reviewsTitle": "What Ben's clients say.",
     "reviewsIntro": "Straight from their Google profile, nothing reworded. Where one is marked shortened, only its opening is here and the rest is on Google. One of them first had Ben build a pool twelve years ago and has him back now for the next stage.",
     "recognitionLabel": "Recognition",
     "recognitionHeadline": "Judged by the industry,<br>not by us.",
-    "recognitionIntro": "SPASA and Master Builders medals from chapter level up to national, and an international award for an indoor lap pool. Their full list runs from 2009 to 2016.",
+    "recognitionIntro": "SPASA medals from chapter level up to national, and an international award for an indoor lap pool. Their full list runs from 2009 to 2016.",
     "areasLabel": "Where Ben works",
     "areasHeadline": "Sydney<br>metro.",
     "areasIntro": "Northern Beaches to the Shire, harbour to the inner west. Sunset Pools is Sydney-based and independent — it has no connection to the businesses using the same name interstate.",
@@ -175,7 +176,7 @@
   },
   "owner": {
     "body": "Founder and managing director. He has spent more than twenty years showing what reinforced concrete can be made to do — indoor, rooftop, infinity edge, on springs, and built into the structure of a building.",
-    "team": "He is at the first site visit and he is there at handover, project-managing each trade himself. Architects, specifiers, builders and developers bring him in as a consultant on the hydraulics and the plant room, and he has presented at national industry forums on pool design and construction.",
+    "team": "He stays directly involved through every stage, project-managing each trade himself, and he has presented at national industry forums on pool design and construction.",
     "facts": [
       {
         "value": "20+",
@@ -245,7 +246,7 @@
   "services": [
     {
       "title": "Pool renovations",
-      "blurb": "Strip the old interior back, fix what is under it, then re-tile, re-cope and re-plumb. Tired pebblecrete to a tiled finish, new filtration, compliant fencing. Most take three to six weeks.",
+      "blurb": "Strip the old interior back, fix what is under it, then re-tile, re-cope and refurbish the filtration. Tired pebblecrete to a tiled finish, new filtration, compliant fencing. Most take three to six weeks.",
       "photo": {
         "src": "assets/sans-souci-800.webp",
         "srcset": "assets/sans-souci-480.webp 480w, assets/sans-souci-800.webp 800w, assets/sans-souci-1000.webp 1000w",
@@ -267,7 +268,7 @@
     },
     {
       "title": "Hydraulics and plant rooms",
-      "blurb": "Pipe sizing, filtration, plant room layout, lighting, heating and the running costs that follow. Other builders and architects bring Ben in to do this part on their projects.",
+      "blurb": "Pipe sizing, filtration, plant room layout, lighting, heating and the running costs that follow. Also offered as a consulting service on other projects.",
       "photo": {
         "src": "assets/plant-room-715.webp",
         "srcset": "assets/plant-room-480.webp 480w, assets/plant-room-715.webp 715w",
@@ -280,7 +281,7 @@
   "process": [
     {
       "step": "Ben looks at the site",
-      "detail": "Access, levels, soil, where the plant room can sit and how the water gets to it. On a hard block that visit decides the whole job, so Ben does it himself."
+      "detail": "Access, levels, soil, where the plant room can sit and how the water gets to it."
     },
     {
       "step": "Design and engineering",
@@ -292,7 +293,7 @@
     },
     {
       "step": "Build, then handover",
-      "detail": "Excavation, shell, interior, tiling, coping, surrounds and plant room. Ben manages every trade and he is the one you call."
+      "detail": "Excavation, shell, interior, tiling, coping, surrounds and plant room. Ben project-manages each trade."
     }
   ],
   "serviceAreas": [
@@ -385,7 +386,7 @@
         "width": 1000,
         "height": 667,
         "caption": "Strathfield",
-        "detail": "Indoor lap pool and spa",
+        "detail": "Filtration and plant room, indoor lap pool and spa",
         "alt": "An indoor lap pool inside a Strathfield home, lit blue along its full length"
       },
       {
@@ -459,8 +460,8 @@
   ],
   "faq": [
     {
-      "q": "Can you get a pool into a block with no access?",
-      "a": "Usually, and it is the part of the job Ben is known for. One Bellevue Hill renovation had 132 steps between the road and the pool. Another client's site needed cranes to bring material in and out."
+      "q": "Can you work on a block with difficult access?",
+      "a": "Sunset have. One Bellevue Hill renovation had 132 steps between the road and the pool, and another client’s site needed cranes to bring material in and out."
     },
     {
       "q": "How long does a renovation take?",
@@ -468,11 +469,11 @@
     },
     {
       "q": "Do you do the pool, or everything around it as well?",
-      "a": "Both. Interiors, waterline tiling, coping and surrounds, fencing, filtration and the plant room. On a renovation that usually means stripping the old pebblecrete interior back and re-plumbing the pool while the surrounds are off it."
+      "a": "Both. Interiors, waterline tiling, coping and surrounds, fencing, filtration and the plant room. On one renovation that meant stripping an old pebblecrete interior back, relining the pool and refurbishing the filtration system."
     },
     {
       "q": "Are you licensed, and do you handle council?",
-      "a": "Ben is a licensed NSW swimming pool builder, licence 166547C, and every job is built to the current NSW fencing and filtration rules. Where a job needs council or a certifier, Sunset deal with them — the Bellevue Hill renovation went through council compliance as part of the work."
+      "a": "Sunset Pools is a licensed NSW swimming pool builder, Business License No. 166547C, and their renovations are built to current NSW fencing and filtration laws. Where a job needs council or a certifier, Sunset deal with them — the Bellevue Hill renovation went through council compliance as part of the work."
     },
     {
       "q": "Can you just do the hydraulics for our project?",
@@ -480,7 +481,7 @@
     },
     {
       "q": "Are you the Sunset Pools on the Gold Coast?",
-      "a": "No. This Sunset Pools is Sydney-based, independent and family-owned, with no connection to the businesses using the same name in Queensland or anywhere else. Every job on this page is from Sunset Pools' own Sydney portfolio."
+      "a": "No. This Sunset Pools is Sydney-based, independent and family-owned, with no connection to the businesses using the same name in Queensland or the US. Every job on this page is from Sunset Pools' own Sydney portfolio."
     }
   ],
   "sms": {

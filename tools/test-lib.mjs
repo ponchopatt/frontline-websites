@@ -104,6 +104,14 @@ check('a phone we cannot parse produces no link at all', () => {
   assert.equal(telHref({ display: '0412 154 594' }), 'tel:+61412154594');
 });
 
+check('1300, 1800 and 13 numbers dial in national form, everything else in E.164', () => {
+  assert.equal(telHref({ e164: '+611300000412' }), 'tel:1300000412');
+  assert.equal(telHref({ e164: '+611800123456' }), 'tel:1800123456');
+  assert.equal(telHref({ e164: '+61131234' }), 'tel:131234');
+  assert.equal(telHref({ e164: '+61412154594' }), 'tel:+61412154594');
+  assert.equal(telHref({ e164: '+61247356411' }), 'tel:+61247356411');
+});
+
 check('smsHref pre-writes the message', () => {
   const href = smsHref({ e164: '+61412154594' }, 'Hi there');
   assert.equal(href, 'sms:+61412154594?&body=Hi%20there');
