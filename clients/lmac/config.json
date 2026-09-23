@@ -551,7 +551,7 @@
   "trustClaims": [
     {
       "value": "4",
-      "label": "Trade licences",
+      "label": "Licences held",
       "sub": "Contractor Lic. 127921C"
     }
   ]

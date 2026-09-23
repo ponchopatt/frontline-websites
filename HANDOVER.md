@@ -9,7 +9,7 @@ Branch `factory`. **Never touch `main`.** Each passing demo also gets `demo/<slu
 | sunset-pools | **done** — review 4.5, branch `demo/sunset-pools` |
 | utopian-landscaping | **done** — review 4.5, branch `demo/utopian-landscaping` |
 | arizona-roofing | rework done, needs a fresh review (was 3.83; both blockers fixed) |
-| south-coast-landscapes | rework (review 4.0) — agent was finishing when stopped |
+| south-coast-landscapes | rework done, passes check — needs a fresh review (was 4.0) |
 | lmac | rework (review 3.5) — agent was finishing when stopped |
 | greenway-landscapes | built, passes check — needs its first review (photos are weak: nothing over 1200px) |
 | dp-landscaping | part-built: photos and a config started, no brief |
@@ -68,4 +68,5 @@ node --test tools/test-lib.mjs           factory unit tests
 - Pinned aperture section scrolls dark for ~1.5 screens on phones.
 - Hero uses `sizes=100vw`, so phones stretch a small file.
 - Review loop width at 1920; reduced-motion 3+2 grid leaves an empty cell.
+- A service card with no photo collapses and its text overlaps the card above.
 - Usage: about 1M tokens per client; the session limit stops all agents at once.
