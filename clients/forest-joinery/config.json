@@ -19,10 +19,10 @@
     "region": "NSW",
     "currentSite": "forestjoinery.com.au",
     "brand": {
-      "accent": "#6B705C",
+      "accent": "#828A6E",
       "accent2": "#8C9394",
       "themeColor": "#1F211C",
-      "_comment": "Both colours are lifted directly from their own site: #6b705c is the exact --logo-title-color / --navigation-link-color sage-grey used for their logo text and nav links, and #8C9394 is their own --button-background-color. Not invented — see forestjoinery.com.au page source."
+      "_comment": "Both colours start from their own site: their exact --logo-title-color / --navigation-link-color sage-grey is #6b705c, and #8C9394 is their own --button-background-color. Accent is lightened slightly to #828A6E (still the same sage-grey) because #6b705c only clears 3.64:1 against this template's skip-link background and the accessibility floor is 4.5:1 — #828A6E clears 5.16:1. Not an invented colour, just a lightened version of their own."
     },
     "logo": {
       "src": "assets/logo.png",
@@ -120,7 +120,7 @@
     {
       "kind": "partner",
       "label": "Blum, Festool and Polytec",
-      "body": "We invest in industry-leading brands and suppliers to guarantee a high-quality finish — Blum hardware, Festool power tools and Polytec decorative surfaces.",
+      "body": "We invest in industry-leading brands and suppliers to guarantee a high-quality finish on your project — Blum hardware, Festool power tools and Polytec decorative surfaces.",
       "strip": false
     }
   ],
@@ -360,7 +360,7 @@
       "a": "Domestic joinery: kitchens, bathrooms, laundries and wardrobes, through to home offices, entertainment units and bespoke pieces. Our gallery includes everything from full kitchen renovations to a custom stereo unit and storage built under a staircase."
     },
     {
-      "q": "Will I get a fixed price before you start?",
+      "q": "Will I get a clear quote before you start?",
       "a": "Yes. You'll receive a clear, itemised quotation covering every element of the plan for your project, so you know exactly what's being delivered before anything is booked in."
     },
     {
@@ -456,8 +456,8 @@
         "sentence": "At Forest Joinery, we specialise in domestic joinery; from kitchens, bathrooms, laundries, and wardrobes to home offices, entertainment units, bespoke pieces, and everything in between.",
         "url": "https://www.forestjoinery.com.au/bespoke-furniture"
       },
-      "Brands: Blum, Festool, Polytec": {
-        "sentence": "Blum: World-renowned for producing a comprehensive range of high-quality, industry-leading kitchen and home products. […] Festool: Global manufacturer of award-winning power tools for over 90 years. […] Polytec: A trusted Australian distributor of decorative surfaces.",
+      "Brands: Blum, Festool, Polytec; credential card body 'guarantee a high-quality finish'": {
+        "sentence": "We invest in industry-leading brands and suppliers to guarantee a high-quality finish on your project, featuring remarkable furnishings that, importantly, stand the test of time. Blum: World-renowned for producing a comprehensive range of high-quality, industry-leading kitchen and home products. […] Festool: Global manufacturer of award-winning power tools for over 90 years. […] Polytec: A trusted Australian distributor of decorative surfaces.",
         "url": "https://www.forestjoinery.com.au/tools"
       },
       "'50+ reviews on Houzz'": {
