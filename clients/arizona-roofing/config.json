@@ -53,7 +53,7 @@
     "ctaLabel": "Book a quote",
     "servicesTitle": "What Oscar does",
     "servicesIntro": "Tile and metal roofs, from a leak to the whole roof. The trade words here come straight out of his reviews.",
-    "servicesAlso": "Also gutter guards and roof painting. <a class=\"link\" href=\"#faq\">What the trade words mean</a>",
+    "servicesAlso": "Also roof restoration, roof painting, gutter guards and metal roof repairs. <a class=\"link\" href=\"#faq\">What the trade words mean</a>",
     "galleryTitle": "Tile, metal, ridges, gutters",
     "galleryIntro": "Sample photos, standing in until Oscar’s own jobs go up. Tap one to see it bigger.",
     "reasonsTitle": "Why people pick Oscar",
@@ -88,27 +88,59 @@
   "services": [
     {
       "title": "Roof repairs",
-      "blurb": "Leaks and damage on tile and metal roofs. Oscar finds it, photographs it and shows you what he found before you decide."
+      "blurb": "Leaks and damage on tile and metal roofs. Oscar finds it, photographs it and shows you what he found before you decide.",
+      "photo": {
+        "src": "assets/sample-corrugated-iron-800.webp",
+        "width": 800,
+        "height": 533,
+        "alt": "Sample photo: an old corrugated iron roof, rusting in patches, around a timber dormer",
+        "sample": true,
+        "license": "CC0 1.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Notnel_residence_rooftop,_West_Ipswich,_Queensland.jpg",
+        "credit": "Shiftchange, Wikimedia Commons"
+      }
     },
     {
       "title": "Repointing and ridge capping",
-      "blurb": "The pointing that holds ridge capping down cracks with age and lets water in. One customer had the whole roof repointed; another had every ridge done."
+      "blurb": "The pointing that holds ridge capping down cracks with age and lets water in. One customer had the whole roof repointed; another had every ridge done.",
+      "photo": {
+        "src": "assets/sample-ridge-capping-800.webp",
+        "width": 800,
+        "height": 533,
+        "alt": "Sample photo: weathered terracotta ridge capping up to the peak of a tile roof",
+        "sample": true,
+        "license": "Unsplash License",
+        "sourceUrl": "https://unsplash.com/photos/close-up-of-a-weathered-terracotta-roof-ridge-G3mggr_zyrU",
+        "credit": "Caroline Badran on Unsplash"
+      }
     },
     {
       "title": "Valleys, collars and dektites",
-      "blurb": "Valley clips, re-taping the valley, and new collars and dektites where pipes and vents come through. Small parts, and the ones his reviews name."
+      "blurb": "Valley clips, re-taping the valley, and new collars and dektites where pipes and vents come through. The small parts his reviews name.",
+      "photo": {
+        "src": "assets/sample-hips-ridges-800.webp",
+        "width": 800,
+        "height": 533,
+        "alt": "Sample photo: a terracotta tile roof with hips, ridges and valleys between them",
+        "sample": true,
+        "license": "Unsplash License",
+        "sourceUrl": "https://unsplash.com/photos/a-couple-of-cars-parked-in-front-of-a-house-bWEeIToqM4g",
+        "credit": "K8 on Unsplash"
+      }
     },
     {
       "title": "Gutters and fascia",
-      "blurb": "New gutters and fascia together, or gutter guards on what you have. “On time, cleaned up everything and great pricing.”"
-    },
-    {
-      "title": "Restoration and painting",
-      "blurb": "Roof restoration and roof painting for a roof that’s tired all over, not just leaking in one spot."
-    },
-    {
-      "title": "Metal roof repairs",
-      "blurb": "Corrugated and sheet metal roofs: loose or rusted sheets, flashings and the fixings that hold it all down."
+      "blurb": "New gutters and fascia together, or gutter guards on what you have. “On time, cleaned up everything and great pricing.”",
+      "photo": {
+        "src": "assets/sample-gutter-800.webp",
+        "width": 800,
+        "height": 533,
+        "alt": "Sample photo: a stained white gutter below mossy concrete roof tiles",
+        "sample": true,
+        "license": "Unsplash License",
+        "sourceUrl": "https://unsplash.com/photos/dirty-gutters-and-roof-against-a-blue-sky-kBc9SXXjezA",
+        "credit": "Aleksi Partanen on Unsplash"
+      }
     }
   ],
   "reasons": [
@@ -155,17 +187,18 @@
       "on": "2026-09-23",
       "reason": "No photos of their own work exist. Approved in chat as labelled samples until Oscar sends his."
     },
-    "_comment": "Sample photos only, all under the Unsplash License, sourced 2026-09-23 and opened one by one. Chosen because they read as Australian: the hero was shot in Clyde North VIC, the terracotta tiles in Melbourne, the hips and ridges in Hobart, the brick house in Newcastle NSW, the aerial in Australia. Crops remove number plates. Nothing from arizonaroofing.com.au is reused. Replace every one with Oscar's own photos when he sends them.",
+    "_comment": "Sample photos only, all under the Unsplash License, sourced 2026-09-23 and opened one by one. Chosen because they read as Australian: the hero was shot in Clyde North VIC, the terracotta tiles in Melbourne, the hips and ridges in Hobart, the brick house in Newcastle NSW, the aerial in Australia, the corrugated iron in West Ipswich QLD (CC0, Wikimedia Commons). Crops remove number plates. Nothing from arizonaroofing.com.au is reused. Replace every one with Oscar's own photos when he sends them.",
     "hero": {
       "src": "assets/sample-metal-roofs-1800.webp",
-      "srcset": "assets/sample-metal-roofs-480.webp 480w, assets/sample-metal-roofs-800.webp 800w, assets/sample-metal-roofs-1200.webp 1200w, assets/sample-metal-roofs-1800.webp 1800w",
+      "srcset": "assets/sample-metal-roofs-1800.webp 1800w, assets/sample-metal-roofs-2400.webp 2400w",
       "width": 1800,
-      "height": 1200,
-      "alt": "Sample photo: dark corrugated metal roofs on new suburban houses, with TV antennas, a roof vent and gum trees behind",
+      "height": 1350,
+      "alt": "Sample photo: dark corrugated metal roofs on new suburban houses, meeting at hips and a valley, with a tree in front",
       "sample": true,
       "license": "Unsplash License",
       "sourceUrl": "https://unsplash.com/photos/corrugated-metal-roofs-on-suburban-houses-nhPfRVGLXaU",
-      "credit": "Troy Mortier on Unsplash"
+      "credit": "Troy Mortier on Unsplash",
+      "_comment": "Cropped to the dark foreground roofs so the headline never sits on pale sky. The srcset lists only the 1800 and 2400 files on purpose: the template sizes the hero at 100vw, so a phone would otherwise pick the 800 file and stretch it about 3.5x to fill a portrait hero. 480/800/1200 variants exist in assets/ for reuse."
     },
     "gallery": [
       {
@@ -208,6 +241,19 @@
         "credit": "Aleksi Partanen on Unsplash"
       },
       {
+        "src": "assets/sample-brick-tiled-roof-800.webp",
+        "full": "assets/sample-brick-tiled-roof-1800.webp",
+        "srcset": "assets/sample-brick-tiled-roof-480.webp 480w, assets/sample-brick-tiled-roof-800.webp 800w, assets/sample-brick-tiled-roof-1200.webp 1200w, assets/sample-brick-tiled-roof-1800.webp 1800w",
+        "width": 1200,
+        "height": 800,
+        "caption": "Tiled roof, gutter and downpipe",
+        "alt": "Sample photo: a red brick house with a terracotta tile roof, a tall chimney, a gutter and a downpipe",
+        "sample": true,
+        "license": "Unsplash License",
+        "sourceUrl": "https://unsplash.com/photos/brick-house-with-a-garage-and-tiled-roof-3tLukKw1kxI",
+        "credit": "ANGIE BAONGOC on Unsplash"
+      },
+      {
         "src": "assets/sample-ridge-capping-800.webp",
         "full": "assets/sample-ridge-capping-1800.webp",
         "srcset": "assets/sample-ridge-capping-480.webp 480w, assets/sample-ridge-capping-800.webp 800w, assets/sample-ridge-capping-1200.webp 1200w, assets/sample-ridge-capping-1800.webp 1800w",
@@ -234,17 +280,30 @@
         "credit": "Maximillian Conacher on Unsplash"
       },
       {
-        "src": "assets/sample-brick-tiled-roof-800.webp",
-        "full": "assets/sample-brick-tiled-roof-1800.webp",
-        "srcset": "assets/sample-brick-tiled-roof-480.webp 480w, assets/sample-brick-tiled-roof-800.webp 800w, assets/sample-brick-tiled-roof-1200.webp 1200w, assets/sample-brick-tiled-roof-1800.webp 1800w",
+        "src": "assets/sample-corrugated-iron-800.webp",
+        "full": "assets/sample-corrugated-iron-1800.webp",
+        "srcset": "assets/sample-corrugated-iron-480.webp 480w, assets/sample-corrugated-iron-800.webp 800w, assets/sample-corrugated-iron-1200.webp 1200w, assets/sample-corrugated-iron-1800.webp 1800w",
         "width": 1200,
         "height": 800,
-        "caption": "Tiled roof, gutter and downpipe",
-        "alt": "Sample photo: a red brick house with a terracotta tile roof, a tall chimney, a gutter and a downpipe",
+        "caption": "Rusted corrugated iron roof",
+        "alt": "Sample photo: an old corrugated iron roof, rusting in patches, with a timber dormer window",
+        "sample": true,
+        "license": "CC0 1.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Notnel_residence_rooftop,_West_Ipswich,_Queensland.jpg",
+        "credit": "Shiftchange, Wikimedia Commons"
+      },
+      {
+        "src": "assets/sample-dark-tiles-800.webp",
+        "full": "assets/sample-dark-tiles-1800.webp",
+        "srcset": "assets/sample-dark-tiles-480.webp 480w, assets/sample-dark-tiles-800.webp 800w, assets/sample-dark-tiles-1200.webp 1200w, assets/sample-dark-tiles-1800.webp 1800w",
+        "width": 1200,
+        "height": 800,
+        "caption": "Dark grey roof tiles",
+        "alt": "Sample photo: rows of dark grey roof tiles throwing sharp shadows in bright sun",
         "sample": true,
         "license": "Unsplash License",
-        "sourceUrl": "https://unsplash.com/photos/brick-house-with-a-garage-and-tiled-roof-3tLukKw1kxI",
-        "credit": "ANGIE BAONGOC on Unsplash"
+        "sourceUrl": "https://unsplash.com/photos/dark-grey-roof-tiles-pattern-m_vEaZizd2s",
+        "credit": "Michael Jasmund on Unsplash"
       }
     ],
     "beforeAfter": []

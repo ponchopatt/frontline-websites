@@ -46,6 +46,26 @@
 .fl-stats .wrap:has(li:nth-child(3):last-child) { grid-template-columns: repeat(3, 1fr); }
 .fl-stats .wrap:has(li:nth-child(2):last-child) { grid-template-columns: repeat(2, 1fr); }
 .fl-stats .wrap:has(li:only-child) { grid-template-columns: 1fr; }
+/* But on a wide screen, two or three stats stretched over 1200px sat 650px
+   apart with nothing between them (Utopian's 5.0 and 25 at 1440). Past the
+   phone they keep their natural width and sit together, split by a rule. */
+@media (min-width: 760px) {
+  .fl-stats .wrap:has(li:only-child),
+  .fl-stats .wrap:has(li:nth-child(2):last-child),
+  .fl-stats .wrap:has(li:nth-child(3):last-child) {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    justify-content: start;
+    column-gap: 0;
+  }
+  .fl-stats .wrap:has(li:nth-child(2):last-child) li + li,
+  .fl-stats .wrap:has(li:nth-child(3):last-child) li + li {
+    border-left: 1px solid color-mix(in srgb, var(--fl-ink) 18%, transparent);
+    margin-left: clamp(40px, 5vw, 72px);
+    padding-left: clamp(40px, 5vw, 72px);
+  }
+}
 .fl-stats li { display: grid; gap: 6px; }
 .fl-stats b {
   font-family: var(--fl-display);
