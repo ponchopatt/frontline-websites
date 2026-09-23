@@ -1,0 +1,89 @@
+/*
+ * First Point Air Conditioning — client layer over the quote template.
+ * Appended after the template's CSS (lib/build.js), so it only ever touches
+ * this one site.
+ *
+ * The idea: Canberra is both extremes, and so is their logo — a blue
+ * snowflake diamond beside a red flame diamond. Cool frost-white and
+ * winter-night navy replace the template's warm cream and neutral charcoal;
+ * red appears only where heat is the subject. The one loud device is the
+ * hard-split blue/red "thermal bar".
+ */
+
+:root{
+  --bone:#F2F5F9; --bone-2:#E3E9F1;
+  --char:#0F1A2E; --char-2:#18253D;
+  --bg:#F2F5F9; --fg:#131C2E; --mute:#556175;
+  --rule:rgba(19,28,46,.13); --rule-2:rgba(19,28,46,.3);
+  --cool:#3D549B; --cool-lift:#9AB0EE;
+  --heat:#C8413B;
+  --thermal:linear-gradient(90deg,var(--cool-lift) 0 50%,var(--heat) 50% 100%);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B1322; --fg:#E8EDF5; --mute:#A3AEC2;
+    --rule:rgba(232,237,245,.14); --rule-2:rgba(232,237,245,.32);
+    --char:#0B1322; --char-2:#16233A; --card:#16233A; --field:#16233A; --chip:#16233A;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B1322; --fg:#E8EDF5; --mute:#A3AEC2;
+  --rule:rgba(232,237,245,.14); --rule-2:rgba(232,237,245,.32);
+  --char:#0B1322; --char-2:#16233A; --card:#16233A; --field:#16233A; --chip:#16233A;
+}
+
+/* Dark sections: navy, and a solid blue button with white text rather than
+   the template's pale lifted accent, which read washed-out on navy. */
+.dark{
+  --mute:#A9B5CB; --rule:rgba(242,245,249,.14); --rule-2:rgba(242,245,249,.34);
+  --btn:#4A63B8; --btn-ink:#FFFFFF; --btn-hover:#5A74CC;
+}
+h1,.kicker,.brand b,.tile h3,.phone,.trust b{color:var(--bone)}
+
+/* Section headings in the case they're written in. The hero keeps its caps
+   as the page's one loud moment. */
+h2,.tile h3{text-transform:none;letter-spacing:-.005em}
+h2{line-height:.96}
+
+/* Header */
+.top.scrolled{background:rgba(15,26,46,.95);box-shadow:none}
+.top.scrolled::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--thermal)}
+.nav .btn{background:#4A63B8;color:#FFFFFF}
+.nav .btn:hover{background:#5A74CC}
+
+/* Hero: navy-tinted overlay, and the thermal bar in place of the plain rule */
+.hero::before{background:linear-gradient(to top,rgba(9,16,30,.94) 0%,rgba(9,16,30,.66) 38%,rgba(9,16,30,.2) 70%,rgba(9,16,30,.08) 100%)}
+.rule{width:168px;height:6px;background:var(--thermal)}
+
+/* Calling is the page's main job, so the phone button is the solid one and
+   comes first — on a phone that puts it at the top of the stacked buttons. */
+/* a.btn, not just a: .final .cta .btn.ghost in the template is (0,4,0) and
+   was winning the colour, leaving white text on the white button. */
+.dark .cta a.btn[href^="tel:"]{order:-1;background:var(--bone);color:var(--char);border-color:var(--bone);backdrop-filter:none}
+.dark .cta a.btn[href^="tel:"]:hover{background:#FFFFFF;border-color:#FFFFFF}
+.dark .cta a.btn[href^="tel:"] svg{color:var(--cool)}
+
+/* Mobile call bar: navy, with Call as the solid white button — same rule as
+   the hero, since this bar is how most phone visitors will ring. */
+.stickybar{background:rgba(15,26,46,.97);border-top:0}
+.stickybar::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--thermal)}
+.stickybar .btn{background:#4A63B8;color:#FFFFFF}
+.stickybar .btn[href^="tel:"]{background:var(--bone);color:var(--char)}
+.stickybar .btn[href^="tel:"] svg{color:var(--cool)}
+.stickybar .btn.ghost{color:var(--bone);border-color:rgba(242,245,249,.45)}
+
+/* Service tiles */
+.tile::after{background:linear-gradient(to top,rgba(9,16,30,.96) 0%,rgba(9,16,30,.7) 42%,rgba(9,16,30,.28) 72%,rgba(9,16,30,.14) 100%)}
+.tile .ico{position:absolute;top:14px;left:14px;z-index:1;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(242,245,249,.95);color:var(--cool)}
+.tile[data-tone="heat"] .ico{color:var(--heat)}
+.tile .ico svg{width:22px;height:22px}
+
+/* A tile with no photo is coloured by what the service does — cooling navy,
+   heating ember — with its icon drawn large as the artwork. */
+.tile.no-photo{background:#1B2B4D}
+.tile.no-photo[data-tone="heat"]{background:#5B1F24}
+.tile.no-photo::after{display:none}
+.tile .ico-big{position:absolute;right:-8%;top:4%;width:64%;aspect-ratio:1;color:rgba(242,245,249,.11);pointer-events:none}
+.tile[data-tone="heat"] .ico-big{color:rgba(255,168,150,.2)}
+.tile .ico-big svg{width:100%;height:100%;stroke-width:1.1}
+@media(max-width:640px){.tile .ico-big{width:40%;right:-2%;top:-6%}}

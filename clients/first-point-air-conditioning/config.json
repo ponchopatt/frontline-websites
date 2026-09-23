@@ -114,7 +114,9 @@
         "license": "CC0 1.0",
         "sourceUrl": "https://www.flickr.com/photos/29155878@N03/26869601272",
         "credit": "Open Grid Scheduler / Grid Engine, Flickr"
-      }
+      },
+      "icon": "split",
+      "tone": "cool"
     },
     {
       "title": "Ducted air conditioning",
@@ -130,7 +132,9 @@
         "license": "CC0 1.0",
         "sourceUrl": "https://commons.wikimedia.org/w/index.php?curid=133257891",
         "credit": "Pedalito, Wikimedia Commons"
-      }
+      },
+      "icon": "ducted",
+      "tone": "cool"
     },
     {
       "title": "A/C service and repair",
@@ -146,19 +150,25 @@
         "license": "CC0 1.0",
         "sourceUrl": "https://wordpress.org/photos/photo/27469e3ea0/",
         "credit": "Dylan Espinoza Pereira, WordPress Photo Directory"
-      }
+      },
+      "icon": "service",
+      "tone": "cool"
     },
     {
       "title": "Evaporative cooling",
       "blurb": "Runs on Canberra's dry summer air for a fraction of the running cost of refrigerated cooling. Suits the climate here better than most people realise.",
       "slug": "evaporative-cooling",
-      "href": "evaporative-cooling.html"
+      "href": "evaporative-cooling.html",
+      "icon": "evaporative",
+      "tone": "cool"
     },
     {
       "title": "Gas heating",
       "blurb": "Ducted or wall-mounted gas heating for the mornings a heat pump alone won't touch. Installed, serviced and repaired.",
       "slug": "gas-heating",
-      "href": "gas-heating.html"
+      "href": "gas-heating.html",
+      "icon": "flame",
+      "tone": "heat"
     }
   ],
   "servicesCommercial": [
@@ -176,7 +186,9 @@
         "license": "CC BY-SA 2.0",
         "sourceUrl": "https://www.flickr.com/photos/192720500@N06/51389204474",
         "credit": "SuperTech HVAC Services, Flickr"
-      }
+      },
+      "icon": "building",
+      "tone": "cool"
     },
     {
       "title": "Mechanical installation",
@@ -192,19 +204,25 @@
         "license": "CC BY-SA 2.0",
         "sourceUrl": "https://www.flickr.com/photos/192720500@N06/51389480745",
         "credit": "SuperTech HVAC Services, Flickr"
-      }
+      },
+      "icon": "mechanical",
+      "tone": "cool"
     },
     {
       "title": "Ventilation",
       "blurb": "Ventilation systems sized to the space and what it's used for.",
       "slug": "commercial-ventilation",
-      "href": "commercial-ventilation.html"
+      "href": "commercial-ventilation.html",
+      "icon": "fan",
+      "tone": "cool"
     },
     {
       "title": "Cool room installation",
       "blurb": "Cool rooms for food service and storage, installed and backed by ongoing service.",
       "slug": "cool-room-installation",
-      "href": "cool-room-installation.html"
+      "href": "cool-room-installation.html",
+      "icon": "snow",
+      "tone": "cool"
     }
   ],
   "reasons": [
@@ -263,13 +281,62 @@
     }
   ],
   "brands": [
-    { "name": "Daikin", "logo": { "src": "assets/brand-daikin.webp", "width": 162, "height": 36 } },
-    { "name": "Mitsubishi Electric", "logo": { "src": "assets/brand-mitsubishi-electric.svg", "width": 192, "height": 45 } },
-    { "name": "Mitsubishi Heavy Industries", "logo": { "src": "assets/brand-mhi.webp", "width": 175, "height": 72 } },
-    { "name": "Fujitsu", "logo": { "src": "assets/brand-fujitsu.webp", "width": 216, "height": 72 } },
-    { "name": "Toshiba", "logo": { "src": "assets/brand-toshiba.webp", "width": 265, "height": 72 } },
-    { "name": "Samsung", "logo": { "src": "assets/brand-samsung.webp", "width": 184, "height": 72 } },
-    { "name": "Temperzone", "logo": { "src": "assets/brand-temperzone.svg", "width": 505, "height": 99 } }
+    {
+      "name": "Daikin",
+      "logo": {
+        "src": "assets/brand-daikin.webp",
+        "width": 162,
+        "height": 36
+      }
+    },
+    {
+      "name": "Mitsubishi Electric",
+      "logo": {
+        "src": "assets/brand-mitsubishi-electric.svg",
+        "width": 192,
+        "height": 45
+      }
+    },
+    {
+      "name": "Mitsubishi Heavy Industries",
+      "logo": {
+        "src": "assets/brand-mhi.webp",
+        "width": 175,
+        "height": 72
+      }
+    },
+    {
+      "name": "Fujitsu",
+      "logo": {
+        "src": "assets/brand-fujitsu.webp",
+        "width": 216,
+        "height": 72
+      }
+    },
+    {
+      "name": "Toshiba",
+      "logo": {
+        "src": "assets/brand-toshiba.webp",
+        "width": 265,
+        "height": 72
+      }
+    },
+    {
+      "name": "Samsung",
+      "logo": {
+        "src": "assets/brand-samsung.webp",
+        "width": 184,
+        "height": 72
+      }
+    },
+    {
+      "name": "Temperzone",
+      "logo": {
+        "src": "assets/brand-temperzone.svg",
+        "width": 505,
+        "height": 99
+      }
+    }
   ],
   "photos": {
     "hero": {
@@ -499,9 +566,18 @@
       ],
       "defaultService": "Split system installation",
       "related": [
-        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" },
-        { "href": "ac-service-repair.html", "label": "A/C service and repair" },
-        { "href": "gas-heating.html", "label": "Gas heating" }
+        {
+          "href": "ducted-air-conditioning.html",
+          "label": "Ducted air conditioning"
+        },
+        {
+          "href": "ac-service-repair.html",
+          "label": "A/C service and repair"
+        },
+        {
+          "href": "gas-heating.html",
+          "label": "Gas heating"
+        }
       ]
     },
     {
@@ -522,9 +598,18 @@
       ],
       "defaultService": "Ducted air conditioning",
       "related": [
-        { "href": "split-system-installation.html", "label": "Split system installation" },
-        { "href": "ac-service-repair.html", "label": "A/C service and repair" },
-        { "href": "gas-heating.html", "label": "Gas heating" }
+        {
+          "href": "split-system-installation.html",
+          "label": "Split system installation"
+        },
+        {
+          "href": "ac-service-repair.html",
+          "label": "A/C service and repair"
+        },
+        {
+          "href": "gas-heating.html",
+          "label": "Gas heating"
+        }
       ]
     },
     {
@@ -555,8 +640,14 @@
       ],
       "defaultService": "A/C service and repair",
       "related": [
-        { "href": "split-system-installation.html", "label": "Split system installation" },
-        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" }
+        {
+          "href": "split-system-installation.html",
+          "label": "Split system installation"
+        },
+        {
+          "href": "ducted-air-conditioning.html",
+          "label": "Ducted air conditioning"
+        }
       ]
     },
     {
@@ -576,8 +667,14 @@
       ],
       "defaultService": "Evaporative cooling",
       "related": [
-        { "href": "split-system-installation.html", "label": "Split system installation" },
-        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" }
+        {
+          "href": "split-system-installation.html",
+          "label": "Split system installation"
+        },
+        {
+          "href": "ducted-air-conditioning.html",
+          "label": "Ducted air conditioning"
+        }
       ]
     },
     {
@@ -597,8 +694,14 @@
       ],
       "defaultService": "Gas heating",
       "related": [
-        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" },
-        { "href": "split-system-installation.html", "label": "Split system installation" }
+        {
+          "href": "ducted-air-conditioning.html",
+          "label": "Ducted air conditioning"
+        },
+        {
+          "href": "split-system-installation.html",
+          "label": "Split system installation"
+        }
       ]
     },
     {
@@ -629,9 +732,18 @@
       ],
       "defaultService": "HVAC install, repair & maintenance",
       "related": [
-        { "href": "mechanical-installation.html", "label": "Mechanical installation" },
-        { "href": "commercial-ventilation.html", "label": "Ventilation" },
-        { "href": "cool-room-installation.html", "label": "Cool room installation" }
+        {
+          "href": "mechanical-installation.html",
+          "label": "Mechanical installation"
+        },
+        {
+          "href": "commercial-ventilation.html",
+          "label": "Ventilation"
+        },
+        {
+          "href": "cool-room-installation.html",
+          "label": "Cool room installation"
+        }
       ]
     },
     {
@@ -662,8 +774,14 @@
       ],
       "defaultService": "Mechanical installation",
       "related": [
-        { "href": "commercial-hvac.html", "label": "Commercial HVAC" },
-        { "href": "commercial-ventilation.html", "label": "Ventilation" }
+        {
+          "href": "commercial-hvac.html",
+          "label": "Commercial HVAC"
+        },
+        {
+          "href": "commercial-ventilation.html",
+          "label": "Ventilation"
+        }
       ]
     },
     {
@@ -683,8 +801,14 @@
       ],
       "defaultService": "Ventilation",
       "related": [
-        { "href": "commercial-hvac.html", "label": "Commercial HVAC" },
-        { "href": "mechanical-installation.html", "label": "Mechanical installation" }
+        {
+          "href": "commercial-hvac.html",
+          "label": "Commercial HVAC"
+        },
+        {
+          "href": "mechanical-installation.html",
+          "label": "Mechanical installation"
+        }
       ]
     },
     {
@@ -704,8 +828,14 @@
       ],
       "defaultService": "Cool room installation",
       "related": [
-        { "href": "commercial-hvac.html", "label": "Commercial HVAC" },
-        { "href": "mechanical-installation.html", "label": "Mechanical installation" }
+        {
+          "href": "commercial-hvac.html",
+          "label": "Commercial HVAC"
+        },
+        {
+          "href": "mechanical-installation.html",
+          "label": "Mechanical installation"
+        }
       ]
     }
   ],
@@ -727,11 +857,26 @@
       ],
       "defaultSuburb": "Gungahlin",
       "related": [
-        { "href": "split-system-installation.html", "label": "Split system installation" },
-        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" },
-        { "href": "ac-service-repair.html", "label": "A/C service and repair" },
-        { "href": "evaporative-cooling.html", "label": "Evaporative cooling" },
-        { "href": "gas-heating.html", "label": "Gas heating" }
+        {
+          "href": "split-system-installation.html",
+          "label": "Split system installation"
+        },
+        {
+          "href": "ducted-air-conditioning.html",
+          "label": "Ducted air conditioning"
+        },
+        {
+          "href": "ac-service-repair.html",
+          "label": "A/C service and repair"
+        },
+        {
+          "href": "evaporative-cooling.html",
+          "label": "Evaporative cooling"
+        },
+        {
+          "href": "gas-heating.html",
+          "label": "Gas heating"
+        }
       ]
     },
     {
@@ -751,11 +896,26 @@
       ],
       "defaultSuburb": "Belconnen",
       "related": [
-        { "href": "split-system-installation.html", "label": "Split system installation" },
-        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" },
-        { "href": "ac-service-repair.html", "label": "A/C service and repair" },
-        { "href": "evaporative-cooling.html", "label": "Evaporative cooling" },
-        { "href": "gas-heating.html", "label": "Gas heating" }
+        {
+          "href": "split-system-installation.html",
+          "label": "Split system installation"
+        },
+        {
+          "href": "ducted-air-conditioning.html",
+          "label": "Ducted air conditioning"
+        },
+        {
+          "href": "ac-service-repair.html",
+          "label": "A/C service and repair"
+        },
+        {
+          "href": "evaporative-cooling.html",
+          "label": "Evaporative cooling"
+        },
+        {
+          "href": "gas-heating.html",
+          "label": "Gas heating"
+        }
       ]
     },
     {
@@ -775,11 +935,26 @@
       ],
       "defaultSuburb": "Tuggeranong",
       "related": [
-        { "href": "split-system-installation.html", "label": "Split system installation" },
-        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" },
-        { "href": "ac-service-repair.html", "label": "A/C service and repair" },
-        { "href": "evaporative-cooling.html", "label": "Evaporative cooling" },
-        { "href": "gas-heating.html", "label": "Gas heating" }
+        {
+          "href": "split-system-installation.html",
+          "label": "Split system installation"
+        },
+        {
+          "href": "ducted-air-conditioning.html",
+          "label": "Ducted air conditioning"
+        },
+        {
+          "href": "ac-service-repair.html",
+          "label": "A/C service and repair"
+        },
+        {
+          "href": "evaporative-cooling.html",
+          "label": "Evaporative cooling"
+        },
+        {
+          "href": "gas-heating.html",
+          "label": "Gas heating"
+        }
       ]
     },
     {
@@ -799,11 +974,26 @@
       ],
       "defaultSuburb": "Woden",
       "related": [
-        { "href": "split-system-installation.html", "label": "Split system installation" },
-        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" },
-        { "href": "ac-service-repair.html", "label": "A/C service and repair" },
-        { "href": "evaporative-cooling.html", "label": "Evaporative cooling" },
-        { "href": "gas-heating.html", "label": "Gas heating" }
+        {
+          "href": "split-system-installation.html",
+          "label": "Split system installation"
+        },
+        {
+          "href": "ducted-air-conditioning.html",
+          "label": "Ducted air conditioning"
+        },
+        {
+          "href": "ac-service-repair.html",
+          "label": "A/C service and repair"
+        },
+        {
+          "href": "evaporative-cooling.html",
+          "label": "Evaporative cooling"
+        },
+        {
+          "href": "gas-heating.html",
+          "label": "Gas heating"
+        }
       ]
     },
     {
@@ -823,11 +1013,26 @@
       ],
       "defaultSuburb": "Queanbeyan",
       "related": [
-        { "href": "split-system-installation.html", "label": "Split system installation" },
-        { "href": "ducted-air-conditioning.html", "label": "Ducted air conditioning" },
-        { "href": "ac-service-repair.html", "label": "A/C service and repair" },
-        { "href": "evaporative-cooling.html", "label": "Evaporative cooling" },
-        { "href": "gas-heating.html", "label": "Gas heating" }
+        {
+          "href": "split-system-installation.html",
+          "label": "Split system installation"
+        },
+        {
+          "href": "ducted-air-conditioning.html",
+          "label": "Ducted air conditioning"
+        },
+        {
+          "href": "ac-service-repair.html",
+          "label": "A/C service and repair"
+        },
+        {
+          "href": "evaporative-cooling.html",
+          "label": "Evaporative cooling"
+        },
+        {
+          "href": "gas-heating.html",
+          "label": "Gas heating"
+        }
       ]
     }
   ],
@@ -850,8 +1055,14 @@
       ],
       "relatedTitle": "Where to next",
       "related": [
-        { "href": "index.html#services", "label": "See our services" },
-        { "href": "contact.html", "label": "Get in touch" }
+        {
+          "href": "index.html#services",
+          "label": "See our services"
+        },
+        {
+          "href": "contact.html",
+          "label": "Get in touch"
+        }
       ]
     },
     {
@@ -864,8 +1075,14 @@
       "sub": "Call, email, or send the form below — we'll get back to you.",
       "relatedTitle": "Where to next",
       "related": [
-        { "href": "index.html#services", "label": "See our services" },
-        { "href": "about.html", "label": "About First Point" }
+        {
+          "href": "index.html#services",
+          "label": "See our services"
+        },
+        {
+          "href": "about.html",
+          "label": "About First Point"
+        }
       ]
     }
   ],

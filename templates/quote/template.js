@@ -190,15 +190,7 @@ function services(cfg) {
       ${when(copy.servicesIntro, (i) => html`<p class="lede">${i}</p>`)}
     </div>
     <div class="tiles" data-reveal="stagger">
-      ${each(cfg.services, (s) => html`<a class="tile" href="${s.href ?? (cfg.has.calculator ? '#pricing' : '#quote')}">
-        ${when(s.photo, (p) => html`<img src="${p.src}"${raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')} loading="lazy" decoding="async" alt="${p.alt ?? ''}">${sampleTag(p)}`)}
-        <span class="arrow" aria-hidden="true">${ICON.arrow}</span>
-        <div class="cap">
-          <h3>${s.title}</h3>
-          ${when(s.blurb, (t) => html`<p>${t}</p>`)}
-          ${when(s.from?.label, (f) => html`<span class="from">${f}</span>`)}
-        </div>
-      </a>`)}
+      ${each(cfg.services, (s) => tile(cfg, s))}
     </div>
     ${when(copy.servicesAlso, (t) => html`<p class="also">${raw(t)}</p>`)}
   </div>
@@ -223,18 +215,53 @@ function servicesCommercial(cfg) {
       ${when(copy.servicesCommercialIntro, (i) => html`<p class="lede">${i}</p>`)}
     </div>
     <div class="tiles" data-reveal="stagger">
-      ${each(list, (s) => html`<a class="tile" href="${s.href ?? (cfg.has.calculator ? '#pricing' : '#quote')}">
-        ${when(s.photo, (p) => html`<img src="${p.src}"${raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')} loading="lazy" decoding="async" alt="${p.alt ?? ''}">${sampleTag(p)}`)}
-        <span class="arrow" aria-hidden="true">${ICON.arrow}</span>
-        <div class="cap">
-          <h3>${s.title}</h3>
-          ${when(s.blurb, (t) => html`<p>${t}</p>`)}
-        </div>
-      </a>`)}
+      ${each(list, (s) => tile(cfg, s))}
     </div>
   </div>
 </section>`;
 }
+
+/**
+ * One service tile. `icon` (a TILE_ICON key) and `tone` ('cool' | 'heat') are
+ * optional — a client that sets neither gets exactly the markup it always did.
+ */
+function tile(cfg, s) {
+  const icon = TILE_ICON[s.icon];
+  return html`<a class="tile${raw(s.photo ? '' : ' no-photo')}" href="${s.href ?? (cfg.has.calculator ? '#pricing' : '#quote')}"${raw(s.tone ? ` data-tone="${s.tone === 'heat' ? 'heat' : 'cool'}"` : '')}>
+        ${when(s.photo, (p) => html`<img src="${p.src}"${raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')} loading="lazy" decoding="async" alt="${p.alt ?? ''}">${sampleTag(p)}`)}
+        ${icon ? html`<span class="ico" aria-hidden="true">${icon}</span>` : ''}
+        ${icon && !s.photo ? html`<span class="ico-big" aria-hidden="true">${icon}</span>` : ''}
+        <span class="arrow" aria-hidden="true">${ICON.arrow}</span>
+        <div class="cap">
+          <h3>${s.title}</h3>
+          ${when(s.blurb, (t) => html`<p>${t}</p>`)}
+          ${when(s.from?.label, (f) => html`<span class="from">${f}</span>`)}
+        </div>
+      </a>`;
+}
+
+/** Line icons for service tiles, 24px grid, drawn to read at 20px. */
+const svg = (d) => raw(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`);
+const TILE_ICON = {
+  // wall-mounted split head with airflow
+  split: svg('<rect x="3" y="5" width="18" height="7" rx="2"/><path d="M6 9.5h12M7 15c0 1.5 1 2 1 3.5M12 15c0 1.5 1 2 1 3.5M17 15c0 1.5 1 2 1 3.5"/>'),
+  // ceiling vent grille
+  ducted: svg('<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M4 14h16M9 4v16M15 4v16"/>'),
+  // spanner
+  service: svg('<path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L4 16.8V20h3.2l5.3-5.3a4 4 0 0 0 5.2-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>'),
+  // water drop over air
+  evaporative: svg('<path d="M12 3s5 5.5 5 9a5 5 0 0 1-10 0c0-3.5 5-9 5-9z"/><path d="M3 20c2-1.2 4-1.2 6 0s4 1.2 6 0 4-1.2 6 0"/>'),
+  // flame
+  flame: svg('<path d="M12 21c-3.9 0-7-2.6-7-6.4 0-3.2 2.4-5.2 3.6-7.6.3 1.7 1.2 2.9 2.4 3.6C11 7.2 12.7 4.5 15 3c-.4 3 1 4.8 2.6 6.9 1 1.3 1.4 2.8 1.4 4.3 0 4-3 6.8-7 6.8z"/><path d="M12 21c-1.7 0-3-1.2-3-2.9 0-1.9 1.7-2.8 2.4-4.6.9 1 3.6 2.4 3.6 4.6 0 1.7-1.3 2.9-3 2.9z"/>'),
+  // rooftop unit on a building
+  building: svg('<path d="M3 21h18M5 21V10h14v11M9 21v-5h6v5"/><rect x="7" y="4" width="10" height="4" rx="1"/><path d="M10 6h4"/>'),
+  // pipework with a valve
+  mechanical: svg('<path d="M3 8h6a3 3 0 0 1 3 3v10M21 8h-6M9 5v6M15 5v6"/><circle cx="12" cy="8" r="2"/>'),
+  // fan
+  fan: svg('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="1.5"/><path d="M12 10.5c-.5-2.5.2-4.8 2.3-5.4 1.6-.4 2.2 1.4 1.1 2.6-.9 1-2.1 1.6-3.4 2.8M13.5 12.4c2.4.8 4 2.6 3.4 4.7-.4 1.6-2.3 1.4-2.8-.1-.4-1.3-.3-2.7-.6-4.6M10.6 12.8c-1.9 1.7-4.2 2.2-5.6.6-1.1-1.2.1-2.7 1.7-2.3 1.3.3 2.4 1.1 3.9 1.7"/>'),
+  // snowflake
+  snow: svg('<path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 3.5l3 2 3-2M9 20.5l3-2 3 2M4.2 10.4l3.1-.8-.3-3.5M19.8 13.6l-3.1.8.3 3.5M4.2 13.6l3.1.8-.3 3.5M19.8 10.4l-3.1-.8.3-3.5"/>'),
+};
 
 function gallery(cfg) {
   if (!cfg.has.gallery) return '';
