@@ -13,7 +13,9 @@ customer only ever deals with one business.
 ## Owner and key names
 
 - **Derek** — the name on the front of their own site: *"Give Derek A Call On!
-  0423 814 300"*. Named in seven of the eight Google reviews and in the client
+  0423 814 300"*. Named in six of the eight Google reviews in the pull (not by Patrick Foley,
+  who names Aaron, nor in Graeme McElligott's cut-off text) — four of the six
+  shown on the page — and in the client
   letters they publish, the oldest addressed "Dear Derek" and dated
   19 November 2007.
 - **Aaron** — named in one Google review (Patrick Foley): *"Aaron was really
@@ -63,7 +65,7 @@ Straight off their homepage, in their order:
 a rural property" (their homepage). The reviews bear it out at both ends:
 Michael Forsythe's was "a small paving job… a soggy dying townhouse lawn" and
 Charlie Stephenson's took in "rockeries, paving, turf, irrigation and other
-features". Their biggest published job is a school sensory garden and
+features". Their most documented job is a school sensory garden and
 playground: a sandpit, roly-poly slopes, stepping stones and artificial turf,
 all of them named in the children's own notes on their testimonials page. The
 word "boardwalk" is on none of their pages and is not used on the demo, and no
@@ -107,7 +109,7 @@ Hero headline comes straight off it: **"Rough ideas turned into real gardens."**
 line below.)
 
 The support under it is the second true thing: they do every part of the job
-themselves, so there is one quote, one crew and one person to ring.
+themselves, so you deal with one business and ring one number (Derek's).
 
 ## What is weak on their current site — for Pat's call
 
@@ -120,7 +122,7 @@ themselves, so there is one quote, one crew and one person to ring.
 2. **Three stock photos sit among their own work** — a close-up of hands
    potting marigolds, a North American flagstone-and-daylily border, and a
    European hosta garden with granite setts. They own 140-odd genuine photos of
-   Canberra jobs and are showing someone else's garden.
+   their own jobs and are showing someone else's garden.
 3. **Their gallery is served at 560px.** Every one of ~150 gallery images is
    scaled down to 560px wide when the originals on their own CDN are 1920px.
    The work looks smaller and softer than it is.
@@ -171,28 +173,42 @@ was opened and looked at. 148 were candidates; 143 are 1920px wide.
 
 ### Used
 
-Fifteen images, fifteen different jobs. No file is used in two slots and no two
-slots show the same job — checked frame by frame, since several of these
-properties were shot from four or five angles.
+**Corrected 2026-09-23.** The previous version of this section said "fifteen
+images, fifteen different jobs … checked frame by frame". That was false. Their
+gallery page has an album called **"MAC Project"** holding frames IMG_0104–0135
+and IMG_0262–0268, and it is one property: the kidney pool with the merbau deck
+(0104–0120), the rockery hillside with the cobble path and brick paving
+(0130–0135) and the pergola with the wicker lounge above the sandstone terrace
+walls (0262–0268). Five slots came from it — hero 0130, aperture 0117, service 03
+0267, gallery 5 0104 and the share card 0265. Four are now replaced; the
+aperture is the only MAC frame left.
 
-| Slot | File | Size | What it shows |
+This time every frame used was **grouped by property first** — by album, by
+filename sequence and by matching fences, house cladding, stone and paving
+across neighbouring frames — and no property appears in two slots.
+
+| Slot | File | Property (other frames of the same property) | What it shows |
 |---|---|---|---|
-| **Hero** | `IMG_0130.JPG` | **1920×1434** | Stone steps built up through a granite boulder rockery to a birch and grass trees, brick paving laid across the foot. Full frame, no crop. Reads as paving, walls and stone at both widths, which a field of white pebble did not. |
-| Statement (4:5) | `IMG_2197.JPEG` | 1536×2048 | Stone-faced garden wall with a bluestone capping and a long water channel along the top, holding a newly planted bed and feature boulders. Sharpest image they own (Laplacian 3086). Four trades in one frame, which is what the section is about. |
-| Aperture | `IMG_0117.JPG` | 1920×1434 | Cobble path curving past a new rockery to a pool and pergola. Bright, deep. |
-| Service 01 — paving & stonework | `IMG_0396.JPG` | 1920×2571 | Sandstone flagging laid the length of a side garden between a dark slat screen and a mulched bed. Paving fills the frame top to bottom, so the caption scrim cannot hide it. Replaces `IMG_0004.JPG`, whose herringbone sat in the bottom fifth. |
-| Service 02 — lawns & gardens | `IMG_0233.JPG` | 1920×1434 | Synthetic lawn running back to stepped sleeper garden beds and a timber deck. Replaces the HILTON frame, which was the same job as gallery 2. |
-| Service 03 — decks & pergolas | `IMG_0267.JPG` | 1920×1434 | Timber pergola over a paved terrace, outdoor lounge, dry-stone wall behind. Cropped 3:4. |
-| Gallery 1 | `IMG_0043.JPG` | 1920×1434 | Slate-faced raised beds with bluestone caps, white pebble, planted bowls, a standing feature stone. Their most obviously *designed* garden — good here, wrong as a hero. |
-| Gallery 2 | `2014_UTOPIAN_HILTON_LENARDS_003.JPG` | 1920×1434 | Rockery and running water course beside a synthetic lawn, brick edge, timber posts. |
-| Gallery 3 | `IMG_0321.JPG` | 1920×1434 | Raised corten steel pond with a stone coping and a fountain jet, set in large-format stone paving. Corten is on their own services list. Replaces `IMG_0135.JPG`, which is the same hillside property as the hero. |
-| Gallery 4 | `IMG_0009.JPG` | 1920×1440 | Curved sandstone block wall, new turf, brick path, deck and pool beyond. |
-| Gallery 5 | `IMG_0104.JPG` | 1920×1434 | Timber deck and gabled pergola around a pool, hills behind. |
-| Gallery 6 | `IMG_6467.JPG` | 1920×1440 | Crazy paving, timber cabin, grass trees in wine barrels, synthetic turf. |
-| Enquiry background | `IMG_0099__283_29.JPG` | 1920×1361 | Curved random-stone wall under uplighting with recycled brick paving at its foot. Quiet and dark, which is what a form background wants. Laplacian 325 — soft for a full-bleed slot, fine behind a form at 1200px. Replaces `IMG_0253.JPG`, a third angle on the gallery 1 courtyard. |
-| Owner slot | `IMG_0415.JPG` | 1920×1434 → 1080×648 | Random-stone retaining wall with a concrete capping holding a planted bed above freshly laid turf. Clean and quiet so the copy carries the section. Replaces `utopianaugust2010_025.JPG` — their ute, but with yellow hazard tape, a blue tipper, a ladder and the door logo cut in half by a stone pier. |
-| Share card | `IMG_0265.JPG` | 1200×857 crop | Dry-stone terrace wall holding a planted bed above lawn, with an established gum behind. A finished garden rather than a detail. |
-| Logo | **type-set, none of their artwork** | 1044×350 | `logo2-280x120.png` is the only logo published anywhere: 280×120, JPEG-artefacted, with a grey halo and a white plate baked into the pixels and black drop-shadow squares behind the red confetti. A knockout at that size left white specks around every confetti mark, a grey fringe on every stroke and the bottom-left flourish clipped by the canvas, all of it visible at the 32px the header renders it at, and the subline was illegible mush. So nothing of theirs is used: the header and footer wordmark is "utopian" set in the page's own display face (Big Shoulders 700, lowercase) in the site accent #F0483A. Note that accent is **not** their red — theirs samples #D80000–#E00000, which only clears 3.7:1 on a dark page, so the wordmark has been recoloured to the site's lifted red. It is a stand-in. Get the vector from Derek. |
+| **Hero** | `DEREK_IPAD_SEPTEMBER_2014_026.JPG` → 1920×1200 crop | Sandstone terrace with rust bowl feature (none used) | Sandstone flag paving filling the lower two-thirds, curved random-stone walls, a rust-finished bowl water feature and planting behind. Cropped at 1200 to drop the hard shadow across the foreground. Reads as paving at 390 and 1440. The reviewer suggested `IMG_0424` (charcoal herringbone against a block wall); it was built and screenshotted, and at 390 the charcoal pavers and charcoal wall went murky under the hero scrim, so it is not used. |
+| Statement (4:5) | `IMG_2197.JPEG` | Stone-faced wall with water channel, brick house (2193, 2195, 2214, 2223) | Stone-faced garden wall with a bluestone capping and a water channel along the top. |
+| Aperture | `IMG_0117.JPG` | **MAC Project** (0104–0135, 0262–0268) — the only frame used from it | Cobble path curving past a new rockery to a pool and pergola. |
+| Service 01 — paving & stonework | `IMG_0396.JPG` | Sandstone side path, rendered house, dark slat gate (0397–0400) | Sandstone flagging the length of a side garden. |
+| Service 02 — lawns & gardens | `IMG_0233.JPG` → 1075×1434 | Synthetic lawn and stepped block beds, cream Colorbond with lattice (0231; very likely pool frame 0189, same fence) | Synthetic lawn, stepped block beds, timber deck. Re-cut at native width — the old 1200×1599 file was a 1.1× enlargement. |
+| Service 03 — decks & pergolas | `IMG_0164.JPG` → 1075×1434 | Hardwood deck, brick house, blue corrugated skirting (0166) | Hardwood deck steps up to a covered deck with a wire balustrade. Replaces MAC frame 0267. |
+| Gallery 1 | `IMG_0043.JPG` | Slate and pebble courtyard, dark Colorbond (0050, 0051, 0253) | Slate-faced raised beds, white pebble, planted bowls. |
+| Gallery 2 | `2014_UTOPIAN_HILTON_LENARDS_003.JPG` | Their "Rock River" album (HILTON_LENARDS 001–007) | Rockery and water course beside synthetic lawn. |
+| Gallery 3 | `IMG_0321.JPG` | Corten pond, pale Colorbond, marble-look pavers, red slat screen (0319, 0322) | Raised corten pond with fountain in large-format paving. |
+| Gallery 4 | `IMG_0009.JPG` | Curved sandstone block wall, brick path, turf (0001–0008) | Curved sandstone wall, new turf, brick path. |
+| Gallery 5 | `IMG_0223.JPG` → 1592×1194 crop | Stone terrace behind a black pool fence (0225) | Pale large-format stone over stepped levels. Cropped to cut the CPR sign and stacked pallets at the top. Replaces MAC frame 0104. |
+| Gallery 6 | `IMG_6467.JPG` | Crazy paving, grass trees in barrels, cabin (6459, 6466, 6469) | Crazy paving, timber cabin, grass trees. |
+| Enquiry background | `IMG_0099__283_29.JPG` | Uplit curved wall, recycled brick, pond (0094) | Curved random-stone wall under uplighting. |
+| Owner slot | `IMG_0415.JPG` | Random-stone wall, timber paling fence on concrete plinth (probably 0418) | Random-stone retaining wall above new turf. |
+| Share card | `IMG_0053.JPG` → 1200×857 | Block steps and curved synthetic lawn, plain cream Colorbond (0052) | Block retaining wall and steps up to a curved synthetic lawn. Replaces MAC frame 0265. |
+| Logo | **type-set, none of their artwork** | — | "utopian" in Big Shoulders 700, site accent #F0483A. **Re-rendered 2026-09-23**: the old file was cropped at the baseline, so the "p" had no descender and it read "utobian". The canvas is now the measured glyph box (measureText at 300px: ascent 244, descent 61; pixel ink box 752×300) plus 16px all round, 784×332; checked at the 32px the header renders it. Theirs is `logo2-280x120.png` (280×120, JPEG-artefacted, halo baked in) and is not used. Their red samples #D80000–#E00000; the wordmark uses the lifted site red. A stand-in — get the vector from Derek. |
+
+Captions and alt text name **no suburb or town**. Nobody recorded where any of
+these jobs are, and their area runs to Yass, Queanbeyan and Crookwell, so the
+old ", Canberra" endings are gone.
 
 **No photo of Derek exists anywhere on their site, their socials or in the
 reviews.** The owner section runs one of their own finished walls instead and
@@ -201,9 +217,12 @@ supply list, and the original logo vector is the second.
 
 ### Held in reserve
 
-Roughly 120 more vetted frames, including `IMG_0053` (block wall, wide steps,
-curved lawn), `IMG_0223` (travertine pool terrace), `IMG_0424` (charcoal
-herringbone paving against a curved block wall), `IMG_0282`, `IMG_0263/0264`,
-`IMG_0177/0178` (brick water feature), `IMG_0094` (the uplit wall from the
-other side), `IMG_0002/0001` (curved brick paths) and `IMG_0157.PNG` (pool
-surround). Plenty to swap from if Derek dislikes any of the fifteen.
+Roughly 120 more vetted frames. Worth knowing before a swap: `IMG_0424` and
+`IMG_0421–0423` are one property (charcoal herringbone, block wall, weatherboard
+house) and are free; `IMG_0189` is probably the service 02 property; the other
+MAC Project frames (0104–0135, 0262–0268) are all the aperture's property and
+must not go in a second slot. Also free: `IMG_0177/0178` and `IMG_0092/0093`
+(brick water features), `IMG_0282/0283/0285` (bluestone wall, dark paving,
+synthetic lawn), `DEREK_IPAD_SEPTEMBER_2014_031` (recycled brick courtyard and
+slat gate), `IMG_0157.PNG` (pool surround) and `IMG_0001/0002` (curved brick
+paths — but those are the gallery 4 property).

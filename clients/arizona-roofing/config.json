@@ -1,11 +1,14 @@
 {
-  "_comment": "BLOCKED — DO NOT BUILD. Re-scraped and re-verified 2026-09-22: 40 images on arizonaroofing.com.au were downloaded at full resolution and looked at one by one. Every single one is stock or WordPress theme demo content. Zero photographs of their own work, so there is no hero and no gallery. The Our Projects gallery includes a Japanese temple roof, a North American log cabin and a Baltic cottage; the page titled \"Asghar Khan, CEO\" carries a stock studio photo of a young woman in a hard hat. Full evidence and the call angle are in BRIEF.md. Nothing has been uploaded to their media library since 2023-06-20 (the four Pexels files), and they have no social accounts, so there is no second source. Pat must get Oscar photo folder before this can be built.",
+  "_comment": "Arizona Roofing Canberra, Franklin ACT. Built 2026-09-23 on the quote template with SAMPLE photos: they have no photographs of their own work (BRIEF.md has the 40-image inventory), so Pat approved labelled stock for this demo only (photos.stockApproved). Every photo is Unsplash-licensed, carries sample/license/sourceUrl/credit, and is captioned generically — none is Oscar's work and none names a suburb, job or customer. Every other fact is traced to arizonaroofing.com.au (_source) or data/google_reviews_top25.json. No prices anywhere: they publish none, so every calculator job is quote-mode.",
   "slug": "arizona-roofing",
   "template": "quote",
   "industry": "roofing",
   "live": false,
+  "siteUrl": "https://www.arizonaroofing.com.au/",
+  "tagline": "Roof repairs, repointing, gutters and fascia across Canberra",
+  "schemaType": "RoofingContractor",
   "business": {
-    "name": "Arizona Roofing",
+    "name": "Arizona Roofing Canberra",
     "ownerName": "Asghar Khan",
     "ownerFirstName": "Oscar",
     "phone": {
@@ -16,37 +19,345 @@
     "abn": "38223082867",
     "baseSuburb": "Franklin",
     "region": "ACT",
+    "address": "Unit 5/293 Flemington Road, Franklin ACT 2913",
     "currentSite": "arizonaroofing.com.au",
     "brand": {
-      "accent": "#0C234B"
+      "accent": "#0C234B",
+      "accentHover": "#0A1C3D",
+      "accentLift": "#EC6420",
+      "accentLiftHover": "#F27A3C",
+      "_comment": "#0c234b (navy, 10 uses) and #ec6420 (orange, 8 uses) are lifted from the inline CSS of their own home page, read 2026-09-23. They are also the two colours of their wordmark. The two hovers are derived, not sourced."
     },
     "logo": {
       "src": "assets/logo.webp",
-      "width": 1,
-      "height": 1
+      "width": 639,
+      "height": 121,
+      "_comment": "Their own navy-and-orange wordmark, wp-content/uploads/2023/06/g320.png (639x121). Dark ink, so it goes on the footer's white tile."
     },
-    "address": "Unit 5/293 Flemington Road, Franklin ACT 2913"
+    "logoMark": {
+      "src": "assets/logo-white.webp",
+      "width": 639,
+      "height": 121,
+      "_comment": "Their own white-and-orange wordmark, wp-content/uploads/2023/06/g94-1.png (639x121), for the dark header."
+    }
   },
-  "responsePromise": "",
+  "responsePromise": "You deal with Oscar himself, from start to finish.",
   "copy": {
-    "headline": "",
-    "sub": "",
-    "kicker": ""
+    "title": "Arizona Roofing Canberra | Roof repairs, repointing, gutters and fascia",
+    "description": "Roof repairs, repointing and ridge capping, valleys, collars, dektites, gutters and fascia across Canberra. 5.0 from 20 Google reviews. Call Oscar on 0421 149 431.",
+    "brandMark": "Canberra",
+    "kicker": "Roof repairs and restoration, Canberra",
+    "headline": "Over six quotes.<br>She picked Oscar.",
+    "sub": "Roof repairs, repointing, valleys, gutters and fascia across Canberra. Oscar gets up on the roof, photographs what’s wrong and gives you the options before you choose.",
+    "anchor": "<b>5.0 from 20 Google reviews.</b> “I got over six quotes to fix my roof before I selected Oscar.” — Pauline Okai-Davies",
+    "ctaLabel": "Book a quote",
+    "servicesTitle": "What Oscar does",
+    "servicesIntro": "Tile and metal roofs, from a leak to the whole roof. The trade words here come straight out of his reviews.",
+    "servicesAlso": "Also gutter guards and roof painting. <a class=\"link\" href=\"#faq\">What the trade words mean</a>",
+    "galleryTitle": "Tile, metal, ridges, gutters",
+    "galleryIntro": "Sample photos, standing in until Oscar’s own jobs go up. Tap one to see it bigger.",
+    "reasonsTitle": "Why people pick Oscar",
+    "reasonsIntro": "Twenty Google reviews, and the same five things keep coming up.",
+    "reviewsTitle": "What customers say",
+    "reviewsIntro": "Real Google reviews, word for word. 5.0 from 20.",
+    "processTitle": "How it works",
+    "processIntro": "Three steps. Oscar quotes it, and Oscar is on the job.",
+    "areasTitle": "Where we work",
+    "areasIntro": "Based in Franklin, working across Canberra.",
+    "areasNote": "Not sure if you’re covered? Ring Oscar and ask.",
+    "faqTitle": "Good to know",
+    "faqIntro": "The trade words from the reviews, in plain English.",
+    "quoteTitle": "Book a quote",
+    "quoteIntro": "Tell Oscar what’s going on with the roof. A photo helps. He’ll get back to you to book a time to come and look.",
+    "finalTitle": "Get Oscar up on the roof.",
+    "finalIntro": "Call or text 0421 149 431. He’ll look, take photos and give you the options.",
+    "footerArea": "Canberra"
   },
+  "quoteSteps": [
+    "<b>You send this.</b> Takes a minute.",
+    "<b>Oscar comes out</b> and gets up on the roof.",
+    "<b>Photos and options</b>, then you decide."
+  ],
   "stats": {
     "googleRating": 5,
     "reviewCount": 20,
     "jobsDone": null,
-    "yearsInBusiness": null
+    "yearsInBusiness": null,
+    "_comment": "5.0 from 20 matches data/google_reviews_top25.json. Years is null on purpose: their site only says \"years of industry experience\". Note one of the 20 (Pauline Okai-Davies, the six-quotes review) is four stars, so never write \"every review is five stars\"."
   },
-  "services": [],
+  "services": [
+    {
+      "title": "Roof repairs",
+      "blurb": "Leaks and damage on tile and metal roofs. Oscar finds it, photographs it and shows you what he found before you decide."
+    },
+    {
+      "title": "Repointing and ridge capping",
+      "blurb": "The pointing that holds ridge capping down cracks with age and lets water in. One customer had the whole roof repointed; another had every ridge done."
+    },
+    {
+      "title": "Valleys, collars and dektites",
+      "blurb": "Valley clips, re-taping the valley, and new collars and dektites where pipes and vents come through. Small parts, and the ones his reviews name."
+    },
+    {
+      "title": "Gutters and fascia",
+      "blurb": "New gutters and fascia together, or gutter guards on what you have. “On time, cleaned up everything and great pricing.”"
+    },
+    {
+      "title": "Restoration and painting",
+      "blurb": "Roof restoration and roof painting for a roof that’s tired all over, not just leaking in one spot."
+    },
+    {
+      "title": "Metal roof repairs",
+      "blurb": "Corrugated and sheet metal roofs: loose or rusted sheets, flashings and the fixings that hold it all down."
+    }
+  ],
+  "reasons": [
+    {
+      "title": "Oscar quotes it himself",
+      "body": "Reviews name Oscar at the quote and on the job. You deal with the owner, from start to finish."
+    },
+    {
+      "title": "Photos and options first",
+      "body": "“He took photos and he gave me different options to fix the roof.” You see the problem before you pick the fix."
+    },
+    {
+      "title": "Priced to win the job",
+      "body": "One customer got over six quotes before choosing him. Others call it “very competitive”, “great pricing” and “well priced”."
+    },
+    {
+      "title": "On time, and tidy",
+      "body": "“On time, cleaned up everything.” “Done on time, cleanly, and professionally every step of the way.”"
+    },
+    {
+      "title": "People have him back",
+      "body": "“This is the second job Oscar has done for me and for good reason.”"
+    }
+  ],
+  "process": [
+    {
+      "step": "Call, text or send the form",
+      "detail": "0421 149 431, or the form on this page. A photo of the problem helps."
+    },
+    {
+      "step": "Oscar comes and looks",
+      "detail": "He gets up on the roof, photographs what’s wrong and talks you through the options. One customer said he “explained what he planned to do in details”."
+    },
+    {
+      "step": "The job gets done",
+      "detail": "On a date that suits you both. Customers mention on time, and a clean site when he leaves."
+    }
+  ],
   "serviceAreas": [],
   "credentials": [],
   "photos": {
-    "gallery": [],
-    "beforeAfter": [],
-    "_comment": "Empty on purpose. There is not one usable photograph of their own work. See BRIEF.md."
+    "stockApproved": {
+      "by": "Pat",
+      "on": "2026-09-23",
+      "reason": "No photos of their own work exist. Approved in chat as labelled samples until Oscar sends his."
+    },
+    "_comment": "Sample photos only, all under the Unsplash License, sourced 2026-09-23 and opened one by one. Chosen because they read as Australian: the hero was shot in Clyde North VIC, the terracotta tiles in Melbourne, the hips and ridges in Hobart, the brick house in Newcastle NSW, the aerial in Australia. Crops remove number plates. Nothing from arizonaroofing.com.au is reused. Replace every one with Oscar's own photos when he sends them.",
+    "hero": {
+      "src": "assets/sample-metal-roofs-1800.webp",
+      "srcset": "assets/sample-metal-roofs-480.webp 480w, assets/sample-metal-roofs-800.webp 800w, assets/sample-metal-roofs-1200.webp 1200w, assets/sample-metal-roofs-1800.webp 1800w",
+      "width": 1800,
+      "height": 1200,
+      "alt": "Sample photo: dark corrugated metal roofs on new suburban houses, with TV antennas, a roof vent and gum trees behind",
+      "sample": true,
+      "license": "Unsplash License",
+      "sourceUrl": "https://unsplash.com/photos/corrugated-metal-roofs-on-suburban-houses-nhPfRVGLXaU",
+      "credit": "Troy Mortier on Unsplash"
+    },
+    "gallery": [
+      {
+        "src": "assets/sample-terracotta-tiles-800.webp",
+        "full": "assets/sample-terracotta-tiles-1800.webp",
+        "srcset": "assets/sample-terracotta-tiles-480.webp 480w, assets/sample-terracotta-tiles-800.webp 800w, assets/sample-terracotta-tiles-1200.webp 1200w, assets/sample-terracotta-tiles-1800.webp 1800w",
+        "width": 1200,
+        "height": 800,
+        "caption": "Terracotta tile roof",
+        "alt": "Sample photo: a terracotta tile roof close up, a few darker tiles and patches of lichen among them",
+        "sample": true,
+        "license": "Unsplash License",
+        "sourceUrl": "https://unsplash.com/photos/brown-roof-tiles-in-close-up-photography-Ng4xt7m9bDA",
+        "credit": "Mitchell Luo on Unsplash"
+      },
+      {
+        "src": "assets/sample-hips-ridges-800.webp",
+        "full": "assets/sample-hips-ridges-1800.webp",
+        "srcset": "assets/sample-hips-ridges-480.webp 480w, assets/sample-hips-ridges-800.webp 800w, assets/sample-hips-ridges-1200.webp 1200w, assets/sample-hips-ridges-1800.webp 1800w",
+        "width": 1200,
+        "height": 800,
+        "caption": "Terracotta hips and ridges",
+        "alt": "Sample photo: an older house with a terracotta tile roof, ridge capping along every hip and ridge, and brick chimneys",
+        "sample": true,
+        "license": "Unsplash License",
+        "sourceUrl": "https://unsplash.com/photos/a-couple-of-cars-parked-in-front-of-a-house-bWEeIToqM4g",
+        "credit": "K8 on Unsplash"
+      },
+      {
+        "src": "assets/sample-gutter-800.webp",
+        "full": "assets/sample-gutter-1800.webp",
+        "srcset": "assets/sample-gutter-480.webp 480w, assets/sample-gutter-800.webp 800w, assets/sample-gutter-1200.webp 1200w, assets/sample-gutter-1800.webp 1800w",
+        "width": 1200,
+        "height": 800,
+        "caption": "Gutter and fascia",
+        "alt": "Sample photo: a stained white gutter below concrete roof tiles with moss on them, against a blue sky",
+        "sample": true,
+        "license": "Unsplash License",
+        "sourceUrl": "https://unsplash.com/photos/dirty-gutters-and-roof-against-a-blue-sky-kBc9SXXjezA",
+        "credit": "Aleksi Partanen on Unsplash"
+      },
+      {
+        "src": "assets/sample-ridge-capping-800.webp",
+        "full": "assets/sample-ridge-capping-1800.webp",
+        "srcset": "assets/sample-ridge-capping-480.webp 480w, assets/sample-ridge-capping-800.webp 800w, assets/sample-ridge-capping-1200.webp 1200w, assets/sample-ridge-capping-1800.webp 1800w",
+        "width": 1200,
+        "height": 800,
+        "caption": "Ridge capping, close up",
+        "alt": "Sample photo: weathered terracotta ridge capping running up to the peak of a tile roof",
+        "sample": true,
+        "license": "Unsplash License",
+        "sourceUrl": "https://unsplash.com/photos/close-up-of-a-weathered-terracotta-roof-ridge-G3mggr_zyrU",
+        "credit": "Caroline Badran on Unsplash"
+      },
+      {
+        "src": "assets/sample-tiled-suburb-800.webp",
+        "full": "assets/sample-tiled-suburb-1800.webp",
+        "srcset": "assets/sample-tiled-suburb-480.webp 480w, assets/sample-tiled-suburb-800.webp 800w, assets/sample-tiled-suburb-1200.webp 1200w, assets/sample-tiled-suburb-1800.webp 1800w",
+        "width": 1200,
+        "height": 800,
+        "caption": "Tile and metal roofs from above",
+        "alt": "Sample photo: an aerial view of suburban streets with terracotta, concrete tile and metal roofs, some with solar panels",
+        "sample": true,
+        "license": "Unsplash License",
+        "sourceUrl": "https://unsplash.com/photos/top-view-photo-of-houses-sPpe2D7VbpM",
+        "credit": "Maximillian Conacher on Unsplash"
+      },
+      {
+        "src": "assets/sample-brick-tiled-roof-800.webp",
+        "full": "assets/sample-brick-tiled-roof-1800.webp",
+        "srcset": "assets/sample-brick-tiled-roof-480.webp 480w, assets/sample-brick-tiled-roof-800.webp 800w, assets/sample-brick-tiled-roof-1200.webp 1200w, assets/sample-brick-tiled-roof-1800.webp 1800w",
+        "width": 1200,
+        "height": 800,
+        "caption": "Tiled roof, gutter and downpipe",
+        "alt": "Sample photo: a red brick house with a terracotta tile roof, a tall chimney, a gutter and a downpipe",
+        "sample": true,
+        "license": "Unsplash License",
+        "sourceUrl": "https://unsplash.com/photos/brick-house-with-a-garage-and-tiled-roof-3tLukKw1kxI",
+        "credit": "ANGIE BAONGOC on Unsplash"
+      }
+    ],
+    "beforeAfter": []
   },
+  "calculator": {
+    "_comment": "Every job is mode 'quote', so not one dollar figure is printed. Arizona Roofing publish no prices. Get Oscar's ranges and these become real numbers.",
+    "heading": "What will it cost?",
+    "intro": "It depends what’s wrong, so Oscar gets up and looks first. He photographs it and gives you the options before you choose. Pick the job below and we’ll start there.",
+    "jobLabel": "What’s the job?",
+    "fine": "",
+    "included": [
+      "Oscar gets up on the roof",
+      "Photos of what’s wrong",
+      "Options before you choose",
+      "Cleaned up after"
+    ],
+    "jobs": [
+      {
+        "id": "repair",
+        "label": "Roof repair",
+        "sub": "A leak or damage",
+        "mode": "quote",
+        "formService": "Roof repair",
+        "quoteEyebrow": "Priced once Oscar has seen it",
+        "quoteLabel": "Book a quote",
+        "note": "Tile or metal. <b>Oscar finds it, photographs it and shows you.</b>"
+      },
+      {
+        "id": "repoint",
+        "label": "Repointing",
+        "sub": "Ridges and hips",
+        "mode": "quote",
+        "formService": "Repointing and ridge capping",
+        "quoteEyebrow": "Priced once Oscar has seen it",
+        "quoteLabel": "Book a quote",
+        "note": "Cracked pointing along the ridge capping. <b>One customer had the whole roof repointed.</b>"
+      },
+      {
+        "id": "valley",
+        "label": "Valleys and collars",
+        "sub": "Pipes, vents, valleys",
+        "mode": "quote",
+        "formService": "Valleys, collars and dektites",
+        "quoteEyebrow": "Priced once Oscar has seen it",
+        "quoteLabel": "Book a quote",
+        "note": "Valley clips, valley re-taping, collars and dektites. <b>The small parts his reviews name.</b>"
+      },
+      {
+        "id": "gutters",
+        "label": "Gutters and fascia",
+        "sub": "Replace or guard",
+        "mode": "quote",
+        "formService": "Gutters and fascia",
+        "quoteEyebrow": "Priced once Oscar has seen it",
+        "quoteLabel": "Book a quote",
+        "note": "New gutters and fascia, or gutter guards. <b>“On time, cleaned up everything.”</b>"
+      },
+      {
+        "id": "restore",
+        "label": "Restoration",
+        "sub": "Or roof painting",
+        "mode": "quote",
+        "formService": "Roof restoration or painting",
+        "quoteEyebrow": "Priced once Oscar has seen it",
+        "quoteLabel": "Book a quote",
+        "note": "For a roof that’s tired all over. <b>Restoration or painting, Oscar will show you which.</b>"
+      },
+      {
+        "id": "metal",
+        "label": "Metal roof",
+        "sub": "Sheets and flashings",
+        "mode": "quote",
+        "formService": "Metal roof repairs",
+        "quoteEyebrow": "Priced once Oscar has seen it",
+        "quoteLabel": "Book a quote",
+        "note": "Loose or rusted sheets, flashings and fixings. <b>Text a photo first if you like.</b>"
+      }
+    ]
+  },
+  "faq": [
+    {
+      "q": "What happens at the quote?",
+      "a": "Oscar gets up on the roof and has a proper look. He takes photos of what’s wrong, shows you, and gives you the options to fix it. Then you decide."
+    },
+    {
+      "q": "Can I send a photo first?",
+      "a": "Yes. Text a photo to 0421 149 431 so Oscar can see what he’s dealing with before he comes out."
+    },
+    {
+      "q": "What does repointing mean?",
+      "a": "On a tile roof, the ridge capping along the ridges and hips is held down by bedding and pointing. Over the years the pointing cracks, and water gets in underneath. Repointing replaces it."
+    },
+    {
+      "q": "What are collars and dektites?",
+      "a": "They seal the gap where a pipe or vent comes up through the roof. A dektite is the flexible boot used on metal roofs. When either one perishes, water runs down the pipe and into the ceiling."
+    },
+    {
+      "q": "What are valley clips?",
+      "a": "A valley is the channel where two roof slopes meet and the water runs off. Clips hold the tiles along it in place, and the valley itself can need re-taping or replacing."
+    },
+    {
+      "q": "Do you do gutters as well?",
+      "a": "Yes. Gutter replacement, gutters and fascia together, and gutter guards."
+    },
+    {
+      "q": "Do you work on commercial roofs?",
+      "a": "Yes, residential and commercial, across Canberra."
+    },
+    {
+      "q": "Will you clean up?",
+      "a": "Customers say so: “On time, cleaned up everything.”"
+    }
+  ],
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
   "reviews": [
@@ -82,14 +393,14 @@
     "accessKey": ""
   },
   "_source": {
-    "url": "https://arizonaroofing.com.au",
+    "url": "https://www.arizonaroofing.com.au",
     "platform": "WordPress",
     "pagesRead": [
-      "home",
-      "services",
-      "about",
-      "gallery",
-      "contact"
+      "https://www.arizonaroofing.com.au/ (home, re-read 2026-09-23)",
+      "https://www.arizonaroofing.com.au/services/ (read 2026-09-23)",
+      "https://www.arizonaroofing.com.au/contact/ (read 2026-09-23)",
+      "about, gallery (2026-09-22 scrape)",
+      "wp-json/wp/v2/media (222 items, for the photo audit)"
     ],
     "aboutText": "At Arizona Roofing, we are dedicated to providing top-notch roofing solutions for both residential and commercial properties in Canberra. With years of industry experience, our team of expert roofing professionals is committed to delivering exceptional services that meet our clients&#8217; needs and exceed their expectations.\n\nOur comprehensive range of roofing services includes roof restoration, roof repairs, gutter replacement, gutter guards, roof painting, and metal roofing repairs. Whether your roof needs a complete makeover, repairs to address leaks and damages, or the installation of new gutters and guards, we have the expertise to handle it all. We pride ourselves on delivering fast and efficient repairs, ensuring that your roof is restored to its optimal condition in no time.\n\nAt Arizona Roofing, we understand the importance of a sturdy and reliable roof for the protection of your property. That&#8217;s why we prioritize quality workmanship and utilize the latest industry techniques and materials to ensure the longevity and durability of our roofing solutions. We are a registered business with a team of experienced and professional roofing experts who are passionate about delivering exceptional results. Our commitment to customer satisfaction, affordable pricing, and reliable service has made us the go-to choice for roofing solutions in Canberra.",
     "socials": {},
@@ -98,29 +409,30 @@
       "https://www.arizonaroofing.com.au/wp-content/uploads/2023/06/pexels-jim-mclain-11467876.jpg",
       "https://www.arizonaroofing.com.au/wp-content/uploads/2023/06/pexels-los-muertos-crew-8853521.jpg",
       "https://www.arizonaroofing.com.au/wp-content/uploads/2023/06/pexels-zeynel-aksakal-6170589.jpg"
+    ],
+    "quotedElsewhere": {
+      "header": "Registered Roofing Solutions / Reliable Residential and Commercial Roofing Solutions in Canberra",
+      "servicesPage": [
+        "Revive your roof’s beauty and durability with our professional restoration services.",
+        "Swift and reliable repairs to fix any roofing issues and ensure optimal protection.",
+        "Enhance your roof’s appearance and protection with our Roof Painting service.",
+        "Upgrade your gutter system for efficient water flow and prevent water damage.",
+        "Keep your gutters clean and clog-free with our high-quality gutter guard service."
+      ],
+      "footer": "Unit 5/293 Flemington road Franklin ACT, 2913 / E-mail: info@arizonaroofing.com.au / ABN: 38223082867",
+      "phoneAsPrinted": "042 1149431 (on every page — grouped wrong; Google lists 0421 149 431)",
+      "brandColours": "#0c234b (10 uses) and #ec6420 (8 uses) in the inline CSS of the home page, read 2026-09-23",
+      "logo": "wp-content/uploads/2023/06/g320.png (navy on transparent, 639x121) and g94-1.png (white on transparent, 639x121)",
+      "sixQuotesReview": "Pauline Okai-Davies, 4 stars, 2 years ago: \"I got over six quotes to fix my roof before I selected Oscar. First of all I found him thorough in his inspection of the roof, then he took photos and he gave me different options to fix the roof. …\" (review pull, cut off — the headline and anchor quote only its first sentence, word for word)",
+      "responsePromise": "No reply time is published anywhere, so none is promised. The line used is from the review pull: Louie Lavender, \"from start to finish he was kind, genuine and helpful\"."
+    },
+    "siteIssuesFound": [
+      "Not one photograph of their own work: every image is stock or theme demo, including a Kyoto temple roof and a log cabin in Our Projects (BRIEF.md)",
+      "The page titled \"Asghar Khan, CEO\" shows a stock photo of a young woman in a hard hat; four more fake team members",
+      "Six testimonials on the home page are theme-written, not his real Google reviews; his 5.0 from 20 appears nowhere",
+      "Live lorem ipsum on the home page: \"Roofing whenan unknown printer took a galley of type and scrambled it...\"; ten blog posts titled \"10 reason why roofing are factmake easier\"",
+      "Phone printed as \"042 1149431\" on every page",
+      "Home page offers a \"free consultation\" and calls itself \"The #1 Choice\" — neither used here"
     ]
-  },
-  "_check": [
-    "business.baseSuburb",
-    "services",
-    "serviceAreas",
-    "business.brand.accent",
-    "business.logo",
-    "photos.hero",
-    "photos.gallery",
-    "calculator.jobs",
-    "business.yearsInBusiness"
-  ],
-  "calculator": {
-    "_comment": "Prices are NOT filled in. Get them from the owner, then set each range. Any range left with \"_check\": true renders \"Guide only, confirmed on site\".",
-    "jobs": []
-  },
-  "_blocked": {
-    "reason": "No photographs of their own work. Every image on their site is stock or theme demo content.",
-    "verifiedOn": "2026-09-22",
-    "imagesExamined": 40,
-    "imagesUsable": 0,
-    "minimumRequired": 4,
-    "seeAlso": "BRIEF.md"
   }
 }
