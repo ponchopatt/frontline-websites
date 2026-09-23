@@ -116,9 +116,9 @@ available in this session).
 | 0002.jpg | 750×448 | Crew on roof laying blue sarking over trusses | Gallery |
 | 0003.jpg | 750×560 | Two crew laying sarking on a large tiled roof, ladder | Gallery |
 | 0004.jpg | 750×560 | Brick home, finished dark tile roof, pool base forming | (spare) |
-| 0005.jpg | 750×560 | Close-up finished tile roof, hips and ridges, blue sky | Gallery |
+| 0005.jpg | 750×560 | Tight geometric shot, finished dark tile hips/ridges, blue sky | **Hero** |
 | 0006.jpg | 750×501 | Large rendered estate, dark tile roof, urn/fountain | Gallery |
-| 0007.jpg | 750×373 | Tight geometric shot, finished dark tile hips/ridges | **Hero** |
+| 0007.jpg | 750×373 | Single-storey home, grey tile hip roof, columned portico entrance | Gallery |
 | 0008.jpg | 750×497 | Large estate, grey tile roof, portico | (spare) |
 | 0009.jpg | 750×491 | Estate with courtyard fountain/pool, white tile roof | Gallery |
 | 0010.jpg | 750×384 | Large home, dusk, grey tile roof | (spare) |

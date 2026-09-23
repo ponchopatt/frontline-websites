@@ -25,6 +25,12 @@
       "accentLift": "#E2725B",
       "accentLiftHover": "#EC8B75",
       "_comment": "Their own site is a generic blue mobile template (style-mobi.css) with no distinct brand colours of their own to lift, so this is a deliberate design choice rather than a colour pulled from their CSS: a mid navy (their header/menu bar reads as a plain mid blue) paired with a terracotta lift colour, since terracotta tiling is their trade. accentLift was picked at #E2725B (not a brighter red) specifically to clear WCAG contrast against the template's dark-mode button text (#1C1F23) — verified at 5.35:1."
+    },
+    "logoMark": {
+      "src": "assets/logo.svg",
+      "width": 620,
+      "height": 100,
+      "_comment": "Their old template site has no logo file anywhere (checked every guessable path in picts-mobi/ and wgc_media/ — only tiny banner furniture images exist, none is a wordmark), so the review-flagged bug was that the header had no business name at all: with no logoMark set, the quote template's header fell back to rendering only copy.brandMark as the visible text, which was 'Northern Beaches' — a region, not the business. A simple text wordmark ('AB ROOF TILING' + a small roof-pitch mark, off-white on the terracotta accent, matching this brand's own accentLift) was built as an SVG so the business name renders as a real graphic mark, exactly like lmac's and arizona-roofing's own white wordmarks — and, unlike copy.brandMark's text, it is not hidden by the template's own sub-400px CSS rule, so it now shows on mobile too. brandMark stays as a small regional badge next to it, matching arizona-roofing's 'Canberra' pattern."
     }
   },
   "responsePromise": "Tony is responsive and pleasant to deal with, and his crew leave the site clean.",
@@ -159,14 +165,14 @@
     }
   ],
   "photos": {
-    "_comment": "All 8 photos used are AB Roof Tiling's own real job photos, pulled from the hidden Pranas.NET gallery at https://abrooftiling.com.au/gallery.htm (images served from wgc_media/photos/0001.jpg–0015.jpg, not linked from the main nav). Opened one by one — see BRIEF.md's photo inventory table for all 15 and which 8 were chosen. No sample/stock photos needed. Native resolution on the source site tops out at 750px wide (no larger originals exist at any guessable path), so images here are served at their true native size rather than upscaled — the hero is below the usual 1600px-wide ideal for that reason; flagged for Pat.",
+    "_comment": "All 8 photos used are AB Roof Tiling's own real job photos, pulled from the hidden Pranas.NET gallery at https://abrooftiling.com.au/gallery.htm (images served from wgc_media/photos/0001.jpg–0015.jpg, not linked from the main nav). Opened one by one — see BRIEF.md's photo inventory table for all 15 and which 8 were chosen. No sample/stock photos needed. Native resolution on the source site tops out at 750px wide (no larger originals exist at any guessable path), so images here are served at their true native size rather than upscaled — the hero is below the usual 1600px-wide ideal for that reason; flagged for Pat. Hero was swapped from 0007 to 0005 in this rework: 0007 is a full single-storey house elevation (BRIEF.md's inventory previously mis-described 0007 as a tight geometric hips/ridges shot — that description actually belongs to 0005, now corrected), and a full elevation full of fine detail (windows, gutters, foliage) turns to mush once the template's mobile hero stretches a 750px-wide source to fill a near-full-height portrait viewport. 0005 is a tight, high-contrast close-up of tile hips and ridges against open sky — far more forgiving of that same upscaling — so it now reads sharper at both 390 and 1440 than 0007 did. 0007 was not dropped: it is genuinely usable, so it now fills the gallery slot 0005 vacated. No hero-overlay or focal-point setting exists anywhere in this template's config surface (checked, as other clients' configs note), so swapping the source image was the only lever available.",
     "hero": {
       "src": "assets/hero-tile-roof-750.webp",
       "srcset": "assets/hero-tile-roof-375.webp 375w, assets/hero-tile-roof-600.webp 600w, assets/hero-tile-roof-750.webp 750w",
       "width": 750,
-      "height": 373,
+      "height": 560,
       "alt": "Close-up of a finished dark grey concrete tile roof, hips and ridges meeting under a blue sky, on an AB Roof Tiling job",
-      "_source": "https://abrooftiling.com.au/wgc_media/photos/0007.jpg, via https://abrooftiling.com.au/gallery.htm (read 2026-09-23)"
+      "_source": "https://abrooftiling.com.au/wgc_media/photos/0005.jpg, via https://abrooftiling.com.au/gallery.htm (read 2026-09-23)"
     },
     "gallery": [
       {
@@ -190,14 +196,14 @@
         "_source": "https://abrooftiling.com.au/wgc_media/photos/0003.jpg"
       },
       {
-        "src": "assets/gallery-tile-roof-close-600.webp",
-        "full": "assets/gallery-tile-roof-close-750.webp",
-        "srcset": "assets/gallery-tile-roof-close-375.webp 375w, assets/gallery-tile-roof-close-600.webp 600w, assets/gallery-tile-roof-close-750.webp 750w",
+        "src": "assets/gallery-portico-home-600.webp",
+        "full": "assets/gallery-portico-home-750.webp",
+        "srcset": "assets/gallery-portico-home-375.webp 375w, assets/gallery-portico-home-600.webp 600w, assets/gallery-portico-home-750.webp 750w",
         "width": 750,
-        "height": 560,
-        "caption": "Finished tile roof, close up",
-        "alt": "Close-up of a finished dark concrete tile roof, hips and ridges, against a blue sky with clouds",
-        "_source": "https://abrooftiling.com.au/wgc_media/photos/0005.jpg"
+        "height": 373,
+        "caption": "Single-storey home, finished tile roof",
+        "alt": "A single-storey rendered home with a dark grey tile hip roof and a columned portico entrance, finished AB Roof Tiling job",
+        "_source": "https://abrooftiling.com.au/wgc_media/photos/0007.jpg"
       },
       {
         "src": "assets/gallery-grand-estate-600.webp",
