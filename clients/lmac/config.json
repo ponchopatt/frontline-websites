@@ -35,7 +35,7 @@
     "Monday to Friday, 8:30am to 4:30pm",
     "After-hours service available"
   ],
-  "responsePromise": "The office replies within one business hour, Monday to Friday.",
+  "responsePromise": "The office is open Monday to Friday, 8:30am to 4:30pm, with after-hours service available.",
   "copy": {
     "title": "Lower Mountains Air Conditioning | Penrith and Blue Mountains, since 1988",
     "description": "Split, multi-split and ducted air conditioning across Penrith and the Blue Mountains. Walk-in showroom at Emu Plains, six brands, and 4.8 stars from 331 Google reviews. Call (02) 4735 6411.",
@@ -62,14 +62,14 @@
     "faqTitle": "Good to know",
     "faqIntro": "The questions the office fields most days.",
     "quoteTitle": "Book a quote",
-    "quoteIntro": "Fill this in and the office comes back within one business hour, Monday to Friday. Andrew or Anthea does the on-site quote themselves.",
+    "quoteIntro": "Fill this in and the office will be in touch, Monday to Friday. Andrew or Anthea does the on-site quote themselves.",
     "finalTitle": "Ready when you are.",
     "finalIntro": "Call the office on (02) 4735 6411, or drop into the showroom at Unit 2/129 Russell St, Emu Plains.",
     "footerArea": "Penrith, the Blue Mountains, the Hawkesbury and western Sydney"
   },
   "quoteSteps": [
     "<b>You send this.</b> Takes a minute.",
-    "<b>The office calls back</b> within one business hour.",
+    "<b>The office calls back</b> to arrange your on-site quote.",
     "<b>Andrew or Anthea quotes on site</b>, then you decide."
   ],
   "stats": {
