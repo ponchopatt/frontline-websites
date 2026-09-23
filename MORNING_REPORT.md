@@ -9,14 +9,12 @@ below 4) and `npm run check` before it counts.
 
 | | |
 |---|---|
-| **Done — passed review and check** | 2 — sunset-pools (4.5), utopian-landscaping (4.5) |
-| **In independent review** | 1 — arizona-roofing (labelled sample photos) |
-| **Being reworked** | 2 — lmac (3.5), south-coast-landscapes (4.0) |
-| **Being built** | 1 — greenway-landscapes |
-| **Part-built** | 1 — dp-landscaping |
+| **Done — passed review and check** | 6 — sunset-pools (4.5), utopian-landscaping (4.5), greenway-landscapes (4.5), south-coast-landscapes (4.5), lmac (4.5), arizona-roofing (4.67) |
+| **Being reworked** | 1 — dp-landscaping (review 1: 3.67, one rework round in progress) |
 | **Not started** | 7 |
 
-Each done demo has its own branch: `demo/sunset-pools`, `demo/utopian-landscaping`.
+Each done demo has its own branch (`demo/<slug>`) and is live on the
+`frontline-demos` Vercel project at `frontline-demos.vercel.app/<slug>`.
 Nothing touches `main`.
 
 ## Invented facts are now impossible, not just caught
@@ -53,8 +51,11 @@ panel.
 
 ## What to do first
 
-1. **Look at the done demos.** `node tools/single.mjs <slug>` writes one
-   self-contained file to `dist-single/<slug>.html` that opens on a phone.
+1. **Look at the six done demos**, live at `frontline-demos.vercel.app/<slug>`
+   for sunset-pools, utopian-landscaping, greenway-landscapes,
+   south-coast-landscapes, lmac and arizona-roofing. Or
+   `node tools/single.mjs <slug>` writes one self-contained file to
+   `dist-single/<slug>.html` that opens on a phone.
 2. **Ring Ryan at South Coast Landscapes today** — his website is hacked. Details
    under his entry below. Worth a call whether or not he ever buys a site.
 3. Nothing else is waiting on you. The queue keeps going.
@@ -68,10 +69,16 @@ shots). Phase 1 was never emptied, so Phase 2 correctly did not start.
 
 ---
 
-## arizona-roofing — IN REVIEW (sample photos)
+## arizona-roofing — DONE (4.67)
 
 **Arizona Roofing** · Oscar (Asghar Khan on his site) · 5.0 from 20 · quote template
-Lighthouse 93 / 96 / 100. Passes `check`.
+Lighthouse 94 / 96 / 100. Branch `demo/arizona-roofing`.
+Demo: `frontline-demos.vercel.app/arizona-roofing`
+
+Two review rounds (3.83, 3.8) found real issues each time: a hero line clipped
+by the sticky call bar, one phrase repeated 8 times across the page, an empty
+footer logo box, and an unsourced ABN/email. All fixed; round 3 passed at 4.67
+with nothing below 4.
 
 Their site has no photos of their own work — the "Our Projects" gallery is theme
 stock (a temple in Kyoto, a log cabin). Under your go-ahead the demo uses nine
@@ -94,6 +101,7 @@ say Oscar or Asghar.
 
 **Sunset Pools** · Ben Thompson · 4.7 from 25 · 1300 000 412 · trust template
 Lighthouse 92 / 97 / 100. Branch `demo/sunset-pools`.
+Demo: `frontline-demos.vercel.app/sunset-pools`
 
 Seven independent reviews: 4.0, 4.3, 4.25, 4.08, 4.42, 4.33, **4.5**. Each round
 found a factory bug or a claim that went past the source, and each was fixed.
@@ -122,6 +130,7 @@ along the top.
 
 **Utopian Landscaping and Paving** · Derek · 5.0 from 25 · 0423 814 300 · trust
 Lighthouse 91 / 97 / 100. Branch `demo/utopian-landscaping`.
+Demo: `frontline-demos.vercel.app/utopian-landscaping`
 
 Three reviews: 3.7, 3.58, **4.5**. Fixed along the way: the clipped "utopian"
 wordmark (the "p" now has its tail); one property used in five photo slots (now
@@ -140,13 +149,19 @@ the gallery 6 lawn is real or synthetic.
 
 Do not lead with "your site is http" — it redirects to https, so it is secure.
 
-## south-coast-landscapes — REWORK (review 4.0, needs 4.5)
+## south-coast-landscapes — DONE (4.5)
 
 **South Coast Landscapes** · Ryan · 4.8 from 24 · 0402 130 046 · trust
-Lighthouse 94 / 97 / 100. Passes `check`: no blockers, nothing to confirm.
+Lighthouse 97 / 97 / 100. Branch `demo/south-coast-landscapes`.
+Demo: `frontline-demos.vercel.app/south-coast-landscapes`
 I predicted this one would be blocked. It was not — the builder got through the
 SiteGround challenge on about one attempt in three, with the real user agent and
 TLS verification left on.
+
+Two review rounds (4.0, 4.25) found real copy issues — two lines that read like
+internal builder notes rather than customer copy ("The process off our design
+page.", "From our own portfolio and before-and-after pages: Engadine…") — now
+rewritten. Round 3 passed at 4.5 with nothing below 4.
 
 ### Ring Ryan today. Their website is hacked.
 
@@ -175,11 +190,17 @@ four shortened reviews; and his surname if he is happy for it to appear.
 
 ---
 
-## lmac — REWORK (review 3.5, needs 4.5)
+## lmac — DONE (4.5)
 
 **Lower Mountains AirConditioning** · Andrew and Anthea Strathdee · 4.8 from
 **331** reviews · (02) 4735 6411 · quote template
-Lighthouse 97 / 96 / 100. Passes `check`: no blockers, nothing to confirm.
+Lighthouse 99 / 96 / 100. Branch `demo/lmac`.
+Demo: `frontline-demos.vercel.app/lmac`
+
+Two review rounds (3.5, 4.33) both caught real problems, the second one an
+invented service guarantee: "within one business hour" repeated 6 times, when
+only one instance is actually sourced (their own site says "Response in One
+Business Hour"). Cut the other 5, round 3 passed at 4.5 with nothing below 4.
 
 331 reviews is six times the next best in the queue, and it appears nowhere on
 their own website. Third-generation family business, same Emu Plains shopfront
@@ -209,23 +230,51 @@ and first names to be published.
 
 ---
 
-## greenway-landscapes — BUILDING
+## greenway-landscapes — DONE (4.5)
 
 **Greenway Landscapes** · Trent · 5.0 from 16 · 0418 607 124 · trust
-Brief written, config written, photos downloaded. Not built — the builder was
-killed mid-run. Resume from where it is; nothing needs redoing.
+Lighthouse 90 / 97 / 100. Branch `demo/greenway-landscapes`.
+Demo: `frontline-demos.vercel.app/greenway-landscapes`
+
+Built, then two review rounds (3.4, 3.5) came back before I noticed my own
+screenshot tool was the problem: it captured the hero mid fade-in animation
+and before lazy-loaded photos had settled, making a fine page look broken
+(faded call button, empty photo boxes). Fixed the tool, re-ran a fair review,
+and it passed 4.5 first time — no code changes needed for that part. Also cut
+three lines of research notes that had leaked into the customer-facing copy
+("A current member, per their own about page.").
+
+**Known, not fixed:** a scroll-pinned photo reveal section (right after the
+"06 Drainage & irrigation" card) renders as an odd gap in a static screenshot.
+This is the same factory-wide "pinned aperture" quirk already logged in
+HANDOVER.md — real visitors see it as a scroll animation, not a blank page.
 
 ---
 
-## dp-landscaping — PART-BUILT
+## dp-landscaping — REWORK (review 3.67, needs 4.5)
 
 **DP Landscaping & Design** · Dale · 5.0 from 10 · 0402 469 118 · trust
-Photos downloaded, config started, no brief. Killed mid-run.
+Lighthouse 98 / 97 / 100. Passes `check`: no blockers, nothing to confirm.
 
-The angle is already clear from the reviews and no competitor can copy it: his
-customers keep him for years. *"15 years ago, Dale landscaped our property & has
-continued to maintain the gardens ever since."* *"Dale has worked with us for 10
-years."* Neither is a years-in-business number and neither should become one.
+Built and briefed. The angle: his customers keep him for years, no competitor
+can copy it. *"15 years ago, Dale landscaped our property & has continued to
+maintain the gardens ever since."* *"Dale has worked with us for 10 years."*
+Neither is a years-in-business number and neither became one.
+
+**The real constraint: only 4 photos of their own exist**, all pre-cropped by
+their old site to an unusual 800×292 banner strip, none reaching the 1600px
+hero bar. First review (3.67) caught real reuse: the pond and stone-wall
+photos each shown 3 times, the "Dale Pickering" section showing a wall instead
+of Dale, and the mobile hero cropping out the job's best feature (a stone
+bridge) under a heavy overlay. One rework round is in progress: stop repeating
+photos across slots, fill the gap with labelled sample photos rather than
+reusing, and fix the mobile crop.
+
+**Pat needs to supply, regardless of how the rework lands:** more/higher-res
+photos (ideally phone originals, not the 800px web crops); a real contact
+email (theirs is spam-bot-hidden); any licence/insurance/ABN info (none is
+published anywhere); and a years-in-business figure, since their own site
+contradicts itself ("started 1996" vs "20 years' experience").
 
 ---
 
