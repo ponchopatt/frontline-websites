@@ -162,7 +162,13 @@ their phone number rather than dead-ending.
 
 ## Hosting
 
-One Vercel project for all of them.
+Two different Vercel projects can serve this repo, and they don't collide —
+each is its own build, on its own subdomain, and neither is the live Bondi or
+Canberra to Coast site (those are separate projects again, pointed at
+`demos/bondi-landscapes` and `sites/canberra-to-coast-fencing`; never touch
+them from here).
+
+### Every client — one project for the whole factory
 
 1. Import this repo. Leave **Root Directory** empty — the root `vercel.json`
    already sets `buildCommand: npm run build` and `outputDirectory: dist`.
@@ -170,7 +176,42 @@ One Vercel project for all of them.
    hits a Vercel login screen instead of their demo. This is the one that bites.
 3. Demos land at `<project>.vercel.app/<slug>`, and `/` lists them all.
 
-Point a real domain at it later without rebuilding anything.
+### `frontline-demos` — only what has actually shipped
+
+A second, separate project. `bin/build-demos-site.js` builds **only the
+clients with a `demo/<slug>` branch on origin** — that branch is the proof a
+demo passed an independent review and `npm run check`, so this project can
+never show something nobody signed off on. It re-checks the branch list on
+every build, so a client added to the queue today, or one still mid-review,
+never appears here until its branch exists.
+
+1. **vercel.com → Add New → Project → Import Git Repository →**
+   `ponchopatt/frontline-websites`.
+2. **Project Name:** `frontline-demos`.
+3. **Root Directory:** leave as the repo root (`.`) — do not change it.
+4. **Framework Preset:** Other.
+5. **Build and Output Settings:** turn on the override toggle for each, and set
+   - **Build Command:** `node bin/build-demos-site.js`
+   - **Output Directory:** `dist-demos`
+   - **Install Command:** leave the default (`npm install`).
+6. **Settings → Git → Production Branch:** `factory` — never `main`.
+7. **Settings → Deployment Protection → turn off Vercel Authentication**, for
+   both Production and Preview. Without this, an owner hits a login screen
+   instead of their demo.
+8. Deploy. Demos land at `<project>.vercel.app/<slug>`; `/` lists whatever has
+   shipped so far.
+
+**Stays current on its own:** every demo that ships gets `git push origin
+factory` right after its `demo/<slug>` branch, which is already this repo's
+habit. Vercel redeploys on every push to the Production Branch, so the next
+push rebuilds the list and picks up the new demo — no extra step, no webhook
+to wire up. To add one by hand instead: **Deployments → Redeploy** on the
+latest one.
+
+Every demo keeps `live:false`, so the demo banner, the demo footer and
+`noindex` stay on regardless of which project serves it.
+
+Point a real domain at either project later without rebuilding anything.
 
 ---
 
