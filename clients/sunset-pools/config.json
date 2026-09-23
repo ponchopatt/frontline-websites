@@ -22,7 +22,7 @@
       "owner.body ‘founder and managing director’": "/awards/: “Ben Thompson Sunset Pool’s founder and Managing Director has accepted requests to undertake public speaking engagements and present at national industry expert forums on the principles and procedures of pool design and construction.” That full sentence is also the source for ‘he has presented at national industry forums on pool design and construction’.",
       "owner.body ‘not one of half a dozen standard shapes’ / ‘one-off designs’": "/about/: “Ben laments that it is difficult to understand why so many concrete pool construction contractors simply carry on offering the same half dozen basic pool shapes year after year.” /residential-pools/: “Specializing in more enterprising designer pools, Sunset constructs one-off concepts seldom addressed by widely known builders.”",
       "owner.body ‘reinforced concrete … indoor, rooftop, infinity edge, on springs, built into the structure’": "/about/: “Ben repeatedly illustrates how in the hands of a creative pool designer reinforced concrete has virtually limitless possibilities.” Their own services menu on every page lists “Rooftop, On Springs or Part of Building Structure”; the homepage portfolio lists “Sunset indoor lap pool and spa – Filtration/Plant Room Strathfield”; and their 2012 GAVA entry on /awards/ is an “Infinity edge pool”.",
-      "copy.sub ‘more than twenty years’ / stats.yearsInBusiness 20": "Homepage hero and footer: “For over 20 years we’ve been creating statements of luxury, turning ideas into reality for homes and venues in Sydney.” Homepage FAQ schema: “Our 20+ years of local experience sets us apart as experts in Sydney concrete pool interiors…” and “For over 20 years, our reputation has been built solely on our premium Sydney pool renovations and our commitment to the local New South Wales community.” The tile renders “20+”, which is their own wording. (Matt Saggers’ ‘12 years ago’ is the age of one customer’s pool, not of the business, and supports nothing on the page except his own review.)",
+      "copy.sub ‘more than twenty years’ / stats.yearsInBusiness 20": "Homepage hero and footer: “For over 20 years we’ve been creating statements of luxury, turning ideas into reality for homes and venues in Sydney.” Homepage FAQ schema: “Our 20+ years of local experience sets us apart as experts in Sydney concrete pool interiors…” and “For over 20 years, our reputation has been built solely on our premium Sydney pool renovations and our commitment to the local New South Wales community.” The tile renders “20”, with “and counting” under it; “over 20 years” is their own wording. (Matt Saggers’ ‘12 years ago’ is the age of one customer’s pool, not of the business, and supports nothing on the page except his own review.)",
       "headline ‘the pools other builders call too hard’ / ‘on rooftops, inside buildings’": "/commercial-pools-water-features/: “Where many pool builders might consider non-standard pool projects ‘too hard’, Sunset Pools takes architects’ and engineers’ more challenging ideas in their stride.” Their own services menu on every page: “Rooftop, On Springs or Part of Building Structure”. Homepage portfolio: “Sunset indoor lap pool and spa – Filtration/Plant Room Strathfield”.",
       "‘cranes’ (statement pull quote and FAQ 1)": "Not from their site — it is Wendy Carcaillet’s Google review, quoted word for word from data/google_reviews_top25.json: “Our pool is on a tricky site which involved cranes to bring supplies in and off the site.” It is attributed to her on the page, and the FAQ says ‘another client’s site needed cranes’ rather than asserting it as a Sunset claim.",
       "‘three to six weeks’ and ‘scheduled around Sydney’s weather so glass bead and pebble interiors cure properly’": "Homepage FAQ schema: “Most restorations take 3 to 6 weeks. We schedule our projects specifically around Sydney’s climate to ensure premium finishes like glass bead or pebble interiors cure perfectly under local conditions.”",
@@ -71,7 +71,7 @@
       "A 10-year guarantee is mentioned once on /residential-pools/ (‘premium materials, guaranteed for ten years’) and was left off until Ben confirms it in writing.",
       "No SMS button is on the page. The only number they publish is 1300 000 412, and an Australian 1300 cannot receive a text, so a “text Ben a photo” button would be a dead control. The message body is kept in `sms` so the buttons return the moment a mobile is added — see BRIEF.md, Ask Ben 7.",
       "Anna Perrin’s Google review is the sixth in `best_for_demo` and is deliberately not on the page. Five reviews keep the marquee to a single row, which is what stops the same review being on screen twice at 1440; hers is the most general of the six, and the detail that carried it — that the job was ten years ago and they still look after it — is the part Google cuts off.",
-      "Fourth review pass (2026-09-23): cut or reworded every line that promised how Ben works, gave a reason for it, claimed a reputation, or overstated a job’s scope. Master Builders is a membership on their site, never a medal, so the recognition line names SPASA only. The licence is the business’s, not Ben’s personally. Strathfield, like Wentworth Point, is captioned as the filtration and plant room because that is how their portfolio labels it."
+      "Fourth review pass (2026-09-23): cut or reworded every line that promised how Ben works, gave a reason for it, claimed a reputation, or overstated a job’s scope. Master Builders is a membership on their site, never a medal, so the recognition line names SPASA only. The licence is the business’s, not Ben’s personally. Strathfield and Wentworth Point were briefly recaptioned as plant-room work; the sixth review and the loop confirmed on Wayback that Sunset built both pools, so both are credited as builds again (see claimSources)."
     ],
     "stockLookingPhotos": [],
     "photoNote": "85 images were downloaded from their own wp-content/uploads library and opened one by one. Nothing from a stock library, no logos, no screenshots and no schematics are used on the page. Full inventory in BRIEF.md."
@@ -144,7 +144,7 @@
     "processIntro": "",
     "ownerLabel": "Who you are dealing with",
     "reviewsTitle": "What Ben's clients say.",
-    "reviewsIntro": "Five of their 25 Google reviews, unedited. Where one is marked shortened, Google cut it off and the rest is on their profile. One of them first had Ben build a pool twelve years ago and has him back now for the next stage.",
+    "reviewsIntro": "Five of their 25 Google reviews, unedited. Where one is marked shortened, Google cut it off and the rest is on their profile. One of them first had Ben build a pool twelve years ago and came back to him for the next stage.",
     "recognitionLabel": "Recognition",
     "recognitionHeadline": "Judged by<br>the industry.",
     "recognitionIntro": "SPASA medals from chapter level up to national, and an international award for an indoor lap pool. The full list runs from 2009 to 2016.",
@@ -172,12 +172,12 @@
     "yearsInBusiness": "and counting"
   },
   "pullQuote": {
-    "text": "Our pool is on a tricky site which involved cranes to bring supplies in and off the site.",
-    "name": "Wendy Carcaillet, Google"
+    "text": "…Our pool is on a tricky site which involved cranes to bring supplies in and off the site.",
+    "name": "Wendy Carcaillet, Google review, shortened"
   },
   "owner": {
     "body": "Founder and managing director. He has spent more than twenty years building and renovating reinforced concrete pools, from indoor and rooftop pools to infinity edges and pools built into the structure of a building.",
-    "team": "He stays directly involved through every stage, project-managing each trade himself, and he has presented at national industry forums on pool design and construction.",
+    "team": "He stays directly involved through every stage, project-managing each trade himself, and he has accepted requests to present at national industry expert forums.",
     "facts": [
       {
         "value": "3–6",
@@ -393,8 +393,8 @@
         "width": 1200,
         "height": 1800,
         "caption": "Hunters Hill",
-        "detail": "Fully tiled pool, granite stepping stones",
-        "alt": "A fully tiled Hunters Hill pool with granite stepping stones across it and a submerged bench"
+        "detail": "Fully tiled pool with stepping stones",
+        "alt": "A fully tiled Hunters Hill pool with stepping stones across it and a submerged bench"
       },
       {
         "src": "assets/drummoyne-800.webp",
@@ -413,7 +413,7 @@
         "width": 960,
         "height": 640,
         "caption": "Wahroonga",
-        "detail": "Stone water wall, spa and new surrounds",
+        "detail": "Stone water wall and spa",
         "alt": "A Wahroonga pool at sunset with a stacked-stone water wall spilling into it and a spa alongside"
       },
       {
@@ -462,7 +462,7 @@
     },
     {
       "q": "How long does a renovation take?",
-      "a": "Most restorations take three to six weeks, scheduled around Sydney's weather so finishes like glass bead and pebble interiors cure properly. A new build takes longer and approvals sit in front of it."
+      "a": "Most restorations take three to six weeks, scheduled around Sydney's weather so finishes like glass bead and pebble interiors cure properly."
     },
     {
       "q": "Do you do the pool, or everything around it as well?",

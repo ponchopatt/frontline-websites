@@ -425,7 +425,10 @@ dialog.lb::backdrop{background:rgba(6,13,16,.94)}
 @media(min-width:960px){.about .wrap{grid-template-columns:.9fr 1.1fr}}
 .facts{display:grid;gap:var(--s24);margin-top:var(--s48);padding-top:var(--s32);
   border-top:1px solid var(--line)}
-@media(min-width:560px){.facts{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:560px){.facts{grid-template-columns:repeat(3,1fr)}
+  /* Two facts share the row, so "20 × 50 m" is not squeezed into a third and broken. */
+  .facts:not(:has(> :nth-child(3))){grid-template-columns:repeat(2,1fr)}}
+.facts .n{white-space:nowrap}
 .facts .n{font-family:var(--font-display);font-weight:800;font-size:clamp(3.25rem,5.5vw,4.75rem);
   line-height:.85;display:block;color:var(--teal);font-variant-numeric:tabular-nums}
 .facts .l{font-size:var(--t-label);letter-spacing:.14em;text-transform:uppercase;
