@@ -213,7 +213,9 @@
       if (flagEl) flagEl.hidden = !(hasPrice && unconfirmed(parts));
 
       pgRange = hasPrice ? money(lo) + ' to ' + money(hi) : '';
-      pgSummary = eyebrow + (pgRange ? ', guide ' + pgRange : '');
+      // No price, no "Price guide:" line in the enquiry. Arizona's owner was
+      // about to receive "Price guide: Priced once Oscar has seen it".
+      pgSummary = pgRange ? eyebrow + ', guide ' + pgRange : '';
 
       var body = hasPrice
         ? 'Hi ' + OWNER + ", I'd like to lock in a quote.\n" + eyebrow + '\nGuide price ' + pgRange
@@ -627,9 +629,21 @@
     try { dismissed = sessionStorage.getItem(key) === 'off'; } catch (e) { /* private mode */ }
     if (html.classList.contains('fl-clean')) return;
     document.body.classList.add('has-demobar');
-    function size() { html.style.setProperty('--demobar-h', bar.offsetHeight + 'px'); }
+    // The banner scrolls away in normal flow, so the fixed header follows its
+    // bottom edge up to 0. Holding it at the full banner height left a 57px
+    // strip over the header on Arizona with the page showing through it.
+    var ticking = false;
+    function size() {
+      ticking = false;
+      if (html.classList.contains('fl-clean')) return;
+      var h = Math.max(0, bar.offsetHeight - window.scrollY);
+      html.style.setProperty('--demobar-h', h + 'px');
+    }
     size();
     window.addEventListener('resize', size, { passive: true });
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(size); }
+    }, { passive: true });
     var close = $('demoClose');
     if (close) close.addEventListener('click', function () {
       html.classList.add('fl-clean');

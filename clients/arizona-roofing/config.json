@@ -41,7 +41,7 @@
       "_comment": "Their own white-and-orange wordmark, wp-content/uploads/2023/06/g94-1.png (639x121), for the dark header."
     }
   },
-  "responsePromise": "You deal with Oscar himself, from start to finish.",
+  "responsePromise": "Oscar shows you the problem and the options before you choose.",
   "copy": {
     "title": "Arizona Roofing Canberra | Roof repairs, repointing, gutters and fascia",
     "description": "Roof repairs, repointing and ridge capping, valleys, collars, dektites, gutters and fascia across Canberra. 5.0 from 20 Google reviews. Call Oscar on 0421 149 431.",
@@ -57,7 +57,7 @@
     "galleryTitle": "Tile, metal, ridges, gutters",
     "galleryIntro": "Sample photos, standing in until Oscar’s own jobs go up. Tap one to see it bigger.",
     "reasonsTitle": "Why people pick Oscar",
-    "reasonsIntro": "Twenty Google reviews, and the same five things keep coming up.",
+    "reasonsIntro": "His Google reviews keep coming back to the same five things.",
     "reviewsTitle": "What customers say",
     "reviewsIntro": "Real Google reviews, word for word. 5.0 from 20.",
     "processTitle": "How it works",
@@ -150,7 +150,7 @@
     },
     {
       "title": "Photos and options first",
-      "body": "“He took photos and he gave me different options to fix the roof.” You see the problem before you pick the fix."
+      "body": "“…he took photos and he gave me different options to fix the roof.” You see the problem before you pick the fix."
     },
     {
       "title": "Priced to win the job",
@@ -158,7 +158,7 @@
     },
     {
       "title": "On time, and tidy",
-      "body": "“On time, cleaned up everything.” “Done on time, cleanly, and professionally every step of the way.”"
+      "body": "“On time, cleaned up everything.” “…done on time, cleanly, and professionally every step of the way.”"
     },
     {
       "title": "People have him back",
@@ -326,7 +326,7 @@
         "label": "Roof repair",
         "sub": "A leak or damage",
         "mode": "quote",
-        "formService": "Roof repair",
+        "formService": "Roof repairs",
         "quoteEyebrow": "Priced once Oscar has seen it",
         "quoteLabel": "Book a quote",
         "note": "Tile or metal. <b>Oscar finds it, photographs it and shows you.</b>"
@@ -366,7 +366,7 @@
         "label": "Restoration",
         "sub": "Or roof painting",
         "mode": "quote",
-        "formService": "Roof restoration or painting",
+        "formService": "Something else",
         "quoteEyebrow": "Priced once Oscar has seen it",
         "quoteLabel": "Book a quote",
         "note": "For a roof that’s tired all over. <b>Restoration or painting, Oscar will show you which.</b>"
@@ -376,7 +376,7 @@
         "label": "Metal roof",
         "sub": "Sheets and flashings",
         "mode": "quote",
-        "formService": "Metal roof repairs",
+        "formService": "Something else",
         "quoteEyebrow": "Priced once Oscar has seen it",
         "quoteLabel": "Book a quote",
         "note": "Loose or rusted sheets, flashings and fixings. <b>Text a photo first if you like.</b>"
