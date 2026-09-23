@@ -12,6 +12,7 @@ __pycache__/
 *.tsbuildinfo
 .vercel
 .scratch/
+.scratch-shots/
 logs/
 
 # Reviewer screenshots. Regenerable, and PNG at 1440px is 6 MB a shot that git
