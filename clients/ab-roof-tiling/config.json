@@ -1,0 +1,403 @@
+{
+  "_comment": "AB Roof Tiling, North Narrabeen (Northern Beaches, Sydney). Built 2026-09-23 on the quote template. Site is a 2013-era document.write/table-layout mobile template (see BRIEF.md); the 15-photo Pranas.NET gallery hidden at gallery.htm holds real, sharp job photos, so no sample/stock photos were needed here — 8 of the 15 real photos are used (1 hero + 7 gallery), all under _source with the exact wgc_media path. Their own gallery tops out at 750px wide, so the hero here is below the usual 1600px ideal; no upscaling applied (only a proper AI upscaler is allowed for that, and none was available this session) — flagged for Pat. Owner's surname is not published anywhere (footer, About, reviews) so only 'Tony' is used. No ABN is shown anywhere on the site. Every other fact is traced to abrooftiling.com.au (_source) or data/google_reviews_top25.json. No prices anywhere: they publish none, so every calculator job is quote-mode.",
+  "slug": "ab-roof-tiling",
+  "template": "quote",
+  "industry": "roofing",
+  "live": false,
+  "siteUrl": "https://abrooftiling.com.au",
+  "tagline": "Roof tiling for the Northern Beaches and Sydney, since 1981",
+  "schemaType": "RoofingContractor",
+  "business": {
+    "name": "AB Roof Tiling",
+    "ownerFirstName": "Tony",
+    "phone": {
+      "display": "0417 207 668",
+      "e164": "+61417207668"
+    },
+    "email": "tony@abrooftiling.com.au",
+    "baseSuburb": "North Narrabeen",
+    "region": "Northern Beaches, Sydney",
+    "address": "43 Carefree Rd, North Narrabeen NSW 2101",
+    "currentSite": "abrooftiling.com.au",
+    "brand": {
+      "accent": "#1B3A5C",
+      "accentHover": "#152D48",
+      "accentLift": "#E2725B",
+      "accentLiftHover": "#EC8B75",
+      "_comment": "Their own site is a generic blue mobile template (style-mobi.css) with no distinct brand colours of their own to lift, so this is a deliberate design choice rather than a colour pulled from their CSS: a mid navy (their header/menu bar reads as a plain mid blue) paired with a terracotta lift colour, since terracotta tiling is their trade. accentLift was picked at #E2725B (not a brighter red) specifically to clear WCAG contrast against the template's dark-mode button text (#1C1F23) — verified at 5.35:1."
+    }
+  },
+  "responsePromise": "Tony is responsive and pleasant to deal with, and his crew leave the site clean.",
+  "copy": {
+    "title": "AB Roof Tiling | Roof tiling, Northern Beaches & Sydney since 1981",
+    "description": "New roofs, re-roofing, extensions, repairs and maintenance on the Northern Beaches and across Sydney. 4.8 from 16 Google reviews. Call Tony on 0417 207 668.",
+    "brandMark": "Northern Beaches",
+    "kicker": "Roof tiling, Northern Beaches & Sydney",
+    "headline": "Your whole roof.<br>Done in a day.",
+    "sub": "New roofs, re-roofing, extensions and repairs across the Northern Beaches and Sydney. Tony's crew, since 1981 — they turn up, get it done, and leave the site clean.",
+    "anchor": "<b>4.8 from 16 Google reviews.</b> “Tony and his team from AB Roofing replaced my entire roof in one day with beautiful terracotta tiles.” — Chris Andia",
+    "ctaLabel": "Book a quote",
+    "servicesTitle": "What Tony does",
+    "servicesIntro": "New roofs, re-roofing, extensions and repairs — tile roofs across the Northern Beaches and Sydney.",
+    "servicesAlso": "Also general roof maintenance and gutter cleaning. <a class=\"link\" href=\"#faq\">Good to know</a>",
+    "galleryTitle": "Roofs, framed and finished",
+    "galleryIntro": "Tony's own jobs, from the trusses going up to the finished tile roof. Tap one to see it bigger.",
+    "reasonsTitle": "Why people pick AB Roof Tiling",
+    "reasonsIntro": "The same things keep coming up in Tony's Google reviews.",
+    "reviewsTitle": "What customers say",
+    "reviewsIntro": "Real Google reviews, word for word. 4.8 from 16.",
+    "processTitle": "How it works",
+    "processIntro": "Three steps, and Tony is on the tools.",
+    "areasTitle": "Where we work",
+    "areasIntro": "Based in North Narrabeen on the Northern Beaches, working across Sydney.",
+    "areasNote": "Not sure if you're covered? Give Tony a call and ask.",
+    "faqTitle": "Good to know",
+    "faqIntro": "Straight answers to the questions Tony gets asked most.",
+    "quoteTitle": "Book a quote",
+    "quoteIntro": "Tell Tony what's going on with the roof. A photo helps. It's a no-charge, obligation-free assessment.",
+    "finalTitle": "Get Tony out to look at the roof.",
+    "finalIntro": "Call or text 0417 207 668 — no-charge, obligation-free assessment.",
+    "footerArea": "Northern Beaches & Sydney"
+  },
+  "quoteSteps": [
+    "<b>You send this.</b> Takes a minute.",
+    "<b>Tony comes and looks.</b> A no-charge, obligation-free assessment.",
+    "<b>The crew gets it done</b> — an average roof, often in a day."
+  ],
+  "stats": {
+    "googleRating": 4.8,
+    "reviewCount": 16,
+    "jobsDone": null,
+    "yearsInBusiness": null,
+    "_comment": "4.8 from 16 matches data/google_reviews_top25.json exactly. yearsInBusiness left null on purpose: their own meta description and home page both say 'since 1981', which is used directly in copy, rather than printing a computed '45 years' that isn't their own wording."
+  },
+  "services": [
+    {
+      "title": "New Roofing",
+      "blurb": "Quality tiling for a new home, quoted off your plans or worked out with you on site — whether you're under contract or building it yourself."
+    },
+    {
+      "title": "Re-Roofing",
+      "blurb": "An average size home re-roofed in just one day. AB Roof Tiling own their own roof-perimeter scaffolding and keep a 100% safety record."
+    },
+    {
+      "title": "Extensions",
+      "blurb": "Matching your existing tiles — new or used concrete or terracotta — so the extension roofline reads as one roof, not two. No-charge, obligation-free assessment."
+    },
+    {
+      "title": "Roof Repairs",
+      "blurb": "Leaking roofs, storm damage, broken tiles, cracked ridges, valley irons, and gutters and downpipes cleared out. No-charge, obligation-free assessment."
+    }
+  ],
+  "reasons": [
+    {
+      "title": "A whole roof, in a day",
+      "body": "“Replaced the terracotta tile roof on my Birchgrove Semi in one day” (Wayne McMahon). “Replaced my entire roof in one day with beautiful terracotta tiles” (Chris Andia)."
+    },
+    {
+      "title": "Tony's on the tools",
+      "body": "“Tony was great on the tools but great with the neighbours” (Hagen Jewell). “Tony is also very responsive and pleasant to deal with” (Wayne McMahon)."
+    },
+    {
+      "title": "They clean up after themselves",
+      "body": "“Left the surrounding area cleaner than before they arrived” (Chris Andia). “The left the site clean” (Hagen Jewell)."
+    },
+    {
+      "title": "CSR-nominated specialist installer",
+      "body": "AB Roof Tiling is nominated by leading roofing manufacturer CSR as a certified roofing specialist installer."
+    },
+    {
+      "title": "Roofing the Northern Beaches since 1981",
+      "body": "A reputation for high-quality roofing installations since 1981, through to roof maintenance and repairs."
+    }
+  ],
+  "process": [
+    {
+      "step": "Call, text or send the form",
+      "detail": "0417 207 668, or the form on this page. A photo of the problem helps."
+    },
+    {
+      "step": "Tony comes and looks",
+      "detail": "A no-charge, obligation-free roofing assessment, on site."
+    },
+    {
+      "step": "The job gets done",
+      "detail": "An average size home is often re-roofed in just one day. Customers mention the crew leaving the site clean."
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "Based in North Narrabeen",
+      "suburbs": ["Northern Beaches"]
+    },
+    {
+      "region": "Also working across",
+      "suburbs": ["North Shore", "Eastern Suburbs", "Inner West", "Sydney"]
+    }
+  ],
+  "credentials": [
+    {
+      "kind": "partner",
+      "label": "CSR-nominated specialist installer",
+      "body": "A.B. Roof Tiling is nominated by leading roofing manufacturer CSR as a certified roofing specialist installer.",
+      "strip": true,
+      "_source": "\"A.B. Roof Tiling is nominated by leading roofing manufacturer CSR as a certified roofing specialist installer.\" — repeated verbatim on https://abrooftiling.com.au/about.htm, /new_roofing.htm, /re_roofing.htm, /extensions.htm and /roof_repairs.htm, read 2026-09-23."
+    },
+    {
+      "kind": "claim",
+      "label": "Since 1981",
+      "body": "A reputation for high quality roofing installations since 1981.",
+      "strip": true,
+      "_source": "Meta description on every page: \"AB Roof Tiling since 1981 has been providing professional roof tiling on the Northern Beaches and Sydney areas...\" AND the home page's own body text: \"A reputation for high quality roofing installations since 1981, A.B. Roof Tiling provides professional services from roof replacement through to roof maintenance and roof repairs.\" — https://abrooftiling.com.au (read 2026-09-23)."
+    },
+    {
+      "kind": "claim",
+      "label": "100% safety record",
+      "body": "A.B. Roof Tiling also maintains, owns and installs its own roof perimeter scaffolding to ensure and guarantee complete safety.",
+      "strip": true,
+      "_source": "\"We pride ourselves in our quality and reliable services and not only do we deliver our services on time, but we offer a 100% safety record. A.B. Roof Tiling also maintains, owns and installs its own 'roof perimetre scaffolding' to ensure and guarantee complete safety.\" — https://abrooftiling.com.au/re_roofing.htm (read 2026-09-23)."
+    }
+  ],
+  "photos": {
+    "_comment": "All 8 photos used are AB Roof Tiling's own real job photos, pulled from the hidden Pranas.NET gallery at https://abrooftiling.com.au/gallery.htm (images served from wgc_media/photos/0001.jpg–0015.jpg, not linked from the main nav). Opened one by one — see BRIEF.md's photo inventory table for all 15 and which 8 were chosen. No sample/stock photos needed. Native resolution on the source site tops out at 750px wide (no larger originals exist at any guessable path), so images here are served at their true native size rather than upscaled — the hero is below the usual 1600px-wide ideal for that reason; flagged for Pat.",
+    "hero": {
+      "src": "assets/hero-tile-roof-750.webp",
+      "srcset": "assets/hero-tile-roof-375.webp 375w, assets/hero-tile-roof-600.webp 600w, assets/hero-tile-roof-750.webp 750w",
+      "width": 750,
+      "height": 373,
+      "alt": "Close-up of a finished dark grey concrete tile roof, hips and ridges meeting under a blue sky, on an AB Roof Tiling job",
+      "_source": "https://abrooftiling.com.au/wgc_media/photos/0007.jpg, via https://abrooftiling.com.au/gallery.htm (read 2026-09-23)"
+    },
+    "gallery": [
+      {
+        "src": "assets/gallery-tiling-in-progress-600.webp",
+        "full": "assets/gallery-tiling-in-progress-750.webp",
+        "srcset": "assets/gallery-tiling-in-progress-375.webp 375w, assets/gallery-tiling-in-progress-600.webp 600w, assets/gallery-tiling-in-progress-750.webp 750w",
+        "width": 750,
+        "height": 448,
+        "caption": "Crew laying sarking before tiling",
+        "alt": "Two AB Roof Tiling crew members on a roof frame, laying blue sarking over the trusses of a brick house under construction",
+        "_source": "https://abrooftiling.com.au/wgc_media/photos/0002.jpg"
+      },
+      {
+        "src": "assets/gallery-roof-sarking-600.webp",
+        "full": "assets/gallery-roof-sarking-750.webp",
+        "srcset": "assets/gallery-roof-sarking-375.webp 375w, assets/gallery-roof-sarking-600.webp 600w, assets/gallery-roof-sarking-750.webp 750w",
+        "width": 750,
+        "height": 560,
+        "caption": "New roof, mid-install",
+        "alt": "Two AB Roof Tiling crew members laying sarking across a large tiled roof frame, ladder against the eave",
+        "_source": "https://abrooftiling.com.au/wgc_media/photos/0003.jpg"
+      },
+      {
+        "src": "assets/gallery-tile-roof-close-600.webp",
+        "full": "assets/gallery-tile-roof-close-750.webp",
+        "srcset": "assets/gallery-tile-roof-close-375.webp 375w, assets/gallery-tile-roof-close-600.webp 600w, assets/gallery-tile-roof-close-750.webp 750w",
+        "width": 750,
+        "height": 560,
+        "caption": "Finished tile roof, close up",
+        "alt": "Close-up of a finished dark concrete tile roof, hips and ridges, against a blue sky with clouds",
+        "_source": "https://abrooftiling.com.au/wgc_media/photos/0005.jpg"
+      },
+      {
+        "src": "assets/gallery-grand-estate-600.webp",
+        "full": "assets/gallery-grand-estate-750.webp",
+        "srcset": "assets/gallery-grand-estate-375.webp 375w, assets/gallery-grand-estate-600.webp 600w, assets/gallery-grand-estate-750.webp 750w",
+        "width": 750,
+        "height": 501,
+        "caption": "Large tiled roof, finished",
+        "alt": "A large rendered home with a dark tile roof, courtyard urn and fountain, finished AB Roof Tiling job",
+        "_source": "https://abrooftiling.com.au/wgc_media/photos/0006.jpg"
+      },
+      {
+        "src": "assets/gallery-courtyard-home-600.webp",
+        "full": "assets/gallery-courtyard-home-750.webp",
+        "srcset": "assets/gallery-courtyard-home-375.webp 375w, assets/gallery-courtyard-home-600.webp 600w, assets/gallery-courtyard-home-750.webp 750w",
+        "width": 750,
+        "height": 491,
+        "caption": "Tile roof over a courtyard home",
+        "alt": "A large home with a white-painted tile roof, courtyard fountain and pool in front",
+        "_source": "https://abrooftiling.com.au/wgc_media/photos/0009.jpg"
+      },
+      {
+        "src": "assets/gallery-estate-dusk-600.webp",
+        "full": "assets/gallery-estate-dusk-750.webp",
+        "srcset": "assets/gallery-estate-dusk-375.webp 375w, assets/gallery-estate-dusk-600.webp 600w, assets/gallery-estate-dusk-750.webp 750w",
+        "width": 750,
+        "height": 507,
+        "caption": "Two-storey home, tile roof",
+        "alt": "A two-storey rendered home at dusk with a dark tile roof and lit windows",
+        "_source": "https://abrooftiling.com.au/wgc_media/photos/0012.jpg"
+      },
+      {
+        "src": "assets/gallery-modern-home-600.webp",
+        "full": "assets/gallery-modern-home-750.webp",
+        "srcset": "assets/gallery-modern-home-375.webp 375w, assets/gallery-modern-home-600.webp 600w, assets/gallery-modern-home-750.webp 750w",
+        "width": 750,
+        "height": 560,
+        "caption": "Modern home, dark tile roof",
+        "alt": "A modern white two-storey home with a dark tile roof against a bright blue sky",
+        "_source": "https://abrooftiling.com.au/wgc_media/photos/0015.jpg"
+      }
+    ],
+    "beforeAfter": []
+  },
+  "calculator": {
+    "_comment": "Every job is mode 'quote', so not one dollar figure is printed. AB Roof Tiling publish no prices anywhere on their site.",
+    "heading": "What will it cost?",
+    "intro": "There's no price list — every roof's different. Pick the job below and Tony will quote it after a no-charge, obligation-free assessment.",
+    "jobLabel": "What's the job?",
+    "fine": "",
+    "included": [
+      "No-charge, obligation-free assessment",
+      "Tony on the tools",
+      "Own roof-perimeter scaffolding",
+      "Site left clean"
+    ],
+    "jobs": [
+      {
+        "id": "new",
+        "label": "New roofing",
+        "sub": "New build or extension",
+        "mode": "quote",
+        "formService": "New Roofing",
+        "quoteEyebrow": "Priced off your plans",
+        "quoteLabel": "Book a quote",
+        "note": "Quoted off your plans, or worked out with you on site."
+      },
+      {
+        "id": "reroof",
+        "label": "Re-roofing",
+        "sub": "Whole roof replaced",
+        "mode": "quote",
+        "formService": "Re-Roofing",
+        "quoteEyebrow": "Priced once Tony has seen it",
+        "quoteLabel": "Book a quote",
+        "note": "An average size home, <b>often re-roofed in just one day</b>."
+      },
+      {
+        "id": "extension",
+        "label": "Extension",
+        "sub": "Matching the existing roof",
+        "mode": "quote",
+        "formService": "Extensions",
+        "quoteEyebrow": "Free, no-obligation assessment",
+        "quoteLabel": "Book a quote",
+        "note": "Matched in new or used concrete or terracotta tiles."
+      },
+      {
+        "id": "repair",
+        "label": "Roof repair",
+        "sub": "Leaks or storm damage",
+        "mode": "quote",
+        "formService": "Roof Repairs",
+        "quoteEyebrow": "Free, no-obligation assessment",
+        "quoteLabel": "Book a quote",
+        "note": "Broken tiles, cracked ridges, valley irons, gutters and downpipes."
+      }
+    ]
+  },
+  "faq": [
+    {
+      "q": "How long does re-roofing take?",
+      "a": "An average size home can be re-roofed in just one day. Two separate customers have had a full roof replaced in a single day — ask Tony what to expect for your place."
+    },
+    {
+      "q": "Is the assessment free?",
+      "a": "Yes. Tony comes out and gives you a no-charge, obligation-free roofing assessment before you decide on anything."
+    },
+    {
+      "q": "Can you match tiles on an extension?",
+      "a": "Yes. AB Roof Tiling matches your existing roof in new or used concrete or terracotta tiles, so the extension reads as one roof."
+    },
+    {
+      "q": "What repairs do you handle?",
+      "a": "Leaking roofs, storm damage, broken tiles, cracked ridges, valley irons, and cleaning out gutters and downpipes."
+    },
+    {
+      "q": "Do you clean up after the job?",
+      "a": "Customers say so: “left the surrounding area cleaner than before they arrived” and “left the site clean”."
+    },
+    {
+      "q": "How long has AB Roof Tiling been operating?",
+      "a": "Since 1981 — a reputation for high quality roofing installations on the Northern Beaches and across Sydney."
+    }
+  ],
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [
+    {
+      "name": "Chris Andia",
+      "text": "Tony and his team from AB Roofing replaced my entire roof in one day with beautiful terracotta tiles. The work is of a high quality and they left the surrounding area cleaner than before they arrived. AB Roofing was recommended to me and I highly recommend them after my experience."
+    },
+    {
+      "name": "Wayne McMahon",
+      "text": "Tony and his AB Roof Tiling team replaced the terracotta tile roof on my Birchgrove Semi in one day. The roof now looks fantastic and the final result is of a high quality. I would highly recommend AB Roof Tiling, they are really good. Tony is also very responsive and pleasant to deal with."
+    },
+    {
+      "name": "Lynette Shedden",
+      "text": "Tony and colleague promptly conducted a physical inspection of our Stata's tiled roof situation to ascertain if repairs were necessary. Many thanks Tony."
+    },
+    {
+      "name": "Fiona Lollback",
+      "text": "Highly recommend Tony and his team! They are a great group of boys that got the job done and it wasn’t an easy job!"
+    },
+    {
+      "name": "geoff dick",
+      "text": "Did a fantastic job on a terrace we have in sydny a real pleasure to deal with Geoff"
+    },
+    {
+      "name": "Brendon Soo",
+      "text": "Tony, Shane and the AB Roof Tiling team did a superlative job replacing the entire terracotta roof on a 100yr old Californian bungalow located on the Lower North Shore in Sydney.",
+      "shortened": true
+    }
+  ],
+  "form": {
+    "accessKey": ""
+  },
+  "_source": {
+    "url": "https://abrooftiling.com.au",
+    "platform": "Static HTML, document.write includes (2013-era mobile template, HTTrack-mirrored)",
+    "pagesRead": [
+      "https://abrooftiling.com.au (home, read 2026-09-23)",
+      "https://abrooftiling.com.au/about.htm (read 2026-09-23)",
+      "https://abrooftiling.com.au/new_roofing.htm (read 2026-09-23)",
+      "https://abrooftiling.com.au/re_roofing.htm (read 2026-09-23)",
+      "https://abrooftiling.com.au/extensions.htm (read 2026-09-23)",
+      "https://abrooftiling.com.au/roof_repairs.htm (read 2026-09-23)",
+      "https://abrooftiling.com.au/contact.htm (read 2026-09-23)",
+      "https://abrooftiling.com.au/gallery.htm (read 2026-09-23)",
+      "https://abrooftiling.com.au/testimonials.htm (read 2026-09-23)",
+      "https://abrooftiling.com.au/header.js, menu.js, pages.js, footer.js, menu-icons.js (read 2026-09-23, to resolve the document.write includes and find the page list)"
+    ],
+    "aboutText": "A.B. Roof Tiling is one of Sydney's well established professional roof tiling companies. They have become the pinnacle of success through high standards of craftmenship and an excellent work ethic. Striving to keep their reputation as one of the best tiling organisations in Sydney, they continue to offer cutting edge technology and the latest advanced roofing systems. . . . one step ahead of the competition. What we offer: Newly built roofs, Roof replacements, Roofing extensions, Repairs. A.B. Roof Tiling is nominated by leading roofing manufacturer CSR as a certified roofing specialist installer.",
+    "socials": {
+      "facebook": "https://www.facebook.com/pages/ab-roof-tiling/224511441039451?rf=527223987346235"
+    },
+    "abn": "Not published anywhere on the site (home, about, service pages, contact, footer) — left off on purpose.",
+    "email": "\"E: tony@abrooftiling.com.au\" printed on https://abrooftiling.com.au/contact.htm and used as the mailto link in menu-icons.js, read 2026-09-23.",
+    "phone": "\"T: 0417 207668\" on https://abrooftiling.com.au/contact.htm, read 2026-09-23; matches the Google Business phone 0417 207 668 in data/google_reviews_top25.json (google_phone field).",
+    "address": "\"43 Carefree Rd, North Narrabeen, Sydney, NSW 2101\" — https://abrooftiling.com.au/contact.htm, read 2026-09-23.",
+    "quotedElsewhere": {
+      "metaDescription": "AB Roof Tiling since 1981 has been providing professional roof tiling on the Northern Beaches and Sydney areas, new roofs re-roofing extensions repairs and maintenance — identical on every page.",
+      "homeIntro": "Welcome to AB Roof Tiling. A reputation for high quality roofing installations since 1981, A.B. Roof Tiling provides professional services from roof replacement through to roof maintenance and roof repairs. Our professional team work with manufacturers to provide specifications in the highest quality products assuring all roof tiles will perform as designed.",
+      "reRoofingClaim": "\"A.B. Roof Tiling can re-roof the average size home in just 1 day. We pride ourselves in our quality and reliable services and not only do we deliver our services on time, but we offer a 100% safety record. A.B. Roof Tiling also maintains, owns and installs its own 'roof perimetre scaffolding' to ensure and guarantee complete safety.\" — re_roofing.htm",
+      "extensionsAssessment": "\"A.B. Roof Tiling will provide a no charge, obligation free roofing assessment.\" — extensions.htm and roof_repairs.htm (near-identical wording on both).",
+      "csrCredential": "\"A.B. Roof Tiling is nominated by leading roofing manufacturer CSR as a certified roofing specialist installer.\" — repeated on about.htm, new_roofing.htm, re_roofing.htm, extensions.htm, roof_repairs.htm.",
+      "customerTestimonials": "Three third-party testimonials also appear on testimonials.htm from 'The Biggest Loser House' (David Love, Project Manager, Chateau Homes), Denton Homes (David Denton, Managing Director) and Greg from The Wiggles — not used on the demo page since none are Google reviews and the names/roles cannot be independently verified from this session, but noted here in case Pat wants to feature one with the client's permission."
+    },
+    "siteIssuesFound": [
+      "Built with 2013-era document.write includes (header.js, menu.js, pages.js, footer.js, menu-icons.js); the testimonials.htm source still carries an HTTrack mirror comment dated 17 Mar 2013",
+      "Active right-click / text-selection blocking script on every page",
+      "Table-based layout throughout, no real responsive design beyond the viewport meta tag",
+      "The 15 real job photos live in a gallery.htm lightbox not linked from the main nav — only reachable via a small icon in the page's icon bar",
+      "Google's own listing for this business points at abrooftiling.com.au/contact.htm rather than the homepage (see data/google_reviews_top25.json 'flag' field)",
+      "Their 4.8-from-16 Google rating appears nowhere on the site",
+      "Contact page gives a fax number equal billing with the mobile number"
+    ]
+  },
+  "sms": {
+    "label": "Text a photo",
+    "body": "Hi Tony, I'd like a quote for my roof.\nSuburb: \nWhat's wrong: \n(I can send photos of the roof.)"
+  }
+}
