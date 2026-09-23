@@ -8,13 +8,21 @@
 <!-- A demo built as a proposal. It carries a real business's name and must never be indexed. -->
 <meta name="robots" content="noindex,nofollow,noarchive,noimageindex">
 <meta name="theme-color" content="#070C18">
+<noscript><style>#qForm{display:none}</style></noscript>
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://aqua-brothers-demo-frontline.vercel.app/">
+<meta property="og:site_name" content="Aqua Brothers Plumbing">
+<meta property="og:locale" content="en_AU">
 <meta property="og:title" content="Aqua Brothers Plumbing | Licensed Plumbers &amp; Gas Fitters, Canberra">
 <meta property="og:description" content="Licensed plumbers and gas fitters in Canberra, ACT &amp; NSW. New builds, renovations, blocked drains, hot water and 24-hour emergencies.">
-<meta property="og:image" content="assets/og-aqua.jpg">
+<meta property="og:image" content="https://aqua-brothers-demo-frontline.vercel.app/assets/og-aqua.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Aqua Brothers Plumbing: licensed plumbers and gas fitters in Canberra">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Aqua Brothers Plumbing | Licensed Plumbers &amp; Gas Fitters, Canberra">
+<meta name="twitter:description" content="Licensed plumbers and gas fitters in Canberra, ACT &amp; NSW.">
+<meta name="twitter:image" content="https://aqua-brothers-demo-frontline.vercel.app/assets/og-aqua.jpg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
@@ -87,6 +95,8 @@ button{font:inherit;color:inherit;background:none;border:0}
 .skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--aqua);color:var(--aqua-ink);
   padding:14px 22px;font-weight:600;text-decoration:none;border-radius:var(--r)}
 .skip:focus{left:12px;top:12px}
+main:focus{outline:none}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 
 /* Film grain over everything: what makes flat dark panels read as a surface.
    Phones skip it; a fixed full-screen layer is paint work a small GPU does not need. */
@@ -132,7 +142,7 @@ body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opa
 .btn-ghost:hover{border-color:rgba(242,246,250,.5);transform:translateY(-2px)}
 .btn:active{transform:translateY(0) scale(.985)}
 .btn[aria-busy="true"]{opacity:.7;cursor:progress}
-.btn.small{min-height:44px;padding:0 20px;font-size:14px}
+.btn.small{min-height:44px;padding:0 20px;font-size:14px;box-shadow:none}
 .link{color:var(--fg-2);text-decoration:underline;text-underline-offset:4px;
   text-decoration-color:var(--line-2);display:inline-flex;align-items:center;gap:9px;min-height:44px;
   transition:color .2s,text-decoration-color .2s}
@@ -149,13 +159,18 @@ body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opa
   background:linear-gradient(rgba(7,12,24,.8),rgba(7,12,24,0))}
 .topline{border-bottom:1px solid var(--border);background:rgba(7,12,24,.5)}
 .topline .wrap{display:flex;align-items:center;gap:10px;padding-block:8px;font-size:11px}
-.topline .dot{width:7px;height:7px;border-radius:50%;background:var(--aqua);flex:none;
-  box-shadow:0 0 0 0 rgba(58,194,234,.55);animation:pulse-dot 2.2s ease-in-out infinite}
-@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(58,194,234,.55)}50%{box-shadow:0 0 0 6px rgba(58,194,234,0)}}
+.topline .dot{position:relative;width:7px;height:7px;border-radius:50%;background:var(--aqua);flex:none}
+.topline .dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:rgba(58,194,234,.55);
+  animation:pulse-ring 2.2s ease-out infinite}
+@keyframes pulse-ring{from{transform:scale(1);opacity:.8}to{transform:scale(2.7);opacity:0}}
+html.still .topline .dot::after{animation-play-state:paused}
+.topline .right{margin-left:auto;display:none;font-family:var(--font-lbl);font-size:10px;letter-spacing:.1em;color:var(--mute)}
+@media(min-width:900px){.topline .right{display:inline-flex}}
+@media(max-width:359px){.topline .label{letter-spacing:.12em;white-space:nowrap;font-size:10px}}
 .topin{display:flex;align-items:center;gap:20px;min-height:76px}
 .brand{display:flex;align-items:center;gap:11px;text-decoration:none;margin-right:auto;min-height:44px}
 .brand .mark{width:auto;height:32px}
-.brand .word{font-family:var(--font-lbl);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg)}
+.brand .word{font-family:var(--font-lbl);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg);white-space:nowrap}
 .nav{display:none;gap:26px;font-size:15px}
 .nav a{text-decoration:none;color:var(--fg-2);min-height:44px;display:inline-flex;align-items:center;
   background-image:linear-gradient(var(--aqua),var(--aqua));background-repeat:no-repeat;
@@ -179,14 +194,25 @@ body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opa
 .menubtn[aria-expanded="true"] span:nth-child(1){transform:translateY(5.5px) rotate(45deg)}
 .menubtn[aria-expanded="true"] span:nth-child(2){opacity:0}
 .menubtn[aria-expanded="true"] span:nth-child(3){transform:translateY(-5.5px) rotate(-45deg)}
-.mobilenav{position:absolute;top:100%;left:0;right:0;background:var(--bg-2);border-bottom:1px solid var(--border);
-  padding:8px var(--gut) 22px;box-shadow:0 20px 40px rgba(0,0,0,.45)}
-.mobilenav a{display:flex;align-items:center;min-height:48px;text-decoration:none;color:var(--fg-2);font-size:16px;
-  border-bottom:1px solid var(--border)}
-.mobilenav a:last-of-type{border-bottom:0}
-.mobilenav a:hover{color:var(--fg)}
-.mobilenav .btn{display:flex;width:100%;margin-top:14px}
+.mobilenav{position:fixed;inset:0;left:0;right:0;top:0;z-index:75;background:rgba(7,12,24,.97);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  padding:calc(var(--header-h) + 8px) var(--gut) calc(24px + env(safe-area-inset-bottom,0px));
+  overflow-y:auto;display:flex;flex-direction:column}
+.mobilenav a.mnlink{display:flex;align-items:center;gap:14px;min-height:56px;text-decoration:none;color:var(--fg);
+  font-family:var(--font-d);font-weight:800;text-transform:uppercase;font-stretch:110%;font-size:clamp(1.7rem,8vw,2.2rem);
+  letter-spacing:-.01em;border-bottom:1px solid var(--border)}
+.mobilenav a.mnlink:last-of-type{border-bottom:0}
+.mobilenav a.mnlink .mnidx{font-family:var(--font-lbl);font-weight:400;font-size:10px;letter-spacing:.1em;color:var(--aqua)}
+.mobilenav .btn{display:flex;width:100%;margin-top:22px}
+.mobilenav .mn-contact{margin-top:20px;display:grid;gap:10px}
+.mobilenav .mn-contact a{display:flex;align-items:center;gap:10px;min-height:44px;text-decoration:none;color:var(--fg-2);
+  font-size:15px;font-variant-numeric:tabular-nums}
+.mobilenav .mn-contact a svg{width:16px;height:16px;color:var(--aqua)}
+.mobilenav .mn-emg{margin-top:18px;display:flex;align-items:center;gap:9px;color:var(--fg-2);font-size:11px;
+  font-family:var(--font-lbl);letter-spacing:.1em;text-transform:uppercase}
+.mobilenav .mn-emg .dot{position:relative;width:7px;height:7px;border-radius:50%;background:var(--aqua);flex:none}
 @media(min-width:1080px){.mobilenav{display:none !important}}
+body.menu-open{overflow:hidden}
 
 /* ---------------------------------------------------------------- hero
    A full-bleed blurred backdrop behind a tall portrait video panel, an aqua
@@ -204,6 +230,7 @@ body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opa
 .hero-panel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--card)}
 .hero-panel .shade{position:absolute;inset:0;
   background:linear-gradient(to top,rgba(7,12,24,.97) 0%,rgba(7,12,24,.8) 45%,rgba(7,12,24,.6) 66%,rgba(7,12,24,.3) 82%,rgba(7,12,24,.4) 100%)}
+.work-reel .playbtn{top:16px}
 .playbtn{position:absolute;right:16px;top:calc(var(--header-h) + 8px);z-index:3;border-radius:999px;
   border:1px solid rgba(242,246,250,.22);background:rgba(7,12,24,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
   padding:0 18px;min-height:44px;font-size:14px;cursor:pointer;color:var(--fg)}
@@ -212,30 +239,52 @@ body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opa
 .panel-chip{display:none}
 @media(min-width:900px){
 .panel-chip{display:block;position:absolute;left:16px;bottom:16px;right:16px;z-index:3;margin:0;font-size:12.5px;
-  font-weight:600;color:var(--fg);background:rgba(7,12,24,.66);border:1px solid var(--border);
-  border-radius:999px;padding:9px 16px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);width:fit-content}
+  line-height:1.5;font-weight:600;color:var(--fg);background:rgba(7,12,24,.66);border:1px solid var(--border);
+  border-radius:14px;padding:9px 16px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);width:fit-content}
 }
 .hero-copy{position:relative;z-index:2;padding-top:38svh}
 .hero-copy .caustic{position:absolute;top:-16vh;left:-14%;right:-14%;height:calc(100% + 32vh);z-index:-1;pointer-events:none;mix-blend-mode:screen;
   opacity:.55;will-change:transform;
+  -webkit-mask-image:radial-gradient(closest-side,#000 60%,transparent);mask-image:radial-gradient(closest-side,#000 60%,transparent);
   background:
-    radial-gradient(34% 30% at 18% 24%,rgba(58,194,234,.4),transparent 72%),
-    radial-gradient(28% 24% at 72% 62%,rgba(22,166,212,.32),transparent 72%),
-    radial-gradient(24% 20% at 48% 8%,rgba(123,221,248,.26),transparent 72%);
+    radial-gradient(34% 30% at 22% 34%,rgba(58,194,234,.4),transparent 72%),
+    radial-gradient(28% 24% at 70% 62%,rgba(22,166,212,.32),transparent 72%),
+    radial-gradient(24% 20% at 48% 30%,rgba(123,221,248,.26),transparent 72%);
   animation:caustic-drift 22s ease-in-out infinite alternate}
+html.still .hero-copy .caustic,html.hero-off .hero-copy .caustic{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.hero-copy .caustic{will-change:auto}}
 @keyframes caustic-drift{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-2.5%,2%,0) scale(1.06)}100%{transform:translate3d(2%,-1.5%,0) scale(1.02)}}
 .hero h1{font-size:min(2.5rem,calc((100vw - 2rem) / 9.4))}
-@media(min-width:900px){.hero h1{font-size:clamp(2.5rem,4.6vw,4.3rem)}}
 .hero-sub{position:relative;margin:22px 0 0;max-width:34rem;font-size:16px;color:var(--fg-2)}
 .hero-cta{position:relative;display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
-.hero-text{position:relative;margin-top:16px}
+.hero-cta-desktop{display:none}
+.hero-cta-phone{display:flex;flex-direction:column;gap:12px}
+.hero-cta-phone .btn{width:100%}
+.hero-cta-row2{display:flex;gap:12px}
+.hero-cta-row2 .btn{flex:1 1 0;padding:0 14px}
+.hero-text{position:relative;margin-top:16px;display:none}
+@media(min-width:768px){
+  .hero-cta-desktop{display:flex}
+  .hero-cta-phone{display:none}
+  .hero-text{display:block}
+}
 .chips{position:relative;display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;padding:0}
 .chips li{font-family:var(--font-lbl);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
   color:var(--fg-2);border:1px solid var(--border);border-radius:999px;padding:8px 14px;
   background:rgba(14,22,41,.5)}
 @media(max-width:767px){
   .hero-cta .btn{flex:1 1 0;padding:0 16px}
+  .chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:22px}
+  .chips li{text-align:center;white-space:nowrap;padding:9px 6px;font-size:10px;letter-spacing:.08em}
+  .brand .mark{height:26px} .brand{gap:9px} .topin{gap:10px}
 }
+/* the mark's own logo-lockup width means the wordmark only has room once
+   the roundbtn/menubtn/mark no longer crowd it (measured: collides below 400px) */
+@media(min-width:400px) and (max-width:767px){
+  .brand .word.only-wide{display:inline-flex !important;font-size:10px;letter-spacing:.08em}
+}
+@media(max-width:379px){ .chips li{font-size:9.5px;letter-spacing:.05em;padding-inline:4px} }
+@media(max-width:359px){ .chips li{font-size:9px;letter-spacing:.04em} }
 /* a phone turned sideways: headline and buttons only, so both fit */
 @media(max-height:500px) and (max-width:899px){
   .hero-copy{padding-top:calc(var(--header-h) + 4px)}
@@ -253,25 +302,35 @@ body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opa
   .hero-grid{grid-template-columns:repeat(12,minmax(0,1fr));align-items:center;
     min-height:92svh;padding-top:calc(var(--header-h) + 12px);padding-bottom:32px}
   .hero-panel{position:relative;inset:auto;grid-column:8 / span 5;grid-row:1;justify-self:end;
-    height:min(74vh,760px);aspect-ratio:720/1280;border-radius:var(--r-xl);overflow:hidden;
+    height:min(74vh,700px);aspect-ratio:720/1280;border-radius:var(--r-xl);overflow:hidden;
     box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 120px rgba(58,194,234,.22)}
   .hero-panel .shade{display:none}
   .playbtn{top:16px}
-  .hero-copy{grid-column:1 / span 8;grid-row:1;padding-top:0}
+  .hero-copy{grid-column:1 / span 7;grid-row:1;padding-top:0}
+  .hero h1{font-size:clamp(2.5rem,4.4vw,4rem)}
   .hero-sub{font-size:18px}
   .hero-cta{gap:14px}
 }
 .strip{position:relative;border-top:1px solid rgba(242,246,250,.1);padding-block:16px}
+.motion-btn{position:absolute;right:var(--gut);top:50%;transform:translateY(-50%);z-index:2;
+  width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:rgba(7,12,24,.55);
+  display:grid;place-items:center;color:var(--fg-2);flex:none;cursor:pointer;transition:border-color .2s,color .2s}
+.motion-btn:hover{border-color:var(--aqua);color:var(--fg)}
+.motion-btn svg{width:14px;height:14px}
+.motion-btn .icon-play{display:none}
+.motion-btn[aria-pressed="true"] .icon-pause{display:none}
+.motion-btn[aria-pressed="true"] .icon-play{display:block}
 
 /* ---------------------------------------------------------------- marquee */
 .marquee{overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);
   mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent)}
 .marquee-track{display:flex;width:max-content;animation:marquee var(--dur,44s) linear infinite}
-.marquee:hover .marquee-track{animation-play-state:paused}
-.marquee span{display:inline-flex;align-items:center;gap:20px;padding-right:20px;white-space:nowrap;
+.marquee:hover .marquee-track,.marquee:focus-within .marquee-track,html.still .marquee-track{animation-play-state:paused}
+.mq{display:flex}
+.mq li{display:inline-flex;align-items:center;gap:20px;padding-right:20px;white-space:nowrap;
   font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:14px;color:var(--fg-2);
   font-stretch:100%}
-.marquee span::after{content:"";width:9px;height:11px;flex:none;background-color:var(--aqua);
+.mq li::after{content:"";width:9px;height:11px;flex:none;background-color:var(--aqua);
   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z'/%3E%3C/svg%3E") center/contain no-repeat;
   mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z'/%3E%3C/svg%3E") center/contain no-repeat}
 @keyframes marquee{to{transform:translate3d(-50%,0,0)}}
@@ -286,84 +345,198 @@ body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opa
   background:radial-gradient(50% 40% at 15% 20%,var(--aqua-soft),transparent 70%)}
 
 /* ---------------------------------------------------------------- problem picker */
-.ptiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-@media(min-width:700px){.ptiles{grid-template-columns:repeat(5,minmax(0,1fr))}}
-.ptile{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:12px;text-align:left;
-  background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:20px 18px;
-  min-height:128px;cursor:pointer;transition:border-color .2s,background-color .2s,transform .2s}
-.ptile svg{width:26px;height:26px;color:var(--aqua);flex:none}
-.ptile .pt-title{font-weight:600;font-size:15px;line-height:1.28}
-.ptile .ptag{position:absolute;top:12px;right:12px;font-family:var(--font-lbl);font-size:9px;letter-spacing:.08em;
-  color:var(--aqua);border:1px solid rgba(58,194,234,.4);border-radius:999px;padding:3px 7px;line-height:1}
-.ptile:hover{border-color:var(--line-2);transform:translateY(-2px)}
-.ptile[aria-pressed="true"]{border-color:var(--aqua);background:var(--aqua-soft);box-shadow:0 0 0 1px var(--aqua) inset}
+.ptiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ptile{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:14px;text-align:left;
+  background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--border);border-radius:16px;padding:18px;
+  min-height:156px;overflow:hidden;cursor:pointer;transition:border-color .2s,background-color .2s,transform .2s,box-shadow .2s}
+.ptile::before{content:"";position:absolute;inset:0;z-index:0;opacity:0;transition:opacity .35s ease;
+  background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%),var(--aqua-soft),transparent 72%)}
+@media(hover:hover) and (pointer:fine){.ptile:hover::before{opacity:1}}
+.ptile > *{position:relative;z-index:1}
+.ptile .pt-ico{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;flex:none;
+  background:var(--aqua-soft);border:1px solid rgba(58,194,234,.35);transition:background-color .25s,border-color .25s}
+.ptile .pt-ico svg{width:24px;height:24px;color:var(--aqua);flex:none;transition:color .25s}
+.ptile .pt-title{font-family:var(--font-d);font-weight:800;font-stretch:100%;text-transform:uppercase;
+  font-size:15px;line-height:1.12;letter-spacing:.01em;margin-top:auto}
+.ptile .ptag{position:absolute;z-index:1;top:14px;right:14px;display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--font-lbl);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--aqua);border:1px solid rgba(58,194,234,.4);border-radius:999px;padding:4px 8px 4px 6px;line-height:1}
+.ptile .ptag .dot{position:relative;width:5px;height:5px;border-radius:50%;background:var(--aqua);flex:none}
+.ptile .ptag .dot::after{content:"";position:absolute;inset:-3px;border-radius:50%;background:rgba(58,194,234,.5);
+  animation:pulse-ring 2.2s ease-out infinite}
+html.still .ptile .ptag .dot::after{animation-play-state:paused}
+.ptile:hover{border-color:rgba(58,194,234,.45);transform:translateY(-4px)}
+.ptile:hover .pt-ico,.ptile[aria-pressed="true"] .pt-ico{background:var(--aqua);border-color:var(--aqua)}
+.ptile:hover .pt-ico svg,.ptile[aria-pressed="true"] .pt-ico svg{color:var(--aqua-ink)}
+.ptile[aria-pressed="true"]{border-color:var(--aqua);box-shadow:0 0 0 1px var(--aqua) inset,0 18px 50px rgba(58,194,234,.18)}
+.ptile[data-p="planning"]{grid-column:1 / -1;min-height:88px;flex-direction:row;align-items:center}
+.ptile[data-p="planning"] .pt-title{margin-top:0}
+@media(min-width:700px) and (max-width:1079px){
+  .ptiles{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .ptile{grid-column:span 2}
+  .ptile[data-p="gas"],.ptile[data-p="planning"]{grid-column:span 3}
+}
+@media(min-width:1080px){
+  .ptiles{grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+  .ptile,.ptile[data-p="planning"]{grid-column:auto;min-height:212px;padding:22px;flex-direction:column;align-items:flex-start}
+  .ptile .pt-ico{width:56px;height:56px}
+  .ptile .pt-ico svg{width:26px;height:26px}
+  .ptile .pt-title{font-size:18px}
+}
 .ppanels{margin-top:20px}
-.ppanel{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);
-  padding:clamp(20px,3vw,32px);margin-bottom:14px}
+.ppanel{position:relative;background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);
+  padding:clamp(20px,3vw,32px);margin-bottom:14px;overflow:clip}
 .ppanel:last-child{margin-bottom:0}
-.ppanel h3{font-size:19px}
-.ppanel .ptag2{display:inline-block;font-family:var(--font-lbl);font-size:9px;letter-spacing:.08em;
-  color:var(--aqua);border:1px solid rgba(58,194,234,.4);border-radius:999px;padding:3px 8px;margin-bottom:10px}
-.ppanel .pdo{margin:12px 0 0;color:var(--fg-2);font-size:15.5px;line-height:1.65;max-width:60ch}
-.ppanel .pdo b{color:var(--fg);font-weight:600}
+.ppanel:focus{outline:none}
+.ppanel:focus-visible{outline:2px solid var(--aqua);outline-offset:4px}
+.ppanel h3{font-size:22px}
+.ppanel .ptag2{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-lbl);font-size:9px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--aqua);border:1px solid rgba(58,194,234,.4);border-radius:999px;padding:4px 9px 4px 7px;margin-bottom:10px}
+.ppanel .ptag2 .dot{position:relative;width:5px;height:5px;border-radius:50%;background:var(--aqua);flex:none}
+.ppanel .pdo{margin:14px 0 0;color:var(--fg-2);font-size:15.5px;line-height:1.55;max-width:60ch}
+.ppanel .pdo b{color:var(--fg);font-weight:600;display:block;margin-bottom:2px}
+.pdo-steps{margin:14px 0 0;display:grid;gap:12px;max-width:56ch}
+.pdo-steps li{display:flex;align-items:flex-start;gap:12px;color:var(--fg-2);font-size:15.5px;line-height:1.5}
+.pdo-steps li svg{width:14px;height:14px;color:var(--aqua);flex:none;margin-top:5px}
 .pactions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.pactions .btn,.paction-card .btn{box-shadow:none}
+.pnote{margin:14px 0 0;padding:10px 14px;border-radius:var(--r);background:rgba(255,138,122,.1);
+  border:1px solid rgba(255,138,122,.35);color:var(--fg);font-weight:600;font-size:14px}
+@media(min-width:900px){
+  .ppanel-in{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;align-items:start}
+  .pactions,.pnote{margin-top:0}
+  .ppanel::before{content:"";position:absolute;top:-9px;left:var(--caret-x,40px);width:16px;height:16px;
+    background:var(--card);border-left:1px solid var(--border);border-top:1px solid var(--border);
+    transform:rotate(45deg);z-index:0}
+}
 .picker-hint{margin-top:20px;color:var(--mute);font-size:14px}
 
-/* ---------------------------------------------------------------- proof band */
+/* ---------------------------------------------------------------- action card + sms preview bubble
+   Big idea: the "triage console". The action card shows the number as the
+   hero type; the bubble shows the exact text the sms: link will send, so
+   the mechanic is shown, not just claimed. Reused in the quote text card. */
+.paction-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:22px;
+  display:flex;flex-direction:column;gap:14px}
+.paction-card .peyebrow{font-family:var(--font-lbl);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.paction-card .pbignum{font-family:var(--font-d);font-weight:800;font-stretch:110%;font-size:clamp(1.5rem,2.4vw,1.9rem);
+  font-variant-numeric:tabular-nums;letter-spacing:-.005em;color:var(--fg);text-decoration:none;display:block}
+.paction-card .paltline{font-size:13.5px;color:var(--mute)}
+.paction-card .paltline a{display:inline-flex;align-items:center;min-height:44px;margin:-13px 0;
+  color:var(--fg-2);text-decoration:underline;text-underline-offset:3px}
+.tbubble-wrap{display:flex;align-items:flex-end;gap:10px;margin-top:2px}
+.tbubble{position:relative;background:var(--aqua);color:var(--aqua-ink);border-radius:18px 18px 4px 18px;
+  padding:12px 14px;font-size:13.5px;line-height:1.4;max-width:100%;min-height:20px}
+.tbubble .tto{display:block;font-family:var(--font-lbl);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  opacity:.7;margin-bottom:4px}
+.tbubble .tcaret{display:inline-block;width:2px;height:1em;vertical-align:-2px;background:var(--aqua-ink);
+  animation:tcaret-blink 1s step-end infinite}
+@keyframes tcaret-blink{50%{opacity:0}}
+html.still .tbubble .tcaret{animation:none}
+.tphoto{flex:none;width:44px;height:44px;border-radius:10px;border:1.5px dashed var(--line-2);
+  display:grid;place-items:center;color:var(--mute)}
+.tphoto svg{width:20px;height:20px}
+
+/* ---------------------------------------------------------------- proof band
+   Big idea: water-meter digit rollers, not a count-up — so "2017" never
+   flashes a false year on the way to its resting value. */
 .proof{border-block:1px solid var(--border);background:rgba(14,22,41,.4)}
-.proof ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:38px 24px;padding-block:clamp(46px,6vw,62px)}
-@media(min-width:900px){.proof ul{grid-template-columns:repeat(4,minmax(0,1fr))}}
-.proof .num{display:block;font-size:clamp(2.8rem,6.2vw,5.2rem);line-height:1;font-variant-numeric:tabular-nums;
+.proof ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 24px;padding-block:clamp(46px,6vw,62px)}
+@media(min-width:900px){
+  .proof ul{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .proof li+li{border-left:1px solid var(--border);padding-left:28px}
+}
+.proof li{display:flex;flex-direction:column;align-items:flex-start}
+.proof .num-box{display:inline-flex;flex-direction:column;align-items:center;gap:7px;
+  border:1px solid var(--border);border-radius:12px;padding:14px 20px 12px;background:rgba(7,12,24,.3)}
+.proof .runit{font-family:var(--font-lbl);font-size:9.5px;letter-spacing:.16em;color:var(--mute)}
+.proof .num{display:inline-flex;font-size:clamp(2.6rem,5vw,4.4rem);line-height:1;font-variant-numeric:tabular-nums;
   background:var(--aqua-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.proof .num small{font-size:.42em;margin-left:.1em;-webkit-text-fill-color:var(--aqua);color:var(--aqua)}
-.proof p{margin:12px 0 0;max-width:21ch;font-size:15px;color:var(--mute)}
+.rdigit{display:inline-block;height:1em;overflow:hidden;vertical-align:top}
+.rstrip{display:flex;flex-direction:column}
+/* background-clip:text on the .num ancestor can't reach through the
+   inline-block/flex boxes above, so each digit carries its own clipped
+   gradient — same look, since the gradient runs top-to-bottom per digit */
+.rstrip span{height:1em;line-height:1;display:block;text-align:center;
+  background:var(--aqua-grad);-webkit-background-clip:text;background-clip:text;
+  color:transparent;-webkit-text-fill-color:transparent}
+.proof p{margin:12px 0 0;max-width:23ch;font-size:15px;color:var(--mute)}
 
 /* ---------------------------------------------------------------- bento services */
 .bento{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-@media(min-width:900px){.bento{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(clamp(150px,15vw,196px),auto);gap:16px}}
+@media(min-width:900px){.bento{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:auto;gap:16px}}
 .bento-tile{position:relative;overflow:hidden;border-radius:var(--r-xl);border:1px solid var(--border);
   background:var(--card);text-decoration:none;color:inherit;display:flex;flex-direction:column}
 .bento-tile::before{content:"";position:absolute;inset:0;z-index:0;opacity:0;transition:opacity .35s ease;
-  background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),var(--aqua-soft),transparent 72%)}
-@media(hover:hover) and (pointer:fine){.bento-tile:hover::before{opacity:1}}
+  background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(58,194,234,.18),transparent 72%)}
+.bento-tile::after{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;padding:1px;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%),rgba(58,194,234,.7),transparent 62%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+@media(hover:hover) and (pointer:fine){.bento-tile:hover::before,.bento-tile:hover::after{opacity:1}}
 .bento-tile > *{position:relative;z-index:1}
-.bt-text{padding:22px 20px;justify-content:flex-start;gap:0}
-.bt-text svg{width:25px;height:25px;flex:none;color:var(--aqua)}
-.bt-text h3{margin-top:14px;font-size:16px;font-weight:700;flex:none}
+.bento-tile h3{font-family:var(--font-d);font-weight:800;font-stretch:100%;text-transform:uppercase;
+  letter-spacing:.01em;font-size:17px;line-height:1.08}
+.bt-arrow{position:absolute;top:16px;right:16px;z-index:2;width:32px;height:32px;border-radius:50%;
+  border:1px solid var(--border);display:grid;place-items:center;color:var(--aqua);transition:border-color .2s,background-color .2s}
+.bt-arrow svg{width:15px;height:15px}
+.bento-tile:hover .bt-arrow{border-color:var(--aqua);background:var(--aqua-soft)}
+.bt-text{padding:20px 18px;justify-content:flex-start;gap:0}
+.bt-text .pt-ico{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex:none;
+  background:var(--aqua-soft);border:1px solid rgba(58,194,234,.35)}
+.bt-text .pt-ico svg{width:22px;height:22px}
+.bt-text h3{margin-top:14px;flex:none;padding-right:30px}
 .bt-text p{margin:8px 0 0;font-size:14px;color:var(--mute);flex:1 1 auto}
-.bt-text .go{margin-top:14px;color:var(--fg-2);font-weight:600;font-size:13.5px;display:inline-flex;align-items:center;gap:6px;flex:none}
-.bt-text .go::after{content:"\2192";color:var(--aqua);transition:transform .25s var(--ease)}
-.bento-tile:hover .go::after{transform:translateX(4px)}
+.bt-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.bt-tags li{font-family:var(--font-lbl);font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--fg-2);border:1px solid var(--border);border-radius:999px;padding:5px 9px}
+@media(min-width:900px){.bt-text{min-height:clamp(170px,15vw,196px)}}
 .bento-tile.photo{aspect-ratio:4/3;grid-column:span 2}
-.bento-tile.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;transition:transform .7s var(--ease)}
-.bento-tile.photo:hover img{transform:scale(1.05)}
-.bento-tile.photo::after{content:"";position:absolute;inset:0;z-index:0;
+.bento-tile.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;transition:transform .7s var(--ease),filter .3s;
+  filter:saturate(.9) contrast(1.05) brightness(.96)}
+.bento-tile.photo:hover img{transform:scale(1.05);filter:none}
+.bento-tile.photo .shade{content:"";position:absolute;inset:0;z-index:0;
   background:linear-gradient(to top,rgba(7,12,24,.95) 0%,rgba(7,12,24,.82) 45%,rgba(7,12,24,.2) 85%,rgba(7,12,24,.05) 100%)}
 .bento-tile.photo .bt-body{position:relative;z-index:1;margin-top:auto;padding:20px}
-.bento-tile.photo .bt-body h3{font-size:19px}
+.bento-tile.photo .bt-body h3{font-size:22px}
 .bento-tile.photo .bt-body p{margin:6px 0 0;font-size:13.5px;color:var(--fg-2);max-width:32ch}
-.bento-tile.photo .bt-body .go{margin-top:12px;color:var(--fg);font-weight:600;font-size:13.5px;display:inline-flex;align-items:center;gap:6px}
-.bento-tile.photo .bt-body .go::after{content:"\2192";color:var(--aqua)}
 .bento-tile.emergency{grid-column:span 2;padding:22px 20px;border-color:rgba(58,194,234,.4);
   background:linear-gradient(160deg,rgba(58,194,234,.14),var(--card) 60%);box-shadow:0 0 0 1px rgba(58,194,234,.25) inset}
-.bento-tile.emergency svg{width:28px;height:28px;flex:none;color:var(--aqua)}
+.bento-tile.emergency .pt-ico{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--aqua-soft);border:1px solid rgba(58,194,234,.35)}
+.bento-tile.emergency .pt-ico svg{width:26px;height:26px;color:var(--aqua)}
 .bento-tile.emergency h3{margin-top:12px;font-size:20px;flex:none}
 .bento-tile.emergency p{margin:8px 0 0;font-size:14.5px;color:var(--fg-2);max-width:40ch;flex:1 1 auto}
-.bento-tile.emergency .btn{margin-top:16px;align-self:flex-start;flex:none}
+.bento-tile.emergency .ebtns{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.bento-tile.emergency .btn{align-self:flex-start;flex:none;box-shadow:none}
+@media(min-width:900px){
+  .bento-tile.emergency{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:28px}
+  .bento-tile.emergency .ebtns{flex-direction:column;margin-top:0}
+  .bento-tile.emergency .btn{width:210px;justify-content:flex-start}
+}
 .bento-tile.wide{grid-column:span 2;padding:24px 22px}
-.bento-tile.wide .wide-in{display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:space-between}
-.bento-tile.wide h3{font-size:18px}
+.bento-tile.wide .wide-in{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.bento-tile.wide .wide-head{display:flex;align-items:center;gap:14px;flex:1 1 220px}
+.bento-tile.wide .pt-ico{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--aqua-soft);border:1px solid rgba(58,194,234,.35)}
+.bento-tile.wide .pt-ico svg{width:22px;height:22px;color:var(--aqua)}
+.bento-tile.wide h3{font-size:17px}
 .bento-tile.wide p{margin:6px 0 0;font-size:14px;color:var(--mute);max-width:44ch}
-.bento-tile.wide .go{flex:none;color:var(--fg-2);font-weight:600;font-size:13.5px;display:inline-flex;align-items:center;gap:6px}
-.bento-tile.wide .go::after{content:"\2192";color:var(--aqua);transition:transform .25s var(--ease)}
-.bento-tile.wide:hover .go::after{transform:translateX(4px)}
+.bento-tile.wide .quote-excerpt{margin:0;flex:1 1 220px;font-size:15px;font-style:italic;color:var(--fg-2);line-height:1.5}
+.bento-tile.wide .quote-excerpt cite{display:block;margin-top:6px;font-style:normal;font-family:var(--font-lbl);font-size:10px;letter-spacing:.08em;color:var(--mute)}
+@media(min-width:900px){
+  .bento-tile.wide{padding:24px 26px}
+  .bento-tile.wide .wide-in{flex-wrap:nowrap;gap:32px}
+  .bento-tile.wide .wide-head{flex:0 0 auto}
+}
 @media(min-width:900px){
   .bento-tile.bt-emergency{grid-column:span 2;grid-row:span 1}
   .bento-tile.bt-bath{grid-column:span 1;grid-row:span 2;aspect-ratio:auto}
   .bento-tile.bt-kitchen{grid-column:span 1;grid-row:span 2;aspect-ratio:auto}
   .bento-tile.bt-newbuild{grid-column:span 2;grid-row:span 1;aspect-ratio:auto}
-  .bento-tile.bt-drains,.bento-tile.bt-hotwater,.bento-tile.bt-gas,.bento-tile.bt-leaks,.bento-tile.bt-toilets,.bento-tile.bt-excavation,.bento-tile.bt-rainwater,.bento-tile.bt-gutters{grid-column:span 1;grid-row:span 1}
-  .bento-tile.bt-projectmgmt{grid-column:span 4;grid-row:span 1}
+  .bento-tile.bt-drains,.bento-tile.bt-hotwater{grid-column:span 2;grid-row:span 1}
+  .bento-tile.bt-gas,.bento-tile.bt-leaks,.bento-tile.bt-toilets,.bento-tile.bt-excavation,.bento-tile.bt-rainwater,.bento-tile.bt-gutters,.bento-tile.bt-heating{grid-column:span 1;grid-row:span 1}
+  .bento-tile.bt-projectmgmt{grid-column:span 4;grid-row:span 1;min-height:0}
+  .bento-tile.bt-newbuild img{object-position:50% 30%}
+  .bento-tile.bt-newbuild .shade{background:
+    linear-gradient(90deg,rgba(7,12,24,.88) 0%,rgba(7,12,24,.55) 38%,rgba(7,12,24,0) 70%),
+    linear-gradient(to top,rgba(7,12,24,.95) 0%,rgba(7,12,24,.5) 55%,rgba(7,12,24,.05) 100%)}
 }
 
 /* ---------------------------------------------------------------- quote */
@@ -374,39 +547,56 @@ body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opa
 .qcard h3{font-size:clamp(1.5rem,2.2vw,1.9rem)}
 .qcard .lede{margin-top:12px;font-size:16px}
 .qcard .btn{margin-top:22px;align-self:flex-start}
+.qcard .how{margin:10px 0 0;font-size:13.5px;color:var(--mute)}
+.qcard:first-child{justify-content:space-between}
+.qcard .tbubble-wrap{margin-top:24px}
 .qr-block{margin-top:28px;padding-top:24px;border-top:1px solid var(--border);display:flex;gap:18px;align-items:center}
-.qr-block .qr{width:104px;height:104px;flex:none;color:var(--fg);background:#fff;border-radius:8px;padding:8px}
+.qr-block .qrwrap{flex:none;display:flex;flex-direction:column;align-items:center;gap:8px}
+.qr-block .qr-eyebrow{font-family:var(--font-lbl);font-size:9.5px;letter-spacing:.16em;color:var(--aqua)}
+.qr-block .qr{width:132px;height:132px;color:#04131E;background:#fff;border-radius:10px;padding:12px}
 .qr-block p{margin:0;font-size:13.5px;color:var(--mute);max-width:24ch}
-@media(max-width:767px){.qr-block{display:none}}
-.also{margin-top:22px;padding-top:20px;border-top:1px solid var(--border)}
+@media(hover:none){.qr-block{display:none}}
+.also{margin-top:auto;padding-top:20px;border-top:1px solid var(--border)}
 .also p{margin:0 0 10px;font-size:14px;color:var(--mute)}
 .also .row-links{display:flex;flex-wrap:wrap;gap:16px}
 .also a{display:inline-flex;align-items:center;gap:8px;min-height:44px;text-decoration:none;font-weight:600;
   font-variant-numeric:tabular-nums;font-size:14.5px;transition:color .2s}
 .also a:hover{color:var(--aqua)}
 .also svg{width:16px;height:16px;color:var(--aqua)}
+.trust-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;padding:0}
+.trust-chips li{font-family:var(--font-lbl);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--fg-2);border:1px solid var(--border);border-radius:999px;padding:8px 13px;background:rgba(14,22,41,.5)}
+.mini-review{margin-top:16px;padding:16px 18px;border:1px solid var(--border);border-radius:12px;background:var(--bg)}
+.mini-review p{margin:0;font-size:14px;color:var(--fg-2);line-height:1.5}
+.mini-review cite{display:block;margin-top:8px;font-style:normal;font-weight:600;font-size:13px;color:var(--fg)}
 form{display:grid;gap:16px}
 .row{display:grid;gap:16px}
 @media(min-width:480px){.row.two{grid-template-columns:1fr 1fr}}
-label{display:grid;gap:8px;font-size:14px;font-weight:600;color:var(--fg-2)}
+.field{display:grid;gap:8px}
+label{display:flex;flex-direction:column;gap:8px;font-size:14px;font-weight:600;color:var(--fg-2)}
+label .lbl{display:block}
 label .opt{font-weight:400;color:var(--mute)}
-input,select,textarea{font:inherit;font-size:16px;color:var(--fg);background:rgba(7,12,24,.6);
+input,select,textarea{font:inherit;font-size:16px;font-weight:500;color:var(--fg);background:rgba(7,12,24,.6);
   border:1px solid var(--input);border-radius:var(--r);padding:14px 16px;min-height:54px;width:100%;
   transition:border-color .2s,box-shadow .2s}
+::placeholder{color:var(--mute);font-weight:400;opacity:1}
 textarea{min-height:110px;resize:vertical;line-height:1.5}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--aqua);box-shadow:0 0 0 3px rgba(58,194,234,.2)}
-input[aria-invalid="true"]{border-color:#ff8a7a}
+input[aria-invalid="true"],select[aria-invalid="true"]{border-color:#ff8a7a}
 select{appearance:none;-webkit-appearance:none;padding-right:44px;
   background:rgba(7,12,24,.6) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23bcc7d5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 14px center/18px no-repeat}
 select option{color:#04131e;background:#f2f6fa}
-.err{color:#ff8a7a;font-size:13px;font-weight:500}
+select:invalid{color:var(--mute)}
+.err{color:#ff8a7a;font-size:13px;font-weight:500;margin:0}
+.err:empty{display:none}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .seg-label{display:block;font-size:14px;font-weight:600;color:var(--fg-2);margin-bottom:8px}
-.segmented{display:flex;flex-wrap:wrap;gap:8px}
+.segmented{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .segmented input{position:absolute;opacity:0;width:1px;height:1px;overflow:hidden}
-.segmented label{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;
+.segmented label{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 8px;
   border-radius:999px;border:1px solid var(--input);font-size:14px;font-weight:600;color:var(--fg-2);
-  cursor:pointer;transition:border-color .2s,background-color .2s,color .2s;margin:0}
+  white-space:nowrap;cursor:pointer;transition:border-color .2s,background-color .2s,color .2s;margin:0}
+@media(max-width:359px){ .segmented{grid-template-columns:1fr 1fr} .segmented label:last-of-type{grid-column:1/-1} }
 .segmented input:checked + label{border-color:var(--aqua);background:var(--aqua-soft);color:var(--fg)}
 .segmented input:focus-visible + label{outline:2px solid var(--aqua);outline-offset:2px}
 .hint{margin:0;padding:14px 16px;border:1px solid rgba(58,194,234,.4);background:var(--aqua-soft);
@@ -414,37 +604,51 @@ select option{color:#04131e;background:#f2f6fa}
 form .btn{width:100%;margin-top:4px}
 .fine{margin:0;font-size:13px;color:var(--mute);text-align:center}
 .thanks h3{font-size:clamp(2rem,3.6vw,2.7rem);overflow-wrap:anywhere}
+.thanks h3:focus{outline:none}
 .thanks p{margin:14px 0 0;color:var(--fg-2)}
 .thanks .note{font-size:14px;color:var(--mute)}
 .thanks .btn{margin-top:22px}
 
 /* ---------------------------------------------------------------- work */
 .work-wrap{display:grid;gap:16px}
-@media(min-width:900px){.work-wrap{grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:start}}
+@media(min-width:900px){.work-wrap{grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:stretch}}
 .work-reel{margin:0;position:relative;border-radius:var(--r-xl);overflow:hidden;background:var(--card);
   aspect-ratio:9/16;max-height:640px;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 100px rgba(58,194,234,.16)}
+@media(min-width:900px){.work-reel{aspect-ratio:auto;max-height:none;height:100%}}
 .work-reel video,.work-reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.work-reel figcaption{position:absolute;left:14px;right:14px;bottom:14px;margin:0;font-size:12.5px;color:var(--fg);
-  background:rgba(7,12,24,.66);border:1px solid var(--border);border-radius:999px;padding:9px 14px;
+.work-reel video{z-index:1}
+.work-reel figcaption{position:absolute;left:14px;right:14px;bottom:14px;margin:0;font-size:12.5px;line-height:1.5;color:var(--fg);
+  background:rgba(7,12,24,.66);border:1px solid var(--border);border-radius:14px;padding:9px 14px;
   -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.work-reel figcaption .mute{display:block;color:var(--fg-2);font-weight:400}
 .work-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-@media(min-width:600px){.work-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:900px){.work-grid{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;height:100%}}
 .work-photo{position:relative;overflow:hidden;border-radius:var(--r-xl);background:var(--card);aspect-ratio:1/1;
   padding:0;cursor:pointer;display:block;width:100%}
-.work-photo img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
-.work-photo:hover img{transform:scale(1.06)}
+@media(min-width:900px){.work-photo{aspect-ratio:auto;height:100%}}
+.work-photo img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease),filter .3s;
+  filter:saturate(.9) contrast(1.05) brightness(.96)}
+.work-photo:hover img{transform:scale(1.06);filter:none}
 .work-photo::after{content:"";position:absolute;inset:45% 0 0;pointer-events:none;background:linear-gradient(to top,rgba(7,12,24,.88),rgba(7,12,24,0))}
-.work-photo figcaption{z-index:1;position:absolute;left:10px;bottom:10px;right:10px;margin:0;font-size:12.5px;font-weight:600;
-  color:var(--fg);text-shadow:0 1px 12px rgba(0,0,0,.9);text-align:left}
+.work-photo .cap{z-index:1;position:absolute;left:10px;bottom:10px;right:10px;margin:0;
+  font-family:var(--font-d);font-weight:800;font-stretch:100%;text-transform:uppercase;letter-spacing:.01em;font-size:14px;
+  color:var(--fg);text-align:left}
 .work-more{margin:22px 0 0}
 
 /* lightbox */
-dialog#lightbox{border:none;padding:0;background:var(--card-2);border-radius:var(--r-xl);
-  max-width:min(880px,92vw);width:100%;color:var(--fg);box-shadow:0 40px 100px rgba(0,0,0,.7)}
-dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
-.lb-body{position:relative}
-.lb-body img{width:100%;max-height:80vh;object-fit:contain;background:#000;border-radius:var(--r-xl) var(--r-xl) 0 0}
-.lb-cap{margin:0;padding:16px 20px;font-size:14px;color:var(--fg-2)}
+dialog#lightbox{border:none;padding:0;background:#000;border-radius:var(--r-xl);
+  max-width:min(880px,92vw);width:100%;color:var(--fg);box-shadow:0 40px 100px rgba(0,0,0,.7);
+  animation:lb-in .3s var(--ease) both}
+@keyframes lb-in{from{opacity:0;transform:scale(.97)}}
+dialog#lightbox::backdrop{background:rgba(4,7,14,.88);animation:lb-fade .3s ease both}
+@keyframes lb-fade{from{opacity:0}}
+html:has(dialog#lightbox[open]){overflow:hidden}
+.lb-body{position:relative;background:#000}
+.lb-body img{width:100%;max-height:80vh;object-fit:contain;background:#000;display:block}
+.lb-cap{margin:0;position:absolute;left:0;right:0;bottom:0;padding:32px 64px 16px 20px;font-size:14px;color:var(--fg);
+  background:linear-gradient(to top,rgba(0,0,0,.85),transparent)}
+.lb-count{position:absolute;left:20px;top:12px;font-family:var(--font-lbl);font-size:10px;letter-spacing:.1em;
+  color:var(--fg-2);background:rgba(7,12,24,.6);border-radius:999px;padding:6px 11px}
 .lb-close,.lb-prev,.lb-next{position:absolute;display:inline-flex;align-items:center;justify-content:center;
   width:44px;height:44px;border-radius:50%;border:1px solid rgba(242,246,250,.25);
   background:rgba(7,12,24,.6);color:var(--fg);cursor:pointer}
@@ -452,6 +656,12 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
 .lb-close{top:12px;right:12px}
 .lb-prev{left:12px;top:50%;transform:translateY(-50%)}
 .lb-next{right:12px;top:50%;transform:translateY(-50%)}
+@media(max-width:599px){
+  dialog#lightbox{max-width:100vw;max-height:100svh;width:100%;height:100%;border-radius:0;margin:0}
+  .lb-body{height:100%;display:flex;align-items:center}
+  .lb-body img{max-height:100svh}
+}
+@media(prefers-reduced-motion:reduce){dialog#lightbox,dialog#lightbox::backdrop{animation:none}}
 
 /* ---------------------------------------------------------------- about */
 .about-wrap{display:grid;gap:clamp(32px,5vw,56px)}
@@ -459,97 +669,179 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
 .promise{display:grid;gap:0;margin-top:28px;border-top:1px solid var(--border)}
 .promise li{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);
   font-size:16px;color:var(--fg-2)}
-.promise li svg{width:20px;height:20px;flex:none;margin-top:2px;color:var(--aqua)}
+.promise li svg{width:16px;height:16px;flex:none;margin-top:4px;color:var(--aqua)}
 .promise-note{margin-top:20px;font-size:14.5px;color:var(--mute);max-width:52ch}
 .persons{display:grid;gap:16px}
 @media(min-width:900px){.persons{grid-template-columns:1fr 1fr;align-items:start}}
-.person-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px;
-  display:flex;flex-direction:column;gap:14px}
-.monogram{width:60px;height:60px;border-radius:50%;border:2px solid var(--aqua);display:flex;align-items:center;
-  justify-content:center;font-family:var(--font-d);font-weight:800;font-size:20px;color:var(--aqua);
-  background:var(--aqua-soft);letter-spacing:0;font-stretch:100%}
-.person-card h3{font-size:19px;margin-top:2px}
+/* big idea: two physical-feeling trade cards — the phone number is the hero
+   type, since it's the actual product of this section */
+.person-card{position:relative;overflow:hidden;isolation:isolate;border-radius:16px;padding:24px;
+  display:flex;flex-direction:column;justify-content:space-between;gap:18px;min-height:230px;
+  background:linear-gradient(160deg,var(--card-2),var(--bg-2));border:1px solid var(--border)}
+.person-card::before{content:"";position:absolute;inset:0;z-index:0;opacity:.5;transition:opacity .35s ease;
+  background:radial-gradient(60% 70% at var(--mx,100%) var(--my,0%),rgba(58,194,234,.16),transparent 70%)}
+@media(hover:hover) and (pointer:fine){.person-card:hover::before{opacity:1}}
+.person-card .watermark{position:absolute;right:-6px;bottom:-10px;width:110px;height:auto;opacity:.06;color:var(--fg);
+  pointer-events:none;z-index:0}
+.person-card > *{position:relative;z-index:1}
+.person-card .pname{font-size:19px;margin-top:2px}
 .person-card .role{display:block;margin-top:3px;color:var(--mute);font-size:11px;text-transform:uppercase;
   letter-spacing:.14em;font-family:var(--font-lbl)}
-.person-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.person-card .pnum{display:inline-flex;align-items:center;min-height:44px;font-family:var(--font-d);font-weight:800;font-stretch:110%;
+  font-size:clamp(1.6rem,3vw,2.1rem);font-variant-numeric:tabular-nums;letter-spacing:-.005em;color:var(--fg);
+  text-decoration:none}
+.person-card .plic{margin:6px 0 0;font-family:var(--font-lbl);font-size:9.5px;letter-spacing:.08em;color:var(--mute)}
+.person-actions{display:flex;gap:10px;flex-wrap:wrap}
+.person-actions .btn{box-shadow:none}
 .person-actions .btn{min-height:46px;padding:0 18px;font-size:14.5px}
 
-/* ---------------------------------------------------------------- how it works */
-.steps{position:relative;display:grid;gap:36px;padding-top:8px}
-@media(min-width:900px){.steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}}
-.drop-num{position:relative;display:inline-block;width:70px;height:86px}
+/* ---------------------------------------------------------------- how it works
+   Big idea: "the pipe" — the three steps sit on a line that fills with water
+   as you reach them. Scrubbed on desktop, a plain once-off fill on phones
+   (no scroll-scrub there, so phone scroll stays smooth). */
+.steps-wrap{position:relative}
+.steps{position:relative;display:grid;gap:22px;padding-top:8px}
+@media(min-width:900px){.steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;padding-top:8px}}
+.steps li{position:relative;display:grid;grid-template-columns:56px 1fr;column-gap:16px;align-items:start}
+@media(min-width:900px){.steps li{display:block}}
+.pipe-v{display:block;position:absolute;left:27px;top:76px;bottom:-11px;width:2px;background:var(--border);
+  z-index:0;overflow:hidden}
+.steps li:last-child .pipe-v{display:none}
+.pipe-v .fill{position:absolute;inset:0;width:100%;transform:scaleY(1);transform-origin:top;
+  background:linear-gradient(var(--aqua),rgba(58,194,234,.12))}
+.pipe-h{display:none}
+@media(min-width:900px){
+  .pipe-v{display:none}
+  .pipe-h{display:block;position:absolute;top:51px;left:calc(100%/6);right:calc(100%/6);height:2px;
+    background:var(--border);z-index:0;overflow:hidden}
+  .pipe-h .fill{position:absolute;inset:0;height:100%;transform:scaleX(1);transform-origin:left;
+    background:var(--aqua-grad)}
+}
+.drop-num{position:relative;z-index:1;display:inline-block;width:56px;height:69px}
+@media(min-width:900px){.drop-num{width:70px;height:86px}}
 .drop-num svg{width:100%;height:100%}
-.drop-num span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding-top:12px;
-  font-family:var(--font-d);font-weight:800;font-size:26px;color:var(--aqua-ink);font-stretch:100%}
-.steps h3{margin-top:16px;font-size:20px;font-weight:600}
-.steps p{margin:10px 0 0;max-width:38ch;font-size:15px;color:var(--mute)}
+.drop-num span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding-top:10px;
+  font-family:var(--font-d);font-weight:800;font-size:22px;color:var(--aqua-ink);font-stretch:100%}
+@media(min-width:900px){.drop-num span{font-size:26px;padding-top:12px}}
+.steps li>div{position:relative;z-index:1}
+@media(min-width:900px){.steps li>div{margin-top:16px}}
+.steps h3{font-size:19px;font-weight:600}
+@media(min-width:900px){.steps h3{margin-top:0}}
+.steps p{margin:8px 0 0;max-width:38ch;font-size:15px;color:var(--mute)}
 
-/* ---------------------------------------------------------------- reviews */
-.quotes-grid{display:grid;gap:20px}
-@media(min-width:800px){.quotes-grid{grid-template-columns:1fr 1fr}}
+/* ---------------------------------------------------------------- reviews
+   An editorial spread rather than two equal boxes: the King review runs big
+   with a drawn underline; Karen's sits beside it as the quieter companion. */
+.quotes-grid{display:grid;gap:32px;align-items:start}
+@media(min-width:900px){.quotes-grid{grid-template-columns:7fr 5fr;gap:0}}
+.quote-feature{padding-left:20px;border-left:2px solid var(--aqua)}
+.quote-feature .qmark{font-family:var(--font-d);font-size:56px;line-height:1;color:var(--aqua);
+  display:block;margin:0 0 4px -.03em;font-stretch:100%}
+.quote-feature blockquote{margin:0}
+.quote-feature p{margin:0;font-size:clamp(1.2rem,2.2vw,1.7rem);line-height:1.42;color:var(--fg);text-wrap:pretty}
+.quote-feature p mark{background:none;color:inherit;
+  background-image:linear-gradient(var(--aqua),var(--aqua));background-repeat:no-repeat;
+  background-position:0 100%;background-size:100% 2px}
+.quote-feature figcaption{display:block;margin-top:18px;font-weight:600;color:var(--fg);font-size:15px}
+.quote-feature figcaption .ctx{display:block;margin-top:4px;font-weight:400;font-family:var(--font-lbl);
+  font-size:9.5px;letter-spacing:.12em;color:var(--mute);text-transform:uppercase}
+@media(min-width:900px){.quote-feature{padding-right:48px}}
 .quote-card{position:relative;background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);
-  padding:clamp(28px,4vw,40px);box-shadow:0 20px 60px rgba(0,0,0,.35);overflow:hidden}
-.quote-card .qmark{font-family:var(--font-d);font-size:88px;line-height:1;color:var(--aqua);opacity:.4;
-  display:block;margin-bottom:-28px;font-stretch:100%}
-.quote-card blockquote{margin:0;position:relative}
-.quote-card p{font-size:clamp(1.02rem,1.5vw,1.15rem);line-height:1.65;color:var(--fg-2)}
-.quote-card cite{display:block;margin-top:18px;font-style:normal;font-weight:600;color:var(--fg);font-size:15px}
+  padding:clamp(24px,3vw,32px);display:flex;flex-direction:column}
+.quote-card .qmark{font-family:var(--font-d);font-size:56px;line-height:1;color:var(--aqua);opacity:.6;
+  display:block;margin-bottom:6px;font-stretch:100%}
+.quote-card blockquote{margin:0}
+.quote-card p{font-size:1rem;line-height:1.6;color:var(--fg-2)}
+.quote-card figcaption{display:block;margin-top:16px;font-weight:600;color:var(--fg);font-size:14px}
+.quote-card figcaption .ctx{display:block;margin-top:4px;font-weight:400;font-family:var(--font-lbl);
+  font-size:9px;letter-spacing:.1em;color:var(--mute);text-transform:uppercase}
+@media(min-width:900px){.quote-card{border:0;border-left:1px solid var(--border);border-radius:0;
+  box-shadow:none;background:none;padding-left:40px}}
 
 /* ---------------------------------------------------------------- where we work */
-.area-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
-.area-chips li{border:1px solid var(--border);border-radius:999px;padding:11px 18px;font-size:14px;
+.area-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;align-items:center}
+.area-chips li{border:1px solid var(--border);border-radius:999px;padding:11px 18px;
   color:var(--fg-2);background:var(--card);font-family:var(--font-lbl);text-transform:uppercase;
   letter-spacing:.06em;font-size:11.5px}
-.area-chips li.nsw{border-color:var(--aqua);color:var(--fg);display:flex;flex-direction:column;gap:2px}
+.area-chips li.nsw{border-color:var(--aqua);color:var(--fg);display:flex;flex-direction:column;justify-content:center;gap:2px}
 .area-chips li.nsw small{color:var(--mute);font-size:9.5px;letter-spacing:.04em;text-transform:none;font-family:var(--font-b)}
+@media(max-width:767px){
+  .area-chips{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .area-chips li{text-align:center;padding:12px 8px;font-size:10.5px;letter-spacing:.05em}
+  .area-chips li.nsw{grid-column:1/-1;align-items:center}
+}
 
 /* ---------------------------------------------------------------- FAQ */
 .faq{margin-top:8px}
+@media(min-width:900px){.faq-wrap{display:grid;grid-template-columns:5fr 7fr;gap:48px;align-items:start}
+  .faq-wrap .head{position:sticky;top:32px;margin-bottom:0;max-width:none}}
 .faq details{border-bottom:1px solid var(--border);padding:18px 0}
 .faq details:first-child{border-top:1px solid var(--border)}
+@media(min-width:900px){.faq details:first-child{border-top:0}}
 .faq summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;
   gap:16px;font-weight:600;font-size:17px;min-height:44px}
+@media(min-width:900px){.faq summary{font-size:18px}}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";font-size:24px;line-height:1;color:var(--aqua);transition:transform .25s var(--ease);flex:none}
+.faq summary::after{content:"+"/"";font-size:24px;line-height:1;color:var(--aqua);transition:transform .25s var(--ease);flex:none}
 .faq details[open] summary::after{transform:rotate(45deg)}
 .faq .a{margin:12px 0 0;color:var(--fg-2);font-size:15.5px;max-width:65ch;line-height:1.6}
-.faq .a a{color:var(--fg);text-decoration:underline;text-underline-offset:3px}
+.faq .a a{display:inline-flex;align-items:center;min-height:44px;margin:-14px 0;
+  color:var(--fg);text-decoration:underline;text-underline-offset:3px}
+.faq details[open]>:not(summary){animation:faq-in .3s ease-out both}
+@keyframes faq-in{from{opacity:0;transform:translateY(-4px)}}
 
 /* ---------------------------------------------------------------- footer */
 .foot{position:relative;overflow:hidden;border-top:1px solid var(--border)}
+.foot::before{content:"";position:absolute;top:-1px;left:0;right:0;height:2px;z-index:1;
+  background:linear-gradient(90deg,transparent,var(--aqua) 50%,transparent);opacity:.7}
 .foot-cta{display:flex;flex-direction:column;gap:26px;padding-top:clamp(76px,9vw,108px);padding-bottom:16px}
-@media(min-width:900px){.foot-cta{flex-direction:row;flex-wrap:wrap;align-items:flex-end;justify-content:space-between}}
+@media(min-width:900px){.foot-cta{display:grid;grid-template-columns:minmax(0,1fr) 230px;column-gap:48px;align-items:end}}
 .foot-cta .lede{margin-top:20px}
+.foot-numbers{display:flex;flex-direction:column;margin-top:26px;border-top:1px solid var(--border)}
+.foot-num{display:flex;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid var(--border);
+  text-decoration:none;color:var(--fg)}
+.foot-num .fn-label{font-family:var(--font-lbl);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute);flex:none;width:60px}
+.foot-num .fn-num{font-family:var(--font-d);font-weight:800;font-stretch:110%;font-size:clamp(1.4rem,4.6vw,2.4rem);
+  font-variant-numeric:tabular-nums;letter-spacing:-.01em;transition:color .2s}
+.foot-num:hover .fn-num{color:var(--aqua)}
 .foot-cta .btns{display:flex;flex-direction:column;gap:12px;flex:none}
-@media(min-width:640px){.foot-cta .btns{flex-direction:row}}
-.wordmark-wrap{overflow:hidden}
+@media(min-width:640px) and (max-width:899px){.foot-cta .btns{flex-direction:row}}
+@media(min-width:900px){.foot-cta .btns .btn{width:100%}}
+.wordmark-wrap{overflow:hidden;padding-top:clamp(36px,6vw,60px)}
 .wordmark{font-family:var(--font-d);font-weight:800;text-transform:uppercase;white-space:nowrap;user-select:none;
   /* JS fits this exactly to the available width; this is only the no-JS
      fallback, deliberately conservative so it never overflows the mask */
-  font-size:min(9vw,calc(var(--wrap) * .0833));line-height:.82;padding-top:clamp(36px,6vw,60px);
-  letter-spacing:-.01em;font-stretch:110%;
-  background:linear-gradient(180deg,rgba(242,246,250,.9) 0%,rgba(242,246,250,.14) 100%);
+  font-size:min(9vw,calc(var(--wrap) * .0833));line-height:.86;padding-top:0;padding-bottom:.1em;
+  letter-spacing:-.01em;font-stretch:110%;width:max-content;
+  background:linear-gradient(180deg,rgba(242,246,250,.92) 0%,rgba(58,194,234,.16) 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent}
+.wbr{display:none}
+@media(max-width:599px){.wbr{display:block}.wordmark{white-space:normal;line-height:.94}}
 .foot .strip{border-bottom:1px solid var(--border);padding-block:12px}
-.cols{display:grid;gap:36px;padding-block:52px}
-@media(min-width:900px){.cols{grid-template-columns:4fr 3fr 2.5fr 2.5fr}}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:32px 20px;padding-block:52px}
+.cols>*:first-child,.cols>*:nth-child(2){grid-column:1/-1}
+@media(min-width:900px){.cols{grid-template-columns:4fr 3fr 2.5fr 2.5fr}.cols>*:first-child,.cols>*:nth-child(2){grid-column:auto}}
 .cols h2{font-family:var(--font-b);font-size:14px;font-weight:600;margin-bottom:12px}
 .cols a,.cols span{display:flex;align-items:center;gap:8px;min-height:44px;word-break:break-word;font-size:15px;
   color:var(--fg-2);text-decoration:none}
 .cols a:hover{color:var(--fg)}
 .cols a svg{width:16px;height:16px;color:var(--aqua);flex:none}
-.cols .logo{width:126px;height:auto;margin:-10px 0 14px -10px}
+.cols .logo{width:150px;height:auto;margin:0 0 14px}
 .cols p{font-size:15px;color:var(--mute);max-width:34ch}
-.legal{border-top:1px solid var(--border);padding-block:22px 28px;display:flex;flex-wrap:wrap;gap:8px 24px;
-  justify-content:space-between;font-size:13px;color:var(--mute)}
+.cols .lic{display:flex;flex-direction:column;align-items:flex-start;gap:0;min-height:0;padding:8px 0}
+.legal{position:relative;border-top:0;box-shadow:inset 0 1px 0 var(--border);padding-block:22px 28px;
+  display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;font-size:13px;color:var(--mute)}
 
 /* ---------------------------------------------------------------- phone bar + corner call */
-.phonebar{position:fixed;left:0;right:0;bottom:0;z-index:65;display:grid;grid-template-columns:1.3fr 1fr;gap:10px;
+.phonebar{position:fixed;left:0;right:0;bottom:0;z-index:65;display:grid;grid-template-columns:1fr 1.3fr;gap:10px;
   padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom,0px));
   background:rgba(7,12,24,.95);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--border);
-  transform:translateY(110%);transition:transform .35s var(--ease)}
-.phonebar.on{transform:none}
-.phonebar .btn{min-height:50px;padding:0 10px;font-size:15px;box-shadow:none}
+  transform:translateY(110%);transition:transform .35s var(--ease),visibility 0s .35s;visibility:hidden}
+.phonebar.on{transform:none;visibility:visible;transition-delay:0s}
+.phonebar .btn{min-height:50px;padding:0 10px;font-size:15px;box-shadow:none;font-variant-numeric:tabular-nums}
+.phonebar.gas{grid-template-columns:1fr}
+.phonebar.gas [data-sms]{display:none}
 @media(max-width:767px){body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}}
 @media(max-width:767px){html{scroll-padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
 @media(min-width:768px){html{scroll-padding-bottom:96px}}
@@ -587,11 +879,12 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
     <div class="wrap">
       <span class="dot" aria-hidden="true"></span>
       <span class="label">24-hour emergency service</span>
+      <span class="right" aria-hidden="true">ACT 20171009 &middot; NSW 302135C</span>
     </div>
   </div>
   <div class="wrap topin">
-    <a class="brand" href="#main" aria-label="Aqua Brothers Plumbing, home">
-      <img class="mark" src="assets/logo-mark-240.webp" width="121" height="32" alt="">
+    <a class="brand" href="#top" aria-label="Aqua Brothers Plumbing, home">
+      <img class="mark" src="assets/logo-mark-240.webp" srcset="assets/logo-mark-120.webp 1x, assets/logo-mark-240.webp 2x, assets/logo-mark-480.webp 3x" width="121" height="32" alt="">
       <span class="word only-wide">Aqua Brothers</span>
     </a>
     <nav class="nav" aria-label="Main">
@@ -602,7 +895,7 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
     </nav>
     <a class="tel" href="tel:+61421877677">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
-      0421 877 677
+      Call 0421 877 677
     </a>
     <a class="roundbtn" href="tel:+61421877677" aria-label="Call 0421 877 677">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
@@ -613,15 +906,20 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
     <a class="btn btn-aqua" href="#quote">Free quote</a>
   </div>
   <nav class="mobilenav" id="mobileNav" aria-label="Mobile" hidden>
-    <a href="#services">Services</a>
-    <a href="#work">Work</a>
-    <a href="#about">About</a>
-    <a href="#faq">FAQ</a>
+    <a class="mnlink" href="#services"><span class="mnidx">01</span>Services</a>
+    <a class="mnlink" href="#work"><span class="mnidx">02</span>Work</a>
+    <a class="mnlink" href="#about"><span class="mnidx">03</span>About</a>
+    <a class="mnlink" href="#faq"><span class="mnidx">04</span>FAQ</a>
     <a class="btn btn-aqua" href="#quote">Free quote</a>
+    <div class="mn-contact">
+      <a href="tel:+61421877677"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>Michael &middot; 0421 877 677</a>
+      <a href="tel:+61401140099"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>Angus &middot; 0401 140 099</a>
+    </div>
+    <p class="mn-emg"><span class="dot" aria-hidden="true"></span>24-hour emergency service</p>
   </nav>
 </header>
 
-<main id="main">
+<main id="main" tabindex="-1">
 
 <!-- ============================================================ hero -->
 <section class="hero" id="top" aria-label="Aqua Brothers Plumbing">
@@ -631,25 +929,35 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
   <div class="wrap hero-grid">
     <div class="hero-panel">
       <video id="heroVideo" muted loop playsinline preload="none" poster="media/hero-poster.webp"
-        aria-label="A bathroom renovation with a floating vanity and LED strip lighting, plumbing by Aqua Brothers"></video>
+        aria-label="A bathroom with a floating vanity and LED strip lighting, plumbing by Aqua Brothers"></video>
       <div class="shade" aria-hidden="true"></div>
       <button class="playbtn" id="heroPlay" type="button" hidden>Play the clip</button>
-      <p class="panel-chip">Recent bathroom · plumbing by Aqua Brothers</p>
+      <p class="panel-chip">Plumbing by Aqua Brothers<br>Tiling by Jet Black Tiling &amp; Interiors</p>
     </div>
     <div class="hero-copy">
       <div class="caustic" aria-hidden="true"></div>
-      <p class="kicker hero-kicker">Canberra · Licensed ACT &amp; NSW</p>
+      <p class="kicker hero-kicker">Canberra &middot; Licensed <span style="white-space:nowrap">ACT &amp; NSW</span></p>
       <h1 class="caps" data-lines>Plumbing, gas<br>&amp; drains.<br><span class="grad-txt">Day or night.</span></h1>
-      <p class="hero-sub">Licensed plumbers and gas fitters, Canberra born and bred. New builds, renovations, blocked drains, hot water — and 24-hour emergencies.</p>
-      <div class="hero-cta">
+      <p class="hero-sub">24&#8209;hour emergency service, plus new builds, renovations, blocked drains and hot water. Owned by Michael and Angus, Canberra born and bred.</p>
+      <div class="hero-cta hero-cta-desktop">
         <a class="btn btn-aqua" href="#quote">Get a free quote</a>
         <a class="btn btn-ghost" href="tel:+61421877677">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
           Call 0421 877 677
         </a>
       </div>
+      <div class="hero-cta hero-cta-phone">
+        <a class="btn btn-aqua" href="tel:+61421877677">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
+          Call 0421 877 677
+        </a>
+        <div class="hero-cta-row2">
+          <a class="btn btn-ghost" data-sms="michael" href="sms:+61421877677">Text a photo</a>
+          <a class="btn btn-ghost" href="#quote">Free quote</a>
+        </div>
+      </div>
       <p class="hero-text">
-        <a class="link" data-sms="michael" href="sms:+61421877677">
+        <a class="link" id="heroTextLink" data-sms="michael" href="sms:+61421877677">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>
           Text us a photo of the problem
         </a>
@@ -663,91 +971,176 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
     </div>
   </div>
   <div class="strip">
-    <div class="marquee" aria-label="Services">
-      <div class="marquee-track" id="heroMarquee"></div>
+    <button class="motion-btn" id="motionBtn" type="button" aria-pressed="false" aria-label="Pause motion">
+      <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+      <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5Z"/></svg>
+    </button>
+    <div class="marquee">
+      <div class="marquee-track" id="heroMarquee"><ul class="mq" aria-label="Services">
+        <li>New builds</li><li>Renovations</li><li>Blocked drains</li><li>Drain camera</li>
+        <li>Hot water</li><li>Gas fitting</li><li>Bathrooms</li><li>Kitchens</li>
+        <li>Leak detection</li><li>Rainwater tanks</li><li>Gutters</li><li>24-hour emergencies</li>
+      </ul></div>
     </div>
   </div>
 </section>
 
 <!-- ============================================================ problem picker -->
-<section class="sec" id="problem" aria-label="What's going on">
+<section class="sec" id="problem" aria-labelledby="problem-h">
   <div class="wrap">
     <div class="head">
-      <h2 class="caps h-lg" data-lines>What's<br>going on?</h2>
+      <h2 class="caps h-lg" data-lines id="problem-h">What's<br>going on?</h2>
       <p class="lede" data-reveal>Pick one. We'll tell you what to do right now, and how to reach us.</p>
     </div>
 
-    <div class="ptiles" role="group" aria-label="Choose your problem" data-reveal="stagger">
-      <button type="button" class="ptile" data-p="burst" aria-pressed="false">
-        <span class="ptag">24 hr</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>
-        <span class="pt-title">Burst pipe or leak</span>
+    <div class="ptiles" role="group" aria-label="Choose your problem" data-reveal="stagger" hidden>
+      <button type="button" class="ptile" data-p="burst" aria-pressed="false" aria-controls="panel-burst">
+        <span class="ptag"><span class="dot" aria-hidden="true"></span>24 hr</span>
+        <span class="pt-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg></span>
+        <span class="pt-title">Burst pipe or leak<span class="sr-only">, 24-hour</span></span>
       </button>
-      <button type="button" class="ptile" data-p="blocked" aria-pressed="false">
-        <span class="ptag">24 hr</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 6v3M12 15v3M6 12h3M15 12h3M8 8l2 2M14 14l2 2M16 8l-2 2M8 16l2-2"/></svg>
-        <span class="pt-title">Blocked drain or toilet</span>
+      <button type="button" class="ptile" data-p="blocked" aria-pressed="false" aria-controls="panel-blocked">
+        <span class="ptag"><span class="dot" aria-hidden="true"></span>24 hr</span>
+        <span class="pt-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 8.5h8M6.8 12h10.4M8 15.5h8"/></svg></span>
+        <span class="pt-title">Blocked drain or toilet<span class="sr-only">, 24-hour</span></span>
       </button>
-      <button type="button" class="ptile" data-p="hotwater" aria-pressed="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2.5" width="6" height="14" rx="3"/><circle cx="12" cy="18.5" r="3"/></svg>
+      <button type="button" class="ptile" data-p="hotwater" aria-pressed="false" aria-controls="panel-hotwater">
+        <span class="pt-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="17" rx="3"/><path d="M9 21.5h6"/><path d="M12 7.5s-2.5 3-2.5 4.7a2.5 2.5 0 0 0 5 0C14.5 10.5 12 7.5 12 7.5Z"/></svg></span>
         <span class="pt-title">No hot water</span>
       </button>
-      <button type="button" class="ptile" data-p="gas" aria-pressed="false">
-        <span class="ptag">24 hr</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c2.2 3-1 4.2-1 7.3a3 3 0 1 0 6 0c0-1.8-.8-2.8-1.2-3.3.2 1.6-1 2.3-1.6 1.5-.7-1-.4-2.3-.8-3.6C13 4.3 12.6 3.6 12 3Z"/><path d="M9.5 21h5"/></svg>
-        <span class="pt-title">Smell gas</span>
+      <button type="button" class="ptile" data-p="gas" aria-pressed="false" aria-controls="panel-gas">
+        <span class="ptag"><span class="dot" aria-hidden="true"></span>24 hr</span>
+        <span class="pt-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21.5a6.5 6.5 0 0 0 6.5-6.5c0-3.6-2.6-5.6-3.6-8.4-.6 2-1.6 3.1-2.7 3.6.2-2.6-.9-5.2-2.9-7.2.4 3.6-3.8 6.4-3.8 12a6.5 6.5 0 0 0 6.5 6.5Z"/></svg></span>
+        <span class="pt-title">Gas smell<span class="sr-only">, 24-hour</span></span>
       </button>
-      <button type="button" class="ptile" data-p="planning" aria-pressed="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9z"/><path d="M9 12l2 2 4-4"/></svg>
+      <button type="button" class="ptile" data-p="planning" aria-pressed="false" aria-controls="panel-planning">
+        <span class="pt-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9z"/><path d="M9 12l2 2 4-4"/></svg></span>
         <span class="pt-title">Planning a job</span>
       </button>
     </div>
 
     <div class="ppanels" id="ppanels">
-      <div class="ppanel" data-panel="burst" id="panel-burst">
-        <span class="ptag2">24 hr</span>
-        <h3 class="caps h-md" style="font-size:22px">Burst pipe or leak</h3>
-        <p class="pdo"><b>Do this now:</b> turn the water off at the main stop tap — usually near your water meter at the front of the property. Keep power away from anything wet.</p>
-        <div class="pactions">
-          <a class="btn btn-aqua" href="tel:+61421877677">Call now</a>
-          <a class="btn btn-ghost" data-sms="michael" href="sms:+61421877677">Text a photo</a>
+      <div class="ppanel" data-panel="burst" id="panel-burst" role="region" aria-labelledby="ph-burst" tabindex="-1">
+        <div class="ppanel-in">
+          <div>
+            <span class="ptag2"><span class="dot" aria-hidden="true"></span>24 hr</span>
+            <h3 class="caps" id="ph-burst">Burst pipe or leak</h3>
+            <b style="display:block;margin-top:14px;color:var(--fg);font-weight:600">Do this now:</b>
+            <ol class="pdo-steps">
+              <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>Turn the water off at the main stop tap. It's usually next to your water meter, near the front of the property.</li>
+              <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>If water is near power points, lights or the switchboard, keep away and don't touch anything electrical.</li>
+              <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>Don't stand under a wet or sagging ceiling.</li>
+            </ol>
+          </div>
+          <div class="paction-card">
+            <span class="peyebrow">Call Michael</span>
+            <a class="pbignum" href="tel:+61421877677">0421 877 677</a>
+            <div class="pactions">
+              <a class="btn btn-aqua" href="tel:+61421877677" style="width:100%">Call now</a>
+              <a class="btn btn-ghost" data-sms="michael" href="sms:+61421877677" style="width:100%">Text a photo</a>
+            </div>
+            <div class="tbubble-wrap" data-bubble>
+              <div class="tphoto" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4Z"/><circle cx="12" cy="13.5" r="3.3"/></svg></div>
+              <div class="tbubble"><span class="tto">To: Michael</span><span class="ttext"></span><span class="tcaret" aria-hidden="true"></span></div>
+            </div>
+            <p class="paltline">or Angus &middot; <a href="tel:+61401140099">0401 140 099</a></p>
+          </div>
         </div>
       </div>
-      <div class="ppanel" data-panel="blocked" id="panel-blocked">
-        <span class="ptag2">24 hr</span>
-        <h3 class="caps h-md" style="font-size:22px">Blocked drain or toilet</h3>
-        <p class="pdo"><b>Do this now:</b> stop running water and don't flush again. If it's backing up outside, keep kids and pets away.</p>
-        <div class="pactions">
-          <a class="btn btn-aqua" href="tel:+61421877677">Call</a>
-          <a class="btn btn-ghost" data-sms="michael" href="sms:+61421877677">Text a photo</a>
+      <div class="ppanel" data-panel="blocked" id="panel-blocked" role="region" aria-labelledby="ph-blocked" tabindex="-1">
+        <div class="ppanel-in">
+          <div>
+            <span class="ptag2"><span class="dot" aria-hidden="true"></span>24 hr</span>
+            <h3 class="caps" id="ph-blocked">Blocked drain or toilet</h3>
+            <b style="display:block;margin-top:14px;color:var(--fg);font-weight:600">Do this now:</b>
+            <ol class="pdo-steps">
+              <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>Stop using water in the house (taps, shower, washing machine) and don't flush again.</li>
+              <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>If it's backing up inside or outside, keep kids and pets away from it.</li>
+            </ol>
+          </div>
+          <div class="paction-card">
+            <span class="peyebrow">Call Michael</span>
+            <a class="pbignum" href="tel:+61421877677">0421 877 677</a>
+            <div class="pactions">
+              <a class="btn btn-aqua" href="tel:+61421877677" style="width:100%">Call now</a>
+              <a class="btn btn-ghost" data-sms="michael" href="sms:+61421877677" style="width:100%">Text a photo</a>
+            </div>
+            <div class="tbubble-wrap" data-bubble>
+              <div class="tphoto" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4Z"/><circle cx="12" cy="13.5" r="3.3"/></svg></div>
+              <div class="tbubble"><span class="tto">To: Michael</span><span class="ttext"></span><span class="tcaret" aria-hidden="true"></span></div>
+            </div>
+            <p class="paltline">or Angus &middot; <a href="tel:+61401140099">0401 140 099</a></p>
+          </div>
         </div>
       </div>
-      <div class="ppanel" data-panel="hotwater" id="panel-hotwater">
-        <h3 class="caps h-md" style="font-size:22px">No hot water</h3>
-        <p class="pdo"><b>Do this now:</b> check the unit has power or gas. Don't open it up. Text us a photo of the label on the side and we'll know what we're dealing with.</p>
-        <div class="pactions">
-          <a class="btn btn-aqua" data-sms="michael" href="sms:+61421877677">Text a photo</a>
-          <a class="btn btn-ghost" href="tel:+61421877677">Call</a>
+      <div class="ppanel" data-panel="hotwater" id="panel-hotwater" role="region" aria-labelledby="ph-hotwater" tabindex="-1">
+        <div class="ppanel-in">
+          <div>
+            <h3 class="caps" id="ph-hotwater">No hot water</h3>
+            <b style="display:block;margin-top:14px;color:var(--fg);font-weight:600">Do this now:</b>
+            <ol class="pdo-steps">
+              <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>Check the hot water system is switched on at the power point or switchboard, or that your gas is on. If a switch keeps tripping, leave it off.</li>
+              <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>Don't take any covers off. Text us a photo of the label on the unit (the sticker with the model number) &mdash; it helps us work out what it needs.</li>
+            </ol>
+          </div>
+          <div class="paction-card">
+            <span class="peyebrow">Text Michael</span>
+            <a class="pbignum" href="sms:+61421877677" data-sms="michael">0421 877 677</a>
+            <div class="pactions">
+              <a class="btn btn-aqua" data-sms="michael" href="sms:+61421877677" style="width:100%">Text a photo</a>
+              <a class="btn btn-ghost" href="tel:+61421877677" style="width:100%">Call</a>
+            </div>
+            <div class="tbubble-wrap" data-bubble>
+              <div class="tphoto" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4Z"/><circle cx="12" cy="13.5" r="3.3"/></svg></div>
+              <div class="tbubble"><span class="tto">To: Michael</span><span class="ttext"></span><span class="tcaret" aria-hidden="true"></span></div>
+            </div>
+            <p class="paltline">or Angus &middot; <a href="tel:+61401140099">0401 140 099</a></p>
+          </div>
         </div>
       </div>
-      <div class="ppanel" data-panel="gas" id="panel-gas">
-        <span class="ptag2">24 hr</span>
-        <h3 class="caps h-md" style="font-size:22px">Smell gas</h3>
-        <p class="pdo"><b>Do this now:</b> don't use switches, phones or flames near the smell. Turn the gas off at the meter if it's safe, open doors and windows and get everyone outside. If the smell is strong, call 000 first. Then call us from outside.</p>
-        <div class="pactions">
-          <a class="btn btn-aqua" href="tel:+61421877677">Call now</a>
-          <a class="btn btn-ghost" href="tel:000">Call 000</a>
+      <div class="ppanel" data-panel="gas" id="panel-gas" role="region" aria-labelledby="ph-gas" tabindex="-1">
+        <div class="ppanel-in">
+          <div>
+            <span class="ptag2"><span class="dot" aria-hidden="true"></span>24 hr</span>
+            <h3 class="caps" id="ph-gas">Gas smell</h3>
+            <b style="display:block;margin-top:14px;color:var(--fg);font-weight:600">Do this now:</b>
+            <ol class="pdo-steps">
+              <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>Get everyone outside.</li>
+              <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>On the way out, open doors and windows, and turn the gas off at the meter or bottle if it's safe.</li>
+              <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>Don't touch light switches or power points, and don't use lighters or matches.</li>
+              <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>Once you're outside, away from the smell: if anyone is hurt or in danger, call 000.</li>
+              <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>To report a gas leak, call the 24-hour gas emergency line on 13 19 09. Then call us.</li>
+            </ol>
+          </div>
+          <div class="paction-card">
+            <span class="peyebrow">From outside, once it's safe</span>
+            <p class="pnote">Strong smell, or anyone unwell? Call 000 first.</p>
+            <div class="pactions" style="flex-direction:column">
+              <a class="btn btn-ghost" href="tel:000" style="width:100%">Call 000</a>
+              <a class="btn btn-ghost" href="tel:131909" style="width:100%">Gas leaks &middot; 13 19 09</a>
+              <a class="btn btn-aqua" href="tel:+61421877677" style="width:100%">Call 0421 877 677</a>
+            </div>
+            <p class="paltline">or Angus &middot; <a href="tel:+61401140099">0401 140 099</a></p>
+          </div>
         </div>
       </div>
-      <div class="ppanel" data-panel="planning" id="panel-planning">
-        <h3 class="caps h-md" style="font-size:22px">Planning a job</h3>
-        <p class="pdo">Renovation, new build or something that isn't urgent? Get a free quote — on site or off your plans.</p>
-        <div class="pactions">
-          <a class="btn btn-aqua" href="#quote">Get a free quote</a>
+      <div class="ppanel" data-panel="planning" id="panel-planning" role="region" aria-labelledby="ph-planning" tabindex="-1">
+        <div class="ppanel-in">
+          <div>
+            <h3 class="caps" id="ph-planning">Planning a job</h3>
+            <p class="pdo">Renovation, new build or something that isn't urgent? Send us the details for a free quote.</p>
+          </div>
+          <div class="paction-card">
+            <span class="peyebrow">Free, no obligation</span>
+            <div class="pactions">
+              <a class="btn btn-aqua" href="#quote" style="width:100%">Get a free quote</a>
+            </div>
+            <p class="paltline">On site at a time that suits, or off your plans.</p>
+          </div>
         </div>
       </div>
     </div>
-    <p class="picker-hint" id="pickerHint" hidden>Choose a tile above and we'll fill in the details for you.</p>
+    <p class="picker-hint" id="pickerHint" hidden>Pick one to see what to do.</p>
   </div>
 </section>
 
@@ -755,10 +1148,10 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
 <section class="proof" aria-label="In numbers">
   <div class="wrap">
     <ul data-reveal="stagger">
-      <li><span class="caps num"><span data-count="24">24</span><small>hr</small></span><p>emergency service, any time</p></li>
-      <li><span class="caps num" data-count="2">2</span><p>states licensed — ACT and NSW</p></li>
-      <li><span class="caps num" data-count="2017">2017</span><p>in business, Canberra born and bred</p></li>
-      <li><span class="caps num" data-count="0">0</span><p>mess left behind — we clean up after ourselves</p></li>
+      <li><span class="num-box"><span class="caps num" data-roll="24">24</span><span class="runit">HR</span></span><p>Emergency service available.</p></li>
+      <li><span class="num-box"><span class="caps num" data-roll="2">2</span><span class="runit">STATES</span></span><p>Licences: ACT and NSW.</p></li>
+      <li><span class="num-box"><span class="caps num" data-roll="2017">2017</span><span class="runit">SINCE</span></span><p>In business since.</p></li>
+      <li><span class="num-box"><span class="caps num" data-roll="0">0</span><span class="runit">MESS</span></span><p>Mess left behind. &ldquo;When we leave, we clear up after ourselves.&rdquo;</p></li>
     </ul>
   </div>
 </section>
@@ -767,108 +1160,143 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
 <section class="sec" id="services">
   <div class="wrap">
     <div class="head">
-      <h2 class="caps h-lg" data-lines>Pipes, gas,<br>drains.</h2>
-      <p class="lede" data-reveal>Residential and commercial — and everything between. Pick what you need, or call and we'll talk it through.</p>
+      <p class="kicker">02 &mdash; Services</p>
+      <h2 class="caps h-lg" data-lines>Big jobs.<br>Small jobs.</h2>
+      <p class="lede" data-reveal>Residential and commercial. Pick a job for a free quote, or call and we'll talk it through.</p>
     </div>
 
     <div class="bento" data-reveal="stagger">
       <div class="bento-tile emergency bt-emergency">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
-        <h3 class="caps" style="font-size:20px">24-hour emergencies</h3>
-        <p>Burst pipe, blocked drain or no hot water at 2am — call Michael or Angus directly.</p>
-        <a class="btn btn-aqua small" href="tel:+61421877677">Call now</a>
+        <div>
+          <span class="pt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>
+          <h3 class="caps">24-hour emergencies</h3>
+          <p>Burst pipe, blocked drain or a gas smell? 24-hour emergency service. Call Michael or Angus directly.</p>
+        </div>
+        <div class="ebtns">
+          <a class="btn btn-aqua small" href="tel:+61421877677">Call Michael</a>
+          <a class="btn btn-ghost small" href="tel:+61401140099">Call Angus</a>
+        </div>
       </div>
 
       <a class="bento-tile photo bt-bath" href="#quote" data-job="Bathroom or kitchen">
-        <img src="assets/bath-marble-800.webp" srcset="assets/bath-marble-480.webp 480w, assets/bath-marble-800.webp 800w, assets/bath-marble-1170.webp 1170w" sizes="(min-width:900px) 24vw, 90vw" width="800" height="800" loading="lazy" decoding="async" alt="A marble-tiled bathroom with a double vanity">
+        <img src="assets/bath-marble-800.webp" srcset="assets/bath-marble-480.webp 480w, assets/bath-marble-800.webp 800w, assets/bath-marble-1170.webp 1170w" sizes="(min-width:900px) 24vw, 90vw" width="800" height="800" loading="lazy" decoding="async" alt="">
+        <span class="shade" aria-hidden="true"></span>
+        <span class="bt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6-6"/></svg></span>
         <div class="bt-body">
           <h3>Bathrooms</h3>
           <p>Bath and shower plumbing and gas, renovations and new fit-outs.</p>
-          <span class="go">Quote this</span>
+          <span class="sr-only">Get a quote</span>
         </div>
       </a>
 
       <a class="bento-tile photo bt-kitchen" href="#quote" data-job="Bathroom or kitchen">
-        <img src="assets/kitchen-island-800.webp" srcset="assets/kitchen-island-480.webp 480w, assets/kitchen-island-800.webp 800w, assets/kitchen-island-1080.webp 1080w" sizes="(min-width:900px) 24vw, 90vw" width="800" height="800" loading="lazy" decoding="async" alt="A black kitchen island with a matching mixer tap">
+        <img src="assets/kitchen-island-800.webp" srcset="assets/kitchen-island-480.webp 480w, assets/kitchen-island-800.webp 800w, assets/kitchen-island-1080.webp 1080w" sizes="(min-width:900px) 24vw, 90vw" width="800" height="800" loading="lazy" decoding="async" alt="">
+        <span class="shade" aria-hidden="true"></span>
+        <span class="bt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6-6"/></svg></span>
         <div class="bt-body">
           <h3>Kitchens</h3>
           <p>Kitchen plumbing and gas.</p>
-          <span class="go">Quote this</span>
+          <span class="sr-only">Get a quote</span>
         </div>
       </a>
 
       <a class="bento-tile photo bt-newbuild" href="#quote" data-job="New build or renovation">
-        <img src="assets/house-exterior-800.webp" srcset="assets/house-exterior-480.webp 480w, assets/house-exterior-800.webp 800w, assets/house-exterior-1080.webp 1080w" sizes="(min-width:900px) 48vw, 90vw" width="800" height="600" loading="lazy" decoding="async" alt="The exterior of a new house build">
+        <img src="assets/house-exterior-800.webp" srcset="assets/house-exterior-480.webp 480w, assets/house-exterior-800.webp 800w, assets/house-exterior-1080.webp 1080w" sizes="(min-width:900px) 48vw, 90vw" width="800" height="600" loading="lazy" decoding="async" alt="">
+        <span class="shade" aria-hidden="true"></span>
+        <span class="bt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6-6"/></svg></span>
         <div class="bt-body">
           <h3>New builds &amp; renovations</h3>
           <p>Residential and commercial.</p>
-          <span class="go">Quote this</span>
+          <span class="sr-only">Get a quote</span>
         </div>
       </a>
 
       <a class="bento-tile bt-text bt-drains" href="#quote" data-job="Blocked drain or toilet">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 6v3M12 15v3M6 12h3M15 12h3M8 8l2 2M14 14l2 2M16 8l-2 2M8 16l2-2"/></svg>
+        <span class="bt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6-6"/></svg></span>
+        <span class="pt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 8.5h8M6.8 12h10.4M8 15.5h8"/></svg></span>
         <h3>Blocked drains</h3>
-        <p>Drain camera to find it, electric eel and high-pressure jetting to clear it, drain and sewer repairs.</p>
-        <span class="go">Quote this</span>
+        <p>Drain camera to find it, electric eel and high-pressure jetting to clear it.</p>
+        <ul class="bt-tags"><li>Drain camera</li><li>Electric eel</li><li>High-pressure jetting</li><li>Drain &amp; sewer repairs</li></ul>
+        <span class="sr-only">Get a quote</span>
       </a>
 
       <a class="bento-tile bt-text bt-hotwater" href="#quote" data-job="No hot water">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2.5" width="6" height="14" rx="3"/><circle cx="12" cy="18.5" r="3"/></svg>
+        <span class="bt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6-6"/></svg></span>
+        <span class="pt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="17" rx="3"/><path d="M9 21.5h6"/><path d="M12 7.5s-2.5 3-2.5 4.7a2.5 2.5 0 0 0 5 0C14.5 10.5 12 7.5 12 7.5Z"/></svg></span>
         <h3>Hot water</h3>
-        <p>New units, repairs and commercial — continuous flow and solar.</p>
-        <span class="go">Quote this</span>
+        <p>New units, repairs and commercial hot water.</p>
+        <ul class="bt-tags"><li>Continuous flow</li><li>Solar</li><li>Commercial</li></ul>
+        <span class="sr-only">Get a quote</span>
       </a>
 
       <a class="bento-tile bt-text bt-gas" href="#quote" data-job="Gas">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c2.2 3-1 4.2-1 7.3a3 3 0 1 0 6 0c0-1.8-.8-2.8-1.2-3.3.2 1.6-1 2.3-1.6 1.5-.7-1-.4-2.3-.8-3.6C13 4.3 12.6 3.6 12 3Z"/><path d="M9.5 21h5"/></svg>
+        <span class="bt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6-6"/></svg></span>
+        <span class="pt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5a6.5 6.5 0 0 0 6.5-6.5c0-3.6-2.6-5.6-3.6-8.4-.6 2-1.6 3.1-2.7 3.6.2-2.6-.9-5.2-2.9-7.2.4 3.6-3.8 6.4-3.8 12a6.5 6.5 0 0 0 6.5 6.5Z"/></svg></span>
         <h3>Gas fitting</h3>
         <p>Kitchens, bathrooms, hot water and heating.</p>
-        <span class="go">Quote this</span>
+        <span class="sr-only">Get a quote</span>
       </a>
 
       <a class="bento-tile bt-text bt-leaks" href="#quote" data-job="Burst pipe or leak">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>
+        <span class="bt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6-6"/></svg></span>
+        <span class="pt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/><path d="M9 14.5a3 3 0 0 0 3 3"/></svg></span>
         <h3>Leaks</h3>
         <p>Pipe leak detection and repair.</p>
-        <span class="go">Quote this</span>
+        <span class="sr-only">Get a quote</span>
       </a>
 
       <a class="bento-tile bt-text bt-toilets" href="#quote" data-job="Blocked drain or toilet">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7.5" y="3" width="7" height="4.5" rx="1"/><path d="M6 7.5h9v3.5a4.5 6 0 0 1-9 0Z"/></svg>
+        <span class="bt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6-6"/></svg></span>
+        <span class="pt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h6v7H6z"/><path d="M4 10h15a7 7 0 0 1-7 7h-1.5l.8 4.5H7.5l.9-4.9A7 7 0 0 1 4 10Z"/></svg></span>
         <h3>Toilets</h3>
         <p>Repairs and new installs.</p>
-        <span class="go">Quote this</span>
+        <span class="sr-only">Get a quote</span>
       </a>
 
       <a class="bento-tile bt-text bt-excavation" href="#quote" data-job="Excavation">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19l9-9"/><path d="M13.5 10.5l3-3 2 2-3 3"/><path d="M5 19l-1.2 2.2L6 20Z"/></svg>
+        <span class="bt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6-6"/></svg></span>
+        <span class="pt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4l-9.5 9.5"/><path d="M18 2.5l3.5 3.5"/><path d="M10.5 13.5l-2-2-4.5 4.5a2.8 2.8 0 0 0 4 4l4.5-4.5-2-2Z"/></svg></span>
         <h3>Excavation</h3>
         <p>Footings, dig-ups, site cuts for stormwater and drains.</p>
-        <span class="go">Quote this</span>
+        <span class="sr-only">Get a quote</span>
       </a>
 
       <a class="bento-tile bt-text bt-rainwater" href="#quote" data-job="Rainwater or grey water">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="5" width="12" height="15" rx="2"/><path d="M6 10.5h12M6 15h12"/></svg>
+        <span class="bt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6-6"/></svg></span>
+        <span class="pt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="7" ry="2.5"/><path d="M5 5v13.5c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V5"/><path d="M5 10c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5M5 14.5c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5"/></svg></span>
         <h3>Rainwater &amp; grey water</h3>
         <p>Tanks and grey water systems.</p>
-        <span class="go">Quote this</span>
+        <span class="sr-only">Get a quote</span>
       </a>
 
       <a class="bento-tile bt-text bt-gutters" href="#quote" data-job="Gutters and downpipes">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h9a4 4 0 0 1 4 4v10"/><path d="M4 6v3.2"/></svg>
+        <span class="bt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6-6"/></svg></span>
+        <span class="pt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8.5 12 3l9.5 5.5"/><path d="M3.5 10.5h14v2.5a2 2 0 0 1-2 2H15v6.5"/></svg></span>
         <h3>Gutters &amp; downpipes</h3>
-        <p>Roofing, gutters and downpipes.</p>
-        <span class="go">Quote this</span>
+        <p>New gutters and downpipes, and repairs to old ones.</p>
+        <span class="sr-only">Get a quote</span>
+      </a>
+
+      <a class="bento-tile bt-text bt-heating" href="#quote" data-job="Something else">
+        <span class="bt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6-6"/></svg></span>
+        <span class="pt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5a6.5 6.5 0 0 0 6.5-6.5c0-3.6-2.6-5.6-3.6-8.4-.6 2-1.6 3.1-2.7 3.6.2-2.6-.9-5.2-2.9-7.2.4 3.6-3.8 6.4-3.8 12a6.5 6.5 0 0 0 6.5 6.5Z" opacity=".45"/><rect x="6" y="2.5" width="9" height="13" rx="3" opacity=".9"/></svg></span>
+        <h3>Heating &amp; cooling</h3>
+        <p>Residential and commercial heating and cooling.</p>
+        <span class="sr-only">Get a quote</span>
       </a>
 
       <a class="bento-tile wide bt-projectmgmt" href="#quote" data-job="Something else">
         <div class="wide-in">
-          <div>
-            <h3 class="caps" style="font-size:18px">Project management</h3>
-            <p>We line up the other trades too — electricians, tilers and the rest.</p>
+          <div class="wide-head">
+            <span class="pt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9z"/><path d="M9 12l2 2 4-4"/></svg></span>
+            <div>
+              <h3 class="caps">Project management</h3>
+              <p>We can organise the other trades too, like electricians and tilers.</p>
+            </div>
           </div>
-          <span class="go">Quote this</span>
+          <p class="quote-excerpt">&#8230;organising the electrical and tiling work (such a relief!)&#8230;<cite>&mdash; Greg and Jude King</cite></p>
+          <span class="bt-arrow" style="position:static" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6-6"/></svg></span>
+          <span class="sr-only">Get a quote</span>
         </div>
       </a>
     </div>
@@ -879,20 +1307,45 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
 <section class="sec glow-l" id="quote">
   <div class="wrap">
     <div class="head">
-      <h2 class="caps h-lg" data-lines>Two ways to<br>get a price.</h2>
+      <p class="kicker">03 &mdash; Free quote</p>
+      <h2 class="caps h-lg" data-lines>Two ways to<br>get a quote.</h2>
       <p class="lede" data-reveal>Free, no-obligation quotes. We'll meet on site at a time that suits, or quote off your plans.</p>
     </div>
 
     <div class="quote-grid">
       <div class="qcard" data-reveal>
+        <div>
         <h3 class="caps" style="font-size:26px">Text us a photo.</h3>
         <p class="lede">Snap the problem, send it to Michael, and we'll come back to you with what it needs.</p>
-        <a class="btn btn-aqua" data-sms="michael" href="sms:+61421877677">Text 0421 877 677</a>
+        <a class="btn btn-aqua" data-sms="michael" href="sms:+61421877677">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-2h6l2 2h3v11H4Z"/><circle cx="12" cy="13.5" r="3.3"/></svg>
+          Text 0421 877 677
+        </a>
+        <p class="how">Opens your messages with a note ready. Add a photo and your suburb, then send.</p>
+        <div class="tbubble-wrap" data-bubble>
+          <div class="tphoto" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4Z"/><circle cx="12" cy="13.5" r="3.3"/></svg></div>
+          <div class="tbubble"><span class="tto">To: Michael</span><span class="ttext"></span><span class="tcaret" aria-hidden="true"></span></div>
+        </div>
+        </div>
 
         <div class="qr-block">
-          <svg class="qr" viewBox="0 0 29 29" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M0 0h1v1h-1zM1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM9 0h1v1h-1zM10 0h1v1h-1zM14 0h1v1h-1zM17 0h1v1h-1zM18 0h1v1h-1zM20 0h1v1h-1zM22 0h1v1h-1zM23 0h1v1h-1zM24 0h1v1h-1zM25 0h1v1h-1zM26 0h1v1h-1zM27 0h1v1h-1zM28 0h1v1h-1zM0 1h1v1h-1zM6 1h1v1h-1zM10 1h1v1h-1zM11 1h1v1h-1zM16 1h1v1h-1zM17 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM12 2h1v1h-1zM14 2h1v1h-1zM15 2h1v1h-1zM17 2h1v1h-1zM18 2h1v1h-1zM20 2h1v1h-1zM22 2h1v1h-1zM24 2h1v1h-1zM25 2h1v1h-1zM26 2h1v1h-1zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM6 3h1v1h-1zM9 3h1v1h-1zM10 3h1v1h-1zM13 3h1v1h-1zM16 3h1v1h-1zM17 3h1v1h-1zM18 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h1v1h-1zM25 3h1v1h-1zM26 3h1v1h-1zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM4 4h1v1h-1zM6 4h1v1h-1zM9 4h1v1h-1zM12 4h1v1h-1zM17 4h1v1h-1zM18 4h1v1h-1zM20 4h1v1h-1zM22 4h1v1h-1zM24 4h1v1h-1zM25 4h1v1h-1zM26 4h1v1h-1zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM9 5h1v1h-1zM15 5h1v1h-1zM16 5h1v1h-1zM17 5h1v1h-1zM18 5h1v1h-1zM19 5h1v1h-1zM20 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM23 6h1v1h-1zM24 6h1v1h-1zM25 6h1v1h-1zM26 6h1v1h-1zM27 6h1v1h-1zM28 6h1v1h-1zM10 7h1v1h-1zM11 7h1v1h-1zM13 7h1v1h-1zM15 7h1v1h-1zM16 7h1v1h-1zM17 7h1v1h-1zM20 7h1v1h-1zM0 8h1v1h-1zM3 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM8 8h1v1h-1zM11 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM19 8h1v1h-1zM21 8h1v1h-1zM23 8h1v1h-1zM0 9h1v1h-1zM1 9h1v1h-1zM4 9h1v1h-1zM5 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM9 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM21 9h1v1h-1zM22 9h1v1h-1zM23 9h1v1h-1zM25 9h1v1h-1zM26 9h1v1h-1zM0 10h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM6 10h1v1h-1zM12 10h1v1h-1zM13 10h1v1h-1zM14 10h1v1h-1zM15 10h1v1h-1zM20 10h1v1h-1zM21 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM1 11h1v1h-1zM2 11h1v1h-1zM3 11h1v1h-1zM4 11h1v1h-1zM5 11h1v1h-1zM7 11h1v1h-1zM9 11h1v1h-1zM10 11h1v1h-1zM11 11h1v1h-1zM12 11h1v1h-1zM13 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM18 11h1v1h-1zM22 11h1v1h-1zM23 11h1v1h-1zM25 11h1v1h-1zM26 11h1v1h-1zM28 11h1v1h-1zM4 12h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM10 12h1v1h-1zM11 12h1v1h-1zM12 12h1v1h-1zM14 12h1v1h-1zM15 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM19 12h1v1h-1zM20 12h1v1h-1zM23 12h1v1h-1zM24 12h1v1h-1zM25 12h1v1h-1zM28 12h1v1h-1zM8 13h1v1h-1zM10 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM14 13h1v1h-1zM15 13h1v1h-1zM16 13h1v1h-1zM19 13h1v1h-1zM22 13h1v1h-1zM23 13h1v1h-1zM24 13h1v1h-1zM26 13h1v1h-1zM28 13h1v1h-1zM2 14h1v1h-1zM3 14h1v1h-1zM5 14h1v1h-1zM6 14h1v1h-1zM7 14h1v1h-1zM8 14h1v1h-1zM11 14h1v1h-1zM12 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM16 14h1v1h-1zM23 14h1v1h-1zM24 14h1v1h-1zM28 14h1v1h-1zM3 15h1v1h-1zM5 15h1v1h-1zM8 15h1v1h-1zM9 15h1v1h-1zM10 15h1v1h-1zM11 15h1v1h-1zM12 15h1v1h-1zM15 15h1v1h-1zM20 15h1v1h-1zM21 15h1v1h-1zM22 15h1v1h-1zM23 15h1v1h-1zM27 15h1v1h-1zM28 15h1v1h-1zM1 16h1v1h-1zM3 16h1v1h-1zM4 16h1v1h-1zM6 16h1v1h-1zM9 16h1v1h-1zM11 16h1v1h-1zM12 16h1v1h-1zM13 16h1v1h-1zM18 16h1v1h-1zM20 16h1v1h-1zM22 16h1v1h-1zM28 16h1v1h-1zM1 17h1v1h-1zM2 17h1v1h-1zM4 17h1v1h-1zM7 17h1v1h-1zM8 17h1v1h-1zM11 17h1v1h-1zM13 17h1v1h-1zM14 17h1v1h-1zM15 17h1v1h-1zM17 17h1v1h-1zM20 17h1v1h-1zM21 17h1v1h-1zM24 17h1v1h-1zM25 17h1v1h-1zM26 17h1v1h-1zM27 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM3 18h1v1h-1zM4 18h1v1h-1zM6 18h1v1h-1zM9 18h1v1h-1zM12 18h1v1h-1zM14 18h1v1h-1zM16 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h1v1h-1zM26 18h1v1h-1zM28 18h1v1h-1zM4 19h1v1h-1zM5 19h1v1h-1zM8 19h1v1h-1zM9 19h1v1h-1zM12 19h1v1h-1zM14 19h1v1h-1zM15 19h1v1h-1zM17 19h1v1h-1zM18 19h1v1h-1zM21 19h1v1h-1zM24 19h1v1h-1zM27 19h1v1h-1zM28 19h1v1h-1zM0 20h1v1h-1zM2 20h1v1h-1zM4 20h1v1h-1zM6 20h1v1h-1zM7 20h1v1h-1zM8 20h1v1h-1zM11 20h1v1h-1zM16 20h1v1h-1zM17 20h1v1h-1zM18 20h1v1h-1zM19 20h1v1h-1zM20 20h1v1h-1zM21 20h1v1h-1zM22 20h1v1h-1zM23 20h1v1h-1zM24 20h1v1h-1zM25 20h1v1h-1zM26 20h1v1h-1zM28 20h1v1h-1zM8 21h1v1h-1zM10 21h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM15 21h1v1h-1zM19 21h1v1h-1zM20 21h1v1h-1zM24 21h1v1h-1zM25 21h1v1h-1zM0 22h1v1h-1zM1 22h1v1h-1zM2 22h1v1h-1zM3 22h1v1h-1zM4 22h1v1h-1zM5 22h1v1h-1zM6 22h1v1h-1zM10 22h1v1h-1zM11 22h1v1h-1zM15 22h1v1h-1zM16 22h1v1h-1zM19 22h1v1h-1zM20 22h1v1h-1zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM27 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM11 23h1v1h-1zM14 23h1v1h-1zM15 23h1v1h-1zM16 23h1v1h-1zM17 23h1v1h-1zM19 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM25 23h1v1h-1zM26 23h1v1h-1zM27 23h1v1h-1zM28 23h1v1h-1zM0 24h1v1h-1zM2 24h1v1h-1zM3 24h1v1h-1zM4 24h1v1h-1zM6 24h1v1h-1zM9 24h1v1h-1zM10 24h1v1h-1zM12 24h1v1h-1zM16 24h1v1h-1zM17 24h1v1h-1zM18 24h1v1h-1zM20 24h1v1h-1zM21 24h1v1h-1zM22 24h1v1h-1zM23 24h1v1h-1zM24 24h1v1h-1zM26 24h1v1h-1zM0 25h1v1h-1zM2 25h1v1h-1zM3 25h1v1h-1zM4 25h1v1h-1zM6 25h1v1h-1zM8 25h1v1h-1zM9 25h1v1h-1zM13 25h1v1h-1zM21 25h1v1h-1zM22 25h1v1h-1zM24 25h1v1h-1zM26 25h1v1h-1zM27 25h1v1h-1zM28 25h1v1h-1zM0 26h1v1h-1zM2 26h1v1h-1zM3 26h1v1h-1zM4 26h1v1h-1zM6 26h1v1h-1zM9 26h1v1h-1zM11 26h1v1h-1zM14 26h1v1h-1zM16 26h1v1h-1zM19 26h1v1h-1zM23 26h1v1h-1zM25 26h1v1h-1zM26 26h1v1h-1zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM9 27h1v1h-1zM10 27h1v1h-1zM11 27h1v1h-1zM12 27h1v1h-1zM13 27h1v1h-1zM14 27h1v1h-1zM16 27h1v1h-1zM17 27h1v1h-1zM19 27h1v1h-1zM20 27h1v1h-1zM22 27h1v1h-1zM27 27h1v1h-1zM28 27h1v1h-1zM0 28h1v1h-1zM1 28h1v1h-1zM2 28h1v1h-1zM3 28h1v1h-1zM4 28h1v1h-1zM5 28h1v1h-1zM6 28h1v1h-1zM8 28h1v1h-1zM9 28h1v1h-1zM10 28h1v1h-1zM11 28h1v1h-1zM12 28h1v1h-1zM14 28h1v1h-1zM15 28h1v1h-1zM19 28h1v1h-1zM20 28h1v1h-1zM21 28h1v1h-1zM23 28h1v1h-1zM24 28h1v1h-1zM25 28h1v1h-1z"/></svg>
+          <div class="qrwrap">
+          <span class="qr-eyebrow">Scan to text</span>
+          <svg class="qr" role="img" aria-label="QR code: scan to text Michael on 0421 877 677" viewBox="0 0 29 29" shape-rendering="crispEdges"><path fill="currentColor" d="M0 0h1v1h-1zM1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM9 0h1v1h-1zM10 0h1v1h-1zM14 0h1v1h-1zM17 0h1v1h-1zM18 0h1v1h-1zM20 0h1v1h-1zM22 0h1v1h-1zM23 0h1v1h-1zM24 0h1v1h-1zM25 0h1v1h-1zM26 0h1v1h-1zM27 0h1v1h-1zM28 0h1v1h-1zM0 1h1v1h-1zM6 1h1v1h-1zM10 1h1v1h-1zM11 1h1v1h-1zM16 1h1v1h-1zM17 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM12 2h1v1h-1zM14 2h1v1h-1zM15 2h1v1h-1zM17 2h1v1h-1zM18 2h1v1h-1zM20 2h1v1h-1zM22 2h1v1h-1zM24 2h1v1h-1zM25 2h1v1h-1zM26 2h1v1h-1zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM6 3h1v1h-1zM9 3h1v1h-1zM10 3h1v1h-1zM13 3h1v1h-1zM16 3h1v1h-1zM17 3h1v1h-1zM18 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h1v1h-1zM25 3h1v1h-1zM26 3h1v1h-1zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM4 4h1v1h-1zM6 4h1v1h-1zM9 4h1v1h-1zM12 4h1v1h-1zM17 4h1v1h-1zM18 4h1v1h-1zM20 4h1v1h-1zM22 4h1v1h-1zM24 4h1v1h-1zM25 4h1v1h-1zM26 4h1v1h-1zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM9 5h1v1h-1zM15 5h1v1h-1zM16 5h1v1h-1zM17 5h1v1h-1zM18 5h1v1h-1zM19 5h1v1h-1zM20 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM23 6h1v1h-1zM24 6h1v1h-1zM25 6h1v1h-1zM26 6h1v1h-1zM27 6h1v1h-1zM28 6h1v1h-1zM10 7h1v1h-1zM11 7h1v1h-1zM13 7h1v1h-1zM15 7h1v1h-1zM16 7h1v1h-1zM17 7h1v1h-1zM20 7h1v1h-1zM0 8h1v1h-1zM3 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM8 8h1v1h-1zM11 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM19 8h1v1h-1zM21 8h1v1h-1zM23 8h1v1h-1zM0 9h1v1h-1zM1 9h1v1h-1zM4 9h1v1h-1zM5 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM9 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM21 9h1v1h-1zM22 9h1v1h-1zM23 9h1v1h-1zM25 9h1v1h-1zM26 9h1v1h-1zM0 10h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM6 10h1v1h-1zM12 10h1v1h-1zM13 10h1v1h-1zM14 10h1v1h-1zM15 10h1v1h-1zM20 10h1v1h-1zM21 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM1 11h1v1h-1zM2 11h1v1h-1zM3 11h1v1h-1zM4 11h1v1h-1zM5 11h1v1h-1zM7 11h1v1h-1zM9 11h1v1h-1zM10 11h1v1h-1zM11 11h1v1h-1zM12 11h1v1h-1zM13 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM18 11h1v1h-1zM22 11h1v1h-1zM23 11h1v1h-1zM25 11h1v1h-1zM26 11h1v1h-1zM28 11h1v1h-1zM4 12h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM10 12h1v1h-1zM11 12h1v1h-1zM12 12h1v1h-1zM14 12h1v1h-1zM15 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM19 12h1v1h-1zM20 12h1v1h-1zM23 12h1v1h-1zM24 12h1v1h-1zM25 12h1v1h-1zM28 12h1v1h-1zM8 13h1v1h-1zM10 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM14 13h1v1h-1zM15 13h1v1h-1zM16 13h1v1h-1zM19 13h1v1h-1zM22 13h1v1h-1zM23 13h1v1h-1zM24 13h1v1h-1zM26 13h1v1h-1zM28 13h1v1h-1zM2 14h1v1h-1zM3 14h1v1h-1zM5 14h1v1h-1zM6 14h1v1h-1zM7 14h1v1h-1zM8 14h1v1h-1zM11 14h1v1h-1zM12 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM16 14h1v1h-1zM23 14h1v1h-1zM24 14h1v1h-1zM28 14h1v1h-1zM3 15h1v1h-1zM5 15h1v1h-1zM8 15h1v1h-1zM9 15h1v1h-1zM10 15h1v1h-1zM11 15h1v1h-1zM12 15h1v1h-1zM15 15h1v1h-1zM20 15h1v1h-1zM21 15h1v1h-1zM22 15h1v1h-1zM23 15h1v1h-1zM27 15h1v1h-1zM28 15h1v1h-1zM1 16h1v1h-1zM3 16h1v1h-1zM4 16h1v1h-1zM6 16h1v1h-1zM9 16h1v1h-1zM11 16h1v1h-1zM12 16h1v1h-1zM13 16h1v1h-1zM18 16h1v1h-1zM20 16h1v1h-1zM22 16h1v1h-1zM28 16h1v1h-1zM1 17h1v1h-1zM2 17h1v1h-1zM4 17h1v1h-1zM7 17h1v1h-1zM8 17h1v1h-1zM11 17h1v1h-1zM13 17h1v1h-1zM14 17h1v1h-1zM15 17h1v1h-1zM17 17h1v1h-1zM20 17h1v1h-1zM21 17h1v1h-1zM24 17h1v1h-1zM25 17h1v1h-1zM26 17h1v1h-1zM27 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM3 18h1v1h-1zM4 18h1v1h-1zM6 18h1v1h-1zM9 18h1v1h-1zM12 18h1v1h-1zM14 18h1v1h-1zM16 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h1v1h-1zM26 18h1v1h-1zM28 18h1v1h-1zM4 19h1v1h-1zM5 19h1v1h-1zM8 19h1v1h-1zM9 19h1v1h-1zM12 19h1v1h-1zM14 19h1v1h-1zM15 19h1v1h-1zM17 19h1v1h-1zM18 19h1v1h-1zM21 19h1v1h-1zM24 19h1v1h-1zM27 19h1v1h-1zM28 19h1v1h-1zM0 20h1v1h-1zM2 20h1v1h-1zM4 20h1v1h-1zM6 20h1v1h-1zM7 20h1v1h-1zM8 20h1v1h-1zM11 20h1v1h-1zM16 20h1v1h-1zM17 20h1v1h-1zM18 20h1v1h-1zM19 20h1v1h-1zM20 20h1v1h-1zM21 20h1v1h-1zM22 20h1v1h-1zM23 20h1v1h-1zM24 20h1v1h-1zM25 20h1v1h-1zM26 20h1v1h-1zM28 20h1v1h-1zM8 21h1v1h-1zM10 21h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM15 21h1v1h-1zM19 21h1v1h-1zM20 21h1v1h-1zM24 21h1v1h-1zM25 21h1v1h-1zM0 22h1v1h-1zM1 22h1v1h-1zM2 22h1v1h-1zM3 22h1v1h-1zM4 22h1v1h-1zM5 22h1v1h-1zM6 22h1v1h-1zM10 22h1v1h-1zM11 22h1v1h-1zM15 22h1v1h-1zM16 22h1v1h-1zM19 22h1v1h-1zM20 22h1v1h-1zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM27 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM11 23h1v1h-1zM14 23h1v1h-1zM15 23h1v1h-1zM16 23h1v1h-1zM17 23h1v1h-1zM19 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM25 23h1v1h-1zM26 23h1v1h-1zM27 23h1v1h-1zM28 23h1v1h-1zM0 24h1v1h-1zM2 24h1v1h-1zM3 24h1v1h-1zM4 24h1v1h-1zM6 24h1v1h-1zM9 24h1v1h-1zM10 24h1v1h-1zM12 24h1v1h-1zM16 24h1v1h-1zM17 24h1v1h-1zM18 24h1v1h-1zM20 24h1v1h-1zM21 24h1v1h-1zM22 24h1v1h-1zM23 24h1v1h-1zM24 24h1v1h-1zM26 24h1v1h-1zM0 25h1v1h-1zM2 25h1v1h-1zM3 25h1v1h-1zM4 25h1v1h-1zM6 25h1v1h-1zM8 25h1v1h-1zM9 25h1v1h-1zM13 25h1v1h-1zM21 25h1v1h-1zM22 25h1v1h-1zM24 25h1v1h-1zM26 25h1v1h-1zM27 25h1v1h-1zM28 25h1v1h-1zM0 26h1v1h-1zM2 26h1v1h-1zM3 26h1v1h-1zM4 26h1v1h-1zM6 26h1v1h-1zM9 26h1v1h-1zM11 26h1v1h-1zM14 26h1v1h-1zM16 26h1v1h-1zM19 26h1v1h-1zM23 26h1v1h-1zM25 26h1v1h-1zM26 26h1v1h-1zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM9 27h1v1h-1zM10 27h1v1h-1zM11 27h1v1h-1zM12 27h1v1h-1zM13 27h1v1h-1zM14 27h1v1h-1zM16 27h1v1h-1zM17 27h1v1h-1zM19 27h1v1h-1zM20 27h1v1h-1zM22 27h1v1h-1zM27 27h1v1h-1zM28 27h1v1h-1zM0 28h1v1h-1zM1 28h1v1h-1zM2 28h1v1h-1zM3 28h1v1h-1zM4 28h1v1h-1zM5 28h1v1h-1zM6 28h1v1h-1zM8 28h1v1h-1zM9 28h1v1h-1zM10 28h1v1h-1zM11 28h1v1h-1zM12 28h1v1h-1zM14 28h1v1h-1zM15 28h1v1h-1zM19 28h1v1h-1zM20 28h1v1h-1zM21 28h1v1h-1zM23 28h1v1h-1zM24 28h1v1h-1zM25 28h1v1h-1z"/></svg>
+          </div>
           <p>On a computer? Scan to text us from your phone.</p>
         </div>
+
+        <ul class="trust-chips" aria-label="Licences and guarantees">
+          <li>ACT lic. 20171009</li>
+          <li>NSW lic. 302135C</li>
+          <li>Insured</li>
+          <li>Work &amp; materials guaranteed</li>
+        </ul>
+        <figure class="mini-review">
+          <blockquote><p>&ldquo;I would like to take this opportunity to thank the staff at Aqua Brothers Plumbing for the impeccable job they have done on our most recent house works, will definitely be getting them back again&rdquo;</p></blockquote>
+          <figcaption><cite>Karen T.</cite></figcaption>
+        </figure>
 
         <div class="also">
           <p>Prefer Angus?</p>
@@ -911,50 +1364,56 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
 
       <div class="qcard" data-reveal>
         <h3 class="caps" style="font-size:26px">Or send the details.</h3>
+        <noscript><p class="lede" style="margin-top:12px">This form needs JavaScript. Call or text Michael on <a href="tel:+61421877677">0421 877 677</a>.</p></noscript>
         <form id="qForm" novalidate aria-label="Quote request" style="margin-top:18px">
-          <div class="hp" aria-hidden="true"><label>Website<input id="qWebsite" type="text" tabindex="-1" autocomplete="off"></label></div>
+          <div class="hp" aria-hidden="true"><label>Website<input id="qWebsite" name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
           <div class="row two">
-            <label>Name<input id="qName" type="text" autocomplete="name" required><span class="err" id="qNameErr" hidden>Please tell us your name</span></label>
-            <label>Mobile<input id="qPhone" type="tel" autocomplete="tel" inputmode="tel" required><span class="err" id="qPhoneErr" hidden>Please enter a mobile number</span></label>
+            <div class="field"><label><span class="lbl">Name</span><input id="qName" name="name" type="text" autocomplete="name" required></label>
+              <span class="err" id="qNameErr" hidden>Please tell us your name</span></div>
+            <div class="field"><label><span class="lbl">Mobile</span><input id="qPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></label>
+              <span class="err" id="qPhoneErr" hidden>Please enter a number we can call you on</span></div>
           </div>
           <div class="row two">
-            <label>Email <span class="opt">(optional)</span><input id="qEmail" type="email" autocomplete="email"></label>
-            <label>Suburb<input id="qSuburb" type="text" autocomplete="address-level2" required><span class="err" id="qSuburbErr" hidden>Please tell us your suburb</span></label>
+            <div class="field"><label><span class="lbl">Suburb</span><input id="qSuburb" name="suburb" type="text" autocomplete="address-level2" required></label>
+              <span class="err" id="qSuburbErr" hidden>Please tell us your suburb</span></div>
+            <div class="field"><label><span class="lbl">Job type</span>
+              <select id="qJob" name="job" required>
+                <option value="" selected disabled>Pick the closest</option>
+                <option>Burst pipe or leak</option>
+                <option>Blocked drain or toilet</option>
+                <option>No hot water</option>
+                <option>Gas</option>
+                <option>Bathroom or kitchen</option>
+                <option>New build or renovation</option>
+                <option>Excavation</option>
+                <option>Rainwater or grey water</option>
+                <option>Gutters and downpipes</option>
+                <option>Something else</option>
+              </select></label>
+              <span class="err" id="qJobErr" hidden>Please pick the closest job type</span></div>
           </div>
-          <label>Job type
-            <select id="qJob">
-              <option>Burst pipe or leak</option>
-              <option>Blocked drain or toilet</option>
-              <option>No hot water</option>
-              <option>Gas</option>
-              <option>Bathroom or kitchen</option>
-              <option>New build or renovation</option>
-              <option>Excavation</option>
-              <option>Rainwater or grey water</option>
-              <option>Gutters and downpipes</option>
-              <option>Something else</option>
-            </select>
-          </label>
           <div>
             <span class="seg-label" id="qUrgLabel">How urgent</span>
             <div class="segmented" role="radiogroup" aria-labelledby="qUrgLabel">
               <input type="radio" id="uToday" name="urgency" value="Today">
               <label for="uToday">Today</label>
-              <input type="radio" id="uWeek" name="urgency" value="This week" checked>
+              <input type="radio" id="uWeek" name="urgency" value="This week">
               <label for="uWeek">This week</label>
               <input type="radio" id="uPlan" name="urgency" value="Just planning">
               <label for="uPlan">Just planning</label>
             </div>
           </div>
-          <label>What's going on <span class="opt">(optional)</span><textarea id="qMsg" placeholder="Tell us what's happening and we'll come back with what it needs."></textarea></label>
+          <label><span class="lbl">What's going on <span class="opt">(optional)</span></span><textarea id="qMsg" name="message" placeholder="For example: the kitchen sink drains slowly and smells."></textarea></label>
+          <div class="field"><label><span class="lbl">Email <span class="opt">(optional, for a written quote)</span></span><input id="qEmail" name="email" type="email" autocomplete="email"></label>
+            <span class="err" id="qEmailErr" hidden>Please check your email (or leave it blank)</span></div>
           <p class="hint" id="qHint" hidden aria-live="polite">For an emergency, calling is fastest: <a class="btn btn-aqua small" href="tel:+61421877677">Call 0421 877 677</a></p>
-          <p class="err" id="qErr" hidden aria-live="polite">Please complete the highlighted fields.</p>
+          <p class="err" id="qErr" role="status"></p>
           <button class="btn btn-aqua" id="qSend" type="submit">Send quote request</button>
-          <p class="fine">We reply by phone. No spam, no sharing your details.</p>
+          <p class="fine">Michael or Angus will call you back on this number.</p>
         </form>
-        <div class="thanks" id="qThanks" hidden aria-live="polite">
-          <h3 class="caps" id="qThanksHead">Got it.</h3>
-          <p id="qThanksBody"></p>
+        <div class="thanks" id="qThanks" hidden>
+          <h3 class="caps" id="qThanksHead" tabindex="-1">Got it.</h3>
+          <p id="qThanksBody" aria-live="polite"></p>
           <p class="note" id="qThanksNote" hidden></p>
           <a class="btn btn-ghost" href="tel:+61421877677">Call 0421 877 677</a>
         </div>
@@ -967,42 +1426,36 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
 <section class="sec" id="work">
   <div class="wrap">
     <div class="head">
-      <h2 class="caps h-lg" data-lines>Recent<br>work.</h2>
+      <p class="kicker">04 &mdash; Recent work</p>
+      <h2 class="caps h-lg" data-lines>Our<br>work.</h2>
       <p class="lede" data-reveal>Straight off our Instagram.</p>
     </div>
 
     <div class="work-wrap">
       <figure class="work-reel" data-reveal="img">
-        <video id="reelVideo" muted loop playsinline preload="none" poster="media/reel-poster.webp" data-base="media/reel"
-          aria-label="A walkthrough of a bathroom renovation, plumbing by Aqua Brothers, tiling by Jet Black Tiling and Interiors"></video>
+        <video id="reelVideo" muted loop playsinline preload="none" data-base="media/reel"
+          aria-label="A walkthrough of a bathroom, plumbing by Aqua Brothers, tiling by Jet Black Tiling and Interiors"></video>
+        <img class="reel-poster" src="media/reel-poster.webp" width="540" height="960" alt="" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
         <button class="playbtn" id="reelPlay" type="button" hidden>Play the clip</button>
-        <figcaption>Bathroom plumbing by Aqua Brothers · tiling by Jet Black Tiling &amp; Interiors</figcaption>
+        <figcaption><span>Bathroom plumbing by Aqua Brothers</span><span class="mute">Tiling by Jet Black Tiling &amp; Interiors</span></figcaption>
       </figure>
 
       <div class="work-grid" id="workGrid" data-reveal="stagger">
-        <button type="button" class="work-photo" data-full="assets/bath-freestanding-1080.webp" data-caption="Bathroom">
-          <img src="assets/bath-freestanding-480.webp" srcset="assets/bath-freestanding-480.webp 480w, assets/bath-freestanding-800.webp 800w" sizes="(min-width:600px) 30vw, 45vw" width="480" height="480" loading="lazy" decoding="async" alt="A black-tiled bathroom with a freestanding bath">
-          <figcaption>Bathroom</figcaption>
+        <button type="button" class="work-photo" aria-haspopup="dialog" data-full="assets/bath-freestanding-1080.webp" data-caption="Freestanding bath">
+          <img src="assets/bath-freestanding-480.webp" srcset="assets/bath-freestanding-480.webp 480w, assets/bath-freestanding-800.webp 800w" sizes="(min-width:900px) 20vw, 45vw" width="480" height="480" loading="lazy" decoding="async" alt="A black-tiled bathroom with a freestanding bath">
+          <span class="cap">Freestanding bath</span>
         </button>
-        <button type="button" class="work-photo" data-full="assets/shower-black-1080.webp" data-caption="Bathroom">
-          <img src="assets/shower-black-480.webp" srcset="assets/shower-black-480.webp 480w, assets/shower-black-800.webp 800w" sizes="(min-width:600px) 30vw, 45vw" width="480" height="480" loading="lazy" decoding="async" alt="A black-tiled shower with a glass screen">
-          <figcaption>Bathroom</figcaption>
+        <button type="button" class="work-photo" aria-haspopup="dialog" data-full="assets/shower-black-1080.webp" data-caption="Black-tiled shower">
+          <img src="assets/shower-black-480.webp" srcset="assets/shower-black-480.webp 480w, assets/shower-black-800.webp 800w" sizes="(min-width:900px) 20vw, 45vw" width="480" height="480" loading="lazy" decoding="async" alt="A black-tiled shower with a glass screen">
+          <span class="cap">Black-tiled shower</span>
         </button>
-        <button type="button" class="work-photo" data-full="assets/bath-green-1080.webp" data-caption="Bathroom">
-          <img src="assets/bath-green-480.webp" srcset="assets/bath-green-480.webp 480w, assets/bath-green-800.webp 800w" sizes="(min-width:600px) 30vw, 45vw" width="480" height="480" loading="lazy" decoding="async" alt="A green-tiled bathroom with a timber vanity">
-          <figcaption>Bathroom</figcaption>
+        <button type="button" class="work-photo" aria-haspopup="dialog" data-full="assets/bath-green-1080.webp" data-caption="Green-tiled bathroom">
+          <img src="assets/bath-green-480.webp" srcset="assets/bath-green-480.webp 480w, assets/bath-green-800.webp 800w" sizes="(min-width:900px) 20vw, 45vw" width="480" height="480" loading="lazy" decoding="async" alt="A green-tiled bathroom with a timber vanity">
+          <span class="cap">Green-tiled bathroom</span>
         </button>
-        <button type="button" class="work-photo" data-full="assets/kitchen-black-1080.webp" data-caption="Kitchen">
-          <img src="assets/kitchen-black-480.webp" srcset="assets/kitchen-black-480.webp 480w, assets/kitchen-black-800.webp 800w" sizes="(min-width:600px) 30vw, 45vw" width="480" height="480" loading="lazy" decoding="async" alt="A black kitchen with timber upper cabinets">
-          <figcaption>Kitchen</figcaption>
-        </button>
-        <button type="button" class="work-photo" data-full="assets/house-exterior-1080.webp" data-caption="New build">
-          <img src="assets/house-exterior-480.webp" srcset="assets/house-exterior-480.webp 480w, assets/house-exterior-800.webp 800w" sizes="(min-width:600px) 30vw, 45vw" width="480" height="480" loading="lazy" decoding="async" alt="The exterior of a new house build">
-          <figcaption>New build</figcaption>
-        </button>
-        <button type="button" class="work-photo" data-full="assets/bath-marble-1170.webp" data-caption="Bathroom">
-          <img src="assets/bath-marble-480.webp" srcset="assets/bath-marble-480.webp 480w, assets/bath-marble-800.webp 800w" sizes="(min-width:600px) 30vw, 45vw" width="480" height="480" loading="lazy" decoding="async" alt="A marble-tiled bathroom, wider view">
-          <figcaption>Bathroom</figcaption>
+        <button type="button" class="work-photo" aria-haspopup="dialog" data-full="assets/kitchen-black-1080.webp" data-caption="Kitchen">
+          <img src="assets/kitchen-black-480.webp" srcset="assets/kitchen-black-480.webp 480w, assets/kitchen-black-800.webp 800w" sizes="(min-width:900px) 20vw, 45vw" width="480" height="480" loading="lazy" decoding="async" alt="A black kitchen with timber upper cabinets">
+          <span class="cap">Kitchen</span>
         </button>
       </div>
     </div>
@@ -1014,26 +1467,31 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
 <section class="sec glow-l" id="about">
   <div class="wrap">
     <div class="head">
-      <h2 class="caps h-lg" data-lines>Canberra born<br>and bred.</h2>
-      <p class="lede" data-reveal>Michael Vaughan and Angus O'Brien started Aqua Brothers Plumbing in Canberra in 2017. Two licensed plumbers and gas fitters, working residential and commercial jobs — plumbing, gas fitting, heating and cooling — across Canberra and the surrounding region.</p>
+      <p class="kicker">05 &mdash; About</p>
+      <h2 class="caps h-lg" data-lines>Canberra<br>born and bred.</h2>
+      <p class="lede" data-reveal>Aqua Brothers Plumbing is owned by Michael Vaughan and Angus O'Brien, and has been in business since 2017. We do residential and commercial plumbing, gas fitting, heating and cooling across Canberra and the surrounding region, licensed and insured in the ACT and NSW.</p>
     </div>
   </div>
   <div class="wrap about-wrap">
     <div>
       <ul class="promise" data-reveal="stagger">
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg>On time.</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg>Quality work and materials.</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg>A fair price.</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg>And when we leave, we clear up after ourselves.</li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>On time.</li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>Quality work and materials.</li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>A reasonable price.</li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C12 2 5 12 5 16.5A7 7 0 0 0 19 16.5C19 12 12 2 12 2Z"/></svg>And when we leave, we clear up after ourselves.</li>
       </ul>
       <p class="promise-note" data-reveal>We guarantee the quality of our work and the materials we use.</p>
     </div>
     <div class="persons" data-reveal="stagger">
       <div class="person-card">
-        <span class="monogram" aria-hidden="true">MV</span>
+        <svg class="watermark" viewBox="3 0 18 29" fill="currentColor" aria-hidden="true"><path d="M12 1C12 1 3 13 3 18.5A9 9 0 0 0 21 18.5C21 13 12 1 12 1Z"/></svg>
         <div>
-          <h3>Michael Vaughan</h3>
+          <h3 class="caps pname">Michael Vaughan</h3>
           <span class="role">Co-owner</span>
+        </div>
+        <div>
+          <a class="pnum" href="tel:+61421877677">0421 877 677</a>
+          <p class="plic">ACT 20171009 &middot; NSW 302135C</p>
         </div>
         <div class="person-actions">
           <a class="btn btn-aqua" href="tel:+61421877677">Call</a>
@@ -1041,10 +1499,14 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
         </div>
       </div>
       <div class="person-card">
-        <span class="monogram" aria-hidden="true">AO</span>
+        <svg class="watermark" viewBox="3 0 18 29" fill="currentColor" aria-hidden="true"><path d="M12 1C12 1 3 13 3 18.5A9 9 0 0 0 21 18.5C21 13 12 1 12 1Z"/></svg>
         <div>
-          <h3>Angus O'Brien</h3>
+          <h3 class="caps pname">Angus O'Brien</h3>
           <span class="role">Co-owner</span>
+        </div>
+        <div>
+          <a class="pnum" href="tel:+61401140099">0401 140 099</a>
+          <p class="plic">ACT 20171009 &middot; NSW 302135C</p>
         </div>
         <div class="person-actions">
           <a class="btn btn-aqua" href="tel:+61401140099">Call</a>
@@ -1059,25 +1521,38 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
 <section class="sec" id="how">
   <div class="wrap">
     <div class="head">
+      <p class="kicker">06 &mdash; How it works</p>
       <h2 class="caps h-lg" data-lines>How it<br>works.</h2>
     </div>
-    <ol class="steps">
-      <li data-reveal>
-        <span class="drop-num" aria-hidden="true"><svg viewBox="0 0 24 29" fill="#3AC2EA"><path d="M12 1C12 1 3 13 3 18.5A9 9 0 0 0 21 18.5C21 13 12 1 12 1Z"/></svg><span>1</span></span>
-        <h3>Call, text or send the form.</h3>
-        <p>Whichever's easiest. Michael or Angus will get back to you.</p>
-      </li>
-      <li data-reveal>
-        <span class="drop-num" aria-hidden="true"><svg viewBox="0 0 24 29" fill="#3AC2EA"><path d="M12 1C12 1 3 13 3 18.5A9 9 0 0 0 21 18.5C21 13 12 1 12 1Z"/></svg><span>2</span></span>
-        <h3>We quote it straight.</h3>
-        <p>Free, no-obligation, on site at a time that suits or off your plans.</p>
-      </li>
-      <li data-reveal>
-        <span class="drop-num" aria-hidden="true"><svg viewBox="0 0 24 29" fill="#3AC2EA"><path d="M12 1C12 1 3 13 3 18.5A9 9 0 0 0 21 18.5C21 13 12 1 12 1Z"/></svg><span>3</span></span>
-        <h3>We do the job and clean up after ourselves.</h3>
-        <p>On time, quality work and materials, and when we leave, we clear up after ourselves.</p>
-      </li>
-    </ol>
+    <div class="steps-wrap">
+      <span class="pipe-h" id="pipeH" aria-hidden="true"><span class="fill"></span></span>
+      <ol class="steps">
+        <li data-reveal>
+          <span class="drop-num" aria-hidden="true"><svg viewBox="3 0 18 29" fill="#3AC2EA"><path d="M12 1C12 1 3 13 3 18.5A9 9 0 0 0 21 18.5C21 13 12 1 12 1Z"/></svg><span>1</span></span>
+          <span class="pipe-v" aria-hidden="true"><span class="fill"></span></span>
+          <div>
+            <h3>Call, text or send the form.</h3>
+            <p>Whichever's easiest. Michael or Angus will get back to you.</p>
+          </div>
+        </li>
+        <li data-reveal>
+          <span class="drop-num" aria-hidden="true"><svg viewBox="3 0 18 29" fill="#3AC2EA"><path d="M12 1C12 1 3 13 3 18.5A9 9 0 0 0 21 18.5C21 13 12 1 12 1Z"/></svg><span>2</span></span>
+          <span class="pipe-v" aria-hidden="true"><span class="fill"></span></span>
+          <div>
+            <h3>We quote it straight.</h3>
+            <p>Free, with no obligation to go ahead, on site at a time that suits or off your plans.</p>
+          </div>
+        </li>
+        <li data-reveal>
+          <span class="drop-num" aria-hidden="true"><svg viewBox="3 0 18 29" fill="#3AC2EA"><path d="M12 1C12 1 3 13 3 18.5A9 9 0 0 0 21 18.5C21 13 12 1 12 1Z"/></svg><span>3</span></span>
+          <span class="pipe-v" aria-hidden="true"><span class="fill"></span></span>
+          <div>
+            <h3>We do the job, then clear up.</h3>
+            <p>On time, with quality work and materials. We guarantee the quality of both.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
   </div>
 </section>
 
@@ -1085,23 +1560,24 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
 <section class="sec glow-l" id="reviews">
   <div class="wrap">
     <div class="head">
+      <p class="kicker">07 &mdash; Reviews</p>
       <h2 class="caps h-lg" data-lines>What people<br>say.</h2>
     </div>
-    <div class="quotes-grid" data-reveal="stagger">
-      <div class="quote-card">
+    <div class="quotes-grid">
+      <figure class="quote-feature" id="quoteFeature" data-reveal>
+        <span class="qmark" aria-hidden="true">&#8220;</span>
+        <blockquote>
+          <p>We were so impressed with the work that the Aqua Brothers Plumbing team did in our laundry renovation which included also <mark>organising the electrical and tiling work (such a relief!)</mark>, that we got them back to install rainwater tanks under our pergola. Thank you so much!</p>
+        </blockquote>
+        <figcaption>Greg and Jude King<span class="ctx">Laundry renovation &middot; rainwater tanks</span></figcaption>
+      </figure>
+      <figure class="quote-card" data-reveal>
         <span class="qmark" aria-hidden="true">&#8220;</span>
         <blockquote>
           <p>I would like to take this opportunity to thank the staff at Aqua Brothers Plumbing for the impeccable job they have done on our most recent house works, will definitely be getting them back again</p>
         </blockquote>
-        <cite>Karen T.</cite>
-      </div>
-      <div class="quote-card">
-        <span class="qmark" aria-hidden="true">&#8220;</span>
-        <blockquote>
-          <p>We were so impressed with the work that the Aqua Brothers Plumbing team did in our laundry renovation which included also organising the electrical and tiling work (such a relief!), that we got them back to install rainwater tanks under our pergola. Thank you so much!</p>
-        </blockquote>
-        <cite>Greg and Jude King</cite>
-      </div>
+        <figcaption>Karen T.<span class="ctx">House works</span></figcaption>
+      </figure>
     </div>
   </div>
 </section>
@@ -1110,8 +1586,9 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
 <section class="sec" id="area">
   <div class="wrap">
     <div class="head">
-      <h2 class="caps h-lg" data-lines>Both sides<br><span class="grad-txt">of the border.</span></h2>
-      <p class="lede" data-reveal>All of Canberra, and licensed to work either side of the ACT and NSW border.</p>
+      <p class="kicker">08 &mdash; Service area</p>
+      <h2 class="caps h-lg" data-lines>All of Canberra.<br><span class="grad-txt">Both sides of the border.</span></h2>
+      <p class="lede" data-reveal>Licensed to work either side of the ACT and NSW border.</p>
     </div>
     <ul class="area-chips" data-reveal="stagger">
       <li>Belconnen</li>
@@ -1129,18 +1606,23 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
 
 <!-- ============================================================ FAQ -->
 <section class="sec glow-l" id="faq">
-  <div class="wrap">
+  <div class="wrap faq-wrap">
     <div class="head">
+      <p class="kicker">09 &mdash; FAQ</p>
       <h2 class="caps h-lg" data-lines>Straight<br>answers.</h2>
     </div>
     <div class="faq">
       <details>
         <summary>Do you do emergencies?</summary>
-        <p class="a">Yes. 24-hour emergency service — call Michael (0421 877 677) or Angus (0401 140 099) directly.</p>
+        <p class="a">Yes. 24-hour emergency service &mdash; call Michael (<a href="tel:+61421877677">0421 877 677</a>) or Angus (<a href="tel:+61401140099">0401 140 099</a>) directly.</p>
       </details>
       <details>
         <summary>Are you licensed and insured?</summary>
         <p class="a">Yes. ACT licence 20171009, NSW licence 302135C, insured in both.</p>
+      </details>
+      <details>
+        <summary>Can I check your licences?</summary>
+        <p class="a">Yes. ACT licence 20171009 and NSW licence 302135C are on the public registers.</p>
       </details>
       <details>
         <summary>Is the quote free?</summary>
@@ -1151,12 +1633,16 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
         <p class="a">Yes, residential and commercial.</p>
       </details>
       <details>
+        <summary>Do you do heating and cooling?</summary>
+        <p class="a">Yes, residential and commercial.</p>
+      </details>
+      <details>
         <summary>Can you organise the other trades?</summary>
         <p class="a">Yes. We can project-manage the job and line up trades like electricians and tilers.</p>
       </details>
       <details>
         <summary>Can I just text you a photo?</summary>
-        <p class="a">Yes. Text it to 0421 877 677 with your suburb and we'll get back to you.</p>
+        <p class="a">Yes. Text it to <a href="tel:+61421877677">0421 877 677</a> with your suburb and we'll get back to you.</p>
       </details>
       <details>
         <summary>Where do you work?</summary>
@@ -1172,35 +1658,41 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
 <footer class="foot">
   <div class="wrap foot-cta">
     <div>
-      <h2 class="caps h-lg" data-lines>Call the<br>brothers.</h2>
-      <p class="lede" data-reveal>Free, no-obligation quotes. Day or night, for an emergency.</p>
+      <h2 class="caps h-lg" data-lines>Call Michael<br>or Angus.</h2>
+      <p class="lede" data-reveal>Free, no-obligation quotes. 24-hour emergency service.</p>
+      <div class="foot-numbers" data-reveal="stagger">
+        <a class="foot-num" href="tel:+61421877677"><span class="fn-label">Michael</span><span class="fn-num">0421 877 677</span></a>
+        <a class="foot-num" href="tel:+61401140099"><span class="fn-label">Angus</span><span class="fn-num">0401 140 099</span></a>
+      </div>
     </div>
     <div class="btns" id="footCta" data-reveal>
-      <a class="btn btn-aqua" href="tel:+61421877677">Call 0421 877 677</a>
       <a class="btn btn-ghost" data-sms="michael" href="sms:+61421877677">Text a photo</a>
-      <a class="btn btn-ghost" href="#quote">Free quote</a>
+      <a class="btn btn-aqua" href="#quote">Free quote</a>
     </div>
   </div>
-  <div class="wrap wordmark-wrap" aria-hidden="true"><div class="wordmark" id="footWordmark">Aqua Brothers</div></div>
+  <div class="wrap wordmark-wrap" aria-hidden="true"><div class="wordmark" id="footWordmark">Aqua <br class="wbr">Brothers</div></div>
   <div class="strip">
-    <div class="marquee"><div class="marquee-track" id="footMarquee" style="--dur:58s"></div></div>
+    <div class="marquee"><div class="marquee-track" id="footMarquee" style="--dur:58s;animation-direction:reverse"><ul class="mq" aria-hidden="true">
+      <li>Canberra born and bred</li><li>ACT 20171009</li><li>NSW 302135C</li>
+      <li>Free, no-obligation quotes</li><li>24-hour emergency service</li>
+    </ul></div></div>
   </div>
   <div class="wrap cols">
     <div>
-      <img class="logo" src="assets/logo-full-320.webp" width="126" height="58" alt="Aqua Brothers Plumbing" loading="lazy">
-      <p>Licensed plumbing, gas fitting, heating and cooling across Canberra and surrounding regions.</p>
+      <img class="logo" src="assets/logo-full-320.webp" srcset="assets/logo-full-320.webp 320w, assets/logo-full-640.webp 640w" sizes="150px" width="150" height="69" alt="Aqua Brothers Plumbing" loading="lazy" decoding="async">
+      <p>Plumbing, gas fitting, heating and cooling across Canberra and surrounding regions. Licensed and insured in the ACT and NSW.</p>
     </div>
     <div>
       <h2>Contact</h2>
       <a href="tel:+61421877677"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>Michael — 0421 877 677</a>
       <a href="tel:+61401140099"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>Angus — 0401 140 099</a>
-      <span>ACT lic. 20171009 · NSW lic. 302135C</span>
+      <span class="lic"><span>ACT lic. 20171009</span><span>NSW lic. 302135C</span></span>
       <span>ABN 48 618 843 691</span>
     </div>
     <div>
       <h2>Services</h2>
       <a href="#services">Bathrooms</a><a href="#services">Kitchens</a><a href="#services">Blocked drains</a>
-      <a href="#services">Hot water</a><a href="#services">Gas fitting</a>
+      <a href="#services">Hot water</a><a href="#services">Gas fitting</a><a href="#services">Heating &amp; cooling</a>
     </div>
     <div>
       <h2>Follow</h2>
@@ -1214,18 +1706,24 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
   </div>
 </footer>
 
+<nav aria-label="Quick contact">
 <div class="phonebar" id="phonebar">
-  <a class="btn btn-aqua" data-sms="michael" href="sms:+61421877677">Text a photo</a>
-  <a class="btn btn-ghost" href="tel:+61421877677">Call</a>
+  <a class="btn btn-ghost" data-sms="michael" href="sms:+61421877677">Text a photo</a>
+  <a class="btn btn-aqua" href="tel:+61421877677">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
+    0421 877 677
+  </a>
 </div>
 <a class="calldock" id="calldock" href="tel:+61421877677" aria-label="Call us on 0421 877 677">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
   <span class="num">0421 877 677</span>
 </a>
+</nav>
 
 <dialog id="lightbox" aria-label="Photo viewer">
   <div class="lb-body">
-    <img id="lbImg" src="" alt="">
+    <img id="lbImg" alt="">
+    <span class="lb-count" id="lbCount" aria-hidden="true"></span>
     <button class="lb-close" id="lbClose" type="button" aria-label="Close">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
@@ -1235,11 +1733,40 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
     <button class="lb-next" id="lbNext" type="button" aria-label="Next photo">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
     </button>
+    <p class="lb-cap" id="lbCap" aria-live="polite"></p>
   </div>
-  <p class="lb-cap" id="lbCap"></p>
 </dialog>
 
-<script type="application/ld+json" id="ld"></script>
+<script type="application/ld+json" id="ld">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {"@type":"Plumber","@id":"#business","name":"Aqua Brothers Plumbing",
+      "url":"https://aqua-brothers-demo-frontline.vercel.app/",
+      "logo":"https://aqua-brothers-demo-frontline.vercel.app/assets/logo-full-640.webp",
+      "image":"https://aqua-brothers-demo-frontline.vercel.app/assets/og-aqua.jpg",
+      "telephone":"+61421877677",
+      "address":{"@type":"PostalAddress","addressLocality":"Canberra","addressRegion":"ACT","addressCountry":"AU"},
+      "areaServed":[{"@type":"City","name":"Canberra"},{"@type":"State","name":"New South Wales"}],
+      "contactPoint":[
+        {"@type":"ContactPoint","contactType":"customer service","name":"Michael Vaughan","telephone":"+61421877677"},
+        {"@type":"ContactPoint","contactType":"customer service","name":"Angus O'Brien","telephone":"+61401140099"}
+      ],
+      "sameAs":["https://www.instagram.com/aquabrothersplumbing","https://www.facebook.com/aquabrothers.plumbing.94"]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Do you do emergencies?","acceptedAnswer":{"@type":"Answer","text":"Yes. 24-hour emergency service — call Michael (0421 877 677) or Angus (0401 140 099) directly."}},
+      {"@type":"Question","name":"Are you licensed and insured?","acceptedAnswer":{"@type":"Answer","text":"Yes. ACT licence 20171009, NSW licence 302135C, insured in both."}},
+      {"@type":"Question","name":"Can I check your licences?","acceptedAnswer":{"@type":"Answer","text":"Yes. ACT licence 20171009 and NSW licence 302135C are on the public registers."}},
+      {"@type":"Question","name":"Is the quote free?","acceptedAnswer":{"@type":"Answer","text":"Yes, free and no obligation. We can meet on site at a time that suits, or quote off your plans."}},
+      {"@type":"Question","name":"Do you do commercial work?","acceptedAnswer":{"@type":"Answer","text":"Yes, residential and commercial."}},
+      {"@type":"Question","name":"Do you do heating and cooling?","acceptedAnswer":{"@type":"Answer","text":"Yes, residential and commercial."}},
+      {"@type":"Question","name":"Can you organise the other trades?","acceptedAnswer":{"@type":"Answer","text":"Yes. We can project-manage the job and line up trades like electricians and tilers."}},
+      {"@type":"Question","name":"Can I just text you a photo?","acceptedAnswer":{"@type":"Answer","text":"Yes. Text it to 0421 877 677 with your suburb and we'll get back to you."}},
+      {"@type":"Question","name":"Where do you work?","acceptedAnswer":{"@type":"Answer","text":"All of Canberra and the surrounding NSW region."}}
+    ]}
+  ]
+}
+</script>
 <script defer src="vendor/gsap.min.js"></script>
 <script defer src="vendor/ScrollTrigger.min.js"></script>
 <script>
@@ -1256,21 +1783,19 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
     formEndpoint:"https://api.web3forms.com/submit",
     formAccessKey:""   /* paste a Web3Forms key to make the form email the owners. Empty = demo mode. */
   };
-  SITE.smsBody="Hi Aqua Brothers, I'd like a quote. Suburb: ";
+  SITE.smsBody="Hi Aqua Brothers, here's a photo of the job. Suburb: ";
   var PROBLEM_SMS={
     burst:"Hi Aqua Brothers, I've got a burst pipe / leak. Suburb: ",
     blocked:"Hi Aqua Brothers, I've got a blocked drain / toilet. Suburb: ",
     hotwater:"Hi Aqua Brothers, I've got no hot water. Suburb: ",
-    gas:"Hi Aqua Brothers, I can smell gas. Suburb: ",
+    gas:"Hi Aqua Brothers, I can smell gas. Please call me. Suburb: ",
     planning:"Hi Aqua Brothers, I'm planning a job and would like a free quote. Suburb: "
   };
   var PROBLEM_JOB={
     burst:"Burst pipe or leak", blocked:"Blocked drain or toilet", hotwater:"No hot water",
-    gas:"Gas", planning:"New build or renovation"
+    gas:"Gas"
   };
   var EMERGENCY_JOBS=["Burst pipe or leak","Blocked drain or toilet","Gas"];
-  var SERVICES=["New builds","Renovations","Blocked drains","Drain camera","Hot water","Gas fitting",
-    "Bathrooms","Kitchens","Leak detection","Rainwater tanks","Gutters","24-hour emergencies"];
 
   var $=function(id){ return document.getElementById(id) };
   var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1284,36 +1809,41 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
   }
   function applySms(){
     document.querySelectorAll("[data-sms]").forEach(function(a){ a.href=smsHref(a.getAttribute("data-sms")); });
+    updateBubbles(SITE.smsBody);
+  }
+  /* ---------- live sms preview bubbles ("triage console") ----------
+     Shows the exact text the sms: link will send, typed in as it changes.
+     Reused wherever a .tbubble sits (the picker panels and the quote card). */
+  function typeInto(el,text){
+    if(!el) return;
+    if(el._typeTimer) clearInterval(el._typeTimer);
+    if(reduce){ el.textContent=text; return; }
+    var i=0; el.textContent="";
+    el._typeTimer=setInterval(function(){
+      i++; el.textContent=text.slice(0,i);
+      if(i>=text.length) clearInterval(el._typeTimer);
+    },18);
+  }
+  function updateBubbles(text){
+    document.querySelectorAll(".tbubble .ttext").forEach(function(el){ typeInto(el,text); });
   }
   applySms();
 
-  /* ---------- marquees: the list twice, so the loop is seamless ---------- */
-  function fill(id,items){
-    var t=$(id); if(!t) return;
-    var one=items.map(function(s){ return "<span>"+s+"</span>" }).join("");
-    t.innerHTML='<div style="display:flex">'+one+'</div><div style="display:flex" aria-hidden="true">'+one+'</div>';
+  /* ---------- marquees: the first copy is already in the HTML (so it reads
+     without JS); this widens it until it covers even a very wide screen,
+     then appends an aria-hidden duplicate so the loop is seamless. ---------- */
+  function fillMarquee(id){
+    var t=$(id), first=t&&t.firstElementChild; if(!first) return;
+    var target=Math.max(window.innerWidth,1920), guard=0;
+    while(first.scrollWidth<target&&guard<6){
+      [].slice.call(first.children).forEach(function(li){ first.appendChild(li.cloneNode(true)); });
+      guard++;
+    }
+    var dup=first.cloneNode(true); dup.setAttribute("aria-hidden","true"); dup.removeAttribute("aria-label");
+    t.appendChild(dup);
   }
-  fill("heroMarquee",SERVICES);
-  fill("footMarquee",["Canberra born and bred","Licensed ACT & NSW"].concat(SERVICES));
-
-  /* ---------- structured data, from SITE ---------- */
-  $("ld").textContent=JSON.stringify({
-    "@context":"https://schema.org",
-    "@graph":[
-      {"@type":"Plumber",name:SITE.name,telephone:SITE.michaelE164,
-        areaServed:{"@type":"City",name:"Canberra"},
-        sameAs:["https://www.instagram.com/aquabrothersplumbing","https://www.facebook.com/aquabrothers.plumbing.94"]},
-      {"@type":"FAQPage",mainEntity:[
-        {"@type":"Question",name:"Do you do emergencies?",acceptedAnswer:{"@type":"Answer",text:"Yes. 24-hour emergency service — call Michael (0421 877 677) or Angus (0401 140 099) directly."}},
-        {"@type":"Question",name:"Are you licensed and insured?",acceptedAnswer:{"@type":"Answer",text:"Yes. ACT licence 20171009, NSW licence 302135C, insured in both."}},
-        {"@type":"Question",name:"Is the quote free?",acceptedAnswer:{"@type":"Answer",text:"Yes, free and no obligation. We can meet on site at a time that suits, or quote off your plans."}},
-        {"@type":"Question",name:"Do you do commercial work?",acceptedAnswer:{"@type":"Answer",text:"Yes, residential and commercial."}},
-        {"@type":"Question",name:"Can you organise the other trades?",acceptedAnswer:{"@type":"Answer",text:"Yes. We can project-manage the job and line up trades like electricians and tilers."}},
-        {"@type":"Question",name:"Can I just text you a photo?",acceptedAnswer:{"@type":"Answer",text:"Yes. Text it to 0421 877 677 with your suburb and we'll get back to you."}},
-        {"@type":"Question",name:"Where do you work?",acceptedAnswer:{"@type":"Answer",text:"All of Canberra and the surrounding NSW region."}}
-      ]}
-    ]
-  });
+  fillMarquee("heroMarquee");
+  fillMarquee("footMarquee");
 
   /* ---------- hero clip ----------
      No <source> in the markup on purpose: this picks the size for the screen
@@ -1343,7 +1873,8 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
     else window.addEventListener("load",tryPlay);
     if("IntersectionObserver" in window){
       new IntersectionObserver(function(e){
-        if(!playing) return;
+        document.documentElement.classList.toggle("hero-off",!e[0].isIntersecting);
+        if(!playing||document.documentElement.classList.contains("still")) return;
         if(e[0].isIntersecting) v.play().catch(function(){}); else v.pause();
       },{threshold:.1}).observe(v);
     }
@@ -1371,12 +1902,14 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
     }
     if(!("IntersectionObserver" in window)){ load(); v.play().catch(function(){}); return; }
     var playing=false;
+    /* one observer fetches the file well ahead of the fold; a tighter one
+       only plays/pauses once the reel is actually visible */
+    new IntersectionObserver(function(e){ if(e[0].isIntersecting) load(); },{rootMargin:"600px 0px"}).observe(v);
     new IntersectionObserver(function(e){
-      if(e[0].isIntersecting){
-        load();
-        v.play().then(function(){ playing=true; }).catch(function(){});
-      } else if(playing) v.pause();
-    },{rootMargin:"600px 0px"}).observe(v);
+      if(document.documentElement.classList.contains("still")) return;
+      if(e[0].isIntersecting){ load(); v.play().then(function(){ playing=true; }).catch(function(){}); }
+      else if(playing) v.pause();
+    },{threshold:.15}).observe(v);
   })();
 
   /* ---------- phone bar + corner call ----------
@@ -1390,22 +1923,46 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
     var io=new IntersectionObserver(function(es){
       es.forEach(function(x){ if(x.isIntersecting) covered.add(x.target); else covered.delete(x.target); }); sync();
     },{threshold:.1});
-    [$("quote"),$("footCta")].forEach(function(t){ if(t) io.observe(t); });
+    [$("quote"),$("footCta"),document.querySelector("footer.foot"),$("ppanels")].forEach(function(t){ if(t) io.observe(t); });
   })();
 
   /* ---------- job links pre-pick the job type in the form ---------- */
   document.querySelectorAll("[data-job]").forEach(function(a){
-    a.addEventListener("click",function(){ var s=$("qJob"); if(s) s.value=a.getAttribute("data-job"); });
+    a.addEventListener("click",function(){ var s=$("qJob"); if(s){ s.value=a.getAttribute("data-job"); s.dispatchEvent(new Event("change")); } });
   });
 
-  /* ---------- bento pointer-follow glow (desktop only) ---------- */
+  /* ---------- pointer-follow glow (desktop only) ----------
+     Cache the rect on enter and batch updates into one rAF per frame,
+     instead of a forced layout read on every pointermove. */
   (function(){
     if(!window.matchMedia("(hover:hover) and (pointer:fine)").matches) return;
-    document.querySelectorAll(".bento-tile").forEach(function(t){
+    document.querySelectorAll(".bento-tile, .ptile, .person-card").forEach(function(t){
+      var r=null, raf=0, x=0, y=0;
+      t.addEventListener("pointerenter",function(){ r=t.getBoundingClientRect(); });
       t.addEventListener("pointermove",function(e){
-        var r=t.getBoundingClientRect();
-        t.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%");
-        t.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%");
+        x=e.clientX; y=e.clientY; if(raf) return;
+        raf=requestAnimationFrame(function(){
+          raf=0; if(!r) r=t.getBoundingClientRect();
+          t.style.setProperty("--mx",((x-r.left)/r.width*100)+"%");
+          t.style.setProperty("--my",((y-r.top)/r.height*100)+"%");
+        });
+      });
+      t.addEventListener("pointerleave",function(){ r=null; });
+    });
+  })();
+
+  /* ---------- pause motion (WCAG 2.2.2): pauses marquees, the caustic light
+     and the hero/reel video loops. One small toggle covers all of it. ---------- */
+  (function(){
+    var b=$("motionBtn"); if(!b) return;
+    if(reduce){ b.hidden=true; return; }
+    b.addEventListener("click",function(){
+      var still=document.documentElement.classList.toggle("still");
+      b.setAttribute("aria-pressed",String(still));
+      b.setAttribute("aria-label",still?"Play motion":"Pause motion");
+      ["heroVideo","reelVideo"].forEach(function(id){
+        var v=$(id); if(!v) return;
+        if(still) v.pause(); else if(v.currentSrc) v.play().catch(function(){});
       });
     });
   })();
@@ -1427,13 +1984,18 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
 
   /* ---------- "what's going on?" problem picker ----------
      Selecting a tile reveals only its panel, updates every sms: link on the
-     page to that problem, and pre-picks the matching job type in the form.
-     Without script every panel is already visible (the CSS default), so
-     nothing here is required to read the advice. */
+     page to that problem (and the sms preview bubble, typed in live), and
+     pre-picks the matching job type in the form. Without script every panel
+     is already visible (the CSS default), so nothing here is required to
+     read the advice; the tiles themselves start hidden without JS, since
+     they would otherwise be buttons that do nothing. */
   (function(){
     var tiles=[].slice.call(document.querySelectorAll(".ptile")), panels=$("ppanels");
+    var tilesWrap=document.querySelector(".ptiles");
     if(!tiles.length||!panels) return;
+    if(tilesWrap) tilesWrap.hidden=false;
     var hint=$("pickerHint");
+    var bar=$("phonebar");
     panels.querySelectorAll(".ppanel").forEach(function(p){ p.hidden=true; });
     if(hint) hint.hidden=false;
     function select(key){
@@ -1441,9 +2003,19 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
       panels.querySelectorAll(".ppanel").forEach(function(p){ p.hidden=p.getAttribute("data-panel")!==key; });
       if(hint) hint.hidden=true;
       if(PROBLEM_SMS[key]){ SITE.smsBody=PROBLEM_SMS[key]; applySms(); }
-      if(PROBLEM_JOB[key]){ var s=$("qJob"); if(s) s.value=PROBLEM_JOB[key]; }
+      var s=$("qJob");
+      if(s&&PROBLEM_JOB[key]){ s.value=PROBLEM_JOB[key]; s.dispatchEvent(new Event("change")); }
+      if(bar) bar.classList.toggle("gas",key==="gas");
+      var tile=tiles.filter(function(t){ return t.getAttribute("data-p")===key })[0];
       var panel=$("panel-"+key);
-      if(panel) panel.scrollIntoView({block:"nearest",behavior:reduce?"auto":"smooth"});
+      if(panel){
+        if(tile&&window.matchMedia("(min-width:900px)").matches){
+          var tr=tile.getBoundingClientRect(), pr=panel.getBoundingClientRect();
+          panels.style.setProperty("--caret-x",Math.max(24,(tr.left+tr.width/2)-pr.left)+"px");
+        }
+        panel.scrollIntoView({block:innerWidth<768?"start":"nearest",behavior:reduce?"auto":"smooth"});
+        panel.focus({preventScroll:true});
+      }
     }
     tiles.forEach(function(t){ t.addEventListener("click",function(){ select(t.getAttribute("data-p")); }); });
   })();
@@ -1451,13 +2023,14 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
   /* ---------- work gallery lightbox ---------- */
   (function(){
     var photos=[].slice.call(document.querySelectorAll(".work-photo"));
-    var lb=$("lightbox"), img=$("lbImg"), cap=$("lbCap"); if(!photos.length||!lb) return;
+    var lb=$("lightbox"), img=$("lbImg"), cap=$("lbCap"), count=$("lbCount"); if(!photos.length||!lb) return;
     var idx=0, opener=null;
     function show(i){
       idx=(i+photos.length)%photos.length;
       var p=photos[idx];
       img.src=p.getAttribute("data-full"); img.alt=p.querySelector("img").alt;
-      cap.textContent=p.getAttribute("data-caption")||"";
+      cap.textContent=(p.getAttribute("data-caption")||"")+" · "+(idx+1)+" of "+photos.length;
+      if(count) count.textContent=(idx+1)+" / "+photos.length;
     }
     photos.forEach(function(p,i){
       p.addEventListener("click",function(){
@@ -1555,14 +2128,37 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
       gsap.fromTo(kind==="stagger"?el.children:el,{opacity:0,y:16},{opacity:1,y:0,duration:.7,ease:"expo.out",
         stagger:.06,immediateRender:false,scrollTrigger:{trigger:el,start:"top 92%",once:true}});
     });
-    /* counters: the markup already holds the real number; this only counts up to it */
-    document.querySelectorAll("[data-count]").forEach(function(el){
-      var end=Number(el.getAttribute("data-count")), o={v:0};
-      gsap.fromTo(o,{v:0},{v:end,duration:1.6,ease:"power2.out",immediateRender:false,
-        scrollTrigger:{trigger:el,start:"top 92%",once:true},
-        onUpdate:function(){ el.textContent=String(Math.round(o.v)); },
-        onComplete:function(){ el.textContent=String(end); }});
+    /* water-meter digit rollers: the markup already holds the real, final
+       number (a plain text node) — this only builds the rolling strips when
+       motion is allowed, so "2017" never flashes a false year on the way up. */
+    document.querySelectorAll("[data-roll]").forEach(function(el){
+      var text=el.getAttribute("data-roll"), trigger=el.closest("li")||el;
+      el.textContent=""; el.classList.add("roller");
+      [].slice.call(text).forEach(function(ch,i){
+        var val=Number(ch);
+        var wrap=document.createElement("span"); wrap.className="rdigit";
+        var strip=document.createElement("span"); strip.className="rstrip";
+        for(var d=0;d<10;d++){ var s=document.createElement("span"); s.textContent=d; strip.appendChild(s); }
+        wrap.appendChild(strip); el.appendChild(wrap);
+        var from=text==="0"?-90:0;   /* the "0 mess" counter rolls DOWN from 9 to 0 */
+        gsap.fromTo(strip,{yPercent:from},{yPercent:-val*10,duration:.9,ease:"expo.out",delay:i*.09,
+          immediateRender:false,scrollTrigger:{trigger:trigger,start:"top 92%",once:true}});
+      });
     });
+
+
+    /* "the pipe": desktop scrubs the fill as you scroll through the section;
+       phones get a plain once-off fill per step, no scrub (keeps scroll smooth) */
+    var pipeH=document.querySelector(".pipe-h .fill");
+    if(pipeH&&window.matchMedia("(min-width:900px)").matches){
+      gsap.fromTo(pipeH,{scaleX:0},{scaleX:1,ease:"none",immediateRender:false,
+        scrollTrigger:{trigger:".steps-wrap",start:"top 75%",end:"bottom 65%",scrub:.4}});
+    } else {
+      document.querySelectorAll(".pipe-v .fill").forEach(function(el,i){
+        gsap.fromTo(el,{scaleY:0},{scaleY:1,duration:.8,ease:"power1.out",delay:i*.05,immediateRender:false,
+          scrollTrigger:{trigger:el.closest("li"),start:"top 85%",once:true}});
+      });
+    }
 
     window.addEventListener("load",function(){ ScrollTrigger.refresh(); });
     if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ ScrollTrigger.refresh(); });
@@ -1571,14 +2167,21 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
 
   /* ---------- quote form ---------- */
   function digits(v){ return (v.match(/\d/g)||[]).length }
-  function setErr(el,errEl,bad){ el.setAttribute("aria-invalid",bad?"true":"false"); errEl.hidden=!bad; }
+  function setErr(el,errEl,bad){
+    el.setAttribute("aria-invalid",bad?"true":"false");
+    errEl.hidden=!bad;
+    if(bad) el.setAttribute("aria-describedby",errEl.id); else el.removeAttribute("aria-describedby");
+  }
   var filled=function(v){ return !!v.trim() }, isPhone=function(v){ return digits(v)>=8 };
+  var isEmail=function(v){ return !v.trim()||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) };
   (function(){
     var f=$("qForm"); if(!f) return;
-    var FIELDS=[["qName","qNameErr",filled],["qPhone","qPhoneErr",isPhone],["qSuburb","qSuburbErr",filled]];
+    var FIELDS=[["qName","qNameErr",filled],["qPhone","qPhoneErr",isPhone],["qSuburb","qSuburbErr",filled],
+      ["qJob","qJobErr",filled],["qEmail","qEmailErr",isEmail]];
     FIELDS.forEach(function(t){
-      $(t[0]).addEventListener("input",function(){
-        if($(t[0]).getAttribute("aria-invalid")==="true"&&t[2]($(t[0]).value)) setErr($(t[0]),$(t[1]),false);
+      var el=$(t[0]);
+      el.addEventListener(el.tagName==="SELECT"?"change":"input",function(){
+        if(el.getAttribute("aria-invalid")==="true"&&t[2](el.value)) setErr(el,$(t[1]),false);
       });
     });
     /* an emergency hint when someone marks a job urgent today */
@@ -1590,37 +2193,49 @@ dialog#lightbox::backdrop{background:rgba(4,7,14,.88)}
     f.querySelectorAll('input[name="urgency"]').forEach(function(r){ r.addEventListener("change",syncHint); });
     $("qJob").addEventListener("change",syncHint);
 
+    var sending=false;
     f.addEventListener("submit",function(e){
       e.preventDefault();
+      if(sending) return;
       if($("qWebsite").value) return;
       var first=null;
       FIELDS.forEach(function(t){ var el=$(t[0]),bad=!t[2](el.value); setErr(el,$(t[1]),bad); if(bad&&!first) first=el; });
-      if(first){ $("qErr").hidden=false; first.focus(); return; }
-      $("qErr").hidden=true;
+      if(first){ $("qErr").textContent="Please complete the highlighted fields."; first.focus(); return; }
+      $("qErr").textContent="";
       var d={name:$("qName").value.trim(),phone:$("qPhone").value.trim(),email:$("qEmail").value.trim(),
              suburb:$("qSuburb").value.trim(),job:$("qJob").value,
-             urgency:(f.querySelector('input[name="urgency"]:checked')||{}).value||"",
+             urgency:(f.querySelector('input[name="urgency"]:checked')||{}).value||"Not given",
              message:$("qMsg").value.trim()};
-      var btn=$("qSend");
-      function done(mode,detail){
+      var btn=$("qSend"), label=btn.textContent;
+      var isEmergencyJob=EMERGENCY_JOBS.indexOf(d.job)!==-1;
+      function done(mode){
         $("qThanksHead").textContent="Got it, "+d.name.split(" ")[0]+".";
         var body=$("qThanksBody"), note=$("qThanksNote");
-        if(mode==="sent"){ body.textContent="Michael or Angus will call you on "+d.phone+"."; note.hidden=true; }
-        else if(mode==="demo"){ body.textContent="Michael or Angus will call you on "+d.phone+"."; note.textContent="Demo mode — on the live site this goes straight to Michael and Angus."; note.hidden=false; }
-        else { body.textContent="We could not send that just now."; note.textContent="Something went wrong on the way"+(detail?" ("+detail+")":"")+". Call or text us on "+SITE.michaelDisplay+" and we will pick it up straight away."; note.hidden=false; }
+        var numSpan='<span style="white-space:nowrap">'+d.phone+'</span>';
+        var textLine=' Got a photo of the problem? <a data-sms="michael" href="sms:+61421877677">Text it to 0421 877 677</a>.';
+        var emgLine=d.urgency==="Today"&&isEmergencyJob?' If it’s an emergency, call 0421 877 677 now.':'';
+        body.innerHTML="Michael or Angus will call you on "+numSpan+"."+textLine+emgLine;
+        if(mode==="demo"){ note.textContent="Demo mode — on the live site this goes straight to Michael and Angus."; note.hidden=false; }
+        else note.hidden=true;
         f.hidden=true; $("qThanks").hidden=false;
         $("qThanks").scrollIntoView({block:"nearest",behavior:reduce?"auto":"smooth"});
+        $("qThanksHead").focus({preventScroll:true});
       }
       if(!SITE.formAccessKey){ done("demo"); return; }   /* no network call at all */
-      btn.disabled=true; btn.setAttribute("aria-busy","true");
-      var label=btn.textContent; btn.textContent="Sending…";
-      fetch(SITE.formEndpoint,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},
-        body:JSON.stringify({access_key:SITE.formAccessKey,subject:"Quote: "+d.job+" ("+d.urgency+")",
-          from_name:SITE.name+" website",name:d.name,phone:d.phone,email:d.email,suburb:d.suburb,
+      sending=true; btn.setAttribute("aria-disabled","true"); btn.setAttribute("aria-busy","true"); btn.textContent="Sending…";
+      var ctl=window.AbortController?new AbortController():null;
+      var timer=ctl&&setTimeout(function(){ ctl.abort(); },15000);
+      fetch(SITE.formEndpoint,{method:"POST",signal:ctl&&ctl.signal,headers:{"Content-Type":"application/json",Accept:"application/json"},
+        body:JSON.stringify({access_key:SITE.formAccessKey,subject:"Quote request: "+d.job+", "+d.suburb+" ("+d.urgency+")",
+          from_name:SITE.name+" website",replyto:d.email||undefined,name:d.name,phone:d.phone,email:d.email,suburb:d.suburb,
           job:d.job,urgency:d.urgency,message:d.message})})
       .then(function(r){ return r.json().catch(function(){return{}}).then(function(b){ if(!r.ok||b.success===false) throw new Error(b.message||("HTTP "+r.status)); }) })
-      .then(function(){ done("sent") })
-      .catch(function(err){ btn.disabled=false; btn.removeAttribute("aria-busy"); btn.textContent=label; done("error",err&&err.message); });
+      .then(function(){ clearTimeout(timer); sending=false; done("sent") })
+      .catch(function(err){
+        clearTimeout(timer); sending=false; btn.removeAttribute("aria-disabled"); btn.removeAttribute("aria-busy"); btn.textContent=label;
+        $("qErr").textContent="That didn't send"+(err&&err.name==="AbortError"?" (no response)":"")+
+          ". Please try again, or call or text "+SITE.michaelDisplay+".";
+      });
     });
   })();
 })();
