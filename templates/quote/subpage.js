@@ -14,7 +14,7 @@
  * header/footer/hero markup correct with zero path-rewriting. A prettier
  * nested URL is a hosting-level rewrite away once this goes live for real.
  */
-import { html, raw, when, each, present, telHref, smsHref, headlineLines } from '../../lib/render.js';
+import { html, raw, when, each, present, telHref, smsHref, headlineLines, sampleTag } from '../../lib/render.js';
 import { heroMedia } from '../../lib/blocks/hero-media.js';
 import { brands } from '../../lib/blocks/brands.js';
 import { promise } from '../../lib/blocks/promise.js';
@@ -22,7 +22,7 @@ import { enquiryForm, thanksPanel, FORM_CLASSES } from '../../lib/blocks/form.js
 import { demoBanner, demoBannerHeadScript, demoFooterNote, robotsMeta } from '../../lib/blocks/demo.js';
 import { headMeta, jsonLd, faviconLink } from '../../lib/blocks/schema.js';
 import {
-  ICON, header, footer, stickyBar, heroPreload, jsonScript, escText, escAttr,
+  ICON, header, footer, stickyBar, heroPreload, jsonScript, escText, escAttr, sitePageNav,
 } from './template.js';
 
 /**
@@ -49,6 +49,7 @@ export function renderSubpage(cfg, page, { styles, script }) {
     cfg.has.reviews && ['index.html#reviews', 'Reviews'],
     cfg.has.serviceAreas && ['index.html#areas', 'Areas'],
     cfg.has.faq && ['index.html#faq', 'FAQ'],
+    ...sitePageNav(cfg),
   ].filter(Boolean);
 
   const title = page.title;
@@ -79,8 +80,10 @@ ${demoBanner(cfg)}
 ${header(cfg, { nav, tel, phone, ctaLabel, ctaLabelShort, homeHref: 'index.html' })}
 <main>
 ${subHero(cfg, page, { tel, sms, ctaLabel })}
+${page.kind === 'contact' ? contactInfo(cfg, page) : ''}
 ${introSection(page)}
 ${benefitsSection(page)}
+${page.kind === 'about' ? photoGrid(cfg) : ''}
 ${brands(cfg)}
 ${faqSection(cfg, page)}
 ${quoteSection(cfg, page, { tel, sms, phone })}
@@ -146,7 +149,10 @@ function benefitsSection(page) {
 }
 
 function faqSection(cfg, page) {
-  const list = page.faq ?? cfg.faq ?? [];
+  // About and Contact are about the business, not a sales objection to answer
+  // — falling back to the whole site FAQ there just repeated the homepage.
+  const fallback = page.kind === 'about' || page.kind === 'contact' ? [] : cfg.faq ?? [];
+  const list = page.faq ?? fallback;
   if (list.length === 0) return '';
   return html`
 <section class="faqs" id="faq">
@@ -171,6 +177,52 @@ function quoteSection(cfg, page, { tel, sms, phone }) {
     </div>
     ${enquiryForm(cfg, FORM_CLASSES.quote, { defaultService: page.defaultService, defaultSuburb: page.defaultSuburb })}
     ${thanksPanel(cfg)}
+  </div>
+</section>`;
+}
+
+/** About page only: the same gallery photos the homepage uses, reused rather
+ *  than re-sourced — see config.json's photos.stockApproved for why they're
+ *  samples, not First Point's own work. */
+function photoGrid(cfg) {
+  const list = cfg.photos?.gallery ?? [];
+  if (list.length === 0) return '';
+  return html`
+<section class="about-photos">
+  <div class="wrap">
+    <div class="head" data-reveal><h2>The work</h2></div>
+    <div class="photo-grid" data-reveal="stagger">
+      ${each(list, (p) => html`<figure>
+        <img src="${p.src}"${raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')} loading="lazy" decoding="async" alt="${p.alt ?? ''}">${sampleTag(p)}
+        ${when(p.caption, (c) => html`<figcaption>${p.sample ? 'Sample photo · ' : ''}${c}</figcaption>`)}
+      </figure>`)}
+    </div>
+  </div>
+</section>`;
+}
+
+/** Contact page only: phone/email/address/hours plus a map — a plain Google
+ *  Maps embed built from business.address, no API key required. */
+function contactInfo(cfg, page) {
+  const b = cfg.business ?? {};
+  const tel = telHref(b.phone ?? {});
+  const rows = [
+    b.phone?.display && ['Phone', html`<a href="${tel}">${b.phone.display}</a>`],
+    b.email && ['Email', html`<a href="mailto:${b.email}">${b.email}</a>`],
+    b.address && ['Address', html`${b.address}`],
+    (cfg.hours ?? []).length && ['Hours', html`${each(cfg.hours, (h, i) => html`${raw(i ? '<br>' : '')}${h}`)}`],
+    b.abn && ['ABN', html`${b.abn}`],
+  ].filter(Boolean);
+  if (rows.length === 0 && !b.address) return '';
+  return html`
+<section class="contact-info dark">
+  <div class="wrap contact-grid">
+    <ul class="c-list" data-reveal>
+      ${each(rows, ([label, value]) => html`<li><b>${label}</b>${value}</li>`)}
+    </ul>
+    ${when(b.address, (addr) => html`<div class="map-embed" data-reveal>
+      <iframe src="https://www.google.com/maps?q=${encodeURIComponent(addr)}&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map showing ${b.name ?? 'our location'}"></iframe>
+    </div>`)}
   </div>
 </section>`;
 }

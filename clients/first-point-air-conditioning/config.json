@@ -687,6 +687,44 @@
       ]
     }
   ],
+  "sitePages": [
+    {
+      "slug": "about",
+      "kind": "about",
+      "title": "About First Point Air Conditioning | Canberra HVAC Specialists",
+      "description": "First Point Air Conditioning — 19+ years combined experience, Fyshwick based, servicing Canberra and Queanbeyan. Free quotes, 12-month workmanship warranty.",
+      "kicker": "About Us",
+      "headline": "19+ Years Combined<br>Experience, One Canberra Team",
+      "sub": "Based in Fyshwick, servicing homes and businesses across Canberra and Queanbeyan.",
+      "intro": "First Point Air Conditioning is dedicated to delivering dependable, high-quality air conditioning and HVAC solutions for homes and businesses throughout Canberra and nearby regions. The team brings 19+ years of combined experience across split systems, ducted air conditioning, evaporative cooling, gas heating and commercial HVAC — installing all major brands and backing every install with a 12-month workmanship warranty.",
+      "benefits": [
+        "19+ years combined experience",
+        "All major brands installed and serviced",
+        "Free, no-obligation quotes",
+        "12-month workmanship warranty",
+        "Open Monday to Saturday"
+      ],
+      "relatedTitle": "Where to next",
+      "related": [
+        { "href": "index.html#services", "label": "See our services" },
+        { "href": "contact.html", "label": "Get in touch" }
+      ]
+    },
+    {
+      "slug": "contact",
+      "kind": "contact",
+      "title": "Contact First Point Air Conditioning | Fyshwick, Canberra",
+      "description": "Call 02 6100 2247 or send an enquiry. First Point Air Conditioning, 4/1 Albany Street, Fyshwick ACT 2609. Mon–Fri 7am–5pm, Sat 7am–12pm.",
+      "kicker": "Contact Us",
+      "headline": "Get In Touch",
+      "sub": "Call, email, or send the form below — we'll get back to you.",
+      "relatedTitle": "Where to next",
+      "related": [
+        { "href": "index.html#services", "label": "See our services" },
+        { "href": "about.html", "label": "About First Point" }
+      ]
+    }
+  ],
   "_source": {
     "url": "https://www.firstpointairconditioning.com.au",
     "pagesRead": [

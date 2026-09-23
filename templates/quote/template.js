@@ -44,6 +44,7 @@ export function render(cfg, { styles, script }) {
     cfg.has.reviews && ['#reviews', 'Reviews'],
     cfg.has.serviceAreas && ['#areas', 'Areas'],
     cfg.has.faq && ['#faq', 'FAQ'],
+    ...sitePageNav(cfg),
   ].filter(Boolean);
 
   /*
@@ -121,6 +122,20 @@ ${jsonLd(cfg)}
 }
 
 /* ------------------------------------------------------------------ sections */
+
+/**
+ * About/Contact nav entries, when a client has them. Every page in the site
+ * is a flat file in the same directory (see subpage.js), so "about.html" is
+ * a correct reference from the homepage or from any other subpage alike —
+ * no path prefix needed either way.
+ */
+export function sitePageNav(cfg) {
+  const pages = cfg.sitePages ?? [];
+  return ['about', 'contact']
+    .map((slug) => pages.find((p) => p.slug === slug))
+    .filter(Boolean)
+    .map((p) => [`${p.slug}.html`, p.navLabel ?? (p.slug === 'about' ? 'About' : 'Contact')]);
+}
 
 export function header(cfg, { nav, tel, phone, ctaLabel, ctaLabelShort, homeHref = '#hero' }) {
   const b = cfg.business ?? {};
@@ -441,6 +456,7 @@ export function footer(cfg, { tel, phone, homePrefix = '' }) {
     cfg.has.reviews && [`${homePrefix}#reviews`, 'Reviews'],
     cfg.has.serviceAreas && [`${homePrefix}#areas`, 'Areas'],
     cfg.has.faq && [`${homePrefix}#faq`, 'FAQ'],
+    ...sitePageNav(cfg),
   ].filter(Boolean);
 
   return html`
