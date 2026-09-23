@@ -1,5 +1,5 @@
 {
-  "_comment": "LMAC — Lower Mountains Air Conditioning, Emu Plains NSW. Scaffolded by \"npm run new\" from https://www.lmac.com.au on 2026-09-22, reworked 2026-09-23. Every factual claim on the page is traced to a sentence stored in _source (their own site, read 2026-09-23) or to data/google_reviews_top25.json. No prices are set: LMAC publish none, so every calculator job is quote-mode. They have no photos of finished installs anywhere on their site, so the four install shots in the gallery are labelled sample photos under Pat's standing approval; hero, quote background and the two team shots are their own.",
+  "_comment": "LMAC — Lower Mountains Air Conditioning, Emu Plains NSW. Scaffolded by \"npm run new\" from https://www.lmac.com.au on 2026-09-22, reworked 2026-09-23. Every factual claim on the page is traced to a sentence stored in _source (their own site, read 2026-09-23) or to data/google_reviews_top25.json. No prices are set: LMAC publish none, so every calculator job is quote-mode. They have no photos of finished installs anywhere on their site, so the four install shots in the gallery are labelled sample photos under Pat's standing approval; the hero, the quote background and the four team shots are their own, each a different photo.",
   "slug": "lmac",
   "template": "quote",
   "industry": "air-conditioning",
@@ -49,7 +49,7 @@
     "servicesIntro": "Sales, installation, service and maintenance, domestic and commercial. We are dealers for six major brands, and we service any brand, even if it wasn't our installation.",
     "servicesAlso": "We're also the sole authorised stockist for Air Clean Filters in Western Sydney, and an approved supplier for the NSW Energy Savings Scheme rebate. <a class=\"link\" href=\"#faq\">How we install, in detail</a>",
     "galleryTitle": "The work, and who turns up",
-    "galleryIntro": "Split systems, ducted and commercial, across Penrith and the Blue Mountains. Kurt and the office are LMAC's own photos; the install shots are marked as samples.",
+    "galleryIntro": "Split systems, ducted and commercial, across Penrith and the Blue Mountains. Kurt, Trevor, Andrew and the office are LMAC's own photos; the install shots are marked as samples.",
     "reasonsTitle": "Why people pick LMAC",
     "reasonsIntro": "What the reviews and the fine print keep coming back to.",
     "reviewsTitle": "What customers say",
@@ -291,6 +291,14 @@
         "credit": "Pedalito, Wikimedia Commons"
       },
       {
+        "src": "assets/andrew-800.webp",
+        "full": "assets/andrew-1600.webp",
+        "width": 800,
+        "height": 513,
+        "caption": "Andrew, director — he quotes the job",
+        "alt": "Andrew Strathdee, director of Lower Mountains Air Conditioning, in front of a company van"
+      },
+      {
         "src": "assets/sample-commercial-condensers-800.webp",
         "full": "assets/sample-commercial-condensers-1024.webp",
         "width": 800,
@@ -301,6 +309,14 @@
         "license": "CC0 1.0",
         "sourceUrl": "https://www.flickr.com/photos/29155878@N03/22130133899",
         "credit": "Open Grid Scheduler / Grid Engine, Flickr"
+      },
+      {
+        "src": "assets/trevor-800.webp",
+        "full": "assets/trevor-1600.webp",
+        "width": 800,
+        "height": 529,
+        "caption": "Trevor, refrigeration and service tradesman",
+        "alt": "Trevor, refrigeration and service tradesman at Lower Mountains Air Conditioning, in front of a company van"
       }
     ],
     "stockApproved": {
@@ -367,7 +383,6 @@
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
-  "_check": [],
   "reviews": [
     {
       "name": "Shayne",

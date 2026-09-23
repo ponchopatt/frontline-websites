@@ -92,10 +92,9 @@ From their own nav and page copy:
   comprehensive test and start-up procedure."
 
 **Nowhere on lmac.com.au does it say a quote is free.** Every "free quote" line
-was stripped out of the demo copy; the CTA reads "Book a quote". The one
-remaining "Free quote" string is the narrow-screen label baked into the quote
-template's header button, which a client config cannot reach. Confirm with Andy
-whether quotes are free and the template can say so again.
+was stripped out of the demo copy; the CTAs read "Book a quote" / "Get a quote"
+and the page says "free" nowhere. Confirm with Andy whether quotes are free
+before any copy says so.
 
 ## Job size
 Residential and commercial. A reviewer describes "three fixed units in my
@@ -162,17 +161,22 @@ Hero headline comes straight from it: **"331 reviews. 4.8 stars. Since 1988."**
 Every image below was opened and looked at. Full site media library (478 items)
 was enumerated via their WordPress REST API, not just the pages the scraper read.
 
-### USED — all genuinely theirs, all sharp
-| File in `clients/lmac/assets/` | Source on their site | Size used | What it actually shows |
+### USED (reworked 2026-09-23 — every slot a different photo)
+| Slot | File in `clients/lmac/assets/` | Own or sample | What it shows |
 |---|---|---|---|
-| `showroom-fleet-2400/1600/800.webp` (**HERO**) | `2023/07/Strath24-1-scaled.jpg` (2560×1463) | 2400×1372 | The whole team, ~14 people, lined up in front of five branded Toyota HiAce vans outside their Russell St showroom. Panasonic, LG, "Lower Mountains AIR CONDITIONING 4735 6411" and "Mitsubishi Electric DIAMOND DEALER" signs on the parapet; "SHOWROOM" sign over the door. Blue sky, sharp. |
-| `team-2025-1600/800.webp` | `2025/03/Team2025-scaled.jpg` (2560×1557) | 1600×973 | The 2025 team in front of four vans at the same showroom, temperature sign reading 31°C. |
-| `owners-showroom-1600/800.webp` | `2025/03/AntheaandAndrew2025.jpg` (1920×1319) | 1600×1099 | Andrew and Anthea beside a van; the shop window sign behind them lists SALES / INSTALLATION / SERVICE / MAINTENANCE / DUCTED SYSTEMS / SPLIT SYSTEMS / REPAIRS / INSURANCE and 4735 6411. |
-| `office-team-1600/800.webp` | `2025/03/Ladies2025.jpg` (1920×1279) | 1600×1066 | The four office staff in branded navy shirts beside a van at the showroom door. |
-| `andrew-1600/800.webp` | `2023/07/Strath9-scaled.jpg` (2560×1585) | 1600×991 | Head-and-shoulders of Andrew against the mountain graphic on a van, LMAC polo. |
-| `anthea-1600/800.webp` | `2023/07/Strath7-scaled.jpg` (2560×1735) | 1600×1084 | Head-and-shoulders of Anthea against a van, LMAC shirt. |
-| `tradesman-1600/800.webp` | `2023/07/Strath10-scaled.jpg` (2560×1684) | 1600×1053 | Head-and-shoulders of a bearded refrigeration tradesman in LMAC polo against a van. Not named on their site, so the caption does not name him. |
-| `owners-vans-1366/800.webp` | `2023/06/team-1.jpg` (1366×911) | 1366×911 | Andrew and Anthea between two vans with the "Lower Mountains AIR CONDITIONING SHOWROOM" sign over their shoulder. Held in reserve — under 1600px so not used as hero. |
+| Hero | `showroom-fleet-2400/1600/800.webp` (their `2023/07/Strath24-1-scaled.jpg`) | Own | The whole team, ~14 people, in front of five branded vans outside the Russell St showroom. |
+| Quote background | `owners-showroom-1600.webp` (their `2025/03/AntheaandAndrew2025.jpg`) | Own | Andrew and Anthea beside a van, shop-window sign behind them. |
+| Gallery 1 | `kurt-800/1600.webp` (their `2025/04/kurt.jpg`, team page "Kurt — Refrigeration/Service Technician") | Own | Kurt against the mountain graphic on a van. |
+| Gallery 2 | `sample-roof-condenser-800/1600.webp` | Sample, CC0 (wordpress.org/photos/photo/27469e3ea0/) | Outdoor unit on a steel frame on a corrugated metal roof. |
+| Gallery 3 | `sample-brick-outdoor-unit-800/1024.webp` | Sample, CC0 (flickr 26869601272) | Gree split outdoor unit on brackets, brick house. |
+| Gallery 4 | `office-team-800/1600.webp` (their `2025/03/Ladies2025.jpg`) | Own | The four office staff by a van at the showroom door. |
+| Gallery 5 | `sample-daikin-outdoor-800/1600.webp` | Sample, CC0 (Wikimedia curid 133257891) | Daikin VRV IV inverter outdoor unit on brackets, autumn leaves. |
+| Gallery 6 | `andrew-800/1600.webp` (their `2025/03/Andrew2025.jpg`) | Own | Andrew head-and-shoulders against a van. |
+| Gallery 7 | `sample-commercial-condensers-800/1024.webp` | Sample, CC0 (flickr 22130133899) | Four wall-mounted Fujitsu outdoor units on a commercial building. |
+| Gallery 8 | `trevor-800/1600.webp` (their `2025/04/trevor.jpg`, team page "Trevor — Refrigeration / Service Tradesman") | Own | Trevor against a van. |
+
+Not used (kept on disk): `team-2025` (same subject as the hero), `owners-vans` (same subject as the quote background), `anthea`.
+Sample photos are under Pat's standing approval of 2026-09-23 (`photos.stockApproved`); the page tags each one "Sample photo".
 
 ### REJECTED
 | Image | Why |
@@ -191,6 +195,5 @@ was enumerated via their WordPress REST API, not just the pages the scraper read
 | `2023/06/02.jpg` (1413×911) | Genuine portrait of an office staff member against a van — good, but four office faces already appear in `office-team`. Held in reserve. |
 | `2023/06/MicrosoftTeams-image-51.jpg` | Could not be retrieved; the site served a rate-limit interstitial on four attempts. Not used. |
 
-**Count: 8 usable photos of their own downloaded and processed, 6 used in the
-gallery, 1 as hero. No photo of a finished installation exists anywhere on their
-site — that is a SUPPLY item, not a blocker.**
+**No photo of a finished installation exists anywhere on their site. Four labelled
+samples fill the gap; real job photos from Andrew are a SUPPLY item.**
