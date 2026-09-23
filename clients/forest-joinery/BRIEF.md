@@ -64,25 +64,43 @@ CDN, at the largest size Houzz serves for each image; none are stock)
 
 | File | Project | Size | Used as | Notes |
 |---|---|---|---|---|
-| bayview-kitchen-island.jpg | Bayview Kitchen and Entry | 2560×1920 | Hero | Curved fluted island, white stone benchtop, sharp, bright, well composed |
+| bayview-kitchen-island.jpg | Bayview Kitchen and Entry | 2560×1920 | Hero (cropped, see note) + services (kitchens, uncropped) | Curved fluted island, white stone benchtop, sharp, bright, well composed |
 | forestville-new-kitchen.jpg | Forestville – New Kitchen | 2560×1708 | Statement | Matte black + light timber, garden view through picture window |
-| family-home-tv-unit.jpg | Custom Family Home Fit Out | 2560×1708 | Aperture | Oak veneer bookshelf/TV unit against a navy wall — striking, shows range beyond kitchens |
+| family-home-tv-unit.jpg | Custom Family Home Fit Out | 2560×1708 | Aperture + services (wardrobes) | Oak veneer bookshelf/TV unit against a navy wall — striking, shows range beyond kitchens |
 | beacon-hill-fitout.jpg | Beacon Hill – House Fitout | 1280×960 | Owner section | White shiplap TV/fireplace wall with floating shelves; stands in for a portrait of Dave, which doesn't exist |
-| bayview-corner-display.jpg | Bayview Kitchen and Entry | 1920×2560 | Gallery + services (wardrobes) | Curved fluted corner display cabinet, glass shelves |
+| bayview-corner-display.jpg | Bayview Kitchen and Entry | 1920×2560 | Gallery | Curved fluted corner display cabinet, glass shelves |
 | bayview-twin-cabinets.jpg | Bayview Kitchen and Entry | 1920×2560 | Gallery + enquiry background | Matching fluted cabinets flanking a hallway door |
 | forestville-pullout-storage.jpg | Forestville – New Kitchen | 2560×1708 | Gallery | Pull-out pot/appliance storage, fully extended, functional detail shot |
 | family-home-staircase.jpg | Custom Family Home Fit Out | 1708×2560 | Gallery | Oak timber battening, handrail and glass balustrade panel |
-| warriwood-ensuite.jpg | Warriwood Makeover | 1920×2560 | Gallery | Curved fluted ensuite vanity |
-| waverton-vanity.jpg | Waverton Bathroom | 756×1008 | Gallery + services (bathrooms) | Double vanity; smaller file (no larger size served by Houzz), used as a small tile only |
+| warriwood-ensuite.jpg | Waverton Bathroom (see note) | 1920×2560 | Gallery (Double vanity) | Timber-veneer two-basin vanity, oval mirror, gunmetal tapware |
+| waverton-vanity.jpg | Waverton Bathroom | 756×1008 | Services (bathrooms) | Tall white storage unit + toilet; smaller file (no larger size served by Houzz) |
+
+**Rework note (found in independent review):** this file naming is misleading — `warriwood-ensuite.jpg` is
+actually the double-basin vanity photo (opened with the Read tool to confirm), not `waverton-vanity.jpg`
+as the filenames imply. `waverton-vanity.jpg` actually shows a tall white storage cabinet and a toilet, no
+vanity at all. config.json now assigns each file by what it actually shows, not by its filename: the
+vanity photo is the sole "Waverton Bathroom, Double vanity" gallery tile, and the storage/toilet photo is
+the sole Bathrooms & laundries services photo (previously duplicated across both slots with the wrong
+captions on both). The old "Warriwood Makeover, Ensuite vanity" gallery tile is removed — there is no
+second real vanity photo to put there. The Kitchens services card (previously duplicating the
+statement photo) now uses bayview-kitchen-island (uncropped) instead of forestville-new-kitchen, and the
+Wardrobes services card (previously duplicating gallery tile 1) now uses family-home-tv-unit instead of
+bayview-corner-display. The hero photo (bayview-kitchen-island) was re-cropped to
+bayview-kitchen-island-hero.jpg (1920×1440, dropping the right third of the frame) because a blown-out
+window/bookshelf on that side was washing out the mobile eyebrow text behind this template's fixed dark
+overlay — no overlay-opacity or focal-point setting exists in this template's config surface (matches
+other clients' notes), so re-cropping the source file was the only lever available.
 
 **Excluded**: two "before" photos of the client's old cream-laminate kitchen from the
 Warriwood Makeover project (not Forest Joinery's finished work), and the About page's
 generic TV-wall photo (redundant with family-home-tv-unit, which is sharper and more
 distinctive).
 
-**Total: 10 real, sharp, distinct photos** across 6 different finished projects — above
-the 6-ideal / 4-minimum bar. No stock photos used; `photos.stockApproved` is absent from
-config.json.
+**Total: 10 real, sharp, distinct photos** across 5 different finished projects (both bathroom
+photos are from Waverton Bathroom — see the rework note above) — the gallery sits at 5 tiles, above
+the 4-minimum bar though below the 6-ideal, since there is no second real vanity photo to fill a
+sixth tile without repeating one already shown. No stock photos used; `photos.stockApproved` is
+absent from config.json.
 
 ## Reviews used
 All 6 from `data/google_reviews_top25.json` → `forest-joinery` → `best_for_demo`, word

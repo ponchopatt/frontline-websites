@@ -49,7 +49,7 @@
     "sub": "Dave Gerson runs every Forest Joinery job himself, from the first quote to the final fix. Send him your plans and, if there's a better way to build them, he'll tell you before he starts — not after.",
     "heroSecondary": "Or send the details",
     "heroSecondarySms": "Or text a photo of the space",
-    "navApproach": "Process",
+    "navApproach": "Approach",
     "statementLabel": "The difference",
     "statementHeadline": "Ask before you<br>build, not after.",
     "statementBody": "One kitchen client wrote that Dave 'wasn't afraid to tell us if something wasn't the best idea or the most practical solution' — and suggested better alternatives instead of just building to the plans. That's the whole approach: Dave is personally involved in every stage of your project, from the first meeting to the final finish.",
@@ -91,7 +91,7 @@
     "name": "Pamela Carr, Google"
   },
   "owner": {
-    "body": "Dave Gerson founded Forest Joinery and is personally involved in every stage of the process — from the first meeting and the quote, through drawings and consultation, to the finished install. He brings his years of industry experience and insight to each project.",
+    "body": "Dave Gerson founded Forest Joinery and is personally involved in every stage of the process — from the first meeting and the quote, through drawings and consultation, to the finished install. He works every job himself, quote to final fix, which is why the reviews on this page are about dealing with Dave directly.",
     "team": "Forest Joinery's install team does the cutting, assembly and fitting, but Dave personally checks that the finish meets his standard before any job is signed off.",
     "facts": [
       {
@@ -134,11 +134,11 @@
       "title": "Kitchens",
       "blurb": "New kitchens and renovations, custom-built and installed — from cabinetry and benchtops to fully fitted joinery.",
       "photo": {
-        "src": "assets/forestville-new-kitchen-1200.webp",
-        "srcset": "assets/forestville-new-kitchen-480.webp 480w, assets/forestville-new-kitchen-800.webp 800w, assets/forestville-new-kitchen-1200.webp 1200w, assets/forestville-new-kitchen-1800.webp 1800w",
+        "src": "assets/bayview-kitchen-island-1200.webp",
+        "srcset": "assets/bayview-kitchen-island-480.webp 480w, assets/bayview-kitchen-island-800.webp 800w, assets/bayview-kitchen-island-1200.webp 1200w, assets/bayview-kitchen-island-1800.webp 1800w",
         "width": 2560,
-        "height": 1708,
-        "alt": "A matte black and light-timber kitchen with a picture window over the sink looking onto a garden, Forestville"
+        "height": 1920,
+        "alt": "A curved fluted kitchen island with a white stone benchtop and integrated fridge cabinetry, Bayview"
       }
     },
     {
@@ -149,18 +149,18 @@
         "srcset": "assets/waverton-vanity-480.webp 480w",
         "width": 756,
         "height": 1008,
-        "alt": "A timber-veneer double vanity with two vessel basins under a large asymmetric mirror, Waverton"
+        "alt": "A tall white built-in storage cabinet with open shelving and drawers beside a wall-hung toilet, Waverton"
       }
     },
     {
       "title": "Wardrobes & bespoke joinery",
       "blurb": "Wardrobes, home offices, entertainment units and bespoke pieces — plus curved and fluted cabinetry for a feature finish.",
       "photo": {
-        "src": "assets/bayview-corner-display-1200.webp",
-        "srcset": "assets/bayview-corner-display-480.webp 480w, assets/bayview-corner-display-800.webp 800w, assets/bayview-corner-display-1200.webp 1200w, assets/bayview-corner-display-1800.webp 1800w",
-        "width": 1920,
-        "height": 2560,
-        "alt": "A curved, fluted corner display cabinet with three glass shelves, Bayview"
+        "src": "assets/family-home-tv-unit-1200.webp",
+        "srcset": "assets/family-home-tv-unit-800.webp 800w, assets/family-home-tv-unit-1200.webp 1200w, assets/family-home-tv-unit-1800.webp 1800w",
+        "width": 2560,
+        "height": 1708,
+        "alt": "A built-in oak veneer bookshelf and TV cabinet against a navy blue wall"
       }
     }
   ],
@@ -220,12 +220,12 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/bayview-kitchen-island-1800.webp",
-      "srcset": "assets/bayview-kitchen-island-480.webp 480w, assets/bayview-kitchen-island-800.webp 800w, assets/bayview-kitchen-island-1200.webp 1200w, assets/bayview-kitchen-island-1800.webp 1800w",
-      "width": 2560,
-      "height": 1920,
-      "alt": "A curved fluted kitchen island with a white stone benchtop, black tapware and a built-in bookshelf wall beyond, Bayview",
-      "_comment": "From the 'Bayview Kitchen and Entry' project (st.hzcdn.com/simgs/9df1704805d591b1_14-5286), downloaded at Houzz's largest served size (2560x1920, well over the 1600px minimum). Chosen as hero because it's a real, sharp, well-lit photo of their own finished cabinetry (the fluted island panels) rather than a generic room shot."
+      "src": "assets/bayview-kitchen-island-hero-1800.webp",
+      "srcset": "assets/bayview-kitchen-island-hero-480.webp 480w, assets/bayview-kitchen-island-hero-800.webp 800w, assets/bayview-kitchen-island-hero-1200.webp 1200w, assets/bayview-kitchen-island-hero-1800.webp 1800w",
+      "width": 1920,
+      "height": 1440,
+      "alt": "A curved fluted kitchen island with a white stone benchtop and black tapware, Bayview",
+      "_comment": "From the 'Bayview Kitchen and Entry' project (st.hzcdn.com/simgs/9df1704805d591b1_14-5286), downloaded at Houzz's largest served size (2560x1920, well over the 1600px minimum). Chosen as hero because it's a real, sharp, well-lit photo of their own finished cabinetry (the fluted island panels) rather than a generic room shot. Re-cropped in this rework (bayview-kitchen-island-hero.jpg, cropped from the original to 1920x1440, dropping the right-hand third of the frame) to remove a blown-out bright window and bookshelf that sat on the far right of the original 2560x1920 frame — at mobile widths, object-fit:cover combined with this template's fixed dark gradient overlay (no overlay-opacity or focal-point setting exists in this template's config surface, matching other clients' notes) put that blown-out window directly behind the 'Cromer, Sydney's Northern Beaches' eyebrow text, washing it out. The re-crop keeps the fluted island, cabinetry and fridge — still unmistakably a kitchen — while dropping the problem window. The uncropped original file is kept and reused for the Kitchens services card."
     },
     "statement": {
       "src": "assets/forestville-new-kitchen-1800.webp",
@@ -304,22 +304,12 @@
         "srcset": "assets/warriwood-ensuite-480.webp 480w, assets/warriwood-ensuite-800.webp 800w, assets/warriwood-ensuite-1200.webp 1200w",
         "width": 1920,
         "height": 2560,
-        "caption": "Warriwood Makeover",
-        "detail": "Ensuite vanity",
-        "alt": "A curved fluted vanity unit with a black tapware pillar tap and vessel basin below an arched mirror"
-      },
-      {
-        "src": "assets/waverton-vanity-480.webp",
-        "full": "assets/waverton-vanity.jpg",
-        "srcset": "assets/waverton-vanity-480.webp 480w",
-        "width": 756,
-        "height": 1008,
         "caption": "Waverton Bathroom",
         "detail": "Double vanity",
-        "alt": "A timber-veneer double vanity with two vessel basins under a large asymmetric mirror"
+        "alt": "A timber-veneer double vanity with two vessel basins, gunmetal tapware and an oval mirror, Waverton"
       }
     ],
-    "_comment": "10 distinct real photos used across the whole page (hero, statement, aperture, owner, enquiry background, 3 services reusing hero/gallery images, 6 gallery tiles), all pulled at Houzz's own largest served resolution (st.hzcdn.com/simgs/..._14-... or _16-...) from four different finished projects (Bayview Kitchen and Entry, Forestville New Kitchen, Beacon Hill House Fitout, Custom Family Home Fit Out) plus Warriwood Makeover and Waverton Bathroom. waverton-vanity is smaller (756px wide, no larger size served) — used only as a small gallery tile, not upscaled. Two 'before' photos from the Warriwood Makeover project (an old cream laminate kitchen, pre-renovation) were deliberately excluded — they show the client's old kitchen, not Forest Joinery's work. No stock photography is used anywhere; photos.stockApproved is intentionally absent."
+    "_comment": "10 distinct real photos used across the whole page (hero, statement, aperture, owner, enquiry background, 3 services cards, 5 gallery tiles), all pulled at Houzz's own largest served resolution (st.hzcdn.com/simgs/..._14-... or _16-...) from six different finished projects. No stock photography is used anywhere; photos.stockApproved is intentionally absent. FIXED IN THIS REWORK (see BRIEF.md / HANDOVER-style notes): the files named 'warriwood-ensuite' and 'waverton-vanity' were paired with the wrong gallery captions — opening both with the Read tool showed 'warriwood-ensuite.jpg' is actually the two-basin timber vanity (now the sole 'Waverton Bathroom, Double vanity' gallery tile) and 'waverton-vanity.jpg' is actually a tall white storage unit next to a toilet, not a vanity (now the sole Bathrooms & laundries services photo, alt corrected). The old 'Warriwood Makeover, Ensuite vanity' gallery tile is removed rather than kept with a mismatched photo, since no second real vanity photo exists — gallery is now 5 tiles (still above the 4 minimum). Each of these two files is now used in exactly one place; previously both were duplicated across a gallery tile and a services card. Kitchens services card switched from forestville-new-kitchen (duplicate of the statement photo directly above it) to bayview-kitchen-island, a different real kitchen (Bayview Kitchen and Entry). Wardrobes services card switched from bayview-corner-display (duplicate of gallery tile 1) to family-home-tv-unit, a different real built-in joinery photo. Hero: bayview-kitchen-island was re-cropped to bayview-kitchen-island-hero.jpg (1920x1440, right third of the original 2560x1920 frame dropped) to remove a blown-out window/bookshelf that washed out the eyebrow text on mobile behind this template's fixed dark overlay — see photos.hero._comment. waverton-vanity is smaller (756px wide, no larger size served) — used only as a small services-card thumbnail, not upscaled."
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
@@ -481,7 +471,7 @@
         "url": "https://www.forestjoinery.com.au/gallery"
       },
       "Every photo on the page": {
-        "sentence": "All 10 photos used (hero, statement, aperture, owner, enquiry background, 3 services reusing hero/gallery images, 6 gallery tiles) are pulled from st.hzcdn.com's own CDN at Houzz's largest served size for each image (the '_14-' or '_16-' size code, up to 2560px), from six of Forest Joinery's own finished projects. Two 'before' photos of the client's old kitchen (from the Warriwood Makeover project page) were identified and excluded. No stock photography is used.",
+        "sentence": "All 10 photos used (hero, statement, aperture, owner, enquiry background, 3 services cards, 5 gallery tiles) are pulled from st.hzcdn.com's own CDN at Houzz's largest served size for each image (the '_14-' or '_16-' size code, up to 2560px), from six of Forest Joinery's own finished projects; the hero is a re-crop of the Bayview kitchen island photo (see photos.hero._comment). Two 'before' photos of the client's old kitchen (from the Warriwood Makeover project page) were identified and excluded. No stock photography is used.",
         "url": "https://www.forestjoinery.com.au/gallery"
       },
       "Logo": {
