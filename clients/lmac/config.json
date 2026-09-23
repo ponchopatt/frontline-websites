@@ -239,7 +239,7 @@
         "full": "assets/team-2025-1600.webp",
         "width": 800,
         "height": 486,
-        "caption": "The whole team, 2025",
+        "caption": "The whole team",
         "alt": "The Lower Mountains Air Conditioning team standing in front of four branded vans at the Emu Plains showroom"
       },
       {
@@ -474,6 +474,17 @@
       "Installation page carries live 'Lorem Ipsum is simply dummy text of the printing and typesetting industry' placeholder copy",
       "'Areas we searve' typo on the air-conditioning page; '3nd Year Refrigeration Apprentice' on the team page",
       "Rating and review count appear nowhere; reviews render via Trustindex with 'Trustindex verifies that the original source of the review is Google' prefixed to every quote"
-    ]
+    ],
+    "installationPage": {
+      "url": "https://www.lmac.com.au/installation/",
+      "readOn": "2026-09-23",
+      "warranty": [
+        "Manufacturer: The manufacturer provides a comprehensive warranty of five (5) years from the installation date, covering all parts for malfunction and associated labour. Commercial installations have a warranty period of two (2) years.",
+        "Workmanship: Lower Mountains Air Conditioning stands behind the quality of our workmanship for domestic installations, offering a warranty period of five (5) years from the installation date. The workmanship warranty is valid for commercial installations for 12 months (1 year).",
+        "Please note that the workmanship warranty remains valid only if our technicians perform yearly general maintenance on the unit.",
+        "Ductwork & Fittings: National Air Parts comes with a 20-year warranty that covers all R1.0/R1.5 flexible ducting against manufacturing defects and the breakdown of materials through natural aging.",
+        "From the installation date, we will send an Annual Maintenance Letter to you, where you can have your maintenance call out at a discounted rate for your ongoing loyalty."
+      ]
+    }
   }
 }

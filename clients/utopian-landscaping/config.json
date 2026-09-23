@@ -23,12 +23,6 @@
       "accent2": "#E9B872",
       "themeColor": "#12100F",
       "_comment": "Their logo is a red script wordmark on white. Sampled red is #E00000, which only clears 3.7:1 on a dark page, so it is lifted to #F0483A (~4.9:1) to keep small accent text legible. The second colour is a sandstone gold taken off the Canberra stone in their own photos — a design choice, not a brand asset."
-    },
-    "logo": {
-      "src": "assets/logo-utopian-light.png",
-      "width": 506,
-      "height": 190,
-      "_comment": "Their own logo2-280x120.png, the only copy published anywhere. Background knocked out, the black subline turned off-white for a dark page, the red kept, and the handwritten 'Only Limited By Your Imagination' line cropped off because it is unreadable at the 32px the header renders it at. No artwork was redrawn. Ask Derek for the original vector."
     }
   },
   "share": {

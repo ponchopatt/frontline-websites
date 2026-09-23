@@ -76,6 +76,17 @@ From the six curated reviews in `data/google_reviews_top25.json` (4.7 from 25).
    a consultant for an indoor pool we're building a very unconventional way
    using formcraft permanent formwork." (Steve Guilbert)
 
+**Five of the six are on the page**, in one row: Max Korzy, Captain Others,
+Wendy Carcaillet, Matt Saggers and Steve Guilbert. Anna Perrin's is the sixth
+and is held back — it is the most general of the six ("exceptional service…
+above and beyond"), and the detail that made it worth having, that her job was
+ten years ago and they still look after it, is the part Google cuts off. Five
+also means one marquee row rather than two, which is what stops the same review
+appearing twice on a 1440 screen. Three of the five carry a "shortened" mark
+beside the name because `best_for_demo` flags them `shortened: true`; the lede
+above them says what that mark means. **Replace the shortened ones with the full
+text before this goes live.**
+
 ## The one angle
 
 **The pool other builders called too hard.** Ben Thompson takes the sites that
@@ -137,7 +148,7 @@ places.
 | `manly-rooftop` (hero, and the share image) | `Manly-1.jpg` | 1920×1440 | **Hero.** Rooftop pool on top of a Manly beachfront building at dusk, glass balustrade, Norfolk pines and the ocean behind. Sharp. On their homepage, /about/ and /project/. |
 | `manly-aerial` (owner section) | `Manly-4.jpg` | 1000×750 | The same Manly rooftop pool shot straight down, cantilevered over the edge of the building inside a glass balustrade, lit rooms below. It is the picture of the sentence beside it. |
 | `apartment-lap-pool` (statement) | `infinitive-2-scaled.jpg` | 2560×1707 | A long lap pool set into a timber deck between apartment buildings, lit blue at dusk with uplit trees down one side. Their largest usable dusk frame. No suburb claimed. |
-| `harbour-rooftop` (aperture) | `Commercial-Pool-Builder2.jpg` | 1700×1133 | Rooftop pool and spa above Sydney Harbour at dusk, sun lounges along the mosaic edge. Used site-wide by them. Captioned "Sydney Harbour" only — the client is not confirmed. |
+| `harbour-rooftop` (aperture) | `Commercial-Pool-Builder2.jpg` | 1700×1133 | Rooftop pool and spa above Sydney Harbour at dusk, sun lounges along the mosaic edge. Used site-wide by them. Captioned "Sydney Harbour" only — the client is not confirmed. **Edited:** the four webp variants carry a baked-in bottom-edge darkening gradient (nothing above 55% of the frame is touched, 0.66 black at the very bottom) because the caption sits over the lit pool water and was hard to read. The photograph itself is not retouched, recropped or stretched. **Flagged.** |
 | `sans-souci` (service 01, renovations) | `Sans-Souci-2.jpg` | 1000×667 | Pool and spa at dusk at a glass waterfront house, Sans Souci. Their own portfolio calls it "Boutique Renovation on the Water", which is why it carries the renovations card. |
 | `new-pool` (service 02) | `Home-1.jpg` | 1000×667 | Raised, fully tiled pool and spa at dusk with a sandstone feature wall and a spill edge into the deck. |
 | `plant-room` (service 03) | `PLANTROOM.png` | 715×466 | A finished plant room: pumps, filter, dosing, valves and labelled switchboards. The only photo of its kind — it is what the hydraulics service actually is. Lowest-resolution image used; fine at card size. |
@@ -202,3 +213,8 @@ Drummoyne-1 / Strathfield-5`.
 5. His Google profile URL, for the "read all reviews" link.
 6. Whether the 10-year guarantee mentioned once on their residential page is a
    real, written guarantee — if it is, it belongs on the page.
+7. **A mobile number, if Ben wants the text-a-photo button to work.** The only
+   number they publish is 1300 000 412, and an Australian 1300 cannot receive
+   SMS, so every "Text Ben a photo" button is off the page. The message body is
+   still in the config: give the build a mobile and the buttons come back in the
+   hero, the mobile sticky bar and the enquiry block with no other change.

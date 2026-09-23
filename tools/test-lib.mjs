@@ -340,5 +340,33 @@ await acheck('every row in QUEUE.csv has reviews pulled for it', async () => {
   }
 });
 
+/* -------------------------------------------------- claims need sources */
+
+console.log('\nclaims');
+{
+  const { buildEvidence, unsourcedClaims } = await import('../lib/claims.js');
+  const cfg = { _source: { aboutText: 'Ben Thompson founded the business. For over 20 years we have built pools. Established in 1988.' }, business: { ownerName: 'Ben Thompson' } };
+  const pull = { reviews: [{ text: 'Ben built our pool 12 years ago and it is still perfect.' }] };
+  const ev = buildEvidence(cfg, pull);
+  const found = (lines) => unsourcedClaims(lines, ev, cfg, new Date('2026-09-23')).map((f) => f.why + ':' + f.claim);
+
+  check('a number with no source is flagged', () => {
+    assert.ok(found(['We have finished 400 pools']).some((f) => f.includes('400 pools')));
+  });
+  check('a sourced number, a verbatim review and a founding-year age all pass', () => {
+    assert.deepEqual(found(['More than 20 years building pools', 'Ben built our pool 12 years ago and it is still perfect.', '38 years in business']), []);
+  });
+  check('credential words with no number are still claims', () => {
+    const f = found(['A fully licensed pool builder', 'Your first consultation is free', 'Family-run since the start']);
+    assert.ok(f.some((x) => x.startsWith('a licence')), 'licensed');
+    assert.ok(f.some((x) => x.startsWith('a free service')), 'free');
+    assert.ok(f.some((x) => x.startsWith('family-run')), 'family-run');
+  });
+  check("an owner's surname nobody published is flagged", () => {
+    const f = unsourcedClaims([], ev, { business: { ownerName: 'Ben Smith' } }).map((x) => x.why);
+    assert.ok(f.includes("the owner's surname"));
+  });
+}
+
 console.log(`\n${passed} passed, ${failed} failed\n`);
 process.exit(failed ? 1 : 0);

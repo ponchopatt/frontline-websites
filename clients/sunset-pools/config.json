@@ -50,7 +50,7 @@
     "photoClaims": {
       "hero + owner — ‘Manly’ rooftop pool": "Manly-1.jpg (1920×1440) is on their homepage, /about/ and /project/; Manly-4.jpg (1000×750, the aerial) and Manly-6.jpg are in the same set, Manly-6 on /faqs/. The suburb is their own file naming; no client is named.",
       "statement — apartment lap pool at dusk": "infinitive-2-scaled.jpg (2560×1707) from their own wp-content/uploads/2024/04 library. No suburb or client is claimed for it, and the alt text describes only what is in the frame.",
-      "aperture — ‘Rooftop pool and spa, Sydney Harbour’": "Commercial-Pool-Builder2.jpg (1700×1133), used by them on the homepage, /about/, /awards/, /contact/, /faqs/, /hydraulic-consulting/, /pool-renovations/, /project/, /residential-pools/ and /commercial-pools-water-features/. Their commercial page lists “Hotels, resorts & leisure complexes”. The file name says Park Hyatt; the page deliberately says only ‘Sydney Harbour’ because the client is not confirmed.",
+      "aperture — ‘Pool and spa, Sydney Harbour’": "Commercial-Pool-Builder2.jpg (1700×1133), used by them on the homepage, /about/, /awards/, /contact/, /faqs/, /hydraulic-consulting/, /pool-renovations/, /project/, /residential-pools/ and /commercial-pools-water-features/. Their commercial page lists “Hotels, resorts & leisure complexes”. The file name says Park Hyatt; the page deliberately says only ‘Sydney Harbour’ because the client is not confirmed. The four harbour-rooftop webp variants in assets/ carry a baked-in bottom-edge darkening gradient (transparent above 55% of the frame, 0.66 black at the very bottom) so the caption is legible over the lit pool water. Nothing in the photograph is moved, cropped further or retouched — only the bottom strip is darkened. Flagged.",
       "gallery — ‘Bellevue Hill · renovation, 132 steps below the road’": "Bellevue-Hill-1.jpg (1000×667) on /pool-renovations/ and /project/, beside the case study that carries the 132-steps line.",
       "gallery — ‘Strathfield · indoor lap pool and spa’": "Strathfield-5.jpg (1000×667) on /hydraulic-consulting/; the homepage portfolio item reads “Sunset indoor lap pool and spa – Filtration/Plant Room Strathfield”.",
       "gallery — ‘Hunters Hill · fully tiled pool, granite stepping stones’": "Residential-Pool-Project-Hunters-Hill-4.jpg (1200×1800) from their own uploads library; the suburb is their file naming.",
@@ -130,9 +130,8 @@
     "statementBody": "Access, levels, soil and where the water has to go decide what a Sydney pool costs and whether it lasts. Ben has put pools on roofs, inside houses, and at the bottom of 132 steps at Bellevue Hill. He works the site out before he prices the pool.",
     "servicesLabel": "What Ben does",
     "servicesHeadline": "Three kinds of work,<br>one builder.",
-    "servicesIntro": "Renovations, new pools — including the ones on a roof or inside a building — and the hydraulics behind both. Ben prices and runs each job himself.",
+    "servicesIntro": "Renovations, new pools — including the ones on a roof or inside a building — and the hydraulics behind both. On a rooftop the pool is the easy part; getting the weight, the water and the plant room up there is not. Ben prices and runs each job himself.",
     "apertureLabel": "Commercial and rooftop",
-    "apertureLine": "The pool is the easy part. Getting the weight, the water and the plant room onto a roof is not.",
     "workLabel": "Selected work",
     "workHeadline": "Six jobs,<br>six different sites.",
     "workIntro": "A beach-entry pool at Wentworth Point, a lap pool inside a house at Strathfield, and a renovation 132 steps below the road. Tap any photo to see it larger.",
@@ -140,8 +139,9 @@
     "processHeadline": "Four steps,<br>and Ben on<br>every one.",
     "processIntro": "The same order whether it is a new pool or a renovation. You hear the site's problems before you get a price, not after.",
     "ownerLabel": "Who you are dealing with",
+    "reviewsLabel": "In their words",
     "reviewsTitle": "What Ben's clients say.",
-    "reviewsIntro": "Word for word from their Google profile. One of them first had Ben build a pool twelve years ago and has him back now for the next stage.",
+    "reviewsIntro": "Straight from their Google profile, nothing reworded. Where one is marked shortened, only its opening is here and the rest is on Google. One of them first had Ben build a pool twelve years ago and has him back now for the next stage.",
     "recognitionLabel": "Recognition",
     "recognitionHeadline": "Judged by the industry,<br>not by us.",
     "recognitionIntro": "SPASA and Master Builders medals from chapter level up to national, and an international award for an indoor lap pool. Their full list runs from 2009 to 2016.",
@@ -340,7 +340,7 @@
       "width": 1700,
       "height": 1133,
       "alt": "A rooftop pool and spa above Sydney Harbour at dusk, sun lounges along the mosaic-tiled edge",
-      "caption": "Rooftop pool and spa, Sydney Harbour"
+      "caption": "Pool and spa, Sydney Harbour"
     },
     "owner": {
       "src": "assets/manly-aerial-800.webp",
@@ -432,19 +432,18 @@
     },
     {
       "name": "Wendy Carcaillet",
-      "text": "Ben from Sunset Pools made our pool renovation a better than expected experience. Our pool is on a tricky site which involved cranes to bring supplies in and off the site."
+      "text": "Ben from Sunset Pools made our pool renovation a better than expected experience. Our pool is on a tricky site which involved cranes to bring supplies in and off the site.",
+      "source": "Google review, shortened"
     },
     {
       "name": "Matt Saggers",
-      "text": "We engaged Ben 12 years ago to build our pool as part of a full Reno. We now have Ben back to help us with a facelift of our backyard, starting with changing the coping and feature wall of the pool."
+      "text": "We engaged Ben 12 years ago to build our pool as part of a full Reno. We now have Ben back to help us with a facelift of our backyard, starting with changing the coping and feature wall of the pool.",
+      "source": "Google review, shortened"
     },
     {
       "name": "Steve Guilbert",
-      "text": "We engaged Sunset pools as a consultant for an indoor pool we're building a very unconventional way using formcraft permanent formwork."
-    },
-    {
-      "name": "Anna Perrin",
-      "text": "Sunset Pools provide an exceptional service. They worked really well with me on my pool, and went above and beyond to deliver a quality outcome."
+      "text": "We engaged Sunset pools as a consultant for an indoor pool we're building a very unconventional way using formcraft permanent formwork.",
+      "source": "Google review, shortened"
     }
   ],
   "faq": [

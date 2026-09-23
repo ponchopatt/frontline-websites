@@ -43,13 +43,13 @@
     "width": 1200,
     "height": 800,
     "title": "South Coast Landscapes — Landscaping, Retaining Walls & Turf, Illawarra",
-    "description": "Family-run landscapers in Dapto. Retaining walls, driveways, paving, turf and irrigation — front and back yards finished start to finish.",
+    "description": "Landscapers in Dapto. Retaining walls, driveways, paving, turf and irrigation — front and back yards finished start to finish.",
     "alt": "A finished Dapto backyard by South Coast Landscapes: granite pool coping and paving, frameless glass fence, pebble strip and a timber pergola"
   },
   "responsePromise": "Ryan does the quoting himself.",
   "copy": {
     "title": "South Coast Landscapes — Landscaping, Retaining Walls & Turf, Illawarra",
-    "description": "Family-run landscapers based in Dapto. Retaining walls, excavation and drainage, driveways, paving, pool surrounds, decking, turf and SMART irrigation across the Illawarra. Front and back yards, finished start to finish.",
+    "description": "Landscapers based in Dapto. Retaining walls, excavation and drainage, driveways, paving, pool surrounds, decking, turf and SMART irrigation across the Illawarra. Front and back yards, finished start to finish.",
     "ctaLabel": "Get a quote from Ryan",
     "kicker": "Dapto · the Illawarra",
     "headline": "From mounds<br>of dirt to a<br><em>finished yard.</em>",
@@ -67,24 +67,24 @@
     "apertureLine": "Wall. Driveway. Turf. Water. In one go.",
     "workLabel": "Selected work",
     "workHeadline": "Illawarra yards,<br>start to finish.",
-    "workIntro": "Six jobs across Dapto, Port Kembla, Flinders, Figtree and Thirroul. Every one designed, built and planted by the same crew.",
+    "workIntro": "Recent jobs across Dapto, Port Kembla, Flinders, Figtree and Thirroul. Every one designed, built and planted by the same crew.",
     "processLabel": "How it runs",
-    "processHeadline": "Four steps.<br>The first is free.",
+    "processHeadline": "Four steps.<br>Start to finish.",
     "processIntro": "Our own process, in our own order. You see a concept and a written quote before any detailed design is charged for, and you approve both before a machine comes near the block.",
     "ownerLabel": "Who you are dealing with",
     "reviewsTitle": "What customers say.",
     "reviewsIntro": "Straight off their Google profile, word for word. Three of the six name Ryan.",
     "recognitionLabel": "Credentials",
-    "recognitionHeadline": "Licensed, and<br>backed by the trade.",
-    "recognitionIntro": "Two things you can check before you book anyone: that they hold a licence, and that a real supplier stands behind their work.",
+    "recognitionHeadline": "Backed by<br>the trade.",
+    "recognitionIntro": "One thing you can check before you book anyone: that a real supplier stands behind their work.",
     "areasLabel": "Where we work",
     "areasHeadline": "The Illawarra,<br>Thirroul to Shell Cove.",
-    "areasIntro": "Based in Dapto. Most jobs sit within twenty minutes of it, and the portfolio runs from Kiama in the south to Engadine in the north.",
+    "areasIntro": "Based in Dapto. The portfolio runs from Kiama in the south to Engadine in the north.",
     "faqLabel": "Before you call",
     "faqHeadline": "Questions we get asked.",
     "enquireLabel": "Get a quote",
     "enquireHeadline": "Tell us about<br>the yard.",
-    "enquireIntro": "The first consultation costs nothing. Tell us the suburb, what the yard is doing now and what you want out of it, and Ryan will come and take a look."
+    "enquireIntro": "Tell us the suburb, what the yard is doing now and what you want out of it, and Ryan will come and take a look."
   },
   "stats": {
     "googleRating": 4.8,
@@ -96,15 +96,11 @@
   },
   "owner": {
     "body": "Founder of South Coast Landscapes, and the person who quotes the work. Four of their reviewers, over five years, name him rather than the company — <em style=\"color:var(--accent)\">Ryan and the team</em>, <em style=\"color:var(--accent)\">Ryan and his team</em> — which is the short version of what a family-run business actually means.",
-    "team": "Behind him is a crew of qualified tradesmen and a horticulturist. Reviewers call them polite, hard-working and extremely punctual, and one made a point of the way they cleaned up the site at the end of each work day.",
+    "team": "Behind him is a crew of tradesmen and a horticulturist. Reviewers call them polite, hard-working and extremely punctual, and one made a point of the way they cleaned up the site at the end of each work day.",
     "facts": [
       {
-        "value": "4",
-        "label": "Trades in-house"
-      },
-      {
-        "value": "Free",
-        "label": "First consultation"
+        "value": "4.8",
+        "label": "Google rating"
       },
       {
         "value": "24",
@@ -113,12 +109,6 @@
     ]
   },
   "credentials": [
-    {
-      "kind": "licence",
-      "label": "Fully licensed landscaper",
-      "body": "Licensed for the construction work as well as the planting — retaining, drainage, concreting and paving are all done in-house rather than subcontracted out.",
-      "strip": true
-    },
     {
       "kind": "supplier",
       "label": "Reece Irrigation preferred supplier",
@@ -135,7 +125,7 @@
   "services": [
     {
       "title": "Design",
-      "blurb": "A free first consultation, then a concept and a written quote, then the detailed design. You sign off the shape and the number before anyone digs.",
+      "blurb": "A first consultation, then a concept and a written quote, then the detailed design. You sign off the shape and the number before anyone digs.",
       "photo": {
         "src": "assets/thirroul-courtyard-800.webp",
         "srcset": "assets/thirroul-courtyard-480.webp 480w, assets/thirroul-courtyard-800.webp 800w, assets/thirroul-courtyard-1200.webp 1200w",
@@ -169,8 +159,8 @@
   ],
   "process": [
     {
-      "step": "Free consultation",
-      "detail": "Ryan comes to the property, walks the block with you and works out what the yard has to do — for the kids, the dog, the entertaining, the mower. No charge for the visit."
+      "step": "Consultation",
+      "detail": "Ryan comes to the property, walks the block with you and works out what the yard has to do — for the kids, the dog, the entertaining, the mower."
     },
     {
       "step": "Concept & quote",
@@ -342,7 +332,7 @@
     },
     {
       "q": "What does a landscaping job cost?",
-      "a": "<p>There is no price list, and nobody who has not stood on your block should give you one. The first consultation is free: we walk the site, set out the scope, and you get a written quote against a concept before any detailed design is charged for.<span data-priceline=\"fee\" hidden> Design fees start from <b data-price-value></b>.</span></p><p>One customer's summary of how that held up: “Timelines and budgets were accurate.”<span data-priceline=\"build\" hidden> Most builds of this kind land between <b data-price-value></b>, though that depends entirely on scope.</span></p>"
+      "a": "<p>There is no price list, and nobody who has not stood on your block should give you one. We walk the site, set out the scope, and you get a written quote against a concept before any detailed design starts.<span data-priceline=\"fee\" hidden> Design fees start from <b data-price-value></b>.</span></p><p>One customer's summary of how that held up: “Timelines and budgets were accurate.”<span data-priceline=\"build\" hidden> Most builds of this kind land between <b data-price-value></b>, though that depends entirely on scope.</span></p>"
     },
     {
       "q": "Will the site be a mess while you are here?",
@@ -360,5 +350,8 @@
   "sms": {
     "label": "Text Ryan a photo",
     "body": "Hi {owner}, I'd like a quote.\nSuburb: \nWhat the yard is doing now: \n(Happy to send photos.)"
+  },
+  "_source": {
+    "stripped": "2026-09-23: removed for want of any source. Their site is behind a SiteGround captcha and nothing they have published could be checked for these: \"fully licensed landscaper\" and the licence credential, a free first consultation (six places), \"family-run\", \"qualified tradesmen\", \"4 trades in-house\", \"most jobs within twenty minutes\", and \"six jobs\" (it is five). Put any of them back only once Ryan confirms it, recorded under _source.confirmed."
   }
 }
