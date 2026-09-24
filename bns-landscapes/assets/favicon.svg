@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="BNS Landscapes">
+  <rect width="64" height="64" rx="14" fill="#0B140C"/>
+  <path d="M31 12c-6 0-10.5 4.4-10.5 9.6-3.6 1.4-6 4.7-6 8.5 0 5.1 4.3 9.2 9.6 9.2h13.8c5.3 0 9.6-4.1 9.6-9.2 0-3.8-2.4-7.1-6-8.5C41.5 16.4 37 12 31 12Z" fill="#55B627"/>
+  <path d="M32 36v17" fill="none" stroke="#55B627" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M20 53h26" fill="none" stroke="#C8A96A" stroke-width="3" stroke-linecap="round"/>
+</svg>
