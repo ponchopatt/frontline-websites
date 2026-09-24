@@ -80,3 +80,11 @@ Supersedes the upscaling notes above. **All Real-ESRGAN images were deleted.** N
 - **Services:** New homes & extensions, Renovations & restorations, Decks & pergolas. Earth moving now appears in the hero sub, the services intro, the aperture line, process step 4 and the FAQ. A 4th tile sat alone on a second row.
 - Hero CTA label is now "Send the details" (the check requires every "Call" label to dial). The call bar still says "Call Darren" and dials 0407 917 649.
 - `noGoogleReviews: true` is kept. `npm run check`: READY TO SEND, Lighthouse mobile 93 / 100 / 100. Captures checked at 390×844 and 1440×900 (port 8981).
+
+### Review fixes (after the 4.42 review)
+- Service cards: `styles.css` shows each photo in a landscape 4:3 frame with the text beneath. Their own two service photos are offered only as the 960 file. At 1440 the 960 file shows at 416px wide, so it is scaled down, not up. The whole Renovations frame shows, stone wall included.
+- Nothing displays above native size at 1x (checked with Playwright at 390 and 1440). The hero offers only 1200/1800 files and the statement only 1200/1568, so the phone's portrait crop isn't stretched. On 2x/3x screens the 960px own photos can't be fully sharp, which is a limit of the files they have.
+- Aperture sample replaced: a Federation-style weatherboard bungalow porch with red-brick piers, sbittinger, CC BY 2.0, https://www.flickr.com/photos/82727312@N00/36376433690, served at 1600×900.
+- Words: "Our team is fully licensed and insured." The recognition intro now reads "A registered Bowral company, with a polite and friendly team that will treat your home with care." (ABR plus their home page). The "smaller jobs" FAQ is dropped.
+- Text-bar label is now "Text Darren", which fits on one line.
+- Check: READY TO SEND. Lighthouse mobile 90 / 100 / 100 (the mobile hero is now 1200px, compressed to 89 KB).
