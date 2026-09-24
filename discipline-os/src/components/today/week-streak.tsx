@@ -19,18 +19,21 @@ interface WeekStreakProps {
 /** The streak and this week at a glance: a tick for each day the word was kept. */
 export function WeekStreak({ days, weekStart, today, firstDay, threshold, streak }: WeekStreakProps) {
   const byDate = new Map(days.map((d) => [d.date, d]));
+  // A closed day is over: under the line, it's missed like any other.
+  const todayClosed = byDate.get(today)?.locked ?? false;
   return (
     <section aria-label="This week's streak" className="surface rounded-[28px] border px-4 pt-4 pb-3.5 sm:px-5">
       <p className="flex items-center gap-2 text-[19px] font-medium tracking-tight">
         <Flame className="size-5" aria-hidden />
-        {streak > 0 ? `${streak}-day streak` : "Start a streak today"}
+        {streak > 0 ? `${streak}-day streak` : todayClosed ? "Start a streak tomorrow" : "Start a streak today"}
       </p>
       <ol className="mt-3 grid grid-cols-7 gap-1">
         {LETTERS.map((letter, i) => {
           const date = addDays(weekStart, i);
           const d = byDate.get(date);
           const kept = d ? keepsChain(d, threshold) : false;
-          const state = date === today ? (kept ? "today-kept" : "today") : date > today || date < firstDay ? "open" : kept ? "kept" : "missed";
+          const state =
+            date === today ? (kept ? "today-kept" : todayClosed ? "missed" : "today") : date > today || date < firstDay ? "open" : kept ? "kept" : "missed";
           const label = `${NAMES[i]}: ${state === "open" ? (date > today ? "to come" : "before you started") : state === "missed" ? "not kept" : state === "today" ? "today, in progress" : "kept"}`;
           return (
             <li key={date} aria-label={label} className="grid justify-items-center gap-1.5">

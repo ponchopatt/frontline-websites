@@ -14,7 +14,10 @@ import { metricTaskTitle, type Metric } from "./metrics";
 
 export interface PlanInput {
   today: LocalDate;
-  /** Local minutes since midnight, for block times. */
+  /**
+   * Local minutes since midnight of the day, for block times. Before the day starts the clock
+   * is still on the night before, so it goes past 24:00 (see minutesIntoDay).
+   */
   nowMinutes: number;
   todayTasks: DailyGoal[];
   /** Pending tasks from the last week that haven't been moved on. */
@@ -216,6 +219,14 @@ export function planDay(input: PlanInput): DayPlan {
   const supporting = pool.filter((p) => !(p.taskId && input.todayTasks.some((t) => t.id === p.taskId))).slice(0, MAX_SUPPORTING);
 
   return { big3, supporting, blocks: allocate(input, [...ranked.map((t) => t.area as Area | null), ...big3.map((b) => b.area)], supporting) };
+}
+
+/**
+ * The wall clock as minutes into the day it belongs to. With a 04:00 start, 01:30 is still
+ * last night: 25:30, not 01:30.
+ */
+export function minutesIntoDay(wallMinutes: number, dayStartHour: number): number {
+  return wallMinutes < dayStartHour * 60 ? wallMinutes + 24 * 60 : wallMinutes;
 }
 
 function hhmm(minutes: number): string {

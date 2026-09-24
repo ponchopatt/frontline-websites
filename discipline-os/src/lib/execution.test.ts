@@ -5,7 +5,7 @@ import { formatDuration, isoWeekday } from "./day";
 import type { DailyGoal } from "./goals/model";
 import { stretchTarget, suggestGoals, type Answers, type SuggestContext } from "./goals/suggest-goals";
 import { dailyTarget, metricTaskTitle, parseQuickTask, totalOver, weekShare, workDaysLeft, type Metric } from "./metrics";
-import { planDay, type PlanInput } from "./plan";
+import { minutesIntoDay, planDay, type PlanInput } from "./plan";
 import { morningTally, scoreboard, type BoardHabit } from "./scoreboard";
 
 const MON_FRI = [1, 2, 3, 4, 5];
@@ -224,6 +224,14 @@ describe("plan my day", () => {
     const plan = planDay({ ...base, counters: [{ metric: leads, target: 10, value: 10 }], milestone: null, worked: { imperium: 480 } });
     expect(plan.big3).toEqual([]);
     expect(plan.blocks).toEqual([]);
+  });
+
+  it("plans no blocks after midnight, when the day is all but over", () => {
+    expect(minutesIntoDay(90, 4)).toBe(25 * 60 + 30); // 01:30 with a 04:00 start is still last night
+    expect(minutesIntoDay(10 * 60, 4)).toBe(10 * 60);
+    expect(minutesIntoDay(90, 0)).toBe(90);
+    expect(planDay({ ...base, nowMinutes: minutesIntoDay(90, 4) }).blocks).toEqual([]);
+    expect(planDay({ ...base, nowMinutes: minutesIntoDay(10 * 60, 4) }).blocks[0].start).toBe("10:00");
   });
 });
 
