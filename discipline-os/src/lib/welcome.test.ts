@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { GOAL_TEMPLATES, goalsToAdd, roundGoal, suggestedTarget, type WelcomeGoalKey } from "./welcome";
+import { GOAL_TEMPLATES, goalsToAdd, gymDaysFor, roundGoal, suggestedTarget, type WelcomeGoalKey } from "./welcome";
 
 const template = (key: WelcomeGoalKey) => GOAL_TEMPLATES.find((t) => t.key === key)!;
 
@@ -43,6 +43,21 @@ describe("setup's suggested targets", () => {
       ["imperium", "revenue"],
       ["websites", "closed"],
     ]);
+  });
+});
+
+describe("the gym days setup starts from", () => {
+  it("keeps the days the gym habit has", () => {
+    expect(gymDaysFor({ days: [1, 3, 5] })).toEqual([1, 3, 5]);
+  });
+
+  it("shows every day as all seven, whether saved as none or as an empty list", () => {
+    expect(gymDaysFor({ days: null })).toEqual([1, 2, 3, 4, 5, 6, 7]);
+    expect(gymDaysFor({ days: [] })).toEqual([1, 2, 3, 4, 5, 6, 7]);
+  });
+
+  it("suggests Monday to Friday without a gym habit", () => {
+    expect(gymDaysFor(null)).toEqual([1, 2, 3, 4, 5]);
   });
 });
 

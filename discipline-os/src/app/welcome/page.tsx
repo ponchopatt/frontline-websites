@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { WelcomeFlow, type WelcomeDefaults } from "@/components/welcome-flow";
 import { getViewer } from "@/lib/data";
 import { firstName } from "@/lib/names";
-import { GOAL_TEMPLATES } from "@/lib/welcome";
+import { GOAL_TEMPLATES, gymDaysFor } from "@/lib/welcome";
 
 export const metadata: Metadata = { title: "Welcome" };
 
@@ -27,6 +27,10 @@ export default async function WelcomePage() {
       .gte("local_date", `${thisYear}-01-01`)
       .lte("local_date", today),
   ]);
+  // Setup saves what it shows, so it mustn't start from numbers that didn't load.
+  if ([metricsRes, gymRes, cardioRes, goalsRes, entriesRes].some((r) => r.error)) {
+    throw new Error("Setup couldn't load your account. Refresh to try again.");
+  }
   const weekly = (area: string, key: string) => {
     const v = metricsRes.data?.find((m) => m.area === area && m.key === key)?.weekly_target;
     return v === null || v === undefined ? null : Number(v);
@@ -46,7 +50,7 @@ export default async function WelcomePage() {
     workHours: profile.workTargetHours,
     workDays: profile.workDays,
     botHours: profile.hourTargets.trading ?? 0,
-    gymDays: gymRes.data?.days?.length ? gymRes.data.days.map(Number) : [1, 2, 3, 4, 5],
+    gymDays: gymDaysFor(gymRes.data),
     cardioMinutes: cardioRes.data?.daily_target === null || cardioRes.data?.daily_target === undefined ? 20 : Number(cardioRes.data.daily_target),
     streakLine: profile.streakThreshold,
     weekly: {

@@ -4,7 +4,7 @@
  * for the passcode each time it's opened. Run: npm run test:e2e
  */
 import { expect, test, type Page } from "@playwright/test";
-import { PASSWORD, admin, ready, signUp, waitForApp } from "./helpers";
+import { PASSWORD, admin, ready, signUp, today, waitForApp } from "./helpers";
 
 async function typePin(page: Page, pin: string) {
   for (const d of pin) await page.getByRole("button", { name: d, exact: true }).click();
@@ -25,6 +25,21 @@ async function toTheWeek(page: Page, { passcode = true } = {}) {
     await main.getByRole("button", { name: "Next" }).click();
   }
   await expect(main.getByRole("heading", { name: "What numbers will you hit each week?" })).toBeVisible();
+}
+
+/** The next action sent from /welcome reaches the server and saves, but its reply is lost. */
+async function loseNextReply(page: Page) {
+  let dropped = false;
+  await page.route(
+    (url) => url.pathname === "/welcome",
+    async (route) => {
+      const request = route.request();
+      if (dropped || request.method() !== "POST" || !request.headers()["next-action"]) return route.fallback();
+      dropped = true;
+      await route.fetch();
+      await route.abort("connectionreset");
+    },
+  );
 }
 
 /** A new account with the 1906 passcode and the rest of setup skipped, on Today. */
@@ -210,6 +225,8 @@ test("redo setup leaves the goals already set alone and adds none twice", async 
   await main.getByRole("button", { name: "Finish setup" }).click();
   await expect(main.getByRole("heading", { name: "You're set, Angus." })).toBeVisible();
   await expect.poll(async () => (await admin.from("yearly_goals").select("id").eq("user_id", userId)).data?.length).toBe(6);
+  // The gym every day since: a habit with no days.
+  await admin.from("habits").update({ days: null }).eq("user_id", userId).eq("kind", "gym");
 
   await page.goto("/settings");
   await page.getByRole("link", { name: "Redo setup" }).click();
@@ -227,15 +244,63 @@ test("redo setup leaves the goals already set alone and adds none twice", async 
     await expect(on).toHaveAttribute("aria-checked", "false");
   }
   await expect(main.getByRole("switch", { name: "Money goal" })).toBeEnabled();
-  for (const heading of ["What do you want to achieve?", "Who are you becoming, and why?", "What does a good day look like?"]) {
+  for (const heading of ["What do you want to achieve?", "Who are you becoming, and why?"]) {
     await expect(main.getByRole("heading", { name: heading })).toBeVisible();
     await main.getByRole("button", { name: "Next" }).click();
   }
+
+  // Every day at the gym shows as all seven days, and stays every day.
+  await expect(main.getByRole("heading", { name: "What does a good day look like?" })).toBeVisible();
+  await expect(main.getByRole("group", { name: "Gym days" }).getByRole("button", { pressed: true })).toHaveCount(7);
+  await main.getByRole("button", { name: "Next" }).click();
   await main.getByRole("button", { name: "Finish setup" }).click();
   await expect(main.getByRole("heading", { name: "You're set, Angus." })).toBeVisible();
 
   const { data: goals } = await admin.from("yearly_goals").select("title").eq("user_id", userId);
   expect(goals).toHaveLength(6);
+  const { data: gymHabit } = await admin.from("habits").select("days").eq("user_id", userId).eq("kind", "gym").single();
+  expect(gymHabit?.days).toBeNull();
+});
+
+test("redo setup offers the full year for a goal whose counter already has this year's entries", async ({ page }) => {
+  const { userId } = await signUp(page);
+  // $80,000 of Imperium revenue logged this year, and some website revenue, which isn't a website sold.
+  const { data: metrics } = await admin.from("metrics").select("id,area").eq("user_id", userId).eq("key", "revenue");
+  const revenue = (area: string) => metrics!.find((m) => m.area === area)!.id;
+  await admin.from("metric_entries").insert([
+    { user_id: userId, metric_id: revenue("imperium"), local_date: today(), value: 80_000 },
+    { user_id: userId, metric_id: revenue("websites"), local_date: today(), value: 5_000 },
+  ]);
+
+  await page.goto("/welcome");
+  const main = page.locator("main");
+  await ready(main.getByRole("button", { name: "Next" }));
+  await main.getByRole("button", { name: "Next" }).click();
+  await main.getByRole("button", { name: "Set passcode" }).click();
+  await expect(main.getByRole("heading", { name: "What do you want to achieve?" })).toBeVisible();
+
+  // The goal counts the counter from 1 January, so a share of the year would be passed already.
+  const imperium = main.getByRole("listitem").filter({ has: page.getByRole("switch", { name: "Imperium goal" }) });
+  await expect(imperium.getByLabel("Target ($)", { exact: true })).toHaveValue("250000");
+  await expect(imperium.getByText("Counts the $80,000 already logged this year.", { exact: true })).toBeVisible();
+  await expect(main.getByText(/^Counts the /)).toHaveCount(1);
+});
+
+test("a Set passcode tapped again after a lost reply moves on", async ({ page }) => {
+  const { userId } = await signUp(page, undefined, { setup: true });
+  const main = page.locator("main");
+  await main.getByRole("button", { name: "Next" }).click();
+
+  // The first one reaches the server and saves, but the reply is lost on the way back.
+  await loseNextReply(page);
+  await main.getByRole("button", { name: "Set passcode" }).click();
+  await expect(page.getByText("That didn't save. Check your connection and try again.")).toBeVisible();
+  await expect.poll(async () => (await admin.from("profiles").select("passcode_set").eq("user_id", userId).single()).data?.passcode_set).toBe(true);
+
+  // Tapped again: the same passcode is taken as the current one, and setup goes on.
+  await main.getByRole("button", { name: "Set passcode" }).click();
+  await expect(main.getByRole("heading", { name: "What do you want to achieve?" })).toBeVisible();
+  await expect(page.getByText("That isn't your current passcode.")).toHaveCount(0);
 });
 
 test("a Finish tapped again after a lost reply adds each goal once", async ({ page }) => {
@@ -245,17 +310,7 @@ test("a Finish tapped again after a lost reply adds each goal once", async ({ pa
   await toTheWeek(page);
 
   // The first Finish reaches the server and saves, but the reply is lost on the way back.
-  let dropped = false;
-  await page.route(
-    (url) => url.pathname === "/welcome",
-    async (route) => {
-      const request = route.request();
-      if (dropped || request.method() !== "POST" || !request.headers()["next-action"]) return route.fallback();
-      dropped = true;
-      await route.fetch();
-      await route.abort("connectionreset");
-    },
-  );
+  await loseNextReply(page);
   await main.getByRole("button", { name: "Finish setup" }).click();
   await expect(page.getByText("That didn't save. Check your connection and try again.")).toBeVisible();
   await expect.poll(async () => (await admin.from("yearly_goals").select("id").eq("user_id", userId)).data?.length).toBe(6);

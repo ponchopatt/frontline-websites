@@ -1,8 +1,8 @@
 import { formatValue } from "./goals/format";
 
 /**
- * First-run setup: the goals it offers for the year, and their suggested numbers. A year
- * already under way gets its share of the full-year number.
+ * First-run setup: the goals it offers for the year, their suggested numbers, and the gym days
+ * it starts from. A year already under way gets its share of the full-year number.
  */
 
 export const WELCOME_GOALS = ["imperium", "websites", "trading", "faith", "fitness", "discipline", "money"] as const;
@@ -54,6 +54,15 @@ export function suggestedTarget(t: GoalTemplate, year: number, today: string, so
   const [y, m, d] = today.split("-").map(Number);
   const weeksLeft = Math.max(1, (end - Date.UTC(y, m - 1, d)) / (7 * 86_400_000));
   return Math.max(1, roundGoal((t.target * Math.min(52, weeksLeft)) / 52));
+}
+
+/**
+ * The gym days setup starts from. A gym habit with no days is due every day, so all seven are
+ * on (and seven save back as every day). Without a gym habit, Monday to Friday.
+ */
+export function gymDaysFor(habit: { days: number[] | null } | null): number[] {
+  if (!habit) return [1, 2, 3, 4, 5];
+  return habit.days?.length ? habit.days.map(Number) : [1, 2, 3, 4, 5, 6, 7];
 }
 
 interface NamedGoal {

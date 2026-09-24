@@ -100,7 +100,8 @@ export function WelcomeFlow({ defaults }: { defaults: WelcomeDefaults }) {
     if (pin === savedPin) return next();
     setBusy(true);
     try {
-      const res = await setPasscode({ pin, current: savedPin });
+      // Sent as the current one too, so a retry after a lost reply that did save it goes through.
+      const res = await setPasscode({ pin, current: savedPin ?? pin });
       if (!res.ok) toast.error(res.error);
       else {
         setSavedPin(pin);
