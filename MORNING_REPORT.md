@@ -573,7 +573,9 @@ Finish round: sharp Mittagong pantry shot replaces the soft full-bleed, Exeter r
 
 Real Mittagong family builder: 45+ years, licence 30559, HIA 25+ years, owner Jason Stokes (apprenticed there in 1991). Every fact checks out and all photos are their own. Held back by one soft full-screen photo, weak crops, and only three short Google reviews (4.2 rating is hidden). **Ask Jason:** a photo of himself, a mobile for a text button, OK to reuse the Ashley Mackevicius Bowral photos, and sign-off on the tidied logo. More Google reviews is the pitch. Quick fixes still to do: swap the High Range full-bleed for a sharp 2024 Mittagong shot, re-crop the Exeter card, fix the lone "45" stat strip on desktop, cut repeated lines.
 
-### ACT Landscape Construction — needs Pat (final 4.33)
+### ACT Landscape Construction — PASS 4.5 after finish round, shipped
+Finish round: sharp Forrest aerial as the pinned photo, caption shown once, form messages say "the team", the "in-house" claim is replaced by their own "One team. One build.", the owner paragraph is sourced, and the award strip now reads "2025 Master Builders ACT award, shared with ACT Decks". All own photos. **Before calling:** read the 1-star Googong review (Emily McClurg) on Google. Earlier notes below still stand.
+
 Real business (est. 2021, team of 14, joint winner at the 2025 Master Builders ACT awards with ACT Decks, Harvest Pools partner). Facts all check out; calls work. Held back by photos (hero is 1360px, pinned photo soft on phones) and a thin owner section. **Ask Xavier:** is ACT Decks part of his business? (The page says "every trade in-house" next to "built with ACT Decks".) Full-size originals of the award job, a line or two about himself, and more Google reviews. Quick fixes still to do: the pinned caption shows twice, and the form error says "call Xavier" on the office line.
 
 ### BNS Landscapes — PASS 4.58 after finish round, shipped

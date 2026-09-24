@@ -79,7 +79,7 @@
     "recognitionIntro": "Master Builders ACT, our Fyshwick showroom and Harvest Pools: three things you can look up before you ring.",
     "reviewsLabel": "Google reviews",
     "reviewsTitle": "In their words.",
-    "reviewsIntro": "From our Google reviews, word for word. Two of the three below run longer on Google and are marked shortened.",
+    "reviewsIntro": "From our Google reviews, word for word.",
     "areasLabel": "Where we work",
     "areasHeadline": "Canberra.<br>Queanbeyan.<br>Around both.",
     "areasIntro": "From our showroom in Fyshwick, we work across Canberra, Queanbeyan and the surrounding areas. Recent jobs include a whole backyard in Forrest, retaining walls and paving in Kaleen, and the Jerrabomberra backyard we built with ACT Decks, a 2025 Master Builders ACT award winner.",
@@ -128,8 +128,7 @@
   "credentials": [
     {
       "kind": "award",
-      "label": "Master Builders ACT Excellence Awards",
-      "year": 2025,
+      "label": "2025 Master Builders ACT award, shared with ACT Decks",
       "body": "Winners with ACT Decks, Landscape Design and Construction Residential, for a three-level backyard in Jerrabomberra: a Trex deck and Versiclad pergola, a lawn and plunge pool, a putting green, a basketball court and a sauna under the deck.",
       "strip": true
     },
