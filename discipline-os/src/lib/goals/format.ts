@@ -4,7 +4,7 @@ function round(n: number): number {
   return Math.abs(n) >= 10_000 ? Math.round(n) : Math.round(n * 10) / 10;
 }
 
-/** "$300,000", "165 kg", "12 hours", "4" */
+/** "$300,000", "165 kg", "12 hours", "85%", "4" */
 export function formatValue(value: number | null, unit: string | null): string {
   if (value === null || !Number.isFinite(value)) return "–";
   const u = unit?.trim() ?? "";
@@ -13,6 +13,7 @@ export function formatValue(value: number | null, unit: string | null): string {
     return `${n < 0 ? "-" : ""}$${Math.abs(n).toLocaleString("en-AU")}`;
   }
   const n = round(value).toLocaleString("en-AU");
+  if (u === "%") return `${n}%`;
   // "1 call", not "1 calls"
   const word = value === 1 && /[a-z]s$/i.test(u) && u.length > 2 ? u.slice(0, -1) : u;
   return word ? `${n} ${word}` : n;

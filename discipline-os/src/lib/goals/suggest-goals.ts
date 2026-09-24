@@ -163,11 +163,14 @@ export function suggestGoals(ctx: SuggestContext, answers: Answers): GoalSuggest
     });
   }
 
-  const money = answers.aims.money?.match(/\$?\s?(\d[\d,]*)/);
+  // "$2,000", "$5k", "1.5k", "$1m"
+  const money = answers.aims.money?.match(/\$?\s?(\d[\d,]*(?:\.\d+)?)\s?([km])?\b/i);
   if (money) {
-    const n = Number(money[1].replace(/,/g, ""));
-    if (n > 0) {
-      const week = Math.round(n / 4.3 / 10) * 10;
+    const suffix = money[2]?.toLowerCase();
+    const n = Number(money[1].replace(/,/g, "")) * (suffix === "k" ? 1_000 : suffix === "m" ? 1_000_000 : 1);
+    const week = Math.round(n / 4.3 / 10) * 10;
+    // Too small to round to a weekly amount (under about $20): nothing honest to suggest.
+    if (week > 0) {
       out.push({
         key: "money",
         area: "money",

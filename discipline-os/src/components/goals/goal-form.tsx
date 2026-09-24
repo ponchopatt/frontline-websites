@@ -6,12 +6,12 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { createYearlyGoal } from "@/app/actions/goals";
 import { daysBetween, type LocalDate } from "@/lib/day";
-import { GOAL_TYPES, isNumeric, type Cadence, type GoalType, type LifeArea, type ProgressSource } from "@/lib/goals/model";
+import { GOAL_TYPES, isNumeric, wordTargetProblem, type Cadence, type GoalType, type LifeArea, type ProgressSource } from "@/lib/goals/model";
 import { checkGoal } from "@/lib/goals/quality";
 import { cn } from "@/lib/utils";
 
 const UNITS = ["$", "kg", "hours", "sessions", "days", "books"];
-type Source = "log" | "timer" | "habit" | "counter";
+type Source = "log" | "timer" | "habit" | "counter" | "word";
 
 interface GoalFormProps {
   year: number;
@@ -54,6 +54,8 @@ export function GoalForm({ year, today, areas, habits, counters, defaultAreaId }
   const areaCounters = counters.filter((c) => c.area === areaKey && c.unit !== null);
   const num = (v: string) => (v.trim() === "" || !Number.isFinite(Number(v)) ? null : Number(v));
   const monthsLeft = Math.max(1, Math.round(daysBetween(today > `${year}-01-01` ? today : `${year}-01-01`, deadline || `${year}-12-31`) / 30.4));
+  // A share of days is a level for the whole year from zero, not a total or a weekly rate.
+  const word = numeric && source === "word";
 
   const quality = useMemo(
     () =>
@@ -62,7 +64,7 @@ export function GoalForm({ year, today, areas, habits, counters, defaultAreaId }
         goalType,
         unit: numeric ? unit || null : null,
         metric: metric || null,
-        startValue: numeric ? num(start) : null,
+        startValue: numeric && !word ? num(start) : null,
         targetValue: numeric ? num(target) : null,
         cadence,
         deadline,
@@ -72,7 +74,7 @@ export function GoalForm({ year, today, areas, habits, counters, defaultAreaId }
         areaName,
         monthsLeft,
       }),
-    [title, goalType, numeric, unit, metric, start, target, cadence, deadline, year, why, success, areaName, monthsLeft],
+    [title, goalType, numeric, word, unit, metric, start, target, cadence, deadline, year, why, success, areaName, monthsLeft],
   );
 
   const progressSource: ProgressSource = !numeric
@@ -85,7 +87,9 @@ export function GoalForm({ year, today, areas, habits, counters, defaultAreaId }
         ? "habit"
         : source === "counter" && counterId
           ? "metric"
-          : "children";
+          : source === "word"
+            ? "keep_word"
+            : "children";
 
   async function submit() {
     setError(null);
@@ -93,6 +97,8 @@ export function GoalForm({ year, today, areas, habits, counters, defaultAreaId }
     if (numeric && num(target) === null) return setError("Add a target number, so progress can be tracked.");
     if (source === "habit" && !habitId) return setError("Pick the habit that counts towards this.");
     if (source === "counter" && !counterId) return setError("Pick the counter that measures this.");
+    const wordProblem = word ? wordTargetProblem(num(target)) : null;
+    if (wordProblem) return setError(wordProblem);
     setBusy(true);
     try {
       const process = quality.process;
@@ -105,11 +111,11 @@ export function GoalForm({ year, today, areas, habits, counters, defaultAreaId }
         lifeAreaId: areaId || null,
         goalType,
         metric: numeric ? metric || null : null,
-        unit: numeric ? unit || null : null,
-        cadence: numeric ? cadence : "total",
-        aggregation: goalType === "performance" ? "latest" : "sum",
+        unit: word ? "%" : numeric ? unit || null : null,
+        cadence: numeric && !word ? cadence : "total",
+        aggregation: goalType === "performance" || word ? "latest" : "sum",
         progressSource,
-        startValue: numeric ? num(start) : null,
+        startValue: numeric && !word ? num(start) : null,
         targetValue: numeric ? num(target) : null,
         habitId: source === "habit" ? habitId || null : null,
         metricId: progressSource === "metric" ? counterId : null,
@@ -203,7 +209,7 @@ export function GoalForm({ year, today, areas, habits, counters, defaultAreaId }
             </label>
             <label className={labelCls}>
               Unit
-              <input value={unit} onChange={(e) => setUnit(e.target.value)} maxLength={20} placeholder="$" className={field} list="goal-units" />
+              <input value={unit} onChange={(e) => setUnit(e.target.value)} maxLength={20} placeholder="$" className={field} list="goal-units" readOnly={word} />
               <datalist id="goal-units">
                 {UNITS.map((u) => (
                   <option key={u} value={u} />
@@ -212,16 +218,18 @@ export function GoalForm({ year, today, areas, habits, counters, defaultAreaId }
             </label>
           </div>
           <div className="grid grid-cols-2 gap-2">
-            <label className={labelCls}>
-              Starting at
-              <input inputMode="decimal" value={start} onChange={(e) => setStart(e.target.value)} placeholder="0" className={field} />
-            </label>
+            {!word && (
+              <label className={labelCls}>
+                Starting at
+                <input inputMode="decimal" value={start} onChange={(e) => setStart(e.target.value)} placeholder="0" className={field} />
+              </label>
+            )}
             <label className={labelCls}>
               Target
-              <input inputMode="decimal" value={target} onChange={(e) => setTarget(e.target.value)} placeholder="300000" className={field} />
+              <input inputMode="decimal" value={target} onChange={(e) => setTarget(e.target.value)} placeholder={word ? "85" : "300000"} className={field} />
             </label>
           </div>
-          {(goalType === "process" || goalType === "habit") && (
+          {(goalType === "process" || goalType === "habit") && !word && (
             <label className={labelCls}>
               The target is
               <select value={cadence} onChange={(e) => setCadence(e.target.value as Cadence)} className={field}>
@@ -233,10 +241,19 @@ export function GoalForm({ year, today, areas, habits, counters, defaultAreaId }
           )}
           <label className={labelCls}>
             Progress comes from
-            <select value={source} onChange={(e) => setSource(e.target.value as Source)} className={field}>
+            <select
+              value={source}
+              onChange={(e) => {
+                setSource(e.target.value as Source);
+                if (e.target.value === "word") setUnit("%");
+                else if (source === "word" && unit === "%") setUnit("");
+              }}
+              className={field}
+            >
               <option value="log">What I log (it adds up from the months below)</option>
               <option value="timer">The work timer (focused hours)</option>
               <option value="habit">Ticks of a habit</option>
+              <option value="word">Days I kept my word (% of days)</option>
               {areaCounters.length > 0 && <option value="counter">A business counter (fills in from Today)</option>}
             </select>
           </label>

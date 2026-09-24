@@ -1,13 +1,15 @@
 /**
  * The goal system's full loop, against the real app and a real (local) Supabase:
  * yearly goal → monthly plan → weekly plan → today's actions → done → progress rolls up →
- * weekly review → what's left carries into next week. Run: npm run test:e2e
+ * weekly review → what's left carries into next week. Then a counter goal carried forward, and
+ * a Keep My Word goal measured from the days. Run: npm run test:e2e
  */
 import { expect, test, type Locator } from "@playwright/test";
-import { startOfWeek } from "../src/lib/day";
+import { fromZonedTime } from "date-fns-tz";
+import { shortDate, startOfWeek } from "../src/lib/day";
 import { formatValue } from "../src/lib/goals/format";
-import { monthOfWeek } from "../src/lib/goals/periods";
-import { addDays, admin, signUp, today, waitForApp } from "./helpers";
+import { monthOfWeek, monthStartOf } from "../src/lib/goals/periods";
+import { TZ, addDays, admin, backdateAccount, completeEverything, signUp, today, waitForApp } from "./helpers";
 
 /** Waits until React has hydrated the element, so typing into it isn't lost. */
 async function ready(locator: Locator) {
@@ -27,7 +29,7 @@ test("goals: plan a year down to today, do the work, see progress, review the we
   const week = startOfWeek(date);
   const month = monthOfWeek(week);
   const year = Number(month.slice(0, 4));
-  test.skip(year !== Number(date.slice(0, 4)), "The first days of January belong to December's last week.");
+  test.skip(month < monthStartOf(date), "This week belongs to last month, and a year's breakdown starts at this month.");
 
   const { userId } = await signUp(page);
   // Label and text lookups are scoped to <main>: while a page streams in, React briefly holds a
@@ -180,4 +182,85 @@ test("goals: plan a year down to today, do the work, see progress, review the we
   const carriedRow = main.locator("li").filter({ hasText: carried!.title }).filter({ hasText: "carried" }).first();
   await expect(carriedRow.getByText("carried", { exact: true })).toBeVisible();
   await expect(carriedRow.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "0");
+});
+
+test("goals: a counter goal carried into next week keeps its counter", async ({ page }) => {
+  const date = today();
+  const week = startOfWeek(date);
+  const last = addDays(week, -7);
+  const { userId } = await signUp(page);
+  await backdateAccount(userId, 8);
+  const main = page.locator("main");
+
+  // Last week: 60 leads, measured by the leads counter. 10 were called then, and 20 today.
+  const { data: leads } = await admin.from("metrics").select("id").eq("user_id", userId).eq("area", "imperium").eq("key", "leads_called").single();
+  const { data: goal } = await admin
+    .from("weekly_goals")
+    .insert({ user_id: userId, week_start: last, title: "Call 60 qualified leads this week", goal_type: "process", unit: "leads", progress_source: "metric", metric_id: leads!.id, target_value: 60, is_major: true })
+    .select("id")
+    .single();
+  await admin.from("metric_entries").insert([
+    { user_id: userId, metric_id: leads!.id, local_date: last, value: 10 },
+    { user_id: userId, metric_id: leads!.id, local_date: date, value: 20 },
+  ]);
+
+  // Close last week. Carrying what's left forward is the default.
+  await page.goto(`/goals/week/${last}`);
+  const item = main.locator("form li").filter({ has: page.getByRole("radiogroup", { name: "How did “Call 60 qualified leads this week” go?" }) });
+  await expect(item.getByRole("radio", { name: /^partial$/i })).toHaveAttribute("aria-checked", "true");
+  await expect(item.getByRole("radio", { name: /Carry forward/ })).toBeChecked();
+  const complete = page.getByRole("button", { name: "Complete review" });
+  await ready(complete);
+  await complete.click();
+  await expect(main.getByText("Partly done · Carry forward")).toBeVisible();
+
+  // This week's goal is still measured by the counter, and its name says what's left.
+  const { data: carried } = await admin.from("weekly_goals").select("*").eq("carried_from_id", goal!.id).single();
+  expect(carried).toMatchObject({ week_start: week, progress_source: "metric", metric_id: leads!.id, title: "Call 50 qualified leads this week" });
+  expect(Number(carried!.target_value)).toBe(50);
+
+  await page.goto(`/goals/week/${week}`);
+  const row = main.locator("li").filter({ hasText: "Call 50 qualified leads this week" }).filter({ hasText: "carried" }).first();
+  await expect(row).toContainText("20 leads of 50 leads");
+  await expect(row.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "40");
+});
+
+test("goals: keep my word on 85% of days is measured from the days themselves", async ({ page }) => {
+  const date = today();
+  const [d3, d1] = [addDays(date, -3), addDays(date, -1)];
+  test.skip(d3.slice(0, 4) !== date.slice(0, 4), "The goal is for this year, and it was set last year.");
+  const { userId } = await signUp(page);
+  await backdateAccount(userId, 4);
+  await admin.from("profiles").update({ work_target_hours: 0 }).eq("user_id", userId);
+
+  // Set three days ago. Since then: kept, missed, kept. Today isn't over, so it doesn't count yet.
+  await completeEverything(userId, d3);
+  // The day in between is missed.
+  await completeEverything(userId, d1);
+  const { data: goal } = await admin
+    .from("yearly_goals")
+    .insert({
+      user_id: userId,
+      year: Number(date.slice(0, 4)),
+      title: "Keep my word on 85% of days",
+      goal_type: "performance",
+      unit: "%",
+      target_value: 85,
+      aggregation: "latest",
+      progress_source: "keep_word",
+      created_at: fromZonedTime(`${d3} 12:00`, TZ).toISOString(),
+    })
+    .select("id")
+    .single();
+
+  // 2 of 3 days is 67%: under the line, whatever share of the year has gone.
+  await page.goto(`/goals/year/${goal!.id}`);
+  const main = page.locator("main");
+  await expect(main.getByText(`Kept your word on 67% of days since ${shortDate(d3).slice(4)}, against 85%.`)).toBeVisible();
+  await expect(main.getByText("67% of 85%").first()).toBeVisible();
+  await expect(main.getByText("Behind", { exact: true })).toBeVisible();
+  const bar = page.getByRole("progressbar", { name: "Progress this year" });
+  await expect(bar).toHaveAttribute("aria-valuenow", "79");
+  // A level has no pace, so the bar has no time-gone marker.
+  await expect(bar.locator("span")).toHaveCount(0);
 });

@@ -11,6 +11,7 @@ import { loadGoalYear, loadLifeAreas, mapYearly } from "@/lib/goals/data";
 import { formatTarget, formatValue } from "@/lib/goals/format";
 import { isNumeric } from "@/lib/goals/model";
 import { monthLabel, monthStartOf, quarterOf } from "@/lib/goals/periods";
+import { withProgress } from "@/lib/goals/progress";
 
 export const metadata: Metadata = { title: "Goal" };
 
@@ -20,14 +21,14 @@ export default async function YearlyGoalPage({ params }: PageProps<"/goals/year/
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
   const { data: row } = await viewer.supabase.from("yearly_goals").select("*").eq("id", id).maybeSingle();
   if (!row) notFound();
-  const goal = mapYearly(row);
+  const goal = mapYearly(row, viewer.profile);
   const [data, areas] = await Promise.all([loadGoalYear(viewer, goal.year), loadLifeAreas(viewer)]);
   const progress = data.progress.get(goal.id);
   const months = data.tree.monthly.filter((m) => m.parentYearlyId === goal.id && m.state !== "cancelled");
   const milestones = data.milestones.filter((m) => m.yearlyGoalId === goal.id);
   const area = areas.find((a) => a.id === goal.lifeAreaId)?.name ?? null;
   const covered = new Set(months.map((m) => m.monthStart));
-  const drafts = yearToMonths(goal, viewer.today, milestones).filter((d) => !covered.has(d.periodStart));
+  const drafts = yearToMonths(withProgress(goal, progress), viewer.today, milestones).filter((d) => !covered.has(d.periodStart));
   const currentMonth = months.find((m) => m.monthStart === monthStartOf(viewer.today));
   const manual = isNumeric(goal.goalType) && (goal.progressSource === "manual" || (goal.progressSource === "children" && months.length === 0));
 

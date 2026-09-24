@@ -4,16 +4,12 @@ import { z } from "zod";
 import { dbFail, fail, invalid, localDateSchema, ok, uuidSchema } from "@/lib/action-helpers";
 import { getViewer } from "@/lib/data";
 import { addDays } from "@/lib/day";
-import { formatValue } from "@/lib/goals/format";
+import { wordTargetProblem } from "@/lib/goals/model";
+import { carriedTitle } from "@/lib/goals/review";
 import type { Database } from "@/lib/supabase/database.types";
 import type { ActionResult } from "@/lib/types";
 
 type Tables = Database["public"]["Tables"];
-type CommonColumn =
-  | "title" | "description" | "why" | "success" | "life_area_id" | "goal_type" | "metric" | "unit" | "cadence"
-  | "aggregation" | "progress_source" | "start_value" | "target_value" | "habit_id" | "metric_id" | "priority" | "deadline";
-/** The columns every goal level shares. */
-type CommonUpdate = Pick<Tables["yearly_goals"]["Update"], CommonColumn>;
 
 const LEVEL_TABLE = { yearly: "yearly_goals", monthly: "monthly_goals", weekly: "weekly_goals" } as const;
 const levelSchema = z.enum(["yearly", "monthly", "weekly"]);
@@ -21,6 +17,9 @@ const levelSchema = z.enum(["yearly", "monthly", "weekly"]);
 const numberOrNull = z
   .union([z.number(), z.null()])
   .refine((n) => n === null || Number.isFinite(n), { message: "Enter a number." });
+
+/** Where a goal's progress comes from; "keep_word" is the share of days I kept my word. */
+const progressSourceSchema = z.enum(["manual", "children", "work_hours", "habit", "actions", "milestones", "metric", "keep_word"]);
 
 const text = (max: number, label: string) =>
   z.string().trim().max(max, `Keep ${label} under ${max} characters.`).nullish().transform((v) => (v ? v : null));
@@ -37,7 +36,7 @@ const goalFields = z.object({
   unit: text(20, "the unit"),
   cadence: z.enum(["total", "per_week", "per_month"]).default("total"),
   aggregation: z.enum(["sum", "latest"]).default("sum"),
-  progressSource: z.enum(["manual", "children", "work_hours", "habit", "actions", "milestones", "metric"]),
+  progressSource: progressSourceSchema,
   startValue: numberOrNull.default(null),
   targetValue: numberOrNull.default(null),
   habitId: uuidSchema.nullish().transform((v) => v ?? null),
@@ -47,7 +46,15 @@ const goalFields = z.object({
 });
 type GoalFields = z.infer<typeof goalFields>;
 
+/** Keep My Word's target is a share of days. Refines every schema that takes a goal's fields. */
+function wordTarget<T extends { progressSource: string; targetValue: number | null }>(f: T, ctx: z.RefinementCtx<T>) {
+  const problem = f.progressSource === "keep_word" ? wordTargetProblem(f.targetValue) : null;
+  if (problem) ctx.addIssue({ code: "custom", path: ["targetValue"], message: problem });
+}
+
 function goalColumns(f: GoalFields) {
+  // Keep My Word is a percentage level measured from zero, whatever else was sent.
+  const word = f.progressSource === "keep_word";
   return {
     title: f.title,
     description: f.description,
@@ -56,11 +63,11 @@ function goalColumns(f: GoalFields) {
     life_area_id: f.lifeAreaId,
     goal_type: f.goalType,
     metric: f.metric,
-    unit: f.unit,
-    cadence: f.cadence,
-    aggregation: f.aggregation,
+    unit: word ? "%" : f.unit,
+    cadence: word ? "total" : f.cadence,
+    aggregation: word ? "latest" : f.aggregation,
     progress_source: f.progressSource,
-    start_value: f.startValue,
+    start_value: word ? null : f.startValue,
     target_value: f.targetValue,
     habit_id: f.habitId,
     metric_id: f.progressSource === "metric" ? f.metricId : null,
@@ -145,8 +152,8 @@ export async function updateLifeArea(input: z.input<typeof areaUpdateSchema>): P
 const createYearlySchema = goalFields.extend({
   year: z.number().int().min(2000).max(2100),
   /** The controllable process goal offered alongside an outcome goal. */
-  process: goalFields.nullish(),
-});
+  process: goalFields.superRefine(wordTarget).nullish(),
+}).superRefine(wordTarget);
 
 export async function createYearlyGoal(input: z.input<typeof createYearlySchema>): Promise<ActionResult<{ id: string }>> {
   const parsed = createYearlySchema.safeParse(input);
@@ -155,9 +162,10 @@ export async function createYearlyGoal(input: z.input<typeof createYearlySchema>
   const { year, process, ...fields } = parsed.data;
   if (fields.deadline && Number(fields.deadline.slice(0, 4)) !== year) return fail(`The deadline has to fall in ${year}.`);
 
+  const columns = goalColumns(fields);
   const { data, error } = await viewer.supabase
     .from("yearly_goals")
-    .insert({ year, ...goalColumns(fields), current_value: fields.startValue })
+    .insert({ year, ...columns, current_value: columns.start_value })
     .select("id")
     .single();
   if (error || !data) return dbFail(error ?? {}, "The goal wasn't saved. Try again.");
@@ -169,51 +177,6 @@ export async function createYearlyGoal(input: z.input<typeof createYearlySchema>
     if (processError) return dbFail(processError, "The goal was saved, but its process goal wasn't. Add it again.");
   }
   return ok({ id: data.id });
-}
-
-const updateSchema = z.object({
-  level: levelSchema,
-  id: uuidSchema,
-  fields: z.record(z.string(), z.unknown()),
-});
-
-const COLUMN: Record<keyof GoalFields, CommonColumn> = {
-  title: "title",
-  description: "description",
-  why: "why",
-  success: "success",
-  lifeAreaId: "life_area_id",
-  metricId: "metric_id",
-  goalType: "goal_type",
-  metric: "metric",
-  unit: "unit",
-  cadence: "cadence",
-  aggregation: "aggregation",
-  progressSource: "progress_source",
-  startValue: "start_value",
-  targetValue: "target_value",
-  habitId: "habit_id",
-  priority: "priority",
-  deadline: "deadline",
-};
-
-/** Edits a goal at any level. Only the fields sent change; each is validated on its own. */
-export async function updateGoal(input: z.input<typeof updateSchema>): Promise<ActionResult> {
-  const parsed = updateSchema.safeParse(input);
-  if (!parsed.success) return invalid(parsed.error);
-  const patch: Record<string, unknown> = {};
-  for (const [key, value] of Object.entries(parsed.data.fields)) {
-    if (!(key in COLUMN)) return fail("That field can't be changed.");
-    const field = goalFields.shape[key as keyof GoalFields];
-    const one = field.safeParse(value);
-    if (!one.success) return invalid(one.error);
-    patch[COLUMN[key as keyof GoalFields]] = one.data;
-  }
-  if (Object.keys(patch).length === 0) return ok();
-  const { supabase } = await getViewer();
-  const { error } = await supabase.from(LEVEL_TABLE[parsed.data.level]).update(patch as CommonUpdate).eq("id", parsed.data.id);
-  if (error) return dbFail(error, "The change wasn't saved. Try again.");
-  return ok();
 }
 
 const stateSchema = z.object({
@@ -243,18 +206,6 @@ export async function logProgress(input: z.input<typeof logSchema>): Promise<Act
   const { supabase } = await getViewer();
   const { error } = await supabase.from(LEVEL_TABLE[parsed.data.level]).update({ current_value: parsed.data.value }).eq("id", parsed.data.id);
   if (error) return dbFail(error, "Progress wasn't saved. Try again.");
-  return ok();
-}
-
-const removeSchema = z.object({ level: z.enum(["monthly", "weekly"]), id: uuidSchema });
-
-/** Removes a monthly or weekly goal added by mistake (and anything planned under it). */
-export async function removeGoal(input: z.input<typeof removeSchema>): Promise<ActionResult> {
-  const parsed = removeSchema.safeParse(input);
-  if (!parsed.success) return invalid(parsed.error);
-  const { supabase } = await getViewer();
-  const { error } = await supabase.from(LEVEL_TABLE[parsed.data.level]).delete().eq("id", parsed.data.id);
-  if (error) return dbFail(error, "It wasn't removed. Try again.");
   return ok();
 }
 
@@ -301,13 +252,13 @@ const draftSchema = z.object({
   metric: z.string().trim().max(60).nullable(),
   cadence: z.enum(["total", "per_week", "per_month"]),
   aggregation: z.enum(["sum", "latest"]),
-  progressSource: z.enum(["manual", "children", "work_hours", "habit", "actions", "milestones", "metric"]),
+  progressSource: progressSourceSchema,
   targetValue: numberOrNull,
   isMajor: z.boolean(),
   why: z.string().max(2000).nullable(),
   metricId: uuidSchema.nullish().transform((v) => v ?? null),
   metricKey: z.string().max(40).nullish().transform((v) => v ?? null),
-});
+}).superRefine(wordTarget);
 
 const monthlyPlanSchema = z.object({
   yearlyGoalId: uuidSchema,
@@ -391,7 +342,7 @@ export async function approveWeeklyPlan(input: z.input<typeof weeklyPlanSchema>)
   return ok({ count: rows.length });
 }
 
-const addMonthlySchema = goalFields.extend({ monthStart: localDateSchema, parentYearlyId: uuidSchema.nullish() });
+const addMonthlySchema = goalFields.extend({ monthStart: localDateSchema, parentYearlyId: uuidSchema.nullish() }).superRefine(wordTarget);
 
 export async function createMonthlyGoal(input: z.input<typeof addMonthlySchema>): Promise<ActionResult<{ id: string }>> {
   const parsed = addMonthlySchema.safeParse(input);
@@ -412,7 +363,7 @@ const addWeeklySchema = goalFields.extend({
   weekStart: localDateSchema,
   parentMonthlyId: uuidSchema.nullish(),
   isMajor: z.boolean(),
-});
+}).superRefine(wordTarget);
 
 export async function createWeeklyGoal(input: z.input<typeof addWeeklySchema>): Promise<ActionResult<{ id: string }>> {
   const parsed = addWeeklySchema.safeParse(input);
@@ -459,13 +410,6 @@ const weeklyReviewSchema = z
     message: "Choose what happens to each goal that wasn't completed.",
   });
 
-/** "$2,000 revenue" carried with $1,500 left becomes "$1,500 revenue". Other titles stay as written. */
-function carriedTitle(title: string, target: number | null, left: number | null, unit: string | null): string {
-  if (target === null || left === null || left === Number(target)) return title;
-  const was = formatValue(Number(target), unit);
-  return title.includes(was) ? title.replace(was, formatValue(left, unit)) : title;
-}
-
 /**
  * Closes a week: records what happened to each goal and why, then applies the decisions.
  * Carried goals reappear next week with what's left; nothing is deleted. The four questions
@@ -510,9 +454,9 @@ export async function saveWeeklyReview(input: z.input<typeof weeklyReviewSchema>
     if (item.outcome !== "completed" && (item.decision === "carry_forward" || item.decision === "modify")) {
       const { data: already } = await supabase.from("weekly_goals").select("id").eq("carried_from_id", goal.id).maybeSingle();
       if (already) continue;
-      // What's left of a total carries over; a level (a lift, a weight) keeps its target.
+      // What's left of a total carries over; a level (a lift, a weight, a share of days) keeps its target.
       const left =
-        goal.target_value !== null && item.actual !== null && goal.aggregation !== "latest"
+        goal.target_value !== null && item.actual !== null && goal.aggregation !== "latest" && goal.progress_source !== "keep_word"
           ? Math.max(1, Number(goal.target_value) - item.actual)
           : goal.target_value;
       const { error: carryError } = await supabase.from("weekly_goals").insert({
@@ -530,7 +474,10 @@ export async function saveWeeklyReview(input: z.input<typeof weeklyReviewSchema>
         cadence: goal.cadence,
         aggregation: goal.aggregation,
         progress_source: goal.progress_source,
+        // The same habit or counter keeps measuring it. Last week's deadline isn't copied: it has passed.
         habit_id: goal.habit_id,
+        metric_id: goal.metric_id,
+        start_value: goal.start_value,
         priority: goal.priority,
         sort_order: goal.sort_order,
         week_start: nextWeek,
