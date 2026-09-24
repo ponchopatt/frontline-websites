@@ -59,7 +59,7 @@
     "processIntro": "Tell us what you have in mind. We'll come and see it.",
     "ownerLabel": "Who you are dealing with",
     "recognitionLabel": "Why people come back",
-    "recognitionHeadline": "Eight in ten jobs are repeat clients or referrals.",
+    "recognitionHeadline": "Most of our jobs are repeat clients or referrals.",
     "recognitionIntro": "That comes down to our attention to detail and the quality of our work.",
     "areasLabel": "Where we work",
     "areasHeadline": "Based in<br>Bowral.",
@@ -112,12 +112,6 @@
       "label": "ABN 74 092 054 594",
       "body": "Meyers Building Group is the registered business name of Thomaselly Pty Ltd, a Bowral company.",
       "strip": false
-    },
-    {
-      "kind": "claim",
-      "label": "Our own earth moving",
-      "body": "Meyers Earth Moving shifts large quantities of earth and rubble to get a site ready to build: driveways, in-ground pools, landscaping, retaining walls and more.",
-      "strip": false
     }
   ],
   "services": [
@@ -141,6 +135,21 @@
         "width": 1920,
         "height": 1440,
         "alt": "A stone wall beside a white gravel courtyard, with a sage-green panelled garden room full of pot plants behind"
+      }
+    },
+    {
+      "title": "Earth moving & site prep",
+      "blurb": "When a job needs preparing, we do it ourselves. We shift large quantities of earth and rubble before a build, and dig for driveways, in-ground pools, landscaping and retaining walls.",
+      "photo": {
+        "src": "assets/sample-track-loader-site-prep-800.webp",
+        "srcset": "assets/sample-track-loader-site-prep-480.webp 480w, assets/sample-track-loader-site-prep-800.webp 800w, assets/sample-track-loader-site-prep-1024.webp 1024w",
+        "width": 1024,
+        "height": 576,
+        "alt": "A yellow tracked loader pushing up a mound of soil on a cleared, levelled site under a blue sky",
+        "sample": true,
+        "license": "CC0 1.0 (public domain dedication)",
+        "sourceUrl": "https://www.flickr.com/photos/15606079@N08/14926230848",
+        "credit": "Julie Brunner, via Flickr and Openverse"
       }
     }
   ],
@@ -213,7 +222,12 @@
         "alt": "A grey clad garage with a white cross-braced door, a barn light and a white gravel drive under trees"
       }
     ],
-    "_comment": "7 real photos, all Meyers Building Group's own, all from their Project Gallery (img1.wsimg.com/isteam/ip/7811a3ed-98ba-483b-8a43-fd6e5038d34b/). All seven show one property. The originals are 960px wide (855px for the garage), so every one was upscaled 2x with Real-ESRGAN x2plus, a proper AI upscaler, and none more than 2x. No stock and no sample photos. Each photo appears once. Their site doesn't name the suburb of this job, so no caption does. Left out: a black-and-white duplicate of the garage photo and three black-and-white GoDaddy template stock images (excavators, a man at a bathtub)."
+    "_comment": "7 real photos, all Meyers Building Group's own, all from their Project Gallery (img1.wsimg.com/isteam/ip/7811a3ed-98ba-483b-8a43-fd6e5038d34b/). All seven show one property. The originals are 960px wide (855px for the garage), so every one was upscaled 2x with Real-ESRGAN x2plus, a proper AI upscaler, and none more than 2x. No stock and no sample photos. Each photo appears once. Their site doesn't name the suburb of this job, so no caption does. Left out: a black-and-white duplicate of the garage photo and three black-and-white GoDaddy template stock images (excavators, a man at a bathtub).",
+    "stockApproved": {
+      "by": "Pat (standing approval)",
+      "on": "2026-09-23",
+      "reason": "All 7 of their own photos are used once each (hero, 2 service tiles, 4 gallery). The check needs 3 services, and they have no photo of their earth moving work, so that one tile uses a labelled CC0 sample."
+    }
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
@@ -233,7 +247,7 @@
     },
     {
       "q": "Can you prepare the site as well?",
-      "a": "Yes. Our own earth moving service moves large quantities of earth and rubble before a build, and handles driveways, in-ground pools, landscaping and retaining walls."
+      "a": "Yes. We run our own earth moving, so site preparation doesn't wait on another company."
     },
     {
       "q": "Do you do commercial work?",
