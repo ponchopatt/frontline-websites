@@ -5,7 +5,7 @@
  */
 import { expect, test, type Locator } from "@playwright/test";
 import { dayBounds, startOfWeek } from "../src/lib/day";
-import { TZ, addDays, admin, backdateAccount, keptOfMade, ringScore, signUp, today, waitForApp } from "./helpers";
+import { addDays, admin, backdateAccount, closeSheet, keptOfMade, openArea, ringScore, signUp, today, TZ, waitForApp } from "./helpers";
 
 /** `ms` ago, but never before the start of today: a session's day is set by when it started. */
 function earlierToday(ms: number): string {
@@ -48,10 +48,13 @@ test("the day runs from one screen: tasks, counters, work, the bot, proof and th
   expect(Number(task!.quantity)).toBe(10);
 
   // Typing 10 into the leads counter finishes the task by itself.
+  await openArea(page, "Imperium");
   const counter = page.locator("#imperium").getByRole("textbox", { name: "Leads called", exact: true });
   await counter.click();
   await counter.fill("10");
   await counter.press("Enter");
+  await expect(counter).toHaveValue("10");
+  await closeSheet(page);
   await expect(page.getByRole("checkbox", { name: 'Mark "Call 10 Imperium leads" done' })).toHaveAttribute("aria-checked", "true");
   await expect.poll(async () => (await admin.from("daily_goals").select("status").eq("id", task!.id).single()).data?.status).toBe("done");
   const { data: entry } = await admin.from("metric_entries").select("value,local_date").eq("metric_id", leads!.id).single();
@@ -59,10 +62,12 @@ test("the day runs from one screen: tasks, counters, work, the bot, proof and th
   expect(Number(entry!.value)).toBe(10);
 
   // + adds one, and the week total follows.
+  await openArea(page, "Imperium");
   await page.locator("#imperium").getByRole("button", { name: "Leads called: one more" }).click();
   await expect.poll(async () => Number((await admin.from("metric_entries").select("value").eq("metric_id", leads!.id).single()).data?.value)).toBe(11);
 
   // Work: choose the business, start, stop. The time is logged against it.
+  await openArea(page, "Work");
   const work = page.locator("#work");
   await work.getByRole("radio", { name: "Websites" }).click();
   await work.getByRole("button", { name: "Start Websites", exact: true }).click();
@@ -83,6 +88,7 @@ test("the day runs from one screen: tasks, counters, work, the bot, proof and th
   await expect.poll(async () => (await admin.from("project_milestones").select("title").eq("user_id", userId)).data?.length).toBe(1);
   await page.goto("/");
   await waitForApp(page);
+  await openArea(page, "AI Bot");
   const bot = page.locator("#trading");
   await expect(bot).toContainText("TradingView comparison");
   await bot.getByRole("checkbox", { name: "Implement" }).click();
@@ -91,7 +97,8 @@ test("the day runs from one screen: tasks, counters, work, the bot, proof and th
     .poll(async () => ((await admin.from("project_milestones").select("steps").eq("user_id", userId).single()).data?.steps as Array<{ done: boolean }>)[0].done)
     .toBe(true);
 
-  // A proof photo for the day.
+  // A proof photo for the day, from the night review.
+  await openArea(page, "Night review");
   const proofInput = page.locator("#proof input[type=file]");
   await proofInput.setInputFiles({ name: "gym.jpg", mimeType: "image/jpeg", buffer: JPEG });
   await expect(page.locator("#proof").getByRole("button", { name: /Open proof/ })).toHaveCount(1);
@@ -163,8 +170,10 @@ test("Start with a timer running on another device asks first, in view, and coun
     .select("id")
     .single();
 
-  // Start from the AI bot card, far below the Work card: the question comes into view.
+  // Start from the AI bot: the question opens in the work sheet, in view.
+  await openArea(page, "AI Bot");
   await page.locator("#trading").getByRole("button", { name: "Start", exact: true }).click();
+  await expect(page.getByRole("dialog", { name: "Work" })).toBeVisible();
   const work = page.locator("#work");
   const ask = work.getByRole("alert");
   await expect(ask).toContainText("Websites is still running");
@@ -188,16 +197,19 @@ test("closing the day stops a running timer, and its time stops counting", async
     .single();
   await page.reload();
   await waitForApp(page);
-  const work = page.locator("#work");
-  await expect(work.getByRole("timer")).toBeVisible();
+  const running = page.getByRole("region", { name: "Running timer" });
+  await expect(running.getByRole("timer")).toBeVisible();
 
+  await openArea(page, "Night review");
   await page.locator("#review").getByRole("button", { name: "Close day" }).click();
   await page.getByRole("dialog", { name: "Day complete" }).getByRole("button", { name: "Done" }).click();
-  await expect(work.getByRole("timer")).toHaveCount(0);
+  await expect(running).toHaveCount(0);
   const { data: stopped } = await admin.from("work_sessions").select("ended_at").eq("id", open!.id).single();
   expect(stopped!.ended_at).not.toBeNull();
 
   // The session shows when it ended, not "now", so the day's hours stand still.
+  await openArea(page, "Work");
+  const work = page.locator("#work");
   await work.getByText("1 session logged").click();
   await expect(work.locator("details li")).toHaveCount(1);
   await expect(work.locator("details li")).not.toContainText("now");

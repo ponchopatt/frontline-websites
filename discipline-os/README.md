@@ -13,64 +13,65 @@ Single user today, multi-tenant safe: every table is locked to `auth.uid() = use
 Next.js 16 (App Router, TypeScript strict) · Tailwind 4 · shadcn/ui · Supabase (Postgres, Auth) ·
 Zod · date-fns / date-fns-tz · Lucide.
 
-## What it is now: a personal execution dashboard
+## What it is now: a personal operating system for your life
 
 Big goals say where I'm going. Weekly goals say what matters now. Daily tasks say what to do. The
-scoreboard says whether I actually did it.
+scoreboard says whether I actually did it. It's built for an iPhone first (390×844, safe areas,
+one hand, portrait), and every screen follows the same few rules: a large title, then grouped
+lists of plain rows; one filled button at most; nothing under 44 points to tap or 13 pixels to
+read; never a card inside a card; tap a row to open its details in a sheet (drag it down to close).
 
 **The look (Sage, the default):** after the "Lightly" journal app. A deep sage ground with soft
-light from above and a fine grain; frosted white glass cards with dark ink inside; big light
-headlines in Geist; a floating glass tab bar of round buttons (the current page filled white) with a
-separate round **+**. Settings → Appearance also has **Spark** (after the "Spark" habit app: an
-orange glow with a dotted texture across the top of each page, fading into cream, plain white
-cards, orange for streaks and the current tab), **Dark** (black and lamplight gold) and **Light**.
+light from above and a fine grain; frosted white glass panels with dark ink inside; big light
+headlines in Geist; a floating glass tab bar. Settings → Appearance also has **Spark** (an orange
+glow across the top of each page, fading into cream), **Dark** (black and lamplight gold) and
+**Light**.
 
-Tab bar: **Today**, **Business**, **Week**, **Goals**, **Progress**. On a phone, Habits, the Work
-log, Bible notes and Settings open from the round **More** button at the top of Today (and from
-the cards that use them); on a wide screen they're all in the bar. A **+** button on every
-page adds a task; a running work block shows as a bar with Stop on every page.
+**Four tabs, one job each:**
 
-**Today** reads top to bottom in order of importance:
+| Tab | Job | What's in it |
+|---|---|---|
+| **Today** | execute | Everything that matters right now |
+| **Goals** | direction | Year → month → week → today, the areas (Imperium, Websites, AI Bot, Fitness, Faith, Personal), and the Business and Week pages |
+| **Faith** | spiritual life | Today's reading, Read / Journal / Pray, the journal, past entries. Kept quiet on purpose |
+| **You** | reflection and history | Streak, best and this month, then Keep my word and momentum, records and streaks, proof, the weekly review, the work log, habits, settings and "Redo setup" |
 
-1. **Header:** "Thursday afternoon, 24 September", then one big line for the day's state ("Keep
-   going, Angus."), and **Keep My Word %** (the day's number) with "13 of 17 kept", the week's
-   average and the streak. The first name comes from Settings; an email-style name is left out. Then **What should I do next?** and,
-   for a bad day, **I'm having a shit day** (see *The daily loop* below).
-2. **Today's Big 3**, then up to a few supporting tasks. **+ Add task** takes plain words: "Call 10
+**Today** reads top to bottom in order of importance, in about two phone screens:
+
+1. **Header:** "Thursday afternoon · 24 September", one big line for the day's state ("Keep
+   going, Angus."), **Keep My Word %** with "13 of 17 kept", the week's average and the streak,
+   and this week as seven dots (a tick for each day the word was kept, today lit). ‹ › step to
+   earlier days to fill them in.
+2. A running timer, when one is running, with Stop.
+3. **Up next:** the one thing to do now, why, and the one button that does it (Start the work,
+   Done, Close the day). "Something else" steps down the list.
+4. **Today's Big 3** and supporting tasks as tick rows. **Add task** takes plain words: "Call 10
    Imperium leads" files itself under Imperium and ties itself to the Leads called counter.
-   **Plan my day** suggests a Big 3, a short supporting list (never 25 tasks) and work blocks for
-   the day's hours; untick anything, then "Use this plan". Unfinished tasks from yesterday are
-   offered back with one tap.
-3. **Streak card:** "5-day streak" and this week as seven circles (a tick for each day the word
-   was kept, today in white, days to come dashed). Then the **Scoreboard:** Faith, Fitness, Imperium, Websites, AI Bot, Discipline as x/y, plus Work
-   hours against the 8h target. Each one jumps to its card.
-4. **Work:** pick Imperium, Websites, AI Trading or Other, then Start / Stop. Today's time per
-   business, planned blocks with a Start button each.
-5. **Morning** (8 one-tap items, "Morning complete ✓" when done), **Faith** (today's reading from a
-   simple plan, Read / Journal / Pray, a journal box, evening prayer and reflection) and
-   **Fitness** (gym Mon–Sun strip against 5 a week, cardio done + minutes and x/7, optional
-   protein / water / sleep).
-6. **Imperium** and **Websites** counters: type a number or tap − / +. Each shows today's target,
-   worked out from the week's target and the work days left. The week, month and year totals
-   are on the Business page. No CRM.
-7. **AI Bot:** the one current milestone, its steps (Implement, Test, Backtest, Compare, Fix,
-   Document, Complete milestone) as a %, hours today, and one notes box. No trade journal.
-8. **Discipline**, **Goals** (each task's chain Today → Week → Month → Year, tap to open),
-   **Proof** (optional photos on any task, a small gallery for the day) and the **Night review**:
-   what I accomplished, where I wasted time, where I broke my word, tomorrow's #1, then
-   **Close day**.
+   **Plan my day** suggests a Big 3, a short supporting list and work blocks. Unfinished tasks
+   from yesterday and "later" tasks sit folded underneath.
+5. **Your day:** Morning, Faith, Fitness, Work, Imperium, Websites, AI Bot, Discipline and the
+   Night review, one row each with its number and a ring. Tap one for everything in it, in a
+   sheet: the morning routine's ticks; today's reading, Read / Journal / Pray and evening prayer;
+   the gym week, cardio minutes and extras; work by business, blocks and sessions; each
+   business's counters with − / + and today's target; the AI bot's milestone and steps;
+   discipline; and the night review with **Close day** and the day's proof photos.
+6. **I'm having a shit day** (see *The daily loop* below).
 
-**Business:** Imperium (sales, marketing, revenue), Websites and the AI bot, with day, week, month
-and year totals for every counter, and where to set weekly targets.
+The **+** beside the tab bar (on Today only) opens **Log something**: Work (start or stop a
+timer), Imperium call and Website call (+1 each), Revenue (an amount, for Imperium or Websites),
+Cardio (minutes), Gym, Habit (anything still to tick) and Note (kept for later, under the tasks).
 
-**Week:** the weekly scoreboard (Faith, Fitness, Imperium, Websites, AI Bot numbers for the week),
-this week's goals, and the review: biggest win, biggest failure, main bottleneck, next week's #1.
+**Business** (under Goals): Imperium, Websites and the AI bot, with day, week, month and year
+totals for every counter, and where to set weekly targets.
 
-**Goals** keeps the year → quarter → month → week → today planning from before, and adds
-**Suggest my goals**: concrete weekly goals ("Call 60 qualified leads this week", never "work
-harder") built from your last weeks of numbers, your targets, the hours you have and what you
-say you want, each with a one-line reason. Nothing is added until you approve it. Goals can be
-measured straight from a counter, so the week's leads goal fills as you log leads.
+**Week** (under Goals): the weekly scoreboard and Weekly Boss, this week's goals, and the review:
+biggest win, biggest failure, main bottleneck, next week's #1.
+
+**Goals** keeps the year → quarter → month → week → today planning, and **Suggest my goals**:
+concrete weekly goals ("Call 60 qualified leads this week", never "work harder") built from your
+last weeks of numbers, your targets, the hours you have and what you say you want, each with a
+one-line reason. Nothing is added until you approve it. Goals can be measured straight from a
+counter, so the week's leads goal fills as you log leads.
 
 ### The daily loop
 

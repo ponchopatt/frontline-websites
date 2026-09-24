@@ -16,6 +16,8 @@ interface QuickAddProps {
   /** Start with "Big 3" ticked (adding from an empty slot). */
   big3Default?: boolean;
   autoFocus?: boolean;
+  /** Start with "Later" on: a note to self, kept under the tasks for later. */
+  startLater?: boolean;
   onAdded: (task: TaskItem) => void;
   className?: string;
 }
@@ -26,12 +28,12 @@ const field = "h-11 rounded-xl border border-input bg-transparent px-3 text-[15p
  * Type a task, press Enter. The business is guessed from the words ("Call 10 Imperium
  * leads" → Imperium); everything else is optional and one tap away.
  */
-export function QuickAdd({ date, big3Free, big3Default, autoFocus, onAdded, className }: QuickAddProps) {
+export function QuickAdd({ date, big3Free, big3Default, autoFocus, startLater, onAdded, className }: QuickAddProps) {
   const input = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState("");
   const [area, setArea] = useState<Area | "auto" | "none">("auto");
   const [big3, setBig3] = useState(Boolean(big3Default) && big3Free);
-  const [later, setLater] = useState(false);
+  const [later, setLater] = useState(Boolean(startLater));
   const [more, setMore] = useState(false);
   const [priority, setPriority] = useState<1 | 2 | 3>(2);
   const [due, setDue] = useState("");
@@ -93,7 +95,7 @@ export function QuickAdd({ date, big3Free, big3Default, autoFocus, onAdded, clas
           enterKeyHint="done"
           autoComplete="off"
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Call 10 Imperium leads"
+          placeholder={startLater ? "Remember to…" : "Call 10 Imperium leads"}
           className={cn(field, "min-w-0 flex-1 text-[16px] placeholder:text-faint")}
         />
         <button

@@ -394,6 +394,21 @@
   border-color: rgb(255 255 255 / 0.28);
 }
 
+/* The current tab: a soft pill of light inside the bar. */
+.nav-active {
+  background-color: rgb(23 21 15 / 0.07);
+}
+.dark .nav-active {
+  background-color: rgb(236 230 218 / 0.1);
+}
+.sage .nav-active {
+  background-color: rgb(255 255 255 / 0.2);
+}
+.spark .nav-active {
+  background-color: rgb(238 79 28 / 0.12);
+  color: #d9420f;
+}
+
 /* Two paler cards peeking out from behind a stacked card. */
 .stack-layer {
   position: absolute;

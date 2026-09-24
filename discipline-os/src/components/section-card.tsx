@@ -1,4 +1,6 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { createContext, useContext, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface SectionCardProps {
@@ -15,26 +17,50 @@ interface SectionCardProps {
   className?: string;
 }
 
+/**
+ * Inside a sheet the sheet is the frame: a card there drops its own panel and title, so there's
+ * never a card inside a card.
+ */
+const BareContext = createContext(false);
+
+/** True inside a sheet, where cards show everything and drop their own frame. */
+export function useBare() {
+  return useContext(BareContext);
+}
+
+export function BareCards({ children }: { children: ReactNode }) {
+  return <BareContext.Provider value>{children}</BareContext.Provider>;
+}
+
 /** A frosted card. Everything inside reads as dark ink on glass in the Sage look. */
 export function SectionCard({ id, title, meta, description, prominent, stacked, children, className }: SectionCardProps) {
+  const bare = useContext(BareContext);
   const headingId = id ? `${id}-heading` : undefined;
+  if (bare) {
+    return (
+      <section id={id} aria-label={title} className="grid grid-cols-[minmax(0,1fr)] gap-3">
+        {description && <p className="text-[15px] text-muted-foreground">{description}</p>}
+        <div>{children}</div>
+      </section>
+    );
+  }
   const card = (
     <section
       id={stacked ? undefined : id}
       aria-labelledby={headingId}
       className={cn(
-        "relative scroll-mt-6 rounded-[28px] border px-4 sm:px-5",
+        "relative scroll-mt-6 rounded-[24px] border px-4 sm:px-5",
         prominent ? "surface-strong pt-5 pb-3" : "surface pt-5 pb-4",
         className,
       )}
     >
       <header className="mb-3 flex items-baseline justify-between gap-4">
-        <h2 id={headingId} className={cn("font-medium tracking-tight", prominent ? "text-2xl" : "text-xl")}>
+        <h2 id={headingId} className={cn("font-medium tracking-tight", prominent ? "text-[22px]" : "text-xl")}>
           {title}
         </h2>
-        {meta !== undefined && <div className="text-sm text-muted-foreground">{meta}</div>}
+        {meta !== undefined && <div className="text-[15px] text-muted-foreground">{meta}</div>}
       </header>
-      {description && <p className="-mt-1 mb-3 text-sm text-muted-foreground">{description}</p>}
+      {description && <p className="-mt-1 mb-3 text-[15px] text-muted-foreground">{description}</p>}
       {children}
     </section>
   );

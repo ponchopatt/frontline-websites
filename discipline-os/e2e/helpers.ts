@@ -51,11 +51,11 @@ export async function signUp(page: Page, email = uniqueEmail("user"), opts: { se
   return { email, userId: user.id };
 }
 
-/** The Today screen is hydrated once the Keep My Word ring shows and a habit responds. */
+/** The Today screen is hydrated once the Keep My Word ring shows and its list of the day responds. */
 export async function waitForApp(page: Page) {
   await expect(page.getByRole("img", { name: /^(Keep my word|Kept my word)/ })).toBeVisible();
   await page.waitForFunction(() => {
-    const el = document.querySelector('[role="checkbox"]');
+    const el = document.querySelector("#scoreboard button, #minimum button");
     return Boolean(el && Object.keys(el).some((k) => k.startsWith("__reactProps")));
   });
 }
@@ -86,6 +86,57 @@ export async function ringScore(page: Page): Promise<number> {
  */
 export function habit(page: Page, name: string) {
   return page.locator(`main button[role="checkbox"][aria-label="${name}"]`).first();
+}
+
+/** Which of Today's sheets each default habit lives in. */
+const AREA_OF: Record<string, string> = {
+  "Wake up on time": "Morning",
+  Shower: "Morning",
+  "Make bed": "Morning",
+  Water: "Morning",
+  Bible: "Morning",
+  Journal: "Morning",
+  Pray: "Morning",
+  "Plan day": "Morning",
+  Gym: "Fitness",
+  "Gym today": "Fitness",
+  Cardio: "Fitness",
+  "Cardio done": "Fitness",
+  Protein: "Fitness",
+  "Water target": "Fitness",
+  "Sleep target": "Fitness",
+  "No porn": "Discipline",
+  "No pointless scrolling": "Discipline",
+  "No procrastination": "Discipline",
+  Prayer: "Faith",
+  Read: "Faith",
+};
+
+/**
+ * Opens one of Today's parts ("Morning", "Faith", "Work", "Night review"…) in its sheet,
+ * closing any other sheet first.
+ */
+export async function openArea(page: Page, name: string) {
+  const sheet = page.getByRole("dialog", { name, exact: true });
+  if (await sheet.isVisible()) return sheet;
+  await closeSheet(page);
+  await page.locator("#scoreboard").getByRole("button", { name: new RegExp(`^${name}:`) }).click();
+  await expect(sheet).toBeVisible();
+  return sheet;
+}
+
+/** Closes whichever sheet is open, if any. */
+export async function closeSheet(page: Page) {
+  const open = page.locator("dialog[open]");
+  if ((await open.count()) === 0) return;
+  await page.keyboard.press("Escape");
+  await expect(page.locator("dialog[open]")).toHaveCount(0);
+}
+
+/** A habit's tick on Today, with its sheet open. */
+export async function habitIn(page: Page, name: string) {
+  await openArea(page, AREA_OF[name] ?? "Morning");
+  return habit(page, name);
 }
 
 /** "13 of 15" in the header: commitments kept and made today. */

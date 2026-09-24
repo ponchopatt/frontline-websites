@@ -12,9 +12,12 @@ import {
   addDays,
   admin,
   backdateAccount,
+  closeSheet,
   completeEverything,
   habit,
+  habitIn,
   keptOfMade,
+  openArea,
   ringScore,
   signUp,
   today,
@@ -25,30 +28,42 @@ const MORNING = ["Wake up on time", "Shower", "Make bed", "Water", "Bible", "Jou
 const DISCIPLINE = ["No porn", "No pointless scrolling", "No procrastination"];
 const HABIT_COUNT = 17;
 
-/** Every habit tick on the screen, once each: the morning routine, fitness, discipline, evening prayer. */
-function allTicks(page: import("@playwright/test").Page) {
-  return page.locator("#morning [role=checkbox], #fitness [role=checkbox], #discipline [role=checkbox], #faith [role=checkbox][aria-label=Prayer]");
-}
+/** Every habit tick, once each, sheet by sheet: the morning routine, fitness, discipline, evening prayer. */
+const TICKS: Array<[string, string]> = [
+  ["Morning", "#morning [role=checkbox]"],
+  ["Fitness", "#fitness [role=checkbox]"],
+  ["Discipline", "#discipline [role=checkbox]"],
+  ["Faith", "#faith [role=checkbox][aria-label=Prayer]"],
+];
 
 test("1. a new user signs up and lands on Today seeded with the default habits", async ({ page }) => {
   await signUp(page);
   await expect(page).toHaveURL("/");
-  for (const name of [...MORNING, ...DISCIPLINE]) await expect(habit(page, name)).toBeVisible();
-  await expect(page.locator("#morning [role=checkbox]")).toHaveCount(8);
-  await expect(page.locator("#fitness [role=checkbox]")).toHaveCount(5);
-  await expect(page.locator("#discipline [role=checkbox]")).toHaveCount(3);
   await expect(page.getByRole("heading", { name: "Today's Big 3" })).toBeVisible();
-  await expect(page.getByRole("region", { name: "Scoreboard" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Your day" })).toBeVisible();
+  await openArea(page, "Morning");
+  for (const name of MORNING) await expect(habit(page, name)).toBeVisible();
+  await expect(page.locator("#morning [role=checkbox]")).toHaveCount(8);
+  await openArea(page, "Fitness");
+  await expect(page.locator("#fitness [role=checkbox]")).toHaveCount(5);
+  await openArea(page, "Discipline");
+  for (const name of DISCIPLINE) await expect(habit(page, name)).toBeVisible();
+  await expect(page.locator("#discipline [role=checkbox]")).toHaveCount(3);
 });
 
 test("2. every habit ticks and unticks, and the timestamp is stored correctly", async ({ page }) => {
   const { userId } = await signUp(page);
   const date = today();
-  const ticks = allTicks(page);
-  await expect(ticks).toHaveCount(HABIT_COUNT);
-
-  for (let i = 0; i < HABIT_COUNT; i += 1) await ticks.nth(i).click();
-  for (let i = 0; i < HABIT_COUNT; i += 1) await expect(ticks.nth(i)).toHaveAttribute("aria-checked", "true");
+  let count = 0;
+  for (const [area, selector] of TICKS) {
+    await openArea(page, area);
+    const ticks = page.locator(selector);
+    const n = await ticks.count();
+    count += n;
+    for (let i = 0; i < n; i += 1) await ticks.nth(i).click();
+    for (let i = 0; i < n; i += 1) await expect(ticks.nth(i)).toHaveAttribute("aria-checked", "true");
+  }
+  expect(count).toBe(HABIT_COUNT);
   await expect.poll(async () => (await admin.from("habit_completions").select("id").eq("user_id", userId)).data?.length).toBe(HABIT_COUNT);
 
   const { data: rows } = await admin.from("habit_completions").select("local_date,completed_at,edited_at").eq("user_id", userId);
@@ -58,11 +73,17 @@ test("2. every habit ticks and unticks, and the timestamp is stored correctly", 
     expect(r.edited_at).toBeNull();
   }
 
-  for (let i = 0; i < HABIT_COUNT; i += 1) await ticks.nth(i).click();
-  for (let i = 0; i < HABIT_COUNT; i += 1) await expect(ticks.nth(i)).toHaveAttribute("aria-checked", "false");
+  for (const [area, selector] of TICKS) {
+    await openArea(page, area);
+    const ticks = page.locator(selector);
+    const n = await ticks.count();
+    for (let i = 0; i < n; i += 1) await ticks.nth(i).click();
+    for (let i = 0; i < n; i += 1) await expect(ticks.nth(i)).toHaveAttribute("aria-checked", "false");
+  }
   await expect.poll(async () => (await admin.from("habit_completions").select("id").eq("user_id", userId)).data?.length).toBe(0);
 
   // A double tap never creates two rows: the unique index and the set-state action see to it.
+  await openArea(page, "Morning");
   await habit(page, "Shower").click();
   await habit(page, "Shower").click();
   await habit(page, "Shower").click();
@@ -71,16 +92,18 @@ test("2. every habit ticks and unticks, and the timestamp is stored correctly", 
 
   // Bible in the morning routine and Read on the faith card are the same tick.
   await habit(page, "Bible").click();
+  await openArea(page, "Faith");
   await expect(page.locator("#faith").getByRole("checkbox", { name: "Read" })).toHaveAttribute("aria-checked", "true");
 
   await page.reload();
   await waitForApp(page);
-  await expect(habit(page, "Shower")).toHaveAttribute("aria-checked", "true");
+  await expect(await habitIn(page, "Shower")).toHaveAttribute("aria-checked", "true");
 });
 
 test("3. a running work block survives a refresh with the right elapsed time", async ({ page }) => {
   const { userId } = await signUp(page);
   const work = page.locator("#work");
+  await openArea(page, "Work");
   await work.getByRole("button", { name: "Plan a block" }).click();
   await page.locator("#block-task").fill("Deep work");
   await work.getByRole("button", { name: "Add block" }).click();
@@ -94,7 +117,7 @@ test("3. a running work block survives a refresh with the right elapsed time", a
   await page.waitForTimeout(4000);
   await page.reload();
   await waitForApp(page);
-  const text = await page.getByRole("timer").first().innerText();
+  const text = await page.getByRole("region", { name: "Running timer" }).getByRole("timer").innerText();
   const [m, s] = text.split(":").map(Number);
   const shown = m * 60 + s;
   const actual = (Date.now() - new Date(open!.started_at).getTime()) / 1000;
@@ -102,6 +125,7 @@ test("3. a running work block survives a refresh with the right elapsed time", a
   expect(Math.abs(shown - actual)).toBeLessThan(3);
 
   // Starting another block while this one runs asks first.
+  await openArea(page, "Work");
   await work.getByRole("button", { name: "Plan a block" }).click();
   await page.locator("#block-task").fill("Admin");
   await work.getByRole("button", { name: "Add block" }).click();
@@ -113,6 +137,7 @@ test("3. a running work block survives a refresh with the right elapsed time", a
   await admin.from("work_sessions").update({ started_at: new Date(Date.now() - 9 * 3_600_000).toISOString() }).eq("id", open!.id);
   await page.reload();
   await waitForApp(page);
+  await openArea(page, "Work");
   await expect(page.getByText("running for over 8 hours")).toBeVisible();
   await page.getByRole("button", { name: "Save end time" }).click();
   await expect(page.locator("main").getByRole("timer")).toHaveCount(0);
@@ -126,9 +151,10 @@ test("4. Keep My Word recalculates live as things are done", async ({ page }) =>
   const [kept0, made0] = await keptOfMade(page);
   expect(kept0).toBe(0);
 
-  await habit(page, "Wake up on time").click();
+  await (await habitIn(page, "Wake up on time")).click();
   await expect.poll(() => keptOfMade(page)).toEqual([1, made0]);
   expect(await ringScore(page)).toBe(Math.round((1 / made0) * 100));
+  await closeSheet(page);
 
   // A new task is a new commitment; finishing it keeps it.
   await page.getByRole("button", { name: "Add your #1" }).click();
@@ -149,18 +175,20 @@ test("5. a part of life with no active habits does not break the numbers", async
     .eq("category", "body");
   await page.reload();
   await waitForApp(page);
+  await expect(page.locator("#scoreboard").getByRole("button", { name: /^Fitness:/ })).toContainText("–");
+  await openArea(page, "Fitness");
   await expect(page.locator("#fitness")).toContainText("No fitness habits.");
-  await expect(page.getByRole("region", { name: "Scoreboard" }).getByRole("link", { name: /Fitness/ })).toContainText("–");
   const [, made] = await keptOfMade(page);
-  await habit(page, "No porn").click();
+  await (await habitIn(page, "No porn")).click();
   await expect.poll(() => keptOfMade(page)).toEqual([1, made]);
   expect(await ringScore(page)).toBe(Math.round((1 / made) * 100));
 });
 
 test("6. the night review saves and Close Day locks the day with its Keep My Word", async ({ page }) => {
   const { userId } = await signUp(page);
-  await habit(page, "Shower").click();
+  await (await habitIn(page, "Shower")).click();
   const review = page.locator("#review");
+  await openArea(page, "Night review");
   await review.getByLabel("What did I accomplish?").fill("Drafted the plan");
   await review.getByLabel("What did I waste time on?").click();
   await expect(review.getByText("Saved").first()).toBeVisible();
@@ -169,15 +197,19 @@ test("6. the night review saves and Close Day locks the day with its Keep My Wor
   await review.getByLabel("What is tomorrow's #1 priority?").fill("Call 15 Imperium leads");
   await review.getByLabel("What did I accomplish?").click();
   await expect(review.getByText("Saved")).toHaveCount(4);
+  await openArea(page, "Faith");
   await expect(page.locator("#faith").getByText("Night review done")).toBeVisible();
 
   const live = await ringScore(page);
   // One tap closes it, and the Day Complete screen shows the same number.
+  await openArea(page, "Night review");
   await review.getByRole("button", { name: "Close day" }).click();
   const done = page.getByRole("dialog", { name: "Day complete" });
   await expect(done.getByRole("img", { name: new RegExp(`^Kept my word: ${live}%`) })).toBeVisible();
   await done.getByRole("button", { name: "Done" }).click();
+  await openArea(page, "Night review");
   await expect(page.getByText(/Closed at \d\d:\d\d\. Kept my word: \d+%/)).toBeVisible();
+  await closeSheet(page);
 
   const { data: plan } = await admin.from("daily_plans").select("final_score,completed_at").eq("user_id", userId).single();
   expect(plan?.final_score).toBe(live);
@@ -187,13 +219,14 @@ test("6. the night review saves and Close Day locks the day with its Keep My Wor
 
   await page.reload();
   await waitForApp(page);
-  await expect(habit(page, "Water")).toBeDisabled();
   expect(await ringScore(page)).toBe(live);
   // The card at the top counts what was done: one habit, no tasks.
   await expect(page.getByText(`Kept my word ${live}% · 1 thing done.`)).toBeVisible();
+  await expect(await habitIn(page, "Water")).toBeDisabled();
 
+  await openArea(page, "Night review");
   await page.getByRole("button", { name: "Reopen day" }).click();
-  await expect(habit(page, "Water")).toBeEnabled();
+  await expect(await habitIn(page, "Water")).toBeEnabled();
 });
 
 test("7. yesterday can be opened and edited; tomorrow cannot", async ({ page }) => {
@@ -204,7 +237,7 @@ test("7. yesterday can be opened and edited; tomorrow cannot", async ({ page }) 
   await page.goto(`/?d=${yesterday}`);
   await waitForApp(page);
   await expect(page.getByText(/You're filling in/)).toBeVisible();
-  await habit(page, "Shower").click();
+  await (await habitIn(page, "Shower")).click();
   await expect(habit(page, "Shower")).toHaveAttribute("aria-checked", "true");
   await expect(page.locator("#morning")).toContainText("edited");
   await expect
@@ -212,6 +245,7 @@ test("7. yesterday can be opened and edited; tomorrow cannot", async ({ page }) 
     .toEqual([expect.objectContaining({ local_date: yesterday, edited_at: expect.any(String) })]);
 
   // Tomorrow: the URL is refused, the arrow is disabled, and the database refuses a write.
+  await closeSheet(page);
   await page.goto(`/?d=${addDays(today(), 1)}`);
   await expect(page).toHaveURL("/");
   await waitForApp(page);
@@ -243,13 +277,12 @@ test("8. a missed day breaks the streak and destroys no data", async ({ page }) 
   await expect(figures).toContainText("Current streak1day");
   await expect(figures).toContainText("Best streak1day");
 
-  // The day before the miss is intact: every commitment kept. A finished morning folds away.
+  // The day before the miss is intact: every commitment kept.
   await page.goto(`/?d=${d3}`);
   await waitForApp(page);
-  await expect(page.getByRole("heading", { name: "Morning complete" })).toBeVisible();
-  await page.locator("#morning").getByRole("button", { expanded: false }).click();
-  for (const name of [...MORNING, ...DISCIPLINE]) await expect(habit(page, name)).toHaveAttribute("aria-checked", "true");
   expect(await ringScore(page)).toBe(100);
+  await expect(page.locator("#scoreboard").getByRole("button", { name: /^Morning:/ })).toContainText("Complete");
+  for (const name of [...MORNING, ...DISCIPLINE]) await expect(await habitIn(page, name)).toHaveAttribute("aria-checked", "true");
 
   // The missed day is simply empty.
   await page.goto(`/?d=${d2}`);
@@ -302,7 +335,23 @@ test("9. everything is usable one-handed on a 390px screen", async ({ page }) =>
   // Then every page, as an account that's set up.
   await page.context().clearCookies();
   await signUp(page);
-  for (const path of ["/", "/business", "/business?tab=websites", "/business?tab=bot", "/week", "/goals", "/goals/suggest", "/habits", "/bible", "/work", "/settings"]) {
+  for (const path of [
+    "/",
+    "/goals",
+    "/faith",
+    "/you",
+    "/business",
+    "/business?tab=websites",
+    "/business?tab=bot",
+    "/week",
+    "/goals/suggest",
+    "/progress",
+    "/progress?tab=trophies",
+    "/progress?tab=proof",
+    "/habits",
+    "/work",
+    "/settings",
+  ]) {
     await page.goto(path);
     await page.waitForLoadState("networkidle");
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
@@ -311,19 +360,27 @@ test("9. everything is usable one-handed on a 390px screen", async ({ page }) =>
     expect(await cutLabels(page), `${path} cuts off tick box names`).toEqual([]);
   }
 
-  // Today with "What should I do next?" open.
+  // Every sheet on Today, and the + sheet.
   await page.goto("/");
   await waitForApp(page);
-  await page.getByRole("button", { name: "What should I do next?" }).click();
-  await expect(main.getByRole("region", { name: "Do this now" })).toBeVisible();
-  expect(await smallTargets(page), "/ with what's next open has touch targets under 44px").toEqual([]);
+  await expect(main.getByRole("region", { name: "Up next" })).toBeVisible();
+  for (const area of ["Morning", "Faith", "Fitness", "Work", "Imperium", "Websites", "AI Bot", "Discipline", "Night review"]) {
+    await openArea(page, area);
+    expect(await smallTargets(page), `Today's ${area} sheet has touch targets under 44px`).toEqual([]);
+    expect(await cutLabels(page), `Today's ${area} sheet cuts off tick box names`).toEqual([]);
+  }
+  await closeSheet(page);
+  await page.getByRole("button", { name: "Log something" }).click();
+  await expect(page.getByRole("dialog", { name: "Log something" })).toBeVisible();
+  expect(await smallTargets(page), "the + sheet has touch targets under 44px").toEqual([]);
 });
 
 test("10. a second user sees none of the first user's data", async ({ browser }) => {
   const a = await browser.newContext();
   const pageA = await a.newPage();
   const { userId: aId } = await signUp(pageA);
-  await habit(pageA, "Shower").click();
+  await (await habitIn(pageA, "Shower")).click();
+  await closeSheet(pageA);
   await pageA.getByRole("button", { name: "Add your #1" }).click();
   await pageA.getByLabel("New task").fill("A's secret task");
   await pageA.getByLabel("New task").press("Enter");
@@ -332,7 +389,7 @@ test("10. a second user sees none of the first user's data", async ({ browser })
   const b = await browser.newContext();
   const pageB = await b.newPage();
   const { email: bEmail } = await signUp(pageB);
-  await expect(habit(pageB, "Shower")).toHaveAttribute("aria-checked", "false");
+  await expect(await habitIn(pageB, "Shower")).toHaveAttribute("aria-checked", "false");
   await expect(pageB.getByText("A's secret task")).toHaveCount(0);
 
   // Straight at the API with B's session, even with A's ids.

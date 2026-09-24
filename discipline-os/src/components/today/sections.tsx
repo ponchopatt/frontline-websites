@@ -7,15 +7,14 @@ import { AutosaveField } from "@/components/autosave-field";
 import { CheckChip } from "@/components/check-chip";
 import { Meter } from "@/components/meter";
 import { ReadingPicker } from "@/components/reading-picker";
-import { SectionCard } from "@/components/section-card";
+import { SectionCard, useBare } from "@/components/section-card";
 import { Stepper } from "@/components/stepper";
-import { AREA_LABEL, type WorkArea } from "@/lib/areas";
+import type { WorkArea } from "@/lib/areas";
 import { PLANS, formatReading } from "@/lib/bible";
 import { clockTime, formatDuration, isoWeekday, type LocalDate } from "@/lib/day";
 import { formatValue } from "@/lib/goals/format";
 import { counterNudge, itemsNudge, minutesNudge } from "@/lib/gradient";
-import { monthShort } from "@/lib/goals/periods";
-import type { ActionResult, BibleState, CounterItem, GoalLadder, HabitItem, MilestoneItem } from "@/lib/types";
+import type { ActionResult, BibleState, CounterItem, HabitItem, MilestoneItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { gymWeekNudge } from "./helpers";
 
@@ -45,6 +44,8 @@ export function MorningCard({ habits, readOnly, timeZone, onToggle }: { habits: 
   const done = due.filter((h) => h.completedAt).length;
   const complete = due.length > 0 && done === due.length;
   const [open, setOpen] = useState(!complete);
+  // In a sheet it's always open: the sheet was opened to see it.
+  const bare = useBare();
   const left = due.filter((h) => !h.completedAt);
   const nudge = itemsNudge(done, due.length, ["item", "items"]) ? `${left.length === 1 ? "One left" : "Two left"}: ${left.map((h) => h.name).join(", ")}.` : null;
 
@@ -73,7 +74,7 @@ export function MorningCard({ habits, readOnly, timeZone, onToggle }: { habits: 
           </Link>
         </p>
       ) : (
-        (open || !complete) && <HabitGrid habits={due} readOnly={readOnly} timeZone={timeZone} onToggle={onToggle} />
+        (bare || open || !complete) && <HabitGrid habits={due} readOnly={readOnly} timeZone={timeZone} onToggle={onToggle} />
       )}
       {nudge && <p className="mt-2 text-sm font-medium text-primary">{nudge}</p>}
     </SectionCard>
@@ -93,12 +94,14 @@ interface FaithCardProps {
   onSetReading: (book: string, chapter: number, passage: string | null) => Promise<boolean>;
   onSaveJournal: (value: string) => Promise<ActionResult<unknown>>;
   onJournalSaved: (value: string) => void;
+  /** Opens the night review, when it isn't on the same page. */
+  onReview?: () => void;
 }
 
 const READING_LABELS = { bible: "Read", journal: "Journal", prayer: "Pray" };
 
 /** Faith: today's chapter with Read / Journal / Pray (the same ticks as the morning routine), and the evening. */
-export function FaithCard({ date, habits, bible, reviewDone, readOnly, timeZone, onToggle, onSetReading, onSaveJournal, onJournalSaved }: FaithCardProps) {
+export function FaithCard({ date, habits, bible, reviewDone, readOnly, timeZone, onToggle, onSetReading, onSaveJournal, onJournalSaved, onReview }: FaithCardProps) {
   const [picking, setPicking] = useState(false);
   const morning = (["bible", "journal", "prayer"] as const).map((k) => habits.find((h) => h.kind === k)).filter((h): h is HabitItem => Boolean(h));
   const evening = habits.filter((h) => h.category === "god" && (h.due || h.completedAt));
@@ -126,7 +129,7 @@ export function FaithCard({ date, habits, bible, reviewDone, readOnly, timeZone,
               Change
             </button>
           )}
-          <Link href="/bible" className="inline-flex min-h-11 items-center text-sm text-muted-foreground hover:text-foreground">
+          <Link href="/faith" className="inline-flex min-h-11 items-center text-[15px] text-muted-foreground hover:text-foreground">
             Notes
           </Link>
         </div>
@@ -177,6 +180,11 @@ export function FaithCard({ date, habits, bible, reviewDone, readOnly, timeZone,
         ))}
         <a
           href="#review"
+          onClick={(e) => {
+            if (!onReview) return;
+            e.preventDefault();
+            onReview();
+          }}
           className={cn(
             "flex min-h-12 items-center gap-2.5 rounded-xl border px-3 py-2",
             reviewDone ? "border-primary/35 bg-lamp-soft" : "border-border bg-card/40",
@@ -187,7 +195,7 @@ export function FaithCard({ date, habits, bible, reviewDone, readOnly, timeZone,
           </span>
           <span className="grid leading-tight">
             <span className="text-[15px]">Reflection</span>
-            <span className="text-xs text-faint">{reviewDone ? "Night review done" : "The night review"}</span>
+            <span className="text-[13px] text-muted-foreground">{reviewDone ? "Night review done" : "The night review"}</span>
           </span>
         </a>
       </div>
@@ -517,55 +525,5 @@ export function DisciplineCard({ habits, readOnly, timeZone, onToggle }: { habit
         <HabitGrid habits={due} readOnly={readOnly} timeZone={timeZone} onToggle={onToggle} />
       )}
     </SectionCard>
-  );
-}
-
-/* ------------------------------------------------------------------ goals */
-
-/** Today → Week → Month → Year for the main goals, each step a link. */
-export function GoalsCard({ ladders, weekStart }: { ladders: GoalLadder[]; weekStart: LocalDate }) {
-  return (
-    <SectionCard id="goals" title="Goals" meta={<Link href="/goals" className="inline-flex min-h-11 items-center text-sm hover:text-foreground">All goals</Link>}>
-      {ladders.length === 0 ? (
-        <p className="text-[15px] text-muted-foreground">
-          No goals for this year yet.{" "}
-          <Link href="/goals" className="text-foreground underline underline-offset-4">
-            Set one
-          </Link>{" "}
-          and it breaks down into this month, this week and today.
-        </p>
-      ) : (
-        <ul className="grid grid-cols-[minmax(0,1fr)] gap-4">
-          {ladders.map((l) => (
-            <li key={l.yearly.id} className="grid grid-cols-[minmax(0,1fr)] gap-1">
-              {l.area && l.area !== "other" && <p className="text-xs text-faint">{AREA_LABEL[l.area]}</p>}
-              <Step href={`/goals/year/${l.yearly.id}`} label={String(l.yearly.year)} title={l.yearly.title} ratio={l.yearly.ratio} depth={0} />
-              {l.monthly ? (
-                <Step href={`/goals/month/${l.monthly.monthStart.slice(0, 7)}`} label={monthShort(l.monthly.monthStart)} title={l.monthly.title} ratio={l.monthly.ratio} depth={1} />
-              ) : (
-                <Step href={`/goals/year/${l.yearly.id}`} label="Month" title="Not broken down yet" ratio={null} depth={1} muted />
-              )}
-              {l.weekly ? (
-                <Step href={`/goals/week/${l.weekly.weekStart}`} label="Week" title={l.weekly.title} ratio={l.weekly.ratio} depth={2} />
-              ) : l.monthly ? (
-                <Step href={`/goals/week/${weekStart}`} label="Week" title="Plan this week" ratio={null} depth={2} muted />
-              ) : null}
-              {l.today && <Step href="#big3" label="Today" title={l.today} ratio={null} depth={3} />}
-            </li>
-          ))}
-        </ul>
-      )}
-    </SectionCard>
-  );
-}
-
-function Step({ href, label, title, ratio, depth, muted }: { href: string; label: string; title: string; ratio: number | null; depth: number; muted?: boolean }) {
-  return (
-    <Link href={href} className="flex min-h-11 items-center gap-2 rounded-lg hover:bg-accent/50" style={{ paddingLeft: depth * 14 }}>
-      {depth > 0 && <span aria-hidden className="h-4 w-2 shrink-0 border-b border-l border-border" />}
-      <span className="w-12 shrink-0 text-[13px] text-faint">{label}</span>
-      <span className={cn("min-w-0 flex-1 truncate text-[15px]", muted && "text-muted-foreground")}>{title}</span>
-      {ratio !== null && <span className="shrink-0 text-[13px] text-muted-foreground">{Math.round(ratio * 100)}%</span>}
-    </Link>
   );
 }

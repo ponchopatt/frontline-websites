@@ -9,12 +9,15 @@ import { completeDay, dayDetails, reopenDay, saveJournal, saveReviewField, setMi
 import { setHabitDone } from "@/app/actions/habits";
 import { deleteTask, moveTask, planMyDay, setTaskRank, setTaskStatus, updateTask, addTask } from "@/app/actions/tasks";
 import { addBlock, deleteBlock, endSessionAt, saveSessionNote, startSession, stopSession } from "@/app/actions/work";
-import { Check, Film } from "lucide-react";
+import { Check, Film, Square } from "lucide-react";
 import { DayComplete, type DayCompleteData } from "@/components/day-complete";
-import { DayStrip } from "@/components/day-strip";
+import { BareCards } from "@/components/section-card";
+import { Sheet } from "@/components/sheet";
+import { TimerDisplay } from "@/components/timer-display";
 import { useNow } from "@/hooks/use-now";
-import { isWorkArea, type WorkArea } from "@/lib/areas";
-import { addDays, clockTime, localHourAt, shortDate, type LocalDate } from "@/lib/day";
+import { AREA_LABEL, isWorkArea, type WorkArea } from "@/lib/areas";
+import { formatReading } from "@/lib/bible";
+import { addDays, clockTime, formatDuration, localHourAt, shortDate, type LocalDate } from "@/lib/day";
 import { itemsNudge } from "@/lib/gradient";
 import { newRecords, type LiveValues } from "@/lib/history";
 import { keepWord, weekAverage } from "@/lib/keep-word";
@@ -25,7 +28,6 @@ import { keepsChain, type DayScore } from "@/lib/streak";
 import type {
   ActionResult,
   BibleState,
-  BossSummary,
   CounterItem,
   DayView,
   HabitItem,
@@ -40,16 +42,17 @@ import type {
 } from "@/lib/types";
 import { REVIEW_FIELDS } from "@/lib/types";
 import { BigThree } from "./big-three";
-import { Scoreboard, TodayHeader, WeekGlance } from "./header";
 import { thingsDone, withEnded, withTask } from "./helpers";
 import { MinimumCard, MinimumSwitch, minimumItems } from "./minimum-day";
 import { MemoryNote, RecordBanner } from "./moments";
 import { NextActionCard } from "./next-action";
-import { WeekStreak } from "./week-streak";
 import { PlanSheet } from "./plan-sheet";
 import { ProofCard } from "./proof";
 import { ReviewSection } from "./review-card";
-import { BotCard, CountersCard, DisciplineCard, FaithCard, FitnessCard, GoalsCard, MorningCard } from "./sections";
+import { LifeList, type AreaKey, type LifeRow } from "./life-list";
+import { LogSheet } from "./log-sheet";
+import { BotCard, CountersCard, DisciplineCard, FaithCard, FitnessCard, MorningCard } from "./sections";
+import { TodayTop } from "./top";
 import { TaskSheet, type TaskPatch } from "./task-sheet";
 import { WorkSection, type RunningSession } from "./work-card";
 
@@ -100,7 +103,7 @@ function minutesBy(date: LocalDate, sessions: WorkSessionItem[], running: Runnin
 }
 
 /** The Today screen: one scroll from "what matters" to "did I do it". */
-export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view: DayView; partOfDay: string; name: string | null; hour: number; boss: BossSummary | null }) {
+export function Today({ view, partOfDay, name, hour: serverHour }: { view: DayView; partOfDay: string; name: string | null; hour: number }) {
   const router = useRouter();
   const now = useNow();
   const { date, today, isToday, profile } = view;
@@ -130,6 +133,8 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
   const [askMinimum, setAskMinimum] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [closing, setClosing] = useState<{ data: DayCompleteData; heading: string } | null>(null);
+  // The part of the day open in a sheet: its ticks, counters, timer or review.
+  const [sheet, setSheet] = useState<AreaKey | null>(null);
   // Tasks being moved right now. A second tap while the first is saving does nothing.
   const moving = useRef(new Set<string>());
 
@@ -384,6 +389,7 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
     if (!res.ok) return;
     if ("running" in res.data) {
       setConflict({ blockId, area, running: res.data.running });
+      setSheet("work");
       return;
     }
     const started = res.data.started;
@@ -399,7 +405,10 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
     if (!res.ok) return;
     setRunning(null);
     setSessions((list) => list.map((s) => (s.id === sessionId ? res.data : s)));
-    if (res.data.localDate === date) setNoteFor(sessionId);
+    if (res.data.localDate === date) {
+      setNoteFor(sessionId);
+      setSheet("work");
+    }
     router.refresh();
   }
 
@@ -547,9 +556,89 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
     `Discipline ${board.discipline.total}`,
   ].join(" · ");
 
+  /* ------------------------------------------------------------- the day as a list */
+  const tally = (done: number, total: number) => (total === 0 ? "–" : `${done}/${total}`);
+  const ratio = (done: number, total: number) => (total === 0 ? null : done / total);
+  const nextMorning = byCategory.morning.find((h) => h.due && !h.completedAt);
+  const gymWeek = view.gymWeek.filter((d) => d.due);
+  const gymDone = view.gymWeek.filter((d) => d.done).length - (view.habits.find((h) => h.kind === "gym")?.completedAt ? 1 : 0) + (habits.find((h) => h.kind === "gym")?.completedAt ? 1 : 0);
+  const firstTarget = (area: string) => {
+    const c = counters.find((x) => x.area === area && x.pinned && x.target !== null && x.target > 0);
+    return c ? `${c.label} ${c.value} of ${c.target}` : null;
+  };
+  const answered = REVIEW_FIELDS.filter((f) => review[f].trim()).length;
+  const workTarget = profile.workTargetHours * 60;
+  const rows: LifeRow[] = [
+    { key: "morning", title: "Morning", subtitle: morning.total === 0 ? null : nextMorning ? `Next: ${nextMorning.name}` : "Complete", value: tally(morning.done, morning.total), ratio: ratio(morning.done, morning.total) },
+    { key: "faith", title: "Faith", subtitle: formatReading(bible, bible.passage), value: tally(board.faith.done, board.faith.total), ratio: ratio(board.faith.done, board.faith.total) },
+    { key: "fitness", title: "Fitness", subtitle: gymWeek.length ? `Gym ${gymDone} of ${gymWeek.length} this week` : null, value: tally(board.fitness.done, board.fitness.total), ratio: ratio(board.fitness.done, board.fitness.total) },
+    {
+      key: "work",
+      title: "Work",
+      subtitle: running ? `Running · ${running.area ? AREA_LABEL[running.area] : "Work"}` : workMinutes >= 1 ? `${profile.workTargetHours}h target` : "Not started",
+      value: formatDuration(workMinutes),
+      ratio: workTarget > 0 ? workMinutes / workTarget : null,
+    },
+    { key: "imperium", title: "Imperium", subtitle: firstTarget("imperium"), value: tally(board.imperium.done, board.imperium.total), ratio: ratio(board.imperium.done, board.imperium.total) },
+    { key: "websites", title: "Websites", subtitle: firstTarget("websites"), value: tally(board.websites.done, board.websites.total), ratio: ratio(board.websites.done, board.websites.total) },
+    { key: "trading", title: "AI Bot", subtitle: milestone ? milestone.title : "No milestone set", value: tally(board.trading.done, board.trading.total), ratio: ratio(board.trading.done, board.trading.total) },
+    { key: "discipline", title: "Discipline", subtitle: null, value: tally(board.discipline.done, board.discipline.total), ratio: ratio(board.discipline.done, board.discipline.total) },
+    {
+      key: "review",
+      title: "Night review",
+      subtitle: locked ? `Closed at ${clockTime(locked.completedAt, tz)}` : `${answered} of ${REVIEW_FIELDS.length} answered`,
+      value: locked ? "Closed" : "",
+      ratio: locked ? 1 : null,
+    },
+  ];
+  const SHEET_TITLE: Record<AreaKey, string> = {
+    morning: "Morning",
+    faith: "Faith",
+    fitness: "Fitness",
+    imperium: "Imperium",
+    websites: "Websites",
+    trading: "AI Bot",
+    discipline: "Discipline",
+    work: "Work",
+    review: "Night review",
+  };
+
+  /** "morning", "fitness", "review"… open their sheet; anything else is a place on the page. */
+  function openTarget(target: string) {
+    if (target in SHEET_TITLE) setSheet(target as AreaKey);
+    else document.getElementById(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function openCounter(metricId: string) {
+    const c = counters.find((x) => x.id === metricId);
+    const area = c?.area;
+    setSheet(area === "imperium" || area === "websites" || area === "fitness" ? area : area === "trading" ? "trading" : "imperium");
+  }
+
+  const reviewSection = (
+    <ReviewSection
+      date={date}
+      isToday={isToday}
+      review={review}
+      word={word}
+      threshold={threshold}
+      timeZone={tz}
+      locked={locked}
+      timerRunningToday={Boolean(running && running.localDate === date)}
+      onSave={(field: ReviewField, value: string) => saveReviewField({ date, field, value })}
+      onSaved={(field, value) => setReview((r) => ({ ...r, [field]: value }))}
+      onComplete={async () => {
+        await complete();
+        setSheet(null);
+      }}
+      onReopen={reopen}
+      onReplay={() => void replayDay()}
+    />
+  );
+
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-5">
-      <TodayHeader
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-6">
+      <TodayTop
         date={date}
         today={today}
         firstDay={view.firstDay}
@@ -562,6 +651,8 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
         streak={streak}
         phase={phase}
         nudge={wordNudge}
+        days={strip}
+        weekStart={view.weekStart}
       />
 
       {!isToday && (
@@ -570,56 +661,65 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
         </p>
       )}
 
+      {records.length > 0 && <RecordBanner date={date} events={records} />}
+
+      {running && running.localDate === date && (
+        <section aria-label="Running timer" className="surface-strong flex items-center gap-3 rounded-[22px] border py-2 pr-2 pl-4">
+          <span aria-hidden className="size-2 shrink-0 animate-pulse rounded-full bg-primary" />
+          <button type="button" onClick={() => setSheet("work")} className="grid min-w-0 flex-1 text-left">
+            <span className="truncate text-[14px] text-muted-foreground">{running.area ? AREA_LABEL[running.area] : "Work"}{running.task ? ` · ${running.task}` : ""}</span>
+            <TimerDisplay startedAt={running.startedAt} className="text-[22px] leading-tight" />
+          </button>
+          <button
+            type="button"
+            onClick={() => void stop(running.id)}
+            className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 text-[15px] font-medium text-primary-foreground"
+          >
+            <Square className="size-3 fill-current" aria-hidden />
+            Stop
+          </button>
+        </section>
+      )}
+
       {locked && (
-        <button
-          type="button"
-          onClick={() => void replayDay()}
-          className="surface flex items-center justify-between gap-3 rounded-[24px] border px-4 py-3 text-left"
-        >
+        <button type="button" onClick={() => void replayDay()} className="surface flex items-center justify-between gap-3 rounded-[22px] border px-4 py-3 text-left">
           <span className="grid gap-0.5">
             <span className="inline-flex items-center gap-2 text-[17px] font-medium text-kept">
               <Check className="size-4" aria-hidden />
               Day complete
             </span>
-            <span className="text-sm text-muted-foreground">
-              Kept my word {locked.score}%{closedDone ? ` · ${closedDone}` : ""}. Reopen it at the bottom to change it.
+            <span className="text-[15px] text-muted-foreground">
+              Kept my word {locked.score}%{closedDone ? ` · ${closedDone}` : ""}.
             </span>
           </span>
-          <span className="inline-flex shrink-0 items-center gap-1.5 text-sm">
+          <span className="inline-flex shrink-0 items-center gap-1.5 text-[15px]">
             <Film className="size-4" aria-hidden />
             Replay
           </span>
         </button>
       )}
 
-      {records.length > 0 && <RecordBanner date={date} events={records} />}
-
-      {isToday && !locked && (
-        <div className="grid gap-1">
-          <NextActionCard
-            actions={actions}
-            running={Boolean(running)}
-            onStart={(area) => void start(null, false, area)}
-            onTaskDone={(id) => {
-              const t = findTask(id);
-              if (t) setStatus(t, "done");
-            }}
-            onHabitDone={(id) => {
-              const h = habits.find((x) => x.id === id);
-              if (h) toggleHabit(h, true);
-            }}
-            onMove={(id) => {
-              const t = findTask(id);
-              if (t) void move(t, "today");
-            }}
-            onCloseDay={() => void complete()}
-          />
-          {!minimumOn && (
-            <button type="button" onClick={() => setAskMinimum(true)} className="glow-ink min-h-11 justify-self-end px-1 text-sm text-muted-foreground hover:text-foreground">
-              I&apos;m having a shit day
-            </button>
-          )}
-        </div>
+      {isToday && !locked && !minimumOn && (
+        <NextActionCard
+          actions={actions}
+          running={Boolean(running)}
+          onStart={(area) => void start(null, false, area)}
+          onTaskDone={(id) => {
+            const t = findTask(id);
+            if (t) setStatus(t, "done");
+          }}
+          onHabitDone={(id) => {
+            const h = habits.find((x) => x.id === id);
+            if (h) toggleHabit(h, true);
+          }}
+          onMove={(id) => {
+            const t = findTask(id);
+            if (t) void move(t, "today");
+          }}
+          onCloseDay={() => void complete()}
+          onOpen={openTarget}
+          onOpenCounter={openCounter}
+        />
       )}
 
       {minimumOn && (
@@ -658,115 +758,123 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
             onUseLastNight={(t) => void takeLastNight(t)}
           />
 
-          {isToday && <WeekStreak days={strip} weekStart={view.weekStart} today={today} firstDay={view.firstDay} threshold={threshold} streak={streak} />}
+          <LifeList rows={rows} onOpen={setSheet} />
 
-          <Scoreboard board={board} workMinutes={workMinutes} workTargetHours={profile.workTargetHours} />
-          {isToday && <WeekGlance momentum={view.momentum} boss={boss} weekStart={view.weekStart} />}
-          {view.memory && !locked && <MemoryNote date={date} card={view.memory} />}
+          {view.memory && !locked && records.length === 0 && <MemoryNote date={date} card={view.memory} />}
         </>
       )}
 
-      <WorkSection
-        date={date}
-        isToday={isToday}
-        readOnly={readOnly}
-        timeZone={tz}
-        dayStartHour={profile.dayStartHour}
-        targetHours={profile.workTargetHours}
-        minutes={workMinutes}
-        byArea={byArea}
-        blocks={blocks}
-        sessions={sessions}
-        running={running}
-        noteFor={noteFor}
-        conflict={conflict}
-        onStart={(blockId, replace, area) => void start(blockId, replace, area)}
-        onCancelConflict={() => setConflict(null)}
-        onStop={(id) => void stop(id)}
-        onSaveNote={(id, note) => void saveNote(id, note)}
-        onSkipNote={() => setNoteFor(null)}
-        onEndAt={(id, d, t) => void endAt(id, d, t)}
-        onKeepRunning={(id) => setKeptRunning(id)}
-        longRunningDismissed={keptRunning === running?.id}
-        onAddBlock={addWorkBlock}
-        onDeleteBlock={removeBlock}
-      />
-
-      {full && (
-        <>
-          <MorningCard habits={byCategory.morning} readOnly={readOnly} timeZone={tz} onToggle={toggleHabit} />
-
-          <FaithCard
-            date={date}
-            habits={habits}
-            bible={bible}
-            reviewDone={reviewDone}
-            readOnly={readOnly}
-            timeZone={tz}
-            onToggle={toggleHabit}
-            onSetReading={changeReading}
-            onSaveJournal={(value) => saveJournal({ date, value, reading: { book: bible.book, chapter: bible.chapter } })}
-            onJournalSaved={(value) => setBible((b) => ({ ...b, journal: value, suggested: false }))}
-          />
-
-          <FitnessCard
-            date={date}
-            today={today}
-            habits={byCategory.body}
-            gymWeek={view.gymWeek}
-            cardioWeek={{
-              done: view.cardioWeek.done - (view.habits.find((h) => h.kind === "cardio")?.completedAt ? 1 : 0) + (habits.find((h) => h.kind === "cardio")?.completedAt ? 1 : 0),
-              days: view.cardioWeek.days,
-            }}
-            cardio={counters.find((c) => c.area === "fitness" && c.key === "cardio_minutes") ?? null}
-            readOnly={readOnly}
-            timeZone={tz}
-            onToggle={toggleHabit}
-            onCounter={commitCounter}
-          />
-
-          <CountersCard id="imperium" title="Imperium" tab="imperium" counters={counters.filter((c) => c.area === "imperium")} tasks={areaTasks("imperium")} readOnly={readOnly} onCounter={commitCounter} />
-          <CountersCard id="websites" title="Websites" tab="websites" counters={counters.filter((c) => c.area === "websites")} tasks={areaTasks("websites")} readOnly={readOnly} onCounter={commitCounter} />
-
-          <BotCard
-            milestone={milestone}
-            minutes={byArea.trading ?? 0}
-            targetHours={profile.hourTargets.trading ?? 0}
-            tasks={areaTasks("trading")}
-            readOnly={readOnly}
-            isToday={isToday}
-            running={Boolean(running)}
-            onStep={toggleStep}
-            onStart={(area) => void start(null, false, isWorkArea(area) ? area : "trading")}
-          />
-
-          <DisciplineCard habits={byCategory.discipline} readOnly={readOnly} timeZone={tz} onToggle={toggleHabit} />
-
-          <GoalsCard ladders={view.ladders} weekStart={view.weekStart} />
-
-          <ProofCard date={date} proofs={proofs} readOnly={readOnly} onAdd={(p) => setProofs((list) => [...list, p])} onRemove={(id) => setProofs((list) => list.filter((p) => p.id !== id))} />
-        </>
+      {isToday && !locked && !minimumOn && (
+        <button type="button" onClick={() => setAskMinimum(true)} className="glow-ink -mt-2 min-h-11 justify-self-center px-3 text-[15px] text-muted-foreground hover:text-foreground">
+          I&apos;m having a shit day
+        </button>
       )}
 
-      <ReviewSection
-        date={date}
-        isToday={isToday}
-        review={review}
-        word={word}
-        threshold={threshold}
-        timeZone={tz}
-        locked={locked}
-        timerRunningToday={Boolean(running && running.localDate === date)}
-        onSave={(field: ReviewField, value: string) => saveReviewField({ date, field, value })}
-        onSaved={(field, value) => setReview((r) => ({ ...r, [field]: value }))}
-        onComplete={complete}
-        onReopen={reopen}
-        onReplay={() => void replayDay()}
-      />
+      <Sheet open={sheet !== null} onClose={() => setSheet(null)} title={sheet ? SHEET_TITLE[sheet] : ""} subtitle={sheet ? rows.find((r) => r.key === sheet)?.value || undefined : undefined}>
+        <BareCards>
+          {sheet === "morning" && <MorningCard habits={byCategory.morning} readOnly={readOnly} timeZone={tz} onToggle={toggleHabit} />}
+          {sheet === "faith" && (
+            <FaithCard
+              date={date}
+              habits={habits}
+              bible={bible}
+              reviewDone={reviewDone}
+              readOnly={readOnly}
+              timeZone={tz}
+              onToggle={toggleHabit}
+              onSetReading={changeReading}
+              onSaveJournal={(value) => saveJournal({ date, value, reading: { book: bible.book, chapter: bible.chapter } })}
+              onJournalSaved={(value) => setBible((b) => ({ ...b, journal: value, suggested: false }))}
+              onReview={() => setSheet("review")}
+            />
+          )}
+          {sheet === "fitness" && (
+            <FitnessCard
+              date={date}
+              today={today}
+              habits={byCategory.body}
+              gymWeek={view.gymWeek}
+              cardioWeek={{
+                done: view.cardioWeek.done - (view.habits.find((h) => h.kind === "cardio")?.completedAt ? 1 : 0) + (habits.find((h) => h.kind === "cardio")?.completedAt ? 1 : 0),
+                days: view.cardioWeek.days,
+              }}
+              cardio={counters.find((c) => c.area === "fitness" && c.key === "cardio_minutes") ?? null}
+              readOnly={readOnly}
+              timeZone={tz}
+              onToggle={toggleHabit}
+              onCounter={commitCounter}
+            />
+          )}
+          {sheet === "imperium" && (
+            <CountersCard id="imperium" title="Imperium" tab="imperium" counters={counters.filter((c) => c.area === "imperium")} tasks={areaTasks("imperium")} readOnly={readOnly} onCounter={commitCounter} />
+          )}
+          {sheet === "websites" && (
+            <CountersCard id="websites" title="Websites" tab="websites" counters={counters.filter((c) => c.area === "websites")} tasks={areaTasks("websites")} readOnly={readOnly} onCounter={commitCounter} />
+          )}
+          {sheet === "trading" && (
+            <BotCard
+              milestone={milestone}
+              minutes={byArea.trading ?? 0}
+              targetHours={profile.hourTargets.trading ?? 0}
+              tasks={areaTasks("trading")}
+              readOnly={readOnly}
+              isToday={isToday}
+              running={Boolean(running)}
+              onStep={toggleStep}
+              onStart={(area) => void start(null, false, isWorkArea(area) ? area : "trading")}
+            />
+          )}
+          {sheet === "discipline" && <DisciplineCard habits={byCategory.discipline} readOnly={readOnly} timeZone={tz} onToggle={toggleHabit} />}
+          {sheet === "work" && (
+            <WorkSection
+              date={date}
+              isToday={isToday}
+              readOnly={readOnly}
+              timeZone={tz}
+              dayStartHour={profile.dayStartHour}
+              targetHours={profile.workTargetHours}
+              minutes={workMinutes}
+              byArea={byArea}
+              blocks={blocks}
+              sessions={sessions}
+              running={running}
+              noteFor={noteFor}
+              conflict={conflict}
+              onStart={(blockId, replace, area) => void start(blockId, replace, area)}
+              onCancelConflict={() => setConflict(null)}
+              onStop={(id) => void stop(id)}
+              onSaveNote={(id, note) => void saveNote(id, note)}
+              onSkipNote={() => setNoteFor(null)}
+              onEndAt={(id, d, t) => void endAt(id, d, t)}
+              onKeepRunning={(id) => setKeptRunning(id)}
+              longRunningDismissed={keptRunning === running?.id}
+              onAddBlock={addWorkBlock}
+              onDeleteBlock={removeBlock}
+            />
+          )}
+          {sheet === "review" && (
+            <div className="grid gap-8">
+              {reviewSection}
+              <ProofCard date={date} proofs={proofs} readOnly={readOnly} onAdd={(p) => setProofs((list) => [...list, p])} onRemove={(id) => setProofs((list) => list.filter((p) => p.id !== id))} />
+            </div>
+          )}
+        </BareCards>
+      </Sheet>
 
-      <section aria-label="Last 30 days" className="surface rounded-[28px] border px-4 py-4 sm:px-5">
-        <DayStrip days={strip} threshold={threshold} selected={date} today={today} firstDay={view.firstDay} />
-      </section>
+      {isToday && !readOnly && (
+        <LogSheet
+          date={date}
+          counters={counters}
+          habits={habits}
+          running={running ? { id: running.id, area: running.area } : null}
+          big3Free={tasks.filter((t) => t.rank !== null).length < 3}
+          onCounter={commitCounter}
+          onHabit={toggleHabit}
+          onStart={(area) => void start(null, false, area)}
+          onStop={(id) => void stop(id)}
+          onAdded={added}
+        />
+      )}
 
       <TaskSheet
         task={openTask}

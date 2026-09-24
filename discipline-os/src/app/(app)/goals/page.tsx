@@ -2,6 +2,7 @@ import { ChevronLeft, ChevronRight, Plus, Sparkles } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { GoalRow } from "@/components/goals/goal-row";
+import { Group, PageHeader, Row } from "@/components/os";
 import { getViewer } from "@/lib/data";
 import { addDays, startOfWeek } from "@/lib/day";
 import { loadGoalYear, loadLifeAreas, loadVision } from "@/lib/goals/data";
@@ -80,7 +81,7 @@ export default async function GoalsPage({ searchParams }: PageProps<"/goals">) {
         href: `/goals/week/${week}`,
         next: hadLastWeek && !reviewedLastWeek ? { text: "Review last week", href: `/goals/week/${lastWeek}` } : majors.length === 0 ? { text: "Plan this week", href: `/goals/week/${week}` } : null,
       },
-      { label: "Today", title: "Your Big 3 and supporting tasks", href: "/", next: { text: "Do the next thing", href: "/#mission" } },
+      { label: "Today", title: "Your Big 3 and supporting tasks", href: "/", next: null },
     );
   }
 
@@ -88,97 +89,106 @@ export default async function GoalsPage({ searchParams }: PageProps<"/goals">) {
     .map((a) => ({ area: a, goals: live.filter((g) => g.lifeAreaId === a.id) }))
     .filter((x) => x.goals.length > 0);
   const noArea = live.filter((g) => !g.lifeAreaId || !areas.some((a) => a.id === g.lifeAreaId));
+  const groups = [...byArea, ...(noArea.length ? [{ area: { id: "none", name: "Other", key: null, sortOrder: 99, isActive: true }, goals: noArea }] : [])];
+
+  // The parts of life, each with where its goals stand. The businesses open their numbers.
+  const goalsIn = (keys: string[]) => live.filter((g) => areas.some((a) => a.id === g.lifeAreaId && a.key && keys.includes(a.key)));
+  const standing = (goals: typeof live) => {
+    if (goals.length === 0) return "No goals yet";
+    const behind = goals.filter((g) => ["behind", "at_risk"].includes(progress.get(g.id)?.health ?? "")).length;
+    return `${goals.length} ${goals.length === 1 ? "goal" : "goals"}${behind ? ` · ${behind} need attention` : ""}`;
+  };
+  const firstGroup = (keys: string[]) => {
+    const g = groups.find((x) => x.area.key && keys.includes(x.area.key));
+    return g ? `#goals-${g.area.id}` : `/goals/new?year=${year}`;
+  };
+  const lifeRows = [
+    { title: "Imperium", href: "/business?tab=imperium", sub: standing(goalsIn(["imperium"])) },
+    { title: "Websites", href: "/business?tab=websites", sub: standing(goalsIn(["websites"])) },
+    { title: "AI Bot", href: "/business?tab=bot", sub: standing(goalsIn(["trading"])) },
+    { title: "Fitness", href: firstGroup(["fitness"]), sub: standing(goalsIn(["fitness"])) },
+    { title: "Faith", href: firstGroup(["faith"]), sub: standing(goalsIn(["faith"])) },
+    { title: "Personal", href: firstGroup(["discipline", "money", "other"]), sub: standing(goalsIn(["discipline", "money", "other"])) },
+  ];
 
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
-      <header className="flex items-end justify-between gap-4">
-        <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">Goals</h1>
-        <nav aria-label="Year" className="flex items-center">
-          <Link href={`/goals?year=${year - 1}`} aria-label={`${year - 1}`} className="grid size-11 place-items-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground">
-            <ChevronLeft className="size-5" />
-          </Link>
-          <span className="w-14 text-center text-xl">{year}</span>
-          <Link href={`/goals?year=${year + 1}`} aria-label={`${year + 1}`} className="grid size-11 place-items-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground">
-            <ChevronRight className="size-5" />
-          </Link>
-        </nav>
-      </header>
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-7">
+      <PageHeader
+        title="Goals"
+        subtitle="Where you're headed, down to today."
+        trailing={
+          <nav aria-label="Year" className="-mr-1 flex items-center">
+            <Link href={`/goals?year=${year - 1}`} aria-label={`${year - 1}`} className="grid size-11 place-items-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground">
+              <ChevronLeft className="size-5" />
+            </Link>
+            <span className="w-12 text-center text-[17px]">{year}</span>
+            <Link href={`/goals?year=${year + 1}`} aria-label={`${year + 1}`} className="grid size-11 place-items-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground">
+              <ChevronRight className="size-5" />
+            </Link>
+          </nav>
+        }
+      />
 
-      <section aria-labelledby="ladder-heading" className="glow-ink">
-        <h2 id="ladder-heading" className="sr-only">
-          From your life to today
-        </h2>
-        <ol className="relative grid gap-0">
-          {rungs.map((r, i) => (
-            <li key={r.label} className="relative grid grid-cols-[1.75rem_minmax(0,1fr)] gap-3 pb-5 last:pb-0">
-              {i < rungs.length - 1 && <span aria-hidden className="absolute top-4 bottom-0 left-[0.8125rem] w-px bg-border" />}
-              <span aria-hidden className="relative mt-1.5 grid size-[1.75rem] place-items-center">
-                <span className={i === rungs.length - 1 ? "size-2.5 rounded-full bg-primary" : "size-2 rounded-full border border-muted-foreground bg-background"} />
-              </span>
-              <div className="grid gap-0.5">
-                <Link href={r.href} className="grid rounded-md hover:text-foreground">
-                  <span className="text-sm text-muted-foreground">{r.label}</span>
-                  <span className="text-[17px] leading-snug">{r.title}</span>
-                </Link>
-                {r.next && (
-                  <Link href={r.next.href} className="mt-1 inline-flex min-h-11 w-fit items-center text-[15px] text-primary underline-offset-4 hover:underline">
-                    Next: {r.next.text}
-                  </Link>
-                )}
-              </div>
-            </li>
-          ))}
-        </ol>
-      </section>
+      <Group id="ladder" title="From your life to today">
+        {rungs.map((r) => (
+          <Row
+            key={r.label}
+            href={r.next?.href ?? r.href}
+            title={r.label}
+            subtitle={
+              <>
+                <span className="block">{r.title}</span>
+                {r.next && <span className="block font-medium text-foreground">Next: {r.next.text}</span>}
+              </>
+            }
+          />
+        ))}
+      </Group>
 
-      <Link
-        href="/goals/suggest"
-        className="-mt-4 flex min-h-14 items-center justify-between gap-3 rounded-2xl border border-primary/30 bg-lamp-soft px-4 py-3"
-      >
-        <span className="grid">
-          <span className="inline-flex items-center gap-2 text-[16px]">
-            <Sparkles className="size-4 text-primary" aria-hidden />
-            Suggest my goals
-          </span>
-          <span className="text-sm text-muted-foreground">Concrete goals for this week, from your own numbers</span>
-        </span>
-        <ChevronRight className="size-5 shrink-0 text-muted-foreground" aria-hidden />
-      </Link>
+      <Group title="Areas">
+        {lifeRows.map((r) => (
+          <Row key={r.title} href={r.href} title={r.title} subtitle={r.sub} />
+        ))}
+      </Group>
 
-      <section aria-labelledby="year-heading" className="grid gap-4 border-t border-border pt-6">
-        <div className="flex items-baseline justify-between gap-4">
-          <h2 id="year-heading" className="text-xl font-medium tracking-tight">
-            {year} goals
-          </h2>
-          <Link href={`/goals/new?year=${year}`} className="inline-flex min-h-11 items-center gap-1.5 text-sm text-primary">
-            <Plus className="size-4" aria-hidden /> Add a goal
-          </Link>
-        </div>
-        {live.length === 0 ? (
-          <div className="grid gap-3 rounded-2xl border border-dashed border-border p-5">
-            <p className="text-[16px]">What has to be true by the end of {year}?</p>
-            <p className="text-sm text-muted-foreground">
-              Start with one goal in the area that matters most. You&apos;ll break it into months, weeks and today&apos;s actions.
-            </p>
+      <Group>
+        <Row href="/goals/suggest" leading={<Sparkles className="size-[22px]" />} title="Suggest my goals" subtitle="Concrete goals for this week, from your own numbers" />
+      </Group>
+
+      {live.length === 0 ? (
+        <Group title={`${year} goals`} plain>
+          <div className="grid gap-3 p-5">
+            <p className="text-[17px]">What has to be true by the end of {year}?</p>
+            <p className="text-[15px] text-muted-foreground">Start with one goal in the area that matters most. You&apos;ll break it into months, weeks and today&apos;s actions.</p>
             <Link href={`/goals/new?year=${year}`} className="inline-flex h-12 w-fit items-center rounded-full bg-primary px-5 text-[15px] font-medium text-primary-foreground">
               Set a {year} goal
             </Link>
           </div>
-        ) : (
-          <div className="grid gap-6">
-            {[...byArea, ...(noArea.length ? [{ area: { id: "none", name: "Other", sortOrder: 99, isActive: true }, goals: noArea }] : [])].map(({ area, goals }) => (
-              <div key={area.id}>
-                <h3 className="text-sm text-muted-foreground">{area.name}</h3>
-                <ul className="divide-y divide-border/70">
-                  {goals.map((g) => (
-                    <GoalRow key={g.id} goal={g} progress={progress.get(g.id)} href={`/goals/year/${g.id}`} />
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
+        </Group>
+      ) : (
+        <>
+          {groups.map(({ area, goals }, i) => (
+            <Group
+              key={area.id}
+              id={`goals-${area.id}`}
+              title={i === 0 ? `${year} goals · ${area.name}` : area.name}
+              action={
+                i === 0 ? (
+                  <Link href={`/goals/new?year=${year}`} className="inline-flex min-h-11 items-center gap-1 text-[15px] text-foreground">
+                    <Plus className="size-4" aria-hidden /> Add a goal
+                  </Link>
+                ) : undefined
+              }
+            >
+              <ul className="divide-y divide-border px-4">
+                {goals.map((g) => (
+                  <GoalRow key={g.id} goal={g} progress={progress.get(g.id)} href={`/goals/year/${g.id}`} />
+                ))}
+              </ul>
+            </Group>
+          ))}
+        </>
+      )}
     </div>
   );
 }

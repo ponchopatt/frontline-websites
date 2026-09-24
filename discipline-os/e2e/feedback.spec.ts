@@ -7,7 +7,7 @@
 import { expect, test, type Locator } from "@playwright/test";
 import { fromZonedTime } from "date-fns-tz";
 import { addDays, dayBounds, shortDate } from "../src/lib/day";
-import { TZ, admin, backdateAccount, habit, signUp, today, waitForApp } from "./helpers";
+import { TZ, admin, backdateAccount, closeSheet, habit, openArea, signUp, today, waitForApp } from "./helpers";
 
 const MORNING = ["Wake up on time", "Shower", "Make bed", "Water", "Bible", "Journal", "Pray", "Plan day"];
 
@@ -41,12 +41,12 @@ test("a full day: plan it, do it, ask what's next, close it, replay it, see the 
 
   // Morning: a new day, and the first thing to do is the morning routine.
   await expect(main.getByText("New day.")).toBeVisible();
-  await page.getByRole("button", { name: "What should I do next?" }).click();
-  const next = main.getByRole("region", { name: "Do this now" });
+  const next = main.getByRole("region", { name: "Up next" });
   await expect(next).toContainText("Finish your morning routine.");
-  await expect(next).toContainText("Why:");
+  await openArea(page, "Morning");
   for (const name of MORNING) await habit(page, name).click();
-  await expect(main.locator("#morning")).toContainText("Morning complete");
+  await closeSheet(page);
+  await expect(main.locator("#scoreboard").getByRole("button", { name: /^Morning:/ })).toContainText("Complete");
   await expect(main.getByText("Build the day.")).toBeVisible();
 
   // Plan: today's #1 in one line.
@@ -62,13 +62,17 @@ test("a full day: plan it, do it, ask what's next, close it, replay it, see the 
   await expect(next).toContainText("Call the 10 Imperium leads you haven't called yet.");
   await expect(next).toContainText("Today's #1, and it isn't done yet.");
   await next.getByRole("button", { name: "Start Imperium" }).click();
-  const work = main.locator("#work");
-  await expect(work.getByRole("timer")).toBeVisible();
+  const running = main.getByRole("region", { name: "Running timer" });
+  await expect(running.getByRole("timer")).toBeVisible();
   await expect.poll(async () => (await admin.from("work_sessions").select("area").eq("user_id", userId).is("ended_at", null)).data?.[0]?.area).toBe("imperium");
-  await work.getByRole("button", { name: "Stop" }).click();
-  await expect(work.getByRole("timer")).toHaveCount(0);
+  await running.getByRole("button", { name: "Stop" }).click();
+  await expect(running).toHaveCount(0);
+  // Stopping asks what was done, in the work sheet; it can be skipped.
+  await expect(page.getByRole("dialog", { name: "Work" })).toBeVisible();
+  await closeSheet(page);
 
   // Business numbers: one short of today's target says so; ten finishes the task by itself.
+  await openArea(page, "Imperium");
   const imperium = main.locator("#imperium");
   const counter = imperium.getByRole("textbox", { name: "Leads called", exact: true });
   const target = (await imperium.locator("li").filter({ hasText: "Leads called" }).first().innerText()).match(/0 of (\d+) today/);
@@ -82,6 +86,8 @@ test("a full day: plan it, do it, ask what's next, close it, replay it, see the 
   await counter.press("Enter");
   await expect(counter).toHaveValue("9");
   await imperium.getByRole("button", { name: "Leads called: one more" }).click();
+  await expect(counter).toHaveValue("10");
+  await closeSheet(page);
   await expect(page.getByRole("checkbox", { name: 'Mark "Call 10 Imperium leads" done' })).toHaveAttribute("aria-checked", "true");
 
   // Ten beats yesterday's five: a new personal record, with the one it beat.
@@ -90,15 +96,20 @@ test("a full day: plan it, do it, ask what's next, close it, replay it, see the 
   await expect(record).toContainText("Previous record: 5");
 
   // Cardio: 20 minutes ticks it.
+  await openArea(page, "Fitness");
   await main.getByRole("textbox", { name: "Cardio minutes" }).fill("20");
   await main.getByRole("textbox", { name: "Cardio minutes" }).press("Enter");
   await expect(main.getByRole("checkbox", { name: "Cardio done" })).toHaveAttribute("aria-checked", "true");
 
+  await closeSheet(page);
+
   // Evening: the header says so, and the night review is next.
   await page.clock.setSystemTime(fromZonedTime(`${date} 21:30`, TZ));
   await expect(main.getByText("Close it out.")).toBeVisible();
-  // The card stays open through the day, and follows it.
+  // Up next follows the day.
   await expect(next).toContainText("Do the night review.");
+  await next.getByRole("button", { name: "Open the review" }).click();
+  await expect(page.getByRole("dialog", { name: "Night review" })).toBeVisible();
   const review = main.locator("#review");
   await review.getByLabel("What did I accomplish?").fill("Called ten leads");
   await review.getByLabel("What did I waste time on?").fill("Nothing much");
@@ -106,8 +117,9 @@ test("a full day: plan it, do it, ask what's next, close it, replay it, see the 
   await review.getByLabel("What is tomorrow's #1 priority?").fill("Build two demos");
   await review.getByLabel("What did I accomplish?").click();
   await expect(review.getByText("Saved")).toHaveCount(4);
+  await closeSheet(page);
 
-  // Close the day from "what's next": the Day Complete screen and the replay.
+  // Close the day from "up next": the Day Complete screen and the replay.
   await expect(next).toContainText("Close the day.");
   await next.getByRole("button", { name: "Close the day" }).click();
   const done = page.getByRole("dialog", { name: "Day complete" });
@@ -182,6 +194,7 @@ test("minimum day: a bad day cut to the non-negotiables keeps the chain alive", 
   await main.getByRole("button", { name: "Show the full day" }).click();
   await expect(main.locator("#big3")).toBeVisible();
 
+  await openArea(page, "Night review");
   await main.locator("#review").getByRole("button", { name: "Close day" }).click();
   const done = page.getByRole("dialog", { name: "Day complete" });
   await expect(done).toContainText("Minimum day secured. You kept the chain alive.");

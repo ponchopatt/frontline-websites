@@ -5,7 +5,7 @@
  */
 import { expect, test } from "@playwright/test";
 import { dateRange, isoWeekday, localDateAt, weekdayName } from "../src/lib/day";
-import { TZ, addDays, admin, backdateAccount, completeEverything, signUp, today, waitForApp } from "./helpers";
+import { TZ, addDays, admin, backdateAccount, completeEverything, openArea, signUp, today, waitForApp } from "./helpers";
 
 test("a day closed under the line ends the streak straight away", async ({ page }) => {
   test.setTimeout(120_000);
@@ -19,14 +19,15 @@ test("a day closed under the line ends the streak straight away", async ({ page 
   await waitForApp(page);
 
   // Today is still open: the three days before it are the streak.
-  const card = main.getByRole("region", { name: "This week's streak" });
-  await expect(card).toContainText("3-day streak");
+  const card = main.getByRole("list", { name: "This week's streak" });
+  await expect(main.getByText(/Streak 3 days/)).toBeVisible();
   await expect(card.getByRole("listitem", { name: `${weekdayName(date)}: today, in progress`, exact: true })).toBeVisible();
 
   // Close it with nothing done. The day is over, so the streak is too.
+  await openArea(page, "Night review");
   await main.locator("#review").getByRole("button", { name: "Close day" }).click();
   await page.getByRole("dialog", { name: "Day complete" }).getByRole("button", { name: "Done" }).click();
-  await expect(card).toContainText("Start a streak tomorrow");
+  await expect(main.getByText(/Streak 0 days/)).toBeVisible();
   await expect(card.getByRole("listitem", { name: `${weekdayName(date)}: not kept`, exact: true })).toBeVisible();
 
   await page.goto("/habits");

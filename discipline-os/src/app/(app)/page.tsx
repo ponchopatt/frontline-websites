@@ -2,13 +2,10 @@ import { formatInTimeZone } from "date-fns-tz";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Today } from "@/components/today/today";
-import { bossOf, loadScoreboard, scoreboardGroups } from "@/components/week/scoreboard-data";
 import { firstDayOf, getViewer, loadDay } from "@/lib/data";
-import { isLocalDate, startOfWeek } from "@/lib/day";
-import { loadGoalYear, yearOfWeek } from "@/lib/goals/data";
+import { isLocalDate } from "@/lib/day";
 import { loadFacts } from "@/lib/history-server";
 import { firstName } from "@/lib/names";
-import type { BossSummary } from "@/lib/types";
 
 export const metadata: Metadata = { title: "Today" };
 
@@ -26,19 +23,10 @@ export default async function TodayPage({ searchParams }: PageProps<"/">) {
     if (!isLocalDate(requested) || requested >= viewer.today || requested < firstDayOf(viewer)) redirect("/");
   }
   const date = requested ?? viewer.today;
-  const isToday = date === viewer.today;
-  const [view, boss] = await Promise.all([loadDay(viewer, date, loadFacts(viewer)), isToday ? loadBoss(viewer) : Promise.resolve(null)]);
+  const view = await loadDay(viewer, date, loadFacts(viewer));
   const [h, m] = formatInTimeZone(new Date(), viewer.profile.timezone, "H:mm").split(":").map(Number);
   const hour = h + m / 60;
   const name = firstName(viewer.profile.displayName);
   // A new day starts fresh; within a day, Today takes the server's lists as they change.
-  return <Today key={date} view={view} partOfDay={partOfDay(hour)} name={name} hour={hour} boss={boss} />;
-}
-
-/** This week's Weekly Boss, in one line. */
-async function loadBoss(viewer: Awaited<ReturnType<typeof getViewer>>): Promise<BossSummary | null> {
-  const week = startOfWeek(viewer.today);
-  const [board, goals] = await Promise.all([loadScoreboard(viewer, week), loadGoalYear(viewer, yearOfWeek(week))]);
-  const boss = bossOf(scoreboardGroups(board, goals), false);
-  return boss ? { hit: boss.hit, total: boss.total, ratio: boss.ratio, state: boss.state } : null;
+  return <Today key={date} view={view} partOfDay={partOfDay(hour)} name={name} hour={hour} />;
 }

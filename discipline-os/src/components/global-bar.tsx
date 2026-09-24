@@ -35,8 +35,8 @@ export function GlobalBar({ running }: GlobalBarProps) {
 
   if (!running || onToday) return null;
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-30">
-      <div className="mx-auto flex max-w-xl px-4 pb-2 sm:px-6 md:max-w-2xl">
+    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(4.75rem+max(0.625rem,env(safe-area-inset-bottom)))] z-30">
+      <div className="mx-auto flex max-w-md justify-center px-4 pb-1">
         <div className="surface-light pointer-events-auto flex h-13 min-w-0 items-center gap-3 rounded-full border border-primary/40 bg-popover/95 pr-1 pl-4 shadow-lg backdrop-blur">
           <span aria-hidden className="size-2 shrink-0 animate-pulse rounded-full bg-primary" />
           <span className="truncate text-sm text-muted-foreground">{running.area ? AREA_LABEL[running.area] : "Work"}</span>
