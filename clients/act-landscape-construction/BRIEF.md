@@ -157,15 +157,15 @@ All from their own site, pulled at full resolution from their CDN (the
 originals behind the /opt/ resized copies). 78 files downloaded, 5 exact
 duplicates, 72 unique. Every one opened. Shoot codes group them by property.
 
-Used on the page (15 slots, 15 different images; the aperture and the court
-service tile are both from the award-winning Jerrabomberra property, which is
-deliberate — the aperture caption is the award):
+Used on the page (15 slots, 15 different images; the hero and the court
+service tile are both from the Jerrabomberra award property, which is
+deliberate):
 
 | Slot | File | Size | Shows |
 |---|---|---|---|
-| Hero | 151225_0026.jpg | 1500×1000 (cropped 1500×840, gentle shadow lift) | Deck with outdoor dining, glass-fenced pool, new lawn on a block retaining wall, blue court under a pergola: all four things the headline names in one frame. **1500 wide — under the 1600 target. Flagged.** Every 1920-wide photo on their site is a single-feature shot. The first build used the Jerrabomberra dusk shot (210624_0013), but it went nearly black under the hero overlay at 390, so it was swapped. |
+| Hero | 210624_0057.jpg | 1500×999 (cropped 1360×860, brightened gamma 0.85) | The award job (with ACT Decks) from above: plunge pool in grey stone behind glass, blue half court, lawn, covered deck, timber stairs, beds, putting green edge. **1360 wide after cropping — under the 1600 target. Flagged.** Rework: replaced 151225_0026, which the reviewer found too dark under the overlay. At 390 the pool, deck and beds read; the court sits under the header. |
 | Statement | 12.jpg | 1920×2879 (cropped 1920×2400) | Crew member in ACT Landscape uniform on a tracked mini loader, two more crew behind. Beside "every trade in-house". Crew member not named. |
-| Aperture | 210624_0068.jpg | 1500×999 | Jerrabomberra from above: putting green, lawn and plunge pool, court, deck. Captioned as the Master Builders winner. |
+| Aperture | 151225_0026.jpg | 1500×1000 (cropped 1500×840, shadow lift) | Deck with outdoor dining, glass-fenced pool, new lawn on a block retaining wall, blue court under a pergola. Captioned "Deck, pool, lawn and court". (Was the hero in the first build.) |
 | Service: pools | 161025_0023.jpg | 1500×1000 (crop 800×1000) | Wide stone steps up to a fenced pool, lawn and loungers. |
 | Service: courts | 210624_0061.png | 999×999 (crop 750×859) | Jerrabomberra half court from directly above, hoop and ball. |
 | Service: walls/paving/decks/gardens | 21- web Firepit.jpg | 1920×1280 (crop 780×1000) | Sunken fire pit terrace under two tiers of stone wall, synthetic lawn. |
@@ -180,9 +180,9 @@ deliberate — the aperture caption is the award):
 | Share card | 151225_0026.jpg | crop 1200×630 | Same frame as the hero (share image only, not on the page). |
 
 Not used: Anthony O'Sullivan's portrait (only one person slot); the other
-Jerrabomberra frames (0011, 0013, 0016, 0019, 0027, 0045 sauna, 0057, 0058,
-0062, the Instagram aerial); the rest of the 151225 set (court, gym, patio,
-retaining wall, pool — same property as the hero); web-series (11, 16, 18, 3,
+Jerrabomberra frames (0011, 0013, 0016, 0019, 0027, 0045 sauna, 0058, 0062,
+0068 aerial, the Instagram aerial); the rest of the 151225 set (court, gym, patio,
+retaining wall, pool — same property as the aperture); web-series (11, 16, 18, 3,
 24, 31 cinema — same property as the fire pit); 160222_011 (long pool — cut to
 avoid a third pool in the gallery); 061124 pool/turf frames; 021222 planting close-ups
 (portrait, flowers only); 160222_001, 161025_0042, 181225_0014, 190624_0003
@@ -199,3 +199,16 @@ Nothing is stock, nothing upscaled. No sample photos needed.
 - Licence number(s), if he wants "licensed" shown as a credential.
 - Whether Anthony should be named on the page alongside him.
 - The brand colour values (taken off the logo file: #0CB582 green, #002316 dark).
+
+## Rework after review (2026-09-24)
+
+- The award was won **jointly with ACT Decks**. Every mention now says "with ACT
+  Decks" and "Master Builders ACT". **Ask Xavier whether ACT Decks is a sister
+  company or a subcontractor.** That matters for the "every trade in-house" line.
+- The page now speaks in one voice ("we"). The sticky call button says "Call the
+  team", because the number is the office landline.
+- The owner paragraph is rewritten in plain words, "our own mini excavators" is
+  gone (the site only lists the machinery), and "No pressure, just clarity" and
+  "No guesswork" are cut.
+- Anthony's portrait is not shown: the owner section has one photo slot, and
+  Xavier's is the one to use.

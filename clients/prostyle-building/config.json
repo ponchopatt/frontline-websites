@@ -253,12 +253,12 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/garran-balcony-view-1800.webp",
-      "srcset": "assets/garran-balcony-view-480.webp 480w, assets/garran-balcony-view-800.webp 800w, assets/garran-balcony-view-1200.webp 1200w, assets/garran-balcony-view-1800.webp 1800w",
+      "src": "assets/garran-dusk-1800.webp",
+      "srcset": "assets/garran-dusk-480.webp 480w, assets/garran-dusk-800.webp 800w, assets/garran-dusk-1200.webp 1200w, assets/garran-dusk-1800.webp 1800w",
       "width": 2500,
-      "height": 1667,
-      "alt": "A covered balcony with a glass balustrade and an outdoor table, looking over Woden to the Brindabella Ranges at sunset, Garran",
-      "_comment": "PS -120330 2218.jpg (2500x1667) from their Garran portfolio page, the only shoot they publish above 1000px. The ceiling at the top gives the headline a dark field, and the centre of a phone-width crop is sky, trees and glass. The view is Woden town centre and the Brindabellas, so it reads as Canberra."
+      "height": 1666,
+      "alt": "A rendered two-storey home with a lit, glass-balustraded upper verandah above a double garage, at dusk, Garran",
+      "_comment": "PS -120330 2276.jpg (2500x1666) from their Garran portfolio page, the only shoot they publish above 1000px. A dusk shot with the whole upper verandah lit, so the home still reads under the hero overlay on a phone (the balcony-view shot from the same shoot went almost black there, so it moved to the aperture)."
     },
     "statement": {
       "src": "assets/extension-alfresco-dusk-966.webp",
@@ -269,11 +269,11 @@
       "_comment": "04.jpg (966x534) from their Extensions & Renovations page, so it sits beside the extensions statement. 015/016 on that page are the same house and are not used."
     },
     "aperture": {
-      "src": "assets/garran-dusk-1800.webp",
-      "srcset": "assets/garran-dusk-480.webp 480w, assets/garran-dusk-800.webp 800w, assets/garran-dusk-1200.webp 1200w, assets/garran-dusk-1800.webp 1800w",
+      "src": "assets/garran-balcony-view-1800.webp",
+      "srcset": "assets/garran-balcony-view-480.webp 480w, assets/garran-balcony-view-800.webp 800w, assets/garran-balcony-view-1200.webp 1200w, assets/garran-balcony-view-1800.webp 1800w",
       "width": 2500,
-      "height": 1666,
-      "alt": "A rendered two-storey home with a lit, glass-balustraded upper verandah above a double garage, at dusk, Garran",
+      "height": 1667,
+      "alt": "A covered balcony with a glass balustrade and an outdoor table, looking over Woden to the Brindabella Ranges at sunset, Garran",
       "caption": "Garran"
     },
     "owner": {
@@ -365,27 +365,32 @@
     {
       "name": "Alexander Claudianos",
       "text": "We had an excellent experience building our home with Prostyle Building Group here in Canberra, and Craig in particular went above and beyond throughout the entire build.",
-      "shortened": true
+      "shortened": true,
+      "source": "Google review, shortened"
     },
     {
       "name": "Jabs Dheadfactor",
       "text": "Extremely profession experience. We worked directly with Josh and he was amazing. The extension was everything we could ask for and then some. Would highly recommend and even when their were problems, they were quickly resolved.",
-      "shortened": true
+      "shortened": true,
+      "source": "Google review, shortened"
     },
     {
       "name": "Stuart Turner",
       "text": "We found Joshua and the team at Prostyle to be extremely professional and knowledgeable in all aspects of our renovation. They listened to us, gave us what we wanted and delivered the work to a high standard.",
-      "shortened": true
+      "shortened": true,
+      "source": "Google review, shortened"
     },
     {
       "name": "Ella Edwards",
       "text": "I highly recommend Prostyle Building – professional, experienced, responsive, efficient and friendly. Prostlye finished on time and on budget with quality workmanship and attention to detail.",
-      "shortened": true
+      "shortened": true,
+      "source": "Google review, shortened"
     },
     {
       "name": "Dave & Evina C",
       "text": "Prostyle Building Group and the subcontractors they utilize are the best in the business. Josh Fogg and his team did an amazing job in transforming our town house both inside and out.",
-      "shortened": true
+      "shortened": true,
+      "source": "Google review, shortened"
     }
   ],
   "faq": [
