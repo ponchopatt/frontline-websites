@@ -97,7 +97,7 @@
     "name": "Kerry G, Google review, shortened"
   },
   "owner": {
-    "body": "Craig runs CJG Pools & Earthworks out of Calwell, in Canberra's south. It's a multi-skilled team: known for pool building, with the excavation, site cuts, paving and drains just as in demand.",
+    "body": "Craig leads the team at CJG Pools & Earthworks, based in Calwell in Canberra's south. It's a multi-skilled crew: known for pool building, with the excavation, site cuts, paving and drains just as in demand.",
     "team": "Mick and Joel are on the crew — their one Google review names all three, not “the company”.",
     "facts": [
       {
@@ -143,7 +143,7 @@
         "src": "assets/denman-prospect-excavator-360.webp",
         "srcset": "assets/denman-prospect-excavator-360.webp 360w",
         "width": 360,
-        "height": 480,
+        "height": 370,
         "alt": "An excavator on a pegged-out block at Denman Prospect, ready to start a site cut, new homes behind"
       }
     },
@@ -403,7 +403,7 @@
       "hero — latest-pool-stone-wall": "wp-content/uploads/2022/05/canberra-pool.jpg (1000x639, their largest job photo), the lead image of /pools-in-canberra/ 'Our Latest Pools in Canberra'. The post does not name its suburb, so the caption and alt don't either. Cropped to its left 860px (dropping the brick wall and sun lounger at the right edge) so the phone crop lands on the water instead of the stone wall. The uncropped 1000px copy is the social share image.",
       "statement — forrest-respray-finished": "wp-content/uploads/2020/03/newpool.jpg (600x400), in the 'Concrete Pool Respray Forrest, ACT' block of /our-work-in-pictures/ with the before (newpool2.jpg) and after (newpool1.jpg) shots. Same pool as the after-shot: same dark tile band, grey paving, hedge and cobalt pot.",
       "services[0] — googong-new-pool": "wp-content/uploads/2022/05/googong-pool.jpg (428x571), under 'New Pool in Googong' on /pools-in-canberra/.",
-      "services[1] — denman-prospect-excavator": "wp-content/uploads/2020/03/site-cut1.jpg (360x480), 'Site Cutting' images for 'Site Cut Denman Prospect, ACT' on /our-work-in-pictures/ (media library alt 'Site Cut for Pool in Canberra').",
+      "services[1] — denman-prospect-excavator": "wp-content/uploads/2020/03/site-cut1.jpg (360x480), 'Site Cutting' images for 'Site Cut Denman Prospect, ACT' on /our-work-in-pictures/ (media library alt 'Site Cut for Pool in Canberra'). Cropped to 360x370 (top 110px of empty sky removed).",
       "services[2] — forrest-paving": "wp-content/uploads/2020/03/paving1.jpg (480x308), 'Concrete & Paving Forrest, ACT' on /our-work-in-pictures/.",
       "owner — pool-infill-pour": "wp-content/uploads/2020/03/pool-infill-1.jpg (437x573), alt 'A Swimming Pool being Filled In', 'Filling In A Swimming Pool' on /our-work-in-pictures/. The worker is not named, so the caption doesn't name him.",
       "gallery — Weetangera": "wp-content/uploads/2022/05/New-Canberra-Pool.jpg (480x640), under 'Concrete Pool in Weetangera' on /pools-in-canberra/.",
