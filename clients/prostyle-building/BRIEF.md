@@ -46,7 +46,7 @@ New Homes · Extensions & Renovations · Knock Down Rebuilds · New Developments
 5. **Problems fixed fast**: "even when their were problems, they were quickly resolved."
 
 ## ONE hero angle
-**Your build, reported every week.** Every review names a person (Josh or Craig) and praises communication. Their own site promises "our dedicated construction manager will run the programme… site meetings & weekly progress reports". That's the reason to pick them. Headline: "Your build, / reported / *every week.*" Hero photo: a Garran balcony at sunset looking over Woden to the Brindabellas. It's a Canberra view from one of their own homes.
+**Your build, reported every week.** Every review names a person (Josh or Craig) and praises communication. Their own site promises "our dedicated construction manager will run the programme… site meetings & weekly progress reports". That's the reason to pick them. Headline: "Your build, / reported / *every week.*" Hero photo: their Garran home at dusk with the upper verandah lit (their only 2500px shoot). The same shoot's balcony view over Woden to the Brindabellas is the full-width aperture photo.
 
 ## What's weak on their current site (for the call)
 - The phone number and name are inconsistent across the web: Google says "Prostyle Homes", the site title says "ProStyle Building Group", and our list had another number. The old domain's `www.` no longer resolves at all, which breaks old links and business cards.
@@ -66,8 +66,8 @@ The site has about 500 images across 12 portfolio projects and 6 service pages. 
 
 | Slot | File (asset) | Source | Size | Shows |
 |---|---|---|---|---|
-| Hero | garran-balcony-view | /portfolio/garran `PS -120330 2218.jpg` | 2500×1667 | Covered balcony, glass balustrade, table, sunset over Woden and the Brindabellas |
-| Aperture | garran-dusk | /portfolio/garran `PS -120330 2276.jpg` | 2500×1666 | Rendered two-storey home, lit upper verandah, double garage, at dusk |
+| Hero | garran-dusk | /portfolio/garran `PS -120330 2276.jpg` | 2500×1666 | Rendered two-storey home, lit upper verandah, double garage, at dusk (lit glass still reads under the overlay on a phone) |
+| Aperture | garran-balcony-view | /portfolio/garran `PS -120330 2218.jpg` | 2500×1667 | Covered balcony, glass balustrade, sunset over Woden and the Brindabellas (tried as hero first, but it went near-black under the overlay) |
 | Statement | curtin-deck-stairs | /portfolio/curtin `_MG_6709-Edit-20160224.jpg` | 667×1000 | Timber stairs up to a covered deck and upper balcony, brick two-storey (portrait, so the tall statement frame isn't enlarged) |
 | Service: new homes | new-home-dusk | /new-homes `02.jpg` | 966×534 | Two-storey home with a steel-framed balcony, lit at dusk |
 | Service: extensions | extension-spa-deck | /extensions-renovations `02.jpg` | 966×534 | French doors and plantation shutters onto a timber deck with a spa |
