@@ -26,6 +26,13 @@ export function isNumeric(type: GoalType): boolean {
   return type === "outcome" || type === "performance" || type === "process" || type === "habit";
 }
 
+/** Keep My Word is a share of days, so its target is a percentage above 0 and up to 100. */
+export function wordTargetProblem(target: number | null): string | null {
+  if (target === null || target <= 0) return "Set a target above 0%.";
+  if (target > 100) return "Set a target of 100% or less.";
+  return null;
+}
+
 export interface GoalCore {
   id: string;
   title: string;

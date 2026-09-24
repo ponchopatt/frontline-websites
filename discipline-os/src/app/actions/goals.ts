@@ -4,6 +4,7 @@ import { z } from "zod";
 import { dbFail, fail, invalid, localDateSchema, ok, uuidSchema } from "@/lib/action-helpers";
 import { getViewer } from "@/lib/data";
 import { addDays } from "@/lib/day";
+import { wordTargetProblem } from "@/lib/goals/model";
 import { carriedTitle } from "@/lib/goals/review";
 import type { Database } from "@/lib/supabase/database.types";
 import type { ActionResult } from "@/lib/types";
@@ -45,7 +46,15 @@ const goalFields = z.object({
 });
 type GoalFields = z.infer<typeof goalFields>;
 
+/** Keep My Word's target is a share of days. Refines every schema that takes a goal's fields. */
+function wordTarget<T extends { progressSource: string; targetValue: number | null }>(f: T, ctx: z.RefinementCtx<T>) {
+  const problem = f.progressSource === "keep_word" ? wordTargetProblem(f.targetValue) : null;
+  if (problem) ctx.addIssue({ code: "custom", path: ["targetValue"], message: problem });
+}
+
 function goalColumns(f: GoalFields) {
+  // Keep My Word is a percentage level measured from zero, whatever else was sent.
+  const word = f.progressSource === "keep_word";
   return {
     title: f.title,
     description: f.description,
@@ -54,11 +63,11 @@ function goalColumns(f: GoalFields) {
     life_area_id: f.lifeAreaId,
     goal_type: f.goalType,
     metric: f.metric,
-    unit: f.unit,
-    cadence: f.cadence,
-    aggregation: f.aggregation,
+    unit: word ? "%" : f.unit,
+    cadence: word ? "total" : f.cadence,
+    aggregation: word ? "latest" : f.aggregation,
     progress_source: f.progressSource,
-    start_value: f.startValue,
+    start_value: word ? null : f.startValue,
     target_value: f.targetValue,
     habit_id: f.habitId,
     metric_id: f.progressSource === "metric" ? f.metricId : null,
@@ -143,8 +152,8 @@ export async function updateLifeArea(input: z.input<typeof areaUpdateSchema>): P
 const createYearlySchema = goalFields.extend({
   year: z.number().int().min(2000).max(2100),
   /** The controllable process goal offered alongside an outcome goal. */
-  process: goalFields.nullish(),
-});
+  process: goalFields.superRefine(wordTarget).nullish(),
+}).superRefine(wordTarget);
 
 export async function createYearlyGoal(input: z.input<typeof createYearlySchema>): Promise<ActionResult<{ id: string }>> {
   const parsed = createYearlySchema.safeParse(input);
@@ -153,9 +162,10 @@ export async function createYearlyGoal(input: z.input<typeof createYearlySchema>
   const { year, process, ...fields } = parsed.data;
   if (fields.deadline && Number(fields.deadline.slice(0, 4)) !== year) return fail(`The deadline has to fall in ${year}.`);
 
+  const columns = goalColumns(fields);
   const { data, error } = await viewer.supabase
     .from("yearly_goals")
-    .insert({ year, ...goalColumns(fields), current_value: fields.startValue })
+    .insert({ year, ...columns, current_value: columns.start_value })
     .select("id")
     .single();
   if (error || !data) return dbFail(error ?? {}, "The goal wasn't saved. Try again.");
@@ -248,7 +258,7 @@ const draftSchema = z.object({
   why: z.string().max(2000).nullable(),
   metricId: uuidSchema.nullish().transform((v) => v ?? null),
   metricKey: z.string().max(40).nullish().transform((v) => v ?? null),
-});
+}).superRefine(wordTarget);
 
 const monthlyPlanSchema = z.object({
   yearlyGoalId: uuidSchema,
@@ -332,7 +342,7 @@ export async function approveWeeklyPlan(input: z.input<typeof weeklyPlanSchema>)
   return ok({ count: rows.length });
 }
 
-const addMonthlySchema = goalFields.extend({ monthStart: localDateSchema, parentYearlyId: uuidSchema.nullish() });
+const addMonthlySchema = goalFields.extend({ monthStart: localDateSchema, parentYearlyId: uuidSchema.nullish() }).superRefine(wordTarget);
 
 export async function createMonthlyGoal(input: z.input<typeof addMonthlySchema>): Promise<ActionResult<{ id: string }>> {
   const parsed = addMonthlySchema.safeParse(input);
@@ -353,7 +363,7 @@ const addWeeklySchema = goalFields.extend({
   weekStart: localDateSchema,
   parentMonthlyId: uuidSchema.nullish(),
   isMajor: z.boolean(),
-});
+}).superRefine(wordTarget);
 
 export async function createWeeklyGoal(input: z.input<typeof addWeeklySchema>): Promise<ActionResult<{ id: string }>> {
   const parsed = addWeeklySchema.safeParse(input);

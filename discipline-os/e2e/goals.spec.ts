@@ -259,5 +259,8 @@ test("goals: keep my word on 85% of days is measured from the days themselves", 
   await expect(main.getByText(`Kept your word on 67% of days since ${shortDate(d3).slice(4)}, against 85%.`)).toBeVisible();
   await expect(main.getByText("67% of 85%").first()).toBeVisible();
   await expect(main.getByText("Behind", { exact: true })).toBeVisible();
-  await expect(page.getByRole("progressbar", { name: "Progress this year" })).toHaveAttribute("aria-valuenow", "79");
+  const bar = page.getByRole("progressbar", { name: "Progress this year" });
+  await expect(bar).toHaveAttribute("aria-valuenow", "79");
+  // A level has no pace, so the bar has no time-gone marker.
+  await expect(bar.locator("span")).toHaveCount(0);
 });

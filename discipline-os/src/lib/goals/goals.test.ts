@@ -2,11 +2,11 @@ import { describe, expect, it } from "vitest";
 import { dateRange } from "../day";
 import { distribute, monthToWeeks, sourceFor, yearToMonths } from "./breakdown";
 import { formatCompact, formatTarget, formatValue } from "./format";
-import { coreFromRow, type DailyGoal, type GoalCore, type GoalRow, type MonthlyGoal, type WeeklyGoal, type YearlyGoal } from "./model";
+import { coreFromRow, wordTargetProblem, type DailyGoal, type GoalCore, type GoalRow, type MonthlyGoal, type WeeklyGoal, type YearlyGoal } from "./model";
 import { elapsedFraction, monthOfWeek, weekRangeLabel, weeksOfMonth } from "./periods";
 import { assess, evaluateGoals, withProgress, type ExecutionData } from "./progress";
 import { checkGoal, isVague } from "./quality";
-import { carriedTitle } from "./review";
+import { carriedTitle, suggestedOutcome } from "./review";
 import { suggestToday, type WeeklyContext } from "./suggest";
 import { suggestGoals, type SuggestContext } from "./suggest-goals";
 
@@ -181,10 +181,20 @@ describe("keep my word goals", () => {
 
   it("isn't behind for the time gone, and isn't complete before the year ends", () => {
     // Every day kept up to 19 Oct, when a running total would read a quarter of the time gone.
+    // A level has no pace, so its bar gets no time-gone marker.
     const kept = dateRange("2026-09-24", "2026-10-18");
-    expect(run(days(kept), "2026-10-19")).toMatchObject({ current: 100, ratio: 1, health: "on_track" });
+    expect(run(days(kept), "2026-10-19")).toMatchObject({ current: 100, ratio: 1, expected: 0, health: "on_track" });
+    expect(assess(word({ state: "completed" }), 88, days(kept), "2026-10-19").expected).toBe(0);
     expect(assess(word(), 88, days(kept), "2027-01-01")).toMatchObject({ health: "complete", explanation: "Target reached: you kept your word on 88% of days." });
     expect(assess(word(), 80, days(kept), "2027-01-01")).toMatchObject({ health: "behind", explanation: "Ended at 80% of days kept, against 85%." });
+  });
+
+  it("takes a target above 0% and up to 100%", () => {
+    expect(wordTargetProblem(85)).toBeNull();
+    expect(wordTargetProblem(100)).toBeNull();
+    expect(wordTargetProblem(120)).toBe("Set a target of 100% or less.");
+    expect(wordTargetProblem(0)).toBe("Set a target above 0%.");
+    expect(wordTargetProblem(null)).toBe("Set a target above 0%.");
   });
 
   it("holds every month and week of a breakdown to the same line", () => {
@@ -298,6 +308,24 @@ describe("month → week breakdown", () => {
     expect(sourceFor("weekly", { progressSource: "children", unit: "$" })).toBe("manual");
     expect(sourceFor("monthly", { progressSource: "children", unit: "$" })).toBe("children");
     expect(sourceFor("weekly", { progressSource: "keep_word", unit: "%" })).toBe("keep_word");
+  });
+});
+
+describe("the weekly review", () => {
+  it("starts a finished target on done, and the rest on partly done or not done", () => {
+    const calls = weekly({ targetValue: 10 });
+    const on = (n: number) => suggestedOutcome(calls, assess(calls, n, noExec, "2026-09-26"));
+    expect([on(10), on(4), on(0)]).toEqual(["completed", "partial", "missed"]);
+    expect(suggestedOutcome(weekly({ state: "completed" }), undefined)).toBe("completed");
+  });
+
+  it("starts a share of days on done only once the week is over", () => {
+    // Every day kept, reviewed early on the Saturday: Sunday could still be broken.
+    const word = weekly({ goalType: "performance", unit: "%", targetValue: 85, aggregation: "latest", progressSource: "keep_word" });
+    const exec: ExecutionData = { ...noExec, wordKept: new Map(dateRange("2026-09-21", "2026-09-26").map((d) => [d, true] as const)) };
+    const on = (today: string) => suggestedOutcome(word, evaluateGoals({ yearly: [], monthly: [], weekly: [word] }, exec, today).get(word.id));
+    expect(on("2026-09-26")).toBe("partial");
+    expect(on("2026-09-28")).toBe("completed");
   });
 });
 

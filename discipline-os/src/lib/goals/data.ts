@@ -153,16 +153,32 @@ export const loadGoalYear = cache(async (viewer: Viewer, year: number): Promise<
     workMinutes.set(s.local_date, (workMinutes.get(s.local_date) ?? 0) + mins);
   }
 
-  const habitIds = [...new Set([...tree.yearly, ...tree.monthly, ...tree.weekly].map((g) => g.habitId).filter((id): id is string => Boolean(id)))];
+  // Habit ticks, counter values and Keep My Word depend only on the goals, so they load
+  // together. A goal measured by a counter reads its values straight from the counter.
+  const goals = [...tree.yearly, ...tree.monthly, ...tree.weekly];
+  const habitIds = [...new Set(goals.map((g) => g.habitId).filter((id): id is string => Boolean(id)))];
+  const metricIds = [...new Set(goals.map((g) => g.metricId).filter((id): id is string => Boolean(id)))];
+  const [completions, counters, wordKept] = await Promise.all([
+    habitIds.length > 0
+      ? fetchAll<{ habit_id: string; local_date: string }>((a, b) =>
+          supabase.from("habit_completions").select("habit_id,local_date").in("habit_id", habitIds).gte("local_date", from).lte("local_date", execTo).order("id").range(a, b),
+        )
+      : [],
+    metricIds.length > 0
+      ? Promise.all([
+          supabase.from("metrics").select("id,aggregation").in("id", metricIds),
+          fetchAll<{ metric_id: string; local_date: string; value: number }>((a, b) =>
+            supabase.from("metric_entries").select("metric_id,local_date,value").in("metric_id", metricIds).gte("local_date", from).lte("local_date", execTo).order("id").range(a, b),
+          ),
+        ])
+      : null,
+    loadWordKept(viewer, goals),
+  ]);
+
   const habitDays = new Map<string, Set<LocalDate>>();
-  if (habitIds.length > 0) {
-    const completions = await fetchAll<{ habit_id: string; local_date: string }>((a, b) =>
-      supabase.from("habit_completions").select("habit_id,local_date").in("habit_id", habitIds).gte("local_date", from).lte("local_date", execTo).order("id").range(a, b),
-    );
-    for (const c of completions) {
-      if (!habitDays.has(c.habit_id)) habitDays.set(c.habit_id, new Set());
-      habitDays.get(c.habit_id)!.add(c.local_date);
-    }
+  for (const c of completions) {
+    if (!habitDays.has(c.habit_id)) habitDays.set(c.habit_id, new Set());
+    habitDays.get(c.habit_id)!.add(c.local_date);
   }
 
   const dailyGoals = daily.map(mapDaily);
@@ -172,21 +188,12 @@ export const loadGoalYear = cache(async (viewer: Viewer, year: number): Promise<
     actionsByWeekly.set(d.parentWeeklyId, (actionsByWeekly.get(d.parentWeeklyId) ?? 0) + (d.quantity ?? 1));
   }
 
-  // Goals measured by a counter read its values straight from the counter.
-  const metricIds = [...new Set([...tree.yearly, ...tree.monthly, ...tree.weekly].map((g) => g.metricId).filter((id): id is string => Boolean(id)))];
   const metrics = new Map<string, { aggregation: "sum" | "latest"; values: DayValues }>();
-  if (metricIds.length > 0) {
-    const [defs, entries] = await Promise.all([
-      supabase.from("metrics").select("id,aggregation").in("id", metricIds),
-      fetchAll<{ metric_id: string; local_date: string; value: number }>((a, b) =>
-        supabase.from("metric_entries").select("metric_id,local_date,value").in("metric_id", metricIds).gte("local_date", from).lte("local_date", execTo).order("id").range(a, b),
-      ),
-    ]);
+  if (counters) {
+    const [defs, entries] = counters;
     for (const d of defs.data ?? []) metrics.set(d.id, { aggregation: d.aggregation, values: new Map() });
     for (const e of entries) metrics.get(e.metric_id)?.values.set(e.local_date, Number(e.value));
   }
-
-  const wordKept = await loadWordKept(viewer, [...tree.yearly, ...tree.monthly, ...tree.weekly]);
 
   const exec: ExecutionData = { workMinutes, habitDays, actionsByWeekly, milestones, metrics, wordKept };
   return { year, tree, milestones, progress: evaluateGoals(tree, exec, viewer.today), exec, daily: dailyGoals };

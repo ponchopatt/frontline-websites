@@ -51,7 +51,7 @@ export interface GoalProgress {
   current: number | null;
   /** 0–1 towards the target, or null when there's nothing to measure against. */
   ratio: number | null;
-  /** Share of the period gone, 0–1. */
+  /** Share of the period gone, 0–1. 0 for Keep My Word: a level has no pace, so no marker. */
   expected: number;
   health: HealthStatus;
   /** One neutral sentence explaining the health. */
@@ -246,7 +246,8 @@ function clamp(n: number): number {
 
 export function assess(goal: AnyGoal, current: number | null, exec: ExecutionData, today: LocalDate): GoalProgress {
   const period = periodOf(goal);
-  const expected = elapsedFraction(period, today);
+  // A share of days is a level with no pace: 0 hides the time-gone marker on its bar.
+  const expected = goal.progressSource === "keep_word" ? 0 : elapsedFraction(period, today);
   const ratio = ratioFor(goal, current, exec);
   const base = { current, ratio, expected };
 

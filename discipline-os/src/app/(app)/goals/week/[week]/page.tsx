@@ -7,7 +7,7 @@ import { GoalBreadcrumb } from "@/components/goals/breadcrumb";
 import { BreakdownPanel, LogProgress } from "@/components/goals/goal-controls";
 import { HealthBadge, ProgressBar } from "@/components/goals/health";
 import { WeeklyReview, type ReviewGoal } from "@/components/goals/weekly-review";
-import { DECISIONS, REASONS } from "@/lib/goals/review";
+import { DECISIONS, REASONS, suggestedOutcome } from "@/lib/goals/review";
 import { SectionCard } from "@/components/section-card";
 import { WeekScoreboard } from "@/components/week/scoreboard";
 import { bossOf, loadScoreboard, scoreboardGroups } from "@/components/week/scoreboard-data";
@@ -87,7 +87,6 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
     .filter((g) => g.state === "active" || g.state === "completed")
     .map((g) => {
       const p = data.progress.get(g.id);
-      const ratio = p?.ratio ?? (g.state === "completed" ? 1 : 0);
       return {
         id: g.id,
         title: g.title,
@@ -95,7 +94,7 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
         unit: g.unit,
         target: g.targetValue,
         actual: p?.current ?? null,
-        suggested: g.state === "completed" || ratio >= 1 ? "completed" : ratio > 0 ? "partial" : "missed",
+        suggested: suggestedOutcome(g, p),
       };
     });
   const pastReviews = goalReviewsRes.data ?? [];

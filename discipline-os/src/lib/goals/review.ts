@@ -1,4 +1,6 @@
 import { formatValue } from "./format";
+import type { AnyGoal } from "./model";
+import type { GoalProgress } from "./progress";
 
 /** The weekly review's vocabulary, shared by the form and the saved summary. */
 
@@ -22,6 +24,17 @@ export const DECISIONS: Array<{ value: Decision; label: string; hint: string }> 
   { value: "replace", label: "Replace", hint: "Close it; plan something better next week." },
   { value: "cancel", label: "Cancel", hint: "Close it. The history stays." },
 ];
+
+/**
+ * The outcome a goal's review starts on. A share of days (Keep My Word) can still fall on the
+ * days left, so it's only done once the week is over, however it stands on an early review.
+ */
+export function suggestedOutcome(goal: Pick<AnyGoal, "state" | "progressSource">, progress: GoalProgress | undefined): Outcome {
+  if (goal.state === "completed") return "completed";
+  const ratio = progress?.ratio ?? 0;
+  const done = goal.progressSource === "keep_word" ? progress?.health === "complete" : ratio >= 1;
+  return done ? "completed" : ratio > 0 ? "partial" : "missed";
+}
 
 /**
  * A carried goal's name with what's left: "$2,000 revenue" with $1,500 left becomes "$1,500
