@@ -82,7 +82,7 @@
     "faqLabel": "Before you call",
     "faqHeadline": "Questions John<br>gets asked.",
     "enquireLabel": "Talk to John",
-    "enquireHeadline": "Tell John about<br>the backyard.",
+    "enquireHeadline": "Tell John<br>about the<br>backyard.",
     "enquireIntro": "Where the pool would go, what the access is like from the street, and roughly what size you have in mind. A photo of the yard helps more than anything."
   },
   "stats": {
@@ -250,7 +250,6 @@
       "width": 2048,
       "height": 1536,
       "alt": "A pool with wide pale stone paving and steps, set into a lawn with sun lounges and big shade trees",
-      "caption": "Stone paving, steps and lawn around the pool",
       "sample": true,
       "license": "CC0 1.0 (public domain), WordPress Photo Directory, photo by Rámon van Raaij",
       "sourceUrl": "https://wordpress.org/photos/photo/118662e8d9/",
