@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 const OPTIONS = [
   { value: "sage", label: "Sage" },
+  { value: "spark", label: "Spark" },
   { value: "dark", label: "Dark" },
   { value: "light", label: "Light" },
 ] as const;
@@ -19,7 +20,7 @@ export function ThemeChoice() {
   const current = mounted ? theme : undefined;
 
   return (
-    <div role="radiogroup" aria-label="Theme" className="grid grid-cols-3 gap-2">
+    <div role="radiogroup" aria-label="Theme" className="grid grid-cols-2 gap-2 sm:grid-cols-4">
       {OPTIONS.map((o) => (
         <button
           key={o.value}

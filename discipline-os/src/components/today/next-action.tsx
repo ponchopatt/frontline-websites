@@ -36,7 +36,7 @@ export function NextActionCard({ actions, running, onStart, onTaskDone, onHabitD
           setSkip(0);
           setOpen(true);
         }}
-        className="flex h-14 w-full items-center justify-center gap-2.5 rounded-[22px] border border-primary/40 bg-lamp-soft text-[17px] font-medium text-foreground transition-colors active:bg-primary/15"
+        className="next-cta flex h-14 w-full items-center justify-center gap-2.5 rounded-[22px] border border-primary/40 bg-lamp-soft text-[17px] font-medium text-foreground backdrop-blur-md transition-colors active:bg-primary/15"
       >
         <Compass className="size-5 text-primary" aria-hidden />
         What should I do next?

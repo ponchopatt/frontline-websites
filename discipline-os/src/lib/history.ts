@@ -193,7 +193,17 @@ export interface StreakRow {
   /** Done of due over the last 30 days (today only once it's done). Null with nothing due. */
   consistency: number | null;
   doneToday: boolean;
+  /** The last six weeks, oldest first, one per day: for the dot grid. */
+  recent: DotState[];
+  /** Done and due over those six weeks. */
+  recentDone: number;
+  recentDue: number;
 }
+
+/** A day in a streak's dot grid: done, due and missed, not due (or before the start), or today still open. */
+export type DotState = "done" | "missed" | "off" | "open";
+
+const RECENT_DAYS = 42;
 
 export function streaks(ix: HistoryIndex): StreakRow[] {
   const { dates, facts } = ix;
@@ -209,6 +219,11 @@ export function streaks(ix: HistoryIndex): StreakRow[] {
       due += 1;
       if (ok) hit += 1;
     }
+    const recent: DotState[] = dateRange(addDays(facts.today, -(RECENT_DAYS - 1)), facts.today).map((d) => {
+      if (d < facts.firstDay || !def.due(d)) return "off";
+      if (def.done(d)) return "done";
+      return d === facts.today ? "open" : "missed";
+    });
     return {
       key: def.key,
       label: def.label,
@@ -217,8 +232,40 @@ export function streaks(ix: HistoryIndex): StreakRow[] {
       bestBefore: s.bestBefore,
       consistency: due === 0 ? null : hit / due,
       doneToday: def.due(facts.today) && def.done(facts.today),
+      recent,
+      recentDone: recent.filter((x) => x === "done").length,
+      recentDue: recent.filter((x) => x === "done" || x === "missed").length,
     };
   });
+}
+
+/* ------------------------------------------------------------------ trophies */
+
+/** Streak lengths worth a trophy. */
+export const MILESTONES = [3, 7, 14, 30, 60, 100, 365] as const;
+
+export interface TrophyShelf {
+  key: StreakKey;
+  label: string;
+  best: number;
+  /** Every milestone reached, then the next one still to reach. */
+  items: Array<{ days: number; unlocked: boolean }>;
+  unlocked: number;
+}
+
+/**
+ * Trophies for streaks actually kept: one for each milestone the best run has reached, and
+ * the next one, locked, to aim at. Nothing is given for anything but days kept.
+ */
+export function trophyShelves(rows: StreakRow[]): TrophyShelf[] {
+  return rows
+    .filter((r) => r.key !== "fitness")
+    .map((r) => {
+      const reached = MILESTONES.filter((m) => r.best >= m);
+      const next = MILESTONES.find((m) => r.best < m);
+      const items = [...reached.map((days) => ({ days, unlocked: true })), ...(next ? [{ days: next, unlocked: false }] : [])];
+      return { key: r.key, label: r.label, best: r.best, items, unlocked: reached.length };
+    });
 }
 
 /* ------------------------------------------------------------------ records */

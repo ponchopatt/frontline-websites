@@ -12,6 +12,10 @@
     Cards are frosted white glass, and inside a card everything flips to dark ink, so the same
     components read on either. White is the accent on the page; deep green-ink in a card.
 
+  Spark — after the "Spark" habit app. A warm orange glow across the top of each page with a
+    dotted texture, fading into cream; plain white cards with soft warm shadows; orange for
+    streaks, dots and the current tab. Text on the glow is white, on cream dark brown.
+
   Dark — three colours, and one for "kept".
     Lampblack  the ground. Near-black with a trace of warmth, like soot from a lamp.
     Bone       text and its greys.
@@ -232,6 +236,128 @@
   background-color: #4e6a59;
 }
 
+/* ------------------------------------------------------------------ spark */
+
+.spark {
+  --background: #fcf2e7;
+  --foreground: #2b1a10;
+  --card: #ffffff;
+  --card-foreground: #2b1a10;
+  --popover: #fffaf4;
+  --popover-foreground: #2b1a10;
+  --primary: #ee4f1c;
+  --primary-foreground: #ffffff;
+  --lamp-soft: rgb(238 79 28 / 0.1);
+  --secondary: #f8e6d6;
+  --secondary-foreground: #2b1a10;
+  --muted: #f8e6d6;
+  --muted-foreground: #7b5b47;
+  --faint: #a78d7b;
+  --accent: rgb(238 79 28 / 0.08);
+  --accent-foreground: #2b1a10;
+  --destructive: #b3261e;
+  --border: rgb(80 40 15 / 0.1);
+  --input: rgb(80 40 15 / 0.2);
+  --ring: #ee4f1c;
+  --kept: #e2470f;
+  --kept-soft: rgb(238 79 28 / 0.12);
+  --glass: #ffffff;
+  --glass-edge: rgb(255 255 255 / 0.9);
+  color-scheme: light;
+}
+
+/* The glow behind the top of each page, dotted, fading into cream. It scrolls with the page. */
+.spark body {
+  position: relative;
+  background-color: #fcf2e7;
+}
+.spark body::before,
+.spark .screen::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 620px;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(rgb(255 255 255 / 0.32) 1.1px, transparent 1.6px) 0 0 / 15px 15px,
+    radial-gradient(90% 70% at 30% 0%, #e83a14 0%, transparent 70%),
+    linear-gradient(180deg, #ee4a1b 0%, #f4692a 38%, #f99450 62%, #fcd5ae 84%, #fcf2e7 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent);
+  mask-image: linear-gradient(180deg, #000 70%, transparent);
+}
+.spark .screen {
+  isolation: isolate;
+  position: fixed;
+  background-color: #fcf2e7;
+}
+
+/* On the glow (the header at the top of a page): white. */
+.spark main > div > header:first-child,
+.spark .on-glow {
+  --foreground: #ffffff;
+  --muted-foreground: rgb(255 255 255 / 0.88);
+  --faint: rgb(255 255 255 / 0.66);
+  --primary: #ffffff;
+  --primary-foreground: #e2450f;
+  --lamp-soft: rgb(255 255 255 / 0.18);
+  --border: rgb(255 255 255 / 0.32);
+  --input: rgb(255 255 255 / 0.5);
+  --accent: rgb(255 255 255 / 0.16);
+  --glass: rgb(255 255 255 / 0.18);
+  --glass-edge: rgb(255 255 255 / 0.45);
+  --kept: #ffffff;
+  --ring: #ffffff;
+  color: var(--foreground);
+}
+
+/* Cards and sheets opened from inside the glow go back to dark ink on white. */
+.spark .on-glow .surface,
+.spark .on-glow .surface-strong,
+.spark .on-glow .surface-light,
+.spark main > div > header:first-child .surface,
+.spark main > div > header:first-child .surface-light {
+  --foreground: #2b1a10;
+  --muted-foreground: #7b5b47;
+  --faint: #a78d7b;
+  --primary: #ee4f1c;
+  --primary-foreground: #ffffff;
+  --lamp-soft: rgb(238 79 28 / 0.1);
+  --border: rgb(80 40 15 / 0.1);
+  --input: rgb(80 40 15 / 0.2);
+  --accent: rgb(238 79 28 / 0.08);
+  --glass: #ffffff;
+  --glass-edge: rgb(255 255 255 / 0.9);
+  --kept: #e2470f;
+  --ring: #ee4f1c;
+  color: var(--foreground);
+}
+
+.spark .surface,
+.spark .surface-strong {
+  background-color: #ffffff;
+  border-color: rgb(255 255 255 / 0.9);
+  box-shadow: 0 14px 34px -22px rgb(150 60 15 / 0.45);
+}
+.spark .surface-strong {
+  box-shadow: 0 18px 40px -22px rgb(150 60 15 / 0.55);
+}
+.spark .next-cta {
+  background-color: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 14px 30px -18px rgb(150 60 15 / 0.55);
+}
+.spark .nav-glass {
+  background-color: rgb(255 246 238 / 0.9);
+  border-color: rgb(255 255 255 / 0.95);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+.spark .stack-layer {
+  background-color: rgb(255 255 255 / 0.6);
+  border-color: rgb(255 255 255 / 0.8);
+}
+
 /* Cards in the other looks: the glass and the lit panel they already had. */
 .surface {
   background-color: var(--glass);
@@ -248,7 +374,7 @@
   background-color: rgb(20 19 16 / 0.82);
   border-color: var(--glass-edge);
 }
-:root:not(.dark):not(.sage) .nav-glass {
+:root:not(.dark):not(.sage):not(.spark) .nav-glass {
   background-color: rgb(251 250 247 / 0.9);
 }
 .sage .nav-glass {

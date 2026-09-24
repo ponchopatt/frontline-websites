@@ -4,6 +4,7 @@ import { addDays, dateRange, isoWeekday, type LocalDate } from "./day";
 import { counterNudge, itemsNudge, minutesNudge, remainingLine, workNudge } from "./gradient";
 import {
   indexHistory,
+  trophyShelves,
   memoryCard,
   momentum,
   newRecords,
@@ -98,6 +99,25 @@ describe("streaks", () => {
     expect(row.current).toBe(9); // Fri 11 – Wed 23 on weekdays
     expect(row.best).toBe(9);
     expect(row.consistency).toBeCloseTo(16 / 17);
+  });
+
+  it("draws the last six weeks as dots, and gives trophies only for days kept", () => {
+    const gym = habit({ id: "gym", kind: "gym", days: [1, 2, 3, 4, 5] });
+    const ticks = dateRange("2026-09-14", "2026-09-23").filter((d) => isoWeekday(d) <= 5).map((d) => ({ habitId: "gym", date: d }));
+    const rows = streaks(indexHistory(facts({ habits: [gym], ticks })));
+    const row = rows.find((r) => r.key === "gym")!;
+    expect(row.recent).toHaveLength(42);
+    expect(row.recent.at(-1)).toBe("open"); // today, not done yet
+    expect(row.recent.at(-2)).toBe("done");
+    expect(row.recent[0]).toBe("off"); // before the account started
+    expect(row.recentDone).toBe(8);
+    const shelf = trophyShelves(rows).find((t) => t.key === "gym")!;
+    expect(shelf.items).toEqual([
+      { days: 3, unlocked: true },
+      { days: 7, unlocked: true },
+      { days: 14, unlocked: false },
+    ]);
+    expect(shelf.unlocked).toBe(2);
   });
 
   it("keeps Keep My Word going through a secured minimum day", () => {

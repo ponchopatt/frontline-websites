@@ -130,12 +130,16 @@ test("a full day: plan it, do it, ask what's next, close it, replay it, see the 
   const square = main.getByRole("button", { name: new RegExp(`^${shortDate(date)}: \\d+%`) });
   await ready(square);
   await expect(main.locator("#streaks")).toContainText("Morning routine");
-  await expect(main.locator("#records")).toContainText("Most Imperium leads in a day");
   await expect(main.locator("#history")).toContainText("You've called 15 Imperium leads.");
   await square.click();
   const day = page.getByRole("dialog", { name: shortDate(date) });
   await expect(day.getByRole("list", { name: "The day, in order" })).toContainText("Day closed");
   await expect(day.getByRole("link", { name: "Open this day" })).toBeVisible();
+
+  // Trophies: the record, and the first streak trophy to go for.
+  await page.goto("/progress?tab=trophies");
+  await expect(main.locator("#records")).toContainText("Most Imperium leads in a day");
+  await expect(main.getByRole("region", { name: "Morning routine" })).toContainText("3-day streak");
 });
 
 test("minimum day: a bad day cut to the non-negotiables keeps the chain alive", async ({ page }) => {

@@ -1,7 +1,7 @@
-import { Flame, TrendingDown, TrendingUp, Trophy } from "lucide-react";
+import { Award, Check, Crown, Flame, Gem, Lock, Medal, Star, TrendingDown, TrendingUp, Trophy } from "lucide-react";
 import { Meter } from "@/components/meter";
 import { SectionCard } from "@/components/section-card";
-import type { Momentum, RecordGroup, RecordRow, Stat, StreakRow, WordTrend } from "@/lib/history";
+import type { DotState, Momentum, RecordGroup, RecordRow, Stat, StreakRow, TrophyShelf, WordTrend } from "@/lib/history";
 import { cn } from "@/lib/utils";
 
 /** Keep My Word over time: this week and month, what was made, kept and broken, and the trend. */
@@ -104,71 +104,143 @@ export function MomentumCard({ momentum }: { momentum: Momentum | null }) {
   );
 }
 
-/** Every streak, with how often it's been kept lately, so one miss never wipes the picture. */
+/**
+ * Every streak as its own card: the run, how many of the last six weeks' due days were kept,
+ * and those six weeks as dots, so one miss never wipes the picture.
+ */
 export function StreakList({ rows }: { rows: StreakRow[] }) {
   const shown = rows.filter((r) => r.key !== "fitness");
   return (
-    <SectionCard id="streaks" title="Streaks" meta="Last 30 days">
-      <ul className="divide-y divide-border/70">
+    <section id="streaks" aria-labelledby="streaks-heading" className="grid gap-3">
+      <h2 id="streaks-heading" className="text-xl font-medium tracking-tight">
+        Streaks
+      </h2>
+      <ul className="grid gap-3">
         {shown.map((r) => (
-          <li key={r.key} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1 py-2.5">
-            <span className="text-[16px]">{r.label}</span>
-            <span className={cn("inline-flex items-center gap-1 text-[17px] tabular-nums", r.current > 0 ? "text-foreground" : "text-muted-foreground")}>
-              {r.current > 0 && <Flame className="size-4 text-primary" aria-hidden />}
-              {r.current} {r.current === 1 ? "day" : "days"}
-            </span>
-            <span className="text-[13px] text-muted-foreground">
-              Best {r.best} · {r.consistency === null ? "nothing due yet" : `${Math.round(r.consistency * 100)}% kept`}
-            </span>
-            <Meter value={r.consistency ?? 0} className="w-20" />
+          <li key={r.key} className="surface grid grid-cols-[minmax(0,1fr)_auto] gap-4 rounded-[26px] border px-4 py-4 sm:px-5">
+            <div className="grid min-w-0 content-start gap-1">
+              <p className={cn("inline-flex items-center gap-1.5 text-[13px]", r.current > 0 ? "font-medium text-kept" : "text-muted-foreground")}>
+                <Flame className="size-3.5" aria-hidden />
+                {r.current > 0 ? `${r.current}-day streak` : "No streak yet"}
+              </p>
+              <p className="text-[19px] leading-snug font-medium tracking-tight">{r.label}</p>
+              <p className="text-[13px] text-muted-foreground">
+                {r.recentDue > 0 ? `${r.recentDone}/${r.recentDue} days kept, last 6 weeks` : "Nothing due yet"} · best {r.best}
+              </p>
+            </div>
+            <div className="grid justify-items-end gap-2">
+              <span
+                role="img"
+                aria-label={r.doneToday ? "Done today" : "Not done today"}
+                className={cn("grid size-6 place-items-center rounded-md border", r.doneToday ? "border-kept bg-kept text-background" : "border-border bg-muted")}
+              >
+                {r.doneToday && <Check className="size-3.5" strokeWidth={3} aria-hidden />}
+              </span>
+              <Dots dots={r.recent} label={`${r.label}, last 6 weeks`} />
+            </div>
           </li>
         ))}
       </ul>
-    </SectionCard>
+    </section>
   );
 }
 
-const GROUPS: Array<{ key: RecordGroup; label: string }> = [
-  { key: "work", label: "Work" },
-  { key: "business", label: "Business" },
-  { key: "fitness", label: "Fitness" },
-  { key: "discipline", label: "Discipline" },
-];
+/** Six weeks as a grid of dots: filled for kept, pale for missed, faint for days it wasn't due. */
+function Dots({ dots, label }: { dots: DotState[]; label: string }) {
+  return (
+    <ol role="img" aria-label={label} className="grid grid-cols-7 gap-[5px]">
+      {dots.map((d, i) => (
+        <li
+          key={i}
+          className={cn(
+            "size-2.5 rounded-[3px]",
+            d === "done" && "bg-kept",
+            d === "missed" && "bg-kept/20",
+            d === "off" && "bg-border",
+            d === "open" && "ring-1 ring-kept ring-inset",
+          )}
+        />
+      ))}
+    </ol>
+  );
+}
 
-/** Personal records: me against my own best, nothing else. */
+const MILESTONE_ICON: Record<number, typeof Trophy> = { 3: Flame, 7: Star, 14: Medal, 30: Award, 60: Trophy, 100: Crown, 365: Gem };
+
+/**
+ * Trophies for streaks kept: each milestone the best run reached, and the next one, locked,
+ * showing how far there is to go. Nothing is given for opening the app.
+ */
+export function TrophyShelves({ shelves }: { shelves: TrophyShelf[] }) {
+  return (
+    <div className="grid gap-6">
+      {shelves.map((shelf) => (
+        <section key={shelf.key} aria-labelledby={`shelf-${shelf.key}`} className="grid gap-2.5">
+          <div className="flex items-center justify-between gap-3">
+            <h2 id={`shelf-${shelf.key}`} className="text-[17px] font-medium">
+              {shelf.label}
+            </h2>
+            <span className="surface inline-flex h-8 items-center gap-1.5 rounded-full border px-3 text-sm" aria-label={`${shelf.unlocked} unlocked`}>
+              <Medal className="size-3.5 text-kept" aria-hidden />
+              {String(shelf.unlocked).padStart(2, "0")}
+            </span>
+          </div>
+          <ul className="-mx-4 -my-3 flex snap-x gap-3 overflow-x-auto px-4 py-3 sm:-mx-6 sm:px-6">
+            {shelf.items.map((t) => {
+              const Icon = MILESTONE_ICON[t.days] ?? Trophy;
+              return (
+                <li key={t.days} className="surface grid w-36 shrink-0 snap-start justify-items-center gap-2.5 rounded-[24px] border px-3 pt-5 pb-3.5 text-center">
+                  <span aria-hidden className={cn("grid size-16 place-items-center rounded-full", t.unlocked ? "bg-kept-soft text-kept" : "bg-muted text-faint blur-[1.5px]")}>
+                    <Icon className="size-8" strokeWidth={1.6} />
+                  </span>
+                  <span className={cn("inline-flex h-7 items-center gap-1 rounded-full px-3 text-[12px] font-medium", t.unlocked ? "bg-kept text-background" : "bg-muted text-muted-foreground")}>
+                    {!t.unlocked && <Lock className="size-3" aria-hidden />}
+                    {t.unlocked ? "Unlocked" : "Locked"}
+                  </span>
+                  <span className="text-[14px] leading-tight">
+                    {t.days}-day streak
+                    {!t.unlocked && <span className="block text-[12px] text-muted-foreground">Best so far {shelf.best}</span>}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))}
+    </div>
+  );
+}
+
+const GROUP_ORDER: RecordGroup[] = ["work", "business", "fitness", "discipline"];
+
+/** Personal records as trophy cards: me against my own best, nothing else. */
 export function RecordList({ rows }: { rows: RecordRow[] }) {
   return (
-    <SectionCard id="records" title="Personal records">
+    <section id="records" aria-labelledby="records-heading" className="grid gap-3">
+      <h2 id="records-heading" className="text-xl font-medium tracking-tight">
+        Personal records
+      </h2>
       {rows.length === 0 ? (
-        <p className="text-[15px] text-muted-foreground">Records appear as you log work, business numbers and habits. Every one is you against your own best.</p>
+        <p className="surface rounded-[24px] border p-4 text-[15px] text-muted-foreground">
+          Records appear as you log work, business numbers and habits. Every one is you against your own best.
+        </p>
       ) : (
-        <div className="grid gap-5">
-          {GROUPS.map((g) => {
-            const list = rows.filter((r) => r.group === g.key);
-            if (list.length === 0) return null;
-            return (
-              <div key={g.key} className="grid gap-1">
-                <h3 className="text-sm text-muted-foreground">{g.label}</h3>
-                <ul className="divide-y divide-border/70">
-                  {list.map((r) => (
-                    <li key={r.key} className="flex items-baseline justify-between gap-3 py-2">
-                      <span className="grid min-w-0">
-                        <span className="text-[15px]">{r.label}</span>
-                        {r.when && <span className="text-[13px] text-faint">{r.when}</span>}
-                      </span>
-                      <span className="inline-flex shrink-0 items-center gap-1.5 text-[17px] tabular-nums">
-                        <Trophy className="size-3.5 text-primary" aria-hidden />
-                        {r.display}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
-        </div>
+        <ul className="grid grid-cols-2 gap-3">
+          {[...rows]
+            .sort((a, b) => GROUP_ORDER.indexOf(a.group) - GROUP_ORDER.indexOf(b.group))
+            .map((r) => (
+              <li key={r.key} className="surface grid content-start gap-1.5 rounded-[24px] border p-4">
+                <span aria-hidden className="grid size-9 place-items-center rounded-full bg-kept-soft text-kept">
+                  <Trophy className="size-[18px]" strokeWidth={1.8} />
+                </span>
+                <span className="text-[22px] leading-tight tracking-tight tabular-nums">{r.display}</span>
+                <span className="text-[13px] leading-snug">{r.label}</span>
+                {r.when && <span className="text-[12px] text-muted-foreground">{r.when}</span>}
+              </li>
+            ))}
+        </ul>
       )}
-    </SectionCard>
+    </section>
   );
 }
 

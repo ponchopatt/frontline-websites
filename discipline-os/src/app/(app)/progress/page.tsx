@@ -2,12 +2,12 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ProofWall, type WallPhoto, type WallRange } from "@/components/progress/proof-wall";
-import { MomentumCard, RecordList, StatList, StreakList, WordCard } from "@/components/progress/sections";
+import { MomentumCard, RecordList, StatList, StreakList, TrophyShelves, WordCard } from "@/components/progress/sections";
 import { YearView } from "@/components/progress/year-view";
 import { SectionCard } from "@/components/section-card";
 import { getViewer, proofTopic, type Viewer } from "@/lib/data";
 import { startOfWeek } from "@/lib/day";
-import { indexHistory, momentum, progressStats, records, streaks, wordTrend, yearDays } from "@/lib/history";
+import { indexHistory, momentum, progressStats, records, streaks, trophyShelves, wordTrend, yearDays } from "@/lib/history";
 import { loadFacts } from "@/lib/history-server";
 import { PROOF_TOPICS, type ProofTopic } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -24,6 +24,7 @@ export default async function ProgressPage({ searchParams }: PageProps<"/progres
   const { tab, year: yearParam, range: rangeParam, topic: topicParam } = await searchParams;
   const viewer = await getViewer();
   const proof = tab === "proof";
+  const trophies = tab === "trophies";
 
   return (
     <div className="grid grid-cols-[minmax(0,1fr)] gap-6">
@@ -32,18 +33,23 @@ export default async function ProgressPage({ searchParams }: PageProps<"/progres
           <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">My progress</h1>
           <p className="text-[15px] text-muted-foreground">What I said I&apos;d do, what I did, and how it&apos;s adding up.</p>
         </div>
-        <nav aria-label="Progress" className="grid grid-cols-2 gap-1 rounded-full border border-border p-1">
-          <Tab href="/progress" on={!proof}>
+        <nav aria-label="Progress" className="grid grid-cols-3 gap-1 rounded-full border border-border p-1">
+          <Tab href="/progress" on={!proof && !trophies}>
             Scoreboard
           </Tab>
+          <Tab href="/progress?tab=trophies" on={trophies}>
+            Trophies
+          </Tab>
           <Tab href="/progress?tab=proof" on={proof}>
-            Proof wall
+            Proof
           </Tab>
         </nav>
       </header>
 
       {proof ? (
         <WallTab viewer={viewer} range={isRange(rangeParam) ? rangeParam : "month"} topic={isTopic(topicParam) ? topicParam : "all"} />
+      ) : trophies ? (
+        <TrophyTab viewer={viewer} />
       ) : (
         <ScoreTab viewer={viewer} year={typeof yearParam === "string" && /^\d{4}$/.test(yearParam) ? Number(yearParam) : null} />
       )}
@@ -85,8 +91,25 @@ async function ScoreTab({ viewer, year: requested }: { viewer: Viewer; year: num
       </SectionCard>
 
       <StreakList rows={streaks(ix)} />
-      <RecordList rows={records(ix)} />
       <StatList stats={progressStats(ix, proofCount.count ?? 0)} />
+    </>
+  );
+}
+
+async function TrophyTab({ viewer }: { viewer: Viewer }) {
+  const ix = indexHistory(await loadFacts(viewer));
+  return (
+    <>
+      <RecordList rows={records(ix)} />
+      <section aria-labelledby="streak-trophies" className="grid gap-4">
+        <div className="grid gap-1">
+          <h2 id="streak-trophies" className="text-xl font-medium tracking-tight">
+            Streak trophies
+          </h2>
+          <p className="text-[15px] text-muted-foreground">One for each streak you&apos;ve reached, and the next one to go for.</p>
+        </div>
+        <TrophyShelves shelves={trophyShelves(streaks(ix))} />
+      </section>
     </>
   );
 }

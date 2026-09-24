@@ -21,7 +21,9 @@ scoreboard says whether I actually did it.
 **The look (Sage, the default):** after the "Lightly" journal app. A deep sage ground with soft
 light from above and a fine grain; frosted white glass cards with dark ink inside; big light
 headlines in Geist; a floating glass tab bar of round buttons (the current page filled white) with a
-separate round **+**. Dark (black and lamplight gold) and Light are still in Settings → Appearance.
+separate round **+**. Settings → Appearance also has **Spark** (after the "Spark" habit app: an
+orange glow with a dotted texture across the top of each page, fading into cream, plain white
+cards, orange for streaks and the current tab), **Dark** (black and lamplight gold) and **Light**.
 
 Tab bar: **Today**, **Business**, **Week**, **Goals**, **Progress**. On a phone, Habits, the Work
 log, Bible notes and Settings open from the round **More** button at the top of Today (and from
@@ -107,16 +109,18 @@ own numbers are the motivation: no quotes, no XP, no coins.
   day only, and only from stored numbers.
 - **Momentum** and the **Weekly Boss** sit under the scoreboard.
 
-**Progress** (the new tab) has two views. *Scoreboard*: Keep My Word today, this week and this
+**Progress** (the new tab) has three views: Scoreboard, Trophies and Proof. *Scoreboard*: Keep My Word today, this week and this
 month, commitments made / kept / broken, week-by-week and month-by-month; **Momentum** (the
 average of Keep My Word, work hours against the target, habits and tasks over the last seven
 finished days; rising or falling means 5 points against the week before, and every part is
 shown); the **year in squares** (strong, average, poor, not completed; a ring marks a secured
 minimum day; tap a day for its numbers and replay); **streaks** for Keep My Word, the morning
-routine, Bible, prayer, gym, cardio, the work target and the night review, each with its best and
-how often it was kept over 30 days, so one miss never wipes the picture; **personal records**;
-and **what you've done**, plain sentences from the history ("You've called 1,284 Imperium
-leads."). *Proof wall*: every proof photo, newest first by day, filtered by today, this week, this
+routine, Bible, prayer, gym, cardio, the work target and the night review, each on its own card
+with its best, how many due days were kept in the last six weeks, and those six weeks as a grid of
+dots, so one miss never wipes the picture; and **what you've done**, plain sentences from the history ("You've called 1,284 Imperium
+leads."). *Trophies*: personal records as trophy cards, and a shelf per streak with a trophy for each
+milestone its best run reached (3, 7, 14, 30, 60, 100, 365 days) and the next one, locked, with
+the best so far. Only days actually kept earn them. *Proof*: every proof photo, newest first by day, filtered by today, this week, this
 month or all, and by Faith, Gym, Imperium, Websites, Work or Other. The Proof card on Today files
 a photo under one of those with one tap.
 

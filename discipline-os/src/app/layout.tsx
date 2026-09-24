@@ -30,7 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geist.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="min-h-full">
-        <ThemeProvider attribute="class" themes={["sage", "dark", "light"]} defaultTheme="sage" enableSystem={false} disableTransitionOnChange>
+        <ThemeProvider attribute="class" themes={["sage", "spark", "dark", "light"]} defaultTheme="sage" enableSystem={false} disableTransitionOnChange>
           {children}
           <Toaster position="bottom-center" offset={96} mobileOffset={{ bottom: 96 }} />
         </ThemeProvider>
