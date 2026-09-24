@@ -107,8 +107,10 @@ one they built in Jerrabomberra won Master Builders 2025.**
 Their own site leads with "One Team. One Build." and "All Trades Managed
 In-House"; the reviews say the same thing ("comprehensive backyard makeover",
 "pool install, paving, deck, retaining walls and new lawn irrigation"); and the
-award is independent proof of it. Hero headline: **"Pool, court, deck, garden.
-One team."** The hero photo is the award-winning Jerrabomberra backyard at dusk.
+award is independent proof of it. Hero headline: **"Pool. Court. Deck. Garden. One team."** (full stops, not
+commas — a line-ending comma in the display face drops onto the next line).
+The hero photo is one of their backyards showing all four in one frame; the
+sub-line and the pinned aerial carry the Jerrabomberra award.
 
 ## Google rating — not shown
 
@@ -155,33 +157,34 @@ All from their own site, pulled at full resolution from their CDN (the
 originals behind the /opt/ resized copies). 78 files downloaded, 5 exact
 duplicates, 72 unique. Every one opened. Shoot codes group them by property.
 
-Used on the page (15 slots, 15 different images; hero and aperture are the
-same award-winning property, which is deliberate — the aperture caption is
-the award):
+Used on the page (15 slots, 15 different images; the aperture and the court
+service tile are both from the award-winning Jerrabomberra property, which is
+deliberate — the aperture caption is the award):
 
 | Slot | File | Size | Shows |
 |---|---|---|---|
-| Hero | 210624_0013.jpg | 1500×1000 | Jerrabomberra at dusk: blue half court, stone steps, lawn, pool behind glass, barrel sauna under the deck. **1500 wide — under the 1600 target. Flagged.** Every 1920-wide photo is from a smaller job; this is the award job. Ask Xavier for the photographer's originals. |
-| Statement | 12.jpg | 1920×2879 (cropped 1920×2400) | Crew member in ACT Landscape uniform on a tracked mini loader, two more crew behind. Beside "every trade in-house". |
-| Aperture | 210624_0068.jpg | 1500×999 | Jerrabomberra from above: putting green, lawn and plunge pool, court, deck. Beside the award line. |
+| Hero | 151225_0026.jpg | 1500×1000 (cropped 1500×840, gentle shadow lift) | Deck with outdoor dining, glass-fenced pool, new lawn on a block retaining wall, blue court under a pergola: all four things the headline names in one frame. **1500 wide — under the 1600 target. Flagged.** Every 1920-wide photo on their site is a single-feature shot. The first build used the Jerrabomberra dusk shot (210624_0013), but it went nearly black under the hero overlay at 390, so it was swapped. |
+| Statement | 12.jpg | 1920×2879 (cropped 1920×2400) | Crew member in ACT Landscape uniform on a tracked mini loader, two more crew behind. Beside "every trade in-house". Crew member not named. |
+| Aperture | 210624_0068.jpg | 1500×999 | Jerrabomberra from above: putting green, lawn and plunge pool, court, deck. Captioned as the Master Builders winner. |
 | Service: pools | 161025_0023.jpg | 1500×1000 (crop 800×1000) | Wide stone steps up to a fenced pool, lawn and loungers. |
-| Service: courts | 151225_0036.jpg | 1500×1000 (crop) | Full blue and grey basketball court with ball-stop netting. |
-| Service: walls/paving/turf | 24-_web.jpg | 1920×1280 (crop) | Sunken fire pit terrace, stone retaining walls, synthetic lawn. |
-| Service: outdoor rooms | 190624_0002 - Outdoor Kitchen.jpg | 1500×1000 (crop) | Stone-clad outdoor kitchen with grill and kamado under a slatted pergola. |
+| Service: courts | 210624_0061.png | 999×999 (crop 750×859) | Jerrabomberra half court from directly above, hoop and ball. |
+| Service: walls/paving/decks/gardens | 21- web Firepit.jpg | 1920×1280 (crop 780×1000) | Sunken fire pit terrace under two tiers of stone wall, synthetic lawn. |
 | Gallery 1 | Forrest-Main-1.jpg | 1920×2688 (crop 1920×1280) | Forrest from above: grass tennis court, pool and spa, pool house, new turf. Taken while the crew was still finishing (people and a mower on the court). |
 | Gallery 2 | 061124_0082 - Screens.jpg | 1500×1000 | Corten laser-cut screens, gravel, block wall and steps. |
 | Gallery 3 | 021222_173.jpg | 1920×1279 | Pool with built-in spa from directly above, grey stone paving, deck corner. |
 | Gallery 4 | 181225_0005.jpg | 1500×1000 | Courtyard plunge pool with a slide, glass fence, alfresco. |
 | Gallery 5 | Snapins…468330689…jpg | 1080×1080 (crop 1080×720) | Curved recycled-brick path through grasses and gravel. Instagram export — softest photo on the page. |
-| Gallery 6 | 160222_011.jpg | 1920×1280 | Long pool with pale stone paving, roller cover, wicker lounges. |
+| Gallery 6 | 190624_0002 - Outdoor Kitchen.jpg | 1500×1000 | Stone-clad outdoor kitchen, grill and kamado under a slatted pergola, dusk. |
 | Owner | Xav Landscape.jpg | 1920×1440 | Xavier Duffy in the showroom. |
 | Enquiry background | Image Feb 10, 2026, 11_42_53 AM.png | 1536×1024 | Their showroom: pergola, deck, lounge, outdoor kitchen, sample boards. **File name and size are what an AI image tool saves; the sister shot (11_42_50) has warped signage through the window, so both have been through an AI enhancer.** The 11_42_53 frame looks clean. Used only as a darkened background. Ask Xavier for the untouched originals. |
+| Share card | 151225_0026.jpg | crop 1200×630 | Same frame as the hero (share image only, not on the page). |
 
 Not used: Anthony O'Sullivan's portrait (only one person slot); the other
-Jerrabomberra frames (0011, 0016, 0019, 0027, 0045 sauna, 0057, 0058, 0061,
-0062, the Instagram aerial); 151225 set (gym, patio, retaining wall, pool —
-same property as the court); web-series (11, 16, 18, 3, 21, 31 cinema — same
-property as the fire pit); 061124 pool/turf frames; 021222 planting close-ups
+Jerrabomberra frames (0011, 0013, 0016, 0019, 0027, 0045 sauna, 0057, 0058,
+0062, the Instagram aerial); the rest of the 151225 set (court, gym, patio,
+retaining wall, pool — same property as the hero); web-series (11, 16, 18, 3,
+24, 31 cinema — same property as the fire pit); 160222_011 (long pool — cut to
+avoid a third pool in the gallery); 061124 pool/turf frames; 021222 planting close-ups
 (portrait, flowers only); 160222_001, 161025_0042, 181225_0014, 190624_0003
 and 0017 (same properties as used frames); award photo (two people with
 certificates — only one of them is identifiable as Xavier); pexels stock photo;
