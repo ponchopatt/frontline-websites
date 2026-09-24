@@ -96,3 +96,11 @@ Logo: their PNG (1450×306, a teal/navy block with a white wordmark). I pulled o
 6. Removed "Phillip" (the office) and "Weston Creek" (a district) from the suburbs-built chips.
 7. The claimSources photo note names the hero file actually used (2276), plus the Curtin statement photo.
 8. Team photo: re-exported with a milder lift (autocontrast only, no brightness boost) and capped at 440px wide on desktop, so the 858px original isn't stretched.
+
+## Finish round (2026-09-24, after final review 4.25)
+- **Hero:** now their own Garran dusk portrait (`PS -120330 2279.jpg`, 2500×3750, uncropped). It fills a 390×844 phone full-height: the lit house sits in the upper half and the dark driveway sits under the sub and buttons. The 40% band styling is gone; the veil is slightly lighter on phones. The headline changed from "Your extension, reported every week." to **"Your design, built across Canberra."** because the site doesn't say what kind of job Garran was. The weekly-report angle stays in the sub, tied to extensions and renovations. Checked in Playwright at 390×844 (DPR 2) and 1440×900, port 8951.
+- **Service cards:** these are their own service-page photos (966×534). They're now shown in a landscape 16:10 frame with the text beneath (styles.css) instead of cropped into the template's tall 3:4 card, so they stay sharp at 1440 and on retina screens. **No sample photos were needed**, so `stockApproved` isn't set.
+- **Team photo dropped** (small and dated). The owner facts are dropped too; they duplicated the credentials.
+- **Words:** Josh is now "one of our co-directors, and several of our clients name him in their Google reviews" (four reviews do). "You'll probably meet Craig" is cut. Craig is now "named in testimonials from clients in Waramanga and Hughes". The live-at-home FAQ is only the sourced fact: a Waramanga family lived on site through a major renovation.
+- **Shorter page:** removed the statement section (Curtin photo) and the pinned aperture section (the Garran balcony), cut reviews from 6 to 4 (Julian, Pam, Alexander, Dave & Evina; Ella and Stuart dropped), and cut credentials to the licence and Sids N Kids. Mobile is now 15,070px (was 18,438) and desktop about 12,000px (was 15,188).
+- `copy.callLabel` "Call ProStyle" was added by the coordinator. It's kept (now part of my config generator, so it can't get lost again).
