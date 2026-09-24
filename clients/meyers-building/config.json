@@ -176,9 +176,9 @@
       "src": "assets/cottage-pergola-stone-walls-1800.webp",
       "srcset": "assets/cottage-pergola-stone-walls-480.webp 480w, assets/cottage-pergola-stone-walls-800.webp 800w, assets/cottage-pergola-stone-walls-1200.webp 1200w, assets/cottage-pergola-stone-walls-1800.webp 1800w",
       "width": 1920,
-      "height": 1440,
+      "height": 1220,
       "alt": "A sage-green period cottage with a white pergola over its deck, behind curved stone walls with stone urns and a new lawn",
-      "_comment": "IMG_4548.JPG (960x720) from their Project Gallery and home page, upscaled 2x with Real-ESRGAN x2plus. A bright daytime shot, so it still reads under the hero overlay on a phone."
+      "_comment": "IMG_4548.JPG (960x720) from their Project Gallery and home page, upscaled 2x with Real-ESRGAN x2plus to 1920x1440, shadows lifted (gamma 0.72) so the house reads under the hero's dark overlay on a phone, and 110px of sky and 110px of lawn cropped off so the stone walls sit higher in the frame."
     },
     "gallery": [
       {
