@@ -22,7 +22,7 @@ export default async function NewGoalPage({ searchParams }: PageProps<"/goals/ne
         <Link href={`/goals?year=${year}`} className="inline-flex min-h-11 min-w-11 w-fit items-center text-sm text-muted-foreground hover:text-foreground">
           Goals
         </Link>
-        <h1 className="text-[34px] leading-tight font-medium tracking-tight">A {year} goal</h1>
+        <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">A {year} goal</h1>
         <p className="text-[15px] text-muted-foreground">Specific enough that you&apos;ll know when it&apos;s done, and tied to a reason you won&apos;t forget.</p>
       </header>
       <GoalForm

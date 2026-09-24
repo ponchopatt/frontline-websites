@@ -46,6 +46,7 @@ export function BigThree(props: BigThreeProps) {
       id="big3"
       title="Today's Big 3"
       prominent
+      stacked
       meta={big.length > 0 ? `${doneBig} of ${big.length} done` : undefined}
     >
       <ol className="grid">

@@ -45,7 +45,7 @@ export default async function MonthPage({ params }: PageProps<"/goals/month/[mon
             </Link>
           </nav>
         </div>
-        <h1 className="text-[34px] leading-tight font-medium tracking-tight">{monthLabel(monthStart)}</h1>
+        <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">{monthLabel(monthStart)}</h1>
         <p className="text-[15px] text-muted-foreground">
           {objectives.length === 0
             ? "No objectives this month."

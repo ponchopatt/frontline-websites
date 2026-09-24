@@ -1,7 +1,11 @@
-import { Check, ChevronLeft, ChevronRight, Flame, Settings2, Swords, TrendingDown, TrendingUp, Trophy } from "lucide-react";
+"use client";
+
+import { BookOpen, Check, ChevronLeft, ChevronRight, Flame, LayoutGrid, ListChecks, Settings2, Swords, Timer, TrendingDown, TrendingUp, Trophy } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { Meter } from "@/components/meter";
 import { ScoreRing } from "@/components/score-ring";
+import { Sheet } from "@/components/sheet";
 import { addDays, dayMonth, formatDuration, weekdayName, type LocalDate } from "@/lib/day";
 import type { Momentum } from "@/lib/history";
 import type { WordResult } from "@/lib/keep-word";
@@ -13,7 +17,10 @@ interface TodayHeaderProps {
   date: LocalDate;
   today: LocalDate;
   firstDay: LocalDate;
-  greeting: string;
+  /** "morning", "afternoon" or "evening", for "Thursday afternoon". */
+  partOfDay: string;
+  /** First name, for the headline and the avatar. */
+  name: string | null;
   word: WordResult;
   locked: boolean;
   threshold: number;
@@ -29,83 +36,123 @@ function dayHref(date: LocalDate, today: LocalDate) {
   return date === today ? "/" : `/?d=${date}`;
 }
 
-/** Good morning, the date, and the day's one number: Keep My Word. */
-export function TodayHeader({ date, today, firstDay, greeting, word, locked, threshold, weekAverage, streak, phase, nudge }: TodayHeaderProps) {
+const round = "grid size-11 place-items-center rounded-full border border-glass-edge bg-glass backdrop-blur-md";
+
+/**
+ * The top of the day: when it is, one big line for what the day needs now, and its number,
+ * Keep My Word.
+ */
+export function TodayHeader({ date, today, firstDay, partOfDay, name, word, locked, threshold, weekAverage, streak, phase, nudge }: TodayHeaderProps) {
   const prev = addDays(date, -1);
   const next = addDays(date, 1);
   const isToday = date === today;
+  const headline = isToday && phase ? phase.line.replace(/\.$/, name ? `, ${name}.` : ".") : `${weekdayName(date)} ${dayMonth(date)}`;
   return (
-    <header className="grid gap-3 pt-1">
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0">
-          <p className="text-[15px] text-muted-foreground">
-            {isToday ? greeting : "Looking back"}
-            {phase && (
-              <>
-                {". "}
-                <span className={cn("font-medium", phase.tone === "kept" ? "text-kept" : "text-primary")}>{phase.line}</span>
-              </>
-            )}
-          </p>
-          <h1 className="mt-0.5 text-[clamp(28px,8vw,40px)] leading-[1.05] font-medium tracking-[-0.02em]">
-            {weekdayName(date)}
-            <span className="block text-muted-foreground">{dayMonth(date)}</span>
-          </h1>
-          <div className="mt-1 -ml-2.5 flex items-center">
-            <DayNav href={prev >= firstDay ? dayHref(prev, today) : null} label="Previous day">
-              <ChevronLeft className="size-5" />
-            </DayNav>
-            <DayNav href={next <= today ? dayHref(next, today) : null} label="Next day">
-              <ChevronRight className="size-5" />
-            </DayNav>
-            {!isToday && (
-              <Link href="/" className="ml-1 inline-flex min-h-11 items-center px-2 text-sm text-primary underline-offset-4 hover:underline">
+    <header className="grid gap-5 pt-1">
+      <div className="flex items-center justify-between gap-3">
+        <Link href="/settings" aria-label="Settings" className={cn(round, "size-12 text-[17px] font-medium")}>
+          {name ? name.slice(0, 1).toUpperCase() : <Settings2 className="size-5" aria-hidden />}
+        </Link>
+        <div className="flex items-center gap-2">
+          <DayNav href={prev >= firstDay ? dayHref(prev, today) : null} label="Previous day">
+            <ChevronLeft className="size-5" />
+          </DayNav>
+          <DayNav href={next <= today ? dayHref(next, today) : null} label="Next day">
+            <ChevronRight className="size-5" />
+          </DayNav>
+          <MoreMenu />
+        </div>
+      </div>
+
+      <div className="grid gap-1.5">
+        <p className="text-[15px] text-muted-foreground">
+          {isToday ? `${weekdayName(date)} ${partOfDay}, ${dayMonth(date)}` : "Looking back"}
+          {!isToday && (
+            <>
+              {" · "}
+              <Link href="/" className="text-foreground underline underline-offset-4">
                 Back to today
               </Link>
-            )}
-            <Link href="/settings" aria-label="Settings" className="grid size-11 place-items-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground md:hidden">
-              <Settings2 className="size-[18px]" />
-            </Link>
-          </div>
-        </div>
-        <a href="#review" className="grid justify-items-center gap-1 rounded-2xl" aria-label={`Keep my word: ${word.percent ?? 0}%. Go to the night review.`}>
-          <ScoreRing score={word.percent ?? 0} threshold={threshold} size={96} suffix="%" label={locked ? "Kept my word" : "Keep my word"} />
-          <span className="text-xs text-muted-foreground">Keep my word</span>
-        </a>
+            </>
+          )}
+        </p>
+        <h1 className={cn("text-[clamp(38px,11vw,54px)] leading-[1.02] font-light tracking-[-0.035em]", phase?.tone === "kept" && "text-kept")}>{headline}</h1>
       </div>
-      <p className="text-sm text-muted-foreground">
-        <span id="kept" className="text-foreground">
-          {word.kept} of {word.made}
-        </span>{" "}
-        kept{weekAverage !== null && (
-          <>
-            {" · "}Week <span className="text-foreground">{weekAverage}%</span>
-          </>
-        )}
-        {" · "}
-        <span className="inline-flex items-baseline gap-1">
-          {streak > 0 && <Flame className="size-3.5 self-center text-primary" aria-hidden />}
-          Streak <span className="text-foreground">{streak}</span> {streak === 1 ? "day" : "days"}
-        </span>
-      </p>
-      {nudge && <p className="-mt-1 text-sm font-medium text-primary">{nudge}</p>}
+
+      <div className="flex items-center gap-4">
+        <a href="#review" className="shrink-0 rounded-full" aria-label={`Keep my word: ${word.percent ?? 0}%. Go to the night review.`}>
+          <ScoreRing score={word.percent ?? 0} threshold={threshold} size={88} suffix="%" label={locked ? "Kept my word" : "Keep my word"} />
+        </a>
+        <div className="grid min-w-0 gap-0.5">
+          <p className="text-[13px] text-muted-foreground">Keep my word</p>
+          <p className="text-[17px]">
+            <span id="kept">
+              {word.kept} of {word.made}
+            </span>{" "}
+            <span className="text-muted-foreground">kept</span>
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {weekAverage !== null && (
+              <>
+                Week <span className="text-foreground">{weekAverage}%</span>
+                {" · "}
+              </>
+            )}
+            <span className="inline-flex items-baseline gap-1">
+              {streak > 0 && <Flame className="size-3.5 self-center" aria-hidden />}
+              Streak <span className="text-foreground">{streak}</span> {streak === 1 ? "day" : "days"}
+            </span>
+          </p>
+          {nudge && <p className="text-sm font-medium text-foreground">{nudge}</p>}
+        </div>
+      </div>
     </header>
   );
 }
 
 function DayNav({ href, label, children }: { href: string | null; label: string; children: React.ReactNode }) {
-  const cls = "grid size-11 place-items-center rounded-full";
   if (!href) {
     return (
-      <span aria-disabled="true" aria-label={label} className={cn(cls, "text-faint/60")}>
+      <span aria-disabled="true" aria-label={label} className={cn(round, "text-faint/60")}>
         {children}
       </span>
     );
   }
   return (
-    <Link href={href} aria-label={label} className={cn(cls, "text-muted-foreground hover:bg-accent hover:text-foreground")}>
+    <Link href={href} aria-label={label} className={cn(round, "text-foreground hover:bg-accent")}>
       {children}
     </Link>
+  );
+}
+
+const MORE = [
+  { href: "/habits", label: "Habits", icon: ListChecks },
+  { href: "/work", label: "Work log", icon: Timer },
+  { href: "/bible", label: "Bible notes", icon: BookOpen },
+  { href: "/settings", label: "Settings", icon: Settings2 },
+] as const;
+
+/** The pages that don't fit in the tab bar, one tap from the top of Today. */
+function MoreMenu() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button type="button" onClick={() => setOpen(true)} aria-label="More" className={cn(round, "text-foreground hover:bg-accent")}>
+        <LayoutGrid className="size-[18px]" aria-hidden />
+      </button>
+      <Sheet open={open} onClose={() => setOpen(false)} title="More">
+        <ul className="grid grid-cols-2 gap-2 pb-1">
+          {MORE.map(({ href, label, icon: Icon }) => (
+            <li key={href}>
+              <Link href={href} onClick={() => setOpen(false)} className="flex h-14 items-center gap-3 rounded-2xl border border-border px-4 text-[15px] hover:bg-accent">
+                <Icon className="size-5 text-muted-foreground" aria-hidden />
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Sheet>
+    </>
   );
 }
 
@@ -124,7 +171,7 @@ export function Scoreboard({ board, workMinutes, workTargetHours }: { board: Rec
   const workTarget = workTargetHours * 60;
   const workDone = workTarget > 0 && workMinutes >= workTarget;
   return (
-    <section aria-label="Scoreboard" className="grid grid-cols-2 gap-x-6 rounded-[26px] border border-glass-edge bg-glass px-4 py-3 sm:px-5">
+    <section aria-label="Scoreboard" className="surface grid grid-cols-2 gap-x-6 rounded-[28px] border px-4 py-3 sm:px-5">
       {keys.map((k) => {
         const t = board[k];
         const complete = t.total > 0 && t.done === t.total;
@@ -162,7 +209,7 @@ export function WeekGlance({ momentum, boss, weekStart }: { momentum: Momentum |
   return (
     <div className={cn("-mt-2 grid gap-2", momentum && boss ? "grid-cols-2" : "grid-cols-1")}>
       {momentum ? (
-        <Link href="/progress#momentum" className="grid gap-0.5 rounded-[22px] border border-glass-edge bg-glass px-4 py-3">
+        <Link href="/progress#momentum" className="surface grid gap-0.5 rounded-[24px] border px-4 py-3">
           <span className="text-[13px] text-muted-foreground">Momentum</span>
           <span className="flex items-baseline gap-2">
             <span className="text-[24px] leading-none tabular-nums">{momentum.score}</span>
@@ -176,7 +223,7 @@ export function WeekGlance({ momentum, boss, weekStart }: { momentum: Momentum |
         </Link>
       ) : null}
       {boss ? (
-        <Link href={`/goals/week/${weekStart}#boss`} className="grid gap-1 rounded-[22px] border border-glass-edge bg-glass px-4 py-3">
+        <Link href={`/goals/week/${weekStart}#boss`} className="surface grid gap-1 rounded-[24px] border px-4 py-3">
           <span className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground">
             <Swords className="size-3.5" aria-hidden />
             Weekly boss

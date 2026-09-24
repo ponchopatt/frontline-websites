@@ -46,7 +46,7 @@ export function RecordBanner({ date, events }: { date: LocalDate; events: Record
     setSeen((s) => new Set(s).add(event.key));
   };
   return (
-    <section role="status" aria-label="New personal record" className="flex gap-3 rounded-[22px] border border-primary/35 bg-lamp-soft p-4 animate-in fade-in-0 slide-in-from-top-2 duration-300">
+    <section role="status" aria-label="New personal record" className="surface-strong flex gap-3 rounded-[24px] border p-4 animate-in fade-in-0 slide-in-from-top-2 duration-300">
       <Trophy className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden />
       <div className="grid min-w-0 flex-1 gap-0.5">
         <p className="text-sm text-primary">New personal record</p>
@@ -70,7 +70,7 @@ export function MemoryNote({ date, card }: { date: LocalDate; card: MemoryCard }
   }, [key]);
   if (hidden) return null;
   return (
-    <aside aria-label="Now and then" className="flex gap-3 rounded-[22px] border border-glass-edge bg-glass p-4">
+    <aside aria-label="Now and then" className="surface flex gap-3 rounded-[24px] border p-4">
       <History className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden />
       <p className="min-w-0 flex-1 text-[15px] leading-snug">
         <span className="text-muted-foreground">{card.then}</span> <span>{card.now}</span>

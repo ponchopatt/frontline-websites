@@ -18,22 +18,29 @@ Zod · date-fns / date-fns-tz · Lucide.
 Big goals say where I'm going. Weekly goals say what matters now. Daily tasks say what to do. The
 scoreboard says whether I actually did it.
 
-Bottom nav (phone): **Today**, **Business**, **Week**, **Goals**, **Progress**. On a phone, Settings
-opens from Today's header, Habits from the habit cards and Settings, the Work log from the Work
-card and Bible notes from the Faith card; on a wide screen they're all in the nav. A **+** button on every
+**The look (Sage, the default):** after the "Lightly" journal app. A deep sage ground with soft
+light from above and a fine grain; frosted white glass cards with dark ink inside; big light
+headlines in Geist; a floating glass tab bar of round buttons (the current page filled white) with a
+separate round **+**. Dark (black and lamplight gold) and Light are still in Settings → Appearance.
+
+Tab bar: **Today**, **Business**, **Week**, **Goals**, **Progress**. On a phone, Habits, the Work
+log, Bible notes and Settings open from the round **More** button at the top of Today (and from
+the cards that use them); on a wide screen they're all in the bar. A **+** button on every
 page adds a task; a running work block shows as a bar with Stop on every page.
 
 **Today** reads top to bottom in order of importance:
 
-1. **Header:** greeting with the day's state, date, and **Keep My Word %** (the day's number)
-   with "13 of 17 kept", the week's average and the streak. Then **What should I do next?** and,
+1. **Header:** "Thursday afternoon, 24 September", then one big line for the day's state ("Keep
+   going, Pat."), and **Keep My Word %** (the day's number) with "13 of 17 kept", the week's
+   average and the streak. The first name comes from Settings; an email-style name is left out. Then **What should I do next?** and,
    for a bad day, **I'm having a shit day** (see *The daily loop* below).
 2. **Today's Big 3**, then up to a few supporting tasks. **+ Add task** takes plain words: "Call 10
    Imperium leads" files itself under Imperium and ties itself to the Leads called counter.
    **Plan my day** suggests a Big 3, a short supporting list (never 25 tasks) and work blocks for
    the day's hours; untick anything, then "Use this plan". Unfinished tasks from yesterday are
    offered back with one tap.
-3. **Scoreboard:** Faith, Fitness, Imperium, Websites, AI Bot, Discipline as x/y, plus Work
+3. **Streak card:** "5-day streak" and this week as seven circles (a tick for each day the word
+   was kept, today in white, days to come dashed). Then the **Scoreboard:** Faith, Fitness, Imperium, Websites, AI Bot, Discipline as x/y, plus Work
    hours against the 8h target. Each one jumps to its card.
 4. **Work:** pick Imperium, Websites, AI Trading or Other, then Start / Stop. Today's time per
    business, planned blocks with a Start button each.

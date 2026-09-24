@@ -73,7 +73,7 @@ export default async function WorkPage() {
   return (
     <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
       <header className="grid gap-6">
-        <h1 className="text-[34px] leading-tight font-medium tracking-tight">Work</h1>
+        <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">Work</h1>
         <StatStrip>
           <Stat label="Today" value={formatHours(t.actual)} unit={`of ${profile.workTargetHours}h`} />
           <Stat label="Planned today" value={formatHours(t.planned)} />

@@ -29,7 +29,7 @@ export default async function ProgressPage({ searchParams }: PageProps<"/progres
     <div className="grid grid-cols-[minmax(0,1fr)] gap-6">
       <header className="grid gap-5">
         <div className="grid gap-1">
-          <h1 className="text-[34px] leading-tight font-medium tracking-tight">My progress</h1>
+          <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">My progress</h1>
           <p className="text-[15px] text-muted-foreground">What I said I&apos;d do, what I did, and how it&apos;s adding up.</p>
         </div>
         <nav aria-label="Progress" className="grid grid-cols-2 gap-1 rounded-full border border-border p-1">

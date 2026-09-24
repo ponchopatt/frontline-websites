@@ -92,7 +92,7 @@ export default async function GoalsPage({ searchParams }: PageProps<"/goals">) {
   return (
     <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
       <header className="flex items-end justify-between gap-4">
-        <h1 className="text-[34px] leading-tight font-medium tracking-tight">Goals</h1>
+        <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">Goals</h1>
         <nav aria-label="Year" className="flex items-center">
           <Link href={`/goals?year=${year - 1}`} aria-label={`${year - 1}`} className="grid size-11 place-items-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground">
             <ChevronLeft className="size-5" />

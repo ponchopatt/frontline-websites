@@ -15,7 +15,7 @@ export default async function SuggestPage() {
         <Link href="/goals" className="inline-flex min-h-11 w-fit items-center text-sm text-muted-foreground hover:text-foreground">
           Goals
         </Link>
-        <h1 className="text-[34px] leading-tight font-medium tracking-tight">Suggest my goals</h1>
+        <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">Suggest my goals</h1>
         <p className="text-[15px] text-muted-foreground">Concrete goals for this week, from what you actually did the last four weeks. You choose which ones to keep.</p>
       </header>
       <SuggestForm weekStart={startOfWeek(viewer.today)} ai={aiConfigured()} />

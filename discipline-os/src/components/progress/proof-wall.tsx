@@ -73,7 +73,7 @@ export function ProofWall({ photos, range, topic, timeZone, more }: ProofWallPro
       </div>
 
       {photos.length === 0 ? (
-        <div className="grid justify-items-start gap-2 rounded-[26px] border border-glass-edge bg-glass p-5">
+        <div className="surface grid justify-items-start gap-2 rounded-[28px] border p-5">
           <Camera className="size-5 text-muted-foreground" aria-hidden />
           <p className="text-[15px]">No proof here yet.</p>
           <p className="text-sm text-muted-foreground">Add a photo from Today&apos;s Proof card, or from any task. It lands on this wall.</p>
@@ -142,7 +142,7 @@ function Chip({ href: to, on, children }: { href: string; on: boolean; children:
       aria-current={on ? "page" : undefined}
       scroll={false}
       className={cn(
-        "inline-flex h-10 items-center rounded-full border px-3.5 text-sm transition-colors",
+        "inline-flex h-11 items-center rounded-full border px-4 text-sm transition-colors",
         on ? "border-primary/50 bg-lamp-soft text-primary" : "border-border text-muted-foreground hover:text-foreground",
       )}
     >

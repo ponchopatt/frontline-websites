@@ -35,9 +35,9 @@ export function Sheet({ open, onClose, title, children, className }: SheetProps)
         if (e.target === ref.current) onClose();
       }}
       className={cn(
-        "m-0 mt-auto max-h-[88dvh] w-full max-w-none overflow-y-auto rounded-t-3xl border border-border bg-popover p-0 text-foreground",
+        "surface-light m-0 mt-auto max-h-[88dvh] w-full max-w-none overflow-y-auto rounded-t-[28px] border border-border bg-popover p-0 text-foreground",
         "backdrop:bg-black/60 backdrop:backdrop-blur-[2px] open:animate-in open:slide-in-from-bottom-8 open:duration-200",
-        "sm:m-auto sm:max-w-lg sm:rounded-3xl",
+        "sm:m-auto sm:max-w-lg sm:rounded-[28px]",
         className,
       )}
     >

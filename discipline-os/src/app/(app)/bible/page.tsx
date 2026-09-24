@@ -42,7 +42,7 @@ export default async function BiblePage({ searchParams }: PageProps<"/bible">) {
     <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
       <header className="grid gap-1">
         <p className="text-muted-foreground">{relativeDayLabel(date, today)}</p>
-        <h1 className="text-[34px] leading-tight font-medium tracking-tight">Bible</h1>
+        <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">Bible</h1>
       </header>
 
       <BibleJournal

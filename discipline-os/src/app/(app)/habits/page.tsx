@@ -19,7 +19,7 @@ export default async function HabitsPage() {
   return (
     <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
       <header className="grid gap-6">
-        <h1 className="text-[34px] leading-tight font-medium tracking-tight">Habits</h1>
+        <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">Habits</h1>
         <StatStrip>
           <Stat label="Current streak" value={history.current} unit={history.current === 1 ? "day" : "days"} />
           <Stat label="Best streak" value={best} unit={best === 1 ? "day" : "days"} />

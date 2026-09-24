@@ -49,7 +49,7 @@ export function NextActionCard({ actions, running, onStart, onTaskDone, onHabitD
   const area: WorkArea | null = d && (d.type === "work" || d.type === "counter") ? d.area : d?.type === "task" ? d.area : null;
 
   return (
-    <section aria-labelledby="next-heading" aria-live="polite" className="rounded-[26px] border border-primary/40 bg-card px-4 pt-4 pb-3 shadow-[0_0_0_1px_var(--lamp-soft)] sm:px-5">
+    <section aria-labelledby="next-heading" aria-live="polite" className="surface-strong rounded-[28px] border px-4 pt-4 pb-3 sm:px-5">
       <div className="flex items-center justify-between gap-3">
         <h2 id="next-heading" className="inline-flex items-center gap-2 text-sm text-primary">
           <Compass className="size-4" aria-hidden />

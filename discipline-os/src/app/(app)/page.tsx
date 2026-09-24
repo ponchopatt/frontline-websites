@@ -11,9 +11,8 @@ import type { BossSummary } from "@/lib/types";
 
 export const metadata: Metadata = { title: "Today" };
 
-function greetingFor(hour: number, name: string | null): string {
-  const part = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
-  return name ? `${part}, ${name}` : part;
+function partOfDay(hour: number): string {
+  return hour < 4 ? "night" : hour < 12 ? "morning" : hour < 17 ? "afternoon" : "evening";
 }
 
 export default async function TodayPage({ searchParams }: PageProps<"/">) {
@@ -30,9 +29,11 @@ export default async function TodayPage({ searchParams }: PageProps<"/">) {
   const [view, boss] = await Promise.all([loadDay(viewer, date, loadFacts(viewer)), isToday ? loadBoss(viewer) : Promise.resolve(null)]);
   const [h, m] = formatInTimeZone(new Date(), viewer.profile.timezone, "H:mm").split(":").map(Number);
   const hour = h + m / 60;
-  const name = viewer.profile.displayName?.split(" ")[0] ?? null;
+  // A real first name only: an email prefix like "pat123" isn't one.
+  const first = viewer.profile.displayName?.trim().split(/\s+/)[0] ?? "";
+  const name = /^[\p{L}'-]{2,14}$/u.test(first) ? first[0].toUpperCase() + first.slice(1) : null;
   // A new day starts fresh; within a day, Today takes the server's lists as they change.
-  return <Today key={date} view={view} greeting={greetingFor(hour, name)} hour={hour} boss={boss} />;
+  return <Today key={date} view={view} partOfDay={partOfDay(hour)} name={name} hour={hour} boss={boss} />;
 }
 
 /** This week's Weekly Boss, in one line. */

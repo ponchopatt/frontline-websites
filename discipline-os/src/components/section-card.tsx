@@ -7,23 +7,24 @@ interface SectionCardProps {
   /** Right-aligned summary, e.g. "7 of 10". */
   meta?: ReactNode;
   description?: ReactNode;
-  /** The one section that gets a panel instead of a hairline: Today's mission. */
+  /** The brighter card for what matters most: Today's Big 3, the Weekly Boss. */
   prominent?: boolean;
+  /** Two paler cards peek out from behind it, like a stack of entries. */
+  stacked?: boolean;
   children: ReactNode;
   className?: string;
 }
 
-export function SectionCard({ id, title, meta, description, prominent, children, className }: SectionCardProps) {
+/** A frosted card. Everything inside reads as dark ink on glass in the Sage look. */
+export function SectionCard({ id, title, meta, description, prominent, stacked, children, className }: SectionCardProps) {
   const headingId = id ? `${id}-heading` : undefined;
-  return (
+  const card = (
     <section
-      id={id}
+      id={stacked ? undefined : id}
       aria-labelledby={headingId}
       className={cn(
-        "scroll-mt-6 rounded-[26px] border px-4 sm:px-5",
-        prominent
-          ? "border-primary/25 bg-card pt-5 pb-3 shadow-[0_0_0_1px_var(--lamp-soft)]"
-          : "border-glass-edge bg-glass pt-5 pb-4",
+        "relative scroll-mt-6 rounded-[28px] border px-4 sm:px-5",
+        prominent ? "surface-strong pt-5 pb-3" : "surface pt-5 pb-4",
         className,
       )}
     >
@@ -36,5 +37,13 @@ export function SectionCard({ id, title, meta, description, prominent, children,
       {description && <p className="-mt-1 mb-3 text-sm text-muted-foreground">{description}</p>}
       {children}
     </section>
+  );
+  if (!stacked) return card;
+  return (
+    <div id={id} className="relative scroll-mt-6 pt-3">
+      <span aria-hidden className="stack-layer inset-x-6 top-0 h-10" />
+      <span aria-hidden className="stack-layer inset-x-3 top-1.5 h-10" />
+      {card}
+    </div>
   );
 }

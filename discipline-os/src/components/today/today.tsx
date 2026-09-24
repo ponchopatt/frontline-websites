@@ -44,6 +44,7 @@ import { Scoreboard, TodayHeader, WeekGlance } from "./header";
 import { MinimumCard, MinimumSwitch, minimumItems } from "./minimum-day";
 import { MemoryNote, RecordBanner } from "./moments";
 import { NextActionCard } from "./next-action";
+import { WeekStreak } from "./week-streak";
 import { PlanSheet } from "./plan-sheet";
 import { ProofCard } from "./proof";
 import { ReviewSection } from "./review-card";
@@ -98,7 +99,7 @@ function minutesBy(date: LocalDate, sessions: WorkSessionItem[], running: Runnin
 }
 
 /** The Today screen: one scroll from "what matters" to "did I do it". */
-export function Today({ view, greeting, hour: serverHour, boss }: { view: DayView; greeting: string; hour: number; boss: BossSummary | null }) {
+export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view: DayView; partOfDay: string; name: string | null; hour: number; boss: BossSummary | null }) {
   const router = useRouter();
   const now = useNow();
   const { date, today, isToday, profile } = view;
@@ -529,7 +530,8 @@ export function Today({ view, greeting, hour: serverHour, boss }: { view: DayVie
         date={date}
         today={today}
         firstDay={view.firstDay}
-        greeting={greeting}
+        partOfDay={partOfDay}
+        name={name}
         word={locked ? { ...word, percent: locked.score } : word}
         locked={Boolean(locked)}
         threshold={threshold}
@@ -549,7 +551,7 @@ export function Today({ view, greeting, hour: serverHour, boss }: { view: DayVie
         <button
           type="button"
           onClick={() => void replayDay()}
-          className="flex items-center justify-between gap-3 rounded-[22px] border border-kept/35 bg-kept-soft px-4 py-3 text-left"
+          className="surface flex items-center justify-between gap-3 rounded-[24px] border px-4 py-3 text-left"
         >
           <span className="grid gap-0.5">
             <span className="inline-flex items-center gap-2 text-[17px] font-medium text-kept">
@@ -632,6 +634,8 @@ export function Today({ view, greeting, hour: serverHour, boss }: { view: DayVie
             onMove={(t, to) => void move(t, to)}
             onUseLastNight={(t) => void takeLastNight(t)}
           />
+
+          {isToday && <WeekStreak days={strip} weekStart={view.weekStart} today={today} firstDay={view.firstDay} threshold={threshold} streak={streak} />}
 
           <Scoreboard board={board} workMinutes={workMinutes} workTargetHours={profile.workTargetHours} />
           {isToday && <WeekGlance momentum={view.momentum} boss={boss} weekStart={view.weekStart} />}
@@ -737,7 +741,7 @@ export function Today({ view, greeting, hour: serverHour, boss }: { view: DayVie
         onReplay={() => void replayDay()}
       />
 
-      <section aria-label="Last 30 days" className="rounded-[26px] border border-glass-edge bg-glass px-4 py-4 sm:px-5">
+      <section aria-label="Last 30 days" className="surface rounded-[28px] border px-4 py-4 sm:px-5">
         <DayStrip days={strip} threshold={threshold} selected={date} today={today} firstDay={view.firstDay} />
       </section>
 

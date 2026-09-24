@@ -158,7 +158,7 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
             </Link>
           </nav>
         </div>
-        <h1 className="text-[34px] leading-tight font-medium tracking-tight">Week {weekNumberInMonth(week)}</h1>
+        <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">Week {weekNumberInMonth(week)}</h1>
         <p className="text-[15px] text-muted-foreground">{weekRangeLabel(week)}</p>
       </header>
 

@@ -8,7 +8,6 @@ import { AREA_SHORT } from "@/lib/areas";
 import { verdictLine, type CloseSummary, type Verdict } from "@/lib/close-day";
 import { formatDuration, weekdayName, dayMonth, type LocalDate } from "@/lib/day";
 import type { ReplayEvent } from "@/lib/replay";
-import { cn } from "@/lib/utils";
 
 export interface DayCompleteData {
   date: LocalDate;
@@ -61,7 +60,7 @@ export function DayComplete({ data, threshold, timeZone, heading = "Day complete
         setShown(0);
         onClose();
       }}
-      className="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto bg-background p-0 text-foreground backdrop:bg-background open:animate-in open:fade-in-0 open:duration-300"
+      className="screen fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto bg-background p-0 text-foreground backdrop:bg-background open:animate-in open:fade-in-0 open:duration-300"
     >
       {data && verdict && (
         <div className="mx-auto grid max-w-xl gap-8 px-5 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(2rem,env(safe-area-inset-bottom))]">
@@ -103,7 +102,7 @@ export function DayComplete({ data, threshold, timeZone, heading = "Day complete
           {s && s.records.length > 0 && (
             <section aria-label="Personal records" className="grid gap-2">
               {s.records.map((r) => (
-                <div key={r.key} className="flex gap-3 rounded-2xl border border-primary/30 bg-lamp-soft p-4">
+                <div key={r.key} className="surface-strong flex gap-3 rounded-[24px] border p-4">
                   <Trophy className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden />
                   <div className="grid gap-0.5">
                     <p className="text-sm text-primary">New personal record</p>
@@ -151,7 +150,7 @@ export function DayComplete({ data, threshold, timeZone, heading = "Day complete
 
 function Stat({ label, value, of }: { label: string; value: string; of: string | null }) {
   return (
-    <div className={cn("grid gap-0.5 rounded-2xl border border-glass-edge bg-glass px-4 py-3")}>
+    <div className="surface grid gap-0.5 rounded-[24px] border px-4 py-3">
       <dt className="text-[13px] text-muted-foreground">{label}</dt>
       <dd className="text-[22px] leading-tight tabular-nums">
         {value}

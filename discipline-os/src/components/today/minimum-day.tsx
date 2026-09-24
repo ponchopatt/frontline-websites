@@ -98,7 +98,7 @@ export function MinimumCard({ state, habits, workMinutes, minWork, running, read
     <section
       id="minimum"
       aria-labelledby="minimum-heading"
-      className={cn("scroll-mt-6 rounded-[26px] border px-4 pt-5 pb-3 sm:px-5", state.secured ? "border-kept/40 bg-kept-soft" : "border-primary/30 bg-card")}
+      className={cn("scroll-mt-6 rounded-[28px] border px-4 pt-5 pb-3 sm:px-5", state.secured ? "surface" : "surface-strong")}
     >
       <header className="mb-1 flex items-baseline justify-between gap-4">
         <h2 id="minimum-heading" className="inline-flex items-center gap-2 text-2xl font-medium tracking-tight">

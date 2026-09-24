@@ -11,22 +11,18 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
   ]);
 
   return (
-    <div className="flex min-h-dvh flex-col md:flex-col-reverse md:justify-end">
+    <div className="flex min-h-dvh flex-col">
       <a
         href="#main"
         className="sr-only z-50 rounded-lg bg-primary px-4 py-2 text-primary-foreground focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
       >
         Skip to content
       </a>
-      <main id="main" className="mx-auto w-full max-w-xl flex-1 px-4 pt-6 pb-44 sm:px-6 md:max-w-2xl md:pt-10 md:pb-28">
+      <main id="main" className="mx-auto w-full max-w-xl flex-1 px-4 pt-[max(1.5rem,env(safe-area-inset-top))] pb-44 sm:px-6 md:max-w-2xl md:pt-10">
         {children}
       </main>
-      <GlobalBar
-        today={viewer.today}
-        running={open ? { id: open.id, area: isWorkArea(open.area) ? open.area : null, startedAt: open.started_at } : null}
-        big3Free={(ranked ?? []).length < 3}
-      />
-      <AppNav />
+      <GlobalBar running={open ? { id: open.id, area: isWorkArea(open.area) ? open.area : null, startedAt: open.started_at } : null} />
+      <AppNav today={viewer.today} big3Free={(ranked ?? []).length < 3} />
     </div>
   );
 }

@@ -26,7 +26,7 @@ export default async function SettingsPage() {
   return (
     <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
       <header className="grid gap-1">
-        <h1 className="text-[34px] leading-tight font-medium tracking-tight">Settings</h1>
+        <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">Settings</h1>
         {data.user?.email && <p className="text-muted-foreground">Signed in as {data.user.email}</p>}
       </header>
 
