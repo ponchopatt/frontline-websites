@@ -7,7 +7,7 @@
 -- account created before this migration (or by an admin) is repaired on its first visit.
 
 -- The sign-up trigger calls user_local_date through a definer function; the session trigger
--- runs as the signed-in user, who has no direct access to it.
+-- runs as the signed-in user, for whom user_local_date only answers about themselves.
 alter function public.work_sessions_set_local_date() security definer;
 alter function public.work_sessions_set_local_date() set search_path = public;
 

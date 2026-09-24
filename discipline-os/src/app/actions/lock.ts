@@ -46,7 +46,7 @@ export async function setPasscode(input: { pin: string; current?: string | null 
   return ok();
 }
 
-/** Forgot it: right after signing in again with the account password, set a new one. */
+/** Forgot it: after asking for a reset and signing in again with the account password, set a new one. */
 export async function resetPasscode(input: { pin: string }): Promise<ActionResult> {
   const parsed = z.object({ pin: pinSchema }).safeParse(input);
   if (!parsed.success) return invalid(parsed.error);
@@ -74,9 +74,13 @@ export async function lockNow(): Promise<void> {
   redirect("/unlock");
 }
 
-/** Signs out so the account password can be used to reset a forgotten passcode. */
+/**
+ * Asks for a reset, then signs out: the next sign-in with the account password can choose a
+ * new passcode. A sign-in without asking first can't.
+ */
 export async function forgotPasscode(): Promise<void> {
   const { supabase } = await getSession();
+  await supabase.rpc("request_passcode_reset");
   await supabase.auth.signOut();
   await clearUnlockToken();
   redirect("/login?reset=passcode");

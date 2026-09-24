@@ -39,6 +39,7 @@ export type Database = {
           blocked_until: string | null
           failures: number
           pin_hash: string
+          reset_requested_at: string | null
           secret: string
           updated_at: string
           user_id: string
@@ -47,6 +48,7 @@ export type Database = {
           blocked_until?: string | null
           failures?: number
           pin_hash: string
+          reset_requested_at?: string | null
           secret?: string
           updated_at?: string
           user_id: string
@@ -55,6 +57,7 @@ export type Database = {
           blocked_until?: string | null
           failures?: number
           pin_hash?: string
+          reset_requested_at?: string | null
           secret?: string
           updated_at?: string
           user_id?: string
@@ -1609,6 +1612,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_reset_passcode: { Args: never; Returns: boolean }
       create_profile_for: {
         Args: { p_email: string; p_meta: Json; p_user: string }
         Returns: undefined
@@ -1641,6 +1645,7 @@ export type Database = {
       }
       lock_state: { Args: { p_token: string }; Returns: string }
       remove_passcode: { Args: { p_current: string }; Returns: undefined }
+      request_passcode_reset: { Args: never; Returns: undefined }
       reset_passcode: { Args: { p_new: string }; Returns: string }
       seed_default_habits: { Args: { p_user: string }; Returns: undefined }
       seed_life_areas: { Args: { p_user: string }; Returns: undefined }
@@ -1689,6 +1694,7 @@ export type Database = {
         | "actions"
         | "milestones"
         | "metric"
+        | "keep_word"
       review_outcome: "completed" | "partial" | "missed"
     }
     CompositeTypes: {
@@ -1853,6 +1859,7 @@ export const Constants = {
         "actions",
         "milestones",
         "metric",
+        "keep_word",
       ],
       review_outcome: ["completed", "partial", "missed"],
     },

@@ -6,11 +6,17 @@ import { useState } from "react";
 import { forgotPasscode, resetPasscode, unlock } from "@/app/actions/lock";
 import { PinPad } from "@/components/pin-pad";
 
-/** Welcome back, and the passcode. A fresh sign-in can choose a new one instead. */
+/** Welcome back, and the passcode. After asking for a reset and signing in again, a new one can be chosen. */
 export function UnlockScreen({ name, canReset }: { name: string | null; canReset: boolean }) {
   const router = useRouter();
   const [mode, setMode] = useState<"unlock" | "new" | "confirm">("unlock");
   const [first, setFirst] = useState("");
+  const [note, setNote] = useState<string | null>(null);
+
+  function show(next: "unlock" | "new" | "confirm", message: string | null = null) {
+    setNote(message);
+    setMode(next);
+  }
 
   async function tryUnlock(pin: string) {
     const res = await unlock({ pin });
@@ -23,12 +29,13 @@ export function UnlockScreen({ name, canReset }: { name: string | null; canReset
   async function chooseNew(pin: string) {
     if (mode === "new") {
       setFirst(pin);
-      setMode("confirm");
+      show("confirm");
       return null;
     }
     if (pin !== first) {
-      setMode("new");
-      return "Those didn't match. Choose it again.";
+      setFirst("");
+      show("new", "Those didn't match. Choose it again.");
+      return null;
     }
     const res = await resetPasscode({ pin });
     if (!res.ok) return res.error;
@@ -45,13 +52,15 @@ export function UnlockScreen({ name, canReset }: { name: string | null; canReset
           {name ? name[0] : <Lock className="size-5" />}
         </span>
         <h1 className="text-[34px] leading-[1.05] font-light tracking-[-0.03em]">{heading}</h1>
-        <p className="text-[15px] text-muted-foreground">{mode === "unlock" ? "Enter your passcode." : "Four digits you'll remember."}</p>
+        <p aria-live="polite" className="text-[15px] text-muted-foreground">
+          {mode === "unlock" ? "Enter your passcode." : (note ?? "Four digits you'll remember.")}
+        </p>
       </div>
       <PinPad key={mode} label={mode === "unlock" ? "Passcode" : "New passcode"} onComplete={mode === "unlock" ? tryUnlock : chooseNew} />
       {mode === "unlock" &&
         (canReset ? (
-          // Just signed in with the account password: that's proof enough to choose a new one.
-          <button type="button" onClick={() => setMode("new")} className="min-h-11 text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
+          // Asked for a reset and signed in again with the account password: that's proof enough.
+          <button type="button" onClick={() => show("new")} className="min-h-11 text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
             Forgot it? Choose a new passcode
           </button>
         ) : (
@@ -62,7 +71,7 @@ export function UnlockScreen({ name, canReset }: { name: string | null; canReset
           </form>
         ))}
       {mode !== "unlock" && (
-        <button type="button" onClick={() => setMode("unlock")} className="min-h-11 text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
+        <button type="button" onClick={() => show("unlock")} className="min-h-11 text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
           Back to the passcode
         </button>
       )}
