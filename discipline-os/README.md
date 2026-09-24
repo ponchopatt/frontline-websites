@@ -33,7 +33,7 @@ page adds a task; a running work block shows as a bar with Stop on every page.
 **Today** reads top to bottom in order of importance:
 
 1. **Header:** "Thursday afternoon, 24 September", then one big line for the day's state ("Keep
-   going, Pat."), and **Keep My Word %** (the day's number) with "13 of 17 kept", the week's
+   going, Angus."), and **Keep My Word %** (the day's number) with "13 of 17 kept", the week's
    average and the streak. The first name comes from Settings; an email-style name is left out. Then **What should I do next?** and,
    for a bad day, **I'm having a shit day** (see *The daily loop* below).
 2. **Today's Big 3**, then up to a few supporting tasks. **+ Add task** takes plain words: "Call 10
@@ -152,8 +152,9 @@ its summary so later changes never rewrite it.
 "Suggest my goals" always works from the rules above. If `ANTHROPIC_API_KEY` (or
 `ANTHROPIC_AUTH_TOKEN` with `ANTHROPIC_BASE_URL`, for a gateway) is set on the server, Claude
 refines those suggestions from the same numbers and your notes; `AI_GOALS_MODEL` changes the
-model (default `claude-opus-5`). Any AI error falls back to the rule suggestions. The key is
-only read on the server and never sent to the browser.
+model (default `claude-opus-5`). Set `AI_ALLOWED_EMAILS` (comma-separated) to limit the AI to
+those accounts; everyone else gets the rule suggestions. Any AI error falls back to the rule
+suggestions. The key is only read on the server and never sent to the browser.
 
 ### First-run setup and the passcode
 
@@ -178,8 +179,9 @@ A new account starts at **Welcome**, one question a screen:
 phone. Its hash, failed tries and signing key are in a table no client can read; the database
 checks it and hands back a 12-hour unlock token for this browser only (an httpOnly session
 cookie, so closing the app locks it). Every page and action checks the token. Five wrong tries
-in a row lock it for a minute, doubling up to 15. Forgot it: sign in again with the account
-password, and the unlock screen offers "Choose a new passcode" for the next 10 minutes.
+in a row lock it for a minute, doubling up to 15. Forgot it: tap **Forgot your passcode?**,
+sign in again with the account password, and the unlock screen offers "Choose a new passcode"
+for the next 10 minutes. A sign-in on its own isn't enough: the reset has to be asked for first.
 Change it, lock now, or turn it off in **Settings → Passcode**.
 
 ### On the phone
@@ -192,7 +194,7 @@ service worker, push keys and a scheduled job. Worth adding once it runs on Verc
 
 ## Run it locally
 
-Needs Node 20+ and Docker.
+Needs Node 22.12+ and Docker.
 
 ```bash
 npm install
@@ -219,7 +221,10 @@ Sign up with any email: local Supabase does not send confirmation emails.
    `npx supabase link --project-ref <ref>` and `npx supabase db push`.
 2. **Auth settings** (Supabase → Authentication → URL configuration): set **Site URL** to the
    app's address and add `https://<your-app>/auth/confirm` to the redirect URLs. Keep email
-   confirmation on or off as you prefer; both flows are handled.
+   confirmation on or off as you prefer; both flows are handled. Once your own account exists,
+   turn off **Authentication → Sign In / Providers → Allow new users to sign up**: this is a
+   one-person app, and the passcode belongs to an account, so it can't stop a stranger making
+   their own. Also turn on **Secure password change**.
 3. **Vercel:** import the repo, set **Root Directory** to `discipline-os`, and add
    `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Supabase → Project settings →
    API; the anon or publishable key). Optional: the AI settings above. Proof photos use a private
@@ -227,16 +232,22 @@ Sign up with any email: local Supabase does not send confirmation emails.
 
 ## Keeping it up to date
 
-- **Every change is checked.** `.github/workflows/discipline-os.yml` runs on each push and pull
-  request that touches `discipline-os/`: lint, types and unit tests, then the database tests,
+- **Every change is checked.** `.github/workflows/discipline-os.yml` runs on each pull request,
+  and each push to `main`, that touches `discipline-os/`: lint, types and unit tests, then the database tests,
   a check that `database.types.ts` matches the migrations, a production build and the full
   browser suite against a local Supabase. A red run means don't merge.
-- **Updates come to you.** Dependabot (`.github/dependabot.yml`) opens a pull request each
-  Monday with minor and patch updates grouped; the checks run on it; merge it when they're green.
+- **Updates come to you.** Dependabot (`.github/dependabot.yml`) opens a pull request against
+  `main` each Monday with minor and patch updates grouped; the checks run on it; merge it when
+  they're green. Major versions are left out: do those by hand when the tools around them
+  (Next.js's lint config, Vercel's Node version) support them.
 - **App changes go live on their own.** With Vercel connected to the repo, every push to `main`
   deploys. The phone app picks up the new version the next time it's opened.
 - **Database changes go live on their own, once connected.** Add a new file to
-  `supabase/migrations/` (never edit one that's already live). After the checks pass on `main`,
+  `supabase/migrations/` (never edit one that's already live). Its name must sort after the
+  newest file already there: until 29 September 2026 `npx supabase migration new` makes an
+  earlier name, so rename it (for example `20260929000100_<name>.sql`). Make each change safe for
+  the code that's live now (add columns; don't rename or drop them in the same release), because
+  the app can deploy a few minutes before its migration runs. After the checks pass on `main`,
   `.github/workflows/discipline-os-migrate.yml` runs `supabase db push` against the live project.
   It does nothing until three repository secrets are set: `SUPABASE_ACCESS_TOKEN` (Supabase →
   Account → Access tokens), `SUPABASE_PROJECT_REF` (the project's reference id) and

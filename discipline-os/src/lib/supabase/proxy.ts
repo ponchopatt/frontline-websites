@@ -9,8 +9,11 @@ const PUBLIC_PATHS = ["/login", "/signup", "/auth"];
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
   const { url, key } = supabaseEnv();
+  const https = request.headers.get("x-forwarded-proto") === "https" || request.nextUrl.protocol === "https:";
 
   const supabase = createServerClient<Database>(url, key, {
+    // Only the server reads the session, so page scripts never can (the same rule as the unlock cookie).
+    cookieOptions: { httpOnly: true, sameSite: "lax", path: "/", secure: https },
     cookies: {
       getAll() {
         return request.cookies.getAll();

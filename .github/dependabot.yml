@@ -1,9 +1,10 @@
-# Weekly update pull requests for Discipline OS. Each one runs the full checks; merge it when
-# they're green.
+# Weekly update pull requests for Discipline OS, opened against main. Each one runs the full
+# checks; merge it when they're green. Major versions are left out and done by hand.
 version: 2
 updates:
   - package-ecosystem: npm
     directory: /discipline-os
+    target-branch: main
     schedule:
       interval: weekly
       day: monday
@@ -11,7 +12,11 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
+    target-branch: main
     schedule:
       interval: monthly
