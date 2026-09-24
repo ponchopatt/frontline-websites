@@ -90,4 +90,11 @@ Three Google reviews from `best_for_demo`, word for word. Each card's source lin
 
 ## Build notes
 - The gate blocks a round `jobsDone: 1000` as a guess, so "over 1,000 projects" appears only in words (credential and work intro). The stats strip shows the 45 years only.
-- On phones, the sticky bar reads "Call Jason", because the template builds it from the owner's first name. The number is the office landline. It's a family firm and the site gives no other number, but Pat should confirm Jason is happy to be the name on the button.
+- On phones, the sticky call bar reads "Call S&I" (`copy.callLabel`, set by the coordinator), because the number is the office landline. The header and footer links to the form read "Talk to us" (`ctaLabel`), not "Call us", because they go to the form, not to the phone.
+
+## Rework after review (2026-09-24)
+- **Owner photo**: added `photos.owner`, the architect-designed Mittagong home from their Project Management page (38-spencer-slider-2, cropped 4:3). It's captioned as a home we project-managed, not as Jason. That house's kitchen came out of gallery 6, which now shows the Mittagong custom home's kitchen and dining room (PALR2381-1). PALR2342 wasn't used because gallery 4 is already a bathroom in the same house.
+- **Aperture**: the bright Mittagong living room (with a line about trades that it didn't support) is replaced with the High Range front view (architectural-design-slider-1). Its shaded lawn and conifers sit under the text. The new line matches the photo: a local architect designed it around the owners' gardens, and we built it in rendered double brick.
+- **Generic lines rewritten**: the process now reads "Your plans, or ours." with an intro about clients arriving with architect's drawings or just a block. The services intro names the Burradoo gymnasium and the garage-to-office conversion. The Sarah line is cut. The owner team line now reads "Jason chooses our trades himself" (from Greg's review).
+- **Bowral is a spec home**: gallery captions say "Spec home" and credit "Photo: Ashley Mackevicius". The hero and the New homes tile have no caption, so the footer demo note adds "Bowral photos by Ashley Mackevicius." No line calls it a client's home.
+- **Lighthouse**: I recompressed the hero (800w file 62 KB, 1800w file 303 KB). Two runs in a row gave 93 and 93.
