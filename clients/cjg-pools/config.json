@@ -64,7 +64,7 @@
     "servicesIntro": "Pools are what they're known for. The ground work is just as in demand.",
     "workLabel": "Recent jobs",
     "workHeadline": "Throsby to<br>Denman Prospect.",
-    "workIntro": "New pools, a respray, a site cut and an old pool about to be filled in. Select any photo to see it larger.",
+    "workIntro": "Their latest build, a new pool in Weetangera, a fibreglass shell arriving at Throsby, a respray in Forrest and a site cut at Denman Prospect. Select any photo to see it larger.",
     "processLabel": "How it runs",
     "processHeadline": "Site visit to<br>first swim.",
     "processIntro": "",
@@ -212,18 +212,30 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/forrest-respray-finished-600.webp",
-      "srcset": "assets/forrest-respray-finished-600.webp 600w",
-      "width": 600,
-      "height": 400,
-      "alt": "A concrete pool with grey stone paving, a stone wall and a blue pergola in front of a yellow house"
+      "src": "assets/sample-pool-steel-1600.webp",
+      "srcset": "assets/sample-pool-steel-portrait-820.webp 820w, assets/sample-pool-steel-1600.webp 1600w, assets/sample-pool-steel-2048.webp 2048w",
+      "width": 2048,
+      "height": 1536,
+      "alt": "Sample photo: a concrete pool dug out and ready for concrete, with the steel and plumbing in place",
+      "caption": "Sample photo: a concrete pool at the steel stage",
+      "sample": true,
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/67513462@N00/125509297",
+      "credit": "billjacobus1 on Flickr",
+      "_comment": "Sample (stock) photo, approved by Pat 2026-09-24. Not a CJG job. Flickr original 2048x1536, used at native size or smaller: 1600 and 2048 are straight resizes; the 820w file is a native-pixel 820x1536 portrait crop (x 614-1434) so a phone at 1-2x DPR gets a portrait frame that is never enlarged. Replace with Craig's own photo of a pool at the steel or dig stage."
     },
     "statement": {
-      "src": "assets/weetangera-statement-584.webp",
-      "srcset": "assets/weetangera-statement-584.webp 584w",
-      "width": 584,
-      "height": 730,
-      "alt": "A new concrete pool in Weetangera with wide sandstone-coloured pavers and a solar cover on the water"
+      "src": "assets/sample-pool-dig-1229.webp",
+      "srcset": "assets/sample-pool-dig-720.webp 720w, assets/sample-pool-dig-1229.webp 1229w",
+      "width": 1229,
+      "height": 1536,
+      "alt": "Sample photo: three workers in a freshly dug pool excavation, the walls cut back and string lines set out",
+      "caption": "Sample photo: a pool freshly dug out",
+      "sample": true,
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/67513462@N00/125509027",
+      "credit": "billjacobus1 on Flickr",
+      "_comment": "Sample (stock) photo, approved by Pat 2026-09-24. Not a CJG job or crew. Native 1229x1536 (4:5) crop of the 2048x1536 Flickr original (x 348-1577), plus a 720w resize."
     },
     "owner": {
       "src": "assets/pool-infill-pour-owner-580.webp",
@@ -236,67 +248,65 @@
     },
     "gallery": [
       {
-        "src": "assets/latest-pool-tile-852.webp",
+        "src": "assets/latest-pool-crop-810.webp",
         "full": "assets/latest-pool-stone-wall-1000.webp",
-        "srcset": "assets/latest-pool-tile-852.webp 852w",
-        "width": 852,
-        "height": 639,
+        "width": 810,
+        "height": 540,
         "caption": "Latest build",
         "detail": "Tiled concrete pool, travertine and stone",
         "alt": "A blue-tiled concrete pool with travertine paving, a stacked-stone feature wall and a roller cover"
       },
       {
-        "src": "assets/throsby-fibreglass-shell-tile.webp",
-        "full": "assets/throsby-fibreglass-shell-462.webp",
-        "srcset": "assets/throsby-fibreglass-shell-tile.webp 752w",
-        "width": 752,
-        "height": 564,
-        "caption": "Throsby",
-        "detail": "Fibreglass pool for a block of units",
-        "alt": "A fibreglass pool shell arriving on a truck at a new block of townhouses in Throsby, excavator buckets in the foreground"
+        "src": "assets/weetangera-pool-crop-480.webp",
+        "full": "assets/weetangera-pool-480.webp",
+        "width": 480,
+        "height": 320,
+        "caption": "Weetangera",
+        "detail": "New concrete pool, wide pavers",
+        "alt": "A new concrete pool in Weetangera with wide sandstone-coloured pavers and a solar cover on the water"
       },
       {
-        "src": "assets/forrest-respray-before-tile.webp",
+        "src": "assets/throsby-shell-crop-462.webp",
+        "full": "assets/throsby-fibreglass-shell-462.webp",
+        "width": 462,
+        "height": 308,
+        "caption": "Throsby",
+        "detail": "Fibreglass pool for a block of units",
+        "alt": "A fibreglass pool shell arriving on a truck at a new block of townhouses in Throsby"
+      },
+      {
+        "src": "assets/forrest-before-crop-360.webp",
         "full": "assets/forrest-respray-before-360.webp",
-        "srcset": "assets/forrest-respray-before-tile.webp 640w",
-        "width": 640,
-        "height": 480,
+        "width": 360,
+        "height": 240,
         "caption": "Forrest · before",
         "detail": "Old concrete pool, drained for its respray",
         "alt": "A drained concrete pool in Forrest with a stained grey interior and a pump sitting in the deep end"
       },
       {
-        "src": "assets/forrest-respray-after-tile.webp",
+        "src": "assets/forrest-after-crop-360.webp",
         "full": "assets/forrest-respray-after-360.webp",
-        "srcset": "assets/forrest-respray-after-tile.webp 640w",
-        "width": 640,
-        "height": 480,
+        "width": 360,
+        "height": 240,
         "caption": "Forrest · after",
         "detail": "The same pool, resprayed",
         "alt": "The same Forrest pool freshly resprayed bright blue, grey paving and hedges around it"
       },
       {
-        "src": "assets/denman-prospect-site-cut-tile.webp",
+        "src": "assets/denman-site-cut-crop-359.webp",
         "full": "assets/denman-prospect-site-cut-359.webp",
-        "srcset": "assets/denman-prospect-site-cut-tile.webp 628w",
-        "width": 628,
-        "height": 471,
+        "width": 359,
+        "height": 239,
         "caption": "Denman Prospect",
         "detail": "Site cut, benched and cleared",
         "alt": "A cleared and benched site cut on a new block at Denman Prospect, the excavator at the edge of frame"
-      },
-      {
-        "src": "assets/pool-infill-before-tile.webp",
-        "full": "assets/pool-infill-before-599.webp",
-        "srcset": "assets/pool-infill-before-tile.webp 628w",
-        "width": 628,
-        "height": 471,
-        "caption": "Pool infill",
-        "detail": "An old pool, before it was filled in and paved over",
-        "alt": "An old drained concrete pool with cracked walls, leaf litter in the bottom and red-tiled edges"
       }
     ],
-    "beforeAfter": []
+    "beforeAfter": [],
+    "stockApproved": {
+      "by": "Pat",
+      "on": "2026-09-24"
+    }
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
