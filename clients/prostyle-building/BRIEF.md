@@ -68,7 +68,7 @@ The site has about 500 images across 12 portfolio projects and 6 service pages. 
 |---|---|---|---|---|
 | Hero | garran-balcony-view | /portfolio/garran `PS -120330 2218.jpg` | 2500×1667 | Covered balcony, glass balustrade, table, sunset over Woden and the Brindabellas |
 | Aperture | garran-dusk | /portfolio/garran `PS -120330 2276.jpg` | 2500×1666 | Rendered two-storey home, lit upper verandah, double garage, at dusk |
-| Statement | extension-alfresco-dusk | /extensions-renovations `04.jpg` | 966×534 | Glass-walled living extension and alfresco lit at dusk |
+| Statement | curtin-deck-stairs | /portfolio/curtin `_MG_6709-Edit-20160224.jpg` | 667×1000 | Timber stairs up to a covered deck and upper balcony, brick two-storey (portrait, so the tall statement frame isn't enlarged) |
 | Service: new homes | new-home-dusk | /new-homes `02.jpg` | 966×534 | Two-storey home with a steel-framed balcony, lit at dusk |
 | Service: extensions | extension-spa-deck | /extensions-renovations `02.jpg` | 966×534 | French doors and plantation shutters onto a timber deck with a spa |
 | Service: knock-down | knockdown-rebuild-gables | /knock-down-rebuilds `1 copy.jpg` | 966×534 | Twin glazed gables, bi-fold doors onto a paved courtyard |
@@ -83,6 +83,6 @@ The site has about 500 images across 12 portfolio projects and 6 service pages. 
 | Gallery | collector-timber-home | /portfolio/collector `02.jpg` | 966×534 | Curved vertical-timber-clad country home |
 | Gallery | oconnor-rear-deck | /portfolio/oconnor `PS-6356-180221.jpg` | 1000×667 | Two-storey home, pergola deck, dusk |
 
-Left out: 036 (knock-down page), which is the same Garran house as the aperture; 015/016 (the same extension as the statement photo); 037/035 (Garran again); 052 (the Campbell pool again); sponsor logos. Gallery captions name only the suburb from the portfolio page title, never a job type, because the site doesn't say which jobs were extensions and which were new builds. No samples or stock were needed. Nothing is upscaled.
+Left out: extensions-page 04.jpg (966×534, looked soft stretched into the tall statement frame, so I swapped it for the Curtin portrait). 036 (knock-down page), which is the same Garran house as the aperture; 015/016 (the same extension as 04.jpg); 037/035 (Garran again); 052 (the Campbell pool again); sponsor logos. Gallery captions name only the suburb from the portfolio page title, never a job type, because the site doesn't say which jobs were extensions and which were new builds. No samples or stock were needed. Nothing is upscaled.
 
 Logo: their PNG (1450×306, a teal/navy block with a white wordmark). I pulled out the white "PROSTYLE" letters onto a transparent background for the dark header and dropped the two taglines. The favicon is the white S on their navy.

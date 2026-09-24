@@ -60,15 +60,15 @@
     "statementBody": "We designed and drew the plans for this Mittagong home ourselves, to suit the size and shape of the block. That let us use the space well and keep the impact on the neighbours low, without giving anything up inside. Bring your architect's plans, or start with ours.",
     "servicesLabel": "What we build",
     "servicesHeadline": "Homes, additions<br>and commercial<br>builds.",
-    "servicesIntro": "No matter the size or scope. We can draw a custom design for you, or work closely with your architect or interior designer.",
-    "apertureLabel": "Local trades",
-    "apertureLine": "Our subcontractors are local and fully insured, and many of them have been part of our team for years.",
+    "servicesIntro": "From a school gymnasium at Burradoo to a garage turned into a home office. We can draw a custom design for you, or build from your architect's or interior designer's plans.",
+    "apertureLabel": "Your architect, our build",
+    "apertureLine": "A local architect designed this High Range home around the owners' gardens. We built it in rendered double brick.",
     "workLabel": "Selected work",
     "workHeadline": "Bowral, Mittagong,<br>High Range.",
     "workIntro": "A few homes from over 1,000 projects we've completed, and some of the rooms inside them.",
     "processLabel": "How it runs",
-    "processHeadline": "From concept<br>to completion.",
-    "processIntro": "We guide you through every step, and we work within your budget.",
+    "processHeadline": "Your plans,<br>or ours.",
+    "processIntro": "Some clients come to us with an architect's drawings. Others bring a block of land and ask us to design the house. Either way, the job runs like this.",
     "ownerLabel": "Who you are dealing with",
     "recognitionLabel": "Beyond the reviews",
     "recognitionHeadline": "HIA members for over 25 years.",
@@ -98,7 +98,7 @@
   },
   "owner": {
     "body": "Jason is our owner and managing director. He started his apprenticeship with S&I Constructions in 1991 and has spent his whole career with the business. He still works on the tools himself.",
-    "team": "Behind every job is a network of highly qualified local subcontractors, many of whom have been with us for years. Clients who've built with us will know Sarah too.",
+    "team": "Jason picks the trades on every job himself. Most are local subcontractors, and many have worked with us for years.",
     "facts": [
       {
         "value": "1991",
@@ -139,7 +139,7 @@
         "srcset": "assets/bowral-living-room-480.webp 480w, assets/bowral-living-room-800.webp 800w, assets/bowral-living-room-1200.webp 1200w, assets/bowral-living-room-1800.webp 1800w",
         "width": 1806,
         "height": 985,
-        "alt": "A living room with panelled walls, linen sofas and a barn door open to the front path, in our new home at Bowral"
+        "alt": "A living room with panelled walls, linen sofas and a barn door open to the front path, in the spec home we built at Bowral"
       }
     },
     {
@@ -231,7 +231,7 @@
       "width": 1806,
       "height": 985,
       "alt": "A grey weatherboard home with a blue Colorbond roof and warm lit windows at dusk, behind a clipped hedge, Bowral",
-      "_comment": "SI-constructions-121A-Bowral-Street-slider1.jpg (1806x985), the first photo of 'Featured project: New home @ Bowral' on their New Homes page, credited 'Photography by Ashley Mackevicius'. The largest undarkened exterior they publish apart from the Mittagong shoot, and a dusk shot, so the lit windows still read under the hero overlay on a phone."
+      "_comment": "SI-constructions-121A-Bowral-Street-slider1.jpg (1806x985), the first photo of 'Featured project: New home @ Bowral' on their New Homes page, credited 'Photography by Ashley Mackevicius'. The largest undarkened exterior they publish apart from the Mittagong shoot, and a dusk shot, so the lit windows still read under the hero overlay on a phone. Their site describes this home as 'built as a speculative project' with the developer and the architect, so no caption or line on the page calls it a client's home. Gallery captions say 'Spec home' and credit the photographer; the footer note credits him for the hero and the New homes tile, which have no caption."
     },
     "statement": {
       "src": "assets/mittagong-custom-home-1200.webp",
@@ -242,12 +242,13 @@
       "_comment": "PALR2305-scaled.jpg (2560x1918), the lead photo of 'Featured New Home @ Mittagong' on their Custom Builds page, the home S&I designed and drew themselves."
     },
     "aperture": {
-      "src": "assets/mittagong-living-room-1800.webp",
-      "srcset": "assets/mittagong-living-room-800.webp 800w, assets/mittagong-living-room-1200.webp 1200w, assets/mittagong-living-room-1800.webp 1800w",
-      "width": 2560,
-      "height": 1708,
-      "alt": "An open living room with oak floors, a jute rug and wide sliding doors out to the balcony and the hills beyond, Mittagong",
-      "caption": "Custom home, Mittagong"
+      "src": "assets/high-range-front-1800.webp",
+      "srcset": "assets/high-range-front-800.webp 800w, assets/high-range-front-1200.webp 1200w, assets/high-range-front-1800.webp 1800w",
+      "width": 1806,
+      "height": 985,
+      "alt": "A rendered double brick home with a dark tiled roof and a cupola, behind a gravel path lined with clipped conifers and lawn, High Range",
+      "caption": "New home, High Range",
+      "_comment": "SI-constructions-architectural-design-slider-1.jpg (1806x985), the first photo of 'Featured project: New Home @ High Range' on their Architectural Design page. Replaced the bright Mittagong living room after review: the lower half here is shaded lawn and dark conifers, so the white aperture text reads clearly. A different photo of the same house as gallery 3 (side view)."
     },
     "enquiryBackground": {
       "src": "assets/mittagong-bedroom-1200.webp",
@@ -272,7 +273,7 @@
         "width": 1806,
         "height": 985,
         "caption": "Bowral",
-        "detail": "New home, kitchen and dining",
+        "detail": "Spec home, kitchen · Photo: Ashley Mackevicius",
         "alt": "A kitchen with a blue-grey island, white stone benchtop and woven cane pendants, open to a sunlit dining room"
       },
       {
@@ -302,21 +303,31 @@
         "width": 1806,
         "height": 985,
         "caption": "Bowral",
-        "detail": "New home, outdoor dining",
+        "detail": "Spec home, alfresco · Photo: Ashley Mackevicius",
         "alt": "Bifold doors folded back onto a paved outdoor dining area under a white pergola, with a garden beyond"
       },
       {
-        "src": "assets/mittagong-kitchen-1200.webp",
-        "full": "assets/mittagong-kitchen.jpg",
-        "srcset": "assets/mittagong-kitchen-480.webp 480w, assets/mittagong-kitchen-800.webp 800w, assets/mittagong-kitchen-1200.webp 1200w, assets/mittagong-kitchen-1800.webp 1800w",
-        "width": 1806,
-        "height": 985,
+        "src": "assets/mittagong-kitchen-dining-1200.webp",
+        "full": "assets/mittagong-kitchen-dining.jpg",
+        "srcset": "assets/mittagong-kitchen-dining-480.webp 480w, assets/mittagong-kitchen-dining-800.webp 800w, assets/mittagong-kitchen-dining-1200.webp 1200w, assets/mittagong-kitchen-dining-1800.webp 1800w",
+        "width": 2560,
+        "height": 1708,
         "caption": "Mittagong",
-        "detail": "Architect-designed home, kitchen",
-        "alt": "A white shaker-style kitchen with a stone island, glass globe pendants, a double wall oven and a subway-tile splashback"
+        "detail": "Custom home, kitchen and dining",
+        "alt": "An island kitchen with white stools and black pendant lights, open to a timber dining table and glass doors onto the lawn"
       }
     ],
-    "_comment": "13 real photos, all S&I's own, from siconstructions.com.au/wp-content/uploads at the largest size published. None are stock, samples or upscaled. Each image is used once. The two Mittagong homes are different houses (the custom home S&I drew, and the architect-designed home on their Project Management page). See BRIEF.md for every source file and what was left out."
+    "_comment": "14 real photos, all S&I's own, from siconstructions.com.au/wp-content/uploads at the largest size published. None are stock, samples or upscaled. Each image is used once. The High Range house appears twice (front in the aperture, side in the gallery) and the Mittagong custom home appears in several rooms. The architect-designed Mittagong home (owner photo) is a different house. See BRIEF.md.",
+    "owner": {
+      "src": "assets/mittagong-project-home-1200.webp",
+      "srcset": "assets/mittagong-project-home-480.webp 480w, assets/mittagong-project-home-800.webp 800w, assets/mittagong-project-home-1200.webp 1200w",
+      "width": 1313,
+      "height": 985,
+      "ratio": "4/3",
+      "alt": "A grey weatherboard home with a gabled front porch, a double garage and a white picket fence, Mittagong",
+      "caption": "Mittagong · architect-designed home we project-managed",
+      "_comment": "SI-constructions-project-management-38-spencer-slider-2.jpg (1806x985), cropped to 4:3 from the centre. From 'Featured project: New Home @ Mittagong' on their Project Management page. Not a photo of Jason, so it isn't captioned as him. This house's kitchen was gallery 6; that slot now uses a different home, so this house appears once."
+    }
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
@@ -439,10 +450,6 @@
         "sentence": "If you are looking for an architect there are a number of designers we work closely with and are able to recommend.",
         "url": "https://www.siconstructions.com.au/projects/architectural-design/"
       },
-      "Architect-designed Mittagong home (gallery 6)": {
-        "sentence": "Featured project: New Home @ Mittagong. Our clients used an architect to design this home to suit its surrounding area.",
-        "url": "https://www.siconstructions.com.au/projects/project-management/"
-      },
       "Process: meet face to face at office or on site": {
         "sentence": "Following your initial enquiry, we welcome the opportunity to meet with you face-to-face, either at our office or on-site.",
         "url": "https://www.siconstructions.com.au/contact/"
@@ -472,14 +479,33 @@
         "url": "data/google_reviews_top25.json"
       },
       "Every photo on the page": {
-        "sentence": "All 13 photos are S&I's own, from siconstructions.com.au/wp-content/uploads/. Bowral (New Homes page, 'Featured project: New home @ Bowral', 'Photography by Ashley Mackevicius'): 121A-Bowral-Street-slider1 (hero), slider2 (kitchen), slider3 (living), slider4 (alfresco). Mittagong custom home (Custom Builds page, 'Featured New Home @ Mittagong'): PALR2305, 2370, 2421, 2410, 2318. Exeter (Renovations page): protfolio-renovations. Burradoo (Commercial page): commercial-oxley-gym-slider-3. High Range (Architectural Design page): architectural-design-slider-2. Mittagong architect-designed home (Project Management page): project-management-38-spencer-slider-4.",
+        "sentence": "All 14 photos are S&I's own, from siconstructions.com.au/wp-content/uploads/. Bowral (New Homes page, 'Featured project: New home @ Bowral', 'Photography by Ashley Mackevicius'): 121A-Bowral-Street-slider1 (hero), slider2 (kitchen), slider3 (living), slider4 (alfresco). Mittagong custom home (Custom Builds page, 'Featured New Home @ Mittagong'): PALR2305, 2421, 2410, 2318, 2381-1. Exeter (Renovations page): protfolio-renovations. Burradoo (Commercial page): commercial-oxley-gym-slider-3. High Range (Architectural Design page): architectural-design-slider-1 (aperture) and slider-2 (gallery). Mittagong architect-designed home (Project Management page): project-management-38-spencer-slider-2 (owner photo).",
         "url": "https://www.siconstructions.com.au/work-projects/"
       },
       "Logo and favicon": {
         "sentence": "Their own SI_constructions_logo_2x.png (padding trimmed) and cropped-SIconstructionsfavicon-1.png (resized to 192px), from wp-content/uploads/2020/05/.",
         "url": "https://www.siconstructions.com.au/"
+      },
+      "Architect-designed Mittagong home (owner photo caption: project-managed by us)": {
+        "sentence": "Featured project: New Home @ Mittagong. Our clients used an architect to design this home to suit its surrounding area. (on the Project Management page, whose heading is PROJECT MANAGEMENT) / Working closely with our clients the S&I team were able to bring to life what was envisaged in a timely matter and on budget.",
+        "url": "https://www.siconstructions.com.au/projects/project-management/"
+      },
+      "Bowral home is a spec home; photographer credit": {
+        "sentence": "Featured project: New home @ Bowral. In partnership with the developer and the architect, this home was built as a speculative project. Photography by Ashley Mackevicius",
+        "url": "https://www.siconstructions.com.au/projects/new-homes/"
+      },
+      "Jason picks the trades (owner team line)": {
+        "sentence": "Google review by Greg Catling: 'Jason is the ultimate professional builder with a great team of trades that all do quality work. His choice of trades is testament to his superior level of professionalism.' / Site testimonial: 'The tradespeople that Jason uses are local, on time, polite, and high quality.' / About: 'we work with a trusted network of highly qualified, fully insured local subcontractors, many of whom have been part of our team for years.'",
+        "url": "https://www.siconstructions.com.au/about/"
+      },
+      "Garage turned into a home office (services intro)": {
+        "sentence": "Google review by Rachel Marion: 'they converted a garage space into an office for us and also built a side deck on our house.'",
+        "url": "data/google_reviews_top25.json"
       }
     }
   },
-  "_check": []
+  "_check": [],
+  "demo": {
+    "footerNote": "This is a demo built by Frontline Systems as a proposal for {business}. It is not their live site. Bowral photos by Ashley Mackevicius."
+  }
 }

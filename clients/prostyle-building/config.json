@@ -61,7 +61,7 @@
     "servicesHeadline": "Extend, rebuild<br>or start<br>new.",
     "servicesIntro": "Our project managers and builders work with your architect or designer, and our own construction team looks after the build.",
     "apertureLabel": "Local",
-    "apertureLine": "We support the local community by using local suppliers.",
+    "apertureLine": "Canberra homes, built by a Canberra team using local suppliers.",
     "workLabel": "Selected work",
     "workHeadline": "Hawker to<br>Red Hill, and<br>out to Collector.",
     "workIntro": "A few homes from our portfolio, from Canberra's inner suburbs out to the country near Lake George.",
@@ -465,7 +465,7 @@
         "sentence": "Craig and the Prostyle team completed a major renovation for us in Waramanga. We were really happy throughout the build - communication was excellent and Craig went above and beyond (PHILIPPA P., new-homes page) / Craig and the Prostyle team were great. They recently completed a fairly major extension to our place in Hughes ... Craig was also always responsive to any queries or concerns. (GREG H., extensions page)",
         "url": "https://www.prostylehomes.com.au/extensions-renovations"
       },
-      "Dedicated construction manager runs the programme; site meetings; weekly progress reports; hand the keys back (hero, aperture, process, FAQ, extensions service)": {
+      "Dedicated construction manager runs the programme; site meetings; weekly progress reports; hand the keys back (hero, statement, process, FAQ)": {
         "sentence": "From there our construction team takes over & the fun begins, our dedicated construction manager will run the programme for you extension & renovation. We will keep you regularly updated on progress with site meetings & weekly progress reports. When we hand the keys back to you will enjoy the look and feel of your newly renovated home.",
         "url": "https://www.prostylehomes.com.au/extensions-renovations"
       },
@@ -518,7 +518,7 @@
         "url": "data/google_reviews_top25.json"
       },
       "Every photo on the page": {
-        "sentence": "All 16 photos are ProStyle's own, from prostylehomes.com.au: Garran portfolio 'PS -120330 2218.jpg' (hero) and 'PS -120330 2276.jpg' (aperture), both 2500px; Extensions page 04.jpg (statement) and 02.jpg; New Homes page 02.jpg; Knock Down Rebuilds page '1 copy.jpg'; New Developments page 01.jpg; Bathrooms page 02.jpg; About page 'team copy.jpg'; Torrens cover 'PS-0557-May 15, 2019.jpg'; Hawker 'PS-0765-160316.jpg'; Campbell 'Garsia-00075.jpg'; Red Hill 'StewH 007.jpg'; Yarralumla 'PS-1003-May 23, 2019.jpg'; Collector 02.jpg; O'Connor 'PS-6356-180221.jpg'. Gallery captions use the portfolio page titles.",
+        "sentence": "All 16 photos are ProStyle's own, from prostylehomes.com.au: Garran portfolio 'PS -120330 2218.jpg' (hero) and 'PS -120330 2276.jpg' (aperture), both 2500px; Curtin portfolio '_MG_6709-Edit-20160224.jpg' (statement, 667x1000 portrait); Extensions page 02.jpg; New Homes page 02.jpg; Knock Down Rebuilds page '1 copy.jpg'; New Developments page 01.jpg; Bathrooms page 02.jpg; About page 'team copy.jpg'; Torrens cover 'PS-0557-May 15, 2019.jpg'; Hawker 'PS-0765-160316.jpg'; Campbell 'Garsia-00075.jpg'; Red Hill 'StewH 007.jpg'; Yarralumla 'PS-1003-May 23, 2019.jpg'; Collector 02.jpg; O'Connor 'PS-6356-180221.jpg'. Gallery captions use the portfolio page titles.",
         "url": "https://www.prostylehomes.com.au/portfolio"
       },
       "Logo": {
