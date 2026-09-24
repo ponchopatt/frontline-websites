@@ -210,7 +210,7 @@ function aperture(cfg, copy) {
 <section class="ap bleed" id="aperture" aria-labelledby="apHead">
   <img src="${p.src}"${raw(p.srcset ? ` srcset="${p.srcset}" sizes="(max-width:767px) 150vw, 100vw"` : '')}${
     raw(p.width ? ` width="${p.width}"` : '')}${raw(p.height ? ` height="${p.height}"` : '')
-  } decoding="async" alt="${p.alt ?? ''}">${sampleTag(p)}
+  } loading="lazy" decoding="async" alt="${p.alt ?? ''}">${sampleTag(p)}
   <div class="frame" aria-hidden="true"></div>
   <p class="t-label apLabel" id="apHead">${copy.apertureLabel ?? ''}</p>
   ${present(p.caption) || present(copy.apertureLine) ? html`<div class="plate">
