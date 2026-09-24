@@ -83,7 +83,8 @@
     "enquireIntro": "Tell us where the house or block is, what you'd like to build and whether you have plans yet. After that first contact, we'd like to meet you, at our office or on site. Or call the office on (02) 4871 1607, 7:00am to 5:30pm.",
     "reviewsLabel": "On Google",
     "reviewsTitle": "In our clients' words.",
-    "reviewsIntro": "What people we've built for have written about us on Google."
+    "reviewsIntro": "What people we've built for have written about us on Google.",
+    "callLabel": "Call S&I"
   },
   "stats": {
     "_comment": "Google is 4.2 from 5 (data/google_reviews_top25.json, slug si-constructions), below the 4.7 floor, so neither shows. Years: their site says 'over 45 years' and publishes no founding year, so the stat shows 45 with the sublabel 'and counting'. Their 'over 1,000 successful projects' stays as a credential in words: the gate reads a round 1000 stat as a guess.",
