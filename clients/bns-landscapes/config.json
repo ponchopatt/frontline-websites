@@ -484,7 +484,7 @@
       }
     ],
     "reviews": "data/google_reviews_top25.json, bns-landscapes: rating 4.2 from 9 (below the floor, not shown). Every review and the pull quote are from best_for_demo, word for word. 'D.A application to final completion of works' (Lauren Mehanna) is the source for the headline's 'From the D.A.' and the approvals step; 'from driveway crossovee concreting through to turf laying' (Rangi Ivaiti) for 'the last roll of turf'.",
-    "photos": "Every photo is from their own media library at bnslandscapes.com.au/wp-content/uploads/. Hero I006.jpg is their own home-page and Landscapes-page hero. Park.jpg is from their Commercial gallery page; IMG_3801.jpg is from their Seawalls and Innovations galleries; IMG_1452.jpg is the Contact-page photo. Captions describe what is in the frame only; their site never names a garden job's suburb, so none is named.",
+    "photos": "Every photo is from their own media library at bnslandscapes.com.au/wp-content/uploads/. Hero I006.jpg is their own home-page and Landscapes-page hero. The aperture is seawall-banner-inno.jpg, their Innovations-page banner. The team photo 0.jpg and IMG_3801.jpg are from their Seawalls and Innovations galleries; Park.jpg and IMG_0239.jpg are from their Commercial gallery. Captions describe what is in the frame only; their site never names a garden job's suburb, so none is named. Full inventory with pixel sizes in BRIEF.md.",
     "notUsed": "Not on the page for want of a checkable source or because it may be stale: 'received many awards of excellence in the Industry' (no award named); 'BNS offers a 24 hour emergency service on all Sylvania Waterways Seawalls' (2019 text, ask Peter); geotechnical engineering (only a form option); ABN (from ABN Lookup, not their site)."
   }
 }

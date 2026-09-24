@@ -110,32 +110,37 @@ own site uses as its hero, so Peter will recognise it straight away.
 
 | Slot | File (their upload) | Size | What it shows |
 |---|---|---|---|
-| Hero | 2019/04/I006.jpg | 2000×1036 | Terraced sandstone walls, palms and hedging up a steep block to a glass-fronted house. Their own site's hero. |
-| Statement | 2019/04/IMG_8956.jpg | 2000×1333 | Hardwood stairs off a verandah, frangipani, glass-fenced lap pool, travertine paving. |
-| Aperture | 2019/04/IMG_1452.jpg | 2000×750 | Waterfront pool with a lit water-blade wall, canal and boats behind, at dusk. |
-| Service: landscape & stone | 2019/04/G014.jpg | 1300×867 | Circular sandstone fire-pit seat, timber posts, mulched beds, lawn. |
-| Service: pools | 2019/04/IMG_8045.jpg | 1300×867 | Lit pool at dusk, bluestone-look coping, timber deck step, palms. |
-| Service: timber | 2019/05/IMG_1067.jpg | 1200×679 | Hardwood deck, stairs, slat screen and pergola against a brick house. |
-| Service: seawalls | 2019/04/IMG_3801.jpg | 1300×975 | New concrete seawall and capping along a canal, gangway down to a pontoon. |
+| Hero | 2019/04/I006.jpg | 2000×1036 | Terraced sandstone walls, palms and hedging up a steep block to a glass-fronted house. Their own site's hero. Gentle shadow lift (gamma 0.85) only. |
+| Statement | 2019/04/IMG_8956.jpg | 2000×1333 → 1066×1333 crop | Hardwood stairs off a verandah, frangipani, glass-fenced lap pool, pale paving. |
+| Aperture | 2019/04/seawall-banner-inno.jpg | 2000×1500 → 2000×1250 crop | New concrete seawall along a canal seen from the water, excavator on a barge at the far end. Their Innovations-page banner. |
+| Owner/team | 2019/04/0.jpg | 1300×975 → 731×975 crop | Two crew in hi-vis on a work barge with an excavator (cab sign reads "LANDSCAPES"), rebuilding a seawall. Captioned as the job, not as Peter. |
+| Service: stone & walls | 2019/04/G014.jpg | 1300×867 → 650×867 | Circular sandstone fire-pit seat, timber posts, mulched beds, lawn. |
+| Service: turf & planting | 2019/04/H007.jpg | 1300×975 → 731×975 | Curved lawn panel edged in clipped hedging, palms and flax behind. |
+| Service: pools & water | 2019/04/IMG_8045.jpg | 1300×867 → 650×867 | Lit pool at dusk, grey coping, timber deck step, palms. |
+| Service: timber | 2019/05/IMG_1067.jpg | 1200×679 → 509×679 | Hardwood deck, stairs, slat screen and pergola against a brick house. |
+| Service: commercial | 2019/04/IMG_0239.jpg | 1500×1125 → 844×1125 | Sandstone block seats in new turf in a public park (their Commercial page). |
+| Service: seawalls | 2019/04/IMG_3801.jpg | 1300×975 → 731×975 | New concrete seawall and capping along a canal, gangway to a pontoon. |
 | Gallery 1 | 2019/06/gallerynew01.jpg | 1200×800 | Front garden: white piers and black slat fence, lawn, aggregate driveway. |
 | Gallery 2 | 2019/06/gallerynew06.jpg | 1200×800 | Paved side path between raised tropical planters. |
 | Gallery 3 | 2019/04/B016.jpg | 1300×867 | Curved path through boulders, pebbles and grass tufts under bamboo. |
 | Gallery 4 | 2019/04/CAS0250.jpg | 1400×933 | Pool in front of a random-stone feature wall with planter slots, new turf. |
-| Gallery 5 | 2019/04/C002.jpg | 1300×975 | Raised pool with a stacked-stone face, glass fence, sandstone steps, river pebbles. |
+| Gallery 5 | 2019/04/C002.jpg | 1300×975 | Raised pool with a stacked-stone face, glass fence, stone steps, river pebbles. |
 | Gallery 6 | 2019/04/Park.jpg | 1500×1125 | Commercial: park path with a timber crossing, rock and mulch beds (their Commercial page). |
 
-Every slot is a different image. Captions describe only what is in the frame — no suburbs,
-because their site never names the suburb of a garden job.
+Sixteen slots, sixteen different images. Captions describe only what is in the frame — no
+suburbs, because their site never names the suburb of a garden job. Portrait crops were made
+so no slot is upscaled at 1440px (measured in a headless browser: every image displays at or
+below its real pixel size; the hero is ~1% over at 1440×900, i.e. none visible).
 
 **Not used, and why:** `SunscreenPatioOysterBay*.jpg` (six photos of a louvred patio roof —
 the file names suggest a patio-roof supplier's shoot, so not safe to present as BNS work);
-`hub-header.jpg` (stock); `1.jpg`/`7.jpg` (a Toyota corporate site — would imply a named
-client); `40Trevellyan_*`, `gallerynew07` (strong, but probably the same development as
-gallery 2 — kept in reserve); the seawall drone shots (`IMG_095x`) and `13.jpg` (good, kept
-in reserve); `service0x.jpg` (500×400, too small); the Gold Licence certificate scan.
+`hub-header.jpg` (stock, not Australian); `1.jpg`/`7.jpg` (a Toyota corporate site — would
+imply a named client); `IMG_1452.jpg` (lovely canal-side water feature, but 2000×750 is too
+panoramic for the full-screen slot); `40Trevellyan_*`, `gallerynew07` (strong, but probably the
+same development as gallery 2 — in reserve); the seawall drone shots (`IMG_095x`) (in reserve);
+`service0x.jpg` (500×400, too small); the Gold Licence certificate scan.
 
-No sample photos needed. No upscaling: the largest display of each image is at or below its
-real width at 1440px.
+No sample photos needed. No AI upscaling.
 
 ## What Pat would need from Peter
 
