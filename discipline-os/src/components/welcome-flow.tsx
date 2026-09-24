@@ -18,7 +18,10 @@ export interface WelcomeDefaults {
   redo: boolean;
   today: string;
   thisYear: number;
-  existingGoals: Array<{ title: string; year: number }>;
+  /** Goals already set for this year and next, with their area's key. */
+  existingGoals: Array<{ title: string; year: number; area: string | null }>;
+  /** What each counter-measured goal's counter already holds this year. */
+  counterSoFar: Partial<Record<WelcomeGoalKey, number>>;
   workHours: number;
   workDays: number[];
   botHours: number;
@@ -38,31 +41,39 @@ interface GoalDraft {
   target: number | null;
   /** The title was typed by hand, so a new number doesn't rewrite it. */
   edited: boolean;
+  /** The number was typed or stepped by hand, so a change of year keeps it. */
+  targetEdited: boolean;
 }
 
-function draftsFor(year: number, today: string, prev?: GoalDraft[]): GoalDraft[] {
+function draftsFor(year: number, today: string, soFar: WelcomeDefaults["counterSoFar"], prev?: GoalDraft[]): GoalDraft[] {
   return GOAL_TEMPLATES.map((t) => {
     const old = prev?.find((p) => p.key === t.key);
-    const target = suggestedTarget(t, year, today);
-    if (old?.edited) return old;
-    return { key: t.key, on: old?.on ?? t.on, title: t.title(target), target, edited: false };
+    const suggested = suggestedTarget(t, year, today, soFar[t.key]);
+    if (!old) return { key: t.key, on: t.on, title: t.title(suggested), target: suggested, edited: false, targetEdited: false };
+    const target = old.targetEdited ? old.target : suggested;
+    return { ...old, target, title: old.edited ? old.title : t.title(target) };
   });
 }
+
+const areaOf = (key: WelcomeGoalKey) => GOAL_TEMPLATES.find((t) => t.key === key)!.area;
 
 /**
  * First-run setup, one question a screen: what to call you, the passcode, what you want to
  * achieve this year, why, and the daily and weekly numbers. Nothing but the passcode is saved
- * until the end; "Skip the rest" keeps the defaults.
+ * until the end; "Skip the rest" keeps what's been answered and the defaults for the rest.
  */
 export function WelcomeFlow({ defaults }: { defaults: WelcomeDefaults }) {
   const router = useRouter();
-  const steps: Step[] = ["name", ...(defaults.passcodeSet ? [] : (["passcode"] as Step[])), "goals", "why", "daily", "weekly", "done"];
+  // Decided once: saving the passcode refreshes the page, and the step mustn't vanish mid-setup.
+  const [askPasscode] = useState(!defaults.passcodeSet);
+  const steps: Step[] = ["name", ...(askPasscode ? (["passcode"] as Step[]) : []), "goals", "why", "daily", "weekly", "done"];
   const [step, setStep] = useState<Step>("name");
   const [busy, setBusy] = useState(false);
   const [name, setName] = useState(defaults.name);
   const [pin, setPin] = useState("1906");
+  const [savedPin, setSavedPin] = useState<string | null>(null);
   const [year, setYear] = useState(defaults.thisYear);
-  const [goals, setGoals] = useState<GoalDraft[]>(() => draftsFor(defaults.thisYear, defaults.today));
+  const [goals, setGoals] = useState<GoalDraft[]>(() => draftsFor(defaults.thisYear, defaults.today, defaults.counterSoFar));
   const [becoming, setBecoming] = useState("");
   const [why, setWhy] = useState("");
   const [workHours, setWorkHours] = useState(defaults.workHours);
@@ -77,17 +88,25 @@ export function WelcomeFlow({ defaults }: { defaults: WelcomeDefaults }) {
   const index = steps.indexOf(step);
   const next = () => setStep(steps[Math.min(steps.length - 1, index + 1)]);
   const back = () => setStep(steps[Math.max(0, index - 1)]);
+  // An area that already has a goal for the chosen year is off here, so nothing is added twice.
+  const taken = new Set(defaults.existingGoals.filter((g) => g.year === year).map((g) => g.area));
 
   async function savePasscode() {
     if (!/^[0-9]{4}$/.test(pin)) {
       toast.error("A passcode is four digits.");
       return;
     }
+    // Back here after saving it: unchanged moves on, a new one replaces the one just saved.
+    if (pin === savedPin) return next();
     setBusy(true);
     try {
-      const res = await setPasscode({ pin });
+      // Sent as the current one too, so a retry after a lost reply that did save it goes through.
+      const res = await setPasscode({ pin, current: savedPin ?? pin });
       if (!res.ok) toast.error(res.error);
-      else next();
+      else {
+        setSavedPin(pin);
+        next();
+      }
     } catch {
       toast.error("That didn't save. Check your connection and try again.");
     } finally {
@@ -102,25 +121,35 @@ export function WelcomeFlow({ defaults }: { defaults: WelcomeDefaults }) {
       return;
     }
     setBusy(true);
+    // Skipping keeps the steps already passed and sends the defaults for the rest. The targets
+    // are saved once the day is answered; before that they keep what they are.
+    const passed = (s: Step) => !skip || steps.indexOf(s) < index;
+    const day = passed("daily");
     const input: WelcomeInput = {
       name: name.trim(),
-      skip,
+      skip: !day,
       year,
-      goals: goals.filter((g) => g.on).map((g) => ({ key: g.key, title: g.title.trim() || GOAL_TEMPLATES.find((t) => t.key === g.key)!.title(g.target), target: g.target })),
-      becoming,
-      why,
-      workHours,
-      workDays,
-      botHours,
-      gymDays,
-      cardioMinutes: cardio,
-      streakLine,
-      weekly,
+      goals: passed("goals")
+        ? goals
+            .filter((g) => g.on && !taken.has(areaOf(g.key)))
+            .map((g) => ({ key: g.key, title: g.title.trim() || GOAL_TEMPLATES.find((t) => t.key === g.key)!.title(g.target), target: g.target }))
+        : [],
+      becoming: passed("why") ? becoming : "",
+      why: passed("why") ? why : "",
+      workHours: day ? workHours : defaults.workHours,
+      workDays: day ? workDays : defaults.workDays,
+      botHours: day ? botHours : defaults.botHours,
+      gymDays: day ? gymDays : defaults.gymDays,
+      cardioMinutes: day ? cardio : defaults.cardioMinutes,
+      streakLine: day ? streakLine : defaults.streakLine,
+      weekly: passed("weekly") ? weekly : defaults.weekly,
     };
     try {
       const res = await finishWelcome(input);
       if (!res.ok) toast.error(res.error);
       else if (skip) {
+        const n = res.data.goals;
+        if (n > 0) toast.success(`${n} ${n === 1 ? "goal" : "goals"} saved for ${year}.`);
         router.replace("/");
         router.refresh();
       } else {
@@ -189,7 +218,7 @@ export function WelcomeFlow({ defaults }: { defaults: WelcomeDefaults }) {
                 inputMode="numeric"
                 autoComplete="off"
                 maxLength={4}
-                className="h-16 rounded-2xl border border-glass-edge bg-glass px-4 text-center text-[34px] tracking-[0.6em] backdrop-blur-md outline-none focus-visible:border-foreground/60"
+                className="h-16 w-full min-w-0 rounded-2xl border border-glass-edge bg-glass px-4 text-center text-[34px] tracking-[0.6em] backdrop-blur-md outline-none focus-visible:border-foreground/60"
               />
             </label>
             <p className="text-[15px] text-muted-foreground">You&apos;ll enter it each time you open the app. Change it any time in Settings.</p>
@@ -208,7 +237,7 @@ export function WelcomeFlow({ defaults }: { defaults: WelcomeDefaults }) {
                   aria-checked={year === y}
                   onClick={() => {
                     setYear(y);
-                    setGoals((g) => draftsFor(y, defaults.today, g));
+                    setGoals((g) => draftsFor(y, defaults.today, defaults.counterSoFar, g));
                   }}
                   className={cn("h-12 rounded-full border text-[15px] transition-colors", year === y ? "border-primary bg-primary text-primary-foreground" : "border-glass-edge bg-glass")}
                 >
@@ -218,29 +247,36 @@ export function WelcomeFlow({ defaults }: { defaults: WelcomeDefaults }) {
             </div>
             {defaults.existingGoals.some((g) => g.year === year) && (
               <p className="text-sm text-muted-foreground">
-                Already set for {year}: {defaults.existingGoals.filter((g) => g.year === year).map((g) => g.title).join("; ")}. New ones are added alongside.
+                Already set for {year}: {defaults.existingGoals.filter((g) => g.year === year).map((g) => g.title).join("; ")}. Areas with a goal are switched off here.
               </p>
             )}
             <ul className="grid gap-3">
               {goals.map((g) => {
                 const t = GOAL_TEMPLATES.find((x) => x.key === g.key)!;
                 const set = (patch: Partial<GoalDraft>) => setGoals((list) => list.map((x) => (x.key === g.key ? { ...x, ...patch } : x)));
+                const blocked = taken.has(t.area);
+                const on = g.on && !blocked;
+                const soFar = year === defaults.thisYear ? (defaults.counterSoFar[g.key] ?? 0) : 0;
                 return (
-                  <li key={g.key} className={cn("surface grid gap-3 rounded-[24px] border p-4 transition-opacity", !g.on && "opacity-70")}>
+                  <li key={g.key} className={cn("surface grid gap-3 rounded-[24px] border p-4 transition-opacity", !on && "opacity-70")}>
                     <div className="flex items-center justify-between gap-3">
                       <span className="text-sm text-muted-foreground">{t.label}</span>
+                      {/* A 44px tap area around the 32px track. */}
                       <button
                         type="button"
                         role="switch"
-                        aria-checked={g.on}
+                        aria-checked={on}
                         aria-label={`${t.label} goal`}
+                        disabled={blocked}
                         onClick={() => set({ on: !g.on })}
-                        className={cn("relative h-8 w-14 shrink-0 rounded-full transition-colors", g.on ? "bg-primary" : "bg-foreground/15")}
+                        className="-my-1.5 grid h-11 w-14 shrink-0 place-items-center"
                       >
-                        <span aria-hidden className={cn("absolute top-1 size-6 rounded-full bg-background shadow transition-[left]", g.on ? "left-7" : "left-1")} />
+                        <span aria-hidden className={cn("relative h-8 w-14 rounded-full transition-colors", on ? "bg-primary" : "bg-foreground/15")}>
+                          <span className={cn("absolute top-1 size-6 rounded-full bg-background shadow transition-[left]", on ? "left-7" : "left-1")} />
+                        </span>
                       </button>
                     </div>
-                    {g.on && (
+                    {on && (
                       <>
                         <label className="grid gap-1">
                           <span className="sr-only">{t.label} goal</span>
@@ -257,9 +293,10 @@ export function WelcomeFlow({ defaults }: { defaults: WelcomeDefaults }) {
                             value={g.target}
                             step={t.unit === "$" ? 5000 : t.unit === "%" ? 5 : t.target !== null && t.target >= 100 ? 10 : 1}
                             max={t.unit === "%" ? 100 : 100_000_000}
-                            onChange={(v) => set({ target: v, ...(g.edited ? {} : { title: t.title(v) }) })}
+                            onChange={(v) => set({ target: v, targetEdited: true, ...(g.edited ? {} : { title: t.title(v) }) })}
                           />
                         )}
+                        {soFar > 0 && <p className="text-sm text-muted-foreground">Counts the {formatValue(soFar, t.unit)} already logged this year.</p>}
                       </>
                     )}
                   </li>
@@ -361,7 +398,7 @@ export function WelcomeFlow({ defaults }: { defaults: WelcomeDefaults }) {
             </Link>
           </>
         ) : (
-          <Primary busy={busy} onClick={next} disabled={step === "name" && !name.trim()}>
+          <Primary busy={busy} onClick={next} disabled={(step === "name" && !name.trim()) || (step === "daily" && (workDays.length === 0 || gymDays.length === 0))}>
             Next
           </Primary>
         )}
@@ -408,27 +445,38 @@ function Area({ label, value, onChange, placeholder }: { label: string; value: s
   );
 }
 
-/** A number with − and +, and typeable. Changes land straight away. */
+/**
+ * A number with − and +, and typeable. Changes land straight away; the typed text stays as
+ * typed ("1." on the way to 1.5) until the field is left, then shows the number kept.
+ */
 function NumberField({ label, value, onChange, step, max, min = 0 }: { label: string; value: number; onChange: (v: number) => void; step: number; max: number; min?: number }) {
+  const [draft, setDraft] = useState<string | null>(null);
   const clamp = (n: number) => Math.min(max, Math.max(min, Math.round(n * 100) / 100));
+  const move = (n: number) => {
+    setDraft(null);
+    onChange(clamp(n));
+  };
   return (
     <div className="flex items-center justify-between gap-3">
       <span className="text-[15px]">{label}</span>
       <div className="flex shrink-0 items-center rounded-full border border-border">
-        <button type="button" aria-label={`${label}: less`} onClick={() => onChange(clamp(value - step))} className="grid size-11 place-items-center rounded-full text-muted-foreground">
+        <button type="button" aria-label={`${label}: less`} onClick={() => move(value - step)} className="grid size-11 place-items-center rounded-full text-muted-foreground">
           <Minus className="size-4" aria-hidden />
         </button>
         <input
           aria-label={label}
           inputMode="decimal"
-          value={Number.isFinite(value) ? String(value) : ""}
+          value={draft ?? (Number.isFinite(value) ? String(value) : "")}
           onChange={(e) => {
-            const n = Number(e.target.value.replace(/[^0-9.]/g, ""));
-            if (Number.isFinite(n)) onChange(clamp(n));
+            const text = e.target.value.replace(/[^0-9.]/g, "");
+            setDraft(text);
+            const n = Number(text);
+            if (text !== "" && Number.isFinite(n)) onChange(clamp(n));
           }}
+          onBlur={() => setDraft(null)}
           className="h-11 w-20 bg-transparent text-center text-[17px] font-medium tabular-nums outline-none"
         />
-        <button type="button" aria-label={`${label}: more`} onClick={() => onChange(clamp(value + step))} className="grid size-11 place-items-center rounded-full text-muted-foreground">
+        <button type="button" aria-label={`${label}: more`} onClick={() => move(value + step)} className="grid size-11 place-items-center rounded-full text-muted-foreground">
           <Plus className="size-4" aria-hidden />
         </button>
       </div>
@@ -457,6 +505,7 @@ function DayChips({ label, value, onToggle }: { label: string; value: number[]; 
           );
         })}
       </div>
+      {value.length === 0 && <p className="text-sm text-muted-foreground">Pick at least one day.</p>}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { expect, type Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 import { addDays, localDateAt, type LocalDate } from "../src/lib/day";
 import type { Database } from "../src/lib/supabase/database.types";
 
@@ -58,6 +58,18 @@ export async function waitForApp(page: Page) {
     const el = document.querySelector('[role="checkbox"]');
     return Boolean(el && Object.keys(el).some((k) => k.startsWith("__reactProps")));
   });
+}
+
+/** A control is on screen and React has hydrated it, so typing into it sticks. */
+export async function ready(locator: Locator) {
+  await expect(locator).toBeVisible();
+  await locator.evaluate(
+    (el) =>
+      new Promise<void>((resolve) => {
+        const check = () => (Object.keys(el).some((k) => k.startsWith("__reactProps")) ? resolve() : setTimeout(check, 50));
+        check();
+      }),
+  );
 }
 
 /** The Keep My Word percentage in the header ring. */
