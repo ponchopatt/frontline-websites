@@ -67,16 +67,6 @@
     "enquireHeadline": "Tell us about<br>the job.",
     "enquireIntro": "Send us a message, or call for a quote. Tell us a bit about the project and where it is, and we'll get back to you."
   },
-  "stats": {
-    "_comment": "The years stat can only render as a number. Their site says 'over 30 years', so it shows 30 with the sublabel 'and counting'.",
-    "yearsInBusiness": 30
-  },
-  "statLabels": {
-    "yearsInBusiness": "Years' experience"
-  },
-  "statSublabels": {
-    "yearsInBusiness": "and counting"
-  },
   "owner": {
     "body": "We're Darren Meyers's building company, based in Bowral. You may know us from before as Darren Meyers Carpentry or Darren Meyers Constructions.",
     "team": "Our team is polite and friendly, fully licensed and insured, and will treat your home with care.",
@@ -104,7 +94,7 @@
       "kind": "claim",
       "label": "ABN 74 092 054 594",
       "body": "Meyers Building Group is the registered business name of Thomaselly Pty Ltd, a Bowral company.",
-      "strip": false
+      "strip": true
     }
   ],
   "services": [

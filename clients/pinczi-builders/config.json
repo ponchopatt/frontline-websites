@@ -4,7 +4,7 @@
   "template": "trust",
   "industry": "builders",
   "live": false,
-  "tagline": "Custom homes, additions and commercial builds, only in the Southern Highlands, for over twenty years.",
+  "tagline": "Custom homes, additions and commercial builds, only in the Southern Highlands, for over two decades.",
   "schemaType": "HomeAndConstructionBusiness",
   "business": {
     "name": "Pinczi Builders",
@@ -41,24 +41,24 @@
     "width": 1200,
     "height": 630,
     "title": "Pinczi Builders: Southern Highlands Builders, Bowral",
-    "description": "Custom homes, additions and commercial builds, only in the Southern Highlands, for over twenty years.",
+    "description": "Custom homes, additions and commercial builds, only in the Southern Highlands, for over two decades.",
     "alt": "At dusk, a white weatherboard home with a lit bedroom window above a lit swimming pool, Burradoo"
   },
   "responsePromise": "Builder's licence 350923C · HIA member · Bowral, Southern Highlands",
   "copy": {
     "title": "Pinczi Builders: Custom Home Builders, Bowral & the Southern Highlands",
-    "description": "Bowral builders working only in the Southern Highlands for over twenty years. Custom homes, renovations and additions, commercial projects, planning and hard landscaping. Steve Pinczi, 0411 540 495.",
+    "description": "Bowral builders working only in the Southern Highlands for over two decades. Custom homes, renovations and additions, commercial projects, planning and hard landscaping. Steve Pinczi, 0411 540 495.",
     "ctaLabel": "Call Pinczi",
     "callLabel": "Call Pinczi",
     "kicker": "Southern Highlands · Bowral",
     "headline": "Ask anyone<br>in the Highlands<br><em>about Steve.</em>",
-    "sub": "For over twenty years we've built only in the Southern Highlands. Custom homes, additions and renovations, and commercial jobs like Oxley College Junior School.",
+    "sub": "For over two decades we've built only in the Southern Highlands. Custom homes, additions and renovations, and commercial jobs like Oxley College Junior School.",
     "heroSecondary": "Or send the details",
     "heroSecondarySms": "Or text us a photo of the site",
     "navApproach": "Approach",
     "statementLabel": "Complete projects",
     "statementHeadline": "One team,<br>start to<br>handover.",
-    "statementBody": "Over twenty years we've built a loyal network of the Highlands' most skilled contractors. We work closely with draughting professionals, architects and landscape designers, so the whole project is coordinated in one place, from council submissions and organising power and water to the stone walls and the driveway.",
+    "statementBody": "Over two decades we've built a loyal network of the Highlands' most skilled contractors. We work closely with draughting professionals, architects and landscape designers, so the whole project is coordinated in one place, from council submissions and organising power and water to the stone walls and the driveway.",
     "servicesLabel": "What we build",
     "servicesHeadline": "Homes, additions<br>and commercial<br>sites.",
     "servicesIntro": "Custom homes, alterations, refurbishments and additions to existing homes, and medium-scale commercial sites. Our commercial work includes Oxley College Junior School and Reekie's Tyres and More.",
@@ -73,7 +73,7 @@
     "ownerLabel": "Who you are dealing with",
     "recognitionLabel": "Our standing",
     "recognitionHeadline": "Licensed, HIA members, and trusted with a school.",
-    "recognitionIntro": "Twenty years of work, all of it in the Southern Highlands.",
+    "recognitionIntro": "Two decades of work, all of it in the Southern Highlands.",
     "areasLabel": "Where we build",
     "areasHeadline": "Only the<br>Southern<br>Highlands.",
     "areasIntro": "We're based in Bowral, and for over two decades we've worked only in the Southern Highlands. You'll find our work all across the district, including homes at Burradoo, Kangaloon and Burrawang.",
@@ -413,7 +413,7 @@
         "url": "https://pinczibuilders.com.au/contact-us/"
       },
       "HIA member, Housing Industry Association": {
-        "sentence": "Contact Us page shows the HIA 'member' badge (https://pinczibuilders.com.au/wp-content/uploads/2025/05/image3.png) beside the ABN and licence number.",
+        "sentence": "The Contact Us page shows the HIA member badge (the HIA logo with the word 'member', https://pinczibuilders.com.au/wp-content/uploads/2025/05/image3.png) beside ABN: 51 633 339 885 and Lic No.: 350923C. HIA is the Housing Industry Association; the demo says 'We're members of the Housing Industry Association.'",
         "url": "https://pinczibuilders.com.au/contact-us/"
       },
       "Enquiry types: new build, additions, renovations": {
@@ -431,6 +431,10 @@
       "Logo": {
         "sentence": "Their own logo, wp-content/uploads/2025/05/pinczibuilderslogo.webp (274x83), with the charcoal panel made transparent. Favicon: wp-content/themes/PincziBuildersv1/images/favicon.png.",
         "url": "https://pinczibuilders.com.au/"
+      },
+      "No Google rating or reviews": {
+        "sentence": "rating null, review_count 0, reviews [], best_for_demo [], flag 'No Google rating or reviews found.' for slug pinczi-builders. No testimonials on their site either.",
+        "url": "data/google_reviews_top25.json"
       }
     }
   },
