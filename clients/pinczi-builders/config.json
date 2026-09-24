@@ -438,5 +438,6 @@
       }
     }
   },
-  "_check": []
+  "_check": [],
+  "noGoogleReviews": true
 }
