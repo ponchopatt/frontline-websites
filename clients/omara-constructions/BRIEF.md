@@ -21,7 +21,7 @@ Google shows **5.0 from 2 reviews**, and one of the two has no text. The only re
 - Their own full-time carpenters do everything from framing to fix-out joinery. They carry $8,000,000 a year of HBCF cover, and their standard contract is the MBA BC4 fixed price contract.
 
 ## The one angle
-**Any block, any design, since 1964.** Their own words are "We build on any site," "We build projects that other builders won't or can't" and "We love difficult jobs, on difficult sites." Most custom builders in the Hills and Hawkesbury can't show flame-zone homes, pole homes on steep bush blocks, heritage work and Olympic Village homes all from one family firm. The hero leads with the hard-site bushfire home at Central McDonald, and the headline is built on "Any block".
+**Any block, any design, since 1964.** Their own words are "We build on any site," "We build projects that other builders won't or can't" and "We love difficult jobs, on difficult sites." Most custom builders in the Hills and Hawkesbury can't show flame-zone homes, pole homes on steep bush blocks, heritage work and Olympic Village homes all from one family firm. The hero shows the Blue Mountains bushfire home at dusk: a lit glass box over a steep bush block. The headline is "Any block. Any design. Since 1964." The statement section, "We love the difficult blocks", uses the Central McDonald bushfire home.
 
 ## What's weak on their current site (for Pat's call)
 - The home page is one very long wall of text, set partly in Comic Sans ("You name it, we build it !"). There are 60 years of great credentials, but they're buried halfway down.
@@ -40,8 +40,8 @@ I downloaded all 338 gallery images from `/thumbnaillarge/` at full size and tri
 
 | Slot | Asset | Source file | Native size | What it shows (their caption) |
 |---|---|---|---|---|
-| Hero | central-mcdonald-bushfire-home | BushfireHome-CentralMcDonald-Ext.jpg | 3168×1886, cropped to 2168×1886 so the house sits centre on mobile | Charcoal-clad bushfire home with a skillion roof on a bush hillside, blue sky. "Metal clad & fibro bushfire home". Central McDonald is from the filename. |
-| Statement | blue-mountains-bushfire-home | BushfireHome-BlueMountains.jpg | 2954×1970 | Twilight, glazed upper level cantilevered over a masonry base, steep garden. "Bushfire Protected Home – Blue Mountains" |
+| Hero | blue-mountains-hero | BushfireHome-BlueMountains.jpg | 2954×1970, bottom 170px of foreground planting cropped | Twilight, glazed upper level cantilevered over a masonry base, steep garden. "Bushfire Protected Home – Blue Mountains". I picked it over the daylight Central McDonald shot because at 390px that shot went murky under the hero overlay, while the lit windows here still read. (Horgan was marked down for a hero too dark on mobile.) |
+| Statement | central-mcdonald-bushfire-home | BushfireHome-CentralMcDonald-Ext.jpg | 3168×1886 | Charcoal-clad bushfire home with a skillion roof on a bush hillside, blue sky. "Metal clad & fibro bushfire home". Central McDonald is from the filename. |
 | Service: second storey | st-ives-upper-level | 2ndstoreyextension-StIves2.jpg | 2278×1434, cropped to 2278×1230 to remove a faint agency watermark bottom-right | Rendered two-storey home with shutters and a curved path. "Upper level addition at St Ives" |
 | Service: new homes | wilberforce-stone-home | NewHome-Stonehome1.jpg | 3120×1498 | Large stone and weatherboard home, triple garage, twilight. "Stone home at Wilberforce" |
 | Service: renovations | kurrajong-heights-kitchen | Kitchen-KurrajongHeights.jpg | 3110×1986 | Shaker kitchen, navy island, marble top, travertine floor. "Kurrajong Kitchen" |
@@ -68,3 +68,6 @@ Each property appears only once. No photo is used twice, and every caption match
 - Logo: their own `_logo.jpg` and favicon (400px). I used the favicon version, removed the white background and cropped off the "Proudly Family Owned" tagline so the mark reads on the dark header. The wordmark itself is unchanged. The favicon is their saw-blade "O" cropped from the same file.
 
 No sample photos were needed.
+
+## Reviews decision
+The gate requires the one best_for_demo review on the page, so Lauran Trevena's review appears once, in a one-card reviews section. The intro says plainly that it's 5.0 from 2 reviews and that one of them has no text. There's no pull quote, so the same words don't appear twice.

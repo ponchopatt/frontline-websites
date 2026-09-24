@@ -1,5 +1,5 @@
 {
-  "_comment": "O'Mara Constructions Pty Ltd, Mulgrave NSW (near Windsor). Hand-written 2026-09-24 from https://www.omara.com.au because `npm run new` is broken in this container (see HANDOVER.md). I read every page with curl. Every specific fact on the page is quoted in _source.claimSources with its URL, or comes from data/google_reviews_top25.json. Google has only 2 reviews, one with no text, so the proof leans on facts from their own site (founder's OAM and MBA presidency, MBA membership since 1968, the Sydney 2000 Olympic Village homes, flame-zone and sloping-site work). The builders preset's process, FAQ and responsePromise describe a generic builder and would be invented claims here, so all three are fully overridden with O'Mara's own published process and answers. Reviews: only one Google review has text, so it runs once as the pull quote. The reviews list is left empty so the same words don't repeat in a one-card reviews section.",
+  "_comment": "O'Mara Constructions Pty Ltd, Mulgrave NSW (near Windsor). Hand-written 2026-09-24 from https://www.omara.com.au because `npm run new` is broken in this container (see HANDOVER.md). I read every page with curl. Every specific fact on the page is quoted in _source.claimSources with its URL, or comes from data/google_reviews_top25.json. Google has only 2 reviews, one with no text, so the proof leans on facts from their own site (founder's OAM and MBA presidency, MBA membership since 1968, the Sydney 2000 Olympic Village homes, flame-zone and sloping-site work). The builders preset's process, FAQ and responsePromise describe a generic builder and would be invented claims here, so all three are fully overridden with O'Mara's own published process and answers. Reviews: only one Google review has text. It appears once, in the reviews section. There's no pull quote, so the same words don't show twice.",
   "slug": "omara-constructions",
   "template": "trust",
   "industry": "builders",
@@ -80,7 +80,10 @@
     "faqHeadline": "Questions Luke gets asked.",
     "enquireLabel": "Talk to Luke",
     "enquireHeadline": "Tell us about<br>the block.",
-    "enquireIntro": "Send the address, what you want to build and a rough budget. Luke can usually check the site on Street View before he calls you back. Office: (02) 4577 4912."
+    "enquireIntro": "Send the address, what you want to build and a rough budget. Luke can usually check the site on Street View before he calls you back. Office: (02) 4577 4912.",
+    "reviewsLabel": "On Google",
+    "reviewsTitle": "Honest and friendly.",
+    "reviewsIntro": "5.0 on Google from 2 reviews. One has no written comment, so here's the other, word for word."
   },
   "stats": {
     "googleRating": 5.0,
@@ -95,10 +98,6 @@
   },
   "statSublabels": {
     "yearsInBusiness": "since 1964"
-  },
-  "pullQuote": {
-    "text": "Great honest and friendly builder. Provides great work and a great price.",
-    "name": "Lauran Trevena, Google review"
   },
   "owner": {
     "body": "Luke O'Mara runs the company day to day. He finished a Bachelor of Applied Science (Building) with Honours at the University of Technology, Sydney in 1994. The phone number on this page goes straight to him.",
@@ -341,7 +340,12 @@
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
-  "reviews": [],
+  "reviews": [
+    {
+      "name": "Lauran Trevena",
+      "text": "Great honest and friendly builder. Provides great work and a great price."
+    }
+  ],
   "faq": [
     {
       "q": "Can we stay in the house during a second storey addition?",
