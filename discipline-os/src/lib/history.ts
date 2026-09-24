@@ -49,6 +49,8 @@ export interface HistoryIndex {
   facts: HistoryFacts;
   /** firstDay … today. */
   dates: LocalDate[];
+  /** Today has been closed: it's over, so it counts like any other day. */
+  todayClosed: boolean;
   summary: Map<LocalDate, DaySummary>;
   score: Map<LocalDate, DayScore>;
   doneOn: Map<string, Set<LocalDate>>;
@@ -82,10 +84,11 @@ export function indexHistory(facts: HistoryFacts): HistoryIndex {
     return cache.get(id)!;
   };
   const dates = facts.firstDay <= facts.today ? dateRange(facts.firstDay, facts.today) : [];
-  return { facts, dates, summary, score, doneOn, counter };
+  const todayClosed = score.get(facts.today)?.locked ?? false;
+  return { facts, dates, todayClosed, summary, score, doneOn, counter };
 }
 
-function existed(h: FactHabit, d: LocalDate) {
+function existed(h: Pick<FactHabit, "from" | "to">, d: LocalDate) {
   return h.from <= d && (h.to === null || h.to > d);
 }
 
@@ -159,15 +162,22 @@ export interface RunStats {
 
 /**
  * Consecutive due days done. A day it isn't due (a rest day) neither breaks nor adds to it;
- * today only adds once it's done, and never breaks it while it's still open.
+ * today only adds once it's done, and never breaks it while it's still open. Once today is
+ * closed it's over, so a due today left undone ends the run.
  */
-export function runStats(dates: LocalDate[], today: LocalDate, due: (d: LocalDate) => boolean, done: (d: LocalDate) => boolean): RunStats {
+export function runStats(
+  dates: LocalDate[],
+  today: LocalDate,
+  due: (d: LocalDate) => boolean,
+  done: (d: LocalDate) => boolean,
+  todayClosed = false,
+): RunStats {
   const runs: Run[] = [];
   let open: Run | null = null;
   for (const d of dates) {
     if (d > today || !due(d)) continue;
     const hit = done(d);
-    if (d === today && !hit) continue;
+    if (d === today && !hit && !todayClosed) continue;
     if (hit) {
       if (open) {
         open.end = d;
@@ -184,13 +194,33 @@ export function runStats(dates: LocalDate[], today: LocalDate, due: (d: LocalDat
   return { current, best: Math.max(current, bestBefore), bestBefore, runs };
 }
 
+/** Due days, and how many were done, over `dates`. Today counts once it's done or closed. */
+function dueTally(
+  dates: LocalDate[],
+  today: LocalDate,
+  due: (d: LocalDate) => boolean,
+  done: (d: LocalDate) => boolean,
+  todayClosed: boolean,
+): { due: number; hit: number } {
+  let dueDays = 0;
+  let hit = 0;
+  for (const d of dates) {
+    if (d > today || !due(d)) continue;
+    const ok = done(d);
+    if (d === today && !ok && !todayClosed) continue;
+    dueDays += 1;
+    if (ok) hit += 1;
+  }
+  return { due: dueDays, hit };
+}
+
 export interface StreakRow {
   key: StreakKey;
   label: string;
   current: number;
   best: number;
   bestBefore: number;
-  /** Done of due over the last 30 days (today only once it's done). Null with nothing due. */
+  /** Done of due over the last 30 days (today once it's done or closed). Null with nothing due. */
   consistency: number | null;
   doneToday: boolean;
   /** The last six weeks, oldest first, one per day: for the dot grid. */
@@ -206,23 +236,15 @@ export type DotState = "done" | "missed" | "off" | "open";
 const RECENT_DAYS = 42;
 
 export function streaks(ix: HistoryIndex): StreakRow[] {
-  const { dates, facts } = ix;
-  const since = addDays(facts.today, -29);
+  const { dates, facts, todayClosed } = ix;
+  const last30 = dates.filter((d) => d >= addDays(facts.today, -29));
   return streakDefs(ix).map((def) => {
-    const s = runStats(dates, facts.today, def.due, def.done);
-    let due = 0;
-    let hit = 0;
-    for (const d of dates) {
-      if (d < since || !def.due(d)) continue;
-      const ok = def.done(d);
-      if (d === facts.today && !ok) continue;
-      due += 1;
-      if (ok) hit += 1;
-    }
+    const s = runStats(dates, facts.today, def.due, def.done, todayClosed);
+    const { due, hit } = dueTally(last30, facts.today, def.due, def.done, todayClosed);
     const recent: DotState[] = dateRange(addDays(facts.today, -(RECENT_DAYS - 1)), facts.today).map((d) => {
       if (d < facts.firstDay || !def.due(d)) return "off";
       if (def.done(d)) return "done";
-      return d === facts.today ? "open" : "missed";
+      return d === facts.today && !todayClosed ? "open" : "missed";
     });
     return {
       key: def.key,
@@ -237,6 +259,36 @@ export function streaks(ix: HistoryIndex): StreakRow[] {
       recentDue: recent.filter((x) => x === "done" || x === "missed").length,
     };
   });
+}
+
+export interface HabitNumbers {
+  /** Done of due over the last 7 and 30 days, 0–1, or null when it wasn't due in them. */
+  week: number | null;
+  month: number | null;
+  /** Consecutive due days done: its streak. */
+  run: number;
+}
+
+/**
+ * One habit's numbers for the Habits page, by the rules its streak on Progress uses: only days
+ * it existed and was due count, and today only once it's done or closed. `dates` is every day
+ * up to today, oldest first.
+ */
+export function habitNumbers(
+  h: Pick<FactHabit, "days" | "from" | "to">,
+  done: Set<LocalDate>,
+  dates: LocalDate[],
+  today: LocalDate,
+  todayClosed = false,
+): HabitNumbers {
+  const due = (d: LocalDate) => existed(h, d) && dueByDays(h.days, d);
+  const has = (d: LocalDate) => done.has(d);
+  const rate = (days: number) => {
+    const from = addDays(today, -(days - 1));
+    const t = dueTally(dates.filter((d) => d >= from), today, due, has, todayClosed);
+    return t.due === 0 ? null : t.hit / t.due;
+  };
+  return { week: rate(7), month: rate(30), run: runStats(dates, today, due, has, todayClosed).current };
 }
 
 /* ------------------------------------------------------------------ trophies */
@@ -484,9 +536,10 @@ export function recordBaseline(ix: HistoryIndex): RecordBaseline {
     week[name] = { bestOther: best(map, thisWeek)?.value ?? 0, before: map.get(thisWeek) ?? 0 };
   }
   // Streaks as they stood last night (today left open): a run level with the record set by
-  // another run beats it with one more day.
+  // another run beats it with one more day. Only a streak due today can gain that day.
   const streak: RecordBaseline["streak"] = {};
   for (const def of streakDefs(ix)) {
+    if (!def.due(today)) continue;
     const s = runStats(ix.dates, today, def.due, (d) => d !== today && def.done(d));
     if (s.bestBefore >= 3 && s.current === s.bestBefore) streak[def.key] = { run: s.current, record: s.bestBefore };
   }
@@ -631,8 +684,7 @@ function momentumOver(ix: HistoryIndex, dates: LocalDate[]): { score: number; pa
  */
 export function momentum(ix: HistoryIndex): Momentum | null {
   const { facts } = ix;
-  const todayClosed = ix.score.get(facts.today)?.locked ?? false;
-  const end = todayClosed ? facts.today : addDays(facts.today, -1);
+  const end = ix.todayClosed ? facts.today : addDays(facts.today, -1);
   const window = (to: LocalDate) => dateRange(addDays(to, -6), to).filter((d) => d >= facts.firstDay && d <= facts.today);
   const now = momentumOver(ix, window(end));
   if (!now) return null;
@@ -789,16 +841,8 @@ export function progressStats(ix: HistoryIndex, proofCount = 0): Stat[] {
   const rate = (key: StreakKey) => {
     const def = defs.get(key);
     if (!def) return null;
-    let due = 0;
-    let hit = 0;
-    for (const d of dates) {
-      if (!def.due(d)) continue;
-      const ok = def.done(d);
-      if (d === today && !ok) continue;
-      due += 1;
-      if (ok) hit += 1;
-    }
-    return due >= 3 ? { due, hit } : null;
+    const t = dueTally(dates, today, def.due, def.done, ix.todayClosed);
+    return t.due >= 3 ? t : null;
   };
   const gym = rate("gym");
   if (gym) out.push({ key: "gym", text: `You've completed ${Math.round((100 * gym.hit) / gym.due)}% of your planned gym sessions.` });

@@ -3,6 +3,7 @@ import { closeSummary, verdictLine, type CloseInput } from "./close-day";
 import { addDays, dateRange, isoWeekday, type LocalDate } from "./day";
 import { counterNudge, itemsNudge, minutesNudge, remainingLine, workNudge } from "./gradient";
 import {
+  habitNumbers,
   indexHistory,
   trophyShelves,
   memoryCard,
@@ -86,6 +87,12 @@ describe("runs", () => {
     const s = runStats(dates, TODAY, weekdays, (d) => done.has(d));
     expect(s).toMatchObject({ current: 3, best: 3, bestBefore: 3 });
   });
+
+  it("ends the run once today is closed without it", () => {
+    const done = new Set(dateRange("2026-09-14", "2026-09-23").filter(weekdays));
+    const s = runStats(dates, TODAY, weekdays, (d) => done.has(d), true);
+    expect(s).toMatchObject({ current: 0, best: 8, bestBefore: 8 });
+  });
 });
 
 describe("streaks", () => {
@@ -118,6 +125,21 @@ describe("streaks", () => {
       { days: 14, unlocked: false },
     ]);
     expect(shelf.unlocked).toBe(2);
+  });
+
+  it("counts a closed today as over: missed if it wasn't done", () => {
+    const gym = habit({ id: "gym", kind: "gym", days: [1, 2, 3, 4, 5] });
+    const ticks = dateRange("2026-09-14", "2026-09-23").filter((d) => isoWeekday(d) <= 5).map((d) => ({ habitId: "gym", date: d }));
+    const f = facts({
+      habits: [gym],
+      ticks,
+      day: (d) => (d === TODAY ? { final_score: 55, completed_at: "2026-09-24T11:00:00Z" } : { habits_done: 10, review_done: 1, work_minutes: 480 }),
+    });
+    const rows = streaks(indexHistory(f));
+    const row = rows.find((r) => r.key === "gym")!;
+    expect(row).toMatchObject({ current: 0, best: 8, doneToday: false });
+    expect(row.recent.at(-1)).toBe("missed");
+    expect(rows.find((r) => r.key === "word")).toMatchObject({ current: 0, best: 23 });
   });
 
   it("keeps Keep My Word going through a secured minimum day", () => {
@@ -175,6 +197,43 @@ describe("records", () => {
     expect(base.streak.bible).toEqual({ run: 5, record: 5 });
     const events = newRecords(base, { day: {}, week: {}, doneToday: { bible: true } });
     expect(events.map((e) => [e.text, e.previous])).toEqual([["Bible streak: 6 days", "5 days"]]);
+  });
+
+  it("offers a streak record only on a day the streak is due", () => {
+    const gym = habit({ id: "gym", kind: "gym", days: [1, 2, 3, 4, 5] });
+    const kept = [...dateRange("2026-08-24", "2026-08-27"), ...dateRange("2026-09-08", "2026-09-11")]; // two runs of 4
+    const at = (today: LocalDate) =>
+      recordBaseline(
+        indexHistory(
+          facts({ first: "2026-08-20", today, habits: [gym], ticks: kept.map((d) => ({ habitId: "gym", date: d })), day: (d) => ({ work_minutes: kept.includes(d) ? 480 : 0 }) }),
+        ),
+      );
+    // Saturday: a rest day for the gym and the work target, so ticking it can't make a run of 5.
+    const saturday = at("2026-09-12");
+    expect(saturday.streak).toEqual({});
+    expect(newRecords(saturday, { day: {}, week: {}, doneToday: { gym: true, fitness: true, work: true } })).toEqual([]);
+    // Monday: due again, and one more day beats the record.
+    expect(at("2026-09-14").streak).toMatchObject({ gym: { run: 4, record: 4 }, work: { run: 4, record: 4 } });
+  });
+});
+
+describe("a habit's numbers", () => {
+  const gym = habit({ id: "gym", kind: "gym", days: [1, 2, 3, 4, 5], from: "2026-08-31" });
+  const dates = dateRange("2026-08-31", TODAY);
+  const done = new Set(dates.filter((d) => isoWeekday(d) <= 5 && d < TODAY)); // every weekday up to yesterday
+
+  it("counts only due days, and not today while it's open, the same as its streak", () => {
+    expect(habitNumbers(gym, done, dates, TODAY)).toEqual({ week: 1, month: 1, run: 18 });
+    const f = facts({ first: "2026-08-31", habits: [gym], ticks: [...done].map((d) => ({ habitId: "gym", date: d })) });
+    expect(streaks(indexHistory(f)).find((r) => r.key === "gym")?.current).toBe(18);
+  });
+
+  it("counts a closed today it wasn't done as missed", () => {
+    expect(habitNumbers(gym, done, dates, TODAY, true)).toEqual({ week: 0.8, month: 18 / 19, run: 0 });
+  });
+
+  it("leaves out the days before the habit existed", () => {
+    expect(habitNumbers(habit({ id: "new", from: TODAY }), new Set(), dates, TODAY)).toEqual({ week: null, month: null, run: 0 });
   });
 });
 

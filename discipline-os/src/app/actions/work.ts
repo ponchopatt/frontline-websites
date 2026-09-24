@@ -219,18 +219,3 @@ export async function endSessionAt(input: z.input<typeof fixEndSchema>): Promise
   if (data.local_date < viewer.today) await recomputeBestStreak(viewer);
   return ok(toItem(data));
 }
-
-const deleteSessionSchema = z.object({ sessionId: uuidSchema, date: localDateSchema });
-
-/** Removes a logged session (for one started by mistake). */
-export async function deleteSession(input: z.input<typeof deleteSessionSchema>): Promise<ActionResult> {
-  const parsed = deleteSessionSchema.safeParse(input);
-  if (!parsed.success) return invalid(parsed.error);
-  const viewer = await getViewer();
-  const refused = guardDate(viewer, parsed.data.date);
-  if (refused) return refused;
-  const { error } = await viewer.supabase.from("work_sessions").delete().eq("id", parsed.data.sessionId);
-  if (error) return dbFail(error, "The session wasn't removed. Try again.");
-  if (parsed.data.date < viewer.today) await recomputeBestStreak(viewer);
-  return ok();
-}

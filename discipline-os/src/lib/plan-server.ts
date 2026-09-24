@@ -5,7 +5,7 @@ import { addDays, startOfWeek, type LocalDate } from "./day";
 import { countersFor, loadCounterData, loadMilestone, type Viewer } from "./data";
 import { lineageOf, loadGoalYear, loadLifeAreas, mapDaily, yearOfWeek } from "./goals/data";
 import { rankSuggestions, type WeeklyContext } from "./goals/suggest";
-import { planDay, type DayPlan } from "./plan";
+import { minutesIntoDay, planDay, type DayPlan } from "./plan";
 
 function minutesBetween(start: string | null, end: string | null): number {
   if (!start || !end) return 0;
@@ -76,7 +76,7 @@ export async function buildPlan(viewer: Viewer, date: LocalDate): Promise<DayPla
 
   return planDay({
     today: date,
-    nowMinutes: date === viewer.today ? h * 60 + m : 0,
+    nowMinutes: date === viewer.today ? minutesIntoDay(h * 60 + m, profile.dayStartHour) : 0,
     todayTasks,
     unfinished: unfinishedRows.filter((t) => !carriedAway.has(t.id)).map(mapDaily),
     later: (laterRes.data ?? []).map(mapDaily),

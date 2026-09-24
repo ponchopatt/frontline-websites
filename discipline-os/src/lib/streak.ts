@@ -79,7 +79,8 @@ export interface Streaks {
  *
  * `days` must be every day up to and including `today`, oldest first. Today only adds to the
  * streak once it reaches the threshold; until then it is still in progress, so the streak
- * shown is the one that ran to yesterday. A missed day ends a streak and changes nothing else.
+ * shown is the one that ran to yesterday. Once today is closed below the line it's a missed
+ * day. A missed day ends a streak and changes nothing else.
  */
 export function computeStreaks(days: DayScore[], threshold: number, today: LocalDate): Streaks {
   let best = 0;
@@ -98,7 +99,7 @@ export function computeStreaks(days: DayScore[], threshold: number, today: Local
       current += 1;
       continue;
     }
-    if (day.date === today) continue; // today is not over yet
+    if (day.date === today && !day.locked) continue; // an open today is not over yet
     break;
   }
 

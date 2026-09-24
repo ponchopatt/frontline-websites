@@ -121,6 +121,12 @@ describe("streaks", () => {
     expect(computeStreaks(d, 70, d[2].date)).toEqual({ current: 2, best: 2 });
   });
 
+  it("ends the streak at once when today is closed below the line", () => {
+    const d = days([80, 90, 20]);
+    expect(computeStreaks([d[0], d[1], { ...d[2], locked: true }], 70, d[2].date)).toEqual({ current: 0, best: 2 });
+    expect(computeStreaks([d[0], d[1], { ...d[2], score: 85, locked: true }], 70, d[2].date)).toEqual({ current: 3, best: 3 });
+  });
+
   it("breaks on a missed day and keeps the best run", () => {
     const d = days([80, 80, 80, 10, 80, 80]);
     expect(computeStreaks(d, 70, d[5].date)).toEqual({ current: 2, best: 3 });

@@ -4,9 +4,9 @@ import { cache } from "react";
 import { isWorkArea, type Area, type WorkArea } from "./areas";
 import { isPlanKey, nextInPlan } from "./bible";
 import { asCloseSummary } from "./close-day";
-import { addDays, daysBetween, isoWeekday, localDateAt, startOfWeek, type LocalDate } from "./day";
+import { addDays, dateRange, daysBetween, isoWeekday, localDateAt, startOfWeek, type LocalDate } from "./day";
 import { formatValue } from "./goals/format";
-import { indexHistory, memoryCard, momentum, recordBaseline, type HistoryFacts } from "./history";
+import { habitNumbers, indexHistory, memoryCard, momentum, recordBaseline, type HistoryFacts } from "./history";
 import { readUnlockToken } from "./lock";
 import { chainOf, loadGoalYear, loadLifeAreas, yearOfWeek, type GoalYear } from "./goals/data";
 import { monthStartOf } from "./goals/periods";
@@ -140,20 +140,23 @@ function toSummary(row: Record<string, unknown>): DaySummary {
   };
 }
 
-/** Day summaries from `from` to `to` inclusive, fetched in chunks the database accepts. */
+/** Day summaries from `from` to `to` inclusive, fetched together in chunks the database accepts. */
 export async function loadSummaries(
   supabase: Supabase,
   from: LocalDate,
   to: LocalDate,
 ): Promise<DaySummary[]> {
-  const out: DaySummary[] = [];
-  let start = from;
-  while (start <= to) {
+  const chunks: Array<[LocalDate, LocalDate]> = [];
+  for (let start = from; start <= to; ) {
     const end = daysBetween(start, to) > 365 ? addDays(start, 365) : to;
-    const { data, error } = await supabase.rpc("day_summaries", { p_from: start, p_to: end });
+    chunks.push([start, end]);
+    start = addDays(end, 1);
+  }
+  const results = await Promise.all(chunks.map(([start, end]) => supabase.rpc("day_summaries", { p_from: start, p_to: end })));
+  const out: DaySummary[] = [];
+  for (const { data, error } of results) {
     if (error) throw new Error(`Could not load your history: ${error.message}`);
     for (const row of data ?? []) out.push(toSummary(row as unknown as Record<string, unknown>));
-    start = addDays(end, 1);
   }
   return out;
 }
@@ -273,7 +276,14 @@ export async function loadCounterData(supabase: Supabase, from: LocalDate, to: L
   const [metricsRes, entries] = await Promise.all([
     supabase.from("metrics").select("*").eq("is_active", true).order("area").order("sort_order"),
     fetchAll<{ metric_id: string; local_date: string; value: number }>((a, b) =>
-      supabase.from("metric_entries").select("metric_id,local_date,value").gte("local_date", from).lte("local_date", to).range(a, b),
+      supabase
+        .from("metric_entries")
+        .select("metric_id,local_date,value", { count: "exact" })
+        .gte("local_date", from)
+        .lte("local_date", to)
+        .order("local_date")
+        .order("metric_id")
+        .range(a, b),
     ),
   ]);
   if (metricsRes.error) throw new Error(`Your counters couldn't be loaded: ${metricsRes.error.message}`);
@@ -567,17 +577,37 @@ export async function loadDay(viewer: Viewer, date: LocalDate, facts: Promise<Hi
   };
 }
 
-/** Every row of a query, page by page (PostgREST returns at most 1000 at a time). */
-export async function fetchAll<T>(
-  page: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>,
-): Promise<T[]> {
+type Page<T> = { data: T[] | null; error: { message: string } | null; count?: number | null };
+
+/**
+ * Every row of a query, page by page (PostgREST returns at most 1000 at a time). The query
+ * must order by a unique key, or rows can repeat or go missing between pages. When it asks
+ * for a count (select(…, { count: "exact" })), the pages after the first are fetched all at
+ * once instead of one after another.
+ */
+export async function fetchAll<T>(page: (from: number, to: number) => PromiseLike<Page<T>>): Promise<T[]> {
   const size = 1000;
-  const out: T[] = [];
-  for (let from = 0; ; from += size) {
-    const { data, error } = await page(from, from + size - 1);
-    if (error) throw new Error(error.message);
-    out.push(...(data ?? []));
-    if (!data || data.length < size) break;
+  const rows = (res: Page<T>) => {
+    if (res.error) throw new Error(res.error.message);
+    return res.data ?? [];
+  };
+  const first = await page(0, size - 1);
+  const out = rows(first);
+  let from = size;
+  let full = out.length === size;
+  if (full && typeof first.count === "number" && first.count > size) {
+    const more = Math.ceil(first.count / size) - 1;
+    const pages = (await Promise.all(Array.from({ length: more }, (_, i) => page(from + i * size, from + (i + 1) * size - 1)))).map(rows);
+    for (const p of pages) out.push(...p);
+    from += more * size;
+    full = pages[pages.length - 1].length === size;
+  }
+  // Without a count, or with rows added since it was taken: on until a short page.
+  while (full) {
+    const p = rows(await page(from, from + size - 1));
+    out.push(...p);
+    from += size;
+    full = p.length === size;
   }
   return out;
 }
@@ -591,27 +621,33 @@ export interface HabitStats {
   sortOrder: number;
   archivedAt: string | null;
   doneToday: boolean;
-  /** Completion rate over the days the habit existed in the window, 0–1, or null if it didn't. */
+  /**
+   * Done of due over the last 7 and 30 days, 0–1: only days the habit existed and was due,
+   * and today once it's done or closed. Null if it wasn't due in them.
+   */
   week: number | null;
   month: number | null;
-  /** Consecutive days done, ending today (or yesterday while today is still open). */
+  /** Consecutive due days done, counted as Progress counts streaks: rest days neither break nor add. */
   run: number;
 }
 
-/** Habits with their 7- and 30-day completion and current run. */
+/** Habits with their 7- and 30-day completion and current run, by the same rules as Progress. */
 export async function loadHabitStats(viewer: Viewer): Promise<HabitStats[]> {
   const { supabase, profile, today } = viewer;
-  const since = addDays(today, -89);
-  const [habitsRes, completions] = await Promise.all([
+  // All of it, so a long run reads the same here as on Progress.
+  const first = firstDayOf(viewer);
+  const [habitsRes, completions, planRes] = await Promise.all([
     supabase.from("habits").select("id,name,category,kind,days,sort_order,created_at,archived_at").order("sort_order"),
     fetchAll<{ habit_id: string; local_date: string }>((from, to) =>
       supabase
         .from("habit_completions")
-        .select("habit_id,local_date")
-        .gte("local_date", since)
+        .select("habit_id,local_date", { count: "exact" })
+        .gte("local_date", first)
         .order("local_date")
+        .order("habit_id")
         .range(from, to),
     ),
+    supabase.from("daily_plans").select("completed_at,final_score").eq("local_date", today).maybeSingle(),
   ]);
   if (habitsRes.error) throw new Error(`Could not load your habits: ${habitsRes.error.message}`);
 
@@ -620,25 +656,13 @@ export async function loadHabitStats(viewer: Viewer): Promise<HabitStats[]> {
     if (!doneOn.has(c.habit_id)) doneOn.set(c.habit_id, new Set());
     doneOn.get(c.habit_id)!.add(c.local_date);
   }
+  const dates = first <= today ? dateRange(first, today) : [];
+  const closed = Boolean(planRes.data?.completed_at && planRes.data.final_score !== null);
+  const local = (at: string) => localDateAt(new Date(at), profile.timezone, profile.dayStartHour);
 
   return (habitsRes.data ?? []).map((h) => {
     const done = doneOn.get(h.id) ?? new Set<string>();
-    const rate = (days: number): number | null => {
-      let active = 0;
-      let hit = 0;
-      for (let i = 0; i < days; i += 1) {
-        const d = addDays(today, -i);
-        if (!habitActiveOn(h, d, profile)) continue;
-        active += 1;
-        if (done.has(d)) hit += 1;
-      }
-      return active === 0 ? null : hit / active;
-    };
-    let run = 0;
-    for (let i = done.has(today) ? 0 : 1; i < 90; i += 1) {
-      if (done.has(addDays(today, -i))) run += 1;
-      else break;
-    }
+    const span = { days: h.days, from: local(h.created_at), to: h.archived_at ? local(h.archived_at) : null };
     return {
       id: h.id,
       name: h.name,
@@ -648,9 +672,7 @@ export async function loadHabitStats(viewer: Viewer): Promise<HabitStats[]> {
       sortOrder: h.sort_order,
       archivedAt: h.archived_at,
       doneToday: done.has(today),
-      week: rate(7),
-      month: rate(30),
-      run,
+      ...habitNumbers(span, done, dates, today, closed),
     };
   });
 }

@@ -13,12 +13,26 @@ export const loadFacts = cache(async (viewer: Viewer): Promise<HistoryFacts> => 
   const [days, habitsRes, ticks, countersRes, entries] = await Promise.all([
     loadSummaries(supabase, first, today),
     supabase.from("habits").select("id,name,category,kind,days,created_at,archived_at"),
+    // Ordered by a unique key, so no page overlaps or skips another.
     fetchAll<{ habit_id: string; local_date: string }>((a, b) =>
-      supabase.from("habit_completions").select("habit_id,local_date").gte("local_date", first).order("local_date").range(a, b),
+      supabase
+        .from("habit_completions")
+        .select("habit_id,local_date", { count: "exact" })
+        .gte("local_date", first)
+        .order("local_date")
+        .order("habit_id")
+        .range(a, b),
     ),
     supabase.from("metrics").select("id,area,key,unit"),
     fetchAll<{ metric_id: string; local_date: string; value: number }>((a, b) =>
-      supabase.from("metric_entries").select("metric_id,local_date,value").gte("local_date", first).gt("value", 0).order("local_date").range(a, b),
+      supabase
+        .from("metric_entries")
+        .select("metric_id,local_date,value", { count: "exact" })
+        .gte("local_date", first)
+        .gt("value", 0)
+        .order("local_date")
+        .order("metric_id")
+        .range(a, b),
     ),
   ]);
   if (habitsRes.error) throw new Error(`Your history couldn't be loaded: ${habitsRes.error.message}`);

@@ -45,12 +45,3 @@ export function weekAverage(days: Array<{ date: LocalDate; score: number | null 
   if (scored.length === 0) return null;
   return Math.round(scored.reduce((s, d) => s + (d.score ?? 0), 0) / scored.length);
 }
-
-/** Plain words under the number. Never a judgement of the person. */
-export function wordCaption(result: WordResult, threshold: number): string {
-  if (result.percent === null) return "Nothing committed to yet.";
-  if (result.kept === result.made) return "Every commitment kept.";
-  const left = result.made - result.kept;
-  if (result.percent >= threshold) return `Above your line. ${left} left.`;
-  return `${left} ${left === 1 ? "commitment" : "commitments"} left.`;
-}
