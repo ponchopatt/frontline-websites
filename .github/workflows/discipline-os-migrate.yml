@@ -30,7 +30,7 @@ jobs:
         if: env.SUPABASE_ACCESS_TOKEN == '' || env.SUPABASE_PROJECT_REF == ''
         working-directory: .
         run: echo "No Supabase secrets set; nothing to apply."
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         if: env.SUPABASE_ACCESS_TOKEN != '' && env.SUPABASE_PROJECT_REF != ''
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
