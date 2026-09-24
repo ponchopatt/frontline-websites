@@ -24,7 +24,7 @@ Pinczi Builders Pty Ltd is a Bowral builder who has "worked exclusively in the S
 No Google rating and no Google reviews (`"flag": "No Google rating or reviews found."`). There are no testimonials on their site either. **Reviews stay empty, and no rating or count appears anywhere.** The closest thing they have is their own line, "Ask anyone in the district about Steve Pinczi – you're sure to get a warm and positive response." That's the reputation Google should be showing, and it's Pat's pitch.
 
 ## The one angle
-**Only the Southern Highlands, for over twenty years, and a name people there know.** Their own words: "worked exclusively in the Southern Highlands for over two decades", "one of the most professional builders in the district", and "Ask anyone in the district about Steve Pinczi". The hero headline is "Ask anyone in the Highlands about Steve." It's their own line, it's local, and it doubles as the opener for the review pitch. The sub carries the twenty-years-only-the-Highlands fact and the range: homes, additions, Oxley College Junior School. The hero photo is the Burradoo home at dusk, with a lit bedroom window over a lit pool: their newest and best-shot project, and it reads well under a dark overlay on a phone.
+**Only the Southern Highlands, for over twenty years, and a name people there know.** Their own words: "worked exclusively in the Southern Highlands for over two decades", "one of the most professional builders in the district", and "Ask anyone in the district about Steve Pinczi". The hero headline is "Ask anyone in the Highlands about Steve." It's their own line, it's local, and it doubles as the opener for the review pitch. The sub carries the twenty-years-only-the-Highlands fact and the range: homes, additions, Oxley College Junior School. The hero photo is the Burrawang Farmhouse: a white farmhouse with a recycled-brick chimney. I tried the Burradoo dusk shot first, but it went almost black under the template's veil on a phone. The farmhouse's white roof and chimney stay visible, so the dusk shot moved to the statement section.
 
 ## What's weak on their current site (for Pat's call)
 - **The home page has no words.** It's one photo and a "CUSTOM BUILDERS" banner image. There's no phone number, no call button and no mention of the Southern Highlands or Steve.
@@ -41,8 +41,8 @@ I downloaded all 108 media-library files at the largest size the site serves (Wo
 **Used (13 slots, 13 different photos)**
 | Slot | File | Size | Shows | Caption source |
 |---|---|---|---|---|
-| Hero | 74a_Burradoo_Road_Dusk_Bodhi_Photo-24-scaled.jpg | 2560×1707 | Weatherboard home at dusk, lit bedroom window, lit pool, lawn, post-and-wire fence | Media title "74A Burradoo Road, Burradoo" |
-| Statement | 6E31BD76-…-min-scaled.jpeg | 2560×1709 | White farmhouse, recycled-brick chimney with wood store, deck and wide timber steps, lawn | Page "Burrawang Farmhouse" (also its portfolio tile) |
+| Statement | 74a_Burradoo_Road_Dusk_Bodhi_Photo-24-scaled.jpg | 2560×1707 | Weatherboard home at dusk, lit bedroom window, lit pool, lawn, post-and-wire fence | Media title "74A Burradoo Road, Burradoo" |
+| Hero | 6E31BD76-…-min-scaled.jpeg | 2560×1709 | White farmhouse, recycled-brick chimney with wood store, deck and wide timber steps, lawn | Page "Burrawang Farmhouse" (also its portfolio tile) |
 | Aperture | 74a_Burradoo_Road-184-scaled.jpg | 2560×1706 | Dining room, raked lining-board ceiling, brick fireplace wall, sliders to covered deck | "Burradoo" |
 | Enquiry bg | 2AFCCFDF-…-min-scaled.jpeg | 2560×1707 | Covered deck with brick outdoor fireplace, wicker lounge, dining | "Burrawang Farmhouse" |
 | Service: Custom homes | kangaloonrdkangaloon13.webp | 1024×682, cropped to 1024×560 | Charcoal-clad home, stone chimney, shingle gables, red door, pergola | Page "Kangaloon" |
