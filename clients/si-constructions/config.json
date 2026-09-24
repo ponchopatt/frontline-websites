@@ -27,10 +27,10 @@
       "_comment": "Accent is the navy blue of their own logo and favicon (#004090), lightened so it reads as a button on the dark theme. themeColor is a deep version of the same navy. Accent2 is a warm oak tone from the floors in their Mittagong and Bowral photos. None are published brand colours."
     },
     "logo": {
-      "src": "assets/logo-si-white.png",
-      "width": 106,
-      "height": 152,
-      "_comment": "Their own logo, SI_constructions_logo_2x.png (white on transparent, 560x150), with the empty transparent padding trimmed off. The artwork itself is unchanged."
+      "src": "assets/logo-si-lockup.png",
+      "width": 707,
+      "height": 127,
+      "_comment": "Their own logo (SI_constructions_logo_2x.png, white on transparent) is a tall house-and-monogram mark with 'CONSTRUCTIONS PTY LTD' in tiny type underneath, which the template's 32px-high header shrank to an unreadable smudge. So I kept their house-and-S&I monogram exactly as drawn and set the word CONSTRUCTIONS beside it instead of under it, in a bold serif close to theirs (Liberation Serif Bold). 'PTY LTD' is dropped. The untouched original is assets/logo-si-white.png. Flag for Pat: a layout change to their logo, not a redraw."
     }
   },
   "icons": {
