@@ -1,0 +1,456 @@
+{
+  "_comment": "BNS Landscapes, Caringbah. Built 2026-09-24 from their own site (bnslandscapes.com.au, read live with curl; a bare 'Mozilla/5.0' UA is refused by Mod_Security, a normal desktop browser UA string reads fine) and data/google_reviews_top25.json. npm run new was not used (broken in this container); this file is hand-written on the shape of south-coast-landscapes and greenway-landscapes. Every photo is theirs, opened and looked at; every slot is a different image. See BRIEF.md.",
+  "slug": "bns-landscapes",
+  "template": "trust",
+  "industry": "landscaping",
+  "live": false,
+  "tagline": "Family-owned landscape construction in Caringbah for over 45 years. Stonework, pools, timber and seawalls.",
+  "schemaType": "LandscapeArchitect",
+  "business": {
+    "name": "BNS Landscapes",
+    "ownerName": "Peter Stubbs",
+    "ownerFirstName": "Peter",
+    "phone": {
+      "display": "02 9542 8900",
+      "e164": "+61295428900"
+    },
+    "address": "14 Woodfield Blvd, Caringbah NSW 2229",
+    "abn": "",
+    "baseSuburb": "Caringbah",
+    "region": "NSW",
+    "currentSite": "bnslandscapes.com.au",
+    "brand": {
+      "accent": "#55B627",
+      "accent2": "#C8A96A",
+      "themeColor": "#0B140C",
+      "_comment": "#55B627 is the green of the tree in their own favicon (favicon-tree.png), 7.2:1 on the dark ground. #C8A96A is the sandstone that runs through their stonework photos, not a logo colour."
+    },
+    "logo": {
+      "src": "assets/logo-bns.webp",
+      "width": 391,
+      "height": 167,
+      "_comment": "Their own BNS-logo.png (green script BNS, white LANDSCAPES), made for a dark ground. Trimmed to its bounding box only."
+    },
+    "_comment": "No email published anywhere on their site (contact is a phone number and a callback form), so none is shown. ABN 30 166 627 452 (BNS LANDSCAPES PTY LTD, active, NSW 2229) is from ABN Lookup, not their site, so it is left off the page."
+  },
+  "icons": {
+    "favicon": "assets/favicon.svg"
+  },
+  "share": {
+    "image": "assets/terraced-stone-walls-1200.webp",
+    "width": 1200,
+    "height": 622,
+    "title": "BNS Landscapes — Landscaping, Stonework, Pools & Seawalls, Caringbah",
+    "description": "Family-owned landscape construction in Caringbah for over 45 years. Retaining walls, stonework, pools, timber decks and seawalls.",
+    "alt": "Terraced sandstone retaining walls, palms and clipped hedging climbing a steep block to a glass-fronted house, built by BNS Landscapes"
+  },
+  "responsePromise": "We'll get back to you and talk it through.",
+  "copy": {
+    "title": "BNS Landscapes — Landscaping, Stonework, Pools & Seawalls, Caringbah",
+    "description": "Family-owned landscape construction in Caringbah for over 45 years. Retaining walls, stone and concrete, paving, pools, timber decks, irrigation and Sylvania Waters seawalls. Call 02 9542 8900.",
+    "ctaLabel": "Book a site inspection",
+    "kicker": "Caringbah · Sutherland Shire",
+    "headline": "From the D.A.<br>to the last<br><em>roll of turf.</em>",
+    "sub": "Design, approvals and the build, from one family-owned firm in Caringbah for over 45 years. <em>Our own site teams, trucks, excavators and bobcats.</em>",
+    "heroSecondary": "Or send the details",
+    "heroSecondarySms": "Or send the details",
+    "navApproach": "How we work",
+    "statementLabel": "Why BNS",
+    "statementHeadline": "Everyone on the job<br>keeps talking.",
+    "statementBody": "Our team keeps every party in the loop for the whole job, and brings a true “can do” attitude whatever their role on site. Patrick Hemsworth, our Construction Manager, runs the site teams to the program, the quality and the budget.",
+    "servicesLabel": "What we do",
+    "servicesHeadline": "Stone, water,<br>timber, seawalls.",
+    "servicesIntro": "Residential and commercial. Retaining walls, excavation, stone and concrete, tiling and paving, pools, timber construction, irrigation and planting. Can't see your job here? Call and ask.",
+    "apertureLabel": "On land and on the water",
+    "apertureLine": "Gardens on the land. Seawalls on the water.",
+    "workLabel": "Our work",
+    "workHeadline": "Gardens we've<br>built.",
+    "workIntro": "Front gardens, pools, paths and stonework for homes, and parkland for commercial clients.",
+    "processLabel": "How it runs",
+    "processHeadline": "One firm,<br>start to finish.",
+    "processIntro": "You deal with one company from the first phone call to the finished yard.",
+    "ownerLabel": "Who you're dealing with",
+    "reviewsTitle": "What customers say.",
+    "reviewsIntro": "In their own words, from Google.",
+    "recognitionLabel": "Licensed & insured",
+    "recognitionHeadline": "A Gold Licence,<br>never blemished.",
+    "recognitionIntro": "Gold Licence 269300C. Fully insured, including home warranty insurance through the Home Building Compensation Fund. WHS, Quality Assurance and Environmental Management Systems in place. Proud members of the LNA.",
+    "areasLabel": "Where we work",
+    "areasHeadline": "Caringbah,<br>and the Shire.",
+    "areasIntro": "Our base is 14 Woodfield Blvd, Caringbah. Our seawall work is on the Sylvania Waters canals. Not sure you're in range? Call and ask.",
+    "faqLabel": "Before you call",
+    "faqHeadline": "Questions we get asked.",
+    "enquireLabel": "Book a site inspection",
+    "enquireHeadline": "Tell us about<br>the job.",
+    "enquireIntro": "The suburb, what's there now, and what you want out of it. Residential or commercial. We'll get back to you and talk through the best way to do it."
+  },
+  "stats": {
+    "googleRating": 4.2,
+    "reviewCount": 9,
+    "_comment": "4.2 from 9 in data/google_reviews_top25.json. Below the 4.7 floor, so the page shows no rating."
+  },
+  "pullQuote": {
+    "text": "Great company, hard-working staff, always friendly & very professional. They know their trade!!",
+    "name": "Marilyn Poniris, Google"
+  },
+  "owner": {
+    "body": "Peter Stubbs has run BNS since 2013. Barry Stubbs co-founded the business and ran it for over 40 years before that. It is still family owned and operated.",
+    "team": "Site teams are run by Patrick Hemsworth, our Construction Manager: highly qualified landscape and horticulture tradespeople and apprentices, hand-picked for their attention to detail.",
+    "facts": [
+      {
+        "value": "45+",
+        "label": "Years, family owned and operated"
+      },
+      {
+        "value": "2013",
+        "label": "Peter Stubbs takes over"
+      },
+      {
+        "value": "Gold",
+        "label": "Licence 269300C"
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "kind": "licence",
+      "label": "Gold Licence 269300C",
+      "body": "Landscaping. Never been blemished.",
+      "strip": true
+    },
+    {
+      "kind": "licence",
+      "label": "Seawall licence 319080C",
+      "body": "Held by BNS Innovations, for seawall works.",
+      "strip": true
+    },
+    {
+      "kind": "claim",
+      "label": "Fully insured",
+      "body": "Including home warranty insurance (Home Building Compensation Fund).",
+      "strip": true
+    },
+    {
+      "kind": "membership",
+      "label": "LNA members",
+      "body": "Proud members.",
+      "strip": true
+    },
+    {
+      "kind": "claim",
+      "label": "Patented seawall system",
+      "body": "All-FRP components, no concrete cancer, a 100 year design life.",
+      "strip": false
+    }
+  ],
+  "priceLines": {
+    "fee": "",
+    "build": "",
+    "_comment": "No price is published anywhere on their site and none is invented here."
+  },
+  "_check": [],
+  "services": [
+    {
+      "title": "Stone & walls",
+      "blurb": "Retaining walls, stonework, stone and concrete, tiling and paving, and the excavation underneath it all.",
+      "photo": {
+        "src": "assets/firepit-seat-800.webp",
+        "srcset": "assets/firepit-seat-480.webp 480w, assets/firepit-seat-800.webp 800w",
+        "width": 800,
+        "height": 534,
+        "alt": "A circular sandstone seat wall around a gravel fire-pit area, with hardwood posts behind, mulched beds and a curved lawn edge"
+      }
+    },
+    {
+      "title": "Pools & water",
+      "blurb": "Swimming pools and water features, with the paving, decking, irrigation and planting around them.",
+      "photo": {
+        "src": "assets/pool-deck-dusk-800.webp",
+        "srcset": "assets/pool-deck-dusk-480.webp 480w, assets/pool-deck-dusk-800.webp 800w",
+        "width": 800,
+        "height": 534,
+        "alt": "A lit pool at dusk with grey stone coping, a timber deck step up to a built-in bench, and palms along a dark fence"
+      }
+    },
+    {
+      "title": "Timber",
+      "blurb": "Timber construction and carpentry: decks, stairs, screens and pergolas.",
+      "photo": {
+        "src": "assets/hardwood-deck-800.webp",
+        "srcset": "assets/hardwood-deck-480.webp 480w, assets/hardwood-deck-800.webp 800w",
+        "width": 800,
+        "height": 453,
+        "alt": "A raised hardwood deck with stairs, a slatted privacy screen and a pergola against a brick house"
+      }
+    },
+    {
+      "title": "Seawalls",
+      "blurb": "Seawall reconstruction, tie-rod installation, capping beams and maintenance, and pontoon removal and replacement, through BNS Innovations.",
+      "photo": {
+        "src": "assets/seawall-canal-800.webp",
+        "srcset": "assets/seawall-canal-480.webp 480w, assets/seawall-canal-800.webp 800w",
+        "width": 800,
+        "height": 600,
+        "alt": "A new concrete seawall and capping beam running along a canal, with a gangway down to a pontoon"
+      }
+    }
+  ],
+  "process": [
+    {
+      "step": "Call, or ask for a call back",
+      "detail": "Ring 02 9542 8900, or leave your details and we'll get back to you to talk it through."
+    },
+    {
+      "step": "Free on-site inspection",
+      "detail": "We come out and look at the site with you, residential or commercial."
+    },
+    {
+      "step": "Design & approvals",
+      "detail": "We design it with you. Where a job needs council approval, we're with you from the D.A. application on."
+    },
+    {
+      "step": "The build",
+      "detail": "Our own site teams, run by Patrick Hemsworth, with our own trucks, excavators and bobcats, through to final completion."
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "Sutherland Shire",
+      "suburbs": [
+        "Caringbah",
+        "Sylvania Waters"
+      ]
+    }
+  ],
+  "photos": {
+    "hero": {
+      "src": "assets/terraced-stone-walls-1600.webp",
+      "srcset": "assets/terraced-stone-walls-480.webp 480w, assets/terraced-stone-walls-800.webp 800w, assets/terraced-stone-walls-1200.webp 1200w, assets/terraced-stone-walls-1600.webp 1600w, assets/terraced-stone-walls-2000.webp 2000w",
+      "width": 2000,
+      "height": 1036,
+      "alt": "Terraced sandstone retaining walls, palms and clipped hedging climbing a steep block to a glass-fronted house, built by BNS Landscapes"
+    },
+    "statement": {
+      "src": "assets/deck-stairs-pool-1200.webp",
+      "srcset": "assets/deck-stairs-pool-480.webp 480w, assets/deck-stairs-pool-800.webp 800w, assets/deck-stairs-pool-1200.webp 1200w, assets/deck-stairs-pool-1600.webp 1600w",
+      "width": 1600,
+      "height": 1066,
+      "alt": "Hardwood stairs down from a verandah to pale paving, a frangipani and a glass-fenced lap pool"
+    },
+    "aperture": {
+      "src": "assets/canal-pool-waterfall-1600.webp",
+      "srcset": "assets/canal-pool-waterfall-480.webp 480w, assets/canal-pool-waterfall-800.webp 800w, assets/canal-pool-waterfall-1200.webp 1200w, assets/canal-pool-waterfall-1600.webp 1600w, assets/canal-pool-waterfall-2000.webp 2000w",
+      "width": 2000,
+      "height": 750,
+      "alt": "A waterfront pool at dusk with a lit water blade falling from a dark stone wall, a glass fence and boats on the canal behind",
+      "caption": "Waterfront pool and water-blade wall"
+    },
+    "gallery": [
+      {
+        "src": "assets/front-fence-driveway-800.webp",
+        "full": "assets/front-fence-driveway-1200.webp",
+        "srcset": "assets/front-fence-driveway-480.webp 480w, assets/front-fence-driveway-800.webp 800w, assets/front-fence-driveway-1200.webp 1200w",
+        "width": 1200,
+        "height": 800,
+        "caption": "Front garden and fence",
+        "detail": "Rendered piers, slat panels, lawn, driveway",
+        "alt": "A new front garden: white rendered piers with black slat panels, a planted strip along the fence, lawn and a dark aggregate driveway to a two-storey home"
+      },
+      {
+        "src": "assets/tropical-side-path-800.webp",
+        "full": "assets/tropical-side-path-1200.webp",
+        "srcset": "assets/tropical-side-path-480.webp 480w, assets/tropical-side-path-800.webp 800w, assets/tropical-side-path-1200.webp 1200w",
+        "width": 1200,
+        "height": 800,
+        "caption": "Side path",
+        "detail": "Raised planters, tropical planting",
+        "alt": "A paved side path between two raised planters of cordylines, bromeliads and silver groundcover, running between white walls"
+      },
+      {
+        "src": "assets/boulder-path-800.webp",
+        "full": "assets/boulder-path-1300.webp",
+        "srcset": "assets/boulder-path-480.webp 480w, assets/boulder-path-800.webp 800w, assets/boulder-path-1300.webp 1300w",
+        "width": 1300,
+        "height": 867,
+        "caption": "Boulder garden path",
+        "detail": "Curved path, boulders, river pebbles",
+        "alt": "A curved dark path through a garden of large pale boulders, river pebbles and grass tufts, screened by bamboo"
+      },
+      {
+        "src": "assets/stone-wall-pool-800.webp",
+        "full": "assets/stone-wall-pool-1400.webp",
+        "srcset": "assets/stone-wall-pool-480.webp 480w, assets/stone-wall-pool-800.webp 800w, assets/stone-wall-pool-1400.webp 1400w",
+        "width": 1400,
+        "height": 933,
+        "caption": "Pool and stone feature wall",
+        "detail": "Random stone, planter slots, new turf",
+        "alt": "A small pool with pale coping in front of a random-stone feature wall with planted slots, glass pool fencing and new turf in the foreground"
+      },
+      {
+        "src": "assets/stackstone-pool-800.webp",
+        "full": "assets/stackstone-pool-1300.webp",
+        "srcset": "assets/stackstone-pool-480.webp 480w, assets/stackstone-pool-800.webp 800w, assets/stackstone-pool-1300.webp 1300w",
+        "width": 1300,
+        "height": 975,
+        "caption": "Raised pool",
+        "detail": "Stacked-stone face, glass fence, pebble bed",
+        "alt": "A raised pool seen from above, faced in stacked stone, with a glass fence, stone steps, a river-pebble bed and lawn below"
+      },
+      {
+        "src": "assets/park-path-800.webp",
+        "full": "assets/park-path-1500.webp",
+        "srcset": "assets/park-path-480.webp 480w, assets/park-path-800.webp 800w, assets/park-path-1500.webp 1500w",
+        "width": 1500,
+        "height": 1125,
+        "caption": "Parkland path",
+        "detail": "Commercial · concrete path, timber crossing, rock beds",
+        "alt": "A concrete path in a public park crossing a timber-decked section between rock and mulch beds, with a picnic shelter and lawn beyond"
+      }
+    ]
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [
+    {
+      "name": "George Tsolakis",
+      "text": "Peter, Barry and the team at BNS produce outstanding quality designs, then build them to produce absolutely amazing landscaping projects. Peter has created an awesomely walkway deck for us that we enjoy every day.",
+      "source": "Google review, shortened"
+    },
+    {
+      "name": "Lauren Mehanna",
+      "text": "Peter & his team were very pleasant to deal with throughout the whole process from D.A application to final completion of works.",
+      "source": "Google review, shortened"
+    },
+    {
+      "name": "Rangi Ivaiti",
+      "text": "Peter and his team were very efficient and reliable... They did/organised it all from driveway crossovee concreting through to turf laying.",
+      "source": "Google review, shortened"
+    },
+    {
+      "name": "PENG",
+      "text": "I am pleased to highly recommend BNS LANDSCAPES for the work they completed on our seawall replacement and backyard landscaping.",
+      "source": "Google review, shortened"
+    }
+  ],
+  "faq": [
+    {
+      "q": "Do you do the whole job, or just the garden?",
+      "a": "The whole job. Excavation, retaining walls, stone and concrete, tiling and paving, pools, timber construction, irrigation and planting, with our own site teams and our own trucks, excavators and bobcats."
+    },
+    {
+      "q": "Is the site inspection free?",
+      "a": "Yes. The on-site inspection is free. We look at the site with you, then talk through the best way to do the job."
+    },
+    {
+      "q": "What does a job cost?",
+      "a": "We don't publish a price list, because no two sites are the same. It starts with the free on-site inspection."
+    },
+    {
+      "q": "Are you licensed and insured?",
+      "a": "Yes. We hold Gold Licence 269300C, and it has never been blemished. We are fully insured, including home warranty insurance through the Home Building Compensation Fund, and we have accredited WHS, Quality Assurance and Environmental Management Systems in place."
+    },
+    {
+      "q": "Do you do commercial work?",
+      "a": "Yes. Commercial landscaping sits alongside residential, and our commercial work includes public parkland. Tell us about the site and we'll come and look."
+    },
+    {
+      "q": "Can you replace an old seawall?",
+      "a": "Yes, through BNS Innovations, under seawall licence 319080C. We developed and patented a system for replacing the old concrete seawalls in Sylvania Waters with all-FRP components: no concrete cancer, and a 100 year design life. The new wall goes in about 700mm in front of the old one, with no percussion or vibration, and the old wall stays in place. We also do tie-rod installation, capping beams and maintenance, and pontoons."
+    }
+  ],
+  "sms": {
+    "label": "Send the details",
+    "body": "Hi {owner}, I'd like a quote.\nSuburb: \nWhat I'm after: \n(Happy to send photos.)"
+  },
+  "form": {
+    "accessKey": ""
+  },
+  "_source": {
+    "url": "https://bnslandscapes.com.au/",
+    "platform": "WordPress (Oxygen builder), © 2019, built by Seek Marketing",
+    "readOn": "2026-09-24, live site via curl with a standard desktop browser user-agent string",
+    "pagesRead": [
+      "https://bnslandscapes.com.au/",
+      "https://bnslandscapes.com.au/landscapes/",
+      "https://bnslandscapes.com.au/about-us/",
+      "https://bnslandscapes.com.au/innovations/",
+      "https://bnslandscapes.com.au/contact/",
+      "https://bnslandscapes.com.au/gallery/",
+      "https://bnslandscapes.com.au/residential/",
+      "https://bnslandscapes.com.au/commercial/",
+      "https://bnslandscapes.com.au/pools/",
+      "https://bnslandscapes.com.au/seawalls/",
+      "https://bnslandscapes.com.au/videos/",
+      "https://bnslandscapes.com.au/wp-json/wp/v2/media (every JPG downloaded; every one used here opened and looked at)"
+    ],
+    "site": [
+      {
+        "url": "https://bnslandscapes.com.au/about-us/",
+        "text": "BNS Landscapes is a family owned and operated business established over 45 years ago. Barry Stubbs was the co-founder of BNS Landscapes and ran the business successfully for over 40 years. In 2013 Peter Stubbs took over the business and has continued to make it grow."
+      },
+      {
+        "url": "https://bnslandscapes.com.au/about-us/",
+        "text": "What distinguishes BNS is that our team actively communicate with all parties throughout the entire process and demonstrate a true 'can do' attitude regardless of their role."
+      },
+      {
+        "url": "https://bnslandscapes.com.au/about-us/",
+        "text": "Our Site teams comprise highly qualified Landscape and Horticulture Tradespersons and Apprentices, hand-picked for their attention to detail and personable natures."
+      },
+      {
+        "url": "https://bnslandscapes.com.au/about-us/",
+        "text": "Site teams are managed by Patrick Hemsworth, Our Construction Manager who ensures that our project teams work effectively to achieve the desired program, quality and budget outcomes."
+      },
+      {
+        "url": "https://bnslandscapes.com.au/about-us/",
+        "text": "Free on-site inspection. Our Company have all the essential equipment at our disposal - Trucks, Excavators and Bobcats to ensure an efficient and Professional job each and every time."
+      },
+      {
+        "url": "https://bnslandscapes.com.au/about-us/",
+        "text": "We are proud members of the LNA and have received many awards of excellence in the Industry. We also hold a Gold Licence number 269300C with the Building Services Corporation which has never been blemished. We also have all up to date and accredited WHS, Quality Assurance & Environmental Management Systems in place."
+      },
+      {
+        "url": "https://bnslandscapes.com.au/landscapes/",
+        "text": "We hold a Gold Licence number 269300C with the Building Services Corporation which has never been blemished. We also have all up to date and accredited WHS, Quality Assurance & Environmental Management Systems in place and are fully insured including home warranty insurance (Home Building Compensation Fund)"
+      },
+      {
+        "url": "https://bnslandscapes.com.au/landscapes/",
+        "text": "Our vast amount of landscaping services include: Residential, Commercial, Swimming Pools, Tiling & Paving, Retaining Walls, Excavation, Timber Construction, Stone & Concrete. Can’t find your service? Don’t worry we do it all! Call us today and discuss your project 02 9542 8900"
+      },
+      {
+        "url": "https://bnslandscapes.com.au/landscapes/",
+        "text": "Free on site inspection. Request a call back. We’ll get back to you and discuss the optimal solution for your residential or commercial property. Please select: Residential Landscaping, Commercial Landscaping, Seawalls, Swimming Pools, Tiling & Paving, Retaining Walls, Excavation, Timber Construction, Irrigation Systems, Stone & Concrete"
+      },
+      {
+        "url": "https://bnslandscapes.com.au/landscapes/",
+        "text": "We can help with landscaping design and installation, commercial and residential projects."
+      },
+      {
+        "url": "https://bnslandscapes.com.au/landscapes/",
+        "text": "Services: Landscaping, Water features, Pools, Carpentry, Stonework, Seawalls. Fully insured including Home warranty insurance. Licence number: 269300C (footer, every page)"
+      },
+      {
+        "url": "https://bnslandscapes.com.au/contact/",
+        "text": "P: 02 9542 8900 A: 14 Woodfield Blvd Caringbah NSW 2229 (also on every page footer, and the Google phone in data/google_reviews_top25.json)"
+      },
+      {
+        "url": "https://bnslandscapes.com.au/innovations/",
+        "text": "BNS has developed and patented a new revolutionary system and method of replacing the old dilapidated concrete Seawalls in Sylvania Waters using all FRP components eliminating concrete cancer and giving a 100 year design life. These walls can be replaced with a brand new technology without any percussion, vibration or interference with the current infrastructure in these properties."
+      },
+      {
+        "url": "https://bnslandscapes.com.au/innovations/",
+        "text": "BNS Innovations are fully insured including Home Warranty insurance (Home Building Compensation Fund) and hold a builders licence specifically for seawall works- Licence number 319080C."
+      },
+      {
+        "url": "https://bnslandscapes.com.au/innovations/",
+        "text": "This system allows the old wall to remain in place with the new wall approx. 700mm in front of the old wall protecting all the currant assets of the property."
+      },
+      {
+        "url": "https://bnslandscapes.com.au/innovations/",
+        "text": "Our Seawall services include: Seawall Reconstruction, Tie Rod Installation, Capping Beams and Maintenance. [Enquiry form:] Tie-Rod Installation, Seawall Reconstruction, Capping Beam replacements, Pontoon removal & replacement, Geotechnical engineering"
+      }
+    ],
+    "reviews": "data/google_reviews_top25.json, bns-landscapes: rating 4.2 from 9 (below the floor, not shown). Every review and the pull quote are from best_for_demo, word for word. 'D.A application to final completion of works' (Lauren Mehanna) is the source for the headline's 'From the D.A.' and the approvals step; 'from driveway crossovee concreting through to turf laying' (Rangi Ivaiti) for 'the last roll of turf'.",
+    "photos": "Every photo is from their own media library at bnslandscapes.com.au/wp-content/uploads/. Hero I006.jpg is their own home-page and Landscapes-page hero. Park.jpg is from their Commercial gallery page; IMG_3801.jpg is from their Seawalls and Innovations galleries; IMG_1452.jpg is the Contact-page photo. Captions describe what is in the frame only; their site never names a garden job's suburb, so none is named.",
+    "notUsed": "Not on the page for want of a checkable source or because it may be stale: 'received many awards of excellence in the Industry' (no award named); 'BNS offers a 24 hour emergency service on all Sylvania Waterways Seawalls' (2019 text, ask Peter); geotechnical engineering (only a form option); ABN (from ABN Lookup, not their site)."
+  }
+}

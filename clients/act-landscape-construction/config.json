@@ -66,7 +66,7 @@
     "servicesHeadline": "The whole<br>backyard.",
     "servicesIntro": "Each part is planned around the rest: how the pool meets the paving and the deck, how a court sits into the levels and the drainage, how the planting ties it together. Built for Canberra's frosty winters and hot, dry summers.",
     "apertureLabel": "Master Builders 2025 · Winner",
-    "apertureLine": "Jerrabomberra. Three levels. One build.",
+    "apertureLine": "Three levels. One build.",
     "workLabel": "Recent work",
     "workHeadline": "Six backyards.<br>Six briefs.",
     "workIntro": "A grass tennis court in Forrest, corten screens, a pool with its own spa, a courtyard plunge pool, a brick path through grasses, and a long pool in pale stone. Every photo on this page is one of our own jobs. Select any photo to see it larger.",
@@ -75,8 +75,8 @@
     "processIntro": "The same six steps on every job, from the first call to walking you through the finished space.",
     "ownerLabel": "Who you are dealing with",
     "recognitionLabel": "Beyond the reviews",
-    "recognitionHeadline": "Master Builders 2025. A showroom. One pool partner.",
-    "recognitionIntro": "Three things you can check before you ring.",
+    "recognitionHeadline": "Worth checking first.",
+    "recognitionIntro": "Master Builders, the Fyshwick showroom and Harvest Pools: three things you can look up before you ring.",
     "reviewsLabel": "Google reviews",
     "reviewsTitle": "In their words.",
     "reviewsIntro": "From our Google reviews, word for word. Two of the four run longer on Google and are marked shortened.",
@@ -164,22 +164,22 @@
       "title": "Sports courts and putting greens",
       "blurb": "Pickleball, basketball half and full courts, tennis and multi-sport courts, and private putting greens. Excavated, drained and built up from a proper base, with lighting and fencing if you want them.",
       "photo": {
-        "src": "assets/jerra-court-sunset-800.webp",
-        "srcset": "assets/jerra-court-sunset-480.webp 480w, assets/jerra-court-sunset-800.webp 800w",
-        "width": 800,
-        "height": 1000,
-        "alt": "A blue and grey half basketball court at sunset beside a glass-fenced paved terrace, part of the award-winning Jerrabomberra backyard"
+        "src": "assets/jerra-court-overhead-750.webp",
+        "srcset": "assets/jerra-court-overhead-480.webp 480w, assets/jerra-court-overhead-750.webp 750w",
+        "width": 750,
+        "height": 999,
+        "alt": "A blue and grey half basketball court seen from directly above, with its hoop, garden beds either side and the glass pool fence below, part of the award-winning Jerrabomberra backyard"
       }
     },
     {
       "title": "Walls, paving and turf",
       "blurb": "Retaining walls in stone, block, brick, hardwood, concrete sleeper or treated pine. Paving for driveways, paths, alfrescos and pool surrounds. Turf, synthetic grass and irrigation.",
       "photo": {
-        "src": "assets/firepit-stone-800.webp",
-        "srcset": "assets/firepit-stone-480.webp 480w, assets/firepit-stone-800.webp 800w, assets/firepit-stone-1024.webp 1024w",
-        "width": 1024,
-        "height": 1280,
-        "alt": "A sunken paved fire pit terrace with a steel fire box, edged by stone retaining walls and a synthetic lawn"
+        "src": "assets/firepit-stone-780.webp",
+        "srcset": "assets/firepit-stone-480.webp 480w, assets/firepit-stone-780.webp 780w",
+        "width": 780,
+        "height": 1000,
+        "alt": "A sunken paved fire pit terrace with a steel fire box, below two tiers of stone retaining wall, beside a synthetic lawn"
       }
     },
     {
@@ -468,7 +468,7 @@
         "sentence": "500+ PROJECTS COMPLETED — With over 500 completed projects, our experience ensures reliable delivery and proven results. (home, about, services and every service page)",
         "url": "https://www.act-landscaping.com.au/about"
       },
-      "Award: '2025 Master Builders award' (hero sub, meta description), credential 'Master Builders Excellence Awards 2025 — Winner, Landscape Design and Construction Residential, with ACT Decks, Jerrabomberra', aperture label 'Master Builders 2025 · Winner', aperture caption 'Jerrabomberra · Master Builders winner, 2025', areas intro 'the Jerrabomberra backyard that won at the 2025 Master Builders Excellence Awards', recognition headline 'Master Builders 2025.', hero alt 'The award-winning Jerrabomberra backyard'": {
+      "Award: '2025 Master Builders award' (hero sub, meta description), credential 'Master Builders Excellence Awards 2025 — Winner, Landscape Design and Construction Residential, with ACT Decks, Jerrabomberra', aperture label 'Master Builders 2025 · Winner', aperture caption 'Jerrabomberra · Master Builders winner, 2025', areas intro 'the Jerrabomberra backyard that won at the 2025 Master Builders Excellence Awards', recognition intro 'Master Builders', hero alt 'The award-winning Jerrabomberra backyard'": {
         "sentence": "2025 Master Builders and Asset Construction Hire Excellence Awards — Landscape Design and Construction Residential — ACT Landscape Construction, ACT Decks — Jerrabomberra. Their own projects page: 'Jerrabomberra — Award Winning Project 2025'. Their own photo of the framed certificate reads 'MASTER BUILDERS AND ASSET CONSTRUCTION HIRE … WINNER — ACT Landscape Construction and ACT Decks — Landscape Design and Construction Residential — Jerrabomberra'.",
         "url": "https://mba.org.au/awards-result/landscape-design-and-constructions/"
       },
@@ -477,7 +477,7 @@
         "url": "https://mba.org.au/awards-result/landscape-design-and-constructions/"
       },
       "Aperture and court service photos identified as the Jerrabomberra job": {
-        "sentence": "Their projects page places 210624_0068.jpg (the aerial used as the aperture) directly under 'Jerrabomberra — Award Winning Project 2025'. The court service photo, 210624_0016, is from the same 21 June 2024 shoot and shows the same blue half court beside the glass-fenced terrace, matching the Master Builders description.",
+        "sentence": "Their projects page places 210624_0068.jpg (the aerial used as the aperture) directly under 'Jerrabomberra — Award Winning Project 2025'. The court service photo, 210624_0061, is from the same 21 June 2024 shoot and shows the same blue half court from above, with the glass pool fence below it, matching the Master Builders description.",
         "url": "https://www.act-landscaping.com.au/projects"
       },
       "'designs and builds whole backyards like this one, with every trade managed in-house' (hero sub), 'One team. Every trade.' (statement), 'Design, approvals, excavation, construction and the final detail are all managed in-house', 'No lining up a pool builder, a court company, a deck builder and a landscaper yourself', 'one team from the first conversation to handover', headline 'One team.', tagline 'designed and built by one team'": {
@@ -569,7 +569,7 @@
         "url": "data/google_reviews_top25.json"
       },
       "Every photo on the page": {
-        "sentence": "All 16 images are their own, pulled at full resolution from their Duda CDN (irp.cdn-website.com/904fa5d1/dms3rep/multi/). No stock, no upscaling, no sample photos. Hero 151225_0026 (deck, pool, lawn and court at one property); aperture 210624_0068 and court service 210624_0016 (Jerrabomberra, the award job); statement 12.jpg (crew on a mini loader, about page background); services 161025_0023, 210624_0016, 24- web, 190624_0002 - Outdoor Kitchen; gallery Forrest-Main-1 (Forrest, projects page), 061124_0082 - Screens, 021222_173, 181225_0005, Snapins.ai_468330689 (Instagram export), 160222_011; owner Xav Landscape.jpg (about page, 'Xavier Duffy, Director'); enquiry background 'Image Feb 10, 2026, 11_42_53 AM.png' (showroom page). Apart from the two Jerrabomberra frames, each slot is a different property by shoot code. No captions name a suburb except Forrest and Jerrabomberra, which their projects page names. Crew member in the statement photo is not named.",
+        "sentence": "All 16 images are their own, pulled at full resolution from their Duda CDN (irp.cdn-website.com/904fa5d1/dms3rep/multi/). No stock, no upscaling, no sample photos. Hero 151225_0026 (deck, pool, lawn and court at one property); aperture 210624_0068 and court service 210624_0061 (Jerrabomberra, the award job); statement 12.jpg (crew on a mini loader, about page background); services 161025_0023, 210624_0061 (overhead court), 21- web Firepit, 190624_0002 - Outdoor Kitchen; gallery Forrest-Main-1 (Forrest, projects page), 061124_0082 - Screens, 021222_173, 181225_0005, Snapins.ai_468330689 (Instagram export), 160222_011; owner Xav Landscape.jpg (about page, 'Xavier Duffy, Director'); enquiry background 'Image Feb 10, 2026, 11_42_53 AM.png' (showroom page). Apart from the two Jerrabomberra frames, each slot is a different property by shoot code. No captions name a suburb except Forrest and Jerrabomberra, which their projects page names. Crew member in the statement photo is not named.",
         "url": "https://www.act-landscaping.com.au/projects"
       },
       "Logo": {
