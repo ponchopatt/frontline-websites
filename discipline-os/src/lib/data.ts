@@ -275,10 +275,10 @@ export interface CounterData {
 export async function loadCounterData(supabase: Supabase, from: LocalDate, to: LocalDate): Promise<CounterData> {
   const [metricsRes, entries] = await Promise.all([
     supabase.from("metrics").select("*").eq("is_active", true).order("area").order("sort_order"),
-    fetchAll<{ metric_id: string; local_date: string; value: number }>((a, b) =>
+    fetchAll<{ metric_id: string; local_date: string; value: number }>((a, b, withCount) =>
       supabase
         .from("metric_entries")
-        .select("metric_id,local_date,value", { count: "exact" })
+        .select("metric_id,local_date,value", withCount ? { count: "exact" } : undefined)
         .gte("local_date", from)
         .lte("local_date", to)
         .order("local_date")
@@ -581,30 +581,31 @@ type Page<T> = { data: T[] | null; error: { message: string } | null; count?: nu
 
 /**
  * Every row of a query, page by page (PostgREST returns at most 1000 at a time). The query
- * must order by a unique key, or rows can repeat or go missing between pages. When it asks
- * for a count (select(…, { count: "exact" })), the pages after the first are fetched all at
- * once instead of one after another.
+ * must order by a unique key, or rows can repeat or go missing between pages. If it asks for
+ * a count on the first page (select(…, withCount ? { count: "exact" } : undefined)), the pages
+ * after it are fetched all at once instead of one after another. Only on the first: each count
+ * is a full scan, and a counted page past the end is an error where an uncounted one is empty.
  */
-export async function fetchAll<T>(page: (from: number, to: number) => PromiseLike<Page<T>>): Promise<T[]> {
+export async function fetchAll<T>(page: (from: number, to: number, withCount: boolean) => PromiseLike<Page<T>>): Promise<T[]> {
   const size = 1000;
   const rows = (res: Page<T>) => {
     if (res.error) throw new Error(res.error.message);
     return res.data ?? [];
   };
-  const first = await page(0, size - 1);
+  const first = await page(0, size - 1, true);
   const out = rows(first);
   let from = size;
   let full = out.length === size;
   if (full && typeof first.count === "number" && first.count > size) {
     const more = Math.ceil(first.count / size) - 1;
-    const pages = (await Promise.all(Array.from({ length: more }, (_, i) => page(from + i * size, from + (i + 1) * size - 1)))).map(rows);
+    const pages = (await Promise.all(Array.from({ length: more }, (_, i) => page(from + i * size, from + (i + 1) * size - 1, false)))).map(rows);
     for (const p of pages) out.push(...p);
     from += more * size;
     full = pages[pages.length - 1].length === size;
   }
   // Without a count, or with rows added since it was taken: on until a short page.
   while (full) {
-    const p = rows(await page(from, from + size - 1));
+    const p = rows(await page(from, from + size - 1, false));
     out.push(...p);
     from += size;
     full = p.length === size;
@@ -638,10 +639,10 @@ export async function loadHabitStats(viewer: Viewer): Promise<HabitStats[]> {
   const first = firstDayOf(viewer);
   const [habitsRes, completions, planRes] = await Promise.all([
     supabase.from("habits").select("id,name,category,kind,days,sort_order,created_at,archived_at").order("sort_order"),
-    fetchAll<{ habit_id: string; local_date: string }>((from, to) =>
+    fetchAll<{ habit_id: string; local_date: string }>((from, to, withCount) =>
       supabase
         .from("habit_completions")
-        .select("habit_id,local_date", { count: "exact" })
+        .select("habit_id,local_date", withCount ? { count: "exact" } : undefined)
         .gte("local_date", first)
         .order("local_date")
         .order("habit_id")
@@ -650,6 +651,7 @@ export async function loadHabitStats(viewer: Viewer): Promise<HabitStats[]> {
     supabase.from("daily_plans").select("completed_at,final_score").eq("local_date", today).maybeSingle(),
   ]);
   if (habitsRes.error) throw new Error(`Could not load your habits: ${habitsRes.error.message}`);
+  if (planRes.error) throw new Error(`Could not load your habits: ${planRes.error.message}`);
 
   const doneOn = new Map<string, Set<string>>();
   for (const c of completions) {

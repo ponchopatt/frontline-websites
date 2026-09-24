@@ -8,18 +8,22 @@ vi.mock("server-only", () => ({}));
 vi.mock("./supabase/server", () => ({ createClient: vi.fn() }));
 vi.mock("./lock", () => ({ readUnlockToken: vi.fn() }));
 
-/** A fake paged query over `rows`, that records each range asked for and how many ran at once. */
+/**
+ * A fake paged query over `rows`, that records each range asked for, whether it asked for a
+ * count, and how many ran at once. Like PostgREST, a counted page past the end is an error.
+ */
 function pager(rows: number[], count: number | null) {
-  const calls: Array<[number, number]> = [];
+  const calls: Array<[number, number, boolean]> = [];
   let running = 0;
   let most = 0;
-  const page = async (from: number, to: number) => {
-    calls.push([from, to]);
+  const page = async (from: number, to: number, withCount: boolean) => {
+    calls.push([from, to, withCount]);
     running += 1;
     most = Math.max(most, running);
     await new Promise((r) => setTimeout(r, 1));
     running -= 1;
-    return { data: rows.slice(from, to + 1), error: null, count };
+    if (withCount && from > 0 && from >= rows.length) return { data: null, error: { message: "Requested range not satisfiable" }, count: null };
+    return { data: rows.slice(from, to + 1), error: null, count: withCount ? count : null };
   };
   return { page, calls, most: () => most };
 }
@@ -30,18 +34,34 @@ describe("fetching every row", () => {
   it("gets every row once, in order, and fetches the pages after the first together", async () => {
     const q = pager(range(2500), 2500);
     expect(await fetchAll(q.page)).toEqual(range(2500));
+    // Only the first page asks for a count.
     expect(q.calls).toEqual([
-      [0, 999],
-      [1000, 1999],
-      [2000, 2999],
+      [0, 999, true],
+      [1000, 1999, false],
+      [2000, 2999, false],
     ]);
     expect(q.most()).toBe(2);
+  });
+
+  it("copes with rows removed after the count", async () => {
+    const rows = range(2100);
+    const q = pager(rows, 2100);
+    // Removed once the first page is in, so the last page starts past the end.
+    const page = (from: number, to: number, withCount: boolean) => {
+      if (from > 0) rows.length = 1900;
+      return q.page(from, to, withCount);
+    };
+    expect(await fetchAll(page)).toEqual(range(1900));
   });
 
   it("goes page by page without a count, until a short page", async () => {
     const q = pager(range(2000), null);
     expect(await fetchAll(q.page)).toHaveLength(2000);
-    expect(q.calls.map(([from]) => from)).toEqual([0, 1000, 2000]);
+    expect(q.calls.map(([from, , withCount]) => [from, withCount])).toEqual([
+      [0, true],
+      [1000, false],
+      [2000, false],
+    ]);
     expect(q.most()).toBe(1);
   });
 
