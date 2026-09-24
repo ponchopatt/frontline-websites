@@ -60,7 +60,7 @@
     "statementBody": "Our team keeps every party in the loop for the whole job, and brings a true “can do” attitude whatever their role on site. Patrick Hemsworth, our Construction Manager, runs the site teams to the program, the quality and the budget.",
     "servicesLabel": "What we do",
     "servicesHeadline": "Stone, water,<br>timber, seawalls.",
-    "servicesIntro": "Residential and commercial. Retaining walls, excavation, stone and concrete, tiling and paving, pools, timber construction, irrigation and planting. Can't see your job here? Call and ask.",
+    "servicesIntro": "Retaining walls, excavation, stone and concrete, tiling and paving, pools, timber construction, turf, planting and irrigation. Can't see your job here? Call and ask.",
     "apertureLabel": "On land and on the water",
     "apertureLine": "Gardens on the land. Seawalls on the water.",
     "workLabel": "Our work",
@@ -161,6 +161,17 @@
       }
     },
     {
+      "title": "Turf & planting",
+      "blurb": "Turf laying, hedging, garden beds and irrigation systems, by landscape and horticulture tradespeople.",
+      "photo": {
+        "src": "assets/hedged-lawn-p-731.webp",
+        "srcset": "assets/hedged-lawn-p-450.webp 450w, assets/hedged-lawn-p-731.webp 731w",
+        "width": 731,
+        "height": 975,
+        "alt": "A curved lawn panel edged in clipped hedging, with palms, strelitzia and flax planting behind and a concrete path alongside"
+      }
+    },
+    {
       "title": "Pools & water",
       "blurb": "Swimming pools and water features, with the paving, decking, irrigation and planting around them.",
       "photo": {
@@ -180,6 +191,17 @@
         "width": 509,
         "height": 679,
         "alt": "A raised hardwood deck with stairs, a slatted privacy screen and a pergola against a brick house"
+      }
+    },
+    {
+      "title": "Commercial",
+      "blurb": "Commercial landscaping alongside our residential work: parkland, paths, sandstone and turf.",
+      "photo": {
+        "src": "assets/park-stone-seats-p-844.webp",
+        "srcset": "assets/park-stone-seats-p-450.webp 450w, assets/park-stone-seats-p-844.webp 844w",
+        "width": 844,
+        "height": 1125,
+        "alt": "Sandstone block seating set in new turf under trees in a public park, with shade sails and play equipment behind"
       }
     },
     {
@@ -308,7 +330,17 @@
         "detail": "Commercial · concrete path, timber crossing, rock beds",
         "alt": "A concrete path in a public park crossing a timber-decked section between rock and mulch beds, with a picnic shelter and lawn beyond"
       }
-    ]
+    ],
+    "owner": {
+      "src": "assets/seawall-crew-barge-731.webp",
+      "srcset": "assets/seawall-crew-barge-480.webp 480w, assets/seawall-crew-barge-731.webp 731w",
+      "width": 731,
+      "height": 975,
+      "ratio": "731/975",
+      "alt": "Two BNS crew in hi-vis on a work barge with an excavator, rebuilding a seawall along a canal",
+      "caption": "Our crew and excavator, working from a barge on a seawall job",
+      "_comment": "0.jpg from their own Seawalls and Innovations pages, cropped to a 3:4 portrait. Not a portrait of Peter (none is published); captioned as the job it is."
+    }
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",

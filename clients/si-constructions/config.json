@@ -1,0 +1,481 @@
+{
+  "_comment": "S&I Constructions Pty Ltd, 28 Tyndall Street, Mittagong NSW (Southern Highlands). Hand-written 2026-09-24 from https://www.siconstructions.com.au (live site, read with curl) because `npm run new` is broken in this container (see HANDOVER.md). Legitimacy checked: named owner Jason Stokes, ABN 62 001 128 767 and Builder's Licence 30559 in the footer, one office, one phone matching Google, real job photos with suburbs. Every specific fact on the page is quoted in _source.claimSources with its URL, or comes from data/google_reviews_top25.json. Google is 4.2 from 5, below the 4.7 floor, so no rating or count shows. The builders preset's process, FAQ and responsePromise describe a generic builder (fixed price, one site supervisor, reply within a day), none of which S&I publish, so all three are overridden with S&I's own words. Three Google reviews, each shown once; no pull quote.",
+  "slug": "si-constructions",
+  "template": "trust",
+  "industry": "builders",
+  "live": false,
+  "tagline": "Family-owned custom builders in the Southern Highlands for over 45 years. New homes, renovations and commercial builds, from our office in Mittagong.",
+  "schemaType": "HomeAndConstructionBusiness",
+  "business": {
+    "name": "S&I Constructions",
+    "ownerName": "Jason Stokes",
+    "ownerFirstName": "Jason",
+    "ownerTitle": "Owner and Managing Director",
+    "phone": {
+      "display": "(02) 4871 1607",
+      "e164": "+61248711607",
+      "_comment": "The only number on their site (every page) and the same as Google. It's a landline, so the page shows no text button. See BRIEF.md: ask Jason for a mobile."
+    },
+    "email": "stokes@siconstructions.com.au",
+    "baseSuburb": "Mittagong",
+    "region": "NSW",
+    "currentSite": "siconstructions.com.au",
+    "brand": {
+      "accent": "#6CA8EE",
+      "accent2": "#D8B68C",
+      "themeColor": "#0E1826",
+      "_comment": "Accent is the navy blue of their own logo and favicon (#004090), lightened so it reads as a button on the dark theme. themeColor is a deep version of the same navy. Accent2 is a warm oak tone from the floors in their Mittagong and Bowral photos. None are published brand colours."
+    },
+    "logo": {
+      "src": "assets/logo-si-white.png",
+      "width": 106,
+      "height": 152,
+      "_comment": "Their own logo, SI_constructions_logo_2x.png (white on transparent, 560x150), with the empty transparent padding trimmed off. The artwork itself is unchanged."
+    }
+  },
+  "icons": {
+    "favicon": "assets/favicon.png"
+  },
+  "share": {
+    "image": "assets/share-1200.webp",
+    "width": 1200,
+    "height": 630,
+    "title": "S&I Constructions: Southern Highlands Builders for Over 45 Years",
+    "description": "Family-owned custom builders in the Southern Highlands for over 45 years. New homes, renovations and commercial builds, from our office in Mittagong.",
+    "alt": "A grey weatherboard home with a blue roof and lit windows at dusk, behind a clipped hedge, Bowral"
+  },
+  "responsePromise": "Office hours 7:00am to 5:30pm. Our office is at 28 Tyndall Street, Mittagong.",
+  "copy": {
+    "title": "S&I Constructions: Custom Home Builders, Mittagong & the Southern Highlands",
+    "description": "Family-owned custom builders in the Southern Highlands for over 45 years. New homes, renovations, extensions, decks and commercial builds. HIA members for over 25 years. Owner Jason Stokes, Mittagong.",
+    "ctaLabel": "Call us",
+    "kicker": "Family owned · Mittagong",
+    "headline": "Building the<br>Highlands for<br><em>45 years.</em>",
+    "sub": "Our owner, Jason Stokes, started here as an apprentice in 1991. He still gets on the tools himself, with local trades, many of whom have been part of our team for years.",
+    "heroSecondary": "Or send the details",
+    "heroSecondarySms": "Or send the details",
+    "navApproach": "Approach",
+    "statementLabel": "Custom builds",
+    "statementHeadline": "Drawn to<br>fit the<br>block.",
+    "statementBody": "We designed and drew the plans for this Mittagong home ourselves, to suit the size and shape of the block. That let us use the space well and keep the impact on the neighbours low, without giving anything up inside. Bring your architect's plans, or start with ours.",
+    "servicesLabel": "What we build",
+    "servicesHeadline": "Homes, additions<br>and commercial<br>builds.",
+    "servicesIntro": "No matter the size or scope. We can draw a custom design for you, or work closely with your architect or interior designer.",
+    "apertureLabel": "Local trades",
+    "apertureLine": "Our subcontractors are local and fully insured, and many of them have been part of our team for years.",
+    "workLabel": "Selected work",
+    "workHeadline": "Bowral, Mittagong,<br>High Range.",
+    "workIntro": "A few homes from over 1,000 projects we've completed, and some of the rooms inside them.",
+    "processLabel": "How it runs",
+    "processHeadline": "From concept<br>to completion.",
+    "processIntro": "We guide you through every step, and we work within your budget.",
+    "ownerLabel": "Who you are dealing with",
+    "recognitionLabel": "Beyond the reviews",
+    "recognitionHeadline": "HIA members for over 25 years.",
+    "recognitionIntro": "Licensed, insured, and building in the Southern Highlands for over 45 years.",
+    "areasLabel": "Where we build",
+    "areasHeadline": "The Southern<br>Highlands.",
+    "areasIntro": "We're based in Mittagong and build across the Southern Highlands. These are towns where we've built. Not sure if we cover your area? Call us and we'll talk it through.",
+    "faqLabel": "Before you call",
+    "faqHeadline": "Questions we get asked.",
+    "enquireLabel": "Talk to us",
+    "enquireHeadline": "Tell us about<br>the project.",
+    "enquireIntro": "Tell us where the house or block is, what you'd like to build and whether you have plans yet. After that first contact, we'd like to meet you, at our office or on site. Or call the office on (02) 4871 1607, 7:00am to 5:30pm.",
+    "reviewsLabel": "On Google",
+    "reviewsTitle": "In our clients' words.",
+    "reviewsIntro": "What people we've built for have written about us on Google."
+  },
+  "stats": {
+    "_comment": "Google is 4.2 from 5 (data/google_reviews_top25.json, slug si-constructions), below the 4.7 floor, so neither shows. Years: their site says 'over 45 years' and publishes no founding year, so the stat shows 45 with the sublabel 'and counting'.",
+    "yearsInBusiness": 45
+  },
+  "statLabels": {
+    "yearsInBusiness": "Years building"
+  },
+  "statSublabels": {
+    "yearsInBusiness": "and counting, in the Highlands"
+  },
+  "owner": {
+    "body": "Jason is our owner and managing director. He started his apprenticeship with S&I Constructions in 1991 and has spent his whole career with the business. He still works on the tools himself.",
+    "team": "Behind every job is a network of highly qualified local subcontractors, many of whom have been with us for years. Clients who've built with us will know Sarah too.",
+    "facts": [
+      {
+        "value": "1991",
+        "label": "Jason's first year here, as an apprentice"
+      },
+      {
+        "value": "25+",
+        "label": "Years as HIA members"
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "kind": "membership",
+      "label": "HIA members for over 25 years",
+      "body": "We've been members of the Housing Industry Association for over 25 years. HIA is the official body of Australia's home building industry.",
+      "strip": true
+    },
+    {
+      "kind": "licence",
+      "label": "Builder's Licence No. 30559",
+      "body": "S&I Constructions Pty Ltd is a fully licensed and insured building company. ABN 62 001 128 767.",
+      "strip": false
+    },
+    {
+      "kind": "claim",
+      "label": "Over 1,000 projects",
+      "body": "New homes, renovations and commercial builds across the Southern Highlands, including medical centres, industrial units, school projects, sporting facilities and car showrooms.",
+      "strip": false
+    }
+  ],
+  "services": [
+    {
+      "title": "New homes",
+      "blurb": "From design and council approval to overseeing the build. Bring your architect's drawings and we'll build them as intended, or we'll design a home around your block, your lifestyle and your budget.",
+      "photo": {
+        "src": "assets/bowral-living-room-1200.webp",
+        "srcset": "assets/bowral-living-room-480.webp 480w, assets/bowral-living-room-800.webp 800w, assets/bowral-living-room-1200.webp 1200w, assets/bowral-living-room-1800.webp 1800w",
+        "width": 1806,
+        "height": 985,
+        "alt": "A living room with panelled walls, linen sofas and a barn door open to the front path, in our new home at Bowral"
+      }
+    },
+    {
+      "title": "Renovations, extensions & decks",
+      "blurb": "Change your home, not your address. At Exeter we turned a carport into two bedrooms and a living room linked to the house, and added a new garage. We build decks and pergolas too.",
+      "photo": {
+        "src": "assets/exeter-garage-addition-800.webp",
+        "srcset": "assets/exeter-garage-addition-480.webp 480w, assets/exeter-garage-addition-800.webp 800w",
+        "width": 1180,
+        "height": 700,
+        "alt": "A new triple garage with timber-look doors and corrugated wall cladding, part of our renovation and addition at Exeter"
+      }
+    },
+    {
+      "title": "Commercial builds",
+      "blurb": "Medical centres, industrial units, commercial buildings, school projects, sporting facilities and car showrooms around the Southern Highlands. We built this gymnasium at Burradoo with the school's architect.",
+      "photo": {
+        "src": "assets/burradoo-school-gym-1200.webp",
+        "srcset": "assets/burradoo-school-gym-480.webp 480w, assets/burradoo-school-gym-800.webp 800w, assets/burradoo-school-gym-1200.webp 1200w",
+        "width": 1806,
+        "height": 985,
+        "alt": "Inside a school gymnasium with a blue sports court, brick and plywood walls and a steel roof with skylights, Burradoo"
+      }
+    }
+  ],
+  "process": [
+    {
+      "step": "Meet us",
+      "detail": "After your first enquiry, we'd like to meet you face to face, at our office in Mittagong or on site."
+    },
+    {
+      "step": "Your plans or ours",
+      "detail": "We can draw a custom design for you, or work with your architect. Don't have one yet? We work closely with several designers and can recommend one."
+    },
+    {
+      "step": "Council approval",
+      "detail": "We take the design through council approval, so you're not chasing paperwork on your own."
+    },
+    {
+      "step": "The build",
+      "detail": "We lead a team of local contractors to finish your home in a timeframe set at the start of the project, and we work to your budget."
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "Southern Highlands",
+      "suburbs": [
+        "Mittagong",
+        "Bowral",
+        "Burradoo",
+        "Exeter",
+        "High Range"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can you build from our architect's plans?",
+      "a": "Yes. If you already have architectural plans, we'll work with your designer so the home is built the way it was drawn. Our High Range home was designed by a local architect around the owners' established gardens."
+    },
+    {
+      "q": "We don't have plans yet. Can you draw them?",
+      "a": "Yes. We drew the plans for our Mittagong custom home ourselves, to fit the size and shape of the block. If you'd rather use an architect, we work closely with a number of designers and can recommend one."
+    },
+    {
+      "q": "Who does the work on site?",
+      "a": "Jason, and a network of local subcontractors, many of whom have been part of our team for years. We support local businesses first, and bring in materials and trades from further afield when a job needs them."
+    },
+    {
+      "q": "Do you take on smaller jobs?",
+      "a": "Yes. As well as new homes and commercial builds, we do extensions, renovations, decks and pergolas."
+    },
+    {
+      "q": "Are you licensed and insured?",
+      "a": "Yes. We're a fully licensed and insured building company, Builder's Licence No. 30559, and we've been HIA members for over 25 years."
+    },
+    {
+      "q": "Can we come and see you?",
+      "a": "Yes. Our office is at 28 Tyndall Street, Mittagong, open 7:00am to 5:30pm. We're also happy to meet you on site."
+    }
+  ],
+  "form": {
+    "notesHint": "Where the house or block is, what you'd like to build or change, whether you have plans or an architect yet, and roughly when you'd like to start."
+  },
+  "photos": {
+    "hero": {
+      "src": "assets/bowral-new-home-dusk-1800.webp",
+      "srcset": "assets/bowral-new-home-dusk-480.webp 480w, assets/bowral-new-home-dusk-800.webp 800w, assets/bowral-new-home-dusk-1200.webp 1200w, assets/bowral-new-home-dusk-1800.webp 1800w",
+      "width": 1806,
+      "height": 985,
+      "alt": "A grey weatherboard home with a blue Colorbond roof and warm lit windows at dusk, behind a clipped hedge, Bowral",
+      "_comment": "SI-constructions-121A-Bowral-Street-slider1.jpg (1806x985), the first photo of 'Featured project: New home @ Bowral' on their New Homes page, credited 'Photography by Ashley Mackevicius'. The largest undarkened exterior they publish apart from the Mittagong shoot, and a dusk shot, so the lit windows still read under the hero overlay on a phone."
+    },
+    "statement": {
+      "src": "assets/mittagong-custom-home-1200.webp",
+      "srcset": "assets/mittagong-custom-home-480.webp 480w, assets/mittagong-custom-home-800.webp 800w, assets/mittagong-custom-home-1200.webp 1200w, assets/mittagong-custom-home-1800.webp 1800w",
+      "width": 2560,
+      "height": 1918,
+      "alt": "A two-storey white weatherboard and brick home with a glass-balustrade balcony above the garage and a curved driveway, Mittagong",
+      "_comment": "PALR2305-scaled.jpg (2560x1918), the lead photo of 'Featured New Home @ Mittagong' on their Custom Builds page, the home S&I designed and drew themselves."
+    },
+    "aperture": {
+      "src": "assets/mittagong-living-room-1800.webp",
+      "srcset": "assets/mittagong-living-room-800.webp 800w, assets/mittagong-living-room-1200.webp 1200w, assets/mittagong-living-room-1800.webp 1800w",
+      "width": 2560,
+      "height": 1708,
+      "alt": "An open living room with oak floors, a jute rug and wide sliding doors out to the balcony and the hills beyond, Mittagong",
+      "caption": "Custom home, Mittagong"
+    },
+    "enquiryBackground": {
+      "src": "assets/mittagong-bedroom-1200.webp",
+      "width": 1200,
+      "height": 801
+    },
+    "gallery": [
+      {
+        "src": "assets/mittagong-balcony-1200.webp",
+        "full": "assets/mittagong-balcony.jpg",
+        "srcset": "assets/mittagong-balcony-480.webp 480w, assets/mittagong-balcony-800.webp 800w, assets/mittagong-balcony-1200.webp 1200w, assets/mittagong-balcony-1800.webp 1800w",
+        "width": 2560,
+        "height": 1708,
+        "caption": "Mittagong",
+        "detail": "Custom home, covered balcony",
+        "alt": "A covered balcony with a glass balustrade and a timber outdoor table, looking out over treetops and rooftops"
+      },
+      {
+        "src": "assets/bowral-kitchen-1200.webp",
+        "full": "assets/bowral-kitchen.jpg",
+        "srcset": "assets/bowral-kitchen-480.webp 480w, assets/bowral-kitchen-800.webp 800w, assets/bowral-kitchen-1200.webp 1200w, assets/bowral-kitchen-1800.webp 1800w",
+        "width": 1806,
+        "height": 985,
+        "caption": "Bowral",
+        "detail": "New home, kitchen and dining",
+        "alt": "A kitchen with a blue-grey island, white stone benchtop and woven cane pendants, open to a sunlit dining room"
+      },
+      {
+        "src": "assets/high-range-home-1200.webp",
+        "full": "assets/high-range-home.jpg",
+        "srcset": "assets/high-range-home-480.webp 480w, assets/high-range-home-800.webp 800w, assets/high-range-home-1200.webp 1200w, assets/high-range-home-1800.webp 1800w",
+        "width": 1806,
+        "height": 985,
+        "caption": "High Range",
+        "detail": "Rendered double brick home",
+        "alt": "A rendered home with a tiled roof, a tall chimney and a glazed arched gable, above a sloping lawn"
+      },
+      {
+        "src": "assets/mittagong-bathroom-1200.webp",
+        "full": "assets/mittagong-bathroom.jpg",
+        "srcset": "assets/mittagong-bathroom-480.webp 480w, assets/mittagong-bathroom-800.webp 800w, assets/mittagong-bathroom-1200.webp 1200w, assets/mittagong-bathroom-1800.webp 1800w",
+        "width": 2560,
+        "height": 1708,
+        "caption": "Mittagong",
+        "detail": "Custom home, bathroom",
+        "alt": "A white double vanity with two basins and two oval black-framed mirrors against a marble-look feature wall"
+      },
+      {
+        "src": "assets/bowral-alfresco-1200.webp",
+        "full": "assets/bowral-alfresco.jpg",
+        "srcset": "assets/bowral-alfresco-480.webp 480w, assets/bowral-alfresco-800.webp 800w, assets/bowral-alfresco-1200.webp 1200w, assets/bowral-alfresco-1800.webp 1800w",
+        "width": 1806,
+        "height": 985,
+        "caption": "Bowral",
+        "detail": "New home, outdoor dining",
+        "alt": "Bifold doors folded back onto a paved outdoor dining area under a white pergola, with a garden beyond"
+      },
+      {
+        "src": "assets/mittagong-kitchen-1200.webp",
+        "full": "assets/mittagong-kitchen.jpg",
+        "srcset": "assets/mittagong-kitchen-480.webp 480w, assets/mittagong-kitchen-800.webp 800w, assets/mittagong-kitchen-1200.webp 1200w, assets/mittagong-kitchen-1800.webp 1800w",
+        "width": 1806,
+        "height": 985,
+        "caption": "Mittagong",
+        "detail": "Architect-designed home, kitchen",
+        "alt": "A white shaker-style kitchen with a stone island, glass globe pendants, a double wall oven and a subway-tile splashback"
+      }
+    ],
+    "_comment": "13 real photos, all S&I's own, from siconstructions.com.au/wp-content/uploads at the largest size published. None are stock, samples or upscaled. Each image is used once. The two Mittagong homes are different houses (the custom home S&I drew, and the architect-designed home on their Project Management page). See BRIEF.md for every source file and what was left out."
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [
+    {
+      "name": "Greg Catling",
+      "text": "Jason is the ultimate professional builder with a great team of trades that all do quality work. His choice of trades is testament to his superior level of professionalism.",
+      "shortened": true
+    },
+    {
+      "name": "Cath Dawes",
+      "text": "Jason and Sarah from S & I Constructions built our dream home for us in 2019. From start to finish they were professional, easy to talk to, very organised, efficient, cost effective and high quality.",
+      "shortened": true
+    },
+    {
+      "name": "Rachel Marion",
+      "text": "We've used S&I Constructions a couple of times now, they converted a garage space into an office for us and also built a side deck on our house.",
+      "shortened": true
+    }
+  ],
+  "_source": {
+    "url": "https://www.siconstructions.com.au/",
+    "platform": "WordPress with the Avada theme (Fusion Builder) and Slider Revolution. Footer: 'Created by Be Creative Media', 'Copyright 2018 - 2020'.",
+    "pagesRead": [
+      "home",
+      "about",
+      "work-projects",
+      "contact",
+      "request-a-quote",
+      "projects/new-homes",
+      "projects/renovations",
+      "projects/custom-builds",
+      "projects/commercial-projects",
+      "projects/architectural-design",
+      "projects/project-management",
+      "projects/energy-survey-job"
+    ],
+    "notes": "Read with curl (plain 'Mozilla/5.0' user agent) on 2026-09-24 from the live site; no Wayback copy was needed. `npm run new` is broken in this container. The ABN and Builder's Licence number are quoted from their footer and have not been checked against the ABR or NSW Fair Trading registers. Sarah is named in Cath Dawes's Google review and in their site testimonials; her surname and role aren't published, so the page names her only in the owner section, without a role. The site's own testimonials (Pauline White, Lyn & Harlan Hall, Paul & Cath Dawes) aren't used, because the page only carries Google reviews.",
+    "claimSources": {
+      "Business name 'S&I Constructions', 'S&I Constructions Pty Ltd'": {
+        "sentence": "S&I Constructions Pty Ltd is a family-owned and operated custom building company that has proudly serviced the Southern Highlands of NSW and surrounding regions for over 45 years. Google name: 'S & I Constructions Pty Ltd'.",
+        "url": "https://www.siconstructions.com.au/"
+      },
+      "Over 45 years in the Southern Highlands; 45 (headline, stat, tagline, recognition intro)": {
+        "sentence": "S&I Constructions Pty Ltd is a family-owned and operated custom building company that has proudly serviced the Southern Highlands of NSW and surrounding regions for over 45 years. / For more than 45 years S&I Constructions has been delivering quality building projects across the Southern Highlands.",
+        "url": "https://www.siconstructions.com.au/"
+      },
+      "Family owned (kicker, tagline)": {
+        "sentence": "S&I Constructions Pty Ltd is a family-owned and operated custom building company",
+        "url": "https://www.siconstructions.com.au/"
+      },
+      "Jason Stokes, owner and managing director; apprenticeship with S&I in 1991; whole career with the business": {
+        "sentence": "Owner and managing director Jason Stokes has been part of the building industry since commencing his apprenticeship with S&I Constructions in 1991. Having dedicated his career to the business, Jason combines decades of hands-on experience with a passion for quality craftmanship",
+        "url": "https://www.siconstructions.com.au/about/"
+      },
+      "Jason still gets on the tools himself": {
+        "sentence": "Google review by Greg Catling (a month ago, 5 stars): 'Jason gets on the tools himself, and along with his trades, is …'",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Local, fully insured, highly qualified subcontractors, many part of the team for years; local first, trades from further afield when required": {
+        "sentence": "At S&I Constructions, we work with a trusted network of highly qualified, fully insured local subcontractors, many of whom have been part of our team for years. We proudly support local businesses while maintaining the flexibility to source quality materials and skilled trades from further afield when required.",
+        "url": "https://www.siconstructions.com.au/about/"
+      },
+      "Sarah": {
+        "sentence": "Google review by Cath Dawes: 'Jason and Sarah from S & I Constructions built our dream home for us in 2019.' / Site testimonial (Pauline White): 'Jason thinks outside the square when it comes to design and Sarah has such a good eye for colour.'",
+        "url": "https://www.siconstructions.com.au/about/"
+      },
+      "HIA members for over 25 years; 25+; HIA is the official body of Australia's home building industry": {
+        "sentence": "As a member of Housing Industry of Australia (HIA) for over 25 years we have built a reputation for delivering premium quality workmanship and exceptional customer service. / S&I Constructions Pty Ltd has proudly been a member of Housing Industry Association (HIA) for over 25 years. Housing Industry Association (HIA) is the official body of Australia's home building industry.",
+        "url": "https://www.siconstructions.com.au/projects/new-homes/"
+      },
+      "Fully licensed and insured; licensed, insured": {
+        "sentence": "Fully licenced and insured, and proud members of the HIA for over 25 years / S&I Constructions is a fully licensed and insured custom building company",
+        "url": "https://www.siconstructions.com.au/about/"
+      },
+      "Builder's Licence No. 30559; ABN 62 001 128 767": {
+        "sentence": "S&I Constructions Pty Ltd ABN: 62 001 128 767 Builder's Licence No: 30559 (footer of every page)",
+        "url": "https://www.siconstructions.com.au/contact/"
+      },
+      "Over 1,000 projects; 1,000": {
+        "sentence": "With over 1,000 successful projects completed, S&I Constructions has built a reputation for quality craftsmanship and satisfied clients.",
+        "url": "https://www.siconstructions.com.au/"
+      },
+      "Services: custom new homes, extensions, renovations, decks, pergolas, commercial": {
+        "sentence": "We specialise in custom new homes, extensions, renovations, decks, pergolas and commercial construction.",
+        "url": "https://www.siconstructions.com.au/"
+      },
+      "No matter the size or scope; custom design or work with your architect or interior designer": {
+        "sentence": "we work closely with you to bring your vision to life – no matter the size or scope. Our experienced team can create a custom design tailored to your lifestyle or collaborate seamlessly with your architect or interior designer",
+        "url": "https://www.siconstructions.com.au/"
+      },
+      "New homes: design and council approval to overseeing construction; collaborate with your designer": {
+        "sentence": "From design and council approval to overseeing the construction, we work with highly skilled trades to make your dream home a reality. If you already have architecturally drawn plans, we will collaborate with your designer to ensure the vision you have for your home is realised.",
+        "url": "https://www.siconstructions.com.au/projects/new-homes/"
+      },
+      "Designed around your block, lifestyle and budget": {
+        "sentence": "Custom homes designed and built to suit your land, lifestyle, and budget.",
+        "url": "https://www.siconstructions.com.au/projects/custom-builds/"
+      },
+      "Mittagong custom home drawn by S&I to fit the block; use of space; impact on neighbours (statement, FAQ)": {
+        "sentence": "Featured New Home @ Mittagong. The plans for this house were designed and drawn by S&I Constructions specifically to fit the size and shape of the block of land. In doing so we were able to utilize the space efficiently and minimise the impact on surrounding properties while keeping functionality in the home.",
+        "url": "https://www.siconstructions.com.au/projects/custom-builds/"
+      },
+      "Renovations: change your home not your address; Exeter carport into 2 bedrooms and living room, new garage": {
+        "sentence": "If you want to change your home but not your address ... Featured project: Renovation and Addition @ Exeter. Conversion of a carport into 2 bedrooms and a living room with a link to the existing house, plus a new garage.",
+        "url": "https://www.siconstructions.com.au/projects/renovations/"
+      },
+      "Commercial: medical centres, industrial units, commercial buildings, school projects, sporting facilities, car showrooms; Burradoo gymnasium with the architect": {
+        "sentence": "S&I Constructions have successfully completed numerous commercial projects in and around the Southern Highlands including Medical Centres, Industrial Units, Commercial Buildings, Major School Projects & Sporting Facilities, and Car Showrooms. Featured project: School Gymnasium @ Burradoo. This project was completed in conjunction with the Architect to the specifications required to meet the school's needs.",
+        "url": "https://www.siconstructions.com.au/projects/commercial-projects/"
+      },
+      "High Range home: local architect, established gardens, rendered double brick": {
+        "sentence": "Featured project: New Home @ High Range. Our clients used a local architect to design this house around some of the established gardens on their property. It is a rendered, double brick home with Nu-Lok ceramic tile roofing.",
+        "url": "https://www.siconstructions.com.au/projects/architectural-design/"
+      },
+      "Designers we work closely with and can recommend": {
+        "sentence": "If you are looking for an architect there are a number of designers we work closely with and are able to recommend.",
+        "url": "https://www.siconstructions.com.au/projects/architectural-design/"
+      },
+      "Architect-designed Mittagong home (gallery 6)": {
+        "sentence": "Featured project: New Home @ Mittagong. Our clients used an architect to design this home to suit its surrounding area.",
+        "url": "https://www.siconstructions.com.au/projects/project-management/"
+      },
+      "Process: meet face to face at office or on site": {
+        "sentence": "Following your initial enquiry, we welcome the opportunity to meet with you face-to-face, either at our office or on-site.",
+        "url": "https://www.siconstructions.com.au/contact/"
+      },
+      "Process: concept to completion, within your budget": {
+        "sentence": "we partner with you from concept to completion, providing expert guidance, transparent communication, and quality workmanship every step of the way. We work within your budget",
+        "url": "https://www.siconstructions.com.au/"
+      },
+      "Process: timeframe set at the start, local contractors, working to your budget": {
+        "sentence": "S&I Constructions will lead a professional team of local contractors to achieve your dream home in a specified time, determined at the beginning of your project. We pride ourselves on attention to detail, quality workmanship, on time construction, and working to your budget.",
+        "url": "https://www.siconstructions.com.au/projects/project-management/"
+      },
+      "Service area: Southern Highlands; call if unsure": {
+        "sentence": "Service Area: We proudly service the Southern Highlands region. If you're unsure whether we can assist with your project, please get in touch and we'll be happy to discuss your location and requirements.",
+        "url": "https://www.siconstructions.com.au/contact/"
+      },
+      "Area suburbs Mittagong, Bowral, Burradoo, Exeter, High Range": {
+        "sentence": "Their own project captions: 'New home @ Bowral', 'Renovation and Addition @ Exeter', 'Featured New Home @ Mittagong', 'School Gymnasium @ Burradoo', 'New Home @ High Range'. Office: 28 Tyndall Street, Mittagong.",
+        "url": "https://www.siconstructions.com.au/work-projects/"
+      },
+      "Phone (02) 4871 1607, email, address 28 Tyndall Street Mittagong, office hours 7:00am to 5:30pm": {
+        "sentence": "PHONE (02) 4871 1607 / EMAIL US stokes@siconstructions.com.au / OFFICE HOURS 7:00am – 5:30pm / 28 Tyndall Street Mittagong, New South Wales 2575. Google phone '(02) 4871 1607'.",
+        "url": "https://www.siconstructions.com.au/contact/"
+      },
+      "Reviews: Greg Catling, Cath Dawes, Rachel Marion (all shortened); rating 4.2 from 5 not shown": {
+        "sentence": "data/google_reviews_top25.json, slug si-constructions, best_for_demo: three reviews, each 'shortened': true. rating 4.2, review_count 5, below the 4.7 display floor.",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Every photo on the page": {
+        "sentence": "All 13 photos are S&I's own, from siconstructions.com.au/wp-content/uploads/. Bowral (New Homes page, 'Featured project: New home @ Bowral', 'Photography by Ashley Mackevicius'): 121A-Bowral-Street-slider1 (hero), slider2 (kitchen), slider3 (living), slider4 (alfresco). Mittagong custom home (Custom Builds page, 'Featured New Home @ Mittagong'): PALR2305, 2370, 2421, 2410, 2318. Exeter (Renovations page): protfolio-renovations. Burradoo (Commercial page): commercial-oxley-gym-slider-3. High Range (Architectural Design page): architectural-design-slider-2. Mittagong architect-designed home (Project Management page): project-management-38-spencer-slider-4.",
+        "url": "https://www.siconstructions.com.au/work-projects/"
+      },
+      "Logo and favicon": {
+        "sentence": "Their own SI_constructions_logo_2x.png (padding trimmed) and cropped-SIconstructionsfavicon-1.png (resized to 192px), from wp-content/uploads/2020/05/.",
+        "url": "https://www.siconstructions.com.au/"
+      }
+    }
+  },
+  "_check": []
+}
