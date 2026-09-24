@@ -545,7 +545,9 @@ Demo: `/omara-constructions`. Custom home builder, Hawkesbury NSW. Luke O'Mara r
 **Opener:** "I noticed your dad's OAM, 60 years of MBA membership and eight Olympic Village homes are buried halfway down a Comic Sans page — and your best twilight photos are thumbnails."
 **Flags / ask Luke:** only 2 Google reviews in 60 years (one with no text) — that's the pitch. Licence Q14472S is from their team page, not checked on the Fair Trading register; NSW advertising normally shows the company's contractor licence, which the page doesn't have. Main number is Luke's mobile (their site: "call the builder direct"); office landline shown too. A photo of Luke or the family on site would fill the half-empty "Luke" section on desktop.
 
-### Nulook Pools — needs Pat (final 4.0)
+### Nulook Pools — PASS 4.5 after finish round, shipped
+Finish round: **6 labelled sample photos** in the large spots (none shows a fibreglass pool, so swap them for John's own installs ASAP); Conquest range photos kept only as small tiles, each labelled "range photo, not a Nulook job". Proof is strong: 5.0 from 35, three licences. Earlier notes below still stand.
+
 Every fact checks out and 5.0 from 35 is strong, but Nulook has no photos of its own installs anywhere online; all photos are labelled Conquest range shots, which caps Photos at 3. **Ask John for 4-6 photos of his own pools** and it should pass. Owner John Eldridge; Charissa is named in 5 of 8 reviews (role unknown).
 
 ### CJG Pools & Earthworks — PASS 4.5 after finish round, shipped
