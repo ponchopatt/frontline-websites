@@ -1,6 +1,6 @@
 /**
- * The V1 definition of done, one test per item, against the real app and a real
- * (local) Supabase. Run: npm run test:e2e
+ * The V1 definition of done, one test per item, against the real app and a real (local)
+ * Supabase, on the Today screen as it is now (Keep My Word, the Big 3 as tasks). Run: npm run test:e2e
  */
 import { expect, test } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
@@ -14,35 +14,42 @@ import {
   backdateAccount,
   completeEverything,
   habit,
+  keptOfMade,
   ringScore,
   signUp,
   today,
   waitForApp,
 } from "./helpers";
 
-const MORNING = ["Wake on time", "No phone on waking", "Shower", "Make bed", "Water", "Coffee", "Bible study", "Prayer", "Journal", "Plan the day"];
-const BODY = ["Gym", "Cardio", "Protein target", "Water target", "Sleep target"];
-const DISCIPLINE = ["No porn", "No pointless scrolling", "No procrastination", "Kept commitments"];
+const MORNING = ["Wake up on time", "Shower", "Make bed", "Water", "Bible", "Journal", "Pray", "Plan day"];
+const DISCIPLINE = ["No porn", "No pointless scrolling", "No procrastination"];
+const HABIT_COUNT = 17;
 
-test("1. a new user signs up and lands on a dashboard seeded with the default habits", async ({ page }) => {
+/** Every habit tick on the screen, once each: the morning routine, fitness, discipline, evening prayer. */
+function allTicks(page: import("@playwright/test").Page) {
+  return page.locator("#morning [role=checkbox], #fitness [role=checkbox], #discipline [role=checkbox], #faith [role=checkbox][aria-label=Prayer]");
+}
+
+test("1. a new user signs up and lands on Today seeded with the default habits", async ({ page }) => {
   await signUp(page);
   await expect(page).toHaveURL("/");
-  for (const name of [...MORNING, ...BODY, ...DISCIPLINE]) {
-    await expect(habit(page, name)).toBeVisible();
-  }
-  await expect(page.locator("#morning [role=checkbox]")).toHaveCount(10);
-  await expect(page.locator("#body [role=checkbox]")).toHaveCount(5);
-  await expect(page.locator("#discipline [role=checkbox]")).toHaveCount(4);
-  await expect(page.getByRole("heading", { name: "Today's mission" })).toBeVisible();
+  for (const name of [...MORNING, ...DISCIPLINE]) await expect(habit(page, name)).toBeVisible();
+  await expect(page.locator("#morning [role=checkbox]")).toHaveCount(8);
+  await expect(page.locator("#fitness [role=checkbox]")).toHaveCount(5);
+  await expect(page.locator("#discipline [role=checkbox]")).toHaveCount(3);
+  await expect(page.getByRole("heading", { name: "Today's Big 3" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Scoreboard" })).toBeVisible();
 });
 
 test("2. every habit ticks and unticks, and the timestamp is stored correctly", async ({ page }) => {
   const { userId } = await signUp(page);
   const date = today();
+  const ticks = allTicks(page);
+  await expect(ticks).toHaveCount(HABIT_COUNT);
 
-  for (const name of [...MORNING, ...BODY, ...DISCIPLINE]) await habit(page, name).click();
-  for (const name of [...MORNING, ...BODY, ...DISCIPLINE]) await expect(habit(page, name)).toHaveAttribute("aria-checked", "true");
-  await expect.poll(async () => (await admin.from("habit_completions").select("id").eq("user_id", userId)).data?.length).toBe(19);
+  for (let i = 0; i < HABIT_COUNT; i += 1) await ticks.nth(i).click();
+  for (let i = 0; i < HABIT_COUNT; i += 1) await expect(ticks.nth(i)).toHaveAttribute("aria-checked", "true");
+  await expect.poll(async () => (await admin.from("habit_completions").select("id").eq("user_id", userId)).data?.length).toBe(HABIT_COUNT);
 
   const { data: rows } = await admin.from("habit_completions").select("local_date,completed_at,edited_at").eq("user_id", userId);
   for (const r of rows ?? []) {
@@ -51,8 +58,8 @@ test("2. every habit ticks and unticks, and the timestamp is stored correctly", 
     expect(r.edited_at).toBeNull();
   }
 
-  for (const name of [...MORNING, ...BODY, ...DISCIPLINE]) await habit(page, name).click();
-  for (const name of [...MORNING, ...BODY, ...DISCIPLINE]) await expect(habit(page, name)).toHaveAttribute("aria-checked", "false");
+  for (let i = 0; i < HABIT_COUNT; i += 1) await ticks.nth(i).click();
+  for (let i = 0; i < HABIT_COUNT; i += 1) await expect(ticks.nth(i)).toHaveAttribute("aria-checked", "false");
   await expect.poll(async () => (await admin.from("habit_completions").select("id").eq("user_id", userId)).data?.length).toBe(0);
 
   // A double tap never creates two rows: the unique index and the set-state action see to it.
@@ -62,6 +69,10 @@ test("2. every habit ticks and unticks, and the timestamp is stored correctly", 
   await expect(habit(page, "Shower")).toHaveAttribute("aria-checked", "true");
   await expect.poll(async () => (await admin.from("habit_completions").select("id").eq("user_id", userId)).data?.length).toBe(1);
 
+  // Bible in the morning routine and Read on the faith card are the same tick.
+  await habit(page, "Bible").click();
+  await expect(page.locator("#faith").getByRole("checkbox", { name: "Read" })).toHaveAttribute("aria-checked", "true");
+
   await page.reload();
   await waitForApp(page);
   await expect(habit(page, "Shower")).toHaveAttribute("aria-checked", "true");
@@ -69,14 +80,16 @@ test("2. every habit ticks and unticks, and the timestamp is stored correctly", 
 
 test("3. a running work block survives a refresh with the right elapsed time", async ({ page }) => {
   const { userId } = await signUp(page);
-  await page.getByRole("button", { name: "Add a block" }).click();
+  const work = page.locator("#work");
+  await work.getByRole("button", { name: "Plan a block" }).click();
   await page.locator("#block-task").fill("Deep work");
-  await page.getByRole("button", { name: "Add block" }).click();
-  await page.getByRole("button", { name: "Start Deep work" }).click();
+  await work.getByRole("button", { name: "Add block" }).click();
+  await work.getByRole("button", { name: "Start the Imperium · Deep work block" }).click();
   await expect(page.getByRole("timer")).toBeVisible();
 
-  const { data: open } = await admin.from("work_sessions").select("id,started_at,ended_at").eq("user_id", userId).single();
+  const { data: open } = await admin.from("work_sessions").select("id,started_at,ended_at,area").eq("user_id", userId).single();
   expect(open?.ended_at).toBeNull();
+  expect(open?.area).toBe("imperium");
 
   await page.waitForTimeout(4000);
   await page.reload();
@@ -89,10 +102,10 @@ test("3. a running work block survives a refresh with the right elapsed time", a
   expect(Math.abs(shown - actual)).toBeLessThan(3);
 
   // Starting another block while this one runs asks first.
-  await page.getByRole("button", { name: "Add a block" }).click();
+  await work.getByRole("button", { name: "Plan a block" }).click();
   await page.locator("#block-task").fill("Admin");
-  await page.getByRole("button", { name: "Add block" }).click();
-  await page.getByRole("button", { name: "Start Admin" }).click();
+  await work.getByRole("button", { name: "Add block" }).click();
+  await work.getByRole("button", { name: "Start the Imperium · Admin block" }).click();
   await expect(page.getByText("is still running")).toBeVisible();
   await page.getByRole("button", { name: "Keep it running" }).click();
 
@@ -102,27 +115,32 @@ test("3. a running work block survives a refresh with the right elapsed time", a
   await waitForApp(page);
   await expect(page.getByText("running for over 8 hours")).toBeVisible();
   await page.getByRole("button", { name: "Save end time" }).click();
-  await expect(page.getByRole("timer")).toHaveCount(0);
+  await expect(page.locator("main").getByRole("timer")).toHaveCount(0);
   const { data: closed } = await admin.from("work_sessions").select("ended_at").eq("id", open!.id).single();
   expect(closed?.ended_at).not.toBeNull();
 });
 
-test("4. the daily score recalculates live as items are completed", async ({ page }) => {
+test("4. Keep My Word recalculates live as things are done", async ({ page }) => {
   await signUp(page);
   expect(await ringScore(page)).toBe(0);
-  await habit(page, "Wake on time").click();
-  const one = await ringScore(page);
-  await page.getByRole("checkbox", { name: "Reading" }).click();
-  const two = await ringScore(page);
-  await habit(page, "Gym").click();
-  const three = await ringScore(page);
-  // Discipline 1/14 of 20 → 1; Bible reading 1/4 of 25 → +6; Gym 1/5 of 20 → +4
-  expect(one).toBe(1);
-  expect(two).toBe(8);
-  expect(three).toBe(12);
+  const [kept0, made0] = await keptOfMade(page);
+  expect(kept0).toBe(0);
+
+  await habit(page, "Wake up on time").click();
+  await expect.poll(() => keptOfMade(page)).toEqual([1, made0]);
+  expect(await ringScore(page)).toBe(Math.round((1 / made0) * 100));
+
+  // A new task is a new commitment; finishing it keeps it.
+  await page.getByRole("button", { name: "Add your #1" }).click();
+  await page.getByLabel("New task").fill("Send the Smith invoice");
+  await page.getByLabel("New task").press("Enter");
+  await expect.poll(() => keptOfMade(page)).toEqual([1, made0 + 1]);
+  await page.getByRole("checkbox", { name: 'Mark "Send the Smith invoice" done' }).click();
+  await expect.poll(() => keptOfMade(page)).toEqual([2, made0 + 1]);
+  expect(await ringScore(page)).toBe(Math.round((2 / (made0 + 1)) * 100));
 });
 
-test("5. a category with no active habits does not break the score", async ({ page }) => {
+test("5. a part of life with no active habits does not break the numbers", async ({ page }) => {
   const { userId } = await signUp(page);
   await admin
     .from("habits")
@@ -131,41 +149,46 @@ test("5. a category with no active habits does not break the score", async ({ pa
     .eq("category", "body");
   await page.reload();
   await waitForApp(page);
-  await expect(page.locator("#body")).toContainText("No body habits yet.");
-  expect(await ringScore(page)).toBe(0);
+  await expect(page.locator("#fitness")).toContainText("No fitness habits.");
+  await expect(page.getByRole("region", { name: "Scoreboard" }).getByRole("link", { name: /Fitness/ })).toContainText("–");
+  const [, made] = await keptOfMade(page);
   await habit(page, "No porn").click();
-  // Body's 20% is shared out: Discipline carries 25% instead of 20%, so 1/14 → 2, not 1.
-  expect(await ringScore(page)).toBe(2);
+  await expect.poll(() => keptOfMade(page)).toEqual([1, made]);
+  expect(await ringScore(page)).toBe(Math.round((1 / made) * 100));
 });
 
-test("6. the night review saves and Complete Day locks the day with a stored score", async ({ page }) => {
+test("6. the night review saves and Complete Day locks the day with its Keep My Word", async ({ page }) => {
   const { userId } = await signUp(page);
   await habit(page, "Shower").click();
-  await page.getByLabel("What did I accomplish?").fill("Drafted the plan");
-  await page.getByLabel("What am I grateful for?").click();
-  await expect(page.getByText("Saved").first()).toBeVisible();
-  await page.getByLabel("What am I grateful for?").fill("My family");
-  await page.getByLabel("Tomorrow's #1").click();
-  await expect(page.getByText("Saved")).toHaveCount(2);
+  const review = page.locator("#review");
+  await review.getByLabel("What did I accomplish?").fill("Drafted the plan");
+  await review.getByLabel("What did I waste time on?").click();
+  await expect(review.getByText("Saved").first()).toBeVisible();
+  await review.getByLabel("What did I waste time on?").fill("Scrolling after lunch");
+  await review.getByLabel("Where did I break my word?").fill("Skipped the gym");
+  await review.getByLabel("What is tomorrow's #1 priority?").fill("Call 15 Imperium leads");
+  await review.getByLabel("What did I accomplish?").click();
+  await expect(review.getByText("Saved")).toHaveCount(4);
+  await expect(page.locator("#faith").getByText("Night review done")).toBeVisible();
 
   const live = await ringScore(page);
-  await page.locator("#review").getByRole("button", { name: "Complete day" }).click();
-  await page.locator("#review").getByRole("button", { name: "Complete day" }).click();
-  await expect(page.getByText(/Completed at \d\d:\d\d with/)).toBeVisible();
+  await review.getByRole("button", { name: "Complete day" }).click();
+  await review.getByRole("button", { name: "Complete day" }).click();
+  await expect(page.getByText(/Completed at \d\d:\d\d\. Kept my word: \d+%/)).toBeVisible();
 
   const { data: plan } = await admin.from("daily_plans").select("final_score,completed_at").eq("user_id", userId).single();
   expect(plan?.final_score).toBe(live);
   expect(plan?.completed_at).not.toBeNull();
-  const { data: review } = await admin.from("daily_reviews").select("accomplished,grateful_for").eq("user_id", userId).single();
-  expect(review).toEqual({ accomplished: "Drafted the plan", grateful_for: "My family" });
+  const { data: saved } = await admin.from("daily_reviews").select("accomplished,tomorrow_priority").eq("user_id", userId).single();
+  expect(saved).toEqual({ accomplished: "Drafted the plan", tomorrow_priority: "Call 15 Imperium leads" });
 
   await page.reload();
   await waitForApp(page);
-  await expect(habit(page, "Coffee")).toBeDisabled();
+  await expect(habit(page, "Water")).toBeDisabled();
   expect(await ringScore(page)).toBe(live);
 
   await page.getByRole("button", { name: "Reopen day" }).click();
-  await expect(habit(page, "Coffee")).toBeEnabled();
+  await expect(habit(page, "Water")).toBeEnabled();
 });
 
 test("7. yesterday can be opened and edited; tomorrow cannot", async ({ page }) => {
@@ -209,15 +232,18 @@ test("8. a missed day breaks the streak and destroys no data", async ({ page }) 
   await completeEverything(userId, d1);
 
   await page.goto("/habits");
-  await expect(page.getByText("Current streak")).toBeVisible();
-  const figures = page.locator("dl").first();
+  // Scoped to <main>: while a page streams in, React briefly holds a hidden copy outside it.
+  await expect(page.locator("main").getByText("Current streak")).toBeVisible();
+  const figures = page.locator("main dl").first();
   await expect(figures).toContainText("Current streak1day");
   await expect(figures).toContainText("Best streak1day");
 
-  // The day before the miss is intact.
+  // The day before the miss is intact: every commitment kept. A finished morning folds away.
   await page.goto(`/?d=${d3}`);
   await waitForApp(page);
-  for (const name of [...MORNING, ...BODY, ...DISCIPLINE]) await expect(habit(page, name)).toHaveAttribute("aria-checked", "true");
+  await expect(page.getByRole("heading", { name: "Morning complete" })).toBeVisible();
+  await page.locator("#morning").getByRole("button", { expanded: false }).click();
+  for (const name of [...MORNING, ...DISCIPLINE]) await expect(habit(page, name)).toHaveAttribute("aria-checked", "true");
   expect(await ringScore(page)).toBe(100);
 
   // The missed day is simply empty.
@@ -225,21 +251,23 @@ test("8. a missed day breaks the streak and destroys no data", async ({ page }) 
   await waitForApp(page);
   expect(await ringScore(page)).toBe(0);
   const { data: rows } = await admin.from("habit_completions").select("local_date").eq("user_id", userId);
-  expect(rows?.filter((r) => r.local_date === d3).length).toBe(19);
-  expect(rows?.filter((r) => r.local_date === d1).length).toBe(19);
+  expect(rows?.filter((r) => r.local_date === d3).length).toBe(HABIT_COUNT);
+  expect(rows?.filter((r) => r.local_date === d1).length).toBe(HABIT_COUNT);
 });
 
 test("9. everything is usable one-handed on a 390px screen", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await signUp(page);
-  for (const path of ["/", "/habits", "/bible", "/work", "/settings"]) {
+  for (const path of ["/", "/business", "/business?tab=websites", "/business?tab=bot", "/week", "/goals", "/goals/suggest", "/habits", "/bible", "/work", "/settings"]) {
     await page.goto(path);
     await page.waitForLoadState("networkidle");
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow, `${path} scrolls sideways`).toBeLessThanOrEqual(0);
     const small = await page.evaluate(() =>
-      [...document.querySelectorAll<HTMLElement>("main button, main [role=checkbox], main input:not([type=hidden]), main select, main textarea, nav a")]
-        .filter((el) => el.offsetParent !== null)
+      [...document.querySelectorAll<HTMLElement>("main button, main [role=checkbox], main input:not([type=hidden]), main select, main textarea, nav[aria-label=Main] a")]
+        .filter((el) => el.offsetParent !== null && !el.classList.contains("sr-only"))
+        // A checkbox or radio inside its label is tapped through the label.
+        .map((el) => ((el as HTMLInputElement).type === "checkbox" || (el as HTMLInputElement).type === "radio") && el.closest("label") ? el.closest("label")! : el)
         .map((el) => ({ el: (el.getAttribute("aria-label") ?? el.textContent ?? el.tagName).trim().slice(0, 40), h: el.getBoundingClientRect().height }))
         .filter((t) => t.h < 44),
     );
@@ -252,15 +280,16 @@ test("10. a second user sees none of the first user's data", async ({ browser })
   const pageA = await a.newPage();
   const { userId: aId } = await signUp(pageA);
   await habit(pageA, "Shower").click();
-  await pageA.getByRole("textbox", { name: "First priority" }).fill("A's secret priority");
-  await pageA.getByRole("textbox", { name: "First priority" }).press("Enter");
-  await expect.poll(async () => (await admin.from("daily_priorities").select("id").eq("user_id", aId)).data?.length).toBe(1);
+  await pageA.getByRole("button", { name: "Add your #1" }).click();
+  await pageA.getByLabel("New task").fill("A's secret task");
+  await pageA.getByLabel("New task").press("Enter");
+  await expect.poll(async () => (await admin.from("daily_goals").select("id").eq("user_id", aId)).data?.length).toBe(1);
 
   const b = await browser.newContext();
   const pageB = await b.newPage();
   const { email: bEmail } = await signUp(pageB);
   await expect(habit(pageB, "Shower")).toHaveAttribute("aria-checked", "false");
-  await expect(pageB.getByText("A's secret priority")).toHaveCount(0);
+  await expect(pageB.getByText("A's secret task")).toHaveCount(0);
 
   // Straight at the API with B's session, even with A's ids.
   const client = createClient<Database>(SUPABASE_URL, ANON_KEY, { auth: { persistSession: false } });
@@ -269,7 +298,7 @@ test("10. a second user sees none of the first user's data", async ({ browser })
   const aIds = (aHabits ?? []).map((h) => h.id);
   const { data: seen } = await client.from("habits").select("id").in("id", aIds);
   expect(seen).toEqual([]);
-  for (const table of ["habit_completions", "daily_priorities", "profiles"] as const) {
+  for (const table of ["habit_completions", "daily_goals", "metrics", "profiles"] as const) {
     const { data } = await client.from(table).select("user_id").eq("user_id", aId);
     expect(data, table).toEqual([]);
   }

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { AutosaveField } from "@/components/autosave-field";
 import { SectionCard } from "@/components/section-card";
 import { clockTime, type LocalDate } from "@/lib/day";
-import { scoreCaption } from "@/lib/score";
+import { wordCaption, type WordResult } from "@/lib/keep-word";
 import type { ActionResult, ReviewField, ReviewState } from "@/lib/types";
 import { REVIEW_FIELDS } from "@/lib/types";
 
@@ -13,16 +13,14 @@ const PROMPTS: Record<ReviewField, string> = {
   accomplished: "What did I accomplish?",
   wasted_time_on: "What did I waste time on?",
   broke_word_where: "Where did I break my word?",
-  sought_god: "How did I seek God?",
-  grateful_for: "What am I grateful for?",
-  tomorrow_priority: "Tomorrow's #1",
+  tomorrow_priority: "What is tomorrow's #1 priority?",
 };
 
 interface ReviewSectionProps {
   date: LocalDate;
   isToday: boolean;
   review: ReviewState;
-  score: number;
+  word: WordResult;
   threshold: number;
   timeZone: string;
   locked: { score: number; completedAt: string } | null;
@@ -37,7 +35,7 @@ export function ReviewSection({
   date,
   isToday,
   review,
-  score,
+  word,
   threshold,
   timeZone,
   locked,
@@ -74,8 +72,8 @@ export function ReviewSection({
             <div className="flex items-center gap-3">
               <Lock className="size-4 text-primary" aria-hidden />
               <p className="text-[15px]">
-                Completed at {clockTime(locked.completedAt, timeZone)} with{" "}
-                <span className="text-foreground">{locked.score}</span>.
+                Completed at {clockTime(locked.completedAt, timeZone)}. Kept my word:{" "}
+                <span className="text-foreground">{locked.score}%</span>.
               </p>
             </div>
             <button
@@ -94,8 +92,8 @@ export function ReviewSection({
         ) : confirming ? (
           <div className="grid gap-3">
             <p className="text-[15px]">
-              Lock {isToday ? "today" : "this day"} at <span className="text-foreground">{score}</span>? {scoreCaption(score, threshold)} You can
-              reopen it later.
+              Lock {isToday ? "today" : "this day"} with <span className="text-foreground">{word.kept} of {word.made}</span> kept (
+              {word.percent ?? 0}%)? {wordCaption(word, threshold)} You can reopen it later.
             </p>
             <div className="flex gap-2">
               <button
@@ -118,6 +116,9 @@ export function ReviewSection({
           </div>
         ) : (
           <>
+            <p className="mb-3 text-[15px] text-muted-foreground">
+              Keep my word: <span className="text-foreground">{word.kept} of {word.made}</span> commitments kept today.
+            </p>
             <button
               type="button"
               disabled={timerRunningToday}

@@ -9,7 +9,7 @@ import {
   localDateAt,
   startOfWeek,
 } from "./day";
-import { computeScore, type ScoreInput } from "./score";
+import { keepWord, weekAverage } from "./keep-word";
 import { computeStreaks, scoreForSummary, type DayScore, type DaySummary } from "./streak";
 import { nextReading } from "./bible";
 
@@ -80,91 +80,29 @@ describe("what counts as a day", () => {
   });
 });
 
-const full: ScoreInput = {
-  god: { done: 4, total: 4 },
-  body: { done: 5, total: 5 },
-  discipline: { done: 14, total: 14 },
-  reflection: { done: 6, total: 6 },
-  work: { minutes: 360, targetMinutes: 360 },
-};
+describe("keep my word", () => {
+  const base = { habitsDone: 0, habitsTotal: 0, tasksDone: 0, tasksTotal: 0, reviewDone: false, workMinutes: 0, workTargetMinutes: 480 };
 
-describe("daily score", () => {
-  it("is 100 when everything is done", () => {
-    expect(computeScore(full).score).toBe(100);
+  it("counts habits, tasks, the night review and the work target as commitments", () => {
+    // 10 habits + 3 tasks + review + work = 15 made; 9 + 3 + review = 13 kept.
+    const r = keepWord({ ...base, habitsDone: 9, habitsTotal: 10, tasksDone: 3, tasksTotal: 3, reviewDone: true, workMinutes: 300 });
+    expect(r).toEqual({ made: 15, kept: 13, percent: 87 });
   });
 
-  it("is 0 when nothing is done", () => {
-    const none: ScoreInput = {
-      god: { done: 0, total: 4 },
-      body: { done: 0, total: 5 },
-      discipline: { done: 0, total: 14 },
-      reflection: { done: 0, total: 6 },
-      work: { minutes: 0, targetMinutes: 360 },
-    };
-    expect(computeScore(none).score).toBe(0);
+  it("keeps the work commitment once the hours are in, and skips it with no target", () => {
+    expect(keepWord({ ...base, workMinutes: 480 }).kept).toBe(1);
+    expect(keepWord({ ...base, workTargetMinutes: 0 }).made).toBe(1);
   });
 
-  it("weights categories 25/30/20/20/5", () => {
-    const onlyWork: ScoreInput = {
-      god: { done: 0, total: 4 },
-      body: { done: 0, total: 5 },
-      discipline: { done: 0, total: 14 },
-      reflection: { done: 0, total: 6 },
-      work: { minutes: 360, targetMinutes: 360 },
-    };
-    expect(computeScore(onlyWork).score).toBe(30);
-    expect(computeScore({ ...onlyWork, work: { minutes: 0, targetMinutes: 360 }, god: { done: 4, total: 4 } }).score).toBe(25);
-  });
-
-  it("caps work at the target", () => {
-    const over = { ...full, work: { minutes: 900, targetMinutes: 360 } };
-    expect(computeScore(over).score).toBe(100);
-    expect(computeScore(over).categories.work.ratio).toBe(1);
-  });
-
-  it("scores partial work proportionally", () => {
-    const half: ScoreInput = { ...full, work: { minutes: 180, targetMinutes: 360 } };
-    expect(computeScore(half).score).toBe(85); // 100 − 30 × 0.5
-  });
-
-  it("redistributes the weight of a category with nothing active", () => {
-    const noBody: ScoreInput = { ...full, body: { done: 0, total: 0 } };
-    const result = computeScore(noBody);
-    expect(result.score).toBe(100);
-    expect(result.categories.body.ratio).toBeNull();
-    expect(result.categories.body.weight).toBe(0);
-    // God keeps its share of the remaining 80: 25 / 80
-    expect(result.categories.god.weight).toBeCloseTo(31.25, 5);
-  });
-
-  it("never divides by zero when work has no target", () => {
-    const noTarget: ScoreInput = {
-      god: { done: 2, total: 4 },
-      body: { done: 5, total: 5 },
-      discipline: { done: 7, total: 14 },
-      reflection: { done: 3, total: 6 },
-      work: { minutes: 120, targetMinutes: 0 },
-    };
-    const result = computeScore(noTarget);
-    expect(Number.isFinite(result.score)).toBe(true);
-    expect(result.categories.work.ratio).toBeNull();
-    // (25×.5 + 20×1 + 20×.5 + 5×.5) / 70 = 45/70
-    expect(result.score).toBe(Math.round((45 / 70) * 100));
-  });
-
-  it("scores 0, not NaN, when nothing at all is active", () => {
-    const empty: ScoreInput = {
-      god: { done: 0, total: 0 },
-      body: { done: 0, total: 0 },
-      discipline: { done: 0, total: 0 },
-      reflection: { done: 0, total: 0 },
-      work: { minutes: 0, targetMinutes: 0 },
-    };
-    expect(computeScore(empty).score).toBe(0);
-  });
-
-  it("clamps impossible counts", () => {
-    expect(computeScore({ ...full, god: { done: 9, total: 4 } }).score).toBe(100);
+  it("averages the days of a week that have a number", () => {
+    const days = [
+      { date: "2026-09-21", score: 80 },
+      { date: "2026-09-22", score: 90 },
+      { date: "2026-09-23", score: null },
+      { date: "2026-09-28", score: 10 },
+    ];
+    expect(weekAverage(days, "2026-09-21", "2026-09-24")).toBe(85);
+    expect(weekAverage([], "2026-09-21", "2026-09-24")).toBeNull();
   });
 });
 
@@ -201,9 +139,8 @@ describe("streaks", () => {
   it("uses the stored score for a completed day", () => {
     const summary: DaySummary = {
       local_date: "2026-09-01",
-      morning_total: 10, morning_done: 0, body_total: 5, body_done: 0,
-      discipline_total: 4, discipline_done: 0, god_total: 0, god_done: 0,
-      bible_done: 0, review_filled: 0, work_minutes: 0,
+      habits_total: 17, habits_done: 0, tasks_total: 3, tasks_done: 0,
+      review_done: 0, work_minutes: 0,
       final_score: 88, completed_at: "2026-09-01T11:00:00Z",
     };
     expect(scoreForSummary(summary, 6)).toEqual({ date: "2026-09-01", score: 88, locked: true });

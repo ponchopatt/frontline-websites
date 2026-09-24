@@ -2,104 +2,17 @@
 
 import { z } from "zod";
 import { chaptersIn } from "@/lib/bible";
+import { ensureReading } from "@/lib/bible-server";
 import { dbFail, fail, guardDate, invalid, localDateSchema, ok } from "@/lib/action-helpers";
-import { getViewer, loadSummaries, recomputeBestStreak, type Viewer } from "@/lib/data";
-import { computeScore } from "@/lib/score";
-import { summaryToScoreInput } from "@/lib/streak";
-import type { LocalDate } from "@/lib/day";
+import { getViewer, loadSummaries, recomputeBestStreak } from "@/lib/data";
+import { keepWord } from "@/lib/keep-word";
+import { summaryToTally } from "@/lib/streak";
 import type { Database } from "@/lib/supabase/database.types";
-import type { ActionResult, BibleCheck, PriorityStatus } from "@/lib/types";
+import type { ActionResult } from "@/lib/types";
+import { REVIEW_FIELDS } from "@/lib/types";
 
 type EntryInsert = Database["public"]["Tables"]["bible_entries"]["Insert"];
 type ReviewInsert = Database["public"]["Tables"]["daily_reviews"]["Insert"];
-import { REVIEW_FIELDS } from "@/lib/types";
-
-/* ------------------------------------------------------------------ priorities */
-
-const positionSchema = z.union([z.literal(1), z.literal(2), z.literal(3)], {
-  message: "There are three priorities a day.",
-});
-
-const savePrioritySchema = z.object({
-  date: localDateSchema,
-  position: positionSchema,
-  title: z.string().trim().max(120, "Keep a priority under 120 characters."),
-  description: z.string().trim().max(500, "Keep the detail under 500 characters.").nullish(),
-});
-
-/** Saves a priority's title (and detail). An empty title clears the slot. */
-export async function savePriority(
-  input: z.input<typeof savePrioritySchema>,
-): Promise<ActionResult<{ id: string | null }>> {
-  const parsed = savePrioritySchema.safeParse(input);
-  if (!parsed.success) return invalid(parsed.error);
-  const { date, position, title, description } = parsed.data;
-  const viewer = await getViewer();
-  const refused = guardDate(viewer, date);
-  if (refused) return refused;
-
-  if (!title) {
-    const { error } = await viewer.supabase
-      .from("daily_priorities")
-      .delete()
-      .eq("local_date", date)
-      .eq("position", position);
-    if (error) return dbFail(error);
-    return ok({ id: null });
-  }
-
-  const row: { user_id: string; local_date: string; position: number; title: string; description?: string | null } = {
-    user_id: viewer.userId,
-    local_date: date,
-    position,
-    title,
-  };
-  if (description !== undefined) row.description = description || null;
-
-  const { data, error } = await viewer.supabase
-    .from("daily_priorities")
-    .upsert(row, { onConflict: "user_id,local_date,position" })
-    .select("id")
-    .single();
-  if (error || !data) return dbFail(error ?? {});
-  return ok({ id: data.id });
-}
-
-const statusSchema = z.object({
-  date: localDateSchema,
-  position: positionSchema,
-  status: z.enum(["pending", "done", "dropped"]),
-});
-
-export async function setPriorityStatus(
-  input: z.input<typeof statusSchema>,
-): Promise<ActionResult<{ status: PriorityStatus; completedAt: string | null }>> {
-  const parsed = statusSchema.safeParse(input);
-  if (!parsed.success) return invalid(parsed.error);
-  const { date, position, status } = parsed.data;
-  const viewer = await getViewer();
-  const refused = guardDate(viewer, date);
-  if (refused) return refused;
-
-  const completedAt = status === "done" ? new Date().toISOString() : null;
-  const { data, error } = await viewer.supabase
-    .from("daily_priorities")
-    .update({ status, completed_at: completedAt })
-    .eq("local_date", date)
-    .eq("position", position)
-    .select("status,completed_at,daily_goal_id")
-    .maybeSingle();
-  if (error) return dbFail(error);
-  if (!data) return fail("Write the priority first.");
-  // A priority that came from a goal moves that goal too.
-  if (data.daily_goal_id) {
-    await viewer.supabase
-      .from("daily_goals")
-      .update({ status, completed_at: completedAt })
-      .eq("id", data.daily_goal_id);
-  }
-  return ok({ status: data.status, completedAt: data.completed_at });
-}
 
 /* ------------------------------------------------------------------ bible */
 
@@ -111,65 +24,6 @@ const readingRefSchema = z
     message: "That chapter isn't in the book.",
     path: ["chapter"],
   });
-
-/** The day's reading row, created from `ref` if the day has none yet. */
-async function ensureReading(
-  viewer: Viewer,
-  date: LocalDate,
-  ref: { book: string; chapter: number },
-): Promise<{ id: string } | { error: { code?: string; hint?: string | null } }> {
-  const { data: existing } = await viewer.supabase
-    .from("bible_readings")
-    .select("id")
-    .eq("local_date", date)
-    .maybeSingle();
-  if (existing) return existing;
-  const { data, error } = await viewer.supabase
-    .from("bible_readings")
-    .insert({ local_date: date, book: ref.book, chapter: ref.chapter })
-    .select("id")
-    .single();
-  if (error?.code === "23505") {
-    const { data: again } = await viewer.supabase.from("bible_readings").select("id").eq("local_date", date).maybeSingle();
-    if (again) return again;
-  }
-  if (error || !data) return { error: error ?? {} };
-  return data;
-}
-
-const checkSchema = z.object({
-  date: localDateSchema,
-  item: z.enum(["reading", "soap", "prayer", "application"]),
-  done: z.boolean(),
-  reading: readingRefSchema,
-});
-
-export async function setBibleCheck(input: z.input<typeof checkSchema>): Promise<ActionResult<{ readingId: string }>> {
-  const parsed = checkSchema.safeParse(input);
-  if (!parsed.success) return invalid(parsed.error);
-  const { date, item, done, reading } = parsed.data;
-  const viewer = await getViewer();
-  const refused = guardDate(viewer, date);
-  if (refused) return refused;
-
-  const r = await ensureReading(viewer, date, reading);
-  if ("error" in r) return dbFail(r.error);
-
-  if (item === "reading") {
-    const { error } = await viewer.supabase.from("bible_readings").update({ is_completed: done }).eq("id", r.id);
-    if (error) return dbFail(error);
-  } else {
-    const column = ({ soap: "soap_done", prayer: "prayer_done", application: "application_done" } as const)[
-      item as Exclude<BibleCheck, "reading">
-    ];
-    const row: EntryInsert = { reading_id: r.id, local_date: date };
-    row[column] = done;
-    const { error } = await viewer.supabase.from("bible_entries").upsert(row, { onConflict: "reading_id" });
-    if (error) return dbFail(error);
-  }
-  if (date < viewer.today) await recomputeBestStreak(viewer);
-  return ok({ readingId: r.id });
-}
 
 const setReadingSchema = z.object({
   date: localDateSchema,
@@ -198,26 +52,24 @@ export async function setReading(input: z.input<typeof setReadingSchema>): Promi
   return ok({ readingId: data.id });
 }
 
-const textSchema = z.object({
+const journalSchema = z.object({
   date: localDateSchema,
-  field: z.enum(["scripture_notes", "observation", "application", "prayer", "obey_today"]),
-  value: z.string().max(4000, "That's too long to save in one field."),
+  value: z.string().max(4000, "That's too long to save in one entry."),
   reading: readingRefSchema,
 });
 
-export async function saveBibleText(input: z.input<typeof textSchema>): Promise<ActionResult> {
-  const parsed = textSchema.safeParse(input);
+/** The day's journal line, kept with its reading. */
+export async function saveJournal(input: z.input<typeof journalSchema>): Promise<ActionResult> {
+  const parsed = journalSchema.safeParse(input);
   if (!parsed.success) return invalid(parsed.error);
-  const { date, field, value, reading } = parsed.data;
-  if (field === "obey_today" && value.length > 500) return fail("Keep this under 500 characters.");
+  const { date, value, reading } = parsed.data;
   const viewer = await getViewer();
   const refused = guardDate(viewer, date);
   if (refused) return refused;
 
   const r = await ensureReading(viewer, date, reading);
   if ("error" in r) return dbFail(r.error);
-  const row: EntryInsert = { reading_id: r.id, local_date: date };
-  row[field] = value.trim() || null;
+  const row: EntryInsert = { reading_id: r.id, local_date: date, journal: value.trim() || null };
   const { error } = await viewer.supabase.from("bible_entries").upsert(row, { onConflict: "reading_id" });
   if (error) return dbFail(error);
   return ok();
@@ -253,7 +105,7 @@ export async function saveReviewField(input: z.input<typeof reviewSchema>): Prom
 const dateOnly = z.object({ date: localDateSchema });
 
 /**
- * Locks the day and stores its score. The score is computed here from what is in the
+ * Locks the day and stores its Keep My Word. It's worked out here from what is in the
  * database, not taken from the browser.
  */
 export async function completeDay(
@@ -276,15 +128,16 @@ export async function completeDay(
 
   const [summary] = await loadSummaries(viewer.supabase, date, date);
   if (!summary) return fail("This day couldn't be scored. Try again.");
-  const result = computeScore(summaryToScoreInput(summary, viewer.profile.workTargetHours));
+  const result = keepWord(summaryToTally(summary, viewer.profile.workTargetHours));
+  const score = result.percent ?? 0;
   const completedAt = new Date().toISOString();
 
   const { error } = await viewer.supabase.from("daily_plans").upsert(
     {
       user_id: viewer.userId,
       local_date: date,
-      final_score: result.score,
-      score_breakdown: result.categories as unknown as Record<string, never>,
+      final_score: score,
+      score_breakdown: { made: result.made, kept: result.kept },
       completed_at: completedAt,
     },
     { onConflict: "user_id,local_date" },
@@ -292,7 +145,7 @@ export async function completeDay(
   if (error) return dbFail(error, "The day wasn't completed. Try again.");
 
   const best = await recomputeBestStreak(viewer);
-  return ok({ score: result.score, completedAt, best });
+  return ok({ score, completedAt, best });
 }
 
 /** Unlocks a completed day so it can be changed. Its stored score is cleared until it is completed again. */

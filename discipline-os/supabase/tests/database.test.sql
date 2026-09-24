@@ -10,8 +10,8 @@ values
   ('22222222-2222-2222-2222-222222222222', 'b@test.dev', '{"timezone":"Not/AZone"}', 'authenticated', 'authenticated');
 
 -- 1–4: seeding
-select is((select count(*)::int from public.habits where user_id = '11111111-1111-1111-1111-111111111111'), 19,
-  'a new user is seeded with the 19 default habits');
+select is((select count(*)::int from public.habits where user_id = '11111111-1111-1111-1111-111111111111'), 17,
+  'a new user is seeded with the 17 default habits');
 select is((select timezone from public.profiles where user_id = '11111111-1111-1111-1111-111111111111'), 'Australia/Sydney',
   'the browser timezone from sign-up is stored');
 select is((select timezone from public.profiles where user_id = '22222222-2222-2222-2222-222222222222'), 'Australia/Sydney',
@@ -35,7 +35,7 @@ set local role authenticated;
 set local request.jwt.claims = '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}';
 
 -- 7: RLS read isolation
-select is((select count(*)::int from public.habits), 19, 'user A sees only their own 19 habits');
+select is((select count(*)::int from public.habits), 17, 'user A sees only their own 17 habits');
 
 -- 8–9: completions are idempotent per habit per day
 select lives_ok($$

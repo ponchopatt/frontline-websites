@@ -131,3 +131,19 @@ export function formatHours(minutes: number): string {
   const hours = Math.round((minutes / 60) * 10) / 10;
   return `${hours}h`;
 }
+
+/** ISO weekday: 1 = Monday … 7 = Sunday. */
+export function isoWeekday(date: LocalDate): number {
+  const [y, m, d] = date.split("-").map(Number);
+  const weekday = new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+  return weekday === 0 ? 7 : weekday;
+}
+
+/** "5h 24m", "45m", "0m" for a number of minutes. */
+export function formatDuration(minutes: number): string {
+  const total = Math.max(0, Math.floor(minutes));
+  const h = Math.floor(total / 60);
+  const m = total % 60;
+  if (h === 0) return `${m}m`;
+  return m === 0 ? `${h}h` : `${h}h ${String(m).padStart(2, "0")}m`;
+}

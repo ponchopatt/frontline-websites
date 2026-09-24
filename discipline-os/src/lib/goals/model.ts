@@ -10,7 +10,7 @@ export type GoalType = "outcome" | "performance" | "process" | "habit" | "milest
 export type GoalState = "draft" | "active" | "completed" | "missed" | "cancelled";
 export type Cadence = "total" | "per_week" | "per_month";
 export type Aggregation = "sum" | "latest";
-export type ProgressSource = "manual" | "children" | "work_hours" | "habit" | "actions" | "milestones";
+export type ProgressSource = "manual" | "children" | "work_hours" | "habit" | "actions" | "milestones" | "metric";
 export type DailyStatus = "pending" | "done" | "dropped";
 
 export const GOAL_TYPES: Array<{ value: GoalType; label: string; hint: string; example: string }> = [
@@ -43,6 +43,8 @@ export interface GoalCore {
   targetValue: number | null;
   currentValue: number | null;
   habitId: string | null;
+  /** The counter this goal is measured by, when its progress source is "metric". */
+  metricId: string | null;
   priority: 1 | 2 | 3;
   state: GoalState;
   deadline: LocalDate | null;
@@ -73,9 +75,10 @@ export interface WeeklyGoal extends GoalCore {
 
 export type AnyGoal = YearlyGoal | MonthlyGoal | WeeklyGoal;
 
+/** A task. Big 3 when ranked 1–3; "later" when it has no day yet. */
 export interface DailyGoal {
   id: string;
-  localDate: LocalDate;
+  localDate: LocalDate | null;
   parentWeeklyId: string | null;
   title: string;
   quantity: number | null;
@@ -87,6 +90,12 @@ export interface DailyGoal {
   workBlockId: string | null;
   carriedFromId: string | null;
   completedAt: string | null;
+  area: string | null;
+  metricId: string | null;
+  priority: 1 | 2 | 3;
+  dueDate: LocalDate | null;
+  notes: string | null;
+  category: string | null;
 }
 
 export interface Milestone {
@@ -101,6 +110,8 @@ export interface Milestone {
 export interface LifeArea {
   id: string;
   name: string;
+  /** Set for the areas the dashboard tracks (imperium, websites, faith…). */
+  key: import("../areas").Area | null;
   sortOrder: number;
   isActive: boolean;
 }
@@ -123,6 +134,7 @@ export interface GoalRow {
   target_value: number | null;
   current_value: number | null;
   habit_id: string | null;
+  metric_id?: string | null;
   priority: number;
   state: GoalState;
   deadline: string | null;
@@ -155,6 +167,7 @@ export function coreFromRow(r: GoalRow): GoalCore {
     targetValue: num(r.target_value),
     currentValue: num(r.current_value),
     habitId: r.habit_id,
+    metricId: r.metric_id ?? null,
     priority: Math.min(3, Math.max(1, r.priority)) as 1 | 2 | 3,
     state: r.state,
     deadline: r.deadline,

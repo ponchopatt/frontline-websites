@@ -44,3 +44,32 @@ export function nextReading(ref: ReadingRef): ReadingRef {
 export function formatReading(ref: ReadingRef, passage?: string | null): string {
   return passage ? `${ref.book} ${ref.chapter}:${passage}` : `${ref.book} ${ref.chapter}`;
 }
+
+/** Simple reading plans: a list of books read a chapter a day, from where you are. */
+export const PLANS = {
+  bible: { label: "Whole Bible", books: BOOK_NAMES },
+  new_testament: { label: "New Testament", books: BOOK_NAMES.slice(BOOK_NAMES.indexOf("Matthew")) },
+  gospels: { label: "The Gospels", books: ["Matthew", "Mark", "Luke", "John"] },
+  psalms_proverbs: { label: "Psalms and Proverbs", books: ["Psalms", "Proverbs"] },
+} as const;
+export type PlanKey = keyof typeof PLANS;
+
+export function isPlanKey(value: unknown): value is PlanKey {
+  return typeof value === "string" && value in PLANS;
+}
+
+/**
+ * Today's chapter on a plan: the one after the last chapter read, if that was on the plan
+ * (wrapping round at the end); otherwise the plan's first chapter. The whole-Bible plan starts
+ * a first-time reader at John 1.
+ */
+export function nextInPlan(plan: PlanKey, last: ReadingRef | null): ReadingRef {
+  const books: readonly string[] = PLANS[plan].books;
+  if (!last || !books.includes(last.book)) {
+    return plan === "bible" ? (last ? nextReading(last) : FIRST_READING) : { book: books[0], chapter: 1 };
+  }
+  const chapters = chaptersIn(last.book) ?? 1;
+  if (last.chapter < chapters) return { book: last.book, chapter: last.chapter + 1 };
+  const next = books[(books.indexOf(last.book) + 1) % books.length];
+  return { book: next, chapter: 1 };
+}

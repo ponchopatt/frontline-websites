@@ -9,7 +9,9 @@ import { HealthBadge, ProgressBar } from "@/components/goals/health";
 import { WeeklyReview, type ReviewGoal } from "@/components/goals/weekly-review";
 import { DECISIONS, REASONS } from "@/lib/goals/review";
 import { SectionCard } from "@/components/section-card";
-import { getViewer, loadSummaries } from "@/lib/data";
+import { WeekScoreboard } from "@/components/week/scoreboard";
+import { loadScoreboard, scoreboardGroups } from "@/components/week/scoreboard-data";
+import { firstDayOf, getViewer, loadSummaries } from "@/lib/data";
 import { addDays, formatHours, isLocalDate } from "@/lib/day";
 import { monthToWeeks } from "@/lib/goals/breakdown";
 import { loadGoalYear, loadLifeAreas, yearOfWeek } from "@/lib/goals/data";
@@ -34,20 +36,23 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
   const { supabase, today, profile } = viewer;
   const end = weekEndOf(week);
   const monthStart = monthOfWeek(week);
-  const [data, areas, reviewRes, goalReviewsRes, sessionsRes, summaries] = await Promise.all([
+  const [data, areas, reviewRes, goalReviewsRes, sessionsRes, summaries, board] = await Promise.all([
     loadGoalYear(viewer, yearOfWeek(week)),
     loadLifeAreas(viewer),
     supabase.from("weekly_reviews").select("*").eq("week_start_date", week).maybeSingle(),
     supabase.from("goal_reviews").select("*").eq("period", "week").eq("period_start", week),
     supabase.from("work_sessions").select("started_at,ended_at,work_block_id").gte("local_date", week).lte("local_date", end),
-    week <= today ? loadSummaries(supabase, week, end < today ? end : today) : Promise.resolve([]),
+    // Only days since the account started count as days on (or off) the line.
+    week <= today ? loadSummaries(supabase, week > firstDayOf(viewer) ? week : firstDayOf(viewer), end < today ? end : today) : Promise.resolve([]),
+    loadScoreboard(viewer, week),
   ]);
 
   const goals = data.tree.weekly.filter((w) => w.weekStart === week && w.state !== "cancelled");
   const majors = goals.filter((g) => g.isMajor);
   const supporting = goals.filter((g) => !g.isMajor);
   const monthly = data.tree.monthly.filter((mg) => mg.monthStart === monthStart && mg.state === "active");
-  const reviewed = Boolean(reviewRes.data?.completed_at);
+  const review = reviewRes.data;
+  const reviewed = Boolean(review?.completed_at);
   const weekOver = end < today;
   // The review opens at the weekend, when the week is over, or early on request.
   const reviewTime = weekOver || today >= addDays(week, 5) || (reviewParam === "now" && week <= today);
@@ -74,7 +79,7 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
   const alignment = totalMin > 0 ? alignedMin / totalMin : null;
   const scores = summaries.map((s) => scoreForSummary(s, profile.workTargetHours));
   const onLine = scores.filter((s) => s.score >= profile.streakThreshold).length;
-  const doneActions = data.daily.filter((dg) => dg.localDate >= week && dg.localDate <= end && dg.status === "done").length;
+  const doneActions = data.daily.filter((dg) => dg.localDate !== null && dg.localDate >= week && dg.localDate <= end && dg.status === "done").length;
 
   const reviewGoals: ReviewGoal[] = goals
     .filter((g) => g.state === "active" || g.state === "completed")
@@ -92,6 +97,16 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
       };
     });
   const pastReviews = goalReviewsRes.data ?? [];
+  // The four questions; older reviews also had "What did I learn?".
+  const answers = (
+    [
+      ["Biggest win", review?.wins],
+      ["Biggest failure", review?.failure],
+      ["Main bottleneck", review?.bottleneck],
+      ["Next week's #1 priority", review?.focus_for_next_week],
+      ["What I learned", review?.lessons],
+    ] satisfies Array<[string, string | null | undefined]>
+  ).filter((a): a is [string, string] => Boolean(a[1]?.trim()));
 
   const row = (g: WeeklyGoal) => {
     const p = data.progress.get(g.id);
@@ -145,6 +160,8 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
         <h1 className="text-[34px] leading-tight font-medium tracking-tight">Week {weekNumberInMonth(week)}</h1>
         <p className="text-[15px] text-muted-foreground">{weekRangeLabel(week)}</p>
       </header>
+
+      <WeekScoreboard groups={scoreboardGroups(board, data)} meta={weekOver ? "Week closed" : week <= today ? "So far" : "Not started"} />
 
       <section aria-labelledby="outcomes-heading" className="grid gap-4">
         <div className="grid gap-1">
@@ -261,20 +278,14 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
                   );
                 })}
               </ul>
-              {(reviewRes.data?.wins || reviewRes.data?.lessons) && (
-                <dl className="grid gap-2 text-[15px]">
-                  {reviewRes.data?.wins && (
-                    <>
-                      <dt className="text-sm text-muted-foreground">What went well</dt>
-                      <dd>{reviewRes.data.wins}</dd>
-                    </>
-                  )}
-                  {reviewRes.data?.lessons && (
-                    <>
-                      <dt className="text-sm text-muted-foreground">What I learned</dt>
-                      <dd>{reviewRes.data.lessons}</dd>
-                    </>
-                  )}
+              {answers.length > 0 && (
+                <dl className="grid gap-3 text-[15px]">
+                  {answers.map(([label, text]) => (
+                    <div key={label} className="grid gap-0.5">
+                      <dt className="text-sm text-muted-foreground">{label}</dt>
+                      <dd className="break-words whitespace-pre-line">{text}</dd>
+                    </div>
+                  ))}
                 </dl>
               )}
               <Link href={`/goals/week/${addDays(week, 7)}`} className="inline-flex h-12 w-fit items-center rounded-full bg-primary px-5 text-[15px] font-medium text-primary-foreground">

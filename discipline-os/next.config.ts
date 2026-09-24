@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   // This app lives in a subfolder of a larger repo; keep Turbopack rooted here.
   turbopack: { root: path.resolve(".") },
+  // Proof photos are shrunk in the browser first; this leaves room for one that can't be.
+  experimental: { serverActions: { bodySizeLimit: "4mb" } },
 };
 
 export default nextConfig;

@@ -1,7 +1,9 @@
 import "server-only";
 import { fetchAll, type Viewer } from "../data";
-import { addDays, startOfWeek, type LocalDate } from "../day";
-import type { GoalChain, PlanSuggestion, TodayPlan } from "../types";
+import { addDays, type LocalDate } from "../day";
+import type { Area } from "../areas";
+import type { DayValues } from "../metrics";
+import type { GoalChain } from "../types";
 import type { Database } from "../supabase/database.types";
 import {
   coreFromRow,
@@ -15,7 +17,6 @@ import {
 } from "./model";
 import { monthOfWeek, weekEndOf, yearEnd, yearStart } from "./periods";
 import { evaluateGoals, type ExecutionData, type GoalProgress, type GoalTree } from "./progress";
-import { suggestToday, type Suggestion, type WeeklyContext } from "./suggest";
 
 type Tables = Database["public"]["Tables"];
 type YearlyRow = Tables["yearly_goals"]["Row"];
@@ -54,6 +55,12 @@ export function mapDaily(r: DailyRow): DailyGoal {
     workBlockId: r.work_block_id,
     carriedFromId: r.carried_from_id,
     completedAt: r.completed_at,
+    area: r.area,
+    metricId: r.metric_id,
+    priority: Math.min(3, Math.max(1, r.priority)) as 1 | 2 | 3,
+    dueDate: r.due_date,
+    notes: r.notes,
+    category: r.category,
   };
 }
 
@@ -64,7 +71,7 @@ export async function loadLifeAreas(viewer: Viewer): Promise<LifeArea[]> {
     await viewer.supabase.rpc("ensure_life_areas");
     ({ data } = await viewer.supabase.from("life_areas").select("*").order("sort_order"));
   }
-  return (data ?? []).map((a) => ({ id: a.id, name: a.name, sortOrder: a.sort_order, isActive: a.is_active }));
+  return (data ?? []).map((a) => ({ id: a.id, name: a.name, key: (a.key as Area | null) ?? null, sortOrder: a.sort_order, isActive: a.is_active }));
 }
 
 export interface Vision {
@@ -156,7 +163,21 @@ export async function loadGoalYear(viewer: Viewer, year: number): Promise<GoalYe
     actionsByWeekly.set(d.parentWeeklyId, (actionsByWeekly.get(d.parentWeeklyId) ?? 0) + (d.quantity ?? 1));
   }
 
-  const exec: ExecutionData = { workMinutes, habitDays, actionsByWeekly, milestones };
+  // Goals measured by a counter read its values straight from the counter.
+  const metricIds = [...new Set([...tree.yearly, ...tree.monthly, ...tree.weekly].map((g) => g.metricId).filter((id): id is string => Boolean(id)))];
+  const metrics = new Map<string, { aggregation: "sum" | "latest"; values: DayValues }>();
+  if (metricIds.length > 0) {
+    const [defs, entries] = await Promise.all([
+      supabase.from("metrics").select("id,aggregation").in("id", metricIds),
+      fetchAll<{ metric_id: string; local_date: string; value: number }>((a, b) =>
+        supabase.from("metric_entries").select("metric_id,local_date,value").in("metric_id", metricIds).gte("local_date", from).lte("local_date", addDays(to, 7)).range(a, b),
+      ),
+    ]);
+    for (const d of defs.data ?? []) metrics.set(d.id, { aggregation: d.aggregation, values: new Map() });
+    for (const e of entries) metrics.get(e.metric_id)?.values.set(e.local_date, Number(e.value));
+  }
+
+  const exec: ExecutionData = { workMinutes, habitDays, actionsByWeekly, milestones, metrics };
   return { year, tree, milestones, progress: evaluateGoals(tree, exec, viewer.today), exec, daily: dailyGoals };
 }
 
@@ -183,91 +204,12 @@ export function weekIsOver(weekStart: LocalDate, today: LocalDate): boolean {
   return weekEndOf(weekStart) < today;
 }
 
-function chainOf(data: GoalYear, weeklyId: string | null): GoalChain | null {
+export function chainOf(data: GoalYear, weeklyId: string | null): GoalChain | null {
   const l = lineageOf(data, weeklyId);
   if (!l.weekly) return null;
   return {
     weekly: { id: l.weekly.id, title: l.weekly.title, weekStart: l.weekly.weekStart },
     monthly: l.monthly ? { id: l.monthly.id, title: l.monthly.title, monthStart: l.monthly.monthStart } : null,
     yearly: l.yearly ? { id: l.yearly.id, title: l.yearly.title, year: l.yearly.year } : null,
-  };
-}
-
-/**
- * Today's goal plan: this week's goals turned into ranked suggestions (only for today, and
- * only while the day is open), plus the actions already accepted, each with what it supports.
- */
-export async function loadTodayPlan(
-  viewer: Viewer,
-  date: LocalDate,
-  opts: { plannedMinutes: number; locked: boolean },
-): Promise<TodayPlan> {
-  const weekStart = startOfWeek(date);
-  const data = await loadGoalYear(viewer, yearOfWeek(weekStart));
-  const { data: deps } = await viewer.supabase.from("goal_dependencies").select("blocker_id,blocked_id").eq("level", "weekly");
-
-  const weekly = data.tree.weekly.filter((w) => w.weekStart === weekStart && w.state === "active");
-  const todayActions = data.daily.filter((d) => d.localDate === date);
-  const carriedFrom = new Set(data.daily.map((d) => d.carriedFromId).filter(Boolean));
-  const unfinished = data.daily.filter(
-    (d) => d.localDate >= weekStart && d.localDate < date && d.status === "pending" && !carriedFrom.has(d.id),
-  );
-
-  let big3: PlanSuggestion[] = [];
-  let supporting: PlanSuggestion[] = [];
-  if (date === viewer.today && !opts.locked) {
-    const contexts: WeeklyContext[] = weekly.map((goal) => {
-      const l = lineageOf(data, goal.id);
-      return {
-        goal,
-        progress: data.progress.get(goal.id)!,
-        monthly: l.monthly,
-        monthlyProgress: l.monthly ? data.progress.get(l.monthly.id) ?? null : null,
-        yearly: l.yearly,
-        unblocks: (deps ?? [])
-          .filter((d) => d.blocker_id === goal.id)
-          .map((d) => weekly.find((w) => w.id === d.blocked_id)?.title)
-          .filter((t): t is string => Boolean(t)),
-      };
-    });
-    const pendingMinutes = todayActions.filter((a) => a.status === "pending").reduce((s, a) => s + (a.estimatedMinutes ?? 0), 0);
-    const result = suggestToday({
-      today: date,
-      weekly: contexts,
-      todayActions,
-      unfinished,
-      availableMinutes: Math.max(0, viewer.profile.workTargetHours * 60 - opts.plannedMinutes - pendingMinutes),
-    });
-    const withChain = (s: Suggestion): PlanSuggestion => ({
-      key: s.key,
-      title: s.title,
-      quantity: s.quantity,
-      unit: s.unit,
-      estimatedMinutes: s.estimatedMinutes,
-      weeklyGoalId: s.weeklyGoalId,
-      carriedFromId: s.carriedFromId,
-      createsWorkBlock: s.createsWorkBlock,
-      reasons: s.reasons,
-      chain: chainOf(data, s.weeklyGoalId),
-    });
-    big3 = result.big3.map(withChain);
-    supporting = result.supporting.map(withChain);
-  }
-
-  return {
-    big3,
-    supporting,
-    actions: todayActions.map((a) => ({
-      id: a.id,
-      title: a.title,
-      quantity: a.quantity,
-      unit: a.unit,
-      rank: a.rank,
-      status: a.status,
-      chain: chainOf(data, a.parentWeeklyId),
-    })),
-    hasGoals: data.tree.yearly.some((y) => y.state === "active") || data.tree.monthly.some((m) => m.state === "active"),
-    hasWeekPlan: weekly.length > 0,
-    weekStart,
   };
 }

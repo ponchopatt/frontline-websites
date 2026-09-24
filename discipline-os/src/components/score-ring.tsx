@@ -8,10 +8,12 @@ interface ScoreRingProps {
   stroke?: number;
   className?: string;
   label?: string;
+  /** Shown small after the number, e.g. "%". */
+  suffix?: string;
 }
 
 /** The day's score: a plain number inside a thin ring. No confetti. */
-export function ScoreRing({ score, threshold, size = 96, stroke = 2.5, className, label = "Score" }: ScoreRingProps) {
+export function ScoreRing({ score, threshold, size = 96, stroke = 2.5, className, label = "Score", suffix }: ScoreRingProps) {
   const value = Math.min(100, Math.max(0, Math.round(score)));
   const center = size / 2;
   const r = center - stroke * 2;
@@ -25,7 +27,7 @@ export function ScoreRing({ score, threshold, size = 96, stroke = 2.5, className
       className={cn("relative grid shrink-0 place-items-center", className)}
       style={{ width: size, height: size }}
       role="img"
-      aria-label={`${label}: ${value} out of 100${threshold !== undefined ? `, streak line ${threshold}` : ""}`}
+      aria-label={`${label}: ${value}${suffix === "%" ? "%" : " out of 100"}${threshold !== undefined ? `, streak line ${threshold}${suffix === "%" ? "%" : ""}` : ""}`}
     >
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0 -rotate-90" aria-hidden>
         <circle cx={center} cy={center} r={r} fill="none" stroke="var(--border)" strokeWidth={stroke} />
@@ -55,6 +57,7 @@ export function ScoreRing({ score, threshold, size = 96, stroke = 2.5, className
       </svg>
       <span className="relative leading-none font-normal tracking-tight" style={{ fontSize: Math.round(size * 0.34) }}>
         {value}
+        {suffix && <span className="text-[0.45em] text-muted-foreground">{suffix}</span>}
       </span>
     </div>
   );

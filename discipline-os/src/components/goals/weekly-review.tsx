@@ -37,7 +37,8 @@ export function WeeklyReview({ weekStart, goals }: { weekStart: LocalDate; goals
     Object.fromEntries(goals.map((g) => [g.id, { outcome: g.suggested, reason: null, note: "", decision: g.suggested === "completed" ? null : "carry_forward" }])),
   );
   const [wins, setWins] = useState("");
-  const [lessons, setLessons] = useState("");
+  const [failure, setFailure] = useState("");
+  const [bottleneck, setBottleneck] = useState("");
   const [focus, setFocus] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -71,7 +72,8 @@ export function WeeklyReview({ weekStart, goals }: { weekStart: LocalDate; goals
           const res = await saveWeeklyReview({
             weekStart,
             wins,
-            lessons,
+            failure,
+            bottleneck,
             focus,
             items: goals.map((g) => ({
               weeklyGoalId: g.id,
@@ -94,7 +96,7 @@ export function WeeklyReview({ weekStart, goals }: { weekStart: LocalDate; goals
         }
       }}
     >
-      {goals.length === 0 && <p className="text-[15px] text-muted-foreground">No goals were set for this week. Write what you learned, then plan the next one.</p>}
+      {goals.length === 0 && <p className="text-[15px] text-muted-foreground">No goals were set for this week. Answer the four questions, then plan the next one.</p>}
       <ol className="grid gap-5">
         {goals.map((g) => {
           const s = items[g.id];
@@ -166,15 +168,19 @@ export function WeeklyReview({ weekStart, goals }: { weekStart: LocalDate; goals
 
       <div className="grid gap-4">
         <label className="grid gap-1.5 text-sm text-muted-foreground">
-          What went well?
+          Biggest win
           <textarea value={wins} onChange={(e) => setWins(e.target.value)} maxLength={2000} rows={2} className={cn(field, "h-auto min-h-[4.5rem] resize-none py-2.5 [field-sizing:content]")} />
         </label>
         <label className="grid gap-1.5 text-sm text-muted-foreground">
-          What did I learn?
-          <textarea value={lessons} onChange={(e) => setLessons(e.target.value)} maxLength={2000} rows={2} className={cn(field, "h-auto min-h-[4.5rem] resize-none py-2.5 [field-sizing:content]")} />
+          Biggest failure
+          <textarea value={failure} onChange={(e) => setFailure(e.target.value)} maxLength={2000} rows={2} className={cn(field, "h-auto min-h-[4.5rem] resize-none py-2.5 [field-sizing:content]")} />
         </label>
         <label className="grid gap-1.5 text-sm text-muted-foreground">
-          Focus for next week
+          Main bottleneck
+          <textarea value={bottleneck} onChange={(e) => setBottleneck(e.target.value)} maxLength={2000} rows={2} className={cn(field, "h-auto min-h-[4.5rem] resize-none py-2.5 [field-sizing:content]")} />
+        </label>
+        <label className="grid gap-1.5 text-sm text-muted-foreground">
+          Next week&apos;s #1 priority
           <input value={focus} onChange={(e) => setFocus(e.target.value)} maxLength={2000} className={field} />
         </label>
       </div>

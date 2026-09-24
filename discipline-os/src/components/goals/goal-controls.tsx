@@ -198,5 +198,7 @@ function toInput(d: DraftGoal) {
     targetValue: d.targetValue,
     isMajor: d.isMajor,
     why: d.why,
+    metricId: d.metricId,
+    metricKey: d.metricKey,
   };
 }

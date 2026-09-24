@@ -4,17 +4,20 @@ import { Archive, ArrowDown, ArrowUp, Check, RotateCcw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { createHabit, moveHabit, renameHabit, setHabitArchived } from "@/app/actions/habits";
+import { createHabit, moveHabit, renameHabit, setHabitArchived, setHabitDays } from "@/app/actions/habits";
 import type { HabitStats } from "@/lib/data";
 import type { ActionResult, HabitCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const SECTIONS: Array<{ key: HabitCategory; title: string; note: string }> = [
-  { key: "morning", title: "Morning routine", note: "Counts towards Discipline." },
-  { key: "god", title: "God", note: "Alongside the four Bible checks." },
-  { key: "body", title: "Body", note: "" },
+  { key: "morning", title: "Morning routine", note: "Bible, Journal and Pray also show under Faith." },
+  { key: "god", title: "Faith (evening)", note: "" },
+  { key: "body", title: "Fitness", note: "" },
   { key: "discipline", title: "Discipline", note: "" },
 ];
+
+const WEEKDAYS = ["M", "T", "W", "T", "F", "S", "S"];
+const WEEKDAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 function pct(v: number | null) {
   return v === null ? "–" : `${Math.round(v * 100)}%`;
@@ -38,12 +41,19 @@ export function HabitsManager({ initial }: { initial: HabitStats[] }) {
   const active = useMemo(() => habits.filter((h) => !h.archivedAt), [habits]);
   const archived = useMemo(() => habits.filter((h) => h.archivedAt), [habits]);
 
+  async function schedule(id: string, days: number[] | null) {
+    const before = habits;
+    setHabits((list) => list.map((h) => (h.id === id ? { ...h, days } : h)));
+    const res = await run(() => setHabitDays({ habitId: id, days }));
+    if (!res.ok) setHabits(before);
+  }
+
   async function add(name: string, category: HabitCategory) {
     const res = await run(() => createHabit({ name, category }));
     if (res.ok) {
       setHabits((list) => [
         ...list,
-        { ...res.data, archivedAt: null, doneToday: false, week: null, month: null, run: 0 },
+        { ...res.data, kind: null, days: null, archivedAt: null, doneToday: false, week: null, month: null, run: 0 },
       ]);
       toast.success(`Added “${res.data.name}”.`);
     }
@@ -107,6 +117,7 @@ export function HabitsManager({ initial }: { initial: HabitStats[] }) {
                     first={i === 0}
                     last={i === list.length - 1}
                     onRename={(name) => rename(h.id, name)}
+                    onDays={(days) => schedule(h.id, days)}
                     onMove={(d) => move(h.id, d)}
                     onArchive={() => archive(h.id, true)}
                   />
@@ -157,6 +168,7 @@ function HabitStatRow({
   first,
   last,
   onRename,
+  onDays,
   onMove,
   onArchive,
 }: {
@@ -164,6 +176,7 @@ function HabitStatRow({
   first: boolean;
   last: boolean;
   onRename: (name: string) => void;
+  onDays: (days: number[] | null) => void;
   onMove: (direction: "up" | "down") => void;
   onArchive: () => void;
 }) {
@@ -212,6 +225,34 @@ function HabitStatRow({
           </>
         )}
       </p>
+      <details className="pl-4">
+        <summary className="flex min-h-11 cursor-pointer list-none items-center text-sm text-muted-foreground hover:text-foreground">
+          {habit.days && habit.days.length < 7 ? `Due ${habit.days.length} days a week` : "Due every day"}
+        </summary>
+        <div className="grid grid-cols-7 gap-1 pb-2" role="group" aria-label={`Days ${habit.name} is due`}>
+          {WEEKDAYS.map((d, i) => {
+            const day = i + 1;
+            const on = !habit.days || habit.days.includes(day);
+            return (
+              <button
+                key={WEEKDAY_NAMES[i]}
+                type="button"
+                aria-pressed={on}
+                aria-label={WEEKDAY_NAMES[i]}
+                onClick={() => {
+                  const current = habit.days ?? [1, 2, 3, 4, 5, 6, 7];
+                  const next = on ? current.filter((x) => x !== day) : [...current, day].sort();
+                  if (next.length === 0) return;
+                  onDays(next.length === 7 ? null : next);
+                }}
+                className={cn("h-11 rounded-lg border text-[13px]", on ? "border-primary bg-lamp-soft" : "border-border text-muted-foreground")}
+              >
+                {d}
+              </button>
+            );
+          })}
+        </div>
+      </details>
       {confirmArchive && (
         <div className="mt-2 flex flex-wrap items-center gap-2 pl-4 text-sm">
           <span className="text-muted-foreground">Archive it? Past days keep it.</span>

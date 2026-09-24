@@ -11,20 +11,22 @@ import { checkGoal } from "@/lib/goals/quality";
 import { cn } from "@/lib/utils";
 
 const UNITS = ["$", "kg", "hours", "sessions", "days", "books"];
-type Source = "log" | "timer" | "habit";
+type Source = "log" | "timer" | "habit" | "counter";
 
 interface GoalFormProps {
   year: number;
   today: LocalDate;
   areas: LifeArea[];
   habits: Array<{ id: string; name: string }>;
+  /** Business counters a goal can be measured by (revenue, leads called…). */
+  counters: Array<{ id: string; area: string; label: string; unit: string | null }>;
   defaultAreaId?: string | null;
 }
 
 const field = "h-12 w-full rounded-lg border border-input bg-background px-3 text-[16px] outline-none placeholder:text-faint focus-visible:border-primary/70";
 const labelCls = "grid gap-1.5 text-sm text-muted-foreground";
 
-export function GoalForm({ year, today, areas, habits, defaultAreaId }: GoalFormProps) {
+export function GoalForm({ year, today, areas, habits, counters, defaultAreaId }: GoalFormProps) {
   const router = useRouter();
   const [areaId, setAreaId] = useState(defaultAreaId ?? areas.find((a) => a.isActive)?.id ?? "");
   const [title, setTitle] = useState("");
@@ -36,6 +38,7 @@ export function GoalForm({ year, today, areas, habits, defaultAreaId }: GoalForm
   const [cadence, setCadence] = useState<Cadence>("total");
   const [source, setSource] = useState<Source>("log");
   const [habitId, setHabitId] = useState("");
+  const [counterId, setCounterId] = useState("");
   const [why, setWhy] = useState("");
   const [success, setSuccess] = useState("");
   const [description, setDescription] = useState("");
@@ -47,6 +50,8 @@ export function GoalForm({ year, today, areas, habits, defaultAreaId }: GoalForm
 
   const numeric = isNumeric(goalType);
   const areaName = areas.find((a) => a.id === areaId)?.name ?? null;
+  const areaKey = areas.find((a) => a.id === areaId)?.key ?? null;
+  const areaCounters = counters.filter((c) => c.area === areaKey && c.unit !== null);
   const num = (v: string) => (v.trim() === "" || !Number.isFinite(Number(v)) ? null : Number(v));
   const monthsLeft = Math.max(1, Math.round(daysBetween(today > `${year}-01-01` ? today : `${year}-01-01`, deadline || `${year}-12-31`) / 30.4));
 
@@ -78,13 +83,16 @@ export function GoalForm({ year, today, areas, habits, defaultAreaId }: GoalForm
       ? "work_hours"
       : source === "habit"
         ? "habit"
-        : "children";
+        : source === "counter" && counterId
+          ? "metric"
+          : "children";
 
   async function submit() {
     setError(null);
     if (!title.trim()) return setError("Give the goal a name.");
     if (numeric && num(target) === null) return setError("Add a target number, so progress can be tracked.");
     if (source === "habit" && !habitId) return setError("Pick the habit that counts towards this.");
+    if (source === "counter" && !counterId) return setError("Pick the counter that measures this.");
     setBusy(true);
     try {
       const process = quality.process;
@@ -104,6 +112,7 @@ export function GoalForm({ year, today, areas, habits, defaultAreaId }: GoalForm
         startValue: numeric ? num(start) : null,
         targetValue: numeric ? num(target) : null,
         habitId: source === "habit" ? habitId || null : null,
+        metricId: progressSource === "metric" ? counterId : null,
         priority,
         deadline: deadline || null,
         process:
@@ -228,8 +237,33 @@ export function GoalForm({ year, today, areas, habits, defaultAreaId }: GoalForm
               <option value="log">What I log (it adds up from the months below)</option>
               <option value="timer">The work timer (focused hours)</option>
               <option value="habit">Ticks of a habit</option>
+              {areaCounters.length > 0 && <option value="counter">A business counter (fills in from Today)</option>}
             </select>
           </label>
+          {source === "counter" && (
+            <label className={labelCls}>
+              Counter
+              <select
+                value={counterId}
+                onChange={(e) => {
+                  const c = counters.find((x) => x.id === e.target.value);
+                  setCounterId(e.target.value);
+                  if (c) {
+                    setUnit(c.unit === "$" ? "$" : c.unit ?? "");
+                    setMetric(c.label);
+                  }
+                }}
+                className={field}
+              >
+                <option value="">Choose a counter</option>
+                {areaCounters.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
           {source === "habit" && (
             <label className={labelCls}>
               Habit

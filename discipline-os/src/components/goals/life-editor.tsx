@@ -80,7 +80,7 @@ export function LifeEditor({ vision, areas: initial }: { vision: { becoming: str
             if (!name.trim()) return;
             const res = await addLifeArea({ name });
             if (!res.ok) return void toast.error(res.error);
-            setAreas((list) => [...list, { ...res.data, isActive: true }]);
+            setAreas((list) => [...list, { ...res.data, key: null, isActive: true }]);
             setName("");
           }}
         >

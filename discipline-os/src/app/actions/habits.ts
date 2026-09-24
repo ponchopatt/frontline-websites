@@ -2,7 +2,10 @@
 
 import { z } from "zod";
 import { dbFail, fail, guardDate, invalid, localDateSchema, ok, uuidSchema } from "@/lib/action-helpers";
-import { getViewer, recomputeBestStreak } from "@/lib/data";
+import { nextInPlan } from "@/lib/bible";
+import { ensureReading } from "@/lib/bible-server";
+import { getViewer, recomputeBestStreak, type Viewer } from "@/lib/data";
+import type { LocalDate } from "@/lib/day";
 import type { ActionResult, HabitCategory } from "@/lib/types";
 
 const setDoneSchema = z.object({
@@ -28,6 +31,10 @@ export async function setHabitDone(
   if (refused) return refused;
   const { supabase } = viewer;
   const isPast = date < viewer.today;
+
+  // Ticking "Bible" reads today's chapter: the reading is recorded so the plan moves on.
+  const { data: habit } = await supabase.from("habits").select("kind").eq("id", habitId).maybeSingle();
+  if (habit?.kind === "bible") await markReading(viewer, date, done);
 
   if (done) {
     const { error } = await supabase
@@ -55,6 +62,18 @@ export async function setHabitDone(
   return ok({ completedAt: null, editedAt: null });
 }
 
+async function markReading(viewer: Viewer, date: LocalDate, done: boolean) {
+  const { data: last } = await viewer.supabase
+    .from("bible_readings")
+    .select("book,chapter")
+    .lt("local_date", date)
+    .order("local_date", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  const r = await ensureReading(viewer, date, nextInPlan(viewer.profile.biblePlan, last));
+  if ("id" in r) await viewer.supabase.from("bible_readings").update({ is_completed: done }).eq("id", r.id);
+}
+
 const categorySchema = z.enum(["morning", "body", "discipline", "god"], {
   message: "Pick a section for the habit.",
 });
@@ -64,7 +83,13 @@ const nameSchema = z
   .min(1, "Give the habit a name.")
   .max(80, "Keep the name under 80 characters.");
 
-const createSchema = z.object({ name: nameSchema, category: categorySchema });
+const daysSchema = z
+  .array(z.number().int().min(1).max(7))
+  .min(1, "Pick at least one day.")
+  .max(7)
+  .nullable();
+
+const createSchema = z.object({ name: nameSchema, category: categorySchema, days: daysSchema.optional() });
 
 export async function createHabit(
   input: z.input<typeof createSchema>,
@@ -83,7 +108,12 @@ export async function createHabit(
 
   const { data, error } = await supabase
     .from("habits")
-    .insert({ name: parsed.data.name, category: parsed.data.category, sort_order: (last?.sort_order ?? 0) + 1 })
+    .insert({
+      name: parsed.data.name,
+      category: parsed.data.category,
+      sort_order: (last?.sort_order ?? 0) + 1,
+      days: parsed.data.days && parsed.data.days.length < 7 ? [...new Set(parsed.data.days)].sort() : null,
+    })
     .select("id,name,category,sort_order")
     .single();
   if (error || !data) return dbFail(error ?? {}, "The habit wasn't added. Try again.");
@@ -98,6 +128,19 @@ export async function renameHabit(input: z.input<typeof renameSchema>): Promise<
   const { supabase } = await getViewer();
   const { error } = await supabase.from("habits").update({ name: parsed.data.name }).eq("id", parsed.data.habitId);
   if (error) return dbFail(error, "The new name wasn't saved. Try again.");
+  return ok();
+}
+
+const setDaysSchema = z.object({ habitId: uuidSchema, days: daysSchema });
+
+/** The days a habit is due (Gym on five days a week). Every day when null. */
+export async function setHabitDays(input: z.input<typeof setDaysSchema>): Promise<ActionResult> {
+  const parsed = setDaysSchema.safeParse(input);
+  if (!parsed.success) return invalid(parsed.error);
+  const days = parsed.data.days && parsed.data.days.length < 7 ? [...new Set(parsed.data.days)].sort() : null;
+  const { supabase } = await getViewer();
+  const { error } = await supabase.from("habits").update({ days }).eq("id", parsed.data.habitId);
+  if (error) return dbFail(error, "The days weren't saved. Try again.");
   return ok();
 }
 

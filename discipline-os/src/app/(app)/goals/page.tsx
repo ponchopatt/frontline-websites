@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Sparkles } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { GoalRow } from "@/components/goals/goal-row";
@@ -130,6 +130,20 @@ export default async function GoalsPage({ searchParams }: PageProps<"/goals">) {
           ))}
         </ol>
       </section>
+
+      <Link
+        href="/goals/suggest"
+        className="-mt-4 flex min-h-14 items-center justify-between gap-3 rounded-2xl border border-primary/30 bg-lamp-soft px-4 py-3"
+      >
+        <span className="grid">
+          <span className="inline-flex items-center gap-2 text-[16px]">
+            <Sparkles className="size-4 text-primary" aria-hidden />
+            Suggest my goals
+          </span>
+          <span className="text-sm text-muted-foreground">Concrete goals for this week, from your own numbers</span>
+        </span>
+        <ChevronRight className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+      </Link>
 
       <section aria-labelledby="year-heading" className="grid gap-4 border-t border-border pt-6">
         <div className="flex items-baseline justify-between gap-4">

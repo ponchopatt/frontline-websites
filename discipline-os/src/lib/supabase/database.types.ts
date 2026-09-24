@@ -40,6 +40,7 @@ export type Database = {
           application_done: boolean
           created_at: string
           id: string
+          journal: string | null
           local_date: string
           obey_today: string | null
           observation: string | null
@@ -56,6 +57,7 @@ export type Database = {
           application_done?: boolean
           created_at?: string
           id?: string
+          journal?: string | null
           local_date: string
           obey_today?: string | null
           observation?: string | null
@@ -72,6 +74,7 @@ export type Database = {
           application_done?: boolean
           created_at?: string
           id?: string
+          journal?: string | null
           local_date?: string
           obey_today?: string | null
           observation?: string | null
@@ -196,13 +199,19 @@ export type Database = {
       }
       daily_goals: {
         Row: {
+          area: string | null
           carried_from_id: string | null
+          category: string | null
           completed_at: string | null
           created_at: string
+          due_date: string | null
           estimated_minutes: number | null
           id: string
-          local_date: string
+          local_date: string | null
+          metric_id: string | null
+          notes: string | null
           parent_weekly_goal_id: string | null
+          priority: number
           quantity: number | null
           rank: number | null
           source: string
@@ -214,13 +223,19 @@ export type Database = {
           work_block_id: string | null
         }
         Insert: {
+          area?: string | null
           carried_from_id?: string | null
+          category?: string | null
           completed_at?: string | null
           created_at?: string
+          due_date?: string | null
           estimated_minutes?: number | null
           id?: string
-          local_date: string
+          local_date?: string | null
+          metric_id?: string | null
+          notes?: string | null
           parent_weekly_goal_id?: string | null
+          priority?: number
           quantity?: number | null
           rank?: number | null
           source?: string
@@ -232,13 +247,19 @@ export type Database = {
           work_block_id?: string | null
         }
         Update: {
+          area?: string | null
           carried_from_id?: string | null
+          category?: string | null
           completed_at?: string | null
           created_at?: string
+          due_date?: string | null
           estimated_minutes?: number | null
           id?: string
-          local_date?: string
+          local_date?: string | null
+          metric_id?: string | null
+          notes?: string | null
           parent_weekly_goal_id?: string | null
+          priority?: number
           quantity?: number | null
           rank?: number | null
           source?: string
@@ -255,6 +276,13 @@ export type Database = {
             columns: ["carried_from_id", "user_id"]
             isOneToOne: false
             referencedRelation: "daily_goals"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "daily_goals_metric_fk"
+            columns: ["metric_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "metrics"
             referencedColumns: ["id", "user_id"]
           },
           {
@@ -305,56 +333,6 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
-      }
-      daily_priorities: {
-        Row: {
-          completed_at: string | null
-          created_at: string
-          daily_goal_id: string | null
-          description: string | null
-          id: string
-          local_date: string
-          position: number
-          status: Database["public"]["Enums"]["priority_status"]
-          title: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          completed_at?: string | null
-          created_at?: string
-          daily_goal_id?: string | null
-          description?: string | null
-          id?: string
-          local_date: string
-          position: number
-          status?: Database["public"]["Enums"]["priority_status"]
-          title: string
-          updated_at?: string
-          user_id?: string
-        }
-        Update: {
-          completed_at?: string | null
-          created_at?: string
-          daily_goal_id?: string | null
-          description?: string | null
-          id?: string
-          local_date?: string
-          position?: number
-          status?: Database["public"]["Enums"]["priority_status"]
-          title?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "daily_priorities_daily_goal_fk"
-            columns: ["daily_goal_id", "user_id"]
-            isOneToOne: false
-            referencedRelation: "daily_goals"
-            referencedColumns: ["id", "user_id"]
-          },
-        ]
       }
       daily_reviews: {
         Row: {
@@ -664,8 +642,10 @@ export type Database = {
           archived_at: string | null
           category: Database["public"]["Enums"]["habit_category"]
           created_at: string
+          days: number[] | null
           id: string
           is_active: boolean
+          kind: string | null
           name: string
           sort_order: number
           updated_at: string
@@ -675,8 +655,10 @@ export type Database = {
           archived_at?: string | null
           category: Database["public"]["Enums"]["habit_category"]
           created_at?: string
+          days?: number[] | null
           id?: string
           is_active?: boolean
+          kind?: string | null
           name: string
           sort_order?: number
           updated_at?: string
@@ -686,8 +668,10 @@ export type Database = {
           archived_at?: string | null
           category?: Database["public"]["Enums"]["habit_category"]
           created_at?: string
+          days?: number[] | null
           id?: string
           is_active?: boolean
+          kind?: string | null
           name?: string
           sort_order?: number
           updated_at?: string
@@ -700,6 +684,7 @@ export type Database = {
           created_at: string
           id: string
           is_active: boolean
+          key: string | null
           name: string
           sort_order: number
           updated_at: string
@@ -709,6 +694,7 @@ export type Database = {
           created_at?: string
           id?: string
           is_active?: boolean
+          key?: string | null
           name: string
           sort_order?: number
           updated_at?: string
@@ -718,10 +704,103 @@ export type Database = {
           created_at?: string
           id?: string
           is_active?: boolean
+          key?: string | null
           name?: string
           sort_order?: number
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      metric_entries: {
+        Row: {
+          created_at: string
+          id: string
+          local_date: string
+          metric_id: string
+          updated_at: string
+          user_id: string
+          value: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          local_date: string
+          metric_id: string
+          updated_at?: string
+          user_id?: string
+          value: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          local_date?: string
+          metric_id?: string
+          updated_at?: string
+          user_id?: string
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "metric_entries_metric_id_user_id_fkey"
+            columns: ["metric_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "metrics"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
+      metrics: {
+        Row: {
+          aggregation: Database["public"]["Enums"]["goal_aggregation"]
+          area: string
+          created_at: string
+          daily_target: number | null
+          grp: string | null
+          id: string
+          is_active: boolean
+          key: string
+          label: string
+          pinned: boolean
+          sort_order: number
+          unit: string | null
+          updated_at: string
+          user_id: string
+          weekly_target: number | null
+        }
+        Insert: {
+          aggregation?: Database["public"]["Enums"]["goal_aggregation"]
+          area: string
+          created_at?: string
+          daily_target?: number | null
+          grp?: string | null
+          id?: string
+          is_active?: boolean
+          key: string
+          label: string
+          pinned?: boolean
+          sort_order?: number
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+          weekly_target?: number | null
+        }
+        Update: {
+          aggregation?: Database["public"]["Enums"]["goal_aggregation"]
+          area?: string
+          created_at?: string
+          daily_target?: number | null
+          grp?: string | null
+          id?: string
+          is_active?: boolean
+          key?: string
+          label?: string
+          pinned?: boolean
+          sort_order?: number
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+          weekly_target?: number | null
         }
         Relationships: []
       }
@@ -739,6 +818,7 @@ export type Database = {
           id: string
           life_area_id: string | null
           metric: string | null
+          metric_id: string | null
           month_start: string
           parent_quarterly_goal_id: string | null
           parent_yearly_goal_id: string | null
@@ -768,6 +848,7 @@ export type Database = {
           id?: string
           life_area_id?: string | null
           metric?: string | null
+          metric_id?: string | null
           month_start: string
           parent_quarterly_goal_id?: string | null
           parent_yearly_goal_id?: string | null
@@ -797,6 +878,7 @@ export type Database = {
           id?: string
           life_area_id?: string | null
           metric?: string | null
+          metric_id?: string | null
           month_start?: string
           parent_quarterly_goal_id?: string | null
           parent_yearly_goal_id?: string | null
@@ -829,6 +911,13 @@ export type Database = {
             referencedColumns: ["id", "user_id"]
           },
           {
+            foreignKeyName: "monthly_goals_metric_fk"
+            columns: ["metric_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "metrics"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
             foreignKeyName: "monthly_goals_parent_quarterly_goal_id_user_id_fkey"
             columns: ["parent_quarterly_goal_id", "user_id"]
             isOneToOne: false
@@ -846,7 +935,9 @@ export type Database = {
       }
       profiles: {
         Row: {
+          area_hour_targets: Json
           best_streak: number
+          bible_plan: string
           created_at: string
           day_start_hour: number
           display_name: string | null
@@ -854,10 +945,13 @@ export type Database = {
           timezone: string
           updated_at: string
           user_id: string
+          work_days: number[]
           work_target_hours: number
         }
         Insert: {
+          area_hour_targets?: Json
           best_streak?: number
+          bible_plan?: string
           created_at?: string
           day_start_hour?: number
           display_name?: string | null
@@ -865,10 +959,13 @@ export type Database = {
           timezone?: string
           updated_at?: string
           user_id: string
+          work_days?: number[]
           work_target_hours?: number
         }
         Update: {
+          area_hour_targets?: Json
           best_streak?: number
+          bible_plan?: string
           created_at?: string
           day_start_hour?: number
           display_name?: string | null
@@ -876,7 +973,44 @@ export type Database = {
           timezone?: string
           updated_at?: string
           user_id?: string
+          work_days?: number[]
           work_target_hours?: number
+        }
+        Relationships: []
+      }
+      project_milestones: {
+        Row: {
+          area: string
+          completed_at: string | null
+          created_at: string
+          id: string
+          state: string
+          steps: Json
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          area?: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          state?: string
+          steps?: Json
+          title: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          area?: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          state?: string
+          steps?: Json
+          title?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -888,6 +1022,7 @@ export type Database = {
           local_date: string
           note: string | null
           storage_path: string
+          task_id: string | null
           updated_at: string
           uploaded_at: string
           user_id: string
@@ -899,6 +1034,7 @@ export type Database = {
           local_date: string
           note?: string | null
           storage_path: string
+          task_id?: string | null
           updated_at?: string
           uploaded_at?: string
           user_id?: string
@@ -910,6 +1046,7 @@ export type Database = {
           local_date?: string
           note?: string | null
           storage_path?: string
+          task_id?: string | null
           updated_at?: string
           uploaded_at?: string
           user_id?: string
@@ -920,6 +1057,13 @@ export type Database = {
             columns: ["habit_id", "user_id"]
             isOneToOne: false
             referencedRelation: "habits"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "proof_uploads_task_fk"
+            columns: ["task_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "daily_goals"
             referencedColumns: ["id", "user_id"]
           },
         ]
@@ -938,6 +1082,7 @@ export type Database = {
           id: string
           life_area_id: string | null
           metric: string | null
+          metric_id: string | null
           parent_yearly_goal_id: string | null
           priority: number
           progress_source: Database["public"]["Enums"]["progress_source"]
@@ -967,6 +1112,7 @@ export type Database = {
           id?: string
           life_area_id?: string | null
           metric?: string | null
+          metric_id?: string | null
           parent_yearly_goal_id?: string | null
           priority?: number
           progress_source?: Database["public"]["Enums"]["progress_source"]
@@ -996,6 +1142,7 @@ export type Database = {
           id?: string
           life_area_id?: string | null
           metric?: string | null
+          metric_id?: string | null
           parent_yearly_goal_id?: string | null
           priority?: number
           progress_source?: Database["public"]["Enums"]["progress_source"]
@@ -1028,6 +1175,13 @@ export type Database = {
             referencedColumns: ["id", "user_id"]
           },
           {
+            foreignKeyName: "quarterly_goals_metric_fk"
+            columns: ["metric_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "metrics"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
             foreignKeyName: "quarterly_goals_parent_yearly_goal_id_user_id_fkey"
             columns: ["parent_yearly_goal_id", "user_id"]
             isOneToOne: false
@@ -1052,6 +1206,7 @@ export type Database = {
           is_major: boolean
           life_area_id: string | null
           metric: string | null
+          metric_id: string | null
           parent_monthly_goal_id: string | null
           priority: number
           progress_source: Database["public"]["Enums"]["progress_source"]
@@ -1082,6 +1237,7 @@ export type Database = {
           is_major?: boolean
           life_area_id?: string | null
           metric?: string | null
+          metric_id?: string | null
           parent_monthly_goal_id?: string | null
           priority?: number
           progress_source?: Database["public"]["Enums"]["progress_source"]
@@ -1112,6 +1268,7 @@ export type Database = {
           is_major?: boolean
           life_area_id?: string | null
           metric?: string | null
+          metric_id?: string | null
           parent_monthly_goal_id?: string | null
           priority?: number
           progress_source?: Database["public"]["Enums"]["progress_source"]
@@ -1150,6 +1307,13 @@ export type Database = {
             referencedColumns: ["id", "user_id"]
           },
           {
+            foreignKeyName: "weekly_goals_metric_fk"
+            columns: ["metric_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "metrics"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
             foreignKeyName: "weekly_goals_parent_monthly_goal_id_user_id_fkey"
             columns: ["parent_monthly_goal_id", "user_id"]
             isOneToOne: false
@@ -1160,8 +1324,10 @@ export type Database = {
       }
       weekly_reviews: {
         Row: {
+          bottleneck: string | null
           completed_at: string | null
           created_at: string
+          failure: string | null
           focus_for_next_week: string | null
           id: string
           lessons: string | null
@@ -1171,8 +1337,10 @@ export type Database = {
           wins: string | null
         }
         Insert: {
+          bottleneck?: string | null
           completed_at?: string | null
           created_at?: string
+          failure?: string | null
           focus_for_next_week?: string | null
           id?: string
           lessons?: string | null
@@ -1182,8 +1350,10 @@ export type Database = {
           wins?: string | null
         }
         Update: {
+          bottleneck?: string | null
           completed_at?: string | null
           created_at?: string
+          failure?: string | null
           focus_for_next_week?: string | null
           id?: string
           lessons?: string | null
@@ -1196,6 +1366,7 @@ export type Database = {
       }
       work_blocks: {
         Row: {
+          area: string | null
           created_at: string
           id: string
           local_date: string
@@ -1206,6 +1377,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          area?: string | null
           created_at?: string
           id?: string
           local_date: string
@@ -1216,6 +1388,7 @@ export type Database = {
           user_id?: string
         }
         Update: {
+          area?: string | null
           created_at?: string
           id?: string
           local_date?: string
@@ -1230,6 +1403,7 @@ export type Database = {
       work_sessions: {
         Row: {
           accomplishment_note: string | null
+          area: string | null
           created_at: string
           ended_at: string | null
           id: string
@@ -1241,6 +1415,7 @@ export type Database = {
         }
         Insert: {
           accomplishment_note?: string | null
+          area?: string | null
           created_at?: string
           ended_at?: string | null
           id?: string
@@ -1252,6 +1427,7 @@ export type Database = {
         }
         Update: {
           accomplishment_note?: string | null
+          area?: string | null
           created_at?: string
           ended_at?: string | null
           id?: string
@@ -1285,6 +1461,7 @@ export type Database = {
           id: string
           life_area_id: string | null
           metric: string | null
+          metric_id: string | null
           priority: number
           progress_source: Database["public"]["Enums"]["progress_source"]
           sort_order: number
@@ -1312,6 +1489,7 @@ export type Database = {
           id?: string
           life_area_id?: string | null
           metric?: string | null
+          metric_id?: string | null
           priority?: number
           progress_source?: Database["public"]["Enums"]["progress_source"]
           sort_order?: number
@@ -1339,6 +1517,7 @@ export type Database = {
           id?: string
           life_area_id?: string | null
           metric?: string | null
+          metric_id?: string | null
           priority?: number
           progress_source?: Database["public"]["Enums"]["progress_source"]
           sort_order?: number
@@ -1368,6 +1547,13 @@ export type Database = {
             referencedRelation: "life_areas"
             referencedColumns: ["id", "user_id"]
           },
+          {
+            foreignKeyName: "yearly_goals_metric_fk"
+            columns: ["metric_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "metrics"
+            referencedColumns: ["id", "user_id"]
+          },
         ]
       }
     }
@@ -1382,24 +1568,21 @@ export type Database = {
       day_summaries: {
         Args: { p_from: string; p_to: string }
         Returns: {
-          bible_done: number
-          body_done: number
-          body_total: number
           completed_at: string
-          discipline_done: number
-          discipline_total: number
           final_score: number
-          god_done: number
-          god_total: number
+          habits_done: number
+          habits_total: number
           local_date: string
-          morning_done: number
-          morning_total: number
-          review_filled: number
+          review_done: number
+          tasks_done: number
+          tasks_total: number
           work_minutes: number
         }[]
       }
       ensure_life_areas: { Args: never; Returns: undefined }
       ensure_profile: { Args: never; Returns: undefined }
+      ensure_setup: { Args: never; Returns: undefined }
+      is_area: { Args: { a: string }; Returns: boolean }
       is_valid_timezone: { Args: { tz: string }; Returns: boolean }
       local_date_at: {
         Args: { start_hour: number; ts: string; tz: string }
@@ -1407,6 +1590,7 @@ export type Database = {
       }
       seed_default_habits: { Args: { p_user: string }; Returns: undefined }
       seed_life_areas: { Args: { p_user: string }; Returns: undefined }
+      seed_metrics: { Args: { p_user: string }; Returns: undefined }
       user_local_date: { Args: { p_user: string; ts: string }; Returns: string }
       user_local_today: { Args: { p_user: string }; Returns: string }
     }
@@ -1441,6 +1625,7 @@ export type Database = {
         | "habit"
         | "actions"
         | "milestones"
+        | "metric"
       review_outcome: "completed" | "partial" | "missed"
     }
     CompositeTypes: {
@@ -1604,6 +1789,7 @@ export const Constants = {
         "habit",
         "actions",
         "milestones",
+        "metric",
       ],
       review_outcome: ["completed", "partial", "missed"],
     },

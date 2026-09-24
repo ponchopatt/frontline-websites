@@ -37,7 +37,7 @@ test("goals: plan a year down to today, do the work, see progress, review the we
   // 1. A yearly goal. The quality check flags the outcome goal and offers a process goal.
   await page.goto(`/goals/new?year=${year}`);
   await ready(page.getByRole("button", { name: "Save goal" }));
-  await main.getByLabel("Area of life").selectOption({ label: "Business" });
+  await main.getByLabel("Area of life").selectOption({ label: "Websites" });
   await main.getByLabel("Goal", { exact: true }).fill("$60,000 revenue from demo sites");
   await main.getByLabel("Measured as").fill("Revenue");
   await main.getByLabel("Unit").fill("$");
@@ -83,36 +83,40 @@ test("goals: plan a year down to today, do the work, see progress, review the we
   const revenue = weekly!.find((w) => w.is_major && w.unit === "$")!;
   expect(revenue).toBeTruthy();
   expect(revenue.parent_monthly_goal_id).toBe(thisMonth.id);
-  const activities = weekly!.filter((w) => !w.is_major && w.progress_source === "actions");
+  // The website activities are measured by the business counters on Today.
+  const activities = weekly!.filter((w) => !w.is_major && w.progress_source === "metric");
   expect(activities.length).toBeGreaterThan(0);
+  expect(activities.every((a) => a.metric_id)).toBe(true);
 
-  // 4. Today suggests the Big 3 from this week's goals, each tied back to the year.
+  // 4. Plan my day turns this week's goals into today's Big 3 and supporting tasks.
   await page.goto("/");
   await waitForApp(page);
-  await expect(page.getByRole("heading", { name: "What should I do today?" })).toBeVisible();
-  const accept = page.getByRole("button", { name: /^Make (these today's Big \d|it today's #1)$/ });
-  await ready(accept);
-  await accept.click();
-  await expect
-    .poll(async () => (await admin.from("daily_goals").select("id").eq("user_id", userId).eq("local_date", date).not("rank", "is", null)).data?.length)
-    .toBeGreaterThan(0);
-  const { data: ranked } = await admin
+  const plan = page.getByRole("button", { name: "Plan my day" });
+  await ready(plan);
+  await plan.click();
+  const planDialog = page.getByRole("dialog", { name: "Plan my day" });
+  await planDialog.getByRole("button", { name: "Use this plan" }).click();
+  // The plan saves task by task; the sheet closes once all of it is in.
+  await expect(page.getByText("Today is planned.")).toBeVisible();
+  await expect(planDialog).toBeHidden();
+  const { data: planned } = await admin
     .from("daily_goals")
-    .select("id,title,quantity,parent_weekly_goal_id,rank")
+    .select("id,title,quantity,parent_weekly_goal_id,rank,metric_id")
     .eq("user_id", userId)
     .eq("local_date", date)
-    .not("rank", "is", null)
-    .order("rank");
-  const { data: priorities } = await admin.from("daily_priorities").select("position,title,daily_goal_id").eq("user_id", userId).eq("local_date", date).order("position");
-  expect(priorities!.map((p) => p.daily_goal_id)).toEqual(ranked!.map((r) => r.id));
-  expect(priorities!.map((p) => p.title)).toEqual(ranked!.map((r) => r.title));
-  await expect(page.locator("#mission").getByText("$60,000 revenue from demo sites").first()).toBeVisible();
+    .order("rank", { nullsFirst: false });
+  expect(planned!.filter((t) => t.rank !== null).length).toBeLessThanOrEqual(3);
+  expect(planned!.length).toBeLessThanOrEqual(7);
+  await expect(page.locator("#big3").getByText("$60,000 revenue from demo sites").first()).toBeVisible();
+  // With goals, tasks and their chains on screen, Today still fits the phone.
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
 
-  // 5. Do the work: finishing a priority finishes its action.
-  for (const r of ranked!) await page.getByRole("checkbox", { name: `Mark "${r.title}" done` }).click();
+  // 5. Do the work: every planned task ticked off.
+  for (const t of planned!) await page.getByRole("checkbox", { name: `Mark "${t.title}" done` }).click();
   await expect
-    .poll(async () => (await admin.from("daily_goals").select("status").in("id", ranked!.map((r) => r.id))).data?.every((d) => d.status === "done"))
+    .poll(async () => (await admin.from("daily_goals").select("status").in("id", planned!.map((t) => t.id))).data?.every((d) => d.status === "done"))
     .toBe(true);
+  const ranked = planned!;
 
   // 6. The week counts the finished actions.
   const counted = ranked!.find((r) => activities.some((a) => a.id === r.parent_weekly_goal_id))!;
@@ -120,7 +124,8 @@ test("goals: plan a year down to today, do the work, see progress, review the we
   const activity = activities.find((a) => a.id === counted.parent_weekly_goal_id)!;
   await page.goto(`/goals/week/${week}`);
   const activityBar = page.getByRole("progressbar", { name: `${activity.title} progress` }).first();
-  await expect(activityBar).toHaveAttribute("aria-valuenow", String(Math.round((100 * Number(counted.quantity ?? 1)) / Number(activity.target_value))));
+  // Ticking a counter task brings its counter up to the task's number; the week reads the counter.
+  await expect(activityBar).toHaveAttribute("aria-valuenow", String(Math.min(100, Math.round((100 * Number(counted.quantity ?? 1)) / Number(activity.target_value)))));
 
   // 7. Log this week's revenue; it rolls up to the month and the year.
   const logged = Math.max(1, Math.round(Number(revenue.target_value) / 4));
@@ -147,8 +152,8 @@ test("goals: plan a year down to today, do the work, see progress, review the we
   await ready(item.getByLabel("Why wasn't this completed?"));
   await item.getByLabel("Why wasn't this completed?").selectOption("underestimated_time");
   await expect(item.getByRole("radio", { name: /Carry forward/ })).toBeChecked();
-  await main.getByLabel("What went well?").fill("Called every lead on the list.");
-  await main.getByLabel("What did I learn?").fill("Sales calls take longer than I plan for.");
+  await main.getByLabel("Biggest win").fill("Called every lead on the list.");
+  await main.getByLabel("Biggest failure").fill("Sales calls took longer than I planned for.");
   await page.getByRole("button", { name: "Complete review" }).click();
   await expect(main.getByText("Partly done · Underestimated the time · Carry forward")).toBeVisible();
 
@@ -157,8 +162,9 @@ test("goals: plan a year down to today, do the work, see progress, review the we
   expect(Number(review!.actual_value)).toBe(logged);
   const { data: closed } = await admin.from("weekly_goals").select("state").eq("id", revenue.id).single();
   expect(closed!.state).toBe("missed");
-  const { data: weekReview } = await admin.from("weekly_reviews").select("wins,lessons,completed_at").eq("user_id", userId).eq("week_start_date", week).single();
+  const { data: weekReview } = await admin.from("weekly_reviews").select("wins,failure,completed_at").eq("user_id", userId).eq("week_start_date", week).single();
   expect(weekReview!.wins).toBe("Called every lead on the list.");
+  expect(weekReview!.failure).toBe("Sales calls took longer than I planned for.");
   expect(weekReview!.completed_at).not.toBeNull();
 
   // 9. Next week has the carried goal, with only what's left.

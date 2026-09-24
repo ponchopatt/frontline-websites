@@ -44,25 +44,37 @@ export async function signUp(page: Page, email = uniqueEmail("user")): Promise<{
   return { email, userId: user.id };
 }
 
-/** The dashboard is hydrated once the score ring and a habit respond. */
+/** The Today screen is hydrated once the Keep My Word ring shows and a habit responds. */
 export async function waitForApp(page: Page) {
-  await expect(page.getByRole("img", { name: /^(Score so far|Completed score)/ })).toBeVisible();
+  await expect(page.getByRole("img", { name: /^(Keep my word|Kept my word)/ })).toBeVisible();
   await page.waitForFunction(() => {
     const el = document.querySelector('[role="checkbox"]');
     return Boolean(el && Object.keys(el).some((k) => k.startsWith("__reactProps")));
   });
 }
 
+/** The Keep My Word percentage in the header ring. */
 export async function ringScore(page: Page): Promise<number> {
-  const label = await page.getByRole("img", { name: /^(Score so far|Completed score)/ }).getAttribute("aria-label");
-  const m = label?.match(/: (\d+) out of 100/);
+  const label = await page.getByRole("img", { name: /^(Keep my word|Kept my word)/ }).getAttribute("aria-label");
+  const m = label?.match(/: (\d+)%/);
   if (!m) throw new Error(`No score in "${label}"`);
   return Number(m[1]);
 }
 
-/** A habit row (not a Bible check with the same word, like "Prayer"). */
+/**
+ * A habit's tick by its name. Bible, Journal and Pray show in both the morning routine and the
+ * faith card; the morning routine's comes first.
+ */
 export function habit(page: Page, name: string) {
-  return page.locator(`button[role="checkbox"][aria-label="${name}"]`);
+  return page.locator(`main button[role="checkbox"][aria-label="${name}"]`).first();
+}
+
+/** "13 of 15" in the header: commitments kept and made today. */
+export async function keptOfMade(page: Page): Promise<[number, number]> {
+  const text = await page.locator("#kept").innerText();
+  const m = text.match(/(\d+) of (\d+)/);
+  if (!m) throw new Error(`No "kept of made" in "${text}"`);
+  return [Number(m[1]), Number(m[2])];
 }
 
 /** Moves an account's start (and its habits) back, so earlier days exist to edit. */

@@ -1,4 +1,5 @@
 import { addDays, daysBetween, type LocalDate } from "../day";
+import { totalOver, type DayValues } from "../metrics";
 import { formatValue, percent } from "./format";
 import type { AnyGoal, Milestone, MonthlyGoal, WeeklyGoal, YearlyGoal } from "./model";
 import { isNumeric } from "./model";
@@ -20,6 +21,8 @@ export interface ExecutionData {
   /** Sum of completed daily-action quantities per weekly goal (a null quantity counts as 1). */
   actionsByWeekly: Map<string, number>;
   milestones: Milestone[];
+  /** Counter values by day, for goals measured by a counter. */
+  metrics?: Map<string, { aggregation: "sum" | "latest"; values: DayValues }>;
 }
 
 export interface GoalTree {
@@ -56,15 +59,19 @@ export interface GoalProgress {
  * it was set, so starting in September doesn't read as nine months behind.
  */
 export function periodOf(goal: AnyGoal): Period {
-  const natural =
-    goal.level === "yearly"
-      ? { start: yearStart(goal.year), end: goal.deadline ?? yearEnd(goal.year) }
-      : goal.level === "monthly"
-        ? { start: goal.monthStart, end: goal.deadline ?? monthEndOf(goal.monthStart) }
-        : { start: goal.weekStart, end: weekEndOf(goal.weekStart) };
+  const natural = naturalPeriodOf(goal);
   const set = goal.createdOn;
   if (set && set > natural.start && set <= natural.end) return { start: set, end: natural.end };
   return natural;
+}
+
+/** The goal's whole year, month or week, whenever it was set. */
+export function naturalPeriodOf(goal: AnyGoal): Period {
+  return goal.level === "yearly"
+    ? { start: yearStart(goal.year), end: goal.deadline ?? yearEnd(goal.year) }
+    : goal.level === "monthly"
+      ? { start: goal.monthStart, end: goal.deadline ?? monthEndOf(goal.monthStart) }
+      : { start: goal.weekStart, end: weekEndOf(goal.weekStart) };
 }
 
 function isRate(goal: AnyGoal): boolean {
@@ -126,6 +133,14 @@ export function evaluateGoals(tree: GoalTree, exec: ExecutionData, today: LocalD
       case "habit": {
         const days = goal.habitId ? exec.habitDays.get(goal.habitId) : undefined;
         value = sumOver(p, today, (d) => (days?.has(d) ? 1 : 0));
+        break;
+      }
+      case "metric": {
+        // A counter was running before the goal was set: the whole period counts.
+        const m = goal.metricId ? exec.metrics?.get(goal.metricId) : undefined;
+        const whole = naturalPeriodOf(goal);
+        const end = today < whole.end ? today : whole.end;
+        value = m ? totalOver(m.values, whole.start, end, m.aggregation) : 0;
         break;
       }
       case "actions": {

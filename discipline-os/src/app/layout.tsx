@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   description: "Start right. Seek God. Do the work. Keep your body. Keep your word.",
   applicationName: "Discipline OS",
   robots: { index: false, follow: false },
+  // Opened from the home screen it runs full-screen, with the status bar over the dark ground.
+  appleWebApp: { capable: true, title: "Discipline", statusBarStyle: "black-translucent" },
 };
 
 export const viewport: Viewport = {

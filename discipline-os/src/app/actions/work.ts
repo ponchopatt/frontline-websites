@@ -3,6 +3,7 @@
 import { fromZonedTime } from "date-fns-tz";
 import { z } from "zod";
 import { dbFail, fail, guardDate, invalid, localDateSchema, ok, uuidSchema } from "@/lib/action-helpers";
+import { WORK_AREAS, isWorkArea } from "@/lib/areas";
 import { getViewer, recomputeBestStreak } from "@/lib/data";
 import type { ActionResult, WorkBlockItem, WorkSessionItem } from "@/lib/types";
 
@@ -15,6 +16,7 @@ const addBlockSchema = z
   .object({
     date: localDateSchema,
     task: z.string().trim().min(1, "Say what the block is for.").max(120, "Keep the task under 120 characters."),
+    area: z.enum(WORK_AREAS).nullish(),
     plannedStart: timeSchema,
     plannedEnd: timeSchema,
   })
@@ -26,20 +28,21 @@ const addBlockSchema = z
 export async function addBlock(input: z.input<typeof addBlockSchema>): Promise<ActionResult<WorkBlockItem>> {
   const parsed = addBlockSchema.safeParse(input);
   if (!parsed.success) return invalid(parsed.error);
-  const { date, task, plannedStart, plannedEnd } = parsed.data;
+  const { date, task, area, plannedStart, plannedEnd } = parsed.data;
   const viewer = await getViewer();
   const refused = guardDate(viewer, date);
   if (refused) return refused;
 
   const { data, error } = await viewer.supabase
     .from("work_blocks")
-    .insert({ local_date: date, task, planned_start: plannedStart ?? null, planned_end: plannedEnd ?? null })
-    .select("id,task,planned_start,planned_end")
+    .insert({ local_date: date, task, area: area ?? null, planned_start: plannedStart ?? null, planned_end: plannedEnd ?? null })
+    .select("id,task,area,planned_start,planned_end")
     .single();
   if (error || !data) return dbFail(error ?? {}, "The block wasn't added. Try again.");
   return ok({
     id: data.id,
     task: data.task,
+    area: isWorkArea(data.area) ? data.area : null,
     plannedStart: data.planned_start?.slice(0, 5) ?? null,
     plannedEnd: data.planned_end?.slice(0, 5) ?? null,
   });
@@ -60,6 +63,7 @@ export async function deleteBlock(input: z.input<typeof blockIdSchema>): Promise
 type SessionRow = {
   id: string;
   work_block_id: string | null;
+  area: string | null;
   local_date: string;
   started_at: string;
   ended_at: string | null;
@@ -70,6 +74,7 @@ function toItem(row: SessionRow): WorkSessionItem {
   return {
     id: row.id,
     blockId: row.work_block_id,
+    area: isWorkArea(row.area) ? row.area : null,
     localDate: row.local_date,
     startedAt: row.started_at,
     endedAt: row.ended_at,
@@ -79,6 +84,8 @@ function toItem(row: SessionRow): WorkSessionItem {
 
 const startSchema = z.object({
   blockId: uuidSchema.nullable(),
+  /** Which business the time goes to. A block's own business wins. */
+  area: z.enum(WORK_AREAS).nullish(),
   /** Stop whatever is running first. Without it, a running session is reported back instead. */
   replaceRunning: z.boolean().default(false),
 });
@@ -95,13 +102,15 @@ export async function startSession(input: z.input<typeof startSchema>): Promise<
   const parsed = startSchema.safeParse(input);
   if (!parsed.success) return invalid(parsed.error);
   const { blockId, replaceRunning } = parsed.data;
+  let area = parsed.data.area ?? null;
   const viewer = await getViewer();
   const { supabase } = viewer;
 
   if (blockId) {
-    const { data: block } = await supabase.from("work_blocks").select("local_date").eq("id", blockId).maybeSingle();
+    const { data: block } = await supabase.from("work_blocks").select("local_date,area").eq("id", blockId).maybeSingle();
     if (!block) return fail("That block couldn't be found.");
     if (block.local_date !== viewer.today) return fail("Only today's blocks can be started.");
+    if (isWorkArea(block.area)) area = block.area;
   }
 
   const { data: running } = await supabase
@@ -124,7 +133,7 @@ export async function startSession(input: z.input<typeof startSchema>): Promise<
 
   const { data, error } = await supabase
     .from("work_sessions")
-    .insert({ work_block_id: blockId, started_at: new Date().toISOString(), local_date: viewer.today })
+    .insert({ work_block_id: blockId, area: area ?? "other", started_at: new Date().toISOString(), local_date: viewer.today })
     .select("*")
     .single();
   if (error?.code === "23505") return fail("A timer is already running. Stop it first.");

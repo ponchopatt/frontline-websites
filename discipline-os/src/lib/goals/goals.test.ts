@@ -24,6 +24,7 @@ const core: GoalCore = {
   targetValue: null,
   currentValue: null,
   habitId: null,
+  metricId: null,
   priority: 2,
   state: "active",
   deadline: null,
@@ -293,6 +294,7 @@ describe("what should I do today?", () => {
     const earlier: DailyGoal = {
       id: "d1", localDate: "2026-09-21", parentWeeklyId: "leads", title: "Follow up with previous leads", quantity: 10, unit: "leads",
       estimatedMinutes: 40, rank: 1, status: "pending", source: "suggested", workBlockId: null, carriedFromId: null, completedAt: null,
+      area: null, metricId: null, priority: 2, dueDate: null, notes: null, category: null,
     };
     const planned: DailyGoal = { ...earlier, id: "d2", localDate: "2026-09-23", parentWeeklyId: "gym", title: "Training sessions", status: "pending" };
     const { big3, supporting } = suggestToday({

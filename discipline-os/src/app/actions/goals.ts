@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { dbFail, fail, guardDate, invalid, localDateSchema, ok, uuidSchema } from "@/lib/action-helpers";
+import { dbFail, fail, invalid, localDateSchema, ok, uuidSchema } from "@/lib/action-helpers";
 import { getViewer } from "@/lib/data";
 import { addDays } from "@/lib/day";
 import { formatValue } from "@/lib/goals/format";
@@ -11,7 +11,7 @@ import type { ActionResult } from "@/lib/types";
 type Tables = Database["public"]["Tables"];
 type CommonColumn =
   | "title" | "description" | "why" | "success" | "life_area_id" | "goal_type" | "metric" | "unit" | "cadence"
-  | "aggregation" | "progress_source" | "start_value" | "target_value" | "habit_id" | "priority" | "deadline";
+  | "aggregation" | "progress_source" | "start_value" | "target_value" | "habit_id" | "metric_id" | "priority" | "deadline";
 /** The columns every goal level shares. */
 type CommonUpdate = Pick<Tables["yearly_goals"]["Update"], CommonColumn>;
 
@@ -37,10 +37,11 @@ const goalFields = z.object({
   unit: text(20, "the unit"),
   cadence: z.enum(["total", "per_week", "per_month"]).default("total"),
   aggregation: z.enum(["sum", "latest"]).default("sum"),
-  progressSource: z.enum(["manual", "children", "work_hours", "habit", "actions", "milestones"]),
+  progressSource: z.enum(["manual", "children", "work_hours", "habit", "actions", "milestones", "metric"]),
   startValue: numberOrNull.default(null),
   targetValue: numberOrNull.default(null),
   habitId: uuidSchema.nullish().transform((v) => v ?? null),
+  metricId: uuidSchema.nullish().transform((v) => v ?? null),
   priority: z.number().int().min(1).max(3).default(2),
   deadline: localDateSchema.nullish().transform((v) => v ?? null),
 });
@@ -62,9 +63,31 @@ function goalColumns(f: GoalFields) {
     start_value: f.startValue,
     target_value: f.targetValue,
     habit_id: f.habitId,
+    metric_id: f.progressSource === "metric" ? f.metricId : null,
     priority: f.priority,
     deadline: f.deadline,
   };
+}
+
+/**
+ * Counter ids for plan rows: a row that names its counter by key ("leads_called") gets the id
+ * of that counter in the parent goal's business.
+ */
+async function resolveMetrics(
+  supabase: Awaited<ReturnType<typeof getViewer>>["supabase"],
+  lifeAreaId: string | null,
+  drafts: Array<{ metricId: string | null; metricKey: string | null; progressSource: string }>,
+): Promise<Array<string | null>> {
+  const keys = [...new Set(drafts.map((d) => d.metricKey).filter((k): k is string => Boolean(k)))];
+  let byKey = new Map<string, string>();
+  if (keys.length > 0 && lifeAreaId) {
+    const { data: area } = await supabase.from("life_areas").select("key").eq("id", lifeAreaId).maybeSingle();
+    if (area?.key) {
+      const { data } = await supabase.from("metrics").select("id,key").eq("area", area.key).in("key", keys);
+      byKey = new Map((data ?? []).map((m) => [m.key, m.id]));
+    }
+  }
+  return drafts.map((d) => (d.progressSource === "metric" ? d.metricId ?? (d.metricKey ? byKey.get(d.metricKey) ?? null : null) : null));
 }
 
 /* ------------------------------------------------------------------ My Life */
@@ -160,6 +183,7 @@ const COLUMN: Record<keyof GoalFields, CommonColumn> = {
   why: "why",
   success: "success",
   lifeAreaId: "life_area_id",
+  metricId: "metric_id",
   goalType: "goal_type",
   metric: "metric",
   unit: "unit",
@@ -277,10 +301,12 @@ const draftSchema = z.object({
   metric: z.string().trim().max(60).nullable(),
   cadence: z.enum(["total", "per_week", "per_month"]),
   aggregation: z.enum(["sum", "latest"]),
-  progressSource: z.enum(["manual", "children", "work_hours", "habit", "actions", "milestones"]),
+  progressSource: z.enum(["manual", "children", "work_hours", "habit", "actions", "milestones", "metric"]),
   targetValue: numberOrNull,
   isMajor: z.boolean(),
   why: z.string().max(2000).nullable(),
+  metricId: uuidSchema.nullish().transform((v) => v ?? null),
+  metricKey: z.string().max(40).nullish().transform((v) => v ?? null),
 });
 
 const monthlyPlanSchema = z.object({
@@ -298,7 +324,9 @@ export async function approveMonthlyPlan(input: z.input<typeof monthlyPlanSchema
   if (parsed.data.drafts.some((d) => !d.periodStart.endsWith("-01") || Number(d.periodStart.slice(0, 4)) !== parent.year)) {
     return fail(`Each month has to be in ${parent.year}.`);
   }
+  const metricIds = await resolveMetrics(supabase, parent.life_area_id, parsed.data.drafts);
   const rows: Tables["monthly_goals"]["Insert"][] = parsed.data.drafts.map((d, i) => ({
+    metric_id: metricIds[i],
     month_start: d.periodStart,
     parent_yearly_goal_id: parent.id,
     life_area_id: parent.life_area_id,
@@ -310,7 +338,7 @@ export async function approveMonthlyPlan(input: z.input<typeof monthlyPlanSchema
     metric: d.metric,
     cadence: d.cadence,
     aggregation: d.aggregation,
-    progress_source: d.progressSource,
+    progress_source: d.progressSource === "metric" && !metricIds[i] ? "actions" : d.progressSource,
     target_value: d.targetValue,
     why: d.why,
     sort_order: i,
@@ -338,7 +366,9 @@ export async function approveWeeklyPlan(input: z.input<typeof weeklyPlanSchema>)
   const { data: parent } = await supabase.from("monthly_goals").select("id,life_area_id,habit_id,priority").eq("id", parsed.data.monthlyGoalId).maybeSingle();
   if (!parent) return fail("That goal couldn't be found.");
   if (parsed.data.drafts.some((d) => !isMonday(d.periodStart))) return fail("Each week has to start on a Monday.");
+  const metricIds = await resolveMetrics(supabase, parent.life_area_id, parsed.data.drafts);
   const rows: Tables["weekly_goals"]["Insert"][] = parsed.data.drafts.map((d, i) => ({
+    metric_id: metricIds[i],
     week_start: d.periodStart,
     parent_monthly_goal_id: parent.id,
     life_area_id: parent.life_area_id,
@@ -351,7 +381,7 @@ export async function approveWeeklyPlan(input: z.input<typeof weeklyPlanSchema>)
     metric: d.metric,
     cadence: d.cadence,
     aggregation: d.aggregation,
-    progress_source: d.progressSource,
+    progress_source: d.progressSource === "metric" && !metricIds[i] ? "actions" : d.progressSource,
     target_value: d.targetValue,
     why: d.why,
     sort_order: i,
@@ -406,144 +436,6 @@ export async function createWeeklyGoal(input: z.input<typeof addWeeklySchema>): 
 
 /* ------------------------------------------------------------------ today's actions */
 
-const acceptSchema = z.object({
-  date: localDateSchema,
-  items: z
-    .array(
-      z.object({
-        title: z.string().trim().min(1).max(140),
-        quantity: z.number().positive().nullable(),
-        unit: z.string().trim().max(20).nullable(),
-        estimatedMinutes: z.number().int().min(1).max(960),
-        weeklyGoalId: uuidSchema.nullable(),
-        carriedFromId: uuidSchema.nullable(),
-        createsWorkBlock: z.boolean(),
-        big3: z.boolean(),
-      }),
-    )
-    .min(1, "Pick at least one action.")
-    .max(20),
-});
-
-/**
- * Puts suggested actions on today's list. The Big 3 take free rank slots and fill empty
- * mission priorities, linked, so ticking the priority moves the goal. Deep-work actions get a
- * work block, so the timer counts towards them.
- */
-export async function acceptSuggestions(input: z.input<typeof acceptSchema>): Promise<ActionResult<{ created: number }>> {
-  const parsed = acceptSchema.safeParse(input);
-  if (!parsed.success) return invalid(parsed.error);
-  const { date, items } = parsed.data;
-  const viewer = await getViewer();
-  const refused = guardDate(viewer, date);
-  if (refused) return refused;
-  const { supabase } = viewer;
-
-  const [{ data: existing }, { data: priorities }] = await Promise.all([
-    supabase.from("daily_goals").select("rank,parent_weekly_goal_id,status").eq("local_date", date),
-    supabase.from("daily_priorities").select("position").eq("local_date", date),
-  ]);
-  const usedRanks = new Set((existing ?? []).map((d) => d.rank).filter((r): r is number => r !== null));
-  const freeRanks = [1, 2, 3].filter((r) => !usedRanks.has(r));
-  const takenWeekly = new Set((existing ?? []).filter((d) => d.status !== "dropped").map((d) => d.parent_weekly_goal_id));
-  const freeSlots = [1, 2, 3].filter((p) => !(priorities ?? []).some((x) => x.position === p));
-
-  let created = 0;
-  for (const item of items) {
-    if (item.weeklyGoalId && takenWeekly.has(item.weeklyGoalId) && !item.carriedFromId) continue;
-    let blockId: string | null = null;
-    if (item.createsWorkBlock) {
-      const { data: block, error: blockError } = await supabase
-        .from("work_blocks")
-        .insert({ local_date: date, task: item.title })
-        .select("id")
-        .single();
-      if (blockError || !block) return dbFail(blockError ?? {}, "The work block wasn't created. Try again.");
-      blockId = block.id;
-    }
-    const rank = item.big3 ? freeRanks.shift() ?? null : null;
-    const { data: goal, error } = await supabase
-      .from("daily_goals")
-      .insert({
-        local_date: date,
-        parent_weekly_goal_id: item.weeklyGoalId,
-        title: item.title,
-        quantity: item.quantity,
-        unit: item.unit,
-        estimated_minutes: item.estimatedMinutes,
-        rank,
-        source: item.carriedFromId ? "carried" : "suggested",
-        carried_from_id: item.carriedFromId,
-        work_block_id: blockId,
-      })
-      .select("id,title")
-      .single();
-    if (error || !goal) return dbFail(error ?? {}, "Today's actions weren't saved. Try again.");
-    created += 1;
-    if (item.weeklyGoalId) takenWeekly.add(item.weeklyGoalId);
-
-    if (rank !== null) {
-      const slot = freeSlots.shift();
-      if (slot !== undefined) {
-        await supabase.from("daily_priorities").insert({ user_id: viewer.userId, local_date: date, position: slot, title: goal.title, daily_goal_id: goal.id });
-      }
-    }
-  }
-  return ok({ created });
-}
-
-const dailyStatusSchema = z.object({ id: uuidSchema, status: z.enum(["pending", "done", "dropped"]) });
-
-/** Done, not done or dropped. Keeps a linked mission priority in step. */
-export async function setDailyGoalStatus(input: z.input<typeof dailyStatusSchema>): Promise<ActionResult<{ completedAt: string | null }>> {
-  const parsed = dailyStatusSchema.safeParse(input);
-  if (!parsed.success) return invalid(parsed.error);
-  const viewer = await getViewer();
-  const completedAt = parsed.data.status === "done" ? new Date().toISOString() : null;
-  const { data, error } = await viewer.supabase
-    .from("daily_goals")
-    .update({ status: parsed.data.status, completed_at: completedAt })
-    .eq("id", parsed.data.id)
-    .select("local_date")
-    .maybeSingle();
-  if (error) return dbFail(error);
-  if (!data) return fail("That action couldn't be found.");
-  await viewer.supabase
-    .from("daily_priorities")
-    .update({ status: parsed.data.status, completed_at: completedAt })
-    .eq("daily_goal_id", parsed.data.id);
-  return ok({ completedAt });
-}
-
-const addActionSchema = z.object({
-  date: localDateSchema,
-  title: z.string().trim().min(1, "Say what the action is.").max(140),
-  weeklyGoalId: uuidSchema.nullable(),
-  quantity: z.number().positive().nullable(),
-});
-
-export async function addDailyGoal(input: z.input<typeof addActionSchema>): Promise<ActionResult<{ id: string }>> {
-  const parsed = addActionSchema.safeParse(input);
-  if (!parsed.success) return invalid(parsed.error);
-  const viewer = await getViewer();
-  const refused = guardDate(viewer, parsed.data.date);
-  if (refused) return refused;
-  let unit: string | null = null;
-  if (parsed.data.weeklyGoalId) {
-    const { data: w } = await viewer.supabase.from("weekly_goals").select("unit").eq("id", parsed.data.weeklyGoalId).maybeSingle();
-    unit = w?.unit ?? null;
-  }
-  const { data, error } = await viewer.supabase
-    .from("daily_goals")
-    .insert({ local_date: parsed.data.date, title: parsed.data.title, parent_weekly_goal_id: parsed.data.weeklyGoalId, quantity: parsed.data.quantity, unit })
-    .select("id")
-    .single();
-  if (error || !data) return dbFail(error ?? {});
-  return ok({ id: data.id });
-}
-
-/* ------------------------------------------------------------------ weekly review */
-
 const reviewItemSchema = z.object({
   weeklyGoalId: uuidSchema,
   outcome: z.enum(["completed", "partial", "missed"]),
@@ -559,7 +451,8 @@ const weeklyReviewSchema = z
     weekStart: localDateSchema,
     items: z.array(reviewItemSchema).max(60),
     wins: z.string().trim().max(2000),
-    lessons: z.string().trim().max(2000),
+    failure: z.string().trim().max(2000),
+    bottleneck: z.string().trim().max(2000),
     focus: z.string().trim().max(2000),
   })
   .refine((r) => r.items.every((i) => i.outcome === "completed" || i.decision !== null), {
@@ -575,12 +468,13 @@ function carriedTitle(title: string, target: number | null, left: number | null,
 
 /**
  * Closes a week: records what happened to each goal and why, then applies the decisions.
- * Carried goals reappear next week with what's left; nothing is deleted.
+ * Carried goals reappear next week with what's left; nothing is deleted. The four questions
+ * (biggest win, biggest failure, main bottleneck, next week's #1) are saved with the week.
  */
 export async function saveWeeklyReview(input: z.input<typeof weeklyReviewSchema>): Promise<ActionResult<{ carried: number }>> {
   const parsed = weeklyReviewSchema.safeParse(input);
   if (!parsed.success) return invalid(parsed.error);
-  const { weekStart, items, wins, lessons, focus } = parsed.data;
+  const { weekStart, items, wins, failure, bottleneck, focus } = parsed.data;
   if (!isMonday(weekStart)) return fail("A week starts on a Monday.");
   const viewer = await getViewer();
   const { supabase } = viewer;
@@ -655,7 +549,8 @@ export async function saveWeeklyReview(input: z.input<typeof weeklyReviewSchema>
       user_id: viewer.userId,
       week_start_date: weekStart,
       wins: wins || null,
-      lessons: lessons || null,
+      failure: failure || null,
+      bottleneck: bottleneck || null,
       focus_for_next_week: focus || null,
       completed_at: new Date().toISOString(),
     },

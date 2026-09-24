@@ -1,19 +1,14 @@
 import type { LocalDate } from "./day";
-import { BIBLE_ITEMS, REVIEW_ITEMS, computeScore, type ScoreInput } from "./score";
+import { keepWord, type WordTally } from "./keep-word";
 
-/** One row of public.day_summaries(). */
+/** One row of public.day_summaries(): the counts behind a day's Keep My Word. */
 export interface DaySummary {
   local_date: LocalDate;
-  morning_total: number;
-  morning_done: number;
-  body_total: number;
-  body_done: number;
-  discipline_total: number;
-  discipline_done: number;
-  god_total: number;
-  god_done: number;
-  bible_done: number;
-  review_filled: number;
+  habits_total: number;
+  habits_done: number;
+  tasks_total: number;
+  tasks_done: number;
+  review_done: number;
   work_minutes: number;
   final_score: number | null;
   completed_at: string | null;
@@ -21,27 +16,27 @@ export interface DaySummary {
 
 export interface DayScore {
   date: LocalDate;
+  /** Keep My Word, 0–100. */
   score: number;
   /** True when the score is the one stored by Complete Day. */
   locked: boolean;
 }
 
-export function summaryToScoreInput(s: DaySummary, workTargetHours: number): ScoreInput {
+export function summaryToTally(s: DaySummary, workTargetHours: number): WordTally {
   return {
-    god: { done: s.god_done + s.bible_done, total: s.god_total + BIBLE_ITEMS },
-    body: { done: s.body_done, total: s.body_total },
-    discipline: {
-      done: s.morning_done + s.discipline_done,
-      total: s.morning_total + s.discipline_total,
-    },
-    reflection: { done: s.review_filled, total: REVIEW_ITEMS },
-    work: { minutes: Number(s.work_minutes), targetMinutes: workTargetHours * 60 },
+    habitsDone: s.habits_done,
+    habitsTotal: s.habits_total,
+    tasksDone: s.tasks_done,
+    tasksTotal: s.tasks_total,
+    reviewDone: s.review_done > 0,
+    workMinutes: Number(s.work_minutes),
+    workTargetMinutes: workTargetHours * 60,
   };
 }
 
 /**
- * A completed day keeps the score it was completed with, so editing your habit list later
- * never rewrites history. Any other day is scored from what is stored for it.
+ * A completed day keeps the number it was completed with, so editing your habit list later
+ * never rewrites history. Any other day is worked out from what is stored for it.
  */
 export function scoreForSummary(s: DaySummary, workTargetHours: number): DayScore {
   if (s.completed_at && s.final_score !== null) {
@@ -49,7 +44,7 @@ export function scoreForSummary(s: DaySummary, workTargetHours: number): DayScor
   }
   return {
     date: s.local_date,
-    score: computeScore(summaryToScoreInput(s, workTargetHours)).score,
+    score: keepWord(summaryToTally(s, workTargetHours)).percent ?? 0,
     locked: false,
   };
 }

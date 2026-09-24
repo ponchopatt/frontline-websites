@@ -8,8 +8,8 @@ values
   ('11111111-1111-1111-1111-111111111111', 'a@test.dev', '{}', 'authenticated', 'authenticated'),
   ('22222222-2222-2222-2222-222222222222', 'b@test.dev', '{}', 'authenticated', 'authenticated');
 
-select is((select count(*)::int from public.life_areas where user_id = '11111111-1111-1111-1111-111111111111'), 11,
-  'a new user gets the eleven areas of life');
+select is((select count(*)::int from public.life_areas where user_id = '11111111-1111-1111-1111-111111111111'), 12,
+  'a new user gets the twelve areas of life');
 
 create temp table ids (name text primary key, id uuid);
 grant select, insert on ids to authenticated;
@@ -20,7 +20,7 @@ set local request.jwt.claims = '{"sub":"11111111-1111-1111-1111-111111111111","r
 select lives_ok($$
   with y as (
     insert into public.yearly_goals (year, title, goal_type, unit, start_value, target_value, life_area_id)
-    select 2027, 'Build a $300k business', 'outcome', '$', 0, 300000, id from public.life_areas where name = 'Business'
+    select 2027, 'Build a $300k business', 'outcome', '$', 0, 300000, id from public.life_areas where key = 'imperium'
     returning id
   ) insert into ids select 'year', id from y
 $$, 'user A creates a yearly goal in an area of life');

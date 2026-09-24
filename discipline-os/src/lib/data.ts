@@ -1,22 +1,36 @@
 import "server-only";
 import { redirect } from "next/navigation";
 import { cache } from "react";
-import { FIRST_READING, nextReading } from "./bible";
-import { addDays, daysBetween, localDateAt, type LocalDate } from "./day";
+import { isWorkArea, type Area, type WorkArea } from "./areas";
+import { isPlanKey, nextInPlan } from "./bible";
+import { addDays, daysBetween, isoWeekday, localDateAt, startOfWeek, type LocalDate } from "./day";
+import { formatValue } from "./goals/format";
+import { chainOf, loadGoalYear, loadLifeAreas, yearOfWeek, type GoalYear } from "./goals/data";
+import { monthStartOf } from "./goals/periods";
+import { dailyTarget, totalOver, weekShare, type DayValues, type Metric } from "./metrics";
 import { computeStreaks, scoreForSummary, type DayScore, type DaySummary } from "./streak";
 import { createClient, type Supabase } from "./supabase/server";
+import type { Database } from "./supabase/database.types";
 import type {
   BibleState,
+  CounterItem,
   DayView,
+  GoalLadder,
   HabitCategory,
   HabitItem,
-  PriorityItem,
+  HabitKind,
+  MilestoneItem,
+  MilestoneStep,
   ProfileSettings,
+  ProofItem,
   ReviewState,
+  TaskItem,
   WorkSessionItem,
 } from "./types";
 import { REVIEW_FIELDS } from "./types";
-import { loadTodayPlan } from "./goals/data";
+
+type TaskRow = Database["public"]["Tables"]["daily_goals"]["Row"];
+type MetricRow = Database["public"]["Tables"]["metrics"]["Row"];
 
 export interface Viewer {
   supabase: Supabase;
@@ -51,6 +65,9 @@ export const getViewer = cache(async (): Promise<Viewer> => {
     workTargetHours: Number(row.work_target_hours),
     streakThreshold: row.streak_threshold,
     bestStreak: row.best_streak,
+    workDays: (row.work_days ?? [1, 2, 3, 4, 5]).map(Number),
+    hourTargets: hourTargetsOf(row.area_hour_targets),
+    biblePlan: isPlanKey(row.bible_plan) ? row.bible_plan : "bible",
   };
   return {
     supabase,
@@ -60,6 +77,17 @@ export const getViewer = cache(async (): Promise<Viewer> => {
     today: localDateAt(new Date(), profile.timezone, profile.dayStartHour),
   };
 });
+
+function hourTargetsOf(raw: unknown): Partial<Record<WorkArea, number>> {
+  const out: Partial<Record<WorkArea, number>> = {};
+  if (raw && typeof raw === "object") {
+    for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
+      const n = Number(v);
+      if (isWorkArea(k) && Number.isFinite(n) && n >= 0) out[k] = n;
+    }
+  }
+  return out;
+}
 
 /** The request time, for server pages that show running totals. */
 export function requestTime(): number {
@@ -73,16 +101,11 @@ export function firstDayOf(viewer: Pick<Viewer, "createdAt" | "profile">): Local
 function toSummary(row: Record<string, unknown>): DaySummary {
   return {
     local_date: String(row.local_date),
-    morning_total: Number(row.morning_total ?? 0),
-    morning_done: Number(row.morning_done ?? 0),
-    body_total: Number(row.body_total ?? 0),
-    body_done: Number(row.body_done ?? 0),
-    discipline_total: Number(row.discipline_total ?? 0),
-    discipline_done: Number(row.discipline_done ?? 0),
-    god_total: Number(row.god_total ?? 0),
-    god_done: Number(row.god_done ?? 0),
-    bible_done: Number(row.bible_done ?? 0),
-    review_filled: Number(row.review_filled ?? 0),
+    habits_total: Number(row.habits_total ?? 0),
+    habits_done: Number(row.habits_done ?? 0),
+    tasks_total: Number(row.tasks_total ?? 0),
+    tasks_done: Number(row.tasks_done ?? 0),
+    review_done: Number(row.review_done ?? 0),
     work_minutes: Number(row.work_minutes ?? 0),
     final_score: row.final_score === null || row.final_score === undefined ? null : Number(row.final_score),
     completed_at: (row.completed_at as string | null) ?? null,
@@ -147,13 +170,15 @@ function habitActiveOn(
   return to > date;
 }
 
-function emptyPriority(position: 1 | 2 | 3): PriorityItem {
-  return { position, id: null, dailyGoalId: null, title: "", description: null, status: "pending", completedAt: null };
+/** Whether a habit is due on `date` by its schedule (every day when it has none). */
+export function habitDueOn(days: number[] | null, date: LocalDate): boolean {
+  return !days || days.length === 0 || days.includes(isoWeekday(date));
 }
 
 function mapSession(row: {
   id: string;
   work_block_id: string | null;
+  area: string | null;
   local_date: string;
   started_at: string;
   ended_at: string | null;
@@ -162,6 +187,7 @@ function mapSession(row: {
   return {
     id: row.id,
     blockId: row.work_block_id,
+    area: isWorkArea(row.area) ? row.area : null,
     localDate: row.local_date,
     startedAt: row.started_at,
     endedAt: row.ended_at,
@@ -169,14 +195,180 @@ function mapSession(row: {
   };
 }
 
-/** Everything the dashboard needs for one day. */
+export function mapTask(r: TaskRow, goals: GoalYear | null, proofCount = 0): TaskItem {
+  return {
+    id: r.id,
+    localDate: r.local_date,
+    title: r.title,
+    area: (r.area as Area | null) ?? null,
+    category: r.category,
+    rank: (r.rank as 1 | 2 | 3 | null) ?? null,
+    status: r.status,
+    priority: Math.min(3, Math.max(1, r.priority)) as 1 | 2 | 3,
+    dueDate: r.due_date,
+    notes: r.notes,
+    quantity: r.quantity === null ? null : Number(r.quantity),
+    unit: r.unit,
+    metricId: r.metric_id,
+    weeklyGoalId: r.parent_weekly_goal_id,
+    carriedFromId: r.carried_from_id,
+    completedAt: r.completed_at,
+    chain: goals ? chainOf(goals, r.parent_weekly_goal_id) : null,
+    proofCount,
+  };
+}
+
+export function mapMetric(m: MetricRow): Metric {
+  return {
+    id: m.id,
+    area: m.area as Area,
+    key: m.key,
+    label: m.label,
+    grp: m.grp,
+    unit: m.unit,
+    aggregation: m.aggregation,
+    dailyTarget: m.daily_target === null ? null : Number(m.daily_target),
+    weeklyTarget: m.weekly_target === null ? null : Number(m.weekly_target),
+    pinned: m.pinned,
+    sortOrder: m.sort_order,
+    createdAt: m.created_at,
+  };
+}
+
+export interface CounterData {
+  metrics: Metric[];
+  values: Map<string, DayValues>;
+}
+
+/** Active counters and their values by day from `from` to `to`. */
+export async function loadCounterData(supabase: Supabase, from: LocalDate, to: LocalDate): Promise<CounterData> {
+  const [metricsRes, entries] = await Promise.all([
+    supabase.from("metrics").select("*").eq("is_active", true).order("area").order("sort_order"),
+    fetchAll<{ metric_id: string; local_date: string; value: number }>((a, b) =>
+      supabase.from("metric_entries").select("metric_id,local_date,value").gte("local_date", from).lte("local_date", to).range(a, b),
+    ),
+  ]);
+  if (metricsRes.error) throw new Error(`Your counters couldn't be loaded: ${metricsRes.error.message}`);
+  const values = new Map<string, DayValues>();
+  for (const e of entries) {
+    if (!values.has(e.metric_id)) values.set(e.metric_id, new Map());
+    values.get(e.metric_id)!.set(e.local_date, Number(e.value));
+  }
+  return { metrics: (metricsRes.data ?? []).map(mapMetric), values };
+}
+
+/**
+ * Each counter for a day: the day's value, the week so far, and today's target — what's left
+ * of the week's target (a weekly goal on the counter, else its own) over the work days left.
+ */
+export function countersFor(data: CounterData, date: LocalDate, profile: ProfileSettings, goals: GoalYear | null): CounterItem[] {
+  const weekStart = startOfWeek(date);
+  const weekEnd = addDays(weekStart, 6);
+  return data.metrics.map((m) => {
+    const values = data.values.get(m.id);
+    const fromGoals = goals?.tree.weekly.filter((w) => w.weekStart === weekStart && w.state !== "cancelled" && w.progressSource === "metric" && w.metricId === m.id) ?? [];
+    const since = localDateAt(new Date(m.createdAt), profile.timezone, profile.dayStartHour);
+    const weekTarget =
+      fromGoals.length > 0 ? fromGoals.reduce((s, w) => s + (w.targetValue ?? 0), 0) : weekShare(m.weeklyTarget, weekStart, since, profile.workDays, m.unit);
+    const value = m.aggregation === "latest" ? totalOver(values, date, date, "latest") : values?.get(date) ?? 0;
+    return {
+      id: m.id,
+      area: m.area,
+      key: m.key,
+      label: m.label,
+      grp: m.grp,
+      unit: m.unit,
+      aggregation: m.aggregation,
+      pinned: m.pinned,
+      value,
+      target: dailyTarget({
+        metric: m,
+        weeklyTarget: weekTarget,
+        doneBeforeToday: totalOver(values, weekStart, addDays(date, -1), "sum"),
+        today: date,
+        workDays: profile.workDays,
+      }),
+      weekTotal: totalOver(values, weekStart, date < weekEnd ? date : weekEnd, m.aggregation),
+      weekTarget,
+    };
+  });
+}
+
+function stepsOf(raw: unknown): MilestoneStep[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .filter((s): s is { title: unknown; done: unknown } => Boolean(s) && typeof s === "object")
+    .map((s) => ({ title: String(s.title ?? "").slice(0, 60), done: Boolean(s.done) }))
+    .filter((s) => s.title.trim());
+}
+
+export async function loadMilestone(supabase: Supabase, area: Area = "trading"): Promise<MilestoneItem | null> {
+  const { data } = await supabase.from("project_milestones").select("id,title,steps").eq("area", area).eq("state", "active").maybeSingle();
+  return data ? { id: data.id, title: data.title, steps: stepsOf(data.steps) } : null;
+}
+
+/** Signed, short-lived links for a day's proof photos. */
+async function loadProofs(supabase: Supabase, date: LocalDate, labels: Map<string, string>): Promise<ProofItem[]> {
+  const { data: rows } = await supabase.from("proof_uploads").select("id,storage_path,task_id,habit_id,note,uploaded_at").eq("local_date", date).order("uploaded_at");
+  if (!rows || rows.length === 0) return [];
+  const { data: signed } = await supabase.storage.from("proof").createSignedUrls(rows.map((r) => r.storage_path), 60 * 60);
+  const urlFor = new Map((signed ?? []).map((s) => [s.path, s.signedUrl]));
+  return rows.map((r) => ({
+    id: r.id,
+    url: urlFor.get(r.storage_path) ?? null,
+    taskId: r.task_id,
+    habitId: r.habit_id,
+    label: r.note ?? (r.task_id ? labels.get(r.task_id) : r.habit_id ? labels.get(r.habit_id) : null) ?? null,
+    uploadedAt: r.uploaded_at,
+  }));
+}
+
+/** Today → Week → Month → Year for the year's main goals. */
+function laddersFor(goals: GoalYear, areaKeys: Map<string, Area | null>, date: LocalDate, counters: CounterItem[], tasks: TaskItem[]): GoalLadder[] {
+  const month = monthStartOf(date);
+  const week = startOfWeek(date);
+  const ratio = (id: string) => goals.progress.get(id)?.ratio ?? null;
+  return goals.tree.yearly
+    .filter((y) => y.state === "active")
+    .sort((a, b) => a.priority - b.priority || a.sortOrder - b.sortOrder)
+    .slice(0, 4)
+    .map((y) => {
+      const monthly = goals.tree.monthly.find((m) => m.parentYearlyId === y.id && m.monthStart === month && m.state !== "cancelled") ?? null;
+      const weekly = monthly
+        ? goals.tree.weekly
+            .filter((w) => w.parentMonthlyId === monthly.id && w.weekStart === week && w.state !== "cancelled")
+            .sort((a, b) => Number(b.isMajor) - Number(a.isMajor))[0] ?? null
+        : null;
+      let today: string | null = null;
+      if (weekly?.metricId) {
+        const c = counters.find((x) => x.id === weekly.metricId);
+        if (c && c.target !== null) today = `${formatValue(c.target, c.unit)} ${c.unit === "$" ? c.label.toLowerCase() + " target" : c.label.toLowerCase()}`;
+      }
+      if (!today && weekly) today = tasks.find((t) => t.weeklyGoalId === weekly.id)?.title ?? null;
+      return {
+        area: y.lifeAreaId ? areaKeys.get(y.lifeAreaId) ?? null : null,
+        yearly: { id: y.id, title: y.title, year: y.year, ratio: ratio(y.id) },
+        monthly: monthly ? { id: monthly.id, title: monthly.title, monthStart: monthly.monthStart, ratio: ratio(monthly.id) } : null,
+        weekly: weekly ? { id: weekly.id, title: weekly.title, weekStart: weekly.weekStart, ratio: ratio(weekly.id) } : null,
+        today,
+      };
+    });
+}
+
+/** Everything the Today screen needs for one day. */
 export async function loadDay(viewer: Viewer, date: LocalDate): Promise<DayView> {
   const { supabase, profile, today } = viewer;
+  const weekStart = startOfWeek(date);
+  const weekEnd = addDays(weekStart, 6);
+  const isToday = date === today;
 
   const [
     habitsRes,
     completionsRes,
-    prioritiesRes,
+    weekCompletionsRes,
+    tasksRes,
+    unfinishedRes,
+    laterRes,
     prevReviewRes,
     blocksRes,
     sessionsRes,
@@ -186,138 +378,145 @@ export async function loadDay(viewer: Viewer, date: LocalDate): Promise<DayView>
     reviewRes,
     planRes,
     history,
+    counterData,
+    milestone,
+    goals,
+    areas,
   ] = await Promise.all([
-    supabase.from("habits").select("id,name,category,sort_order,created_at,archived_at").order("sort_order"),
+    supabase.from("habits").select("id,name,category,kind,days,sort_order,created_at,archived_at").order("sort_order"),
     supabase.from("habit_completions").select("habit_id,completed_at,edited_at").eq("local_date", date),
-    supabase.from("daily_priorities").select("*").eq("local_date", date),
+    supabase.from("habit_completions").select("habit_id,local_date").gte("local_date", weekStart).lte("local_date", weekEnd),
+    supabase.from("daily_goals").select("*").eq("local_date", date).order("rank", { nullsFirst: false }).order("created_at"),
+    isToday
+      ? supabase.from("daily_goals").select("*").gte("local_date", addDays(date, -7)).lt("local_date", date).eq("status", "pending").order("local_date", { ascending: false })
+      : Promise.resolve({ data: [] as TaskRow[], error: null }),
+    supabase.from("daily_goals").select("*").is("local_date", null).eq("status", "pending").order("due_date", { nullsFirst: false }).order("created_at"),
     supabase.from("daily_reviews").select("tomorrow_priority").eq("local_date", addDays(date, -1)).maybeSingle(),
-    supabase.from("work_blocks").select("id,task,planned_start,planned_end").eq("local_date", date)
+    supabase.from("work_blocks").select("id,task,area,planned_start,planned_end").eq("local_date", date)
       .order("planned_start", { ascending: true, nullsFirst: false }).order("created_at"),
     supabase.from("work_sessions").select("*").eq("local_date", date).order("started_at"),
     supabase.from("work_sessions").select("*, work_blocks(task)").is("ended_at", null).maybeSingle(),
-    supabase.from("bible_readings").select("*, bible_entries(*)").eq("local_date", date).maybeSingle(),
+    supabase.from("bible_readings").select("*, bible_entries(journal)").eq("local_date", date).maybeSingle(),
     supabase.from("bible_readings").select("book,chapter").lt("local_date", date)
       .order("local_date", { ascending: false }).limit(1).maybeSingle(),
     supabase.from("daily_reviews").select("*").eq("local_date", date).maybeSingle(),
     supabase.from("daily_plans").select("final_score,completed_at").eq("local_date", date).maybeSingle(),
     loadHistory(viewer),
+    loadCounterData(supabase, addDays(weekStart, -60), date),
+    loadMilestone(supabase),
+    loadGoalYear(viewer, yearOfWeek(weekStart)),
+    loadLifeAreas(viewer),
   ]);
 
-  for (const res of [habitsRes, completionsRes, prioritiesRes, blocksRes, sessionsRes, readingRes, reviewRes, planRes]) {
+  for (const res of [habitsRes, completionsRes, tasksRes, unfinishedRes, laterRes, blocksRes, sessionsRes, readingRes, reviewRes, planRes]) {
     if (res.error) throw new Error(`Could not load this day: ${res.error.message}`);
   }
 
   const done = new Map((completionsRes.data ?? []).map((c) => [c.habit_id, c]));
-  const habits: HabitItem[] = (habitsRes.data ?? [])
-    .filter((h) => habitActiveOn(h, date, profile) || done.has(h.id))
-    .map((h) => ({
-      id: h.id,
-      name: h.name,
-      category: h.category as HabitCategory,
-      sortOrder: h.sort_order,
-      completedAt: done.get(h.id)?.completed_at ?? null,
-      editedAt: done.get(h.id)?.edited_at ?? null,
-    }));
+  const habitRows = (habitsRes.data ?? []).filter((h) => habitActiveOn(h, date, profile) || done.has(h.id));
+  const habits: HabitItem[] = habitRows.map((h) => ({
+    id: h.id,
+    name: h.name,
+    category: h.category as HabitCategory,
+    kind: (h.kind as HabitKind | null) ?? null,
+    days: h.days,
+    due: habitDueOn(h.days, date),
+    sortOrder: h.sort_order,
+    completedAt: done.get(h.id)?.completed_at ?? null,
+    editedAt: done.get(h.id)?.edited_at ?? null,
+  }));
 
-  const priorities: [PriorityItem, PriorityItem, PriorityItem] = [
-    emptyPriority(1),
-    emptyPriority(2),
-    emptyPriority(3),
-  ];
-  for (const p of prioritiesRes.data ?? []) {
-    const pos = p.position as 1 | 2 | 3;
-    priorities[pos - 1] = {
-      position: pos,
-      id: p.id,
-      dailyGoalId: p.daily_goal_id,
-      title: p.title,
-      description: p.description,
-      status: p.status,
-      completedAt: p.completed_at,
-    };
+  // Gym and cardio across this week.
+  const weekDone = new Map<string, Set<string>>();
+  for (const c of weekCompletionsRes.data ?? []) {
+    if (!weekDone.has(c.habit_id)) weekDone.set(c.habit_id, new Set());
+    weekDone.get(c.habit_id)!.add(c.local_date);
+  }
+  const gym = (habitsRes.data ?? []).find((h) => h.kind === "gym" && !h.archived_at);
+  const cardio = (habitsRes.data ?? []).find((h) => h.kind === "cardio" && !h.archived_at);
+  // Days before the habit existed are neither due nor missed.
+  const gymWeek = Array.from({ length: 7 }, (_, i) => {
+    const d = addDays(weekStart, i);
+    const existed = gym ? d >= localDateAt(new Date(gym.created_at), profile.timezone, profile.dayStartHour) : false;
+    return { date: d, due: gym && existed ? habitDueOn(gym.days, d) : false, done: gym ? weekDone.get(gym.id)?.has(d) ?? false : false };
+  });
+  const cardioFrom = cardio ? localDateAt(new Date(cardio.created_at), profile.timezone, profile.dayStartHour) : weekStart;
+  const cardioStart = cardioFrom > weekStart ? cardioFrom : weekStart;
+  const cardioEnd = date < weekEnd ? date : weekEnd;
+  const cardioWeek = {
+    done: cardio ? weekDone.get(cardio.id)?.size ?? 0 : 0,
+    days: cardioEnd < cardioStart ? 0 : daysBetween(cardioStart, cardioEnd) + 1,
+  };
+
+  // Tasks. Unfinished ones that were already moved on don't come back.
+  const unfinishedRows = unfinishedRes.data ?? [];
+  let carriedAway = new Set<string>();
+  if (unfinishedRows.length > 0) {
+    const { data: carried } = await supabase.from("daily_goals").select("carried_from_id").in("carried_from_id", unfinishedRows.map((t) => t.id));
+    carriedAway = new Set((carried ?? []).map((c) => c.carried_from_id as string));
   }
 
+  const labels = new Map<string, string>([...(tasksRes.data ?? []).map((t) => [t.id, t.title] as const), ...habits.map((h) => [h.id, h.name] as const)]);
+  const proofs = await loadProofs(supabase, date, labels);
+  const proofCount = (taskId: string) => proofs.filter((p) => p.taskId === taskId).length;
+  const tasks = (tasksRes.data ?? []).map((t) => mapTask(t, goals, proofCount(t.id)));
+  const unfinished = unfinishedRows.filter((t) => !carriedAway.has(t.id)).map((t) => mapTask(t, goals));
+  const later = (laterRes.data ?? []).map((t) => mapTask(t, goals));
+
+  const counters = countersFor(counterData, date, profile, goals);
+
+  // Bible: today's chapter from the plan, and the journal line.
   const reading = readingRes.data;
   const entry = reading?.bible_entries ?? null;
   const entryRow = Array.isArray(entry) ? entry[0] ?? null : entry;
-  const suggested = lastReadingRes.data
-    ? nextReading({ book: lastReadingRes.data.book, chapter: lastReadingRes.data.chapter })
-    : FIRST_READING;
+  const planned = nextInPlan(profile.biblePlan, lastReadingRes.data ? { book: lastReadingRes.data.book, chapter: lastReadingRes.data.chapter } : null);
   const bible: BibleState = reading
-    ? {
-        readingId: reading.id,
-        book: reading.book,
-        chapter: reading.chapter,
-        passage: reading.passage,
-        suggested: false,
-        checks: {
-          reading: reading.is_completed,
-          soap: entryRow?.soap_done ?? false,
-          prayer: entryRow?.prayer_done ?? false,
-          application: entryRow?.application_done ?? false,
-        },
-        obeyToday: entryRow?.obey_today ?? "",
-      }
-    : {
-        readingId: null,
-        book: suggested.book,
-        chapter: suggested.chapter,
-        passage: null,
-        suggested: true,
-        checks: { reading: false, soap: false, prayer: false, application: false },
-        obeyToday: "",
-      };
+    ? { readingId: reading.id, book: reading.book, chapter: reading.chapter, passage: reading.passage, suggested: false, journal: entryRow?.journal ?? "", plan: profile.biblePlan }
+    : { readingId: null, book: planned.book, chapter: planned.chapter, passage: null, suggested: true, journal: "", plan: profile.biblePlan };
 
   const reviewRow = reviewRes.data;
-  const review = Object.fromEntries(
-    REVIEW_FIELDS.map((f) => [f, (reviewRow?.[f] as string | null | undefined) ?? ""]),
-  ) as ReviewState;
+  const review = Object.fromEntries(REVIEW_FIELDS.map((f) => [f, (reviewRow?.[f] as string | null | undefined) ?? ""])) as ReviewState;
 
   const open = openRes.data;
-  const openTask = open
-    ? ((open as unknown as { work_blocks: { task: string } | null }).work_blocks?.task ?? null)
-    : null;
+  const openTask = open ? ((open as unknown as { work_blocks: { task: string } | null }).work_blocks?.task ?? null) : null;
 
   const plan = planRes.data;
-  const locked =
-    plan?.completed_at && plan.final_score !== null
-      ? { score: plan.final_score, completedAt: plan.completed_at }
-      : null;
+  const locked = plan?.completed_at && plan.final_score !== null ? { score: plan.final_score, completedAt: plan.completed_at } : null;
 
-  const suggestion = prevReviewRes.data?.tomorrow_priority?.trim() || null;
-
-  const blocks = (blocksRes.data ?? []).map((b) => ({
-    id: b.id,
-    task: b.task,
-    plannedStart: b.planned_start?.slice(0, 5) ?? null,
-    plannedEnd: b.planned_end?.slice(0, 5) ?? null,
-  }));
-  const plannedMinutes = blocks.reduce((m, b) => {
-    if (!b.plannedStart || !b.plannedEnd) return m;
-    const [sh, sm] = b.plannedStart.split(":").map(Number);
-    const [eh, em] = b.plannedEnd.split(":").map(Number);
-    return m + Math.max(0, eh * 60 + em - sh * 60 - sm);
-  }, 0);
-  const goalPlan = await loadTodayPlan(viewer, date, { plannedMinutes, locked: Boolean(locked) });
+  const areaKeys = new Map(areas.map((a) => [a.id, a.key]));
 
   return {
     date,
     today,
-    isToday: date === today,
+    isToday,
     locked,
     profile,
     habits,
-    priorities,
-    prioritySuggestion: suggestion,
-    blocks,
+    tasks,
+    unfinished,
+    later,
+    lastNightPriority: prevReviewRes.data?.tomorrow_priority?.trim() || null,
+    counters,
+    blocks: (blocksRes.data ?? []).map((b) => ({
+      id: b.id,
+      task: b.task,
+      area: isWorkArea(b.area) ? b.area : null,
+      plannedStart: b.planned_start?.slice(0, 5) ?? null,
+      plannedEnd: b.planned_end?.slice(0, 5) ?? null,
+    })),
     sessions: (sessionsRes.data ?? []).map(mapSession),
     openSession: open ? { ...mapSession(open), task: openTask } : null,
     bible,
     review,
+    milestone,
+    gymWeek,
+    cardioWeek,
+    proofs,
     streak: { current: history.current, best: Math.max(history.best, profile.bestStreak) },
     history: history.scores.slice(-30),
     firstDay: firstDayOf(viewer),
-    plan: goalPlan,
+    ladders: laddersFor(goals, areaKeys, date, counters, tasks),
+    weekStart,
   };
 }
 
@@ -340,6 +539,8 @@ export interface HabitStats {
   id: string;
   name: string;
   category: HabitCategory;
+  kind: HabitKind | null;
+  days: number[] | null;
   sortOrder: number;
   archivedAt: string | null;
   doneToday: boolean;
@@ -355,7 +556,7 @@ export async function loadHabitStats(viewer: Viewer): Promise<HabitStats[]> {
   const { supabase, profile, today } = viewer;
   const since = addDays(today, -89);
   const [habitsRes, completions] = await Promise.all([
-    supabase.from("habits").select("id,name,category,sort_order,created_at,archived_at").order("sort_order"),
+    supabase.from("habits").select("id,name,category,kind,days,sort_order,created_at,archived_at").order("sort_order"),
     fetchAll<{ habit_id: string; local_date: string }>((from, to) =>
       supabase
         .from("habit_completions")
@@ -395,6 +596,8 @@ export async function loadHabitStats(viewer: Viewer): Promise<HabitStats[]> {
       id: h.id,
       name: h.name,
       category: h.category as HabitCategory,
+      kind: (h.kind as HabitKind | null) ?? null,
+      days: h.days,
       sortOrder: h.sort_order,
       archivedAt: h.archived_at,
       doneToday: done.has(today),

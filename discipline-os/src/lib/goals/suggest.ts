@@ -40,6 +40,8 @@ export interface Suggestion {
   estimatedMinutes: number;
   weeklyGoalId: string | null;
   carriedFromId: string | null;
+  /** The counter this action moves ("Call 10 leads" → leads called). */
+  metricId: string | null;
   /** Deep-work suggestions create a work block when accepted. */
   createsWorkBlock: boolean;
   score: number;
@@ -71,7 +73,7 @@ function generate(ctx: WeeklyContext, today: LocalDate): Omit<Suggestion, "score
   if (left <= 0) return null;
 
   if (goal.goalType === "binary" || goal.goalType === "milestone") {
-    return { key: `w-${goal.id}`, title: goal.title, quantity: null, unit: null, estimatedMinutes: 60, weeklyGoalId: goal.id, carriedFromId: null, createsWorkBlock: false };
+    return { key: `w-${goal.id}`, title: goal.title, quantity: null, unit: null, estimatedMinutes: 60, weeklyGoalId: goal.id, carriedFromId: null, metricId: null, createsWorkBlock: false };
   }
   if (!isNumeric(goal.goalType) || goal.targetValue === null) return null;
 
@@ -90,10 +92,11 @@ function generate(ctx: WeeklyContext, today: LocalDate): Omit<Suggestion, "score
       estimatedMinutes: blocks * 90,
       weeklyGoalId: goal.id,
       carriedFromId: null,
+      metricId: null,
       createsWorkBlock: true,
     };
   }
-  if (goal.progressSource === "actions") {
+  if (goal.progressSource === "actions" || (goal.progressSource === "metric" && goal.unit !== "$")) {
     const unit = goal.unit?.trim() || null;
     const quantity = unit === "days" ? 1 : Math.max(1, Math.ceil(remaining / left));
     return {
@@ -104,6 +107,7 @@ function generate(ctx: WeeklyContext, today: LocalDate): Omit<Suggestion, "score
       estimatedMinutes: estimate(quantity, unit),
       weeklyGoalId: goal.id,
       carriedFromId: null,
+      metricId: goal.progressSource === "metric" ? goal.metricId : null,
       createsWorkBlock: false,
     };
   }
@@ -112,6 +116,12 @@ function generate(ctx: WeeklyContext, today: LocalDate): Omit<Suggestion, "score
 }
 
 export function suggestToday(input: SuggestionInput): { big3: Suggestion[]; supporting: Suggestion[] } {
+  const ordered = rankSuggestions(input);
+  return { big3: ordered.slice(0, 3), supporting: ordered.slice(3) };
+}
+
+/** Every suggestion from this week's goals and unfinished actions, best first. */
+export function rankSuggestions(input: SuggestionInput): Suggestion[] {
   const takenWeekly = new Set(input.todayActions.filter((a) => a.status !== "dropped").map((a) => a.parentWeeklyId));
   const takenCarry = new Set(input.todayActions.map((a) => a.title.trim().toLowerCase()));
   const byWeekly = new Map(input.weekly.map((w) => [w.goal.id, w]));
@@ -140,11 +150,12 @@ export function suggestToday(input: SuggestionInput): { big3: Suggestion[]; supp
       estimatedMinutes: a.estimatedMinutes ?? estimate(a.quantity, a.unit),
       weeklyGoalId: a.parentWeeklyId,
       carriedFromId: a.id,
+      metricId: a.metricId,
       createsWorkBlock: false,
     };
     const r = ctx ? rank(base, ctx, input) : { ...base, score: 20, reasons: [] as string[] };
     r.score += 14;
-    r.reasons.unshift(`Left from ${shortDate(a.localDate)}`);
+    r.reasons.unshift(a.localDate ? `Left from ${shortDate(a.localDate)}` : "Unfinished");
     scored.push(r);
   }
 
@@ -162,8 +173,7 @@ export function suggestToday(input: SuggestionInput): { big3: Suggestion[]; supp
       tooLong.push({ ...s, reasons: [...s.reasons, "More than the time left today"] });
     }
   }
-  const ordered = [...fits, ...tooLong];
-  return { big3: ordered.slice(0, 3), supporting: ordered.slice(3) };
+  return [...fits, ...tooLong];
 }
 
 function rank(s: Omit<Suggestion, "score" | "reasons">, ctx: WeeklyContext, input: SuggestionInput): Suggestion {

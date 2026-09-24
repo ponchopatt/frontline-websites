@@ -39,6 +39,9 @@ export interface DraftGoal {
   /** Suggested, but left unticked until the user opts in. */
   optional: boolean;
   why: string | null;
+  /** The counter it's measured by: its id when known, or its key within the goal's business. */
+  metricId: string | null;
+  metricKey: string | null;
 }
 
 /* ------------------------------------------------------------------ rounding */
@@ -97,7 +100,8 @@ const MEASURED_UNITS = new Set(["$", "kg", "lb", "lbs", "%", "cm"]);
  * in activities (leads, calls, sessions) is counted from completed daily actions.
  */
 export function sourceFor(level: "monthly" | "weekly", parent: { progressSource: ProgressSource; unit: string | null }): ProgressSource {
-  if (parent.progressSource === "work_hours" || parent.progressSource === "habit") return parent.progressSource;
+  // Hours, habit ticks and counters run all the way down: each level reads the same source.
+  if (parent.progressSource === "work_hours" || parent.progressSource === "habit" || parent.progressSource === "metric") return parent.progressSource;
   if (level === "monthly") return "children";
   return MEASURED_UNITS.has((parent.unit ?? "").trim().toLowerCase()) ? "manual" : "actions";
 }
@@ -146,6 +150,8 @@ export function yearToMonths(goal: YearlyGoal, today: LocalDate, milestones: Arr
     why: goal.why,
     isMajor: true,
     optional: false,
+    metricId: goal.progressSource === "metric" ? goal.metricId : null,
+    metricKey: null,
   };
 
   // Yes/no: finish in the deadline month, with a preparation month before it where there's room.
@@ -230,6 +236,8 @@ interface ActivityTemplate {
   unit: string | null;
   target: number | null;
   goalType: GoalType;
+  /** The business counter that measures it, so the quick counters on Today move it. */
+  metricKey?: string;
 }
 
 /**
@@ -237,6 +245,23 @@ interface ActivityTemplate {
  * starting point to edit, not a prescription.
  */
 export const ACTIVITIES: Record<string, ActivityTemplate[]> = {
+  imperium: [
+    { title: "Call leads", unit: "leads", target: 50, goalType: "process", metricKey: "leads_called" },
+    { title: "Follow up with leads", unit: "follow-ups", target: 20, goalType: "process", metricKey: "follow_ups" },
+    { title: "Post reels", unit: "reels", target: 5, goalType: "process", metricKey: "reels_posted" },
+    { title: "Send quotes", unit: "quotes", target: 5, goalType: "process", metricKey: "quotes_sent" },
+    { title: "Film before/after content", unit: "posts", target: 3, goalType: "process", metricKey: "before_after" },
+  ],
+  websites: [
+    { title: "Build demos", unit: "demos", target: 10, goalType: "process", metricKey: "demos_built" },
+    { title: "Make cold calls", unit: "calls", target: 100, goalType: "process", metricKey: "cold_calls" },
+    { title: "Follow up with prospects", unit: "follow-ups", target: 20, goalType: "process", metricKey: "follow_ups" },
+    { title: "Deliver websites", unit: "websites", target: 1, goalType: "process", metricKey: "delivered" },
+  ],
+  "ai trading": [
+    { title: "Finish the next milestone step", unit: null, target: null, goalType: "binary" },
+    { title: "Write up what the tests showed", unit: null, target: null, goalType: "binary" },
+  ],
   business: [
     { title: "Contact prospects", unit: "prospects", target: 25, goalType: "process" },
     { title: "Run sales calls", unit: "calls", target: 3, goalType: "process" },
@@ -309,7 +334,7 @@ export function monthToWeeks(goal: MonthlyGoal, areaName: string | null, today: 
   const weeks = remainingWeeks(goal.monthStart, today);
   if (weeks.length === 0) return [];
   const out: DraftGoal[] = [];
-  const base = { metric: goal.metric, why: goal.why, optional: false };
+  const base = { metric: goal.metric, why: goal.why, optional: false, metricId: goal.progressSource === "metric" ? goal.metricId : null, metricKey: null };
 
   if (isNumeric(goal.goalType) && goal.targetValue !== null) {
     if (goal.aggregation === "latest" || goal.goalType === "performance") {
@@ -348,7 +373,9 @@ export function monthToWeeks(goal: MonthlyGoal, areaName: string | null, today: 
         metric: null,
         cadence: "total",
         aggregation: "sum",
-        progressSource: a.target === null ? "manual" : "actions",
+        progressSource: a.target === null ? "manual" : a.metricKey ? "metric" : "actions",
+        metricId: null,
+        metricKey: a.metricKey ?? null,
         startValue: null,
         targetValue: a.target,
         isMajor: false,

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { BibleJournal } from "@/components/bible/bible-journal";
-import { FIRST_READING, formatReading, nextReading } from "@/lib/bible";
+import { PLANS, formatReading, nextInPlan } from "@/lib/bible";
 import { firstDayOf, getViewer } from "@/lib/data";
 import { isLocalDate, relativeDayLabel } from "@/lib/day";
 
@@ -23,7 +23,7 @@ export default async function BiblePage({ searchParams }: PageProps<"/bible">) {
     supabase.from("bible_readings").select("book,chapter").lt("local_date", date).order("local_date", { ascending: false }).limit(1).maybeSingle(),
     supabase
       .from("bible_readings")
-      .select("local_date,book,chapter,passage,is_completed,bible_entries(obey_today,observation,soap_done)")
+      .select("local_date,book,chapter,passage,is_completed,bible_entries(journal,obey_today,observation)")
       .lt("local_date", date)
       .order("local_date", { ascending: false })
       .limit(30),
@@ -36,7 +36,7 @@ export default async function BiblePage({ searchParams }: PageProps<"/bible">) {
   const reading = readingRes.data;
   const entryRaw = reading?.bible_entries ?? null;
   const entry = Array.isArray(entryRaw) ? entryRaw[0] ?? null : entryRaw;
-  const suggested = lastRes.data ? nextReading(lastRes.data) : FIRST_READING;
+  const suggested = nextInPlan(viewer.profile.biblePlan, lastRes.data);
 
   return (
     <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
@@ -55,13 +55,8 @@ export default async function BiblePage({ searchParams }: PageProps<"/bible">) {
           passage: reading?.passage ?? null,
           suggested: !reading,
         }}
-        entry={{
-          scripture_notes: entry?.scripture_notes ?? "",
-          observation: entry?.observation ?? "",
-          application: entry?.application ?? "",
-          prayer: entry?.prayer ?? "",
-          obey_today: entry?.obey_today ?? "",
-        }}
+        planLabel={PLANS[viewer.profile.biblePlan].label}
+        journal={entry?.journal ?? ""}
       />
 
       <section aria-labelledby="bible-history" className="border-t border-border pt-6">
@@ -74,7 +69,7 @@ export default async function BiblePage({ searchParams }: PageProps<"/bible">) {
           <ol className="divide-y divide-border/70">
             {(historyRes.data ?? []).map((r) => {
               const e = Array.isArray(r.bible_entries) ? r.bible_entries[0] : r.bible_entries;
-              const line = e?.obey_today || e?.observation;
+              const line = e?.journal || e?.obey_today || e?.observation;
               return (
                 <li key={r.local_date}>
                   <Link href={`/bible?d=${r.local_date}`} className="grid gap-0.5 py-3 hover:bg-accent/40">

@@ -93,6 +93,9 @@ const settingsSchema = z.object({
     .int()
     .min(1, "The streak line has to be at least 1%.")
     .max(100, "The streak line can't be over 100%."),
+  workDays: z.array(z.number().int().min(1).max(7)).min(1, "Pick at least one work day.").max(7).optional(),
+  botHours: z.number().min(0, "Hours can't be negative.").max(16, "Keep it at 16 hours or less.").optional(),
+  biblePlan: z.enum(["bible", "new_testament", "gospels", "psalms_proverbs"]).optional(),
 });
 
 export async function saveSettings(input: z.input<typeof settingsSchema>): Promise<ActionResult> {
@@ -108,6 +111,9 @@ export async function saveSettings(input: z.input<typeof settingsSchema>): Promi
       day_start_hour: d.dayStartHour,
       work_target_hours: d.workTargetHours,
       streak_threshold: d.streakThreshold,
+      ...(d.workDays ? { work_days: [...new Set(d.workDays)].sort() } : {}),
+      ...(d.botHours !== undefined ? { area_hour_targets: { ...viewer.profile.hourTargets, trading: d.botHours } } : {}),
+      ...(d.biblePlan ? { bible_plan: d.biblePlan } : {}),
     })
     .eq("user_id", viewer.userId);
   if (error) return dbFail(error, "Your settings weren't saved. Try again.");

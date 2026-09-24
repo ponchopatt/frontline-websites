@@ -1,53 +1,97 @@
+import type { Area, WorkArea } from "./areas";
+import type { PlanKey } from "./bible";
 import type { LocalDate } from "./day";
 import type { DayScore } from "./streak";
 
 export type HabitCategory = "morning" | "body" | "discipline" | "god";
-export type PriorityStatus = "pending" | "done" | "dropped";
-export type BibleCheck = "reading" | "soap" | "prayer" | "application";
-export type BibleTextField = "scripture_notes" | "observation" | "application" | "prayer" | "obey_today";
+export type HabitKind = "bible" | "journal" | "prayer" | "evening_prayer" | "gym" | "cardio";
+export type TaskStatus = "pending" | "done" | "dropped";
 
-export const REVIEW_FIELDS = [
-  "accomplished",
-  "wasted_time_on",
-  "broke_word_where",
-  "sought_god",
-  "grateful_for",
-  "tomorrow_priority",
-] as const;
+/** The night review: four questions, then Complete Day. */
+export const REVIEW_FIELDS = ["accomplished", "wasted_time_on", "broke_word_where", "tomorrow_priority"] as const;
 export type ReviewField = (typeof REVIEW_FIELDS)[number];
+export type ReviewState = Record<ReviewField, string>;
 
 export interface ProfileSettings {
   displayName: string | null;
   timezone: string;
   dayStartHour: number;
   workTargetHours: number;
+  /** Keep My Word line for the streak, 0–100. */
   streakThreshold: number;
   bestStreak: number;
+  /** ISO weekdays that are work days. */
+  workDays: number[];
+  /** Hours a day to give a business, e.g. { trading: 2 }. */
+  hourTargets: Partial<Record<WorkArea, number>>;
+  biblePlan: PlanKey;
 }
 
 export interface HabitItem {
   id: string;
   name: string;
   category: HabitCategory;
+  kind: HabitKind | null;
+  /** ISO weekdays it's due; null for every day. */
+  days: number[] | null;
+  /** Due on the day being shown. */
+  due: boolean;
   sortOrder: number;
   completedAt: string | null;
   editedAt: string | null;
 }
 
-export interface PriorityItem {
-  position: 1 | 2 | 3;
-  id: string | null;
-  /** Set when the priority came from a goal's daily action. */
-  dailyGoalId: string | null;
+/** What a task supports, all the way up. Plain data so it can cross to the browser. */
+export interface GoalChain {
+  weekly: { id: string; title: string; weekStart: LocalDate } | null;
+  monthly: { id: string; title: string; monthStart: LocalDate } | null;
+  yearly: { id: string; title: string; year: number } | null;
+}
+
+export interface TaskItem {
+  id: string;
+  /** Null: parked for later. */
+  localDate: LocalDate | null;
   title: string;
-  description: string | null;
-  status: PriorityStatus;
+  area: Area | null;
+  category: string | null;
+  /** 1–3: today's Big 3. */
+  rank: 1 | 2 | 3 | null;
+  status: TaskStatus;
+  priority: 1 | 2 | 3;
+  dueDate: LocalDate | null;
+  notes: string | null;
+  quantity: number | null;
+  unit: string | null;
+  metricId: string | null;
+  weeklyGoalId: string | null;
+  carriedFromId: string | null;
   completedAt: string | null;
+  chain: GoalChain | null;
+  proofCount: number;
+}
+
+export interface CounterItem {
+  id: string;
+  area: Area;
+  key: string;
+  label: string;
+  grp: string | null;
+  unit: string | null;
+  aggregation: "sum" | "latest";
+  pinned: boolean;
+  /** Today's entry (a level shows its latest value). */
+  value: number;
+  /** Today's target, or null. */
+  target: number | null;
+  weekTotal: number;
+  weekTarget: number | null;
 }
 
 export interface WorkBlockItem {
   id: string;
   task: string;
+  area: WorkArea | null;
   plannedStart: string | null; // "HH:MM"
   plannedEnd: string | null;
 }
@@ -55,6 +99,7 @@ export interface WorkBlockItem {
 export interface WorkSessionItem {
   id: string;
   blockId: string | null;
+  area: WorkArea | null;
   localDate: LocalDate;
   startedAt: string;
   endedAt: string | null;
@@ -66,54 +111,41 @@ export interface BibleState {
   book: string;
   chapter: number;
   passage: string | null;
-  /** True when no reading is saved for the day yet and this one is suggested. */
+  /** True when no reading is saved for the day yet and this one comes from the plan. */
   suggested: boolean;
-  checks: Record<BibleCheck, boolean>;
-  obeyToday: string;
+  journal: string;
+  plan: PlanKey;
 }
 
-export type ReviewState = Record<ReviewField, string>;
-
-/** What a daily action supports, all the way up. Plain data so it can cross to the browser. */
-export interface GoalChain {
-  weekly: { id: string; title: string; weekStart: LocalDate } | null;
-  monthly: { id: string; title: string; monthStart: LocalDate } | null;
-  yearly: { id: string; title: string; year: number } | null;
-}
-
-export interface PlanSuggestion {
-  key: string;
+export interface MilestoneStep {
   title: string;
-  quantity: number | null;
-  unit: string | null;
-  estimatedMinutes: number;
-  weeklyGoalId: string | null;
-  carriedFromId: string | null;
-  createsWorkBlock: boolean;
-  reasons: string[];
-  chain: GoalChain | null;
+  done: boolean;
 }
 
-export interface PlanAction {
+export interface MilestoneItem {
   id: string;
   title: string;
-  quantity: number | null;
-  unit: string | null;
-  rank: 1 | 2 | 3 | null;
-  status: "pending" | "done" | "dropped";
-  chain: GoalChain | null;
+  steps: MilestoneStep[];
 }
 
-/** Today's side of the goal system: suggestions from this week's goals, and accepted actions. */
-export interface TodayPlan {
-  big3: PlanSuggestion[];
-  supporting: PlanSuggestion[];
-  actions: PlanAction[];
-  /** Any active goal exists at all. */
-  hasGoals: boolean;
-  /** This week has goals planned. */
-  hasWeekPlan: boolean;
-  weekStart: LocalDate;
+export interface ProofItem {
+  id: string;
+  /** A short-lived link to the photo. */
+  url: string | null;
+  taskId: string | null;
+  habitId: string | null;
+  label: string | null;
+  uploadedAt: string;
+}
+
+/** Today → Week → Month → Year for one yearly goal. */
+export interface GoalLadder {
+  area: Area | null;
+  yearly: { id: string; title: string; year: number; ratio: number | null };
+  monthly: { id: string; title: string; monthStart: LocalDate; ratio: number | null } | null;
+  weekly: { id: string; title: string; weekStart: LocalDate; ratio: number | null } | null;
+  /** Today's part, e.g. "10 leads called" or "$1,000 revenue target". */
+  today: string | null;
 }
 
 export interface DayView {
@@ -124,21 +156,32 @@ export interface DayView {
   locked: { score: number; completedAt: string } | null;
   profile: ProfileSettings;
   habits: HabitItem[];
-  priorities: [PriorityItem, PriorityItem, PriorityItem];
-  /** Last night's "tomorrow's #1", offered for an empty first priority. */
-  prioritySuggestion: string | null;
+  /** Today's tasks: the Big 3 (ranked) and the rest. */
+  tasks: TaskItem[];
+  /** Pending tasks from the last week that haven't been moved on. */
+  unfinished: TaskItem[];
+  /** Tasks parked for later. */
+  later: TaskItem[];
+  /** Last night's answer to "tomorrow's #1". */
+  lastNightPriority: string | null;
+  counters: CounterItem[];
   blocks: WorkBlockItem[];
   sessions: WorkSessionItem[];
   /** The running session, whichever day it belongs to. */
   openSession: (WorkSessionItem & { task: string | null }) | null;
   bible: BibleState;
   review: ReviewState;
+  milestone: MilestoneItem | null;
+  /** Monday to Sunday of this week. */
+  gymWeek: Array<{ date: LocalDate; due: boolean; done: boolean }>;
+  cardioWeek: { done: number; days: number };
+  proofs: ProofItem[];
   streak: { current: number; best: number };
-  /** The last 30 days, oldest first, ending with this view's today. */
+  /** The last 30 days of Keep My Word, oldest first, ending with this view's today. */
   history: DayScore[];
-  /** When the account started, so the day picker does not wander before it. */
   firstDay: LocalDate;
-  plan: TodayPlan | null;
+  ladders: GoalLadder[];
+  weekStart: LocalDate;
 }
 
 export type ActionResult<T = undefined> =
