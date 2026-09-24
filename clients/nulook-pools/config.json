@@ -86,7 +86,7 @@
     "enquireIntro": "Where the pool would go, what the access is like from the street, and roughly what size you have in mind. A photo of the yard helps more than anything."
   },
   "stats": {
-    "googleRating": 5.0,
+    "googleRating": 5,
     "reviewCount": 35
   },
   "statLabels": {
@@ -154,30 +154,30 @@
       "title": "Landscaping, tiling & paving",
       "blurb": "Done with the pool as one package, using local contractors — so you are not sourcing separate quotes and organising trades to finish the job. Pictured: the Torrens, from the range.",
       "photo": {
-        "src": "assets/torrens-sandstone-800.webp",
-        "srcset": "assets/torrens-sandstone-480.webp 480w, assets/torrens-sandstone-800.webp 800w, assets/torrens-sandstone-1296.webp 1296w",
-        "width": 1296,
-        "height": 968,
-        "alt": "Range photo of the Torrens fibreglass shape: a small plunge pool edged in crazy-paved sandstone, with a stepped rock waterfall spilling into it",
+        "src": "assets/sample-pool-crazy-paving-800.webp",
+        "srcset": "assets/sample-pool-crazy-paving-480.webp 480w, assets/sample-pool-crazy-paving-800.webp 800w, assets/sample-pool-crazy-paving-1156.webp 1156w",
+        "width": 1156,
+        "height": 1542,
+        "alt": "A pool surrounded by crazy-paved stone, with a stone garden wall, shade umbrellas and trees behind",
         "sample": true,
-        "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
-        "sourceUrl": "https://www.nulookpools.com.au/the-torrens",
-        "credit": "The Torrens — Conquest range photo, via nulookpools.com.au (Torrens_4m_HawaiianSand_2-2ea532aa.jpeg)"
+        "license": "CC0 1.0 (public domain), WordPress Photo Directory, photo by markvanjaarsveld",
+        "sourceUrl": "https://wordpress.org/photos/photo/6116300b69/",
+        "credit": "Sample photo: “Pools scene” by markvanjaarsveld, CC0, wordpress.org/photos (cropped to portrait)"
       }
     },
     {
       "title": "Pool maintenance",
       "blurb": "Nulook looks after pools as well as putting them in. Ask John what yours needs when you call. Pictured: the Darling, from the range.",
       "photo": {
-        "src": "assets/darling-granite-800.webp",
-        "srcset": "assets/darling-granite-480.webp 480w, assets/darling-granite-800.webp 800w, assets/darling-granite-1024.webp 1024w",
-        "width": 1024,
-        "height": 683,
-        "alt": "Range photo of the Darling fibreglass shape: a long rectangular pool in a dark granite finish with pale coping, beside a brick house",
+        "src": "assets/sample-pool-cleaner-800.webp",
+        "srcset": "assets/sample-pool-cleaner-480.webp 480w, assets/sample-pool-cleaner-800.webp 800w, assets/sample-pool-cleaner-1200.webp 1200w",
+        "width": 1200,
+        "height": 1600,
+        "alt": "A backyard pool with an automatic pool cleaner and its hose in the water, fruit trees behind",
         "sample": true,
-        "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
-        "sourceUrl": "https://www.nulookpools.com.au/the-darling",
-        "credit": "The Darling — Conquest range photo, via nulookpools.com.au (Darling-8m-Crystal-Granite-Marble-Grey.jpg)"
+        "license": "CC BY 2.0, photo by Dru Bloomfield on Flickr",
+        "sourceUrl": "https://www.flickr.com/photos/14544437@N07/5193397096",
+        "credit": "Sample photo: “Camelback in the Backyard” by Dru Bloomfield - At Home in Scottsdale, CC BY 2.0 (cropped to portrait)"
       }
     }
   ],
@@ -224,49 +224,49 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/diamantina-hero-1800.webp",
-      "srcset": "assets/diamantina-hero-480.webp 480w, assets/diamantina-hero-800.webp 800w, assets/diamantina-hero-1200.webp 1200w, assets/diamantina-hero-1800.webp 1800w",
-      "width": 1800,
-      "height": 1008,
-      "alt": "Range photo of the Diamantina fibreglass shape: a freeform pool set in a timber deck with sandstone coping and a water blade, tree-covered hills behind",
+      "src": "assets/sample-pool-timber-deck-1600.webp",
+      "srcset": "assets/sample-pool-timber-deck-480.webp 480w, assets/sample-pool-timber-deck-800.webp 800w, assets/sample-pool-timber-deck-1200.webp 1200w, assets/sample-pool-timber-deck-1600.webp 1600w, assets/sample-pool-timber-deck-2048.webp 2048w",
+      "width": 2048,
+      "height": 1536,
+      "alt": "A rectangular in-ground pool edged in grey stone coping, set into a timber deck, with gum trees and palms behind",
       "sample": true,
-      "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
-      "sourceUrl": "https://www.nulookpools.com.au/the-diamantina",
-      "credit": "The Diamantina — Conquest range photo, via nulookpools.com.au (Diamantina_13.5m_HawaiianSequins.jpg (top 200px cropped, lightened 12%))"
+      "license": "CC0 1.0 (public domain), WordPress Photo Directory, photo by Michael Burridge",
+      "sourceUrl": "https://wordpress.org/photos/photo/7056228e44/",
+      "credit": "Sample photo: “Swimming Pool” by Michael Burridge, CC0, wordpress.org/photos"
     },
     "statement": {
-      "src": "assets/saxby-courtyard-1200.webp",
-      "srcset": "assets/saxby-courtyard-480.webp 480w, assets/saxby-courtyard-800.webp 800w, assets/saxby-courtyard-1200.webp 1200w, assets/saxby-courtyard-1600.webp 1600w",
+      "src": "assets/sample-pool-paved-lawn-1200.webp",
+      "srcset": "assets/sample-pool-paved-lawn-480.webp 480w, assets/sample-pool-paved-lawn-800.webp 800w, assets/sample-pool-paved-lawn-1200.webp 1200w, assets/sample-pool-paved-lawn-1600.webp 1600w",
       "width": 1600,
-      "height": 1200,
-      "alt": "Range photo of the Saxby fibreglass shape: a small pool in a courtyard of charcoal walls, with a water blade, a raised planter and pale paving",
+      "height": 2000,
+      "alt": "An angular pool with stencilled concrete paving round it, a lawn and tall trees behind",
       "sample": true,
-      "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
-      "sourceUrl": "https://www.nulookpools.com.au/the-saxby",
-      "credit": "The Saxby — Conquest range photo, via nulookpools.com.au (5m-Saxby-Pearl.jpeg)"
+      "license": "CC BY 2.0, photo by corsi photo on Flickr",
+      "sourceUrl": "https://www.flickr.com/photos/11211909@N00/52097588417",
+      "credit": "Sample photo: “Backyard - pool before rebuild” by corsi photo, CC BY 2.0 (cropped to portrait)"
     },
     "aperture": {
-      "src": "assets/macquarie-sandstone-1600.webp",
-      "srcset": "assets/macquarie-sandstone-480.webp 480w, assets/macquarie-sandstone-800.webp 800w, assets/macquarie-sandstone-1200.webp 1200w, assets/macquarie-sandstone-1600.webp 1600w, assets/macquarie-sandstone-1920.webp 1920w",
-      "width": 1920,
-      "height": 1440,
-      "alt": "Range photo of the Macquarie fibreglass shape: a pool with a curved end in rose sandstone paving, a timber screen and outdoor seating behind",
-      "caption": "Range photo · the Macquarie, sandstone paving",
+      "src": "assets/sample-pool-stone-lawn-1600.webp",
+      "srcset": "assets/sample-pool-stone-lawn-480.webp 480w, assets/sample-pool-stone-lawn-800.webp 800w, assets/sample-pool-stone-lawn-1200.webp 1200w, assets/sample-pool-stone-lawn-1600.webp 1600w, assets/sample-pool-stone-lawn-2048.webp 2048w",
+      "width": 2048,
+      "height": 1536,
+      "alt": "A pool with wide pale stone paving and steps, set into a lawn with sun lounges and big shade trees",
+      "caption": "Stone paving, steps and lawn around the pool",
       "sample": true,
-      "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
-      "sourceUrl": "https://www.nulookpools.com.au/the-macquarie",
-      "credit": "The Macquarie — Conquest range photo, via nulookpools.com.au (Macquarie_10.5m_CGNiteBlue_3.jpg)"
+      "license": "CC0 1.0 (public domain), WordPress Photo Directory, photo by Rámon van Raaij",
+      "sourceUrl": "https://wordpress.org/photos/photo/118662e8d9/",
+      "credit": "Sample photo: “A outdoors swimming pool, grass, bushes and trees in the background” by Rámon van Raaij, CC0, wordpress.org/photos"
     },
     "enquiryBackground": {
-      "src": "assets/montague-aggregate-1200.webp",
-      "srcset": "assets/montague-aggregate-480.webp 480w, assets/montague-aggregate-800.webp 800w, assets/montague-aggregate-1200.webp 1200w",
+      "src": "assets/sample-pool-empty-1200.webp",
+      "srcset": "assets/sample-pool-empty-800.webp 800w, assets/sample-pool-empty-1200.webp 1200w",
       "width": 1200,
       "height": 900,
+      "alt": "",
       "sample": true,
-      "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
-      "sourceUrl": "https://www.nulookpools.com.au/the-montague",
-      "credit": "The Montague — Conquest range photo, via nulookpools.com.au (Montague_8m_NiteBlue_1-scaled.jpg)",
-      "alt": ""
+      "license": "CC0 1.0 (public domain), WordPress Photo Directory, photo by Javier Casares",
+      "sourceUrl": "https://wordpress.org/photos/photo/62264079f1/",
+      "credit": "Sample photo: “Empty pool” by Javier Casares, CC0, wordpress.org/photos (decorative background, 22% opacity)"
     },
     "gallery": [
       {
