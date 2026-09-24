@@ -30,17 +30,24 @@ export function uniqueEmail(tag: string) {
   return `${tag}-${Date.now()}-${process.pid}-${counter}@e2e.test`;
 }
 
-/** Signs up through the real form and waits for the dashboard to be interactive. */
-export async function signUp(page: Page, email = uniqueEmail("user")): Promise<{ email: string; userId: string }> {
+/**
+ * Signs up through the real form. A new account starts at first-run setup; unless `setup` is
+ * asked for, it's marked done (no passcode) and the dashboard is waited for.
+ */
+export async function signUp(page: Page, email = uniqueEmail("user"), opts: { setup?: boolean } = {}): Promise<{ email: string; userId: string }> {
   await page.goto("/signup");
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password").fill(PASSWORD);
   await page.getByRole("button", { name: "Create account" }).click();
-  await page.waitForURL("/");
-  await waitForApp(page);
+  await page.waitForURL("**/welcome");
   const { data } = await admin.auth.admin.listUsers({ perPage: 1000 });
   const user = data.users.find((u) => u.email === email);
   if (!user) throw new Error(`User ${email} was not created`);
+  if (!opts.setup) {
+    await admin.from("profiles").update({ onboarded_at: new Date().toISOString() }).eq("user_id", user.id);
+    await page.goto("/");
+    await waitForApp(page);
+  }
   return { email, userId: user.id };
 }
 

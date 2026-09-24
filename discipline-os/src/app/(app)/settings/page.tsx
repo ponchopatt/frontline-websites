@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { signOut } from "@/app/actions/account";
 import { MinimumForm } from "@/components/settings/minimum-form";
+import { PasscodeForm } from "@/components/settings/passcode-form";
 import { SettingsForm } from "@/components/settings/settings-form";
 import { ThemeChoice } from "@/components/settings/theme-choice";
 import { SectionCard } from "@/components/section-card";
@@ -33,6 +34,14 @@ export default async function SettingsPage() {
       <SettingsForm profile={viewer.profile} />
 
       <MinimumForm habits={habitsRes.data ?? []} workMinutes={viewer.profile.minimumWorkMinutes} fitness={viewer.profile.minimumFitness} />
+
+      <PasscodeForm passcodeSet={viewer.passcodeSet} />
+
+      <SectionCard title="Setup" description="Your goals for the year, why they matter, and your daily and weekly numbers.">
+        <Link href="/welcome" className="inline-flex h-12 items-center justify-center rounded-full border border-border px-5 text-[15px] hover:bg-accent">
+          Redo setup
+        </Link>
+      </SectionCard>
 
       <SectionCard title="Appearance">
         <ThemeChoice />

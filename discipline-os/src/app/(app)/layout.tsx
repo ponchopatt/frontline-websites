@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { AppNav } from "@/components/app-nav";
 import { GlobalBar } from "@/components/global-bar";
 import { isWorkArea } from "@/lib/areas";
@@ -5,6 +6,8 @@ import { getViewer } from "@/lib/data";
 
 export default async function AppLayout({ children }: LayoutProps<"/">) {
   const viewer = await getViewer();
+  // First visit: set up goals, targets and the passcode before anything else.
+  if (!viewer.onboardedAt) redirect("/welcome");
   const [{ data: open }, { data: ranked }] = await Promise.all([
     viewer.supabase.from("work_sessions").select("id,area,started_at").is("ended_at", null).maybeSingle(),
     viewer.supabase.from("daily_goals").select("rank").eq("local_date", viewer.today).not("rank", "is", null),

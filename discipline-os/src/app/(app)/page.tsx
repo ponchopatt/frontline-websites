@@ -7,6 +7,7 @@ import { firstDayOf, getViewer, loadDay } from "@/lib/data";
 import { isLocalDate, startOfWeek } from "@/lib/day";
 import { loadGoalYear, yearOfWeek } from "@/lib/goals/data";
 import { loadFacts } from "@/lib/history-server";
+import { firstName } from "@/lib/names";
 import type { BossSummary } from "@/lib/types";
 
 export const metadata: Metadata = { title: "Today" };
@@ -29,9 +30,7 @@ export default async function TodayPage({ searchParams }: PageProps<"/">) {
   const [view, boss] = await Promise.all([loadDay(viewer, date, loadFacts(viewer)), isToday ? loadBoss(viewer) : Promise.resolve(null)]);
   const [h, m] = formatInTimeZone(new Date(), viewer.profile.timezone, "H:mm").split(":").map(Number);
   const hour = h + m / 60;
-  // A real first name only: an email prefix like "pat123" isn't one.
-  const first = viewer.profile.displayName?.trim().split(/\s+/)[0] ?? "";
-  const name = /^[\p{L}'-]{2,14}$/u.test(first) ? first[0].toUpperCase() + first.slice(1) : null;
+  const name = firstName(viewer.profile.displayName);
   // A new day starts fresh; within a day, Today takes the server's lists as they change.
   return <Today key={date} view={view} partOfDay={partOfDay(hour)} name={name} hour={hour} boss={boss} />;
 }

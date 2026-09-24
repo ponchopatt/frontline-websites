@@ -1,0 +1,74 @@
+# Discipline OS: every change is checked before it can reach the live app.
+#   checks  lint, types and unit tests (a minute)
+#   full    the database's own tests (pgTAP) and the whole app in a browser (Playwright),
+#           against a local Supabase started in the runner
+name: Discipline OS
+
+on:
+  push:
+    branches: [main]
+    paths: ["discipline-os/**", ".github/workflows/discipline-os.yml"]
+  pull_request:
+    paths: ["discipline-os/**", ".github/workflows/discipline-os.yml"]
+  workflow_dispatch:
+
+concurrency:
+  group: discipline-os-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: discipline-os
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: discipline-os/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+
+  full:
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: discipline-os/package-lock.json
+      - run: npm ci
+      - name: Start local Supabase
+        run: npx supabase start -x realtime,studio,imgproxy,edge-runtime,logflare,vector,postgres-meta,supavisor,mailpit
+      - name: Database tests
+        run: npm run db:test
+      - name: Types match the database
+        run: |
+          npm run db:types
+          git diff --exit-code -- src/lib/supabase/database.types.ts
+      - run: npx playwright install --with-deps chromium
+      - name: Build against local Supabase
+        run: |
+          eval "$(npx supabase status -o env | sed -n 's/^\(API_URL\|ANON_KEY\)=/SB_\1=/p')"
+          NEXT_PUBLIC_SUPABASE_URL="$SB_API_URL" NEXT_PUBLIC_SUPABASE_ANON_KEY="$SB_ANON_KEY" npm run build
+      - name: End-to-end tests
+        run: npm run test:e2e
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: discipline-os/test-results
+          retention-days: 7

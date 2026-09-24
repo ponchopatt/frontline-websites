@@ -155,6 +155,33 @@ refines those suggestions from the same numbers and your notes; `AI_GOALS_MODEL`
 model (default `claude-opus-5`). Any AI error falls back to the rule suggestions. The key is
 only read on the server and never sent to the browser.
 
+### First-run setup and the passcode
+
+A new account starts at **Welcome**, one question a screen:
+
+1. **What should we call you?** (Angus unless the account already has a first name.)
+2. **Your passcode:** four digits asked for each time the app is opened (1906 to start).
+3. **What do you want to achieve?** This year or next, with a suggested goal for Imperium
+   revenue, websites sold, the AI trading bot, Bible days, gym sessions, Keep My Word and savings.
+   Each is on or off, renamed or re-numbered in place; a year already under way gets its share.
+   Every goal is tied to what already measures it: Imperium revenue and websites sold to their
+   counters, Bible and gym to their habits.
+4. **Who are you becoming, and why?** (shown on the Goals page.)
+5. **What does a good day look like?** Work hours and days, AI bot hours, gym days, cardio
+   minutes, the streak line.
+6. **What numbers will you hit each week?** Leads, reels, revenue, website calls and demos; Today
+   splits them into a target for each work day.
+
+"Skip the rest" is there from step 3; everything can be redone from **Settings → Redo setup**.
+
+**The passcode** sits on top of the account sign-in: it keeps out someone holding an unlocked
+phone. Its hash, failed tries and signing key are in a table no client can read; the database
+checks it and hands back a 12-hour unlock token for this browser only (an httpOnly session
+cookie, so closing the app locks it). Every page and action checks the token. Five wrong tries
+in a row lock it for a minute, doubling up to 15. Forgot it: sign in again with the account
+password, and the unlock screen offers "Choose a new passcode" for the next 10 minutes.
+Change it, lock now, or turn it off in **Settings → Passcode**.
+
 ### On the phone
 
 Add it to the home screen (Share → Add to Home Screen): it has an app icon and opens full screen
@@ -181,9 +208,9 @@ Sign up with any email: local Supabase does not send confirmation emails.
 
 | Command | What it checks |
 |---|---|
-| `npm test` | Day boundaries (timezones, 04:00 start, daylight saving), Keep My Word, streaks (with minimum days), counter targets, quick add, the scoreboard, Plan my day, reading plans, goal suggestions, What should I do next, "one more" prompts, personal records and when they fire, momentum, the year view, history sentences, now-and-then cards, the Close Day summary and the replay; goal health, roll-ups, breakdowns and the goal check — 89 unit tests |
-| `npm run db:test` | The database's own rules with pgTAP: seeding, RLS isolation, no future days, locked days, one running timer, no duplicate ticks, one number per counter per day, one current bot milestone, Minimum Day counts and proof topics, no cross-user references, goal ownership down the hierarchy — 64 tests |
-| `npm run test:e2e` | The V1 definition of done, the execution day (quick add → counter finishes the task → work by business → bot milestone → proof photo → weekly scoreboard → Suggest my goals) the full goal loop (year → months → weeks → Plan my day → done → progress → weekly review), a whole day with the browser clock set to morning then evening (morning routine → Big 3 → What should I do next → Start → counters and "one more" → a personal record → cardio → night review → Close day → Day complete and replay → Progress), and a Minimum Day that keeps the streak. Runs on a phone-sized screen against a production build and local Supabase; run `npm run build` first — 14 tests |
+| `npm test` | Day boundaries (timezones, 04:00 start, daylight saving), Keep My Word, streaks (with minimum days), counter targets, quick add, the scoreboard, Plan my day, reading plans, goal suggestions, What should I do next, "one more" prompts, personal records and when they fire, momentum, the year view, history sentences, now-and-then cards, the Close Day summary and the replay; goal health, roll-ups, breakdowns and the goal check — 90 unit tests |
+| `npm run db:test` | The database's own rules with pgTAP: seeding, RLS isolation, no future days, locked days, one running timer, no duplicate ticks, one number per counter per day, one current bot milestone, Minimum Day counts and proof topics, the passcode lock (unreadable hash, wrong tries and the block, forged tokens, reset only after a fresh sign-in), no cross-user references, goal ownership down the hierarchy — 79 tests |
+| `npm run test:e2e` | The V1 definition of done, the execution day (quick add → counter finishes the task → work by business → bot milestone → proof photo → weekly scoreboard → Suggest my goals) the full goal loop (year → months → weeks → Plan my day → done → progress → weekly review), a whole day with the browser clock set to morning then evening (morning routine → Big 3 → What should I do next → Start → counters and "one more" → a personal record → cardio → night review → Close day → Day complete and replay → Progress), a Minimum Day that keeps the streak, first-run setup (name, 1906 passcode, goals, why, day, week), and the lock (wrong passcode, right passcode, lock now, skip). Runs on a phone-sized screen against a production build and local Supabase; run `npm run build` first — 16 tests |
 | `npm run typecheck` · `npm run lint` | Types and lint |
 
 ## Deploy
@@ -197,6 +224,25 @@ Sign up with any email: local Supabase does not send confirmation emails.
    `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Supabase → Project settings →
    API; the anon or publishable key). Optional: the AI settings above. Proof photos use a private
    Supabase Storage bucket, `proof`, which the migrations create.
+
+## Keeping it up to date
+
+- **Every change is checked.** `.github/workflows/discipline-os.yml` runs on each push and pull
+  request that touches `discipline-os/`: lint, types and unit tests, then the database tests,
+  a check that `database.types.ts` matches the migrations, a production build and the full
+  browser suite against a local Supabase. A red run means don't merge.
+- **Updates come to you.** Dependabot (`.github/dependabot.yml`) opens a pull request each
+  Monday with minor and patch updates grouped; the checks run on it; merge it when they're green.
+- **App changes go live on their own.** With Vercel connected to the repo, every push to `main`
+  deploys. The phone app picks up the new version the next time it's opened.
+- **Database changes go live on their own, once connected.** Add a new file to
+  `supabase/migrations/` (never edit one that's already live). After the checks pass on `main`,
+  `.github/workflows/discipline-os-migrate.yml` runs `supabase db push` against the live project.
+  It does nothing until three repository secrets are set: `SUPABASE_ACCESS_TOKEN` (Supabase →
+  Account → Access tokens), `SUPABASE_PROJECT_REF` (the project's reference id) and
+  `SUPABASE_DB_PASSWORD`. Without them, run `npx supabase db push` from this folder yourself.
+- **Before merging by hand:** `npm run lint && npm run typecheck && npm test && npm run db:test`,
+  then `npm run build && npm run test:e2e` with local Supabase running.
 
 ## How the hard parts are solved
 
@@ -274,3 +320,8 @@ The daily loop adds `habits.minimum`, `profiles.minimum_work_minutes` and `minim
 `minimum_on`, `minimum_total` and `minimum_done`. Close Day stores its summary (numbers,
 achievements, records) in `daily_plans.score_breakdown`. Everything else (streaks, records,
 momentum, the year, the replay) is worked out from rows that already existed.
+
+The passcode and first-run setup add `app_locks` (no client access at all; only the passcode
+functions read it), `profiles.onboarded_at` and `profiles.passcode_set` (guarded by a trigger so
+it can't be switched off from outside those functions), and the functions `set_passcode`,
+`unlock_app`, `lock_state`, `reset_passcode` and `remove_passcode`.

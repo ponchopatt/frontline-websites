@@ -7,6 +7,7 @@ import { asCloseSummary } from "./close-day";
 import { addDays, daysBetween, isoWeekday, localDateAt, startOfWeek, type LocalDate } from "./day";
 import { formatValue } from "./goals/format";
 import { indexHistory, memoryCard, momentum, recordBaseline, type HistoryFacts } from "./history";
+import { readUnlockToken } from "./lock";
 import { chainOf, loadGoalYear, loadLifeAreas, yearOfWeek, type GoalYear } from "./goals/data";
 import { monthStartOf } from "./goals/periods";
 import { dailyTarget, totalOver, weekShare, type DayValues, type Metric } from "./metrics";
@@ -41,14 +42,31 @@ export interface Viewer {
   profile: ProfileSettings;
   createdAt: string;
   today: LocalDate;
+  /** When first-run setup was finished, or null. */
+  onboardedAt: string | null;
+  passcodeSet: boolean;
 }
 
 /**
- * The signed-in user, their profile and their "today". Signs out to /login if there is no
- * session. Creates the profile and default habits on the first visit if the sign-up trigger
- * did not (an account made before the migration, or by an admin).
+ * The signed-in user behind the passcode lock: everything in the app goes through here. With
+ * a passcode set and no valid unlock token in this browser, it sends them to /unlock.
  */
 export const getViewer = cache(async (): Promise<Viewer> => {
+  const viewer = await getSession();
+  if (viewer.passcodeSet) {
+    const { data, error } = await viewer.supabase.rpc("lock_state", { p_token: await readUnlockToken() });
+    if (error || (data !== "open" && data !== "none")) redirect("/unlock");
+  }
+  return viewer;
+});
+
+/**
+ * The signed-in user, their profile and their "today", without the passcode check (for the
+ * unlock screen itself). Signs out to /login if there is no session. Creates the profile and
+ * default habits on the first visit if the sign-up trigger did not (an account made before
+ * the migration, or by an admin).
+ */
+export const getSession = cache(async (): Promise<Viewer> => {
   const supabase = await createClient();
   const { data: claims } = await supabase.auth.getClaims();
   const userId = claims?.claims?.sub;
@@ -80,6 +98,8 @@ export const getViewer = cache(async (): Promise<Viewer> => {
     profile,
     createdAt: row.created_at,
     today: localDateAt(new Date(), profile.timezone, profile.dayStartHour),
+    onboardedAt: row.onboarded_at,
+    passcodeSet: row.passcode_set,
   };
 });
 

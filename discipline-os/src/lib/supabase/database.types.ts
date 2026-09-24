@@ -34,6 +34,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_locks: {
+        Row: {
+          blocked_until: string | null
+          failures: number
+          pin_hash: string
+          secret: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blocked_until?: string | null
+          failures?: number
+          pin_hash: string
+          secret?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blocked_until?: string | null
+          failures?: number
+          pin_hash?: string
+          secret?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       bible_entries: {
         Row: {
           application: string | null
@@ -949,6 +976,8 @@ export type Database = {
           display_name: string | null
           minimum_fitness: boolean
           minimum_work_minutes: number
+          onboarded_at: string | null
+          passcode_set: boolean
           streak_threshold: number
           timezone: string
           updated_at: string
@@ -965,6 +994,8 @@ export type Database = {
           display_name?: string | null
           minimum_fitness?: boolean
           minimum_work_minutes?: number
+          onboarded_at?: string | null
+          passcode_set?: boolean
           streak_threshold?: number
           timezone?: string
           updated_at?: string
@@ -981,6 +1012,8 @@ export type Database = {
           display_name?: string | null
           minimum_fitness?: boolean
           minimum_work_minutes?: number
+          onboarded_at?: string | null
+          passcode_set?: boolean
           streak_threshold?: number
           timezone?: string
           updated_at?: string
@@ -1606,9 +1639,21 @@ export type Database = {
         Args: { start_hour: number; ts: string; tz: string }
         Returns: string
       }
+      lock_state: { Args: { p_token: string }; Returns: string }
+      remove_passcode: { Args: { p_current: string }; Returns: undefined }
+      reset_passcode: { Args: { p_new: string }; Returns: string }
       seed_default_habits: { Args: { p_user: string }; Returns: undefined }
       seed_life_areas: { Args: { p_user: string }; Returns: undefined }
       seed_metrics: { Args: { p_user: string }; Returns: undefined }
+      set_passcode: {
+        Args: { p_current?: string; p_new: string }
+        Returns: string
+      }
+      unlock_app: { Args: { p_pin: string }; Returns: string }
+      unlock_token: {
+        Args: { p_secret: string; p_user: string }
+        Returns: string
+      }
       user_local_date: { Args: { p_user: string; ts: string }; Returns: string }
       user_local_today: { Args: { p_user: string }; Returns: string }
     }
