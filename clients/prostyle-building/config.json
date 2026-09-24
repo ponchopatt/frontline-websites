@@ -54,14 +54,14 @@
     "heroSecondary": "Or send the details",
     "heroSecondarySms": "Or send the details",
     "navApproach": "Approach",
-    "statementLabel": "Extensions & renovations",
-    "statementHeadline": "No<br>added-on<br>look.",
-    "statementBody": "When we extend a home, the new rooms become the space you always wanted, and the outside is finished to flow with the house you already have. We work with your designers on the drawings and approvals, and build to current building and energy requirements.",
+    "statementLabel": "How we work",
+    "statementHeadline": "One person<br>to ring.",
+    "statementBody": "Every job has a dedicated construction manager who runs the programme from start to finish. You get regular site meetings and a progress report every week, and when a question comes up, you know exactly who to call.",
     "servicesLabel": "What we build",
     "servicesHeadline": "Extend, rebuild<br>or start<br>new.",
     "servicesIntro": "Our project managers and builders work with your architect or designer, and our own construction team looks after the build.",
-    "apertureLabel": "One manager",
-    "apertureLine": "A dedicated construction manager runs the programme on every job, from the first site meeting to handing back the keys.",
+    "apertureLabel": "Local",
+    "apertureLine": "We support the local community by using local suppliers.",
     "workLabel": "Selected work",
     "workHeadline": "Hawker to<br>Red Hill, and<br>out to Collector.",
     "workIntro": "A few homes from our portfolio, from Canberra's inner suburbs out to the country near Lake George.",
@@ -83,16 +83,6 @@
     "reviewsLabel": "On Google",
     "reviewsTitle": "Josh, Craig and the team.",
     "reviewsIntro": "What clients have written about us on Google."
-  },
-  "stats": {
-    "_comment": "'With over 30 years in the building industry, our team has...' (home page). The years stat only renders as a number, so it shows 30 with the sublabel 'and more, across our team'. It's the team's industry experience, not the company's age, and the label says so.",
-    "yearsInBusiness": 30
-  },
-  "statLabels": {
-    "yearsInBusiness": "Years in building"
-  },
-  "statSublabels": {
-    "yearsInBusiness": "and more, across our team"
   },
   "owner": {
     "body": "Josh Fogg is one of our co-directors. Clients deal with him directly, because he project-manages jobs himself.",
@@ -142,7 +132,7 @@
     },
     {
       "title": "Extensions & renovations",
-      "blurb": "Expand or change your home to suit how you live now. Your construction manager runs the programme, with site meetings and weekly progress reports until we hand the keys back.",
+      "blurb": "Expand or change your home to suit how you live now. We work with your designers on the drawings and approvals, and finish the outside to flow with the house you have, so it doesn't look added-on.",
       "photo": {
         "src": "assets/extension-spa-deck-966.webp",
         "srcset": "assets/extension-spa-deck-480.webp 480w, assets/extension-spa-deck-800.webp 800w, assets/extension-spa-deck-966.webp 966w",
@@ -261,12 +251,12 @@
       "_comment": "PS -120330 2276.jpg (2500x1666) from their Garran portfolio page, the only shoot they publish above 1000px. A dusk shot with the whole upper verandah lit, so the home still reads under the hero overlay on a phone (the balcony-view shot from the same shoot went almost black there, so it moved to the aperture)."
     },
     "statement": {
-      "src": "assets/extension-alfresco-dusk-966.webp",
-      "srcset": "assets/extension-alfresco-dusk-480.webp 480w, assets/extension-alfresco-dusk-800.webp 800w, assets/extension-alfresco-dusk-966.webp 966w",
-      "width": 966,
-      "height": 534,
-      "alt": "A glass-walled living extension opening onto a paved alfresco with an outdoor table, lit at dusk",
-      "_comment": "04.jpg (966x534) from their Extensions & Renovations page, so it sits beside the extensions statement. 015/016 on that page are the same house and are not used."
+      "src": "assets/curtin-deck-stairs-667.webp",
+      "srcset": "assets/curtin-deck-stairs-480.webp 480w, assets/curtin-deck-stairs-667.webp 667w",
+      "width": 667,
+      "height": 1000,
+      "alt": "Wide timber stairs rising from a paved courtyard to a covered deck and upper balcony on a brick and render two-storey home, Curtin",
+      "_comment": "_MG_6709-Edit-20160224.jpg (667x1000) from their Curtin portfolio page. A portrait original, so it fills the tall statement frame without being enlarged (their extension-page photos are 966x534 and looked soft stretched to that frame). The statement makes no claim about this job."
     },
     "aperture": {
       "src": "assets/garran-balcony-view-1800.webp",
