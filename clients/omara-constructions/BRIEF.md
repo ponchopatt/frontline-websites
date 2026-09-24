@@ -71,3 +71,10 @@ No sample photos were needed.
 
 ## Reviews decision
 The gate requires the one best_for_demo review on the page, so Lauran Trevena's review appears once, in a one-card reviews section. The intro says plainly that it's 5.0 from 2 reviews and that one of them has no text. There's no pull quote, so the same words don't appear twice.
+
+## Post-review fixes (2026-09-24)
+- The copy is now all in O'Mara's own voice ("we").
+- The reviews intro now reads "5.0 on Google from 2 reviews. In Lauran's words:".
+- The rating and count stats under the hero are gone. The gate blocks a rating shown without its count, so both went. The years stat shows 60 with "and counting, since 1964".
+- Luke's mobile is labelled in the line under the hero button. Putting the label in the phone display squashed the header logo on phones.
+- The gallery is reordered so the shortest caption (Kurrajong, "Home renovation") is last.

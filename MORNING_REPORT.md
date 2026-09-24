@@ -537,6 +537,25 @@ body membership is published anywhere, worth asking about.
 
 ---
 
+## Batch 2 (2026-09-24): the 11 prospects added from the review pull
+
+### O'Mara Constructions — PASS 4.5, shipped
+Demo: `/omara-constructions`. Custom home builder, Hawkesbury NSW. Luke O'Mara runs it; founded 1964 by his father Barry O'Mara OAM (MBA NSW President 1987-88).
+**Angle:** "Any block. Any design. Since 1964." — bushfire flame-zone, pole homes, flood and heritage work other builders turn down.
+**Opener:** "I noticed your dad's OAM, 60 years of MBA membership and eight Olympic Village homes are buried halfway down a Comic Sans page — and your best twilight photos are thumbnails."
+**Flags / ask Luke:** only 2 Google reviews in 60 years (one with no text) — that's the pitch. Licence Q14472S is from their team page, not checked on the Fair Trading register; NSW advertising normally shows the company's contractor licence, which the page doesn't have. Main number is Luke's mobile (their site: "call the builder direct"); office landline shown too. A photo of Luke or the family on site would fill the half-empty "Luke" section on desktop.
+
+### Nulook Pools — needs Pat (final 4.0)
+Every fact checks out and 5.0 from 35 is strong, but Nulook has no photos of its own installs anywhere online; all photos are labelled Conquest range shots, which caps Photos at 3. **Ask John for 4-6 photos of his own pools** and it should pass. Owner John Eldridge; Charissa is named in 5 of 8 reviews (role unknown).
+
+### Northern Beaches Roofers — not built
+A trading name of Your Local Roofers Pty Ltd (Castle Hill, multi-city, many local-sounding names). Real licensed roofer, but no local owner to pitch. Drop, or pitch the group as a different conversation.
+
+### Innovative Pools — not built (per Pat's own note)
+2.6 stars, complaints about deposits and unfinished pools. Build only if Pat says so.
+
+---
+
 ## Notes for whoever runs this next
 
 - **Builder agents have no Agent tool.** Four of them wasted time discovering
