@@ -21,11 +21,12 @@ one hand, portrait), and every screen follows the same few rules: a large title,
 lists of plain rows; one filled button at most; nothing under 44 points to tap or 13 pixels to
 read; never a card inside a card; tap a row to open its details in a sheet (drag it down to close).
 
-**The look (Sage, the default):** after the "Lightly" journal app. A deep sage ground with soft
-light from above and a fine grain; frosted white glass panels with dark ink inside; big light
-headlines in Geist; a floating glass tab bar. Settings → Appearance also has **Spark** (an orange
-glow across the top of each page, fading into cream), **Dark** (black and lamplight gold) and
-**Light**.
+**The look (Onyx, the default):** cool and quiet, like a well-made watch face. A charcoal-blue
+ground with a cold light from above and a fine grain; panels of smoked glass with a hairline of
+light along the top; ice-white type in Geist; platinum for the one filled button; a cool mint once
+something is kept. Settings → Appearance also has **Sage** (a deep green ground with frosted white
+glass, after the "Lightly" journal app), **Spark** (an orange glow across the top of each page,
+fading into cream), **Dark** (black and lamplight gold) and **Light**.
 
 **Four tabs, one job each:**
 
@@ -247,7 +248,10 @@ Sign up with any email: local Supabase does not send confirmation emails.
   they're green. Major versions are left out: do those by hand when the tools around them
   (Next.js's lint config, Vercel's Node version) support them.
 - **App changes go live on their own.** With Vercel connected to the repo, every push to `main`
-  deploys. The phone app picks up the new version the next time it's opened.
+  deploys. A phone that kept the old version open (a home-screen app comes back as it was left)
+  reloads itself the first time a button reaches the new server, so buttons never go quiet after
+  a release. On Vercel's Pro plan, **Settings → Deployment Protection → Skew Protection** makes
+  that seamless: an open page keeps talking to the version it loaded.
 - **Database changes go live on their own, once connected.** Add a new file to
   `supabase/migrations/` (never edit one that's already live). Its name must sort after the
   newest file already there: until 29 September 2026 `npx supabase migration new` makes an

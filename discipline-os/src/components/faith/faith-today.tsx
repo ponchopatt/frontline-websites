@@ -3,6 +3,7 @@
 import { Check } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { reloadIfStale } from "@/lib/stale";
 import { saveJournal, setReading } from "@/app/actions/day";
 import { setHabitDone } from "@/app/actions/habits";
 import { AutosaveField } from "@/components/autosave-field";
@@ -45,7 +46,7 @@ export function FaithToday({ date, locked, reading: initial, planLabel, journal,
       if (!res.ok) throw new Error(res.error);
     } catch (e) {
       setTicks((list) => list.map((x) => (x.id === t.id ? { ...x, done: t.done } : x)));
-      toast.error(e instanceof Error && e.message ? e.message : "That didn't save. Check your connection and try again.");
+      if (!reloadIfStale(e)) toast.error(e instanceof Error && e.message ? e.message : "That didn't save. Check your connection and try again.");
     }
   }
 
@@ -94,7 +95,7 @@ export function FaithToday({ date, locked, reading: initial, planLabel, journal,
               aria-label={t.label}
               disabled={locked}
               onClick={() => void toggle(t)}
-              className="flex min-h-14 w-full items-center gap-3 px-4 text-left transition-colors active:bg-accent disabled:cursor-default"
+              className="flex min-h-14 w-full items-center gap-3 px-4 text-left transition-colors duration-150 active:bg-accent disabled:cursor-default disabled:opacity-55"
             >
               <span
                 aria-hidden

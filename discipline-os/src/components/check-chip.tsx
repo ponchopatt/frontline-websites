@@ -27,7 +27,7 @@ export function CheckChip({ label, done, disabled, hint, onToggle, className }: 
         onToggle(!done);
       }}
       className={cn(
-        "group flex min-h-12 w-full touch-manipulation items-center gap-2 rounded-xl border px-2.5 py-2 text-left transition-colors disabled:cursor-default",
+        "group flex min-h-12 w-full touch-manipulation items-center gap-2 rounded-xl border px-2.5 py-2 text-left transition-colors duration-150 disabled:cursor-default disabled:opacity-55",
         done ? "border-primary/35 bg-lamp-soft" : "border-border bg-card/40",
         !disabled && "active:bg-accent/70",
         className,

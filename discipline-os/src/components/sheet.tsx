@@ -27,7 +27,18 @@ export function Sheet({ open, onClose, title, subtitle, children, className }: S
     const d = ref.current;
     if (!d) return;
     if (open && !d.open) d.showModal();
-    if (!open && d.open) d.close();
+    if (!open && d.open) {
+      // Slide out first; the dialog closes once that's done.
+      d.classList.add("sheet-closing");
+      const t = setTimeout(() => {
+        d.classList.remove("sheet-closing");
+        if (d.open) d.close();
+      }, 180);
+      return () => {
+        clearTimeout(t);
+        d.classList.remove("sheet-closing");
+      };
+    }
   }, [open]);
 
   return (
@@ -41,7 +52,7 @@ export function Sheet({ open, onClose, title, subtitle, children, className }: S
       style={dy ? { transform: `translateY(${dy}px)`, transition: "none" } : undefined}
       className={cn(
         "surface-light m-0 mt-auto max-h-[90dvh] w-full max-w-none overflow-y-auto overscroll-contain rounded-t-[28px] border border-border bg-popover p-0 text-foreground transition-transform duration-200",
-        "backdrop:bg-black/55 backdrop:backdrop-blur-[2px] open:animate-in open:slide-in-from-bottom-8 open:duration-250",
+        "backdrop:bg-black/55 backdrop:backdrop-blur-[2px] open:animate-in open:fade-in-0 open:slide-in-from-bottom-10 open:duration-300",
         "sm:m-auto sm:max-w-lg sm:rounded-[28px]",
         className,
       )}

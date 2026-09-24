@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
   turbopack: { root: path.resolve(".") },
   // Proof photos are shrunk in the browser first; this leaves room for one that can't be.
   experimental: { serverActions: { bodySizeLimit: "4mb" } },
+  // Each release has an id, so a page left open from the release before reloads instead of
+  // calling server functions that no longer exist.
+  deploymentId: process.env.VERCEL_DEPLOYMENT_ID ?? process.env.NEXT_DEPLOYMENT_ID ?? undefined,
 };
 
 export default nextConfig;

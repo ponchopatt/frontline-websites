@@ -5,11 +5,13 @@ import { Toaster as Sonner, type ToasterProps } from "sonner"
 import { CircleCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Loader2Icon } from "lucide-react"
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme()
+  const { theme } = useTheme()
+  // Sonner knows light and dark; the app's looks map onto those.
+  const tone: ToasterProps["theme"] = theme === "light" || theme === "spark" || theme === "sage" ? "light" : "dark"
 
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme={tone}
       className="toaster group"
       icons={{
         success: (

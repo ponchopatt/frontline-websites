@@ -5,6 +5,7 @@ import { useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
 
 const OPTIONS = [
+  { value: "onyx", label: "Onyx" },
   { value: "sage", label: "Sage" },
   { value: "spark", label: "Spark" },
   { value: "dark", label: "Dark" },
@@ -13,7 +14,7 @@ const OPTIONS = [
 
 const subscribe = () => () => {};
 
-/** The look, as one segmented control: four choices in a single row. */
+/** The look, as one segmented control: five choices in a single row. */
 export function ThemeChoice() {
   const { theme, setTheme } = useTheme();
   // The stored theme is only known in the browser.
@@ -21,7 +22,7 @@ export function ThemeChoice() {
   const current = mounted ? theme : undefined;
 
   return (
-    <div role="radiogroup" aria-label="Theme" className="grid grid-cols-4 gap-1 p-1.5">
+    <div role="radiogroup" aria-label="Theme" className="grid grid-cols-5 gap-1 p-1.5">
       {OPTIONS.map((o) => (
         <button
           key={o.value}
@@ -30,7 +31,7 @@ export function ThemeChoice() {
           aria-checked={current === o.value}
           onClick={() => setTheme(o.value)}
           className={cn(
-            "h-11 min-w-0 rounded-2xl text-[15px] transition-colors",
+            "h-11 min-w-0 rounded-2xl text-[14px] transition-colors",
             current === o.value ? "bg-primary font-medium text-primary-foreground" : "text-foreground hover:bg-accent",
           )}
         >

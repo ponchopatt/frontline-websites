@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
-  Discipline OS has three looks. Sage is the default; Dark and Light are in Settings.
+  Discipline OS has five looks. Onyx is the default; the rest are in Settings → Appearance.
 
   Sage — a calm green ground with frosted glass on it, after the "Lightly" journal app.
     The page is deep sage with a soft light from above and a fine grain. Text on it is white.
@@ -121,6 +121,106 @@
   --kept-soft: rgb(151 205 166 / 0.1);
   --glass: rgb(236 230 218 / 0.032);
   --glass-edge: rgb(236 230 218 / 0.075);
+}
+
+/* ------------------------------------------------------------------ onyx */
+
+/*
+  Onyx, the default: cool and quiet, like a well-made watch face. A charcoal-blue ground with a
+  cold light from above and a fine grain; panels of smoked glass with a hairline of light along
+  the top; ice-white type; platinum for the one filled button; a cool mint once something is
+  kept. Nothing warm, nothing loud.
+*/
+.onyx {
+  --background: #0d1218;
+  --foreground: #e8edf2;
+  --card: rgb(232 237 242 / 0.06);
+  --card-foreground: #e8edf2;
+  --popover: #151c24;
+  --popover-foreground: #e8edf2;
+  --primary: #e3ebf3;
+  --primary-foreground: #0d1218;
+  --lamp-soft: rgb(227 235 243 / 0.1);
+  --secondary: rgb(232 237 242 / 0.07);
+  --secondary-foreground: #e8edf2;
+  --muted: rgb(232 237 242 / 0.06);
+  --muted-foreground: #a9b5c1;
+  --faint: #7f8b98;
+  --accent: rgb(232 237 242 / 0.09);
+  --accent-foreground: #e8edf2;
+  --destructive: #f2b8a0;
+  --border: rgb(232 237 242 / 0.1);
+  --input: rgb(232 237 242 / 0.22);
+  --ring: #e3ebf3;
+  --kept: #9fdcc4;
+  --kept-soft: rgb(159 220 196 / 0.12);
+  --glass: rgb(232 237 242 / 0.055);
+  --glass-edge: rgb(232 237 242 / 0.11);
+  color-scheme: dark;
+}
+.onyx body {
+  background-color: #0d1218;
+}
+.onyx body::before,
+.onyx .screen::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(100% 55% at 50% -10%, rgb(78 102 128 / 0.5), transparent 62%),
+    radial-gradient(70% 45% at 100% 100%, rgb(30 42 56 / 0.7), transparent 70%),
+    linear-gradient(180deg, #141b23 0%, #0e141a 55%, #0a0e13 100%);
+}
+.onyx body::after,
+.onyx .screen::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.onyx .screen {
+  isolation: isolate;
+  background-color: #0d1218;
+}
+.onyx .surface,
+.onyx .surface-strong {
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  backdrop-filter: blur(24px) saturate(1.2);
+}
+.onyx .surface {
+  background-color: rgb(232 237 242 / 0.055);
+  border-color: rgb(255 255 255 / 0.09);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.07),
+    0 24px 48px -32px rgb(0 0 0 / 0.8);
+}
+.onyx .surface-strong {
+  background-color: rgb(232 237 242 / 0.1);
+  border-color: rgb(255 255 255 / 0.15);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.12),
+    0 28px 56px -30px rgb(0 0 0 / 0.85);
+}
+.onyx .surface-light {
+  background-color: #151c24;
+  border-color: rgb(255 255 255 / 0.1);
+}
+.onyx .nav-glass {
+  background-color: rgb(16 22 29 / 0.8);
+  border-color: rgb(255 255 255 / 0.1);
+}
+.onyx .nav-active {
+  background-color: rgb(232 237 242 / 0.12);
+}
+.onyx .stack-layer {
+  background-color: rgb(232 237 242 / 0.035);
+  border-color: rgb(255 255 255 / 0.07);
 }
 
 /* ------------------------------------------------------------------ sage */
@@ -386,7 +486,7 @@
   background-color: rgb(20 19 16 / 0.82);
   border-color: var(--glass-edge);
 }
-:root:not(.dark):not(.sage):not(.spark) .nav-glass {
+:root:not(.dark):not(.sage):not(.spark):not(.onyx) .nav-glass {
   background-color: rgb(251 250 247 / 0.9);
 }
 .sage .nav-glass {
@@ -445,6 +545,44 @@
   }
   ::selection {
     background: var(--lamp-soft);
+  }
+}
+
+/* Sheets: a settled ease in, and a short slide out instead of vanishing. */
+dialog[open] {
+  animation-timing-function: var(--ease-out-quart);
+}
+dialog.sheet-closing {
+  animation: sheet-out 180ms var(--ease-out-quart) forwards;
+}
+dialog.sheet-closing::backdrop {
+  animation: backdrop-out 180ms ease-out forwards;
+}
+@keyframes sheet-out {
+  to {
+    transform: translateY(28px);
+    opacity: 0;
+  }
+}
+@keyframes backdrop-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* A progress ring draws itself on arrival. */
+@keyframes ring-in {
+  from {
+    stroke-dashoffset: var(--ring-c);
+  }
+}
+.ring-fill {
+  animation: ring-in 700ms var(--ease-out-quart) both;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }
 

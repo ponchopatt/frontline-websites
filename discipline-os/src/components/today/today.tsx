@@ -11,10 +11,12 @@ import { deleteTask, moveTask, planMyDay, setTaskRank, setTaskStatus, updateTask
 import { addBlock, deleteBlock, endSessionAt, saveSessionNote, startSession, stopSession } from "@/app/actions/work";
 import { Check, Film, Square } from "lucide-react";
 import { DayComplete, type DayCompleteData } from "@/components/day-complete";
+import { TextAction } from "@/components/os";
 import { BareCards } from "@/components/section-card";
 import { Sheet } from "@/components/sheet";
 import { TimerDisplay } from "@/components/timer-display";
 import { useNow } from "@/hooks/use-now";
+import { reloadIfStale } from "@/lib/stale";
 import { AREA_LABEL, isWorkArea, type WorkArea } from "@/lib/areas";
 import { formatReading } from "@/lib/bible";
 import { addDays, clockTime, formatDuration, localHourAt, shortDate, type LocalDate } from "@/lib/day";
@@ -68,9 +70,9 @@ async function optimistic<T>(apply: () => void, rollback: () => void, action: ()
       toast.error(res.error);
     }
     return res;
-  } catch {
+  } catch (error) {
     rollback();
-    toast.error(SAVE_FAILED);
+    if (!reloadIfStale(error)) toast.error(SAVE_FAILED);
     return { ok: false, error: SAVE_FAILED };
   }
 }
@@ -80,8 +82,8 @@ async function call<T>(action: () => Promise<ActionResult<T>>): Promise<ActionRe
     const res = await action();
     if (!res.ok) toast.error(res.error);
     return res;
-  } catch {
-    toast.error(SAVE_FAILED);
+  } catch (error) {
+    if (!reloadIfStale(error)) toast.error(SAVE_FAILED);
     return { ok: false, error: SAVE_FAILED };
   }
 }
@@ -771,6 +773,12 @@ export function Today({ view, partOfDay, name, hour: serverHour }: { view: DayVi
       )}
 
       <Sheet open={sheet !== null} onClose={() => setSheet(null)} title={sheet ? SHEET_TITLE[sheet] : ""} subtitle={sheet ? rows.find((r) => r.key === sheet)?.value || undefined : undefined}>
+        {readOnly && sheet !== "review" && (
+          <p className="mb-4 flex items-center justify-between gap-3 rounded-2xl bg-accent px-4 py-2 text-[15px] text-muted-foreground">
+            This day is closed.
+            <TextAction onClick={() => void reopen()}>Reopen day</TextAction>
+          </p>
+        )}
         <BareCards>
           {sheet === "morning" && <MorningCard habits={byCategory.morning} readOnly={readOnly} timeZone={tz} onToggle={toggleHabit} />}
           {sheet === "faith" && (

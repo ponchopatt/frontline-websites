@@ -38,7 +38,7 @@ export function TaskRow({ task, today, big, disabled, showChain, onToggle, onOpe
           if (typeof navigator !== "undefined" && "vibrate" in navigator) navigator.vibrate?.(8);
           onToggle(task);
         }}
-        className="-my-0.5 -ml-2 grid size-12 shrink-0 touch-manipulation place-items-center rounded-full disabled:cursor-default"
+        className="-my-0.5 -ml-2 grid size-12 shrink-0 touch-manipulation place-items-center rounded-full disabled:cursor-default disabled:opacity-55"
       >
         <span
           aria-hidden

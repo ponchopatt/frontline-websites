@@ -111,7 +111,7 @@ export function Row({ href, onClick, leading, title, subtitle, value, trailing, 
       {tappable && chevron !== false && <ChevronRight className="-mr-1 size-[18px] shrink-0 text-faint" aria-hidden />}
     </>
   );
-  const cls = cn("flex min-h-14 w-full items-center gap-3 px-4 py-2.5 text-left", tappable && "transition-colors active:bg-accent", className);
+  const cls = cn("flex min-h-14 w-full items-center gap-3 px-4 py-2.5 text-left", tappable && "transition-colors duration-150 active:bg-accent", className);
   if (href && !disabled) {
     return (
       <Link href={href} aria-label={ariaLabel} className={cls}>
@@ -149,7 +149,8 @@ export function Ring({ value, size = 28, label }: { value: number; size?: number
         strokeLinecap="round"
         strokeDasharray={c}
         strokeDashoffset={c * (1 - v)}
-        className={cn("transition-[stroke-dashoffset] duration-500 ease-out", done ? "text-kept" : "text-foreground")}
+        style={{ "--ring-c": c } as React.CSSProperties}
+        className={cn("ring-fill transition-[stroke-dashoffset] duration-500 ease-out", done ? "text-kept" : "text-foreground")}
       />
     </svg>
   );

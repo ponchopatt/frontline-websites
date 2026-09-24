@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
+import { FreshCopy } from "@/components/fresh-copy";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
@@ -23,15 +24,16 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#5a7664",
+  themeColor: "#0d1218",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geist.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="min-h-full">
-        <ThemeProvider attribute="class" themes={["sage", "spark", "dark", "light"]} defaultTheme="sage" enableSystem={false} disableTransitionOnChange>
+        <ThemeProvider attribute="class" themes={["onyx", "sage", "spark", "dark", "light"]} defaultTheme="onyx" enableSystem={false} disableTransitionOnChange>
           {children}
+          <FreshCopy />
           <Toaster position="top-center" offset={{ top: 16 }} mobileOffset={{ top: "max(12px, env(safe-area-inset-top))" }} />
         </ThemeProvider>
       </body>
