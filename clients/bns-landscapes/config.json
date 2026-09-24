@@ -56,8 +56,8 @@
     "heroSecondarySms": "Or send the details",
     "navApproach": "How we work",
     "statementLabel": "Why BNS",
-    "statementHeadline": "Barry co-founded it.<br>Peter runs it.<br>Patrick runs the crews.",
-    "statementBody": "Barry Stubbs ran BNS for over 40 years. Peter Stubbs took over in 2013. Patrick Hemsworth, our Construction Manager, manages the site teams to the program, the quality and the budget, with trucks, excavators and bobcats at our disposal. On seawalls, we own all our own equipment.",
+    "statementHeadline": "Peter runs it.<br>Patrick runs the crews.",
+    "statementBody": "Barry Stubbs co-founded BNS and ran it for over 40 years. Peter Stubbs took over in 2013. Patrick Hemsworth, our Construction Manager, runs the site teams to program, quality and budget, with trucks, excavators and bobcats at our disposal. On seawalls, we own all our own equipment.",
     "servicesLabel": "What we do",
     "servicesHeadline": "Stone, water,<br>timber, seawalls.",
     "servicesIntro": "Retaining walls, excavation, stone and concrete, tiling and paving, pools, timber construction, turf, planting and irrigation. Can't see your job here? Call and ask.",
@@ -95,7 +95,7 @@
     "name": "Marilyn Poniris, Google"
   },
   "owner": {
-    "body": "Peter took over BNS in 2013 and has kept it growing. It is family owned and operated, and was established over 45 years ago.",
+    "body": "BNS is family owned and operated, and was established over 45 years ago. Under Peter, it has kept growing.",
     "team": "Our site teams are highly qualified landscape and horticulture tradespeople and apprentices, hand-picked for their attention to detail and personable natures.",
     "facts": [
       {
@@ -246,7 +246,7 @@
       "width": 2000,
       "height": 1036,
       "alt": "Terraced sandstone retaining walls, palms and clipped hedging climbing a steep block to a glass-fronted house, built by BNS Landscapes",
-      "_comment": "I006.jpg, their own photo and the hero of their own home and Landscapes pages. 2000x1036, given a gentle shadow lift (gamma 0.85) so the stone terraces read under the hero overlay on a phone; no other retouching. The srcset starts at 1200 on purpose: on a phone the hero is height-filled (~1600px rendered), so a 480/800 file would be stretched and soft. 480/800 remain in assets/ unused."
+      "_comment": "I006.jpg, their own photo and the hero of their own home and Landscapes pages. 2000x1036, given a gentle shadow lift (gamma 0.85) so the stone terraces read under the hero overlay on a phone; no other retouching. The srcset starts at 1200 on purpose: on a phone the hero is height-filled (~1600px rendered), so a 480/800 file would be stretched and soft. 480/800 remain in assets/ unused. Finish round: on phones styles.css frames the photo at the top of the hero, zoomed onto the stone terraces and door (the house is cropped off), about 1240px wide, so the 1200 file shows at ~1:1. Veil lightened on desktop so the terraces read."
     },
     "statement": {
       "src": "assets/deck-stairs-pool-p-900.webp",
@@ -263,7 +263,7 @@
       "height": 1250,
       "alt": "A long new concrete seawall along a canal, seen from the water, with an excavator working from a barge at the far end and the homes reflected in still water",
       "caption": "Seawall works, seen from the canal",
-      "_comment": "seawall-banner-inno.jpg (2000x1500), the banner of their own Innovations (seawalls) page, cropped to 16:10 (200px of plain sky off the top, 50px of water off the bottom). Replaced IMG_1452 (2000x750), which is too panoramic for a 1440x900 box and was upscaled 1.5x."
+      "_comment": "seawall-banner-inno.jpg (2000x1500), the banner of their own Innovations (seawalls) page, cropped to 16:10 (200px of plain sky off the top, 50px of water off the bottom). Replaced IMG_1452 (2000x750), which is too panoramic for a 1440x900 box and was upscaled 1.5x. Finish round: phone crop moved to 88% across (styles.css) so the excavator and barge stay in frame; srcset starts at a new 1400w file (same crop, from the original) because the phone box is ~1350px wide and the 800 file was being stretched 1.7x."
     },
     "gallery": [
       {
@@ -490,6 +490,7 @@
     "reviews": "data/google_reviews_top25.json, bns-landscapes: rating 4.2 from 9 (below the floor, not shown). Every review and the pull quote are from best_for_demo, word for word.",
     "photos": "Every photo is from their own media library at bnslandscapes.com.au/wp-content/uploads/. Hero I006.jpg is their own home-page and Landscapes-page hero. The aperture is seawall-banner-inno.jpg, their Innovations-page banner. The team photo 0.jpg and IMG_3801.jpg are from their Seawalls and Innovations galleries; Park.jpg and IMG_0239.jpg are from their Commercial gallery. Captions describe what is in the frame only; their site never names a garden job's suburb, so none is named. Full inventory with pixel sizes in BRIEF.md.",
     "notUsed": "Not on the page for want of a checkable source or because it may be stale: 'received many awards of excellence in the Industry' (no award named); 'BNS offers a 24 hour emergency service on all Sylvania Waterways Seawalls' (2019 text, ask Peter); geotechnical engineering (only a form option); ABN (from ABN Lookup, not their site).",
-    "reviewRound": "2026-09-24 rework: hero no longer claims approvals (their site never mentions D.A. or council; only Lauren Mehanna's review does). Seawall material claim dropped: their Innovations page says both 'all FRP components' and 'premium all concrete precast system'. 'LNA members' and 'never been blemished' dropped as unverifiable 2019 text. Call button reads 'Call BNS' because 02 9542 8900 is the office landline."
+    "reviewRound": "2026-09-24 rework: hero no longer claims approvals (their site never mentions D.A. or council; only Lauren Mehanna's review does). Seawall material claim dropped: their Innovations page says both 'all FRP components' and 'premium all concrete precast system'. 'LNA members' and 'never been blemished' dropped as unverifiable 2019 text. Call button reads 'Call BNS' because 02 9542 8900 is the office landline.",
+    "finishRound": "2026-09-24 finish round: statement rewritten from their About page (Barry co-founded, Peter took over 2013, Patrick manages site teams, equipment 'at our disposal') and their Innovations page ('We own all our own equipment essential for your seawall project'), replacing the 'keeps you in the loop' line. Owning equipment is now said only about seawalls: hero headline 'Our own machines.' became 'Design and build.' (Landscapes page: 'landscaping design and installation'), and the sub, process and FAQ say trucks, excavators and bobcats 'at our disposal'. 'Gold' dropped from licence 269300C (the Building Services Corporation no longer exists); 'Up-to-date' dropped from the WHS line. No sample photos: every photo is theirs and none is stretched at 390 or 1440."
   }
 }

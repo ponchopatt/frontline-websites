@@ -212,3 +212,44 @@ Nothing is stock, nothing upscaled. No sample photos needed.
   "No guesswork" are cut.
 - Anthony's portrait is not shown: the owner section has one photo slot, and
   Xavier's is the one to use.
+
+## Finish round (2026-09-24)
+
+Pat now allows labelled sample photos. **None were needed: every photo on the
+page is still theirs.** Reviewer score going in: 4.33.
+
+- **Pinned aperture photo swapped** to `Forrest-Main-1.jpg` (their projects
+  page, under "Forrest — Full Scale Landscape Project"), cropped to 1920×2168
+  (street and neighbours off the top), native size, no upscaling. It is a
+  portrait frame, so on a phone it is about 1.5 source pixels per CSS pixel at
+  1x and 2.5 at 3x, where the old 151225_0026 was served at half a pixel per
+  pixel (the 800w file under `sizes="150vw"`) and showed only pool and lawn.
+  At 1440 it shows the grass tennis court, pool and spa, pergola and new turf.
+  Object position per breakpoint is in `clients/act-landscape-construction/styles.css`.
+  The neighbour's blue court shows at the far left at 1440; it is not labelled.
+- **Aperture caption shown once:** small label "Forrest", big line "Court, pool
+  and garden. One backyard." (Forrest's own project tags: Swimming Pool,
+  Tennis Court, Vegetable Garden, Deck, Pergola, Paving.)
+- **151225_0026 moved to gallery slot 1** at full 1500×1000 ("Deck, pool and
+  court"), card cropped from the left so the court stays in. The Forrest
+  gallery card is gone (that photo is now the aperture). Work intro updated.
+- **Form messages** no longer name Xavier on the office line: error "Please
+  call the team on 02 5110 3917 instead.", success "Your enquiry is with the
+  team…", demo note "…straight to the team's inbox."
+- **"Every trade managed in-house" dropped** from the hero (it sat next to "we
+  built with ACT Decks"). Hero now says "you deal with one team from the first
+  plan to handover" (their "you only deal with one team throughout your
+  project"). Statement headline is now their own "One team. One build.", and
+  "a deck builder" is out of the "no lining up…" line. The process step still
+  quotes their "Our in-house team builds it". Still ask Xavier what ACT Decks
+  is to him.
+- **Owner paragraph rewritten** from sourced facts only: started 2021 to meet
+  demand across Canberra and Queanbeyan (their about page), team of 14, 500+
+  projects, the 2025 Master Builders ACT award with ACT Decks; Harvest Pools
+  moved into the team line. Nothing new about Xavier himself; still ask him for
+  a line or two.
+- **Hero kept** (1360 wide, from a 1500 original; no larger copy of the
+  Jerrabomberra shoot exists on their CDN, and the Instagram copies are 1080).
+  Checked at 1440: deck boards, pool fence spigots and pergola edges are crisp.
+- Lighthouse mobile 91 after trimming the aperture's phone file to 1100w
+  (first try at 1200w q74 dropped it to 87).

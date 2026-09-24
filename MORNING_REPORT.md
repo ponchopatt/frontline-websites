@@ -552,11 +552,15 @@ Every fact checks out and 5.0 from 35 is strong, but Nulook has no photos of its
 Real Calwell business (ABN since 2014, SPASA and Master Builders members). Owner Craig; crew Mick and Joel. Angle: "Pools, and the earthworks behind them." Facts all check out. Held back only by photos: every photo they have online is a small web copy, so the hero looks smeared when shown large. **Ask Craig for his original phone photos** (hero 1600px+), plus his licence number; more Google reviews (5.0 from 1) is the pitch.
 **Opener:** "I noticed your best work — the Weetangera and Throsby pools, the Denman Prospect site cut — is buried in two old blog posts, while your homepage shows eleven 2016 catalogue shapes and never mentions the earthworks side."
 
-### ProStyle Building (Prostyle Homes) — needs Pat (final 4.25)
+### ProStyle Building (Prostyle Homes) — PASS 4.58 after finish round, shipped
+Finish round: headline now "Your design, built across Canberra." over their own Garran dusk portrait; weekly reports kept to extensions only; service photos in a wider frame so they stay sharp; page trimmed. All own photos. Earlier notes below still stand.
+
 Same business as Google's "Prostyle Homes": real number is **(02) 6282 0770**, not the 6282 9496 on our list. Office in Phillip, licence ACT 20241545, Co-Director Joshua (Josh) Fogg; Craig is named in reviews. Angle: "Your extension, reported every week." Facts and 6 reviews all check out. Held back by photos: their site only has ~1000px copies, so cards look soft and the phone hero is weak. **Before calling:** the old company's ABN was cancelled in June 2025 and a new company started in Oct 2024. Check ASIC, and read the low Google reviews (3.5 from 19). **Ask Josh:** full-size photos, which jobs were extensions, the award names behind "award winning", a photo of himself, and whether weekly reports apply to new builds too.
 **Opener:** "I noticed your Google listing says Prostyle Homes while your site still says ProStyle Building Group, and your reviews all praise Josh and Craig for communication, which your site barely mentions."
 
-### Pinczi Builders — needs Pat (built, not reviewed)
+### Pinczi Builders — PASS 4.58, shipped
+Reviewed after the finish round: Hero 5, Photos 5, Mobile 5. One fix made before shipping: the header and footer "Call Pinczi" links went to the form (now "Send the details"). No reviews section, because they have none on Google. Earlier notes below still stand.
+
 Real Bowral builder: Steve Pinczi, ABN 51 633 339 885 (since 2019), licence 350923C (not yet checked on the register), HIA badge on their site. Over 100 of their own professional photos, none upscaled. Angle, from their own About page: "Ask anyone in the Highlands about Steve." Not sent to review because it has **no Google reviews**, so the gate can never say READY. Close to ready otherwise. **Ask Steve:** a few Google reviews (the pitch), is 0411 540 495 his own mobile (then the bar can say "Call Steve"), are HIA and the licence current, what year he started, a photo of himself, and details of the Oxley College job. Their own site has broken pages Google can see (e.g. /kangaloon-2/ shows "critical error"), which is another talking point.
 **Opener:** "I noticed your About page says to ask anyone in the district about Steve, but Google has no reviews at all. Your home page doesn't even show your phone number."
 
@@ -564,7 +568,9 @@ Real Bowral builder: Steve Pinczi, ABN 51 633 339 885 (since 2019), licence 3509
 Real Bowral builder (ABN 74 092 054 594, trading since 2000; old names Darren Meyers Carpentry/Constructions). Angle: "Most of our work comes by word of mouth" (their site: 80% repeat and referral). Not sent to review because it has **no Google reviews**, so the gate can never say READY. Their only photos are 960px phone shots of one job (the builder AI-upscaled them, which a reviewer would mark down), and one tile uses a labelled sample photo. **Ask Darren:** a few Google reviews (that's the pitch), full-size photos of other jobs and his machine, licence number (135713C is unconfirmed), OK to name him, suburbs he covers.
 **Opener:** "I noticed 80% of your work is repeat clients and referrals, but Google shows no reviews for Meyers Building Group, and your website never says you're in Bowral."
 
-### S&I Constructions — needs Pat (final 4.33)
+### S&I Constructions — PASS 4.67 after finish round, shipped
+Finish round: sharp Mittagong pantry shot replaces the soft full-bleed, Exeter re-cropped, stats strip fixed, repeats cut. **1 sample photo** (timber frame in the owner section, CC BY, credited in the footer). Earlier notes below still stand.
+
 Real Mittagong family builder: 45+ years, licence 30559, HIA 25+ years, owner Jason Stokes (apprenticed there in 1991). Every fact checks out and all photos are their own. Held back by one soft full-screen photo, weak crops, and only three short Google reviews (4.2 rating is hidden). **Ask Jason:** a photo of himself, a mobile for a text button, OK to reuse the Ashley Mackevicius Bowral photos, and sign-off on the tidied logo. More Google reviews is the pitch. Quick fixes still to do: swap the High Range full-bleed for a sharp 2024 Mittagong shot, re-crop the Exeter card, fix the lone "45" stat strip on desktop, cut repeated lines.
 
 ### ACT Landscape Construction — needs Pat (final 4.33)
@@ -580,6 +586,9 @@ A trading name of Your Local Roofers Pty Ltd (Castle Hill, multi-city, many loca
 2.6 stars, complaints about deposits and unfinished pools. Build only if Pat says so.
 
 ---
+
+### Finish round (Pat: "just make them all, use sample photos if needed")
+Samples are allowed when labelled "Sample photo", with licence and source recorded. Two new check rules came out of this round: `noGoogleReviews: true` lets a site with no Google reviews pass (the section is just left out), and any "Call …" link that doesn't dial is now a blocker. That rule caught O'Mara's live header button ("Call Luke" went to the form); it's fixed and redeployed.
 
 ## Notes for whoever runs this next
 

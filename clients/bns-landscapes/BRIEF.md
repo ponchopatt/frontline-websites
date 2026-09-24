@@ -155,3 +155,30 @@ No sample photos needed. No AI upscaling.
 - Is the free on-site inspection still offered?
 - Is BNS Innovations still doing Sylvania Waters seawalls under 319080C?
 - An email address to show (none published).
+
+## Finish round (2026-09-24, after the 4.42 review)
+
+- **Statement rewritten from their own pages.** "One team keeps you in the loop… so you
+  always know where it's at" was generic and promised the one thing Robert Howard's
+  "Called twice for a quote… no reply" says went wrong. Now: **"Peter runs it. Patrick runs
+  the crews."** with Barry co-founding and running it for over 40 years, Peter taking over
+  in 2013, Patrick managing the site teams to program, quality and budget, and the gear.
+- **Owning equipment is said only about seawalls.** "We own all our own equipment essential
+  for your seawall project" is on the Innovations page only; the landscaping pages say
+  trucks, excavators and bobcats are "at our disposal". So the hero headline "Our own
+  machines." is now **"One family. Over 45 years. Design and build."** (Landscapes page:
+  "landscaping design and installation"), the sub says "canal seawalls, built with our own
+  equipment", and the process step and FAQ say "at our disposal".
+- **Licence 269300C, no "Gold".** The Gold Licence was issued by the Building Services
+  Corporation, which no longer exists. "Up-to-date" dropped from the WHS line.
+- **Owner section de-duplicated** so it doesn't repeat the statement word for word.
+- **Hero:** veil lightened so the terraced stonework reads on desktop. On phones the photo
+  now sits in a frame at the top of the hero, zoomed onto the stone walls and door (house
+  cropped off), fading into the dark ground under the headline (`styles.css`). Shown at
+  about 1:1 from the 1200px file.
+- **Aperture:** the phone crop now sits 88% across so the excavator and barge are in frame
+  instead of houses across the water. New `canal-seawall-works-1400.webp` (same crop, from
+  the original) heads the srcset: the 800 file was being stretched 1.7x on phones.
+- **Photos:** every image measured at 390 and 1440 (Playwright, DPR 1): none is shown above
+  its real pixel size. All 16 are still their own; **no sample photos were needed.** The
+  softest at retina is the timber deck (509px original), still sharp at DPR 1.

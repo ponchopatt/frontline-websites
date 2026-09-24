@@ -1,5 +1,5 @@
 {
-  "_comment": "Meyers Building Group, Bowral NSW. Hand-written 2026-09-24 from https://meyersbuildinggroup.com.au because `npm run new` is broken in this container (see HANDOVER.md). Every page of their GoDaddy site was read with curl. Their site names no person and no town, so the owner's name (Darren Meyers) comes from the ABR trading names on their ABN, and Bowral from the ABR postcode and their Yellow Pages listing. No Google rating or reviews exist (data/google_reviews_top25.json), and there are no testimonials on their site, so reviews is empty and the proof is their own sourced facts: 80% returning clients and referrals, over 30 years, fully licensed and insured, and their registered ABN. The builders preset's process, FAQ and responsePromise describe a generic builder and would be invented claims here, so all three are overridden with lines from their own site. 7 of the 8 photos are their own (one job), upscaled 2x with Real-ESRGAN because the originals are 960px wide; the earth moving tile is a labelled CC0 sample. No stats strip: the only number available is 'over 30 years', which the owner section already shows as 30+, and a lone stat left a large empty band on desktop. No serviceAreas: their site lists no suburbs, and inventing Highlands towns would be unsourced. See BRIEF.md.",
+  "_comment": "Meyers Building Group, Bowral NSW. Hand-written 2026-09-24 from https://meyersbuildinggroup.com.au because `npm run new` is broken in this container (see HANDOVER.md). Every page of their GoDaddy site was read with curl. Their site names no person and no town, so the owner's name (Darren Meyers) comes from the ABR trading names on their ABN, and Bowral from the ABR postcode and their Yellow Pages listing. No Google rating or reviews exist (data/google_reviews_top25.json), and there are no testimonials on their site, so reviews is empty and the proof is their own sourced facts: 80% returning clients and referrals, over 30 years, fully licensed and insured, and their registered ABN. The builders preset's process, FAQ and responsePromise describe a generic builder and would be invented claims here, so all three are overridden with lines from their own site. Finish round (2026-09-24): their 7 photos (one job, 960px wide) are used only at native size in the gallery and on two service cards; the hero, statement, aperture and the new homes card are labelled samples. Nothing is upscaled. No stats strip: the only number available is 'over 30 years', which the owner section already shows as 30+, and a lone stat left a large empty band on desktop. No serviceAreas: their site lists no suburbs, and inventing Highlands towns would be unsourced. See BRIEF.md.",
   "slug": "meyers-building",
   "template": "trust",
   "industry": "builders",
@@ -32,13 +32,13 @@
     "height": 630,
     "title": "Meyers Building Group: Builders in Bowral",
     "description": "Over 30 years of construction, restoration and renovation. 80% of our work comes from returning clients and referrals.",
-    "alt": "A sage-green period cottage behind curved stone walls, with a white pergola over the deck and a new lawn"
+    "alt": "A sandstone cottage with timber dormers, a brick chimney and a white picket fence"
   },
   "responsePromise": "We work flexible hours, and we're happy to come out to the site to talk it through.",
   "copy": {
     "title": "Meyers Building Group: Builders in Bowral, Southern Highlands",
     "description": "Bowral builders with over 30 years in construction, restoration and renovation. New homes, extensions, renovations, kitchens, bathrooms, decks, pergolas and earth moving. Call Darren on 0407 917 649.",
-    "ctaLabel": "Call Darren",
+    "ctaLabel": "Send the details",
     "kicker": "Builders · Bowral",
     "headline": "Most of our work<br>comes by<br><em>word of mouth.</em>",
     "sub": "80% of our work comes from returning clients and referrals. Over 30 years of construction, restoration and renovation, from new homes to decks, kitchens and our own earth moving.",
@@ -47,10 +47,10 @@
     "navApproach": "Approach",
     "servicesLabel": "What we build",
     "servicesHeadline": "Built new,<br>or brought<br>back to life.",
-    "servicesIntro": "New homes and cottages, commercial builds, extensions and granny flats, kitchens and bathrooms. When a site needs preparing, we do the earth moving ourselves.",
+    "servicesIntro": "New homes and cottages, commercial builds for offices, warehouses and shops, kitchens and bathrooms. When a site needs preparing, we do the earth moving ourselves.",
     "workLabel": "Our work",
     "workHeadline": "Stone, timber<br>and glass.",
-    "workIntro": "Photos from one of our projects: a period cottage with stone walls, a pergola and deck, glazed garden rooms and a garage.",
+    "workIntro": "Photos from one of our projects: a period cottage with stone walls, a pergola and deck, and glazed garden rooms.",
     "processLabel": "How it starts",
     "processHeadline": "Call, meet,<br>then a quote.",
     "processIntro": "Tell us what you have in mind. We'll come and see it.",
@@ -65,7 +65,12 @@
     "faqHeadline": "Questions we get asked.",
     "enquireLabel": "Talk to Darren",
     "enquireHeadline": "Tell us about<br>the job.",
-    "enquireIntro": "Send us a message, or call for a quote. Tell us a bit about the project and where it is, and we'll get back to you."
+    "enquireIntro": "Send us a message, or call for a quote. Tell us a bit about the project and where it is, and we'll get back to you.",
+    "statementLabel": "Why they come back",
+    "statementHeadline": "Work that lasts,<br>and a team<br>you'll have back.",
+    "statementBody": "We build for quality that will last for many years to come, and we pay attention to the details. Our team is polite and friendly, and treats your home with care. That's why most of our jobs come from people we've built for before, or people they've recommended us to.",
+    "apertureLabel": "Construction, restoration & renovation",
+    "apertureLine": "Over 30 years of building, restoring and renovating homes, with our own earth moving when the site needs it."
   },
   "owner": {
     "body": "We're Darren Meyers's building company, based in Bowral. You may know us from before as Darren Meyers Carpentry or Darren Meyers Constructions.",
@@ -99,41 +104,40 @@
   ],
   "services": [
     {
-      "title": "Decks & pergolas",
-      "blurb": "A pool deck, or a deck that joins your living room to the garden. Then a pergola over it for outdoor dinners, weatherproofed so you get the most out of it.",
+      "title": "New homes & extensions",
+      "blurb": "Your dream home or an investment property, built from scratch, from houses to cottages. Or add on: more rooms, a bathroom, a kitchen, living space or a granny flat.",
       "photo": {
-        "src": "assets/pergola-deck-stone-planters-1200.webp",
-        "srcset": "assets/pergola-deck-stone-planters-480.webp 480w, assets/pergola-deck-stone-planters-800.webp 800w, assets/pergola-deck-stone-planters-1200.webp 1200w, assets/pergola-deck-stone-planters-1800.webp 1800w",
-        "width": 1920,
-        "height": 1440,
-        "alt": "A white timber pergola over a deck with French doors behind, stone planter walls and steppers set into the lawn"
+        "src": "assets/sample-wall-frames-800.webp",
+        "srcset": "assets/sample-wall-frames-480.webp 480w, assets/sample-wall-frames-800.webp 800w, assets/sample-wall-frames-1200.webp 1200w",
+        "width": 1200,
+        "height": 900,
+        "alt": "Timber wall frames standing on a new concrete slab beside a house",
+        "sample": true,
+        "license": "CC BY 2.0",
+        "sourceUrl": "https://www.flickr.com/photos/18045697@N00/1459074925",
+        "credit": "Peg Syverson, via Flickr (CC BY 2.0)"
       }
     },
     {
       "title": "Renovations & restorations",
       "blurb": "Complete house renovations, and rundown or unfinished projects brought back to life. In a kitchen, we can modernise it or keep the heritage elements.",
       "photo": {
-        "src": "assets/stone-wall-courtyard-garden-room-1200.webp",
-        "srcset": "assets/stone-wall-courtyard-garden-room-480.webp 480w, assets/stone-wall-courtyard-garden-room-800.webp 800w, assets/stone-wall-courtyard-garden-room-1200.webp 1200w, assets/stone-wall-courtyard-garden-room-1800.webp 1800w",
-        "width": 1920,
-        "height": 1440,
+        "src": "assets/stone-wall-courtyard-garden-room-960.webp",
+        "srcset": "assets/stone-wall-courtyard-garden-room-480.webp 480w, assets/stone-wall-courtyard-garden-room-960.webp 960w",
+        "width": 960,
+        "height": 720,
         "alt": "A stone wall beside a white gravel courtyard, with a sage-green panelled garden room full of pot plants behind"
       }
     },
     {
-      "title": "Earth moving & site prep",
-      "blurb": "When a job needs preparing, we do it ourselves. We shift large quantities of earth and rubble before a build, and dig for driveways, in-ground pools, landscaping and retaining walls.",
+      "title": "Decks & pergolas",
+      "blurb": "A pool deck, or a deck that joins your living room to the garden. Then a pergola over it for outdoor dinners, weatherproofed so you get the most out of it.",
       "photo": {
-        "src": "assets/sample-track-loader-site-prep-660.webp",
-        "srcset": "assets/sample-track-loader-site-prep-480.webp 480w, assets/sample-track-loader-site-prep-660.webp 660w",
-        "width": 660,
-        "height": 456,
-        "alt": "A yellow tracked loader pushing up a mound of soil on a cleared, levelled site under a blue sky",
-        "sample": true,
-        "license": "CC0 1.0 (public domain dedication)",
-        "sourceUrl": "https://www.flickr.com/photos/15606079@N08/14926230848",
-        "credit": "Julie Brunner, via Flickr and Openverse",
-        "_comment": "Cropped from the 1024x576 original around the machine, so the tile doesn't show mostly sky."
+        "src": "assets/pergola-deck-stone-planters-960.webp",
+        "srcset": "assets/pergola-deck-stone-planters-480.webp 480w, assets/pergola-deck-stone-planters-960.webp 960w",
+        "width": 960,
+        "height": 720,
+        "alt": "A white timber pergola over a deck with French doors behind, stone planter walls and steppers set into the lawn"
       }
     }
   ],
@@ -157,61 +161,87 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/cottage-pergola-stone-walls-1800.webp",
-      "srcset": "assets/cottage-pergola-stone-walls-480.webp 480w, assets/cottage-pergola-stone-walls-800.webp 800w, assets/cottage-pergola-stone-walls-1200.webp 1200w, assets/cottage-pergola-stone-walls-1800.webp 1800w",
-      "width": 1920,
-      "height": 1220,
-      "alt": "A sage-green period cottage with a white pergola over its deck, behind curved stone walls with stone urns and a new lawn",
-      "_comment": "IMG_4548.JPG (960x720) from their Project Gallery and home page, upscaled 2x with Real-ESRGAN x2plus to 1920x1440, shadows lifted (gamma 0.72) so the house reads under the hero's dark overlay on a phone, and 110px of sky and 110px of lawn cropped off so the stone walls sit higher in the frame."
+      "src": "assets/sample-sandstone-cottage-1800.webp",
+      "srcset": "assets/sample-sandstone-cottage-480.webp 480w, assets/sample-sandstone-cottage-800.webp 800w, assets/sample-sandstone-cottage-1200.webp 1200w, assets/sample-sandstone-cottage-1800.webp 1800w",
+      "width": 1800,
+      "height": 1200,
+      "alt": "A sandstone cottage with two timber dormers, a brick chimney and a white picket fence",
+      "sample": true,
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/25287507@N02/5406893693",
+      "credit": "Rexness, via Flickr (CC BY-SA 2.0). Heritage plaque blurred.",
+      "_comment": "Sample photo (their own photos are 960px, too small for a full-bleed hero, and upscaling isn't allowed). 1800x1200 original from Flickr. A small name plaque on the wall is blurred so the house isn't identifiable; the adapted image stays under CC BY-SA 2.0."
+    },
+    "statement": {
+      "src": "assets/sample-brick-stone-verandah-1568.webp",
+      "srcset": "assets/sample-brick-stone-verandah-480.webp 480w, assets/sample-brick-stone-verandah-800.webp 800w, assets/sample-brick-stone-verandah-1200.webp 1200w, assets/sample-brick-stone-verandah-1568.webp 1568w",
+      "width": 1568,
+      "height": 1156,
+      "alt": "A stone and red-brick cottage with a long timber verandah and an autumn tree",
+      "sample": true,
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/89165847@N00/35145678841",
+      "credit": "Michael Coghlan, via Flickr (CC BY-SA 2.0)"
+    },
+    "aperture": {
+      "src": "assets/sample-weatherboard-cottage-1800.webp",
+      "srcset": "assets/sample-weatherboard-cottage-800.webp 800w, assets/sample-weatherboard-cottage-1200.webp 1200w, assets/sample-weatherboard-cottage-1800.webp 1800w, assets/sample-weatherboard-cottage-2321.webp 2321w",
+      "width": 2321,
+      "height": 1777,
+      "alt": "A weatherboard cottage with a red iron roof, twin chimneys and a timber-fretwork verandah",
+      "sample": true,
+      "license": "CC BY-SA 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/89165847@N00/53608915817",
+      "credit": "Michael Coghlan, via Flickr (CC BY-SA 2.0). Name sign blurred; 150px cropped off the left."
     },
     "gallery": [
       {
-        "src": "assets/cottage-garden-view-1200.webp",
-        "full": "assets/cottage-garden-view-1800.webp",
-        "srcset": "assets/cottage-garden-view-480.webp 480w, assets/cottage-garden-view-800.webp 800w, assets/cottage-garden-view-1200.webp 1200w, assets/cottage-garden-view-1800.webp 1800w",
-        "width": 1920,
-        "height": 1440,
+        "src": "assets/cottage-pergola-stone-walls-960.webp",
+        "srcset": "assets/cottage-pergola-stone-walls-480.webp 480w, assets/cottage-pergola-stone-walls-960.webp 960w",
+        "width": 960,
+        "height": 720,
+        "alt": "A sage-green period cottage with a white pergola over its deck, behind curved stone walls with stone urns and a new lawn",
+        "full": "assets/cottage-pergola-stone-walls-960.webp",
+        "caption": "Pergola and stone walls",
+        "detail": "Deck, pergola and curved stone retaining wall"
+      },
+      {
+        "src": "assets/cottage-garden-view-960.webp",
+        "srcset": "assets/cottage-garden-view-480.webp 480w, assets/cottage-garden-view-960.webp 960w",
+        "width": 960,
+        "height": 720,
+        "alt": "A period cottage with a slate roof and chimneys, its white pergola and stone walls seen across a large garden with tall cypresses",
+        "full": "assets/cottage-garden-view-960.webp",
         "caption": "Cottage and garden",
-        "detail": "Pergola, deck and stone walls from across the lawn",
-        "alt": "A period cottage with a slate roof and chimneys, its white pergola and stone walls seen across a large garden with tall cypresses"
+        "detail": "The same pergola and stone walls from across the lawn"
       },
       {
-        "src": "assets/panelled-glazing-garden-room-1200.webp",
-        "full": "assets/panelled-glazing-garden-room-1800.webp",
-        "srcset": "assets/panelled-glazing-garden-room-480.webp 480w, assets/panelled-glazing-garden-room-800.webp 800w, assets/panelled-glazing-garden-room-1200.webp 1200w, assets/panelled-glazing-garden-room-1800.webp 1800w",
-        "width": 1920,
-        "height": 1440,
+        "src": "assets/panelled-glazing-garden-room-960.webp",
+        "srcset": "assets/panelled-glazing-garden-room-480.webp 480w, assets/panelled-glazing-garden-room-960.webp 960w",
+        "width": 960,
+        "height": 720,
+        "alt": "A long glazed garden room with sage-painted timber frames and panelled walls, beside a white gravel path",
+        "full": "assets/panelled-glazing-garden-room-960.webp",
         "caption": "Garden room",
-        "detail": "Panelled timber glazing, painted sage",
-        "alt": "A long glazed garden room with sage-painted timber frames and panelled walls, beside a white gravel path"
+        "detail": "Panelled timber glazing, painted sage"
       },
       {
-        "src": "assets/garden-room-french-doors-1200.webp",
-        "full": "assets/garden-room-french-doors-1800.webp",
-        "srcset": "assets/garden-room-french-doors-480.webp 480w, assets/garden-room-french-doors-800.webp 800w, assets/garden-room-french-doors-1200.webp 1200w, assets/garden-room-french-doors-1800.webp 1800w",
-        "width": 1920,
-        "height": 1440,
+        "src": "assets/garden-room-french-doors-960.webp",
+        "srcset": "assets/garden-room-french-doors-480.webp 480w, assets/garden-room-french-doors-960.webp 960w",
+        "width": 960,
+        "height": 720,
+        "alt": "Glazed French doors with fanlights into a sage-green garden room, flanked by two potted cypresses on white gravel",
+        "full": "assets/garden-room-french-doors-960.webp",
         "caption": "Garden room entry",
-        "detail": "French doors with fanlights",
-        "alt": "Glazed French doors with fanlights into a sage-green garden room, flanked by two potted cypresses on white gravel"
-      },
-      {
-        "src": "assets/garage-cross-braced-door-1200.webp",
-        "full": "assets/garage-cross-braced-door-1710.webp",
-        "srcset": "assets/garage-cross-braced-door-480.webp 480w, assets/garage-cross-braced-door-800.webp 800w, assets/garage-cross-braced-door-1200.webp 1200w, assets/garage-cross-braced-door-1710.webp 1710w",
-        "width": 1710,
-        "height": 1356,
-        "caption": "Garage",
-        "detail": "Cross-braced door and gravel drive",
-        "alt": "A grey clad garage with a white cross-braced door, a barn light and a white gravel drive under trees"
+        "detail": "French doors with fanlights"
       }
     ],
-    "_comment": "8 photos. 7 are Meyers Building Group's own, all from their Project Gallery (img1.wsimg.com/isteam/ip/7811a3ed-98ba-483b-8a43-fd6e5038d34b/), all showing one property. The originals are 960px wide (855px for the garage), so each was upscaled 2x with Real-ESRGAN x2plus, a proper AI upscaler, never more than 2x. Each appears once: hero, 2 service tiles, 4 gallery. The check needs 3 services, so the earth moving tile uses 1 labelled CC0 sample (they have no photo of their own machine). Their site doesn't name the suburb of this job, so no caption does. Left out: a black-and-white duplicate of the garage photo and three black-and-white GoDaddy template stock images (excavators, a man at a bathtub). No statement or aperture photo: there aren't enough distinct photos, so those sections are off.",
     "stockApproved": {
-      "by": "Pat (standing approval)",
-      "on": "2026-09-23",
-      "reason": "All 7 of their own photos are used once each (hero, 2 service tiles, 4 gallery). The check needs 3 services, and they have no photo of their earth moving work, so that one tile uses a labelled CC0 sample."
-    }
+      "by": "Pat",
+      "on": "2026-09-24",
+      "reason": "Finish round: their 7 photos are all 960px or smaller, so they're used only at native size or smaller (gallery tiles and service cards). The hero, statement and aperture spots and the new homes service card use labelled openly licensed samples. No upscaling."
+    },
+    "_comment": "10 photos. 6 used here are Meyers Building Group's own (their Project Gallery, img1.wsimg.com/isteam/ip/7811a3ed-98ba-483b-8a43-fd6e5038d34b/), all showing one property, used at their native 960px (855px for the garage) or smaller, never upscaled and not retouched: 4 in the gallery, 2 on service cards; the garage photo is left out so the gallery grid stays even. 4 are labelled samples (hero, statement, aperture, and the new homes card); their alt text and captions describe them generically and never as Meyers' work. No caption names a suburb."
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
@@ -310,16 +340,16 @@
         "url": "https://meyersbuildinggroup.com.au/meyers-earth-moving"
       },
       "Every photo on the page": {
-        "sentence": "All 7 photos are from their Project Gallery (loaded by /gallery's script): IMG_4548.JPG (hero), IMG_4554.JPG (decks & pergolas), IMG_4549.JPG (renovations & restorations), IMG_4553.JPG, IMG_4550.JPG, blob-12c7c23.png and IMG_4552-f7f6957.JPG (gallery). IMG_4548, IMG_4550, IMG_4552 and IMG_4554 are also on their home page. No captions on their site; captions here describe only what each photo shows. All upscaled 2x with Real-ESRGAN x2plus from 960px originals.",
+        "sentence": "6 photos are from their Project Gallery (loaded by /gallery's script): IMG_4548.JPG, IMG_4553.JPG, IMG_4550.JPG, blob-12c7c23.png (gallery) and IMG_4554.JPG, IMG_4549.JPG (service cards), all at native 960px. No captions on their site; captions here describe only what each photo shows.",
         "url": "https://meyersbuildinggroup.com.au/gallery"
       },
       "No Google rating or reviews": {
         "sentence": "rating null, review_count 0, flag 'No Google rating or reviews found.' for slug meyers-building.",
         "url": "data/google_reviews_top25.json"
       },
-      "Sample photo on the earth moving tile": {
-        "sentence": "CC0 1.0, '20140831_161618_resized' by Julie Brunner (a Cat track loader on a dirt pad). Found through the Openverse API (license=cc0,pdm), downloaded from live.staticflickr.com. Labelled 'Sample photo' on the page by the template.",
-        "url": "https://www.flickr.com/photos/15606079@N08/14926230848"
+      "Sample photos (hero, statement, aperture, new homes card)": {
+        "sentence": "All five are openly licensed, tagged 'Sample photo' by the template, and described generically: Rexness 'Sandstone Cottage, Richmond, Tasmania' (CC BY-SA 2.0, plaque blurred); Michael Coghlan 'Sandstone Cottages' and 'Weatherboard House' (CC BY-SA 2.0, sign blurred on the latter); Peg Syverson 'House framing' (CC BY 2.0). Found via Openverse, downloaded from live.staticflickr.com at native size.",
+        "url": "https://api.openverse.org/v1/images/"
       }
     }
   },

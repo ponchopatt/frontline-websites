@@ -241,7 +241,7 @@
     },
     "aperture": {
       "src": "assets/forrest-planned-1920.webp",
-      "srcset": "assets/forrest-planned-1200.webp 1200w, assets/forrest-planned-1920.webp 1920w",
+      "srcset": "assets/forrest-planned-1100.webp 1100w, assets/forrest-planned-1920.webp 1920w",
       "width": 1920,
       "height": 2168,
       "alt": "A Forrest backyard from above: a grass tennis court, a pool with its spa, a pergola, new turf and garden beds, photographed as the crew finished",
@@ -503,7 +503,7 @@
         "url": "data/google_reviews_top25.json"
       },
       "Every photo on the page": {
-        "sentence": "All 15 images are their own, pulled at full resolution from their Duda CDN (irp.cdn-website.com/904fa5d1/dms3rep/multi/). No stock, no upscaling, no sample photos. Hero 210624_0057 and court service 210624_0061 (Jerrabomberra, the award job with ACT Decks); aperture 151225_0026 (deck, pool, lawn and court at one property); statement 12.jpg (crew on a mini loader, about page background); services 161025_0023, 210624_0061, 21- web Firepit; gallery Forrest-Main-1 (Forrest, projects page), 061124_0082 - Screens, 021222_173, 181225_0005, Snapins.ai_468330689 (Instagram export), 190624_0002 - Outdoor Kitchen; owner Xav Landscape.jpg (about page, 'Xavier Duffy, Director'); enquiry background 'Image Feb 10, 2026, 11_42_53 AM.png' (showroom page). Apart from the two Jerrabomberra frames, each slot is a different property by shoot code. Work intro says 'Every photo on this page is our own', not that every photo is a job: the crew, Xavier and the showroom are not jobs.",
+        "sentence": "All 15 images are their own, pulled at full resolution from their Duda CDN (irp.cdn-website.com/904fa5d1/dms3rep/multi/). No stock, no upscaling, no sample photos. Hero 210624_0057 and court service 210624_0061 (Jerrabomberra, the award job with ACT Decks); aperture Forrest-Main-1 (Forrest, projects page; finish round, replacing 151225_0026); statement 12.jpg (crew on a mini loader, about page background); services 161025_0023, 210624_0061, 21- web Firepit; gallery 151225_0026 (deck, pool, lawn and court at one property), 061124_0082 - Screens, 021222_173, 181225_0005, Snapins.ai_468330689 (Instagram export), 190624_0002 - Outdoor Kitchen; owner Xav Landscape.jpg (about page, 'Xavier Duffy, Director'); enquiry background 'Image Feb 10, 2026, 11_42_53 AM.png' (showroom page). Apart from the two Jerrabomberra frames, each slot is a different property by shoot code. Work intro says 'Every photo on this page is our own', not that every photo is a job: the crew, Xavier and the showroom are not jobs.",
         "url": "https://www.act-landscaping.com.au/projects"
       },
       "Logo": {
