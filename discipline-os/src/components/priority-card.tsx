@@ -2,7 +2,8 @@
 
 import { Check, RotateCcw, X } from "lucide-react";
 import { useState } from "react";
-import type { PriorityItem, PriorityStatus } from "@/lib/types";
+import { GoalBreadcrumb } from "@/components/goals/breadcrumb";
+import type { GoalChain, PriorityItem, PriorityStatus } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const ORDINAL = ["First", "Second", "Third"] as const;
@@ -13,6 +14,8 @@ interface PriorityCardProps {
   suggestion?: string | null;
   disabled?: boolean;
   completedTime?: string | null;
+  /** What this priority supports, when it came from a goal. */
+  chain?: GoalChain | null;
   onSaveTitle: (title: string) => void;
   onSaveDescription: (description: string) => void;
   onStatus: (status: PriorityStatus) => void;
@@ -24,6 +27,7 @@ export function PriorityCard({
   suggestion,
   disabled,
   completedTime,
+  chain,
   onSaveTitle,
   onSaveDescription,
   onStatus,
@@ -68,24 +72,31 @@ export function PriorityCard({
       </button>
 
       <div className="min-w-0 flex-1">
-        <input
+        {/* A one-line textarea so long titles wrap instead of hiding off the edge. */}
+        <textarea
           aria-label={label}
           value={title}
           disabled={disabled || done}
           maxLength={120}
+          rows={1}
           placeholder={`${label}`}
           enterKeyHint="done"
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => setTitle(e.target.value.replace(/\n/g, " "))}
           onBlur={commitTitle}
           onKeyDown={(e) => {
-            if (e.key === "Enter") (e.target as HTMLInputElement).blur();
+            if (e.key === "Enter") {
+              e.preventDefault();
+              (e.target as HTMLTextAreaElement).blur();
+            }
           }}
           className={cn(
-            "h-11 w-full bg-transparent text-[19px] leading-tight font-medium tracking-tight outline-none placeholder:font-normal placeholder:text-faint",
+            "block min-h-11 w-full resize-none bg-transparent py-2.5 text-[19px] leading-tight font-medium tracking-tight outline-none [field-sizing:content] placeholder:font-normal placeholder:text-faint",
             done && "text-muted-foreground",
             dropped && "text-faint line-through",
           )}
         />
+
+        {filled && chain && <GoalBreadcrumb chain={chain} className="mb-0.5" />}
 
         {!filled && suggestion && priority.position === 1 && !disabled && (
           <button

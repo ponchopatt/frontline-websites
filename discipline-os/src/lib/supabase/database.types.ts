@@ -194,6 +194,85 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_goals: {
+        Row: {
+          carried_from_id: string | null
+          completed_at: string | null
+          created_at: string
+          estimated_minutes: number | null
+          id: string
+          local_date: string
+          parent_weekly_goal_id: string | null
+          quantity: number | null
+          rank: number | null
+          source: string
+          status: Database["public"]["Enums"]["daily_goal_status"]
+          title: string
+          unit: string | null
+          updated_at: string
+          user_id: string
+          work_block_id: string | null
+        }
+        Insert: {
+          carried_from_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          estimated_minutes?: number | null
+          id?: string
+          local_date: string
+          parent_weekly_goal_id?: string | null
+          quantity?: number | null
+          rank?: number | null
+          source?: string
+          status?: Database["public"]["Enums"]["daily_goal_status"]
+          title: string
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+          work_block_id?: string | null
+        }
+        Update: {
+          carried_from_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          estimated_minutes?: number | null
+          id?: string
+          local_date?: string
+          parent_weekly_goal_id?: string | null
+          quantity?: number | null
+          rank?: number | null
+          source?: string
+          status?: Database["public"]["Enums"]["daily_goal_status"]
+          title?: string
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+          work_block_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_goals_carried_from_id_user_id_fkey"
+            columns: ["carried_from_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "daily_goals"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "daily_goals_parent_weekly_goal_id_user_id_fkey"
+            columns: ["parent_weekly_goal_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "weekly_goals"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "daily_goals_work_block_id_user_id_fkey"
+            columns: ["work_block_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "work_blocks"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
       daily_plans: {
         Row: {
           completed_at: string | null
@@ -231,6 +310,7 @@ export type Database = {
         Row: {
           completed_at: string | null
           created_at: string
+          daily_goal_id: string | null
           description: string | null
           id: string
           local_date: string
@@ -243,6 +323,7 @@ export type Database = {
         Insert: {
           completed_at?: string | null
           created_at?: string
+          daily_goal_id?: string | null
           description?: string | null
           id?: string
           local_date: string
@@ -255,6 +336,7 @@ export type Database = {
         Update: {
           completed_at?: string | null
           created_at?: string
+          daily_goal_id?: string | null
           description?: string | null
           id?: string
           local_date?: string
@@ -264,7 +346,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "daily_priorities_daily_goal_fk"
+            columns: ["daily_goal_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "daily_goals"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
       }
       daily_reviews: {
         Row: {
@@ -305,6 +395,202 @@ export type Database = {
           updated_at?: string
           user_id?: string
           wasted_time_on?: string | null
+        }
+        Relationships: []
+      }
+      goal_dependencies: {
+        Row: {
+          blocked_id: string
+          blocker_id: string
+          created_at: string
+          id: string
+          level: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blocked_id: string
+          blocker_id: string
+          created_at?: string
+          id?: string
+          level: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          blocked_id?: string
+          blocker_id?: string
+          created_at?: string
+          id?: string
+          level?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      goal_milestones: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          done: boolean
+          due_date: string | null
+          id: string
+          monthly_goal_id: string | null
+          sort_order: number
+          title: string
+          updated_at: string
+          user_id: string
+          yearly_goal_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          done?: boolean
+          due_date?: string | null
+          id?: string
+          monthly_goal_id?: string | null
+          sort_order?: number
+          title: string
+          updated_at?: string
+          user_id?: string
+          yearly_goal_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          done?: boolean
+          due_date?: string | null
+          id?: string
+          monthly_goal_id?: string | null
+          sort_order?: number
+          title?: string
+          updated_at?: string
+          user_id?: string
+          yearly_goal_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "goal_milestones_monthly_goal_id_user_id_fkey"
+            columns: ["monthly_goal_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "monthly_goals"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "goal_milestones_yearly_goal_id_user_id_fkey"
+            columns: ["yearly_goal_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "yearly_goals"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
+      goal_reviews: {
+        Row: {
+          actual_value: number | null
+          created_at: string
+          decision: Database["public"]["Enums"]["miss_decision"] | null
+          id: string
+          monthly_goal_id: string | null
+          outcome: Database["public"]["Enums"]["review_outcome"]
+          period: string
+          period_start: string
+          reason: Database["public"]["Enums"]["miss_reason"] | null
+          reason_note: string | null
+          target_value: number | null
+          updated_at: string
+          user_id: string
+          weekly_goal_id: string | null
+          yearly_goal_id: string | null
+        }
+        Insert: {
+          actual_value?: number | null
+          created_at?: string
+          decision?: Database["public"]["Enums"]["miss_decision"] | null
+          id?: string
+          monthly_goal_id?: string | null
+          outcome: Database["public"]["Enums"]["review_outcome"]
+          period: string
+          period_start: string
+          reason?: Database["public"]["Enums"]["miss_reason"] | null
+          reason_note?: string | null
+          target_value?: number | null
+          updated_at?: string
+          user_id?: string
+          weekly_goal_id?: string | null
+          yearly_goal_id?: string | null
+        }
+        Update: {
+          actual_value?: number | null
+          created_at?: string
+          decision?: Database["public"]["Enums"]["miss_decision"] | null
+          id?: string
+          monthly_goal_id?: string | null
+          outcome?: Database["public"]["Enums"]["review_outcome"]
+          period?: string
+          period_start?: string
+          reason?: Database["public"]["Enums"]["miss_reason"] | null
+          reason_note?: string | null
+          target_value?: number | null
+          updated_at?: string
+          user_id?: string
+          weekly_goal_id?: string | null
+          yearly_goal_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "goal_reviews_monthly_goal_id_user_id_fkey"
+            columns: ["monthly_goal_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "monthly_goals"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "goal_reviews_weekly_goal_id_user_id_fkey"
+            columns: ["weekly_goal_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "weekly_goals"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "goal_reviews_yearly_goal_id_user_id_fkey"
+            columns: ["yearly_goal_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "yearly_goals"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
+      goal_suggestions: {
+        Row: {
+          created_at: string
+          id: string
+          level: string
+          payload: Json
+          source: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          level: string
+          payload: Json
+          source?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          level?: string
+          payload?: Json
+          source?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -409,6 +695,155 @@ export type Database = {
         }
         Relationships: []
       }
+      life_areas: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          sort_order: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          sort_order?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          sort_order?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      monthly_goals: {
+        Row: {
+          aggregation: Database["public"]["Enums"]["goal_aggregation"]
+          cadence: Database["public"]["Enums"]["goal_cadence"]
+          completed_at: string | null
+          created_at: string
+          current_value: number | null
+          deadline: string | null
+          description: string | null
+          goal_type: Database["public"]["Enums"]["goal_type"]
+          habit_id: string | null
+          id: string
+          life_area_id: string | null
+          metric: string | null
+          month_start: string
+          parent_quarterly_goal_id: string | null
+          parent_yearly_goal_id: string | null
+          priority: number
+          progress_source: Database["public"]["Enums"]["progress_source"]
+          sort_order: number
+          start_value: number | null
+          state: Database["public"]["Enums"]["goal_state"]
+          success: string | null
+          target_value: number | null
+          title: string
+          unit: string | null
+          updated_at: string
+          user_id: string
+          why: string | null
+        }
+        Insert: {
+          aggregation?: Database["public"]["Enums"]["goal_aggregation"]
+          cadence?: Database["public"]["Enums"]["goal_cadence"]
+          completed_at?: string | null
+          created_at?: string
+          current_value?: number | null
+          deadline?: string | null
+          description?: string | null
+          goal_type?: Database["public"]["Enums"]["goal_type"]
+          habit_id?: string | null
+          id?: string
+          life_area_id?: string | null
+          metric?: string | null
+          month_start: string
+          parent_quarterly_goal_id?: string | null
+          parent_yearly_goal_id?: string | null
+          priority?: number
+          progress_source?: Database["public"]["Enums"]["progress_source"]
+          sort_order?: number
+          start_value?: number | null
+          state?: Database["public"]["Enums"]["goal_state"]
+          success?: string | null
+          target_value?: number | null
+          title: string
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+          why?: string | null
+        }
+        Update: {
+          aggregation?: Database["public"]["Enums"]["goal_aggregation"]
+          cadence?: Database["public"]["Enums"]["goal_cadence"]
+          completed_at?: string | null
+          created_at?: string
+          current_value?: number | null
+          deadline?: string | null
+          description?: string | null
+          goal_type?: Database["public"]["Enums"]["goal_type"]
+          habit_id?: string | null
+          id?: string
+          life_area_id?: string | null
+          metric?: string | null
+          month_start?: string
+          parent_quarterly_goal_id?: string | null
+          parent_yearly_goal_id?: string | null
+          priority?: number
+          progress_source?: Database["public"]["Enums"]["progress_source"]
+          sort_order?: number
+          start_value?: number | null
+          state?: Database["public"]["Enums"]["goal_state"]
+          success?: string | null
+          target_value?: number | null
+          title?: string
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+          why?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "monthly_goals_habit_id_user_id_fkey"
+            columns: ["habit_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "habits"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "monthly_goals_life_area_id_user_id_fkey"
+            columns: ["life_area_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "life_areas"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "monthly_goals_parent_quarterly_goal_id_user_id_fkey"
+            columns: ["parent_quarterly_goal_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "quarterly_goals"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "monthly_goals_parent_yearly_goal_id_user_id_fkey"
+            columns: ["parent_yearly_goal_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "yearly_goals"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           best_streak: number
@@ -489,30 +924,273 @@ export type Database = {
           },
         ]
       }
+      quarterly_goals: {
+        Row: {
+          aggregation: Database["public"]["Enums"]["goal_aggregation"]
+          cadence: Database["public"]["Enums"]["goal_cadence"]
+          completed_at: string | null
+          created_at: string
+          current_value: number | null
+          deadline: string | null
+          description: string | null
+          goal_type: Database["public"]["Enums"]["goal_type"]
+          habit_id: string | null
+          id: string
+          life_area_id: string | null
+          metric: string | null
+          parent_yearly_goal_id: string | null
+          priority: number
+          progress_source: Database["public"]["Enums"]["progress_source"]
+          quarter: number
+          sort_order: number
+          start_value: number | null
+          state: Database["public"]["Enums"]["goal_state"]
+          success: string | null
+          target_value: number | null
+          title: string
+          unit: string | null
+          updated_at: string
+          user_id: string
+          why: string | null
+          year: number
+        }
+        Insert: {
+          aggregation?: Database["public"]["Enums"]["goal_aggregation"]
+          cadence?: Database["public"]["Enums"]["goal_cadence"]
+          completed_at?: string | null
+          created_at?: string
+          current_value?: number | null
+          deadline?: string | null
+          description?: string | null
+          goal_type?: Database["public"]["Enums"]["goal_type"]
+          habit_id?: string | null
+          id?: string
+          life_area_id?: string | null
+          metric?: string | null
+          parent_yearly_goal_id?: string | null
+          priority?: number
+          progress_source?: Database["public"]["Enums"]["progress_source"]
+          quarter: number
+          sort_order?: number
+          start_value?: number | null
+          state?: Database["public"]["Enums"]["goal_state"]
+          success?: string | null
+          target_value?: number | null
+          title: string
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+          why?: string | null
+          year: number
+        }
+        Update: {
+          aggregation?: Database["public"]["Enums"]["goal_aggregation"]
+          cadence?: Database["public"]["Enums"]["goal_cadence"]
+          completed_at?: string | null
+          created_at?: string
+          current_value?: number | null
+          deadline?: string | null
+          description?: string | null
+          goal_type?: Database["public"]["Enums"]["goal_type"]
+          habit_id?: string | null
+          id?: string
+          life_area_id?: string | null
+          metric?: string | null
+          parent_yearly_goal_id?: string | null
+          priority?: number
+          progress_source?: Database["public"]["Enums"]["progress_source"]
+          quarter?: number
+          sort_order?: number
+          start_value?: number | null
+          state?: Database["public"]["Enums"]["goal_state"]
+          success?: string | null
+          target_value?: number | null
+          title?: string
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+          why?: string | null
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quarterly_goals_habit_id_user_id_fkey"
+            columns: ["habit_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "habits"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "quarterly_goals_life_area_id_user_id_fkey"
+            columns: ["life_area_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "life_areas"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "quarterly_goals_parent_yearly_goal_id_user_id_fkey"
+            columns: ["parent_yearly_goal_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "yearly_goals"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
+      weekly_goals: {
+        Row: {
+          aggregation: Database["public"]["Enums"]["goal_aggregation"]
+          cadence: Database["public"]["Enums"]["goal_cadence"]
+          carried_from_id: string | null
+          completed_at: string | null
+          created_at: string
+          current_value: number | null
+          deadline: string | null
+          description: string | null
+          goal_type: Database["public"]["Enums"]["goal_type"]
+          habit_id: string | null
+          id: string
+          is_major: boolean
+          life_area_id: string | null
+          metric: string | null
+          parent_monthly_goal_id: string | null
+          priority: number
+          progress_source: Database["public"]["Enums"]["progress_source"]
+          sort_order: number
+          start_value: number | null
+          state: Database["public"]["Enums"]["goal_state"]
+          success: string | null
+          target_value: number | null
+          title: string
+          unit: string | null
+          updated_at: string
+          user_id: string
+          week_start: string
+          why: string | null
+        }
+        Insert: {
+          aggregation?: Database["public"]["Enums"]["goal_aggregation"]
+          cadence?: Database["public"]["Enums"]["goal_cadence"]
+          carried_from_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          current_value?: number | null
+          deadline?: string | null
+          description?: string | null
+          goal_type?: Database["public"]["Enums"]["goal_type"]
+          habit_id?: string | null
+          id?: string
+          is_major?: boolean
+          life_area_id?: string | null
+          metric?: string | null
+          parent_monthly_goal_id?: string | null
+          priority?: number
+          progress_source?: Database["public"]["Enums"]["progress_source"]
+          sort_order?: number
+          start_value?: number | null
+          state?: Database["public"]["Enums"]["goal_state"]
+          success?: string | null
+          target_value?: number | null
+          title: string
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+          week_start: string
+          why?: string | null
+        }
+        Update: {
+          aggregation?: Database["public"]["Enums"]["goal_aggregation"]
+          cadence?: Database["public"]["Enums"]["goal_cadence"]
+          carried_from_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          current_value?: number | null
+          deadline?: string | null
+          description?: string | null
+          goal_type?: Database["public"]["Enums"]["goal_type"]
+          habit_id?: string | null
+          id?: string
+          is_major?: boolean
+          life_area_id?: string | null
+          metric?: string | null
+          parent_monthly_goal_id?: string | null
+          priority?: number
+          progress_source?: Database["public"]["Enums"]["progress_source"]
+          sort_order?: number
+          start_value?: number | null
+          state?: Database["public"]["Enums"]["goal_state"]
+          success?: string | null
+          target_value?: number | null
+          title?: string
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+          week_start?: string
+          why?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "weekly_goals_carried_from_id_user_id_fkey"
+            columns: ["carried_from_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "weekly_goals"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "weekly_goals_habit_id_user_id_fkey"
+            columns: ["habit_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "habits"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "weekly_goals_life_area_id_user_id_fkey"
+            columns: ["life_area_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "life_areas"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "weekly_goals_parent_monthly_goal_id_user_id_fkey"
+            columns: ["parent_monthly_goal_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "monthly_goals"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
       weekly_reviews: {
         Row: {
+          completed_at: string | null
           created_at: string
           focus_for_next_week: string | null
           id: string
+          lessons: string | null
           updated_at: string
           user_id: string
           week_start_date: string
+          wins: string | null
         }
         Insert: {
+          completed_at?: string | null
           created_at?: string
           focus_for_next_week?: string | null
           id?: string
+          lessons?: string | null
           updated_at?: string
           user_id?: string
           week_start_date: string
+          wins?: string | null
         }
         Update: {
+          completed_at?: string | null
           created_at?: string
           focus_for_next_week?: string | null
           id?: string
+          lessons?: string | null
           updated_at?: string
           user_id?: string
           week_start_date?: string
+          wins?: string | null
         }
         Relationships: []
       }
@@ -593,6 +1271,105 @@ export type Database = {
           },
         ]
       }
+      yearly_goals: {
+        Row: {
+          aggregation: Database["public"]["Enums"]["goal_aggregation"]
+          cadence: Database["public"]["Enums"]["goal_cadence"]
+          completed_at: string | null
+          created_at: string
+          current_value: number | null
+          deadline: string | null
+          description: string | null
+          goal_type: Database["public"]["Enums"]["goal_type"]
+          habit_id: string | null
+          id: string
+          life_area_id: string | null
+          metric: string | null
+          priority: number
+          progress_source: Database["public"]["Enums"]["progress_source"]
+          sort_order: number
+          start_value: number | null
+          state: Database["public"]["Enums"]["goal_state"]
+          success: string | null
+          target_value: number | null
+          title: string
+          unit: string | null
+          updated_at: string
+          user_id: string
+          why: string | null
+          year: number
+        }
+        Insert: {
+          aggregation?: Database["public"]["Enums"]["goal_aggregation"]
+          cadence?: Database["public"]["Enums"]["goal_cadence"]
+          completed_at?: string | null
+          created_at?: string
+          current_value?: number | null
+          deadline?: string | null
+          description?: string | null
+          goal_type?: Database["public"]["Enums"]["goal_type"]
+          habit_id?: string | null
+          id?: string
+          life_area_id?: string | null
+          metric?: string | null
+          priority?: number
+          progress_source?: Database["public"]["Enums"]["progress_source"]
+          sort_order?: number
+          start_value?: number | null
+          state?: Database["public"]["Enums"]["goal_state"]
+          success?: string | null
+          target_value?: number | null
+          title: string
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+          why?: string | null
+          year: number
+        }
+        Update: {
+          aggregation?: Database["public"]["Enums"]["goal_aggregation"]
+          cadence?: Database["public"]["Enums"]["goal_cadence"]
+          completed_at?: string | null
+          created_at?: string
+          current_value?: number | null
+          deadline?: string | null
+          description?: string | null
+          goal_type?: Database["public"]["Enums"]["goal_type"]
+          habit_id?: string | null
+          id?: string
+          life_area_id?: string | null
+          metric?: string | null
+          priority?: number
+          progress_source?: Database["public"]["Enums"]["progress_source"]
+          sort_order?: number
+          start_value?: number | null
+          state?: Database["public"]["Enums"]["goal_state"]
+          success?: string | null
+          target_value?: number | null
+          title?: string
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+          why?: string | null
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "yearly_goals_habit_id_user_id_fkey"
+            columns: ["habit_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "habits"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "yearly_goals_life_area_id_user_id_fkey"
+            columns: ["life_area_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "life_areas"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -621,6 +1398,7 @@ export type Database = {
           work_minutes: number
         }[]
       }
+      ensure_life_areas: { Args: never; Returns: undefined }
       ensure_profile: { Args: never; Returns: undefined }
       is_valid_timezone: { Args: { tz: string }; Returns: boolean }
       local_date_at: {
@@ -628,13 +1406,42 @@ export type Database = {
         Returns: string
       }
       seed_default_habits: { Args: { p_user: string }; Returns: undefined }
+      seed_life_areas: { Args: { p_user: string }; Returns: undefined }
       user_local_date: { Args: { p_user: string; ts: string }; Returns: string }
       user_local_today: { Args: { p_user: string }; Returns: string }
     }
     Enums: {
       commitment_outcome: "kept" | "broken" | "cancelled" | "pending"
+      daily_goal_status: "pending" | "done" | "dropped"
+      goal_aggregation: "sum" | "latest"
+      goal_cadence: "total" | "per_week" | "per_month"
+      goal_state: "draft" | "active" | "completed" | "missed" | "cancelled"
+      goal_type:
+        | "outcome"
+        | "performance"
+        | "process"
+        | "habit"
+        | "milestone"
+        | "binary"
       habit_category: "morning" | "body" | "discipline" | "god"
+      miss_decision: "carry_forward" | "modify" | "replace" | "cancel"
+      miss_reason:
+        | "underestimated_time"
+        | "too_ambitious"
+        | "procrastination"
+        | "unexpected_event"
+        | "no_longer_matters"
+        | "poor_planning"
+        | "other"
       priority_status: "pending" | "done" | "dropped"
+      progress_source:
+        | "manual"
+        | "children"
+        | "work_hours"
+        | "habit"
+        | "actions"
+        | "milestones"
+      review_outcome: "completed" | "partial" | "missed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -766,8 +1573,39 @@ export const Constants = {
   public: {
     Enums: {
       commitment_outcome: ["kept", "broken", "cancelled", "pending"],
+      daily_goal_status: ["pending", "done", "dropped"],
+      goal_aggregation: ["sum", "latest"],
+      goal_cadence: ["total", "per_week", "per_month"],
+      goal_state: ["draft", "active", "completed", "missed", "cancelled"],
+      goal_type: [
+        "outcome",
+        "performance",
+        "process",
+        "habit",
+        "milestone",
+        "binary",
+      ],
       habit_category: ["morning", "body", "discipline", "god"],
+      miss_decision: ["carry_forward", "modify", "replace", "cancel"],
+      miss_reason: [
+        "underestimated_time",
+        "too_ambitious",
+        "procrastination",
+        "unexpected_event",
+        "no_longer_matters",
+        "poor_planning",
+        "other",
+      ],
       priority_status: ["pending", "done", "dropped"],
+      progress_source: [
+        "manual",
+        "children",
+        "work_hours",
+        "habit",
+        "actions",
+        "milestones",
+      ],
+      review_outcome: ["completed", "partial", "missed"],
     },
   },
 } as const

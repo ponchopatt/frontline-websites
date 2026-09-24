@@ -16,6 +16,7 @@ import type {
   WorkSessionItem,
 } from "./types";
 import { REVIEW_FIELDS } from "./types";
+import { loadTodayPlan } from "./goals/data";
 
 export interface Viewer {
   supabase: Supabase;
@@ -147,7 +148,7 @@ function habitActiveOn(
 }
 
 function emptyPriority(position: 1 | 2 | 3): PriorityItem {
-  return { position, id: null, title: "", description: null, status: "pending", completedAt: null };
+  return { position, id: null, dailyGoalId: null, title: "", description: null, status: "pending", completedAt: null };
 }
 
 function mapSession(row: {
@@ -228,6 +229,7 @@ export async function loadDay(viewer: Viewer, date: LocalDate): Promise<DayView>
     priorities[pos - 1] = {
       position: pos,
       id: p.id,
+      dailyGoalId: p.daily_goal_id,
       title: p.title,
       description: p.description,
       status: p.status,
@@ -284,6 +286,20 @@ export async function loadDay(viewer: Viewer, date: LocalDate): Promise<DayView>
 
   const suggestion = prevReviewRes.data?.tomorrow_priority?.trim() || null;
 
+  const blocks = (blocksRes.data ?? []).map((b) => ({
+    id: b.id,
+    task: b.task,
+    plannedStart: b.planned_start?.slice(0, 5) ?? null,
+    plannedEnd: b.planned_end?.slice(0, 5) ?? null,
+  }));
+  const plannedMinutes = blocks.reduce((m, b) => {
+    if (!b.plannedStart || !b.plannedEnd) return m;
+    const [sh, sm] = b.plannedStart.split(":").map(Number);
+    const [eh, em] = b.plannedEnd.split(":").map(Number);
+    return m + Math.max(0, eh * 60 + em - sh * 60 - sm);
+  }, 0);
+  const goalPlan = await loadTodayPlan(viewer, date, { plannedMinutes, locked: Boolean(locked) });
+
   return {
     date,
     today,
@@ -293,12 +309,7 @@ export async function loadDay(viewer: Viewer, date: LocalDate): Promise<DayView>
     habits,
     priorities,
     prioritySuggestion: suggestion,
-    blocks: (blocksRes.data ?? []).map((b) => ({
-      id: b.id,
-      task: b.task,
-      plannedStart: b.planned_start?.slice(0, 5) ?? null,
-      plannedEnd: b.planned_end?.slice(0, 5) ?? null,
-    })),
+    blocks,
     sessions: (sessionsRes.data ?? []).map(mapSession),
     openSession: open ? { ...mapSession(open), task: openTask } : null,
     bible,
@@ -306,6 +317,7 @@ export async function loadDay(viewer: Viewer, date: LocalDate): Promise<DayView>
     streak: { current: history.current, best: Math.max(history.best, profile.bestStreak) },
     history: history.scores.slice(-30),
     firstDay: firstDayOf(viewer),
+    plan: goalPlan,
   };
 }
 

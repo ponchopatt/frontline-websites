@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Settings2 } from "lucide-react";
 import Link from "next/link";
 import { DayStrip } from "@/components/day-strip";
 import { ScoreRing } from "@/components/score-ring";
@@ -67,6 +67,9 @@ export function DayHeader({
                 Back to today
               </Link>
             )}
+            <Link href="/settings" aria-label="Settings" className="grid size-11 place-items-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground md:hidden">
+              <Settings2 className="size-[18px]" />
+            </Link>
           </div>
         </div>
         <div className="grid justify-items-center gap-1">

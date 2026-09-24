@@ -17,5 +17,7 @@ export default async function TodayPage({ searchParams }: PageProps<"/">) {
   }
   const date = requested ?? viewer.today;
   const view = await loadDay(viewer, date);
-  return <Dashboard key={date} view={view} />;
+  // Remount when the goal plan changes (actions accepted), so local state starts fresh.
+  const planKey = view.plan ? view.plan.actions.map((a) => a.id).join(".") : "";
+  return <Dashboard key={`${date}:${planKey}:${view.priorities.map((p) => p.id ?? "").join(".")}`} view={view} />;
 }

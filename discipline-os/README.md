@@ -19,10 +19,40 @@ Auth · Dashboard · Morning routine · Bible block (today's reading + SOAP) · 
 Work blocks + live timer · Body and Discipline · Daily score · Night review + Complete Day ·
 Streaks and 30-day history. Pages: **Today**, **Habits**, **Bible**, **Work**, **Settings**.
 
-**V2 — schema only, no UI:** `bible_plans`, `proof_uploads`, `weekly_reviews`, `goals`. Analytics,
-charts, proof uploads, weekly reviews, goals, the reading-plan builder, notifications and PWA are
-not built. `commitments` also exists in the schema with no V1 screen (the "Kept commitments" habit
-covers it for now).
+## Goals (built)
+
+A fifth tab, **Goals**, turns a year into today's work: My Life → Year → Quarter → Month → Week →
+Today. Plan → Execute → Review → Adjust.
+
+- **My Life:** who I'm becoming, my why, and 11 areas of life (add, rename or hide your own).
+- **Yearly goals** with a type (Outcome, Performance, Process, Habit, Milestone, Yes/no), a
+  measure, start and target, deadline, priority, and why it matters.
+- **Goal check** while you type: specific, measurable, dated, realistic, within your control, has a
+  reason. It flags, never blocks. An outcome goal is offered the process goal that drives it
+  ("$300k revenue" → "10 focused business-development hours a week").
+- **Break down goal:** a year into months (revenue ramps up; a lift climbs in plate-sized steps; a
+  weekly habit becomes each month's total; a yes/no goal gets a preparing month and a finishing
+  month), then a month into weeks with the activities that drive it. Every suggestion is editable
+  and nothing is saved until you approve it. A month or week already under way gets only its share
+  of the days left.
+- **Week:** "What am I trying to accomplish this week?", major outcomes and supporting tasks, a
+  gentle note past 3 majors, what got done, and how much tracked work was on goal-linked blocks.
+- **Today:** "What should I do today?" ranks this week's goals by priority, what the year needs,
+  what's behind, what's due, what unblocks something, what was missed, and the time left. One tap
+  makes them today's Big 3; each priority shows what it supports (Week › Month › Year).
+- **Progress** comes from real activity where it can: the work timer for hours, habit ticks for
+  habits, finished daily actions for counts, and what you log for money or a lift. It rolls up the
+  hierarchy.
+- **Health:** On track, At risk, Behind, Not started, Complete — a plain pace check (share done
+  against share of time gone, counted from the day the goal was set), always with the numbers.
+- **Weekly review:** for each goal, done / partly / not; why (seven reasons); and what next: carry
+  forward (what's left moves to next week), modify, replace or cancel. Nothing is deleted.
+
+Not built yet: AI goal suggestions and AI breakdowns, quarterly and year-end reviews.
+
+**V2 — schema only, no UI:** `bible_plans`, `proof_uploads`. Analytics, charts, proof uploads, the
+reading-plan builder, notifications and PWA are not built. `commitments` also exists in the schema
+with no screen (the "Kept commitments" habit covers it for now).
 
 ## Run it locally
 
@@ -42,9 +72,9 @@ Sign up with any email: local Supabase does not send confirmation emails.
 
 | Command | What it checks |
 |---|---|
-| `npm test` | Day boundaries (timezones, 04:00 start, daylight saving), score weights and redistribution, streak rules — 26 unit tests |
-| `npm run db:test` | The database's own rules with pgTAP: seeding, RLS isolation, no future days, locked days, one running timer, no duplicate ticks, no cross-user references — 24 tests |
-| `npm run test:e2e` | The V1 definition of done, one Playwright test per item, against a production build and local Supabase. Run `npm run build` first |
+| `npm test` | Day boundaries (timezones, 04:00 start, daylight saving), score weights and redistribution, streak rules; goal health, roll-ups, breakdowns, the goal check and today's ranking — 53 unit tests |
+| `npm run db:test` | The database's own rules with pgTAP: seeding, RLS isolation, no future days, locked days, one running timer, no duplicate ticks, no cross-user references, goal ownership down the hierarchy — 39 tests |
+| `npm run test:e2e` | The V1 definition of done (one Playwright test per item) and the full goal loop: yearly goal → months → weeks → today's Big 3 → done → progress → weekly review → carried to next week. Runs against a production build and local Supabase; run `npm run build` first |
 | `npm run typecheck` · `npm run lint` | Types and lint |
 
 ## Deploy
@@ -120,3 +150,9 @@ Decisions the brief left open:
 `application_done` for the one-tap checks · `bible_readings.plan_id` (for V2 plans) · `updated_at`
 and its trigger on every table · composite `(id, user_id)` foreign keys so rows can only point at
 their owner's parents. Habits have no delete permission at all: archiving is the only way out.
+
+Goals add `life_areas`, `yearly_goals`, `quarterly_goals`, `monthly_goals`, `weekly_goals`,
+`daily_goals`, `goal_milestones`, `goal_dependencies`, `goal_reviews` and `goal_suggestions`, each
+level pointing at its parent with an owner-checked foreign key. `daily_priorities.daily_goal_id`
+links a priority to the action it came from, so finishing one finishes the other. `weekly_reviews`
+gains `wins`, `lessons` and `completed_at`.

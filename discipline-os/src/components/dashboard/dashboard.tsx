@@ -30,6 +30,7 @@ import type {
 } from "@/lib/types";
 import { REVIEW_FIELDS } from "@/lib/types";
 import { BibleSection } from "./bible-section";
+import { PlanWeekPrompt, SupportingActions, TodaySuggestions } from "./goal-plan";
 import { DayHeader } from "./day-header";
 import { ReviewSection } from "./review-section";
 import { WorkSection, type RunningSession } from "./work-section";
@@ -172,7 +173,7 @@ export function Dashboard({ view }: { view: DayView }) {
   function saveTitle(p: PriorityItem, title: string) {
     const before = { ...p };
     void optimistic(
-      () => updatePriority(p.position, title ? { title } : { title: "", description: null, status: "pending", completedAt: null, id: null }),
+      () => updatePriority(p.position, title ? { title } : { title: "", description: null, status: "pending", completedAt: null, id: null, dailyGoalId: null }),
       () => updatePriority(p.position, before),
       async () => {
         const res = await savePriority({ date, position: p.position, title });
@@ -380,11 +381,14 @@ export function Dashboard({ view }: { view: DayView }) {
         prominent
         meta={`${priorities.filter((p) => p.status === "done").length} of ${priorities.filter((p) => p.title.trim()).length || 3}`}
       >
+        {view.plan && isToday && !readOnly && <TodaySuggestions plan={view.plan} date={date} />}
+        {view.plan && isToday && view.plan.hasGoals && !view.plan.hasWeekPlan && <PlanWeekPrompt weekStart={view.plan.weekStart} />}
         <ol className="grid">
           {priorities.map((p) => (
             <PriorityCard
               key={`${p.position}-${p.id ?? "new"}`}
               priority={p}
+              chain={view.plan?.actions.find((a) => a.id === p.dailyGoalId)?.chain ?? null}
               suggestion={view.prioritySuggestion}
               disabled={readOnly}
               completedTime={p.completedAt ? clockTime(p.completedAt, tz) : null}
@@ -394,6 +398,12 @@ export function Dashboard({ view }: { view: DayView }) {
             />
           ))}
         </ol>
+        {view.plan && (
+          <SupportingActions
+            actions={view.plan.actions.filter((a) => !priorities.some((p) => p.dailyGoalId === a.id))}
+            readOnly={readOnly}
+          />
+        )}
       </SectionCard>
 
       <WorkSection

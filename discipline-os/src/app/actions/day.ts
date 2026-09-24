@@ -87,10 +87,17 @@ export async function setPriorityStatus(
     .update({ status, completed_at: completedAt })
     .eq("local_date", date)
     .eq("position", position)
-    .select("status,completed_at")
+    .select("status,completed_at,daily_goal_id")
     .maybeSingle();
   if (error) return dbFail(error);
   if (!data) return fail("Write the priority first.");
+  // A priority that came from a goal moves that goal too.
+  if (data.daily_goal_id) {
+    await viewer.supabase
+      .from("daily_goals")
+      .update({ status, completed_at: completedAt })
+      .eq("id", data.daily_goal_id);
+  }
   return ok({ status: data.status, completedAt: data.completed_at });
 }
 

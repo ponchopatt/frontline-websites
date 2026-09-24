@@ -37,6 +37,8 @@ export interface HabitItem {
 export interface PriorityItem {
   position: 1 | 2 | 3;
   id: string | null;
+  /** Set when the priority came from a goal's daily action. */
+  dailyGoalId: string | null;
   title: string;
   description: string | null;
   status: PriorityStatus;
@@ -72,6 +74,48 @@ export interface BibleState {
 
 export type ReviewState = Record<ReviewField, string>;
 
+/** What a daily action supports, all the way up. Plain data so it can cross to the browser. */
+export interface GoalChain {
+  weekly: { id: string; title: string; weekStart: LocalDate } | null;
+  monthly: { id: string; title: string; monthStart: LocalDate } | null;
+  yearly: { id: string; title: string; year: number } | null;
+}
+
+export interface PlanSuggestion {
+  key: string;
+  title: string;
+  quantity: number | null;
+  unit: string | null;
+  estimatedMinutes: number;
+  weeklyGoalId: string | null;
+  carriedFromId: string | null;
+  createsWorkBlock: boolean;
+  reasons: string[];
+  chain: GoalChain | null;
+}
+
+export interface PlanAction {
+  id: string;
+  title: string;
+  quantity: number | null;
+  unit: string | null;
+  rank: 1 | 2 | 3 | null;
+  status: "pending" | "done" | "dropped";
+  chain: GoalChain | null;
+}
+
+/** Today's side of the goal system: suggestions from this week's goals, and accepted actions. */
+export interface TodayPlan {
+  big3: PlanSuggestion[];
+  supporting: PlanSuggestion[];
+  actions: PlanAction[];
+  /** Any active goal exists at all. */
+  hasGoals: boolean;
+  /** This week has goals planned. */
+  hasWeekPlan: boolean;
+  weekStart: LocalDate;
+}
+
 export interface DayView {
   date: LocalDate;
   today: LocalDate;
@@ -94,6 +138,7 @@ export interface DayView {
   history: DayScore[];
   /** When the account started, so the day picker does not wander before it. */
   firstDay: LocalDate;
+  plan: TodayPlan | null;
 }
 
 export type ActionResult<T = undefined> =
