@@ -18,7 +18,11 @@ interface DayStripProps {
 export function DayStrip({ days, threshold, selected, today, firstDay }: DayStripProps) {
   return (
     <nav aria-label="Last 30 days" className="relative pb-2.5">
-      <div className="pointer-events-none absolute inset-x-0 border-t border-dashed border-muted-foreground/35" style={{ bottom: `calc(0.625rem + ${threshold} * 0.48px)` }} aria-hidden />
+      <div className="mb-2 flex items-baseline justify-between text-xs text-faint" aria-hidden>
+        <span>Last 30 days</span>
+        <span>Streak line {threshold}</span>
+      </div>
+      <div className="pointer-events-none absolute inset-x-0 h-px bg-primary/35" style={{ bottom: `calc(0.625rem + ${threshold} * 0.48px)` }} aria-hidden />
       <ol className="flex h-12 items-end gap-[3px]">
         {days.map((d) => {
           const before = d.date < firstDay;

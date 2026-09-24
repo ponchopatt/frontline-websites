@@ -50,7 +50,7 @@ export function PriorityCard({
         aria-label={filled ? `Mark "${priority.title}" done` : `${label}: write it first`}
         disabled={disabled || !filled || dropped}
         onClick={() => onStatus(done ? "pending" : "done")}
-        className="-m-2.5 grid size-12 shrink-0 touch-manipulation place-items-center rounded-full disabled:cursor-default"
+        className="-mx-2.5 -my-0.5 grid size-12 shrink-0 touch-manipulation place-items-center rounded-full disabled:cursor-default"
       >
         <span
           aria-hidden
@@ -81,7 +81,7 @@ export function PriorityCard({
             if (e.key === "Enter") (e.target as HTMLInputElement).blur();
           }}
           className={cn(
-            "h-8 w-full bg-transparent text-[19px] leading-tight font-medium tracking-tight outline-none placeholder:font-normal placeholder:text-faint",
+            "h-11 w-full bg-transparent text-[19px] leading-tight font-medium tracking-tight outline-none placeholder:font-normal placeholder:text-faint",
             done && "text-muted-foreground",
             dropped && "text-faint line-through",
           )}

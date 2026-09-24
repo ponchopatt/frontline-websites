@@ -215,11 +215,11 @@ function HabitStatRow({
       {confirmArchive && (
         <div className="mt-2 flex flex-wrap items-center gap-2 pl-4 text-sm">
           <span className="text-muted-foreground">Archive it? Past days keep it.</span>
-          <button type="button" onClick={onArchive} className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 font-medium text-primary-foreground">
+          <button type="button" onClick={onArchive} className="inline-flex h-11 items-center gap-1.5 rounded-full bg-primary px-4 font-medium text-primary-foreground">
             <Check className="size-4" aria-hidden />
             Archive
           </button>
-          <button type="button" onClick={() => setConfirmArchive(false)} className="h-10 px-3 text-muted-foreground hover:text-foreground">
+          <button type="button" onClick={() => setConfirmArchive(false)} className="h-11 px-3 text-muted-foreground hover:text-foreground">
             Keep
           </button>
         </div>
