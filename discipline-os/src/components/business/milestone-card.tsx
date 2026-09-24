@@ -1,19 +1,16 @@
 "use client";
 
-import { Check, Pencil, X } from "lucide-react";
+import { Check, Pencil, Plus, X } from "lucide-react";
 import { useId, useRef, useState } from "react";
 import { toast } from "sonner";
 import { completeMilestone, saveMilestone, startMilestone } from "@/app/actions/bot";
-import { CheckChip } from "@/components/check-chip";
-import { Meter } from "@/components/meter";
-import { SectionCard } from "@/components/section-card";
+import { field } from "@/components/goals/form-bits";
+import { Group, PrimaryButton, Ring, Row } from "@/components/os";
 import type { MilestoneItem, MilestoneStep } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { run } from "./run";
 
 const MAX_STEPS = 20;
-const field =
-  "h-12 w-full min-w-0 rounded-lg border border-input bg-transparent px-3 text-[16px] outline-none placeholder:text-faint focus-visible:border-primary/70 disabled:opacity-60";
 
 interface MilestoneCardProps {
   initial: MilestoneItem | null;
@@ -21,8 +18,8 @@ interface MilestoneCardProps {
 }
 
 /**
- * The bot's one current milestone: its steps to tick, and "Complete milestone". With none
- * running, just the question of what's next.
+ * The bot's one current milestone as a list: its name, its steps to tick, a line to add one,
+ * and "Complete milestone". With none running, just the question of what's next.
  */
 export function MilestoneCard({ initial, onCompleted }: MilestoneCardProps) {
   const [milestone, setMilestone] = useState(initial);
@@ -33,9 +30,9 @@ export function MilestoneCard({ initial, onCompleted }: MilestoneCardProps) {
 
   if (!milestone) {
     return (
-      <SectionCard title="Milestone">
+      <Group title="Milestone" plain>
         <StartForm autoFocus={justFinished} onStarted={setMilestone} />
-      </SectionCard>
+      </Group>
     );
   }
 
@@ -82,37 +79,47 @@ export function MilestoneCard({ initial, onCompleted }: MilestoneCardProps) {
   }
 
   return (
-    <SectionCard
+    <Group
       title="Milestone"
-      meta={
-        <span>
-          <span className="text-foreground">{Math.round(ratio * 100)}%</span> done
+      action={
+        <span className="text-[15px] text-muted-foreground">
+          {Math.round(ratio * 100)}% done
         </span>
       }
     >
-      <TitleEditor title={title} onSave={(t) => void rename(t)} />
-      <Meter value={ratio} label="Milestone progress" className="mt-3" />
-      <p className="mt-2 text-sm text-muted-foreground">
-        {doneCount} of {steps.length} {steps.length === 1 ? "step" : "steps"} done
-      </p>
+      <div className="flex items-center gap-3 px-4 py-3">
+        <div className="grid min-w-0 flex-1 gap-0.5">
+          <TitleEditor title={title} onSave={(t) => void rename(t)} />
+          <p className="text-[14px] text-muted-foreground">
+            {doneCount} of {steps.length} {steps.length === 1 ? "step" : "steps"} done
+          </p>
+        </div>
+        <Ring value={ratio} size={36} label={`Milestone ${Math.round(ratio * 100)}% done`} />
+      </div>
 
       {steps.length > 0 && (
-        <ul className="mt-4 grid gap-2">
+        <ul className="divide-y divide-border">
           {steps.map((s, i) => (
             // Steps have no ids; a step is its place in the list.
-            <li key={`${i}:${s.title}`} className="grid grid-cols-[minmax(0,1fr)_2.75rem] items-center gap-1">
-              <CheckChip
-                label={s.title}
-                done={s.done}
-                onToggle={(done) => void saveSteps(steps.map((x, j) => (j === i ? { ...x, done } : x)))}
-              />
+            <li key={`${i}:${s.title}`} className="flex items-center pr-2">
+              <button
+                type="button"
+                role="checkbox"
+                aria-checked={s.done}
+                aria-label={s.title}
+                onClick={() => void saveSteps(steps.map((x, j) => (j === i ? { ...x, done: !s.done } : x)))}
+                className="flex min-h-14 min-w-0 flex-1 items-center gap-3 py-2.5 pl-4 text-left transition-colors active:bg-accent"
+              >
+                <Tick done={s.done} />
+                <span className={cn("min-w-0 text-[17px] leading-snug break-words", s.done && "text-muted-foreground")}>{s.title}</span>
+              </button>
               <button
                 type="button"
                 onClick={() => removeStep(i)}
                 aria-label={`Remove step: ${s.title}`}
-                className="grid size-11 place-items-center rounded-full text-faint hover:bg-accent hover:text-foreground"
+                className="grid size-11 shrink-0 place-items-center rounded-full text-faint hover:bg-accent hover:text-foreground"
               >
-                <X className="size-4" aria-hidden />
+                <X className="size-[18px]" aria-hidden />
               </button>
             </li>
           ))}
@@ -122,39 +129,49 @@ export function MilestoneCard({ initial, onCompleted }: MilestoneCardProps) {
       <AddStep full={steps.length >= MAX_STEPS} onAdd={(t) => void saveSteps([...steps, { title: t, done: false }])} />
 
       {confirming ? (
-        <div role="alert" className="mt-5 grid gap-3 rounded-xl border border-border bg-card p-4 text-[15px]">
+        <div role="alert" className="grid gap-3 px-4 py-4 text-[15px] leading-snug">
           <p>
             {left === 1 ? "1 step isn't" : `${left} steps aren't`} ticked yet. Complete the milestone anyway?
           </p>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
               disabled={busy}
               onClick={() => void complete()}
-              className="h-11 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground disabled:opacity-60"
+              className="h-11 rounded-full bg-primary px-5 text-[15px] font-medium text-primary-foreground disabled:opacity-60"
             >
               Complete anyway
             </button>
-            <button type="button" onClick={() => setConfirming(false)} className="h-11 rounded-full px-4 text-sm text-muted-foreground hover:text-foreground">
+            <button type="button" onClick={() => setConfirming(false)} className="h-11 rounded-full px-4 text-[15px] text-muted-foreground hover:text-foreground">
               Not yet
             </button>
           </div>
         </div>
       ) : (
-        <button
-          type="button"
-          disabled={busy}
+        <Row
           onClick={() => (left > 0 ? setConfirming(true) : void complete())}
-          className={cn(
-            "mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full text-[15px] font-medium active:scale-[0.99] disabled:opacity-60",
-            left === 0 ? "bg-primary text-primary-foreground" : "border border-primary/60 text-primary",
-          )}
-        >
-          <Check className="size-4" aria-hidden />
-          {busy ? "Completing…" : "Complete milestone"}
-        </button>
+          disabled={busy}
+          leading={<Check className="size-5" />}
+          title={<span className={cn(left === 0 && steps.length > 0 && "font-medium")}>{busy ? "Completing…" : "Complete milestone"}</span>}
+          chevron={false}
+        />
       )}
-    </SectionCard>
+    </Group>
+  );
+}
+
+/** A round tick, filled once done. */
+function Tick({ done }: { done: boolean }) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "grid size-[26px] shrink-0 place-items-center rounded-full border-[1.5px] transition-colors duration-200",
+        done ? "border-kept bg-kept text-white" : "border-input",
+      )}
+    >
+      {done && <Check className="size-4" strokeWidth={3} />}
+    </span>
   );
 }
 
@@ -184,16 +201,16 @@ function TitleEditor({ title, onSave }: { title: string; onSave: (title: string)
             e.currentTarget.blur();
           }
         }}
-        className={cn(field, "text-[20px]")}
+        className="-mx-2 h-11 w-[calc(100%+1rem)] min-w-0 rounded-xl bg-accent px-2 text-[20px] leading-snug font-medium tracking-tight outline-none"
       />
     );
   }
 
   return (
-    <button type="button" onClick={() => setEditing(true)} className="group flex min-h-12 w-full items-start gap-2 text-left">
+    <button type="button" onClick={() => setEditing(true)} className="group flex min-h-11 w-full items-center gap-2 text-left">
       <span className="sr-only">Rename milestone: </span>
-      <span className="min-w-0 text-[22px] leading-snug font-medium tracking-tight break-words">{title}</span>
-      <Pencil className="mt-2 size-4 shrink-0 text-faint group-hover:text-foreground" aria-hidden />
+      <span className="min-w-0 text-[20px] leading-snug font-medium tracking-tight break-words">{title}</span>
+      <Pencil className="size-4 shrink-0 text-faint group-hover:text-foreground" aria-hidden />
     </button>
   );
 }
@@ -203,7 +220,7 @@ function AddStep({ full, onAdd }: { full: boolean; onAdd: (title: string) => voi
   const [text, setText] = useState("");
   return (
     <form
-      className="mt-3 grid grid-cols-[minmax(0,1fr)_auto] gap-2"
+      className="flex min-h-14 items-center gap-3 pr-2 pl-4"
       onSubmit={(e) => {
         e.preventDefault();
         const t = text.trim();
@@ -212,6 +229,7 @@ function AddStep({ full, onAdd }: { full: boolean; onAdd: (title: string) => voi
         setText("");
       }}
     >
+      <Plus className="size-[22px] shrink-0 text-muted-foreground" aria-hidden />
       <label htmlFor={id} className="sr-only">
         New step
       </label>
@@ -223,15 +241,13 @@ function AddStep({ full, onAdd }: { full: boolean; onAdd: (title: string) => voi
         enterKeyHint="done"
         onChange={(e) => setText(e.target.value)}
         placeholder={full ? "Twenty steps is the most" : "Add a step"}
-        className={field}
+        className="h-11 min-w-0 flex-1 bg-transparent text-[17px] outline-none placeholder:text-muted-foreground disabled:opacity-60"
       />
-      <button
-        type="submit"
-        disabled={full || !text.trim()}
-        className="h-12 rounded-full border border-primary/60 px-5 text-sm font-medium text-primary disabled:opacity-50"
-      >
-        Add
-      </button>
+      {text.trim() && !full && (
+        <button type="submit" className="h-11 shrink-0 rounded-full px-3 text-[15px] font-medium text-foreground hover:bg-accent">
+          Add
+        </button>
+      )}
     </form>
   );
 }
@@ -242,7 +258,7 @@ function StartForm({ autoFocus, onStarted }: { autoFocus: boolean; onStarted: (m
   const [busy, setBusy] = useState(false);
   return (
     <form
-      className="grid gap-2"
+      className="grid gap-3 p-4"
       onSubmit={async (e) => {
         e.preventDefault();
         const t = title.trim();
@@ -253,7 +269,7 @@ function StartForm({ autoFocus, onStarted }: { autoFocus: boolean; onStarted: (m
         if (res.ok) onStarted(res.data);
       }}
     >
-      <label htmlFor={id} className="text-[15px]">
+      <label htmlFor={id} className="text-[17px]">
         What&apos;s the next milestone?
       </label>
       <input
@@ -266,13 +282,9 @@ function StartForm({ autoFocus, onStarted }: { autoFocus: boolean; onStarted: (m
         placeholder="e.g. Complete TradingView comparison"
         className={field}
       />
-      <button
-        type="submit"
-        disabled={busy || !title.trim()}
-        className="h-12 rounded-full bg-primary text-[15px] font-medium text-primary-foreground disabled:opacity-50"
-      >
+      <PrimaryButton type="submit" disabled={busy || !title.trim()}>
         {busy ? "Starting…" : "Start milestone"}
-      </button>
+      </PrimaryButton>
     </form>
   );
 }

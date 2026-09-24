@@ -31,18 +31,32 @@ export function Stepper({ label, value, onCommit, step = 1, unit, disabled, clas
     if (!editing && pending.current === null) setDraft(String(value));
   }, [value, editing]);
 
-  useEffect(() => () => {
-    if (timer.current) clearTimeout(timer.current);
-  }, []);
+  // The latest value and callback, for a burst that's still waiting when this goes away.
+  const latest = useRef({ value, onCommit });
+  useEffect(() => {
+    latest.current = { value, onCommit };
+  });
+
+  // Closed mid-burst (a sheet dismissed straight after a tap): save the last tap now.
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+      const v = pending.current;
+      pending.current = null;
+      if (v !== null && v !== latest.current.value) latest.current.onCommit(v);
+    },
+    [],
+  );
 
   function settle(next: number) {
     pending.current = next;
     setDraft(String(next));
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => {
+      timer.current = null;
       const v = pending.current;
       pending.current = null;
-      if (v !== null && v !== value) onCommit(v);
+      if (v !== null && v !== latest.current.value) latest.current.onCommit(v);
     }, 600);
   }
 

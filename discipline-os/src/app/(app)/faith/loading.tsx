@@ -1,5 +1,5 @@
 import { PageSkeleton } from "@/components/page-skeleton";
 
 export default function Loading() {
-  return <PageSkeleton label="business" back stats sections={2} rows={4} />;
+  return <PageSkeleton label="faith" stats={false} sections={3} rows={3} />;
 }

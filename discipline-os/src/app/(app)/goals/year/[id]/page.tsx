@@ -1,10 +1,12 @@
+import { ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { ReactNode } from "react";
 import { BreakdownPanel, GoalStateControls, LogProgress, Milestones } from "@/components/goals/goal-controls";
 import { HealthBadge, ProgressBar } from "@/components/goals/health";
 import { GoalRow } from "@/components/goals/goal-row";
-import { SectionCard } from "@/components/section-card";
+import { Group, PageHeader } from "@/components/os";
 import { getViewer } from "@/lib/data";
 import { yearToMonths } from "@/lib/goals/breakdown";
 import { loadGoalYear, loadLifeAreas, mapYearly } from "@/lib/goals/data";
@@ -42,73 +44,79 @@ export default async function YearlyGoalPage({ params }: PageProps<"/goals/year/
     .map((q) => ({ q, items: months.filter((m) => quarterOf(m.monthStart) === q) }))
     .filter((x) => x.items.length > 0);
 
-  return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
-      <header className="grid gap-4">
-        <Link href={`/goals?year=${goal.year}`} className="inline-flex min-h-11 w-fit items-center text-sm text-muted-foreground hover:text-foreground">
-          {goal.year}
-          {area ? ` · ${area}` : ""}
-        </Link>
-        <h1 className="text-[30px] leading-tight font-medium tracking-tight">{goal.title}</h1>
-        {progress && (
-          <div className="grid gap-2">
-            <div className="flex flex-wrap items-baseline justify-between gap-3">
-              <HealthBadge status={progress.health} />
-              <span className="text-sm text-muted-foreground">
-                {progress.current !== null && goal.targetValue !== null ? (
-                  <>
-                    <span className="text-foreground">{formatValue(progress.current, goal.unit)}</span> of {formatTarget(goal)}
-                  </>
-                ) : (
-                  formatTarget(goal)
-                )}
-              </span>
-            </div>
-            {progress.ratio !== null && <ProgressBar ratio={progress.ratio} expected={progress.expected} label="Progress this year" />}
-            <p className="text-[15px] text-muted-foreground">{progress.explanation}</p>
-          </div>
-        )}
-      </header>
+  const thisYear = Number(viewer.today.slice(0, 4));
 
-      <dl className="grid gap-5 border-t border-border pt-6">
-        <div className="grid gap-1">
-          <dt className="text-sm text-muted-foreground">Why this matters</dt>
-          <dd className="text-[16px]">{goal.why || <span className="text-faint">Not written yet.</span>}</dd>
-        </div>
-        <div className="grid gap-1">
-          <dt className="text-sm text-muted-foreground">What success looks like</dt>
-          <dd className="text-[16px]">{goal.success || formatTarget(goal)}</dd>
-        </div>
-        <div className="grid gap-1">
-          <dt className="text-sm text-muted-foreground">What I need to do next</dt>
-          <dd className="text-[16px] text-primary">
-            {currentMonth ? <Link href={`/goals/month/${currentMonth.monthStart.slice(0, 7)}`} className="inline-flex min-h-11 items-center underline-offset-4 hover:underline">{next}</Link> : next}
-          </dd>
-        </div>
-      </dl>
+  return (
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-7">
+      <PageHeader back={{ href: goal.year === thisYear ? "/goals" : `/goals?year=${goal.year}`, label: "Goals" }} eyebrow={`${goal.year}${area ? ` · ${area}` : ""}`} title={goal.title} />
+
+      {progress && (
+        <section aria-label="Where it stands" className="grid gap-2.5 px-1">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+            <HealthBadge status={progress.health} className="text-[15px]" />
+            <span className="text-[15px] text-muted-foreground">
+              {progress.current !== null && goal.targetValue !== null ? (
+                <>
+                  <span className="text-foreground">{formatValue(progress.current, goal.unit)}</span> of {formatTarget(goal)}
+                </>
+              ) : (
+                formatTarget(goal)
+              )}
+            </span>
+          </div>
+          {progress.ratio !== null && <ProgressBar ratio={progress.ratio} expected={progress.expected} label="Progress this year" />}
+          <p className="text-[15px] leading-snug text-muted-foreground">{progress.explanation}</p>
+        </section>
+      )}
+
+      <Group title="About this goal">
+        <Detail label="Why this matters">{goal.why || <span className="text-muted-foreground">Not written yet.</span>}</Detail>
+        <Detail label="What success looks like">{goal.success || formatTarget(goal)}</Detail>
+        {currentMonth ? (
+          <Link href={`/goals/month/${currentMonth.monthStart.slice(0, 7)}`} className="flex min-h-14 items-center gap-3 px-4 py-3 transition-colors active:bg-accent">
+            <span className="grid min-w-0 flex-1 gap-0.5">
+              <span className="text-[14px] text-muted-foreground">What I need to do next</span>
+              <span className="text-[17px] leading-snug font-medium">{next}</span>
+            </span>
+            <ChevronRight className="-mr-1 size-[18px] shrink-0 text-faint" aria-hidden />
+          </Link>
+        ) : (
+          <Detail label="What I need to do next">
+            <span className="font-medium">{next}</span>
+          </Detail>
+        )}
+      </Group>
 
       {manual && (
-        <LogProgress level="yearly" id={goal.id} unit={goal.unit} current={goal.currentValue} />
+        <Group title="Progress" plain>
+          <div className="p-4">
+            <LogProgress level="yearly" id={goal.id} unit={goal.unit} current={goal.currentValue} />
+          </div>
+        </Group>
       )}
 
       {goal.goalType === "milestone" && (
-        <SectionCard title="Milestones">
+        <Group title="Milestones">
           <Milestones yearlyGoalId={goal.id} milestones={milestones} />
-        </SectionCard>
+        </Group>
       )}
 
-      <SectionCard title="Months" meta={months.length ? `${months.length} planned` : undefined} description={months.length === 0 ? "A year is too far away to act on. Break it into monthly targets that build towards it." : undefined}>
+      <Group
+        title="Months"
+        action={months.length ? <span className="text-[15px] text-muted-foreground">{months.length} planned</span> : undefined}
+        footer={months.length === 0 ? "A year is too far away to act on. Break it into monthly targets that build towards it." : undefined}
+      >
         {quarters.map(({ q, items }) => (
-          <div key={q} className="mb-3">
-            <h3 className="text-sm text-muted-foreground">Q{q}</h3>
-            <ul className="divide-y divide-border/70">
+          <div key={q} className="pt-2.5">
+            <h3 className="px-4 text-[14px] font-medium text-muted-foreground">Q{q}</h3>
+            <ul className="divide-y divide-border px-4">
               {items.map((m) => (
                 <GoalRow key={m.id} goal={m} progress={data.progress.get(m.id)} href={`/goals/month/${m.monthStart.slice(0, 7)}`} meta={monthLabel(m.monthStart).split(" ")[0]} />
               ))}
             </ul>
           </div>
         ))}
-        {goal.state === "active" && (
+        {goal.state === "active" ? (
           <BreakdownPanel
             parentId={goal.id}
             level="monthly"
@@ -117,12 +125,22 @@ export default async function YearlyGoalPage({ params }: PageProps<"/goals/year/
             buttonLabel={months.length ? "Plan the remaining months" : "Break down goal"}
             approveLabel="Save monthly plan"
           />
-        )}
-      </SectionCard>
+        ) : null}
+        {months.length === 0 && (goal.state !== "active" || drafts.length === 0) && <p className="px-4 py-4 text-[15px] text-muted-foreground">No months planned.</p>}
+      </Group>
 
-      <div className="border-t border-border pt-6">
+      <Group>
         <GoalStateControls level="yearly" id={goal.id} state={goal.state} />
-      </div>
+      </Group>
+    </div>
+  );
+}
+
+function Detail({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="grid min-h-14 content-center gap-0.5 px-4 py-3">
+      <span className="text-[14px] text-muted-foreground">{label}</span>
+      <span className="text-[17px] leading-snug break-words">{children}</span>
     </div>
   );
 }

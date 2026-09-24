@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { startSession, stopSession } from "@/app/actions/work";
 import { Meter } from "@/components/meter";
-import { SectionCard } from "@/components/section-card";
+import { Group, Row } from "@/components/os";
 import { TimerDisplay } from "@/components/timer-display";
 import { useNow } from "@/hooks/use-now";
 import { AREA_LABEL } from "@/lib/areas";
@@ -33,7 +33,7 @@ function runningName(r: RunningTimer): string {
 
 /**
  * Time given to one business today, this week and this month, counting a running timer up to
- * now, with the button that starts its timer.
+ * now, and one row that starts its timer.
  */
 export function AreaHours({ data }: { data: HoursData }) {
   const { area, today, weekStart, monthStart, targetHours, serverNow } = data;
@@ -87,82 +87,73 @@ export function AreaHours({ data }: { data: HoursData }) {
   }
 
   return (
-    <SectionCard
+    <Group
       title="Hours"
-      meta={
+      action={
         targetHours ? (
-          <span>
-            <span className="text-foreground">{hours(todayMin)}</span> of {targetHours}h today
+          <span className="text-[15px] text-muted-foreground">
+            {hours(todayMin)} of {targetHours}h today
           </span>
         ) : undefined
       }
     >
-      {targetHours ? <Meter value={todayMin / (targetHours * 60)} label={`${name} hours today`} className="mb-4" /> : null}
+      <div className="grid gap-4 px-4 pt-4 pb-4">
+        <dl className="grid grid-cols-3 gap-3">
+          <Figure label="Today" value={hours(todayMin)} />
+          <Figure label="This week" value={hours(weekMin)} />
+          <Figure label="This month" value={hours(monthMin)} />
+        </dl>
+        {targetHours ? <Meter value={todayMin / (targetHours * 60)} label={`${name} hours today`} /> : null}
+      </div>
 
-      <dl className="grid grid-cols-3 gap-3">
-        <Figure label="Today" value={hours(todayMin)} />
-        <Figure label="This week" value={hours(weekMin)} />
-        <Figure label="This month" value={hours(monthMin)} />
-      </dl>
-
-      <div className="mt-5">
-        {mine ? (
-          <div className="flex items-center justify-between gap-4 rounded-xl border border-primary/30 bg-card p-4">
-            <div className="min-w-0">
-              <p className="truncate text-sm text-muted-foreground">{mine.task ?? `${name} timer`}</p>
-              <TimerDisplay startedAt={mine.startedAt} className="text-[34px] leading-none tracking-tight" />
-            </div>
-            <button
-              type="button"
-              disabled={busy}
-              onClick={() => void stop(mine)}
-              className="inline-flex h-12 shrink-0 items-center gap-2 rounded-full bg-primary px-5 text-[15px] font-medium text-primary-foreground active:scale-[0.98] disabled:opacity-60"
-            >
-              <Square className="size-4 fill-current" aria-hidden />
-              Stop
-            </button>
-          </div>
-        ) : conflict ? (
-          <div role="alert" className="rounded-xl border border-border bg-card p-4 text-[15px]">
-            <p>
-              {runningName(conflict)} is running (<TimerDisplay startedAt={conflict.startedAt} />
-              ). Stop it and start {name}?
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => void start(true)}
-                className="h-11 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground disabled:opacity-60"
-              >
-                Switch to this
-              </button>
-              <button type="button" onClick={() => setConflict(null)} className="h-11 rounded-full px-4 text-sm text-muted-foreground hover:text-foreground">
-                Keep it running
-              </button>
-            </div>
-          </div>
-        ) : (
+      {mine ? (
+        <div className="flex min-h-16 items-center gap-3 px-4 py-3">
+          <span className="grid min-w-0 flex-1 gap-0.5">
+            <span className="text-[14px] break-words text-muted-foreground">{mine.task ?? `${name} timer`}</span>
+            <TimerDisplay startedAt={mine.startedAt} className="text-[28px] leading-none font-light tracking-tight" />
+          </span>
           <button
             type="button"
             disabled={busy}
-            onClick={() => void start(false)}
-            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-primary/60 text-[15px] font-medium text-primary active:scale-[0.99] disabled:opacity-60"
+            onClick={() => void stop(mine)}
+            className="inline-flex h-11 shrink-0 items-center gap-2 rounded-full bg-primary px-5 text-[15px] font-medium text-primary-foreground transition-transform active:scale-[0.98] disabled:opacity-60"
           >
-            <Play className="size-4 fill-current" aria-hidden />
-            Start {name} timer
+            <Square className="size-3.5 fill-current" aria-hidden />
+            Stop
           </button>
-        )}
-      </div>
-    </SectionCard>
+        </div>
+      ) : conflict ? (
+        <div role="alert" className="grid gap-3 px-4 py-4 text-[15px] leading-snug">
+          <p>
+            {runningName(conflict)} is running (<TimerDisplay startedAt={conflict.startedAt} />
+            ). Stop it and start {name}?
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => void start(true)}
+              className="h-11 rounded-full bg-primary px-5 text-[15px] font-medium text-primary-foreground disabled:opacity-60"
+            >
+              Switch to this
+            </button>
+            <button type="button" onClick={() => setConflict(null)} className="h-11 rounded-full px-4 text-[15px] text-muted-foreground hover:text-foreground">
+              Keep it running
+            </button>
+          </div>
+        </div>
+      ) : (
+        <Row onClick={() => void start(false)} disabled={busy} leading={<Play className="size-5 fill-current" />} title={`Start ${name} timer`} chevron={false} />
+      )}
+    </Group>
   );
 }
 
 function Figure({ label, value }: { label: string; value: string }) {
   return (
     <div className="grid min-w-0 gap-0.5">
-      <dt className="text-sm text-muted-foreground">{label}</dt>
-      <dd className="truncate text-2xl leading-tight tracking-tight">{value}</dd>
+      <dt className="text-[14px] text-muted-foreground">{label}</dt>
+      <dd className="text-[clamp(19px,5.6vw,24px)] leading-tight font-light tracking-tight break-words tabular-nums">{value}</dd>
     </div>
   );
 }

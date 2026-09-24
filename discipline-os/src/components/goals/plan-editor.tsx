@@ -1,8 +1,10 @@
 "use client";
 
+import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { PrimaryButton } from "@/components/os";
 import type { DraftGoal } from "@/lib/goals/breakdown";
 import { formatValue } from "@/lib/goals/format";
 import type { ActionResult } from "@/lib/types";
@@ -34,63 +36,74 @@ export function PlanEditor({ drafts: initial, groupLabel, approveLabel, onApprov
   }
 
   return (
-    <div className="grid gap-5">
+    <div className="grid gap-5 pt-1">
       {groups.map((g) => (
-        <fieldset key={g} className="grid gap-1">
-          <legend className="mb-1 text-sm text-muted-foreground">{groupLabel(g)}</legend>
-          {drafts
-            .filter((d) => d.periodStart === g)
-            .map((d) => {
-              const on = included.has(d.key);
-              return (
-                <div key={d.key} className={cn("grid grid-cols-[2.75rem_minmax(0,1fr)_auto] items-center gap-2 transition-opacity", !on && "opacity-50")}>
-                  <label className="grid size-11 cursor-pointer place-items-center">
-                    <input
-                      type="checkbox"
-                      checked={on}
-                      onChange={(e) =>
-                        setIncluded((s) => {
-                          const next = new Set(s);
-                          if (e.target.checked) next.add(d.key);
-                          else next.delete(d.key);
-                          return next;
-                        })
-                      }
-                      className="size-5 accent-[var(--primary)]"
-                      aria-label={`Include ${d.title}`}
-                    />
-                  </label>
-                  <div className="min-w-0">
-                    <textarea
-                      value={d.title}
-                      maxLength={140}
-                      rows={1}
-                      onChange={(e) => update(d.key, { title: e.target.value.replace(/\n/g, " ") })}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") e.preventDefault();
-                      }}
-                      aria-label="Goal"
-                      className="block min-h-11 w-full min-w-0 resize-none rounded-md bg-transparent px-1 py-2.5 text-[16px] leading-snug outline-none [field-sizing:content] focus-visible:bg-accent"
-                    />
-                    {!d.isMajor && <span className="block px-1 text-xs text-faint">Supporting task</span>}
-                  </div>
-                  {d.targetValue !== null ? (
-                    <label className="flex h-11 min-w-20 items-center justify-end gap-1 rounded-lg border border-input px-2 focus-within:border-primary/70">
-                      <span className="sr-only">Target for {d.title}</span>
-                      {d.unit === "$" && <span className="text-muted-foreground">$</span>}
-                      <TargetInput value={d.targetValue} onChange={(n) => update(d.key, { targetValue: n })} />
-                      {d.unit && d.unit !== "$" && <span className="max-w-[5.5rem] truncate text-xs text-muted-foreground">{d.unit}</span>}
+        <fieldset key={g} className="grid min-w-0">
+          <legend className="mb-1 text-[15px] font-medium text-muted-foreground">{groupLabel(g)}</legend>
+          <div className="divide-y divide-border">
+            {drafts
+              .filter((d) => d.periodStart === g)
+              .map((d) => {
+                const on = included.has(d.key);
+                return (
+                  <div key={d.key} className="flex min-h-14 items-center gap-2 py-1.5">
+                    <label className="-ml-2 grid size-11 shrink-0 cursor-pointer place-items-center rounded-full has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-foreground/30">
+                      <input
+                        type="checkbox"
+                        checked={on}
+                        onChange={(e) =>
+                          setIncluded((s) => {
+                            const next = new Set(s);
+                            if (e.target.checked) next.add(d.key);
+                            else next.delete(d.key);
+                            return next;
+                          })
+                        }
+                        className="sr-only"
+                        aria-label={`Include ${d.title}`}
+                      />
+                      <span
+                        aria-hidden
+                        className={cn(
+                          "grid size-[26px] place-items-center rounded-full border-[1.5px] transition-colors duration-200",
+                          on ? "border-kept bg-kept text-white" : "border-input",
+                        )}
+                      >
+                        {on && <Check className="size-4" strokeWidth={3} />}
+                      </span>
                     </label>
-                  ) : (
-                    <span className="text-right text-sm text-faint">Yes / no</span>
-                  )}
-                </div>
-              );
-            })}
+                    <div className={cn("min-w-0 flex-1 transition-opacity", !on && "opacity-50")}>
+                      <textarea
+                        value={d.title}
+                        maxLength={140}
+                        rows={1}
+                        onChange={(e) => update(d.key, { title: e.target.value.replace(/\n/g, " ") })}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") e.preventDefault();
+                        }}
+                        aria-label="Goal"
+                        className="block min-h-11 w-full min-w-0 resize-none rounded-lg bg-transparent px-1.5 py-2.5 text-[17px] leading-snug outline-none [field-sizing:content] focus-visible:bg-accent"
+                      />
+                      {!d.isMajor && <span className="-mt-1 block px-1.5 pb-1 text-[13px] text-muted-foreground">Supporting task</span>}
+                    </div>
+                    {d.targetValue !== null ? (
+                      <label className={cn("flex h-11 max-w-[8.5rem] min-w-[5.5rem] shrink-0 items-center justify-end gap-1 rounded-xl bg-accent px-2.5 transition-opacity focus-within:ring-2 focus-within:ring-foreground/20", !on && "opacity-50")}>
+                        <span className="sr-only">Target for {d.title}</span>
+                        {d.unit === "$" && <span className="text-[17px] text-muted-foreground">$</span>}
+                        <TargetInput value={d.targetValue} onChange={(n) => update(d.key, { targetValue: n })} />
+                        {d.unit && d.unit !== "$" && <span className="min-w-0 truncate text-[13px] text-muted-foreground">{d.unit}</span>}
+                      </label>
+                    ) : (
+                      <span className={cn("shrink-0 text-right text-[14px] text-muted-foreground", !on && "opacity-50")}>Yes / no</span>
+                    )}
+                  </div>
+                );
+              })}
+          </div>
         </fieldset>
       ))}
-      <div className="grid gap-2">
-        <p className="text-sm text-muted-foreground">
+      <div className="grid gap-3">
+        <p className="text-center text-[15px] text-muted-foreground">
           {count} of {drafts.length} selected
           {drafts.some((d) => d.targetValue !== null && d.isMajor && included.has(d.key)) &&
             ` · ${formatValue(
@@ -98,8 +111,7 @@ export function PlanEditor({ drafts: initial, groupLabel, approveLabel, onApprov
               drafts.find((d) => d.isMajor)?.unit ?? null,
             )} in total`}
         </p>
-        <button
-          type="button"
+        <PrimaryButton
           disabled={busy || count === 0}
           onClick={async () => {
             setBusy(true);
@@ -117,10 +129,10 @@ export function PlanEditor({ drafts: initial, groupLabel, approveLabel, onApprov
               setBusy(false);
             }
           }}
-          className="h-12 rounded-full bg-primary text-[15px] font-medium text-primary-foreground disabled:opacity-50"
+          className="w-full"
         >
           {busy ? "Saving…" : `${approveLabel} (${count})`}
-        </button>
+        </PrimaryButton>
       </div>
     </div>
   );
@@ -142,7 +154,7 @@ function TargetInput({ value, onChange }: { value: number; onChange: (n: number)
       }}
       onBlur={() => setDraft(null)}
       size={Math.max(2, shown.length)}
-      className="min-w-0 bg-transparent text-right text-[15px] outline-none"
+      className="min-w-0 bg-transparent text-right text-[17px] tabular-nums outline-none"
     />
   );
 }

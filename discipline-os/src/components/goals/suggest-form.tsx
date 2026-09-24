@@ -1,14 +1,16 @@
 "use client";
 
-import { Check, Sparkles } from "lucide-react";
+import { Check, ChevronDown, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { addSuggestedGoals, suggestMyGoals } from "@/app/actions/suggest";
+import { Group, PrimaryButton, TextAction } from "@/components/os";
 import { AREA_LABEL, type Area } from "@/lib/areas";
 import type { LocalDate } from "@/lib/day";
 import type { GoalSuggestion } from "@/lib/goals/suggest-goals";
 import { cn } from "@/lib/utils";
+import { area as fieldArea, field, fieldLabel } from "./form-bits";
 
 const ASK: Array<{ area: Area; placeholder: string }> = [
   { area: "imperium", placeholder: "More bookings before summer" },
@@ -19,8 +21,6 @@ const ASK: Array<{ area: Area; placeholder: string }> = [
   { area: "discipline", placeholder: "No phone in bed" },
   { area: "money", placeholder: "Save $2,000 this month" },
 ];
-
-const field = "w-full rounded-xl border border-input bg-transparent px-3 text-[16px] outline-none placeholder:text-faint focus-visible:border-primary/70";
 
 /** Ask (optionally) what matters, suggest, then keep the ones worth keeping. */
 export function SuggestForm({ weekStart, ai }: { weekStart: LocalDate; ai: boolean }) {
@@ -71,57 +71,65 @@ export function SuggestForm({ weekStart, ai }: { weekStart: LocalDate; ai: boole
   if (result) {
     const count = result.suggestions.length - off.size;
     return (
-      <div className="grid gap-5">
-        <p className="text-sm text-muted-foreground">
-          {result.source === "ai" ? "Suggested by Claude from your numbers and what you said." : "Worked out from your numbers over the last four weeks."}
-        </p>
-        {result.suggestions.length === 0 ? (
-          <p className="text-[15px] text-muted-foreground">Nothing new to suggest: this week already has goals for everything with numbers behind it.</p>
-        ) : (
-          <ul className="grid gap-1">
-            {result.suggestions.map((s) => {
-              const on = !off.has(s.key);
-              return (
-                <li key={s.key}>
-                  <button
-                    type="button"
-                    role="checkbox"
-                    aria-checked={on}
-                    aria-label={s.title}
-                    onClick={() =>
-                      setOff((set) => {
-                        const next = new Set(set);
-                        if (next.has(s.key)) next.delete(s.key);
-                        else next.add(s.key);
-                        return next;
-                      })
-                    }
-                    className="flex w-full items-start gap-3 rounded-xl py-3 text-left"
-                  >
-                    <span aria-hidden className={cn("mt-0.5 grid size-5 shrink-0 place-items-center rounded-md border", on ? "border-primary bg-primary text-primary-foreground" : "border-input")}>
-                      {on && <Check className="size-3.5" strokeWidth={3} />}
-                    </span>
-                    <span className="grid min-w-0 gap-1">
-                      <span className="text-xs text-faint">
-                        {AREA_LABEL[s.area]}
-                        {s.major ? " · Major" : ""}
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-7">
+        <Group
+          title="Suggested for this week"
+          footer={result.source === "ai" ? "Suggested by Claude from your numbers and what you said." : "Worked out from your numbers over the last four weeks."}
+        >
+          {result.suggestions.length === 0 ? (
+            <p className="px-4 py-4 text-[15px] leading-snug text-muted-foreground">Nothing new to suggest: this week already has goals for everything with numbers behind it.</p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {result.suggestions.map((s) => {
+                const on = !off.has(s.key);
+                return (
+                  <li key={s.key}>
+                    <button
+                      type="button"
+                      role="checkbox"
+                      aria-checked={on}
+                      aria-label={s.title}
+                      onClick={() =>
+                        setOff((set) => {
+                          const next = new Set(set);
+                          if (next.has(s.key)) next.delete(s.key);
+                          else next.add(s.key);
+                          return next;
+                        })
+                      }
+                      className="flex min-h-14 w-full items-start gap-3 px-4 py-3.5 text-left transition-colors active:bg-accent"
+                    >
+                      <span
+                        aria-hidden
+                        className={cn(
+                          "mt-0.5 grid size-[26px] shrink-0 place-items-center rounded-full border-[1.5px] transition-colors duration-200",
+                          on ? "border-kept bg-kept text-white" : "border-input",
+                        )}
+                      >
+                        {on && <Check className="size-4" strokeWidth={3} />}
                       </span>
-                      <span className={cn("text-[17px] leading-snug", !on && "text-muted-foreground line-through decoration-faint")}>{s.title}</span>
-                      <span className="text-sm text-muted-foreground">{s.reason}</span>
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-        <div className="grid gap-2">
-          <button type="button" disabled={busy || count === 0} onClick={() => void keep()} className="h-12 rounded-full bg-primary text-[15px] font-medium text-primary-foreground disabled:opacity-50">
+                      <span className="grid min-w-0 gap-0.5">
+                        <span className="text-[13px] text-muted-foreground">
+                          {AREA_LABEL[s.area]}
+                          {s.major ? " · Major" : ""}
+                        </span>
+                        <span className={cn("text-[17px] leading-snug break-words", !on && "text-muted-foreground line-through decoration-faint")}>{s.title}</span>
+                        <span className="text-[14px] leading-snug break-words text-muted-foreground">{s.reason}</span>
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </Group>
+        <div className="grid gap-1">
+          <PrimaryButton disabled={busy || count === 0} onClick={() => void keep()} className="w-full">
             {busy ? "Adding…" : `Add ${count} ${count === 1 ? "goal" : "goals"} to this week`}
-          </button>
-          <button type="button" onClick={() => setResult(null)} className="min-h-11 text-sm text-muted-foreground hover:text-foreground">
+          </PrimaryButton>
+          <TextAction onClick={() => setResult(null)} className="justify-self-center">
             Change my answers
-          </button>
+          </TextAction>
         </div>
       </div>
     );
@@ -129,52 +137,50 @@ export function SuggestForm({ weekStart, ai }: { weekStart: LocalDate; ai: boole
 
   return (
     <form
-      className="grid gap-6"
+      className="grid grid-cols-[minmax(0,1fr)] gap-7"
       onSubmit={(e) => {
         e.preventDefault();
         void suggest();
       }}
     >
-      <details className="group grid gap-3 rounded-2xl border border-border p-4">
-        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-[16px]">
-          What do you want this week?
-          <span className="text-sm text-muted-foreground">Optional</span>
-        </summary>
-        <div className="mt-3 grid gap-3">
-          {ASK.map(({ area, placeholder }) => (
-            <label key={area} className="grid gap-1.5 text-sm text-muted-foreground">
-              {AREA_LABEL[area]}
-              <input
-                value={aims[area] ?? ""}
-                maxLength={500}
-                placeholder={placeholder}
-                onChange={(e) => setAims((a) => ({ ...a, [area]: e.target.value }))}
-                className={cn(field, "h-12")}
+      <Group plain footer={ai ? undefined : "Suggestions come from your own numbers. Add an Anthropic API key on the server to have Claude refine them too."}>
+        <details className="group">
+          <summary className="flex min-h-14 cursor-pointer list-none items-center gap-3 px-4 py-2.5 transition-colors active:bg-accent [&::-webkit-details-marker]:hidden">
+            <span className="grid min-w-0 flex-1 gap-0.5">
+              <span className="text-[17px] leading-snug">What do you want this week?</span>
+              <span className="text-[14px] text-muted-foreground">Optional. Aims, free hours, what&apos;s booked in</span>
+            </span>
+            <ChevronDown className="size-[18px] shrink-0 text-faint transition-transform duration-200 group-open:rotate-180" aria-hidden />
+          </summary>
+          <div className="grid gap-4 border-t border-border p-4">
+            {ASK.map(({ area, placeholder }) => (
+              <label key={area} className={fieldLabel}>
+                {AREA_LABEL[area]}
+                <input value={aims[area] ?? ""} maxLength={500} placeholder={placeholder} onChange={(e) => setAims((a) => ({ ...a, [area]: e.target.value }))} className={field} />
+              </label>
+            ))}
+            <label className={fieldLabel}>
+              Hours free for work this week
+              <input inputMode="numeric" type="number" min={0} max={120} value={hours} onChange={(e) => setHours(e.target.value)} placeholder="40" className={field} />
+            </label>
+            <label className={fieldLabel}>
+              Already booked in
+              <textarea
+                value={commitments}
+                maxLength={1000}
+                rows={2}
+                onChange={(e) => setCommitments(e.target.value)}
+                placeholder="Two full-day details on Tuesday and Friday"
+                className={fieldArea}
               />
             </label>
-          ))}
-          <label className="grid gap-1.5 text-sm text-muted-foreground">
-            Hours free for work this week
-            <input inputMode="numeric" type="number" min={0} max={120} value={hours} onChange={(e) => setHours(e.target.value)} placeholder="40" className={cn(field, "h-12")} />
-          </label>
-          <label className="grid gap-1.5 text-sm text-muted-foreground">
-            Already booked in
-            <textarea
-              value={commitments}
-              maxLength={1000}
-              rows={2}
-              onChange={(e) => setCommitments(e.target.value)}
-              placeholder="Two full-day details on Tuesday and Friday"
-              className={cn(field, "min-h-16 resize-none py-2.5 [field-sizing:content]")}
-            />
-          </label>
-        </div>
-      </details>
-      <button type="submit" disabled={busy} className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary text-[15px] font-medium text-primary-foreground disabled:opacity-60">
-        <Sparkles className="size-4" aria-hidden />
+          </div>
+        </details>
+      </Group>
+      <PrimaryButton type="submit" disabled={busy} className="w-full">
+        <Sparkles className="size-[18px]" aria-hidden />
         {busy ? "Thinking…" : "Suggest my goals"}
-      </button>
-      {!ai && <p className="-mt-3 text-xs text-faint">Suggestions come from your own numbers. Add an Anthropic API key on the server to have Claude refine them too.</p>}
+      </PrimaryButton>
     </form>
   );
 }

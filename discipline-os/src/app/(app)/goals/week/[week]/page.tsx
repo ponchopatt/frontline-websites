@@ -1,14 +1,14 @@
-import { AlertTriangle, ChevronLeft, ChevronRight } from "lucide-react";
+import { CalendarCheck, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AddWeeklyGoal } from "@/components/goals/add-goal";
 import { GoalBreadcrumb } from "@/components/goals/breadcrumb";
+import { Note } from "@/components/goals/form-bits";
 import { BreakdownPanel, LogProgress } from "@/components/goals/goal-controls";
 import { HealthBadge, ProgressBar } from "@/components/goals/health";
 import { WeeklyReview, type ReviewGoal } from "@/components/goals/weekly-review";
-import { DECISIONS, REASONS, suggestedOutcome } from "@/lib/goals/review";
-import { SectionCard } from "@/components/section-card";
+import { Group, PageHeader, Row } from "@/components/os";
 import { WeekScoreboard } from "@/components/week/scoreboard";
 import { bossOf, loadScoreboard, scoreboardGroups } from "@/components/week/scoreboard-data";
 import { firstDayOf, getViewer, loadSummaries } from "@/lib/data";
@@ -19,6 +19,7 @@ import { formatTarget, formatValue } from "@/lib/goals/format";
 import type { WeeklyGoal } from "@/lib/goals/model";
 import { monthLabel, monthOfWeek, weekEndOf, weekNumberInMonth, weekRangeLabel } from "@/lib/goals/periods";
 import { withProgress } from "@/lib/goals/progress";
+import { DECISIONS, REASONS, suggestedOutcome } from "@/lib/goals/review";
 import { scoreForSummary } from "@/lib/streak";
 import { cn } from "@/lib/utils";
 
@@ -114,16 +115,16 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
     const parent = g.parentMonthlyId ? data.tree.monthly.find((mg) => mg.id === g.parentMonthlyId) ?? null : null;
     const yearly = parent?.parentYearlyId ? data.tree.yearly.find((yg) => yg.id === parent.parentYearlyId) ?? null : null;
     return (
-      <li key={g.id} className="grid gap-2 py-3">
+      <li key={g.id} className="grid gap-2 px-4 py-3.5">
         <div className="flex items-baseline justify-between gap-3">
-          <span className="text-[17px] leading-snug">
+          <span className="min-w-0 text-[17px] leading-snug">
             {g.title}
-            {g.carriedFromId && <span className="ml-2 text-xs text-faint">carried</span>}
+            {g.carriedFromId && <span className="ml-2 text-[13px] text-muted-foreground">carried</span>}
           </span>
           {p && <HealthBadge status={p.health} className="shrink-0" />}
         </div>
         {p && p.ratio !== null && <ProgressBar ratio={p.ratio} expected={p.expected} label={`${g.title} progress`} />}
-        <p className="text-sm text-muted-foreground">
+        <p className="text-[14px] leading-snug text-muted-foreground">
           {p?.current !== null && p?.current !== undefined && g.targetValue !== null ? (
             <>
               <span className="text-foreground">{formatValue(p.current, g.unit)}</span> of {formatTarget(g)}
@@ -137,20 +138,22 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
         </p>
         <GoalBreadcrumb chain={{ weekly: null, monthly: parent, yearly }} />
         {g.progressSource === "manual" && g.targetValue !== null && g.state === "active" && (
-          <LogProgress level="weekly" id={g.id} unit={g.unit} current={g.currentValue} label="So far this week" />
+          <div className="pt-1">
+            <LogProgress level="weekly" id={g.id} unit={g.unit} current={g.currentValue} label="So far this week" />
+          </div>
         )}
       </li>
     );
   };
 
+  const meta = (text: string) => <span className="text-[15px] text-muted-foreground">{text}</span>;
+
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
-      <header className="grid gap-2">
-        <div className="flex items-center justify-between gap-3">
-          <Link href={`/goals/month/${monthStart.slice(0, 7)}`} className="inline-flex min-h-11 items-center text-sm text-muted-foreground hover:text-foreground">
-            {monthLabel(monthStart)}
-          </Link>
-          <nav aria-label="Week" className="flex">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-7">
+      <PageHeader
+        back={{ href: "/goals", label: "Goals" }}
+        trailing={
+          <nav aria-label="Week" className="-mr-1 flex">
             <Link href={`/goals/week/${addDays(week, -7)}`} aria-label="Previous week" className="grid size-11 place-items-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground">
               <ChevronLeft className="size-5" />
             </Link>
@@ -158,147 +161,125 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
               <ChevronRight className="size-5" />
             </Link>
           </nav>
-        </div>
-        <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">Week {weekNumberInMonth(week)}</h1>
-        <p className="text-[15px] text-muted-foreground">{weekRangeLabel(week)}</p>
-      </header>
+        }
+        eyebrow={
+          <Link href={`/goals/month/${monthStart.slice(0, 7)}`} className="-my-3 inline-flex min-h-11 items-center underline-offset-4 hover:text-foreground hover:underline">
+            {monthLabel(monthStart)}
+          </Link>
+        }
+        title={`Week ${weekNumberInMonth(week)}`}
+        subtitle={weekRangeLabel(week)}
+      />
 
       <WeekScoreboard groups={groups} boss={week <= today ? bossOf(groups, weekOver) : null} meta={weekOver ? "Week closed" : week <= today ? "So far" : "Not started"} />
 
-      <section aria-labelledby="outcomes-heading" className="grid gap-4">
-        <div className="grid gap-1">
-          <h2 id="outcomes-heading" className="text-xl font-medium tracking-tight">
-            What am I trying to accomplish this week?
-          </h2>
-          <p className="text-sm text-muted-foreground">One to three major outcomes, with supporting tasks under them.</p>
-        </div>
-
-        {majors.length > MAJOR_LIMIT && (
-          <p className="flex gap-2.5 rounded-xl border border-primary/40 bg-lamp-soft p-3 text-[15px]" role="note">
-            <AlertTriangle className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
-            You have {majors.length} major goals this week. Consider reducing them to 1–3.
-          </p>
-        )}
-
-        {goals.length === 0 ? (
-          <p className="text-[15px] text-muted-foreground">Nothing planned for this week yet.</p>
+      <Group id="outcomes" title="What am I trying to accomplish this week?" footer="One to three major outcomes, with supporting tasks under them.">
+        {majors.length > MAJOR_LIMIT && <Note>You have {majors.length} major goals this week. Consider reducing them to 1–3.</Note>}
+        {majors.length > 0 ? (
+          <ul className="divide-y divide-border">{majors.map(row)}</ul>
         ) : (
-          <>
-            {majors.length > 0 && <ul className="divide-y divide-border/70">{majors.map(row)}</ul>}
-            {supporting.length > 0 && (
-              <div>
-                <h3 className="text-sm text-muted-foreground">Supporting tasks</h3>
-                <ul className="divide-y divide-border/70">{supporting.map(row)}</ul>
-              </div>
-            )}
-          </>
+          <p className="px-4 py-4 text-[15px] text-muted-foreground">{goals.length === 0 ? "Nothing planned for this week yet." : "No major outcome yet."}</p>
         )}
+        {planning && <AddWeeklyGoal weekStart={week} monthlyGoals={monthly.map((mg) => ({ id: mg.id, title: mg.title }))} />}
+      </Group>
 
-        {planning && pullIn.length > 0 && (
-          <div className="grid gap-4 rounded-2xl border border-border p-4">
-            <h3 className="text-lg font-medium tracking-tight">From your monthly objectives</h3>
-            {pullIn.map(({ goal, drafts }) => (
-              <div key={goal.id} className="grid gap-2">
-                <GoalBreadcrumb chain={{ weekly: null, monthly: goal, yearly: goal.parentYearlyId ? data.tree.yearly.find((yg) => yg.id === goal.parentYearlyId) ?? null : null }} />
-                <BreakdownPanel
-                  parentId={goal.id}
-                  level="weekly"
-                  drafts={drafts}
-                  groupLabels={{ [week]: `This week · ${goal.title}` }}
-                  buttonLabel={`Plan this week for “${goal.title}”`}
-                  approveLabel="Add to this week"
-                />
-              </div>
-            ))}
-          </div>
-        )}
+      {supporting.length > 0 && (
+        <Group title="Supporting tasks">
+          <ul className="divide-y divide-border">{supporting.map(row)}</ul>
+        </Group>
+      )}
 
-        {planning && (
-          <div className="border-t border-border pt-5">
-            <AddWeeklyGoal weekStart={week} monthlyGoals={monthly.map((mg) => ({ id: mg.id, title: mg.title }))} />
-          </div>
-        )}
-      </section>
+      {planning && pullIn.length > 0 && (
+        <Group title="From your monthly objectives">
+          {pullIn.map(({ goal, drafts }) => (
+            <BreakdownPanel
+              key={goal.id}
+              parentId={goal.id}
+              level="weekly"
+              drafts={drafts}
+              groupLabels={{ [week]: `This week · ${goal.title}` }}
+              buttonLabel={`Plan this week for “${goal.title}”`}
+              approveLabel="Add to this week"
+            />
+          ))}
+        </Group>
+      )}
 
       {week <= today && (
-        <SectionCard title="Execution" meta={weekOver ? "Week closed" : "So far"}>
-          <dl className="grid grid-cols-3 gap-3">
-            <div className="grid gap-0.5">
-              <dt className="text-xs text-muted-foreground">Work</dt>
-              <dd className="text-xl">{formatHours(totalMin)}</dd>
-            </div>
-            <div className="grid gap-0.5 border-l border-border pl-3">
-              <dt className="text-xs text-muted-foreground">Actions done</dt>
-              <dd className="text-xl">{doneActions}</dd>
-            </div>
-            <div className="grid gap-0.5 border-l border-border pl-3">
-              <dt className="text-xs text-muted-foreground">Days on the line</dt>
-              <dd className="text-xl">
-                {onLine}/{scores.length}
-              </dd>
-            </div>
+        <Group
+          title="Execution"
+          action={meta(weekOver ? "Week closed" : "So far")}
+          footer={
+            alignment !== null ? (
+              <>
+                <span className="text-foreground">{Math.round(alignment * 100)}%</span> of tracked work was on blocks linked to a goal.
+              </>
+            ) : undefined
+          }
+        >
+          <dl className="grid grid-cols-3 gap-3 px-4 py-4">
+            <Figure label="Work" value={formatHours(totalMin)} />
+            <Figure label="Actions done" value={String(doneActions)} />
+            <Figure label="Days on the line" value={`${onLine}/${scores.length}`} />
           </dl>
-          {alignment !== null && (
-            <p className="mt-3 text-[15px] text-muted-foreground">
-              <span className="text-foreground">{Math.round(alignment * 100)}%</span> of tracked work was on blocks linked to a goal.
-            </p>
-          )}
           {alignment !== null && alignment < 0.5 && totalMin >= 120 && (
-            <p className="mt-3 flex gap-2.5 rounded-xl border border-primary/40 bg-lamp-soft p-3 text-[15px]" role="note">
-              <AlertTriangle className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
-              <span>
-                <span className="font-medium">Goal alignment check.</span> A large portion of your tracked work this week isn&apos;t connected to one of your current
-                priorities. Review your schedule?
-              </span>
-            </p>
+            <Note>
+              <span className="font-medium">Goal alignment check.</span> A large portion of your tracked work this week isn&apos;t connected to one of your current priorities.
+              Review your schedule?
+            </Note>
           )}
-        </SectionCard>
+        </Group>
       )}
 
       {!reviewTime && week <= today && (
-        <Link href={`/goals/week/${week}?review=now`} className="-mt-4 inline-flex min-h-11 w-fit items-center text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
-          Review this week now
-        </Link>
+        <Group>
+          <Row href={`/goals/week/${week}?review=now#review`} leading={<CalendarCheck className="size-[22px]" />} title="Review this week now" />
+        </Group>
       )}
 
-      {reviewTime && (
-        <SectionCard title="Weekly review" meta={reviewed ? "Done" : undefined}>
-          {reviewed ? (
-            <div className="grid gap-4">
-              <ul className="grid gap-3">
-                {pastReviews.map((r) => {
-                  const g = goals.find((x) => x.id === r.weekly_goal_id) ?? data.tree.weekly.find((x) => x.id === r.weekly_goal_id);
-                  return (
-                    <li key={r.id} className="grid gap-0.5 border-l border-border pl-3">
-                      <span className="text-[16px]">{g?.title ?? "A goal"}</span>
-                      <span className={cn("text-sm", r.outcome === "completed" ? "text-primary" : "text-muted-foreground")}>
-                        {r.outcome === "completed" ? "Done" : r.outcome === "partial" ? "Partly done" : "Not done"}
-                        {r.reason && ` · ${REASONS.find((x) => x.value === r.reason)?.label}`}
-                        {r.decision && ` · ${DECISIONS.find((x) => x.value === r.decision)?.label}`}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
-              {answers.length > 0 && (
-                <dl className="grid gap-3 text-[15px]">
-                  {answers.map(([label, text]) => (
-                    <div key={label} className="grid gap-0.5">
-                      <dt className="text-sm text-muted-foreground">{label}</dt>
-                      <dd className="break-words whitespace-pre-line">{text}</dd>
-                    </div>
-                  ))}
-                </dl>
-              )}
-              <Link href={`/goals/week/${addDays(week, 7)}`} className="inline-flex h-12 w-fit items-center rounded-full bg-primary px-5 text-[15px] font-medium text-primary-foreground">
+      {reviewTime &&
+        (reviewed ? (
+          <Group id="review" title="Weekly review" action={meta("Done")}>
+            {pastReviews.map((r) => {
+              const g = goals.find((x) => x.id === r.weekly_goal_id) ?? data.tree.weekly.find((x) => x.id === r.weekly_goal_id);
+              return (
+                <div key={r.id} className="grid gap-0.5 px-4 py-3">
+                  <span className="text-[17px] leading-snug">{g?.title ?? "A goal"}</span>
+                  <span className={cn("text-[14px]", r.outcome === "completed" ? "font-medium text-kept" : "text-muted-foreground")}>
+                    {r.outcome === "completed" ? "Done" : r.outcome === "partial" ? "Partly done" : "Not done"}
+                    {r.reason && ` · ${REASONS.find((x) => x.value === r.reason)?.label}`}
+                    {r.decision && ` · ${DECISIONS.find((x) => x.value === r.decision)?.label}`}
+                  </span>
+                </div>
+              );
+            })}
+            {answers.map(([label, text]) => (
+              <div key={label} className="grid gap-0.5 px-4 py-3">
+                <span className="text-[14px] text-muted-foreground">{label}</span>
+                <span className="text-[17px] leading-snug break-words whitespace-pre-line">{text}</span>
+              </div>
+            ))}
+            <div className="p-4">
+              <Link
+                href={`/goals/week/${addDays(week, 7)}`}
+                className="flex h-[52px] items-center justify-center rounded-full bg-primary px-6 text-[17px] font-medium text-primary-foreground transition-transform active:scale-[0.98]"
+              >
                 Plan next week
               </Link>
             </div>
-          ) : (
-            <WeeklyReview weekStart={week} goals={reviewGoals} />
-          )}
-        </SectionCard>
-      )}
+          </Group>
+        ) : (
+          <WeeklyReview weekStart={week} goals={reviewGoals} />
+        ))}
+    </div>
+  );
+}
+
+function Figure({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="grid min-w-0 content-start gap-0.5">
+      <dt className="text-[14px] leading-snug text-muted-foreground">{label}</dt>
+      <dd className="text-[24px] leading-tight font-light tracking-tight tabular-nums">{value}</dd>
     </div>
   );
 }

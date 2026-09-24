@@ -57,7 +57,7 @@ export function ScoreRing({ score, threshold, size = 96, stroke = 2.5, className
       </svg>
       <span className="relative leading-none font-normal tracking-tight" style={{ fontSize: Math.round(size * 0.34) }}>
         {value}
-        {suffix && <span className="text-[0.45em] text-muted-foreground">{suffix}</span>}
+        {suffix && <span className="text-[max(13px,0.45em)] text-muted-foreground">{suffix}</span>}
       </span>
     </div>
   );

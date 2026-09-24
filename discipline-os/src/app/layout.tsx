@@ -32,7 +32,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full">
         <ThemeProvider attribute="class" themes={["sage", "spark", "dark", "light"]} defaultTheme="sage" enableSystem={false} disableTransitionOnChange>
           {children}
-          <Toaster position="bottom-center" offset={96} mobileOffset={{ bottom: 96 }} />
+          <Toaster position="top-center" offset={{ top: 16 }} mobileOffset={{ top: "max(12px, env(safe-area-inset-top))" }} />
         </ThemeProvider>
       </body>
     </html>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { saveBotNotes } from "@/app/actions/bot";
 import { AutosaveField } from "@/components/autosave-field";
-import { SectionCard } from "@/components/section-card";
+import { Group, Row } from "@/components/os";
 import { shortDate, type LocalDate } from "@/lib/day";
 import type { ActionResult, MilestoneItem } from "@/lib/types";
 import { AreaHours } from "./area-hours";
@@ -43,32 +43,30 @@ export function BotBoard({ milestone, done: initialDone, notes, today, hours }: 
 
       <AreaHours data={hours} />
 
-      <SectionCard title="Done milestones" meta={done.length > 0 ? String(done.length) : undefined}>
+      <Group
+        title="Done milestones"
+        action={done.length > 0 ? <span className="text-[15px] text-muted-foreground">{done.length}</span> : undefined}
+      >
         {done.length === 0 ? (
-          <p className="text-[15px] text-muted-foreground">Milestones you finish are kept here.</p>
+          <p className="px-4 py-4 text-[15px] text-muted-foreground">Milestones you finish are kept here.</p>
         ) : (
-          <ul className="divide-y divide-border/70">
-            {done.map((m) => (
-              <li key={m.id} className="flex min-h-12 items-center justify-between gap-3 py-2">
-                <span className="min-w-0 text-[16px] break-words">{m.title}</span>
-                {m.doneOn && <span className="shrink-0 text-sm text-muted-foreground">{doneLabel(m.doneOn, today)}</span>}
-              </li>
-            ))}
-          </ul>
+          done.map((m) => <Row key={m.id} title={<span className="break-words">{m.title}</span>} value={m.doneOn ? <span className="text-[15px]">{doneLabel(m.doneOn, today)}</span> : undefined} />)
         )}
-      </SectionCard>
+      </Group>
 
-      <section aria-label="Notes" className="border-t border-border pt-6">
-        <AutosaveField
-          label="Notes"
-          multiline
-          value={notes}
-          maxLength={4000}
-          placeholder="Important findings"
-          onSave={saveNotes}
-          className="[&_label]:text-xl [&_label]:font-medium [&_label]:tracking-tight [&_label]:text-foreground"
-        />
-      </section>
+      <Group title="Notes" plain>
+        <div className="p-4">
+          <AutosaveField
+            label="Important findings"
+            multiline
+            value={notes}
+            maxLength={4000}
+            placeholder="What you've found, so it isn't lost"
+            onSave={saveNotes}
+            inputClassName="min-h-[7rem] text-[17px]"
+          />
+        </div>
+      </Group>
     </>
   );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { GoalForm } from "@/components/goals/goal-form";
+import { PageHeader } from "@/components/os";
 import { getViewer } from "@/lib/data";
 import { loadLifeAreas } from "@/lib/goals/data";
 
@@ -17,14 +17,12 @@ export default async function NewGoalPage({ searchParams }: PageProps<"/goals/ne
     viewer.supabase.from("metrics").select("id,area,label,unit,aggregation").eq("is_active", true).eq("aggregation", "sum").order("sort_order"),
   ]);
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-8">
-      <header className="grid gap-1">
-        <Link href={`/goals?year=${year}`} className="inline-flex min-h-11 min-w-11 w-fit items-center text-sm text-muted-foreground hover:text-foreground">
-          Goals
-        </Link>
-        <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">A {year} goal</h1>
-        <p className="text-[15px] text-muted-foreground">Specific enough that you&apos;ll know when it&apos;s done, and tied to a reason you won&apos;t forget.</p>
-      </header>
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-7">
+      <PageHeader
+        back={{ href: year === thisYear ? "/goals" : `/goals?year=${year}`, label: "Goals" }}
+        title={`A ${year} goal`}
+        subtitle="Specific enough that you'll know when it's done, and tied to a reason you won't forget."
+      />
       <GoalForm
         year={year}
         today={viewer.today}

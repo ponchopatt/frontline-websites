@@ -108,7 +108,7 @@ test("3. a running work block survives a refresh with the right elapsed time", a
   await page.locator("#block-task").fill("Deep work");
   await work.getByRole("button", { name: "Add block" }).click();
   await work.getByRole("button", { name: "Start the Imperium · Deep work block" }).click();
-  await expect(page.getByRole("timer")).toBeVisible();
+  await expect(work.getByRole("timer")).toBeVisible();
 
   const { data: open } = await admin.from("work_sessions").select("id,started_at,ended_at,area").eq("user_id", userId).single();
   expect(open?.ended_at).toBeNull();
@@ -236,7 +236,7 @@ test("7. yesterday can be opened and edited; tomorrow cannot", async ({ page }) 
 
   await page.goto(`/?d=${yesterday}`);
   await waitForApp(page);
-  await expect(page.getByText(/You're filling in/)).toBeVisible();
+  await expect(page.locator("main").getByText(/You're filling in/)).toBeVisible();
   await (await habitIn(page, "Shower")).click();
   await expect(habit(page, "Shower")).toHaveAttribute("aria-checked", "true");
   await expect(page.locator("#morning")).toContainText("edited");

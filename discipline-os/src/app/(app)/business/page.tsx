@@ -5,6 +5,7 @@ import { BotBoard } from "@/components/business/bot-board";
 import { BUSINESS_TABS, BusinessTabs, isBusinessTab, type BusinessTab } from "@/components/business/business-tabs";
 import { CounterBoard } from "@/components/business/counter-board";
 import { TabSkeleton } from "@/components/business/tab-skeleton";
+import { PageHeader } from "@/components/os";
 import type { BoardCounter, DoneMilestone, HoursData } from "@/components/business/types";
 import { isWorkArea, type WorkArea } from "@/lib/areas";
 import { countersFor, fetchAll, getViewer, loadCounterData, loadMilestone, requestTime, type Viewer } from "@/lib/data";
@@ -16,8 +17,9 @@ import { totalOver, workDaysBetween } from "@/lib/metrics";
 export const metadata: Metadata = { title: "Business" };
 
 /**
- * The businesses, one tab each: quick counters for Imperium and Websites, the current
- * milestone for the AI bot. The header and tabs paint at once; a tab's numbers stream in.
+ * The businesses, one tab each: counters for Imperium and Websites as rows that open a sheet,
+ * the current milestone for the AI bot. The header and tabs paint at once; a tab's numbers
+ * stream in.
  */
 export default async function BusinessPage({ searchParams }: PageProps<"/business">) {
   const { tab: requested } = await searchParams;
@@ -25,17 +27,14 @@ export default async function BusinessPage({ searchParams }: PageProps<"/busines
   const label = BUSINESS_TABS.find((t) => t.key === tab)?.label ?? "Business";
 
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-8">
-      <header className="grid gap-5">
-        <div className="grid gap-1">
-          <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">Business</h1>
-          <p className="text-[15px] text-muted-foreground">Quick counts for each business, and the bot&apos;s next step.</p>
-        </div>
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-7">
+      <div className="grid gap-5">
+        <PageHeader back={{ href: "/goals", label: "Goals" }} title="Business" subtitle="Quick counts for each business, and the bot's next step." />
         <BusinessTabs active={tab} />
-      </header>
+      </div>
 
       <Suspense key={tab} fallback={<TabSkeleton label={label} />}>
-        <div className="grid grid-cols-[minmax(0,1fr)] gap-10">{tab === "bot" ? <BotTab /> : <CounterTab area={tab} />}</div>
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-7">{tab === "bot" ? <BotTab /> : <CounterTab area={tab} />}</div>
       </Suspense>
     </div>
   );

@@ -7,10 +7,11 @@ import { toast } from "sonner";
 import { saveWeeklyReview } from "@/app/actions/goals";
 import type { LocalDate } from "@/lib/day";
 import { addDays } from "@/lib/day";
+import { Group, PrimaryButton } from "@/components/os";
 import { formatValue } from "@/lib/goals/format";
-import { cn } from "@/lib/utils";
-
 import { DECISIONS, REASONS, type Decision, type Outcome, type Reason } from "@/lib/goals/review";
+import { cn } from "@/lib/utils";
+import { area, field, fieldLabel, segItem, segTrack } from "./form-bits";
 
 export interface ReviewGoal {
   id: string;
@@ -29,8 +30,10 @@ interface ItemState {
   decision: Decision | null;
 }
 
-const field = "h-12 w-full min-w-0 rounded-lg border border-input bg-background px-3 text-[16px] outline-none focus-visible:border-primary/70";
-
+/**
+ * The week's review: how each goal went (and what happens to what's left), four questions, then
+ * one button. Saving closes the week and carries what was chosen into the next.
+ */
 export function WeeklyReview({ weekStart, goals }: { weekStart: LocalDate; goals: ReviewGoal[] }) {
   const router = useRouter();
   const [items, setItems] = useState<Record<string, ItemState>>(() =>
@@ -50,18 +53,23 @@ export function WeeklyReview({ weekStart, goals }: { weekStart: LocalDate; goals
 
   if (done) {
     return (
-      <div className="grid gap-3 rounded-2xl border border-primary/30 p-4" role="status">
-        <p className="text-[16px]">Week reviewed.</p>
-        <Link href={`/goals/week/${addDays(weekStart, 7)}`} className="inline-flex h-12 w-fit items-center rounded-full bg-primary px-5 text-[15px] font-medium text-primary-foreground">
-          Plan next week
-        </Link>
-      </div>
+      <Group id="review" title="Weekly review" action={<span className="text-[15px] text-muted-foreground">Done</span>} plain>
+        <div className="grid gap-4 p-4" role="status">
+          <p className="text-[17px]">Week reviewed.</p>
+          <Link
+            href={`/goals/week/${addDays(weekStart, 7)}`}
+            className="inline-flex h-[52px] items-center justify-center rounded-full bg-primary px-6 text-[17px] font-medium text-primary-foreground transition-transform active:scale-[0.98]"
+          >
+            Plan next week
+          </Link>
+        </div>
+      </Group>
     );
   }
 
   return (
     <form
-      className="grid gap-6"
+      className="grid grid-cols-[minmax(0,1fr)] gap-7"
       onSubmit={async (e) => {
         e.preventDefault();
         setError(null);
@@ -96,102 +104,109 @@ export function WeeklyReview({ weekStart, goals }: { weekStart: LocalDate; goals
         }
       }}
     >
-      {goals.length === 0 && <p className="text-[15px] text-muted-foreground">No goals were set for this week. Answer the four questions, then plan the next one.</p>}
-      <ol className="grid gap-5">
-        {goals.map((g) => {
-          const s = items[g.id];
-          const notDone = s.outcome !== "completed";
-          return (
-            <li key={g.id} className="grid gap-3 border-b border-border pb-5">
-              <div className="flex items-baseline justify-between gap-3">
-                <p className="text-[17px] leading-snug">
-                  {g.title}
-                  {!g.isMajor && <span className="ml-2 text-xs text-faint">supporting</span>}
-                </p>
-                {g.target !== null && (
-                  <span className="shrink-0 text-sm text-muted-foreground">
-                    {formatValue(g.actual ?? 0, g.unit)} / {formatValue(g.target, g.unit)}
-                  </span>
-                )}
-              </div>
-              <div role="radiogroup" aria-label={`How did “${g.title}” go?`} className="grid grid-cols-3 gap-2">
-                {(["completed", "partial", "missed"] as const).map((o) => (
-                  <button
-                    key={o}
-                    type="button"
-                    role="radio"
-                    aria-checked={s.outcome === o}
-                    onClick={() => set(g.id, { outcome: o, decision: o === "completed" ? null : s.decision ?? "carry_forward" })}
-                    className={cn("h-11 rounded-xl border text-sm capitalize", s.outcome === o ? "border-primary bg-primary text-primary-foreground" : "border-input")}
-                  >
-                    {o === "completed" ? "Done" : o}
-                  </button>
-                ))}
-              </div>
-              {notDone && (
-                <div className="grid gap-2">
-                  <label className="grid gap-1 text-sm text-muted-foreground">
-                    Why wasn&apos;t this completed?
-                    <select value={s.reason ?? ""} onChange={(e) => set(g.id, { reason: (e.target.value || null) as Reason | null })} className={field}>
-                      <option value="">Choose a reason</option>
-                      {REASONS.map((r) => (
-                        <option key={r.value} value={r.value}>
-                          {r.label}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  {s.reason === "other" && (
-                    <input aria-label="What happened" value={s.note} maxLength={1000} onChange={(e) => set(g.id, { note: e.target.value })} placeholder="What happened" className={field} />
-                  )}
-                  <fieldset className="grid gap-1.5">
-                    <legend className="mb-1 text-sm text-muted-foreground">What should happen?</legend>
-                    <div className="grid grid-cols-2 gap-2">
-                      {DECISIONS.map((d) => (
-                        <label
-                          key={d.value}
-                          className={cn("grid min-h-14 cursor-pointer content-center rounded-xl border px-3 py-2", s.decision === d.value ? "border-primary bg-lamp-soft" : "border-input")}
-                        >
-                          <input type="radio" name={`decision-${g.id}`} value={d.value} checked={s.decision === d.value} onChange={() => set(g.id, { decision: d.value })} className="sr-only" />
-                          <span className="text-[15px]">{d.label}</span>
-                          <span className="text-xs text-muted-foreground">{d.hint}</span>
-                        </label>
-                      ))}
+      <Group id="review" title="Weekly review" footer={goals.length > 0 ? "How each goal went. What's left can carry into next week." : undefined}>
+        {goals.length === 0 ? (
+          <p className="px-4 py-4 text-[15px] text-muted-foreground">No goals were set for this week. Answer the four questions, then plan the next one.</p>
+        ) : (
+          <ol className="divide-y divide-border">
+            {goals.map((g) => {
+              const s = items[g.id];
+              const notDone = s.outcome !== "completed";
+              const decision = DECISIONS.find((d) => d.value === s.decision);
+              return (
+                <li key={g.id} className="grid gap-3 px-4 py-4">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <p className="min-w-0 text-[17px] leading-snug">
+                      {g.title}
+                      {!g.isMajor && <span className="ml-2 text-[13px] text-muted-foreground">supporting</span>}
+                    </p>
+                    {g.target !== null && (
+                      <span className="shrink-0 text-[15px] text-muted-foreground tabular-nums">
+                        {formatValue(g.actual ?? 0, g.unit)} / {formatValue(g.target, g.unit)}
+                      </span>
+                    )}
+                  </div>
+                  <div role="radiogroup" aria-label={`How did “${g.title}” go?`} className={cn(segTrack, "grid-cols-3")}>
+                    {(["completed", "partial", "missed"] as const).map((o) => (
+                      <button
+                        key={o}
+                        type="button"
+                        role="radio"
+                        aria-checked={s.outcome === o}
+                        onClick={() => set(g.id, { outcome: o, decision: o === "completed" ? null : s.decision ?? "carry_forward" })}
+                        className={cn(segItem(s.outcome === o), "capitalize")}
+                      >
+                        {o === "completed" ? "Done" : o}
+                      </button>
+                    ))}
+                  </div>
+                  {notDone && (
+                    <div className="grid gap-3">
+                      <label className={fieldLabel}>
+                        Why wasn&apos;t this completed?
+                        <select value={s.reason ?? ""} onChange={(e) => set(g.id, { reason: (e.target.value || null) as Reason | null })} className={field}>
+                          <option value="">Choose a reason</option>
+                          {REASONS.map((r) => (
+                            <option key={r.value} value={r.value}>
+                              {r.label}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      {s.reason === "other" && (
+                        <input aria-label="What happened" value={s.note} maxLength={1000} onChange={(e) => set(g.id, { note: e.target.value })} placeholder="What happened" className={field} />
+                      )}
+                      <fieldset className="grid gap-1.5">
+                        <legend className="mb-1.5 text-[15px] text-muted-foreground">What should happen?</legend>
+                        <div className={cn(segTrack, "grid-cols-2")}>
+                          {DECISIONS.map((d) => (
+                            <label key={d.value} className={segItem(s.decision === d.value)}>
+                              <input type="radio" name={`decision-${g.id}`} value={d.value} checked={s.decision === d.value} onChange={() => set(g.id, { decision: d.value })} className="sr-only" />
+                              {d.label}
+                            </label>
+                          ))}
+                        </div>
+                        {decision && <p className="px-1 text-[14px] text-muted-foreground">{decision.hint}</p>}
+                      </fieldset>
                     </div>
-                  </fieldset>
-                </div>
-              )}
-            </li>
-          );
-        })}
-      </ol>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        )}
+      </Group>
 
-      <div className="grid gap-4">
-        <label className="grid gap-1.5 text-sm text-muted-foreground">
-          Biggest win
-          <textarea value={wins} onChange={(e) => setWins(e.target.value)} maxLength={2000} rows={2} className={cn(field, "h-auto min-h-[4.5rem] resize-none py-2.5 [field-sizing:content]")} />
-        </label>
-        <label className="grid gap-1.5 text-sm text-muted-foreground">
-          Biggest failure
-          <textarea value={failure} onChange={(e) => setFailure(e.target.value)} maxLength={2000} rows={2} className={cn(field, "h-auto min-h-[4.5rem] resize-none py-2.5 [field-sizing:content]")} />
-        </label>
-        <label className="grid gap-1.5 text-sm text-muted-foreground">
-          Main bottleneck
-          <textarea value={bottleneck} onChange={(e) => setBottleneck(e.target.value)} maxLength={2000} rows={2} className={cn(field, "h-auto min-h-[4.5rem] resize-none py-2.5 [field-sizing:content]")} />
-        </label>
-        <label className="grid gap-1.5 text-sm text-muted-foreground">
-          Next week&apos;s #1 priority
-          <input value={focus} onChange={(e) => setFocus(e.target.value)} maxLength={2000} className={field} />
-        </label>
-      </div>
+      <Group title="Four questions" plain>
+        <div className="grid gap-4 p-4">
+          <label className={fieldLabel}>
+            Biggest win
+            <textarea value={wins} onChange={(e) => setWins(e.target.value)} maxLength={2000} rows={2} className={area} />
+          </label>
+          <label className={fieldLabel}>
+            Biggest failure
+            <textarea value={failure} onChange={(e) => setFailure(e.target.value)} maxLength={2000} rows={2} className={area} />
+          </label>
+          <label className={fieldLabel}>
+            Main bottleneck
+            <textarea value={bottleneck} onChange={(e) => setBottleneck(e.target.value)} maxLength={2000} rows={2} className={area} />
+          </label>
+          <label className={fieldLabel}>
+            Next week&apos;s #1 priority
+            <input value={focus} onChange={(e) => setFocus(e.target.value)} maxLength={2000} className={field} />
+          </label>
+        </div>
+      </Group>
 
       <div className="grid gap-2">
-        <p aria-live="polite" className="min-h-6 text-[15px] text-primary">
-          {error}
-        </p>
-        <button type="submit" disabled={busy} className="h-12 rounded-full bg-primary text-[15px] font-medium text-primary-foreground disabled:opacity-60">
+        {error && (
+          <p role="alert" className="px-1 text-[15px] font-medium text-foreground">
+            {error}
+          </p>
+        )}
+        <PrimaryButton type="submit" disabled={busy} className="w-full">
           {busy ? "Saving…" : "Complete review"}
-        </button>
+        </PrimaryButton>
       </div>
     </form>
   );

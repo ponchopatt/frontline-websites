@@ -17,7 +17,8 @@ export function GoalBreadcrumb({ chain, className }: { chain: GoalChain; classNa
         {steps.map((s, i) => (
           <li key={s.key} className="flex min-w-0 items-center gap-1">
             {i > 0 && <ChevronRight className="size-3 shrink-0 text-faint" aria-hidden />}
-            <Link href={s.href} className="min-w-0 truncate rounded-sm hover:text-foreground">
+            {/* The padding reaches a 44-point tap height without moving the line. */}
+            <Link href={s.href} className="-my-[13px] min-w-0 truncate rounded-sm py-[13px] hover:text-foreground">
               <span className="text-faint">{s.label}</span> {s.title}
             </Link>
           </li>

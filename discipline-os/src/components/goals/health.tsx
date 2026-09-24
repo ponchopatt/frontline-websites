@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
  */
 export function HealthBadge({ status, className }: { status: HealthStatus; className?: string }) {
   return (
-    <span className={cn("inline-flex items-center gap-1.5 text-sm whitespace-nowrap", status === "behind" ? "text-foreground" : "text-muted-foreground", className)}>
+    <span className={cn("inline-flex items-center gap-1.5 text-[14px] whitespace-nowrap", status === "behind" ? "text-foreground" : "text-muted-foreground", className)}>
       <HealthDot status={status} />
       {HEALTH_LABEL[status]}
     </span>
