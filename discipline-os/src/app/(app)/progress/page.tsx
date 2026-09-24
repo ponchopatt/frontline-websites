@@ -1,10 +1,10 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageHeader } from "@/components/os";
 import { ProofWall, type WallPhoto, type WallRange } from "@/components/progress/proof-wall";
-import { MomentumCard, RecordList, StatList, StreakList, TrophyShelves, WordCard } from "@/components/progress/sections";
+import { MomentumCard, RecordList, Segmented, StatList, StreakList, TrophyShelves, WordCard } from "@/components/progress/sections";
 import { YearView } from "@/components/progress/year-view";
-import { SectionCard } from "@/components/section-card";
 import { getViewer, proofTopic, type Viewer } from "@/lib/data";
 import { startOfWeek } from "@/lib/day";
 import { indexHistory, momentum, progressStats, records, streaks, trophyShelves, wordTrend, yearDays } from "@/lib/history";
@@ -17,8 +17,9 @@ export const metadata: Metadata = { title: "Progress" };
 const WALL_LIMIT = 120;
 
 /**
- * My progress: Keep My Word over time, momentum, the year in squares, streaks, personal
- * records and plain facts from the history. The proof wall is the second tab.
+ * My progress: Keep My Word over time, momentum, the year in squares, streaks and plain facts
+ * from the history. Trophies (personal records and streak trophies) and the proof wall are the
+ * other two views, one tap away in the switch at the top.
  */
 export default async function ProgressPage({ searchParams }: PageProps<"/progress">) {
   const { tab, year: yearParam, range: rangeParam, topic: topicParam } = await searchParams;
@@ -27,24 +28,18 @@ export default async function ProgressPage({ searchParams }: PageProps<"/progres
   const trophies = tab === "trophies";
 
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-6">
-      <header className="grid gap-5">
-        <div className="grid gap-1">
-          <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">My progress</h1>
-          <p className="text-[15px] text-muted-foreground">What I said I&apos;d do, what I did, and how it&apos;s adding up.</p>
-        </div>
-        <nav aria-label="Progress" className="grid grid-cols-3 gap-1 rounded-full border border-border p-1">
-          <Tab href="/progress" on={!proof && !trophies}>
-            Scoreboard
-          </Tab>
-          <Tab href="/progress?tab=trophies" on={trophies}>
-            Trophies
-          </Tab>
-          <Tab href="/progress?tab=proof" on={proof}>
-            Proof
-          </Tab>
-        </nav>
-      </header>
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-7">
+      <PageHeader back={{ href: "/you", label: "You" }} title="My progress" />
+      <div className="-mt-3">
+        <Segmented
+          label="Progress"
+          items={[
+            { href: "/progress", label: "Scoreboard", on: !proof && !trophies },
+            { href: "/progress?tab=trophies", label: "Trophies", on: trophies },
+            { href: "/progress?tab=proof", label: "Proof", on: proof },
+          ]}
+        />
+      </div>
 
       {proof ? (
         <WallTab viewer={viewer} range={isRange(rangeParam) ? rangeParam : "month"} topic={isTopic(topicParam) ? topicParam : "all"} />
@@ -72,12 +67,15 @@ async function ScoreTab({ viewer, year: requested }: { viewer: Viewer; year: num
     <>
       <WordCard trend={wordTrend(ix)} today={today?.score ?? null} />
       <MomentumCard momentum={momentum(ix)} />
-
-      <SectionCard
-        id="year"
-        title={String(year)}
-        meta={
-          <span className="-mr-2 flex">
+      <YearView
+        key={year}
+        year={year}
+        days={yearDays(ix, year)}
+        today={viewer.today}
+        threshold={facts.threshold}
+        timeZone={viewer.profile.timezone}
+        nav={
+          <span className="-my-2 -mr-2 flex self-center">
             <YearLink year={year - 1} enabled={year > firstYear} label="Previous year">
               <ChevronLeft className="size-5" />
             </YearLink>
@@ -86,10 +84,7 @@ async function ScoreTab({ viewer, year: requested }: { viewer: Viewer; year: num
             </YearLink>
           </span>
         }
-      >
-        <YearView days={yearDays(ix, year)} today={viewer.today} threshold={facts.threshold} timeZone={viewer.profile.timezone} />
-      </SectionCard>
-
+      />
       <StreakList rows={streaks(ix)} />
       <StatList stats={progressStats(ix, proofCount.count ?? 0)} />
     </>
@@ -98,18 +93,11 @@ async function ScoreTab({ viewer, year: requested }: { viewer: Viewer; year: num
 
 async function TrophyTab({ viewer }: { viewer: Viewer }) {
   const ix = indexHistory(await loadFacts(viewer));
+  const rows = streaks(ix);
   return (
     <>
       <RecordList rows={records(ix)} />
-      <section aria-labelledby="streak-trophies" className="grid gap-4">
-        <div className="grid gap-1">
-          <h2 id="streak-trophies" className="text-xl font-medium tracking-tight">
-            Streak trophies
-          </h2>
-          <p className="text-[15px] text-muted-foreground">One for each streak you&apos;ve reached, and the next one to go for.</p>
-        </div>
-        <TrophyShelves shelves={trophyShelves(streaks(ix))} />
-      </section>
+      <TrophyShelves shelves={trophyShelves(rows)} />
     </>
   );
 }
@@ -149,23 +137,8 @@ function isTopic(v: unknown): v is ProofTopic {
   return typeof v === "string" && (PROOF_TOPICS as readonly string[]).includes(v);
 }
 
-function Tab({ href, on, children }: { href: string; on: boolean; children: React.ReactNode }) {
-  return (
-    <Link
-      href={href}
-      aria-current={on ? "page" : undefined}
-      className={cn(
-        "flex h-11 items-center justify-center rounded-full text-[15px] transition-colors",
-        on ? "bg-lamp-soft font-medium text-primary" : "text-muted-foreground hover:text-foreground",
-      )}
-    >
-      {children}
-    </Link>
-  );
-}
-
 function YearLink({ year, enabled, label, children }: { year: number; enabled: boolean; label: string; children: React.ReactNode }) {
-  const cls = "grid size-10 place-items-center rounded-full";
+  const cls = "grid size-11 place-items-center rounded-full";
   if (!enabled) {
     return (
       <span aria-disabled="true" aria-label={label} className={cn(cls, "text-faint/50")}>
