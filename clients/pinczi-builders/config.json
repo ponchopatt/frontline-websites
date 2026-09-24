@@ -42,7 +42,7 @@
     "height": 630,
     "title": "Pinczi Builders: Southern Highlands Builders, Bowral",
     "description": "Custom homes, additions and commercial builds, only in the Southern Highlands, for over two decades.",
-    "alt": "At dusk, a white weatherboard home with a lit bedroom window above a lit swimming pool, Burradoo"
+    "alt": "A white farmhouse with a recycled-brick chimney, a covered deck and wide timber steps down to a lawn, Burrawang"
   },
   "responsePromise": "Builder's licence 350923C · HIA member · Bowral, Southern Highlands",
   "copy": {
@@ -199,20 +199,20 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/burradoo-dusk-hero-1800.webp",
-      "srcset": "assets/burradoo-dusk-hero-480.webp 480w, assets/burradoo-dusk-hero-800.webp 800w, assets/burradoo-dusk-hero-1200.webp 1200w, assets/burradoo-dusk-hero-1800.webp 1800w, assets/burradoo-dusk-hero-2400.webp 2400w",
-      "width": 2560,
-      "height": 1707,
-      "alt": "At dusk, a white weatherboard home with a lit bedroom window and a lit swimming pool in front, Burradoo",
-      "_comment": "74a_Burradoo_Road_Dusk_Bodhi_Photo-24-scaled.jpg (2560x1707) from their Burradoo project page. The media library titles it '74A Burradoo Road, Burradoo'. It's a twilight shot, so the lit window and pool still read under the hero's dark overlay on a phone, and a phone-width centre crop keeps the gable, the lit window and the pool."
-    },
-    "statement": {
-      "src": "assets/burrawang-farmhouse-1200.webp",
-      "srcset": "assets/burrawang-farmhouse-480.webp 480w, assets/burrawang-farmhouse-800.webp 800w, assets/burrawang-farmhouse-1200.webp 1200w, assets/burrawang-farmhouse-1800.webp 1800w",
+      "src": "assets/burrawang-hero-1800.webp",
+      "srcset": "assets/burrawang-hero-480.webp 480w, assets/burrawang-hero-800.webp 800w, assets/burrawang-hero-1200.webp 1200w, assets/burrawang-hero-1800.webp 1800w, assets/burrawang-hero-2400.webp 2400w",
       "width": 2560,
       "height": 1709,
       "alt": "A white farmhouse with a recycled-brick chimney and wood store, a covered deck and wide timber steps down to the lawn, Burrawang",
-      "_comment": "6E31BD76-603B-4996-BC5E-25885630D7F1-min-scaled.jpeg (2560x1709), the portfolio tile and first photo of their 'Burrawang Farmhouse' page."
+      "_comment": "6E31BD76-603B-4996-BC5E-25885630D7F1-min-scaled.jpeg (2560x1709), the portfolio tile and first photo of their 'Burrawang Farmhouse' page. I first tried the Burradoo dusk shot here, but under the template's dark veil it went almost black on a phone. This daylight shot keeps the white roof and brick chimney in the light upper-right of the phone crop, and the lawn sits under the dark lower veil where the text is."
+    },
+    "statement": {
+      "src": "assets/burradoo-dusk-1200.webp",
+      "srcset": "assets/burradoo-dusk-480.webp 480w, assets/burradoo-dusk-800.webp 800w, assets/burradoo-dusk-1200.webp 1200w, assets/burradoo-dusk-1800.webp 1800w",
+      "width": 2560,
+      "height": 1707,
+      "alt": "At dusk, a white weatherboard home with a lit bedroom window and a lit swimming pool in front, Burradoo",
+      "_comment": "74a_Burradoo_Road_Dusk_Bodhi_Photo-24-scaled.jpg (2560x1707) from their Burradoo project page. Media library title: '74A Burradoo Road, Burradoo'."
     },
     "aperture": {
       "src": "assets/burradoo-dining-1800.webp",

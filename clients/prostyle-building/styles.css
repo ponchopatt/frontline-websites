@@ -1,0 +1,13 @@
+/*
+ * ProStyle Building Group: client layer over the trust template.
+ * Appended after the template's CSS (lib/build.js), so it only touches this site.
+ *
+ * Hero: garran-dusk-portrait is a 4:5 crop of their Garran dusk shot. The house sits
+ * in the top half of the frame, so the focal point is raised on both widths.
+ * At 390px the whole lit upper verandah and the garage stay in frame.
+ */
+.hero img.bg{object-position:50% 30%}
+@media(max-width:700px){.hero img.bg{object-position:42% 34%}}
+
+/* Team photo: their original is only 858px wide, so show it no wider than that renders sharply. */
+@media(min-width:960px){.about .figure{max-width:440px}}

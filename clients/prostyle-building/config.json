@@ -4,7 +4,7 @@
   "template": "trust",
   "industry": "builders",
   "live": false,
-  "tagline": "Extensions, knock-down rebuilds and new homes across Canberra, run by one dedicated construction manager with weekly progress reports.",
+  "tagline": "Extensions, renovations, knock-down rebuilds and new homes across Canberra, from our office in Phillip.",
   "schemaType": "HomeAndConstructionBusiness",
   "business": {
     "name": "ProStyle Building Group",
@@ -40,38 +40,38 @@
     "width": 1200,
     "height": 630,
     "title": "ProStyle Building Group: Extensions & New Homes, Canberra",
-    "description": "Extensions, knock-down rebuilds and new homes across Canberra, run by one dedicated construction manager with weekly progress reports.",
-    "alt": "A covered balcony with a glass balustrade looking over Woden to the Brindabella Ranges at sunset, Garran"
+    "description": "Extensions, renovations, knock-down rebuilds and new homes across Canberra. On extensions, a dedicated construction manager and weekly progress reports.",
+    "alt": "A rendered two-storey home at dusk, its upper verandah lit behind a glass balustrade, Garran"
   },
   "responsePromise": "Our office is at 51 Townshend St, Phillip, in the Woden Valley.",
   "copy": {
     "title": "ProStyle Building Group: Extensions, Knock-Down Rebuilds & New Homes, Canberra",
-    "description": "Canberra builders of extensions, renovations, knock-down rebuilds, new homes, multi-unit developments and bathrooms. One construction manager per job, site meetings and weekly progress reports. Phillip ACT.",
-    "ctaLabel": "Call us",
+    "description": "Canberra builders of extensions, renovations, knock-down rebuilds, new homes, multi-unit developments and bathrooms. Extensions run by a dedicated construction manager, with weekly progress reports. Phillip ACT.",
+    "ctaLabel": "Send the details",
     "kicker": "Extensions & new homes · Canberra",
-    "headline": "Your build,<br>reported<br><em>every week.</em>",
-    "sub": "One dedicated construction manager runs your extension, rebuild or new home, with regular site meetings and a progress report every week. Our team has over 30 years in the building industry.",
+    "headline": "Your extension,<br>reported<br><em>every week.</em>",
+    "sub": "On extensions and renovations, a dedicated construction manager runs the programme, with site meetings and weekly progress reports. We build new homes and knock-down rebuilds too, and our team has over 30 years in the building industry.",
     "heroSecondary": "Or send the details",
     "heroSecondarySms": "Or send the details",
     "navApproach": "Approach",
-    "statementLabel": "How we work",
-    "statementHeadline": "One person<br>to ring.",
-    "statementBody": "Every job has a dedicated construction manager who runs the programme from start to finish. You get regular site meetings and a progress report every week, and when a question comes up, you know exactly who to call.",
+    "statementLabel": "Your designer, our build",
+    "statementHeadline": "Your design.<br>Your say on<br>the finishes.",
+    "statementBody": "Our project managers and builders work with your architect or designer on a home that's modern, functional and personal to you. We encourage your input on every part of the design, and the final decisions on finishes and fittings are yours.",
     "servicesLabel": "What we build",
     "servicesHeadline": "Extend, rebuild<br>or start<br>new.",
-    "servicesIntro": "Our project managers and builders work with your architect or designer, and our own construction team looks after the build.",
+    "servicesIntro": "Our project managers and builders work with your architect or designer, and our construction team looks after the build.",
     "apertureLabel": "Local",
     "apertureLine": "Canberra homes, built by a Canberra team using local suppliers.",
     "workLabel": "Selected work",
     "workHeadline": "Hawker to<br>Red Hill, and<br>out to Collector.",
     "workIntro": "A few homes from our portfolio, from Canberra's inner suburbs out to the country near Lake George.",
-    "processLabel": "How a job runs",
+    "processLabel": "How an extension runs",
     "processHeadline": "Consult,<br>design,<br>build.",
-    "processIntro": "From the first consultation to handover, one person runs your job and keeps you updated.",
+    "processIntro": "From the first consultation to handing back the keys, here's how an extension or renovation runs with us.",
     "ownerLabel": "Who you are dealing with",
     "recognitionLabel": "Beyond the reviews",
     "recognitionHeadline": "Licensed in the ACT. Part of the community.",
-    "recognitionIntro": "Our licence details, and some of the local causes we've backed since 2004.",
+    "recognitionIntro": "Our licence details, and some of the local causes we back.",
     "areasLabel": "Where we build",
     "areasHeadline": "Right across<br>Canberra.",
     "areasIntro": "We're based in Phillip, in the Woden Valley. These are suburbs where we've built.",
@@ -79,15 +79,14 @@
     "faqHeadline": "Questions we get asked.",
     "enquireLabel": "Talk to us",
     "enquireHeadline": "Tell us about<br>the house.",
-    "enquireIntro": "Tell us your suburb, what you'd like to build or change, and whether you have plans yet. Or call the office on (02) 6282 0770.",
+    "enquireIntro": "Tell us your suburb, what you'd like to build or change, and whether you have plans yet. Or call the office on (02) 6282 0770.",
     "reviewsLabel": "On Google",
     "reviewsTitle": "Josh, Craig and the team.",
-    "reviewsIntro": "What clients have written about us on Google.",
-    "callLabel": "Call ProStyle"
+    "reviewsIntro": "What clients have written about us on Google."
   },
   "owner": {
-    "body": "Josh Fogg is one of our co-directors. Clients deal with him directly, because he project-manages jobs himself.",
-    "team": "You'll probably meet Craig too. Families we've built for in Waramanga and Hughes named him for staying responsive and keeping them in the loop. Behind them is our own experienced construction team.",
+    "body": "Josh Fogg is one of our co-directors. Many of our clients have worked with him directly on their build.",
+    "team": "You'll probably meet Craig too. Families we've built for in Waramanga and Hughes named him for staying responsive and keeping them in the loop. Behind them is our experienced construction team.",
     "facts": [
       {
         "value": "$400k+",
@@ -186,8 +185,8 @@
       "detail": "Our project managers work with your architect or designer, and help with the working drawings and approvals."
     },
     {
-      "step": "One construction manager",
-      "detail": "A dedicated construction manager runs the programme. You get regular site meetings and a progress report every week."
+      "step": "Construction",
+      "detail": "Our construction team takes over, and a dedicated construction manager runs the programme. We keep you updated with site meetings and weekly progress reports."
     },
     {
       "step": "Keys back",
@@ -198,7 +197,6 @@
     {
       "region": "Woden Valley",
       "suburbs": [
-        "Phillip",
         "Curtin",
         "Garran",
         "Hughes",
@@ -223,7 +221,6 @@
     {
       "region": "Weston Creek & Belconnen",
       "suburbs": [
-        "Weston Creek",
         "Waramanga",
         "Hawker"
       ]
@@ -244,12 +241,12 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/garran-dusk-1800.webp",
-      "srcset": "assets/garran-dusk-480.webp 480w, assets/garran-dusk-800.webp 800w, assets/garran-dusk-1200.webp 1200w, assets/garran-dusk-1800.webp 1800w",
+      "src": "assets/garran-dusk-portrait-1600.webp",
+      "srcset": "assets/garran-dusk-portrait-1200.webp 1200w, assets/garran-dusk-portrait-1600.webp 1600w, assets/garran-dusk-portrait-2000.webp 2000w",
       "width": 2500,
-      "height": 1666,
-      "alt": "A rendered two-storey home with a lit, glass-balustraded upper verandah above a double garage, at dusk, Garran",
-      "_comment": "PS -120330 2276.jpg (2500x1666) from their Garran portfolio page, the only shoot they publish above 1000px. A dusk shot with the whole upper verandah lit, so the home still reads under the hero overlay on a phone (the balcony-view shot from the same shoot went almost black there, so it moved to the aperture)."
+      "height": 3125,
+      "alt": "A rendered two-storey home at dusk, its upper verandah lit behind a glass balustrade, above a double garage and a steep driveway, Garran",
+      "_comment": "PS -120330 2279.jpg (2500x3750 portrait) from their Garran portfolio page, cropped to 2500x3125 (4:5; 150px off the top of the sky, 475px of driveway off the bottom). Rework: the first hero (landscape PS -120330 2276.jpg) showed only a ceiling light and rail at 390px. A portrait original keeps the whole lit verandah and garage in a phone crop, and the focal point is set in styles.css. The srcset starts at 1200w on purpose: the template uses sizes=100vw, and a 480/800 file stretched across a phone looked soft."
     },
     "statement": {
       "src": "assets/curtin-deck-stairs-667.webp",
@@ -354,14 +351,14 @@
       "text": "Prostyle completed our renovations efficiently and to a high standard. Josh provided excellent project management and was always available to answer our questions. The tradesmen were reliable and happy to accommodate our personal requests. I would highly recommend this company to complete home renovations."
     },
     {
-      "name": "Alexander Claudianos",
-      "text": "We had an excellent experience building our home with Prostyle Building Group here in Canberra, and Craig in particular went above and beyond throughout the entire build.",
+      "name": "Pam Courtier",
+      "text": "I found Prostyle provided a very efficient, friendly service. They kept me up to date with what was happening, the workmen involved were friendly and efficient, , and the end result was just what I had wished for.",
       "shortened": true,
       "source": "Google review, shortened"
     },
     {
-      "name": "Jabs Dheadfactor",
-      "text": "Extremely profession experience. We worked directly with Josh and he was amazing. The extension was everything we could ask for and then some. Would highly recommend and even when their were problems, they were quickly resolved.",
+      "name": "Alexander Claudianos",
+      "text": "We had an excellent experience building our home with Prostyle Building Group here in Canberra, and Craig in particular went above and beyond throughout the entire build.",
       "shortened": true,
       "source": "Google review, shortened"
     },
@@ -390,12 +387,12 @@
       "a": "Yes. Our project managers and builders work with your architect or designer. We can also help from the design stage through working drawings and approvals."
     },
     {
-      "q": "How will we know how the build is going?",
-      "a": "Your dedicated construction manager runs the programme and keeps you updated, with regular site meetings and a progress report every week."
+      "q": "How will we know how our extension is going?",
+      "a": "On an extension or renovation, a dedicated construction manager runs the programme and keeps you updated, with site meetings and weekly progress reports."
     },
     {
       "q": "Can we live at home during a renovation?",
-      "a": "Clients have lived on site through major renovations with us. We keep the site clean and safe the whole way through."
+      "a": "It's often possible. A family in Waramanga lived on site through a major renovation with us. Tell us early if you plan to stay, so we can talk through how the work will affect you."
     },
     {
       "q": "Will an extension look tacked on?",
@@ -466,7 +463,7 @@
         "sentence": "Craig and the Prostyle team completed a major renovation for us in Waramanga. We were really happy throughout the build - communication was excellent and Craig went above and beyond (PHILIPPA P., new-homes page) / Craig and the Prostyle team were great. They recently completed a fairly major extension to our place in Hughes ... Craig was also always responsive to any queries or concerns. (GREG H., extensions page)",
         "url": "https://www.prostylehomes.com.au/extensions-renovations"
       },
-      "Dedicated construction manager runs the programme; site meetings; weekly progress reports; hand the keys back (hero, statement, process, FAQ)": {
+      "Dedicated construction manager runs the programme; site meetings; weekly progress reports; hand the keys back (hero, extensions process, FAQ; tied to extensions and renovations, where their site says it)": {
         "sentence": "From there our construction team takes over & the fun begins, our dedicated construction manager will run the programme for you extension & renovation. We will keep you regularly updated on progress with site meetings & weekly progress reports. When we hand the keys back to you will enjoy the look and feel of your newly renovated home.",
         "url": "https://www.prostylehomes.com.au/extensions-renovations"
       },
@@ -482,7 +479,7 @@
         "sentence": "Extensions & Renovations — Expand or modify your home to suit your changing lifestyle.",
         "url": "https://www.prostylehomes.com.au/"
       },
-      "New homes: work with your architect/designer; modern, functional, personalised; homeowner makes final decisions on finishes and fittings; experienced construction team": {
+      "New homes and statement: work with your architect/designer; modern, functional, personalised; homeowner makes final decisions on finishes and fittings; experienced construction team": {
         "sentence": "Our Project Managers and builders work in conjunction with your architect and/or designer to create a space that is modern, functional and personalised. We provide the opportunity for ample consultation and encourage the homeowner to make the final decisions about finishes and fittings. Our experienced construction team can look after the building process.",
         "url": "https://www.prostylehomes.com.au/new-homes"
       },
@@ -515,11 +512,11 @@
         "url": "https://www.prostylehomes.com.au/portfolio"
       },
       "Reviews (6) and no rating shown": {
-        "sentence": "data/google_reviews_top25.json, slug prostyle-building: rating 3.5, review_count 19 (below the 4.7 floor, so no rating renders). best_for_demo used word for word: Julian Barnard (full), Alexander Claudianos, Jabs Dheadfactor, Stuart Turner, Ella Edwards, Dave & Evina C (all shortened: true). They name Josh, Joshua, Josh Fogg, Craig, Canberra, 'on time and on budget'.",
+        "sentence": "data/google_reviews_top25.json, slug prostyle-building: rating 3.5, review_count 19 (below the 4.7 floor, so no rating renders). best_for_demo used word for word: Julian Barnard (full), Alexander Claudianos, Stuart Turner, Ella Edwards, Dave & Evina C (shortened: true). Pam Courtier is from the same pull's reviews list (5 stars), cut word for word at the end of her second sentence (shortened: true), in place of Jabs Dheadfactor at the reviewer's request because it backs the keep-you-updated angle. They name Josh, Joshua, Josh Fogg, Craig, Canberra, 'on time and on budget'.",
         "url": "data/google_reviews_top25.json"
       },
       "Every photo on the page": {
-        "sentence": "All 16 photos are ProStyle's own, from prostylehomes.com.au: Garran portfolio 'PS -120330 2218.jpg' (hero) and 'PS -120330 2276.jpg' (aperture), both 2500px; Curtin portfolio '_MG_6709-Edit-20160224.jpg' (statement, 667x1000 portrait); Extensions page 02.jpg; New Homes page 02.jpg; Knock Down Rebuilds page '1 copy.jpg'; New Developments page 01.jpg; Bathrooms page 02.jpg; About page 'team copy.jpg'; Torrens cover 'PS-0557-May 15, 2019.jpg'; Hawker 'PS-0765-160316.jpg'; Campbell 'Garsia-00075.jpg'; Red Hill 'StewH 007.jpg'; Yarralumla 'PS-1003-May 23, 2019.jpg'; Collector 02.jpg; O'Connor 'PS-6356-180221.jpg'. Gallery captions use the portfolio page titles.",
+        "sentence": "All 16 photos are ProStyle's own, from prostylehomes.com.au: Garran portfolio 'PS -120330 2279.jpg' (hero, 2500x3750 portrait cropped to 2500x3125) and 'PS -120330 2218.jpg' (aperture, 2500x1667); Curtin portfolio '_MG_6709-Edit-20160224.jpg' (statement, 667x1000 portrait); Extensions page 02.jpg; New Homes page 02.jpg; Knock Down Rebuilds page '1 copy.jpg'; New Developments page 01.jpg; Bathrooms page 02.jpg; About page 'team copy.jpg'; Torrens cover 'PS-0557-May 15, 2019.jpg'; Hawker 'PS-0765-160316.jpg'; Campbell 'Garsia-00075.jpg'; Red Hill 'StewH 007.jpg'; Yarralumla 'PS-1003-May 23, 2019.jpg'; Collector 02.jpg; O'Connor 'PS-6356-180221.jpg'. Gallery captions use the portfolio page titles.",
         "url": "https://www.prostylehomes.com.au/portfolio"
       },
       "Logo": {

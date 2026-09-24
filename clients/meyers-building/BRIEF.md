@@ -56,7 +56,9 @@ Left out:
 - blob-6ca1f86.png (1232×852), blob-c9304bd.png (1691×1123), blob-a825065.png (2136×1440): GoDaddy template stock in black and white (a man at a bathtub, two excavators by the sea, an excavator in a quarry). Not theirs.
 - No logo image exists (the site logo is typed text in Cinzel).
 
-Slots: hero 1 + services 2 + gallery 4 = 7, every photo used once. No statement/aperture photo (not enough distinct photos).
+Slots: hero 1 + services 2 + gallery 4 = 7, every own photo used once. `npm run check` requires 3 services, so the third tile (Earth moving & site prep) uses one labelled CC0 sample: "20140831_161618_resized" by Julie Brunner, https://www.flickr.com/photos/15606079@N08/14926230848 (a Cat track loader on a dirt pad, 1024×576, cropped to 660×456 around the machine). Pat's standing approval (2026-09-23). No statement/aperture section (not enough distinct photos; a statement without a photo left a big empty half on desktop).
+
+Hero treatment: IMG_4548 upscaled to 1920×1440, shadows lifted (gamma 0.72) so the house reads under the dark overlay on phones, and 110px of sky and 110px of lawn trimmed (final 1920×1220).
 
 ## What Pat needs from Darren
 - Confirm he's happy being named (name comes from the ABR, not his site).
