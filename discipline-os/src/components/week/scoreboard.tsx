@@ -1,12 +1,35 @@
+import { Swords } from "lucide-react";
 import { Meter } from "@/components/meter";
 import { SectionCard } from "@/components/section-card";
 import { cn } from "@/lib/utils";
-import type { ScoreGroup } from "./scoreboard-data";
+import type { Boss, ScoreGroup } from "./scoreboard-data";
 
-/** The week in numbers: each line is what got done against the week's target. */
-export function WeekScoreboard({ groups, meta }: { groups: ScoreGroup[]; meta: string }) {
+/**
+ * The Weekly Boss: the week's targets as one fight, then every line of the week in numbers,
+ * actual against target. Beaten when most targets are hit; never a verdict on the person.
+ */
+export function WeekScoreboard({ groups, boss, meta }: { groups: ScoreGroup[]; boss: Boss | null; meta: string }) {
   return (
-    <SectionCard id="scoreboard" title="Scoreboard" meta={meta}>
+    <SectionCard id="boss" title="Weekly boss" meta={meta} prominent>
+      {boss && (
+        <div className="mb-5 grid gap-2">
+          <div className="flex items-baseline gap-2">
+            <Swords className={cn("size-5 self-center", boss.state === "defeated" ? "text-kept" : "text-primary")} aria-hidden />
+            <span className={cn("text-[34px] leading-none tracking-tight tabular-nums", boss.hit === boss.total && "text-kept")}>{boss.hit}</span>
+            <span className="text-[15px] text-muted-foreground">of {boss.total} targets hit</span>
+          </div>
+          <Meter value={boss.ratio} size="md" label="Weekly boss" />
+          <p className={cn("text-[15px]", boss.state === "defeated" ? "font-medium text-kept" : "text-muted-foreground")} role="status">
+            {boss.state === "defeated"
+              ? "Week complete. Boss defeated."
+              : boss.state === "survived"
+                ? `Week complete: ${boss.hit} of ${boss.total}. The boss survived this one. Next week starts from these numbers.`
+                : boss.total - boss.hit === 1
+                  ? "One target left this week."
+                  : `${boss.total - boss.hit} targets to go this week.`}
+          </p>
+        </div>
+      )}
       {groups.length === 0 ? (
         <p className="text-[15px] text-muted-foreground">Nothing to count yet.</p>
       ) : (
@@ -23,7 +46,7 @@ export function WeekScoreboard({ groups, meta }: { groups: ScoreGroup[]; meta: s
                         {r.note && <span className="truncate text-xs text-faint">{r.note}</span>}
                       </span>
                       <span className="shrink-0 text-[16px] tabular-nums">
-                        <span className={cn(r.ratio !== null && r.ratio >= 1 && "text-primary")}>{r.value}</span>
+                        <span className={cn(r.ratio !== null && r.ratio >= 1 && "text-kept")}>{r.value}</span>
                         {r.of && (
                           <span className="text-muted-foreground">
                             <span aria-hidden>/</span>

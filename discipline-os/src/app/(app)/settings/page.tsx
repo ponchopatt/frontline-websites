@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { signOut } from "@/app/actions/account";
+import { MinimumForm } from "@/components/settings/minimum-form";
 import { SettingsForm } from "@/components/settings/settings-form";
 import { ThemeChoice } from "@/components/settings/theme-choice";
 import { SectionCard } from "@/components/section-card";
@@ -17,7 +18,10 @@ const WHAT_COUNTS: Array<[string, string]> = [
 
 export default async function SettingsPage() {
   const viewer = await getViewer();
-  const { data } = await viewer.supabase.auth.getUser();
+  const [{ data }, habitsRes] = await Promise.all([
+    viewer.supabase.auth.getUser(),
+    viewer.supabase.from("habits").select("id,name,minimum").eq("is_active", true).order("category").order("sort_order"),
+  ]);
 
   return (
     <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
@@ -27,6 +31,8 @@ export default async function SettingsPage() {
       </header>
 
       <SettingsForm profile={viewer.profile} />
+
+      <MinimumForm habits={habitsRes.data ?? []} workMinutes={viewer.profile.minimumWorkMinutes} fitness={viewer.profile.minimumFitness} />
 
       <SectionCard title="Appearance">
         <ThemeChoice />
@@ -51,7 +57,7 @@ export default async function SettingsPage() {
           ))}
         </dl>
         <p className="mt-3 text-sm text-muted-foreground">
-          A day at or above your streak line extends the streak. Complete day locks the number, so changing habits later never rewrites it.
+          A day at or above your streak line extends the streak, and so does a secured minimum day. Close day locks the number, so changing habits later never rewrites it.
         </p>
       </SectionCard>
 

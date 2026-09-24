@@ -1,11 +1,11 @@
 "use client";
 
-import { Lock } from "lucide-react";
+import { Check, Film } from "lucide-react";
 import { useState } from "react";
 import { AutosaveField } from "@/components/autosave-field";
 import { SectionCard } from "@/components/section-card";
 import { clockTime, type LocalDate } from "@/lib/day";
-import { wordCaption, type WordResult } from "@/lib/keep-word";
+import type { WordResult } from "@/lib/keep-word";
 import type { ActionResult, ReviewField, ReviewState } from "@/lib/types";
 import { REVIEW_FIELDS } from "@/lib/types";
 
@@ -29,6 +29,7 @@ interface ReviewSectionProps {
   onSaved: (field: ReviewField, value: string) => void;
   onComplete: () => Promise<void>;
   onReopen: () => Promise<void>;
+  onReplay: () => void;
 }
 
 export function ReviewSection({
@@ -36,7 +37,6 @@ export function ReviewSection({
   isToday,
   review,
   word,
-  threshold,
   timeZone,
   locked,
   timerRunningToday,
@@ -44,8 +44,8 @@ export function ReviewSection({
   onSaved,
   onComplete,
   onReopen,
+  onReplay,
 }: ReviewSectionProps) {
-  const [confirming, setConfirming] = useState(false);
   const [busy, setBusy] = useState(false);
   const answered = REVIEW_FIELDS.filter((f) => review[f].trim()).length;
 
@@ -68,66 +68,50 @@ export function ReviewSection({
 
       <div className="mt-6 border-t border-border pt-5" aria-live="polite">
         {locked ? (
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <Lock className="size-4 text-primary" aria-hidden />
-              <p className="text-[15px]">
-                Completed at {clockTime(locked.completedAt, timeZone)}. Kept my word:{" "}
-                <span className="text-foreground">{locked.score}%</span>.
-              </p>
-            </div>
-            <button
-              type="button"
-              disabled={busy}
-              onClick={async () => {
-                setBusy(true);
-                await onReopen();
-                setBusy(false);
-              }}
-              className="min-h-11 shrink-0 px-1 text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
-            >
-              Reopen day
-            </button>
-          </div>
-        ) : confirming ? (
           <div className="grid gap-3">
-            <p className="text-[15px]">
-              Lock {isToday ? "today" : "this day"} with <span className="text-foreground">{word.kept} of {word.made}</span> kept (
-              {word.percent ?? 0}%)? {wordCaption(word, threshold)} You can reopen it later.
+            <p className="inline-flex items-center gap-2 text-[15px]">
+              <Check className="size-4 text-kept" aria-hidden />
+              <span>
+                Closed at {clockTime(locked.completedAt, timeZone)}. Kept my word: <span className="text-foreground">{locked.score}%</span>.
+              </span>
             </p>
-            <div className="flex gap-2">
+            <div className="flex items-center justify-between gap-3">
+              <button type="button" onClick={onReplay} className="inline-flex h-11 items-center gap-2 rounded-full border border-border px-4 text-sm hover:bg-accent">
+                <Film className="size-4" aria-hidden />
+                Replay the day
+              </button>
               <button
                 type="button"
                 disabled={busy}
                 onClick={async () => {
                   setBusy(true);
-                  await onComplete();
+                  await onReopen();
                   setBusy(false);
-                  setConfirming(false);
                 }}
-                className="h-12 flex-1 rounded-full bg-primary text-[15px] font-medium text-primary-foreground disabled:opacity-60"
+                className="min-h-11 shrink-0 px-1 text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
               >
-                {busy ? "Completing…" : "Complete day"}
-              </button>
-              <button type="button" onClick={() => setConfirming(false)} className="h-12 rounded-full px-5 text-[15px] text-muted-foreground hover:text-foreground">
-                Not yet
+                Reopen day
               </button>
             </div>
           </div>
         ) : (
           <>
             <p className="mb-3 text-[15px] text-muted-foreground">
-              Keep my word: <span className="text-foreground">{word.kept} of {word.made}</span> commitments kept today.
+              Keep my word: <span className="text-foreground">{word.kept} of {word.made}</span> commitments kept {isToday ? "today" : "that day"}.
+              {timerRunningToday && " Closing stops the running timer."}
             </p>
             <button
               type="button"
-              disabled={timerRunningToday}
-              onClick={() => setConfirming(true)}
-              className="h-12 w-full rounded-full border border-primary/70 text-[15px] font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-primary"
+              disabled={busy}
+              onClick={async () => {
+                setBusy(true);
+                await onComplete();
+                setBusy(false);
+              }}
+              className="h-12 w-full rounded-full bg-primary text-[15px] font-medium text-primary-foreground transition-opacity disabled:opacity-60"
             >
-              Complete day
+              {busy ? "Closing…" : "Close day"}
             </button>
-            {timerRunningToday && <p className="mt-2 text-sm text-muted-foreground">Stop the running timer first.</p>}
           </>
         )}
       </div>

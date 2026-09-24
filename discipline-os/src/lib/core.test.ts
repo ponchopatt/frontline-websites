@@ -107,7 +107,7 @@ describe("keep my word", () => {
 });
 
 function days(scores: number[], start = "2026-09-01"): DayScore[] {
-  return scores.map((score, i) => ({ date: addDays(start, i), score, locked: false }));
+  return scores.map((score, i) => ({ date: addDays(start, i), score, locked: false, minimum: null }));
 }
 
 describe("streaks", () => {
@@ -131,6 +131,12 @@ describe("streaks", () => {
     expect(computeStreaks(d, 70, d[2].date)).toEqual({ current: 1, best: 1 });
   });
 
+  it("keeps the chain alive through a secured minimum day, not one left open", () => {
+    const d = days([80, 30, 80]);
+    expect(computeStreaks([d[0], { ...d[1], minimum: "secured" }, d[2]], 70, d[2].date)).toEqual({ current: 3, best: 3 });
+    expect(computeStreaks([d[0], { ...d[1], minimum: "on" }, d[2]], 70, d[2].date)).toEqual({ current: 1, best: 1 });
+  });
+
   it("ignores days after today", () => {
     const d = days([80, 80, 80]);
     expect(computeStreaks(d, 70, d[1].date)).toEqual({ current: 2, best: 2 });
@@ -142,8 +148,10 @@ describe("streaks", () => {
       habits_total: 17, habits_done: 0, tasks_total: 3, tasks_done: 0,
       review_done: 0, work_minutes: 0,
       final_score: 88, completed_at: "2026-09-01T11:00:00Z",
+      minimum_on: false, minimum_total: 7, minimum_done: 0,
     };
-    expect(scoreForSummary(summary, 6)).toEqual({ date: "2026-09-01", score: 88, locked: true });
+    expect(scoreForSummary(summary, 6)).toEqual({ date: "2026-09-01", score: 88, locked: true, minimum: null });
+    expect(scoreForSummary({ ...summary, minimum_on: true, minimum_done: 7 }, 6).minimum).toBe("secured");
     expect(scoreForSummary({ ...summary, final_score: null, completed_at: null }, 6).score).toBe(0);
   });
 });

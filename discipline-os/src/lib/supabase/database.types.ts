@@ -308,6 +308,7 @@ export type Database = {
           final_score: number | null
           id: string
           local_date: string
+          minimum_at: string | null
           score_breakdown: Json | null
           updated_at: string
           user_id: string
@@ -318,6 +319,7 @@ export type Database = {
           final_score?: number | null
           id?: string
           local_date: string
+          minimum_at?: string | null
           score_breakdown?: Json | null
           updated_at?: string
           user_id?: string
@@ -328,6 +330,7 @@ export type Database = {
           final_score?: number | null
           id?: string
           local_date?: string
+          minimum_at?: string | null
           score_breakdown?: Json | null
           updated_at?: string
           user_id?: string
@@ -646,6 +649,7 @@ export type Database = {
           id: string
           is_active: boolean
           kind: string | null
+          minimum: boolean
           name: string
           sort_order: number
           updated_at: string
@@ -659,6 +663,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           kind?: string | null
+          minimum?: boolean
           name: string
           sort_order?: number
           updated_at?: string
@@ -672,6 +677,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           kind?: string | null
+          minimum?: boolean
           name?: string
           sort_order?: number
           updated_at?: string
@@ -941,6 +947,8 @@ export type Database = {
           created_at: string
           day_start_hour: number
           display_name: string | null
+          minimum_fitness: boolean
+          minimum_work_minutes: number
           streak_threshold: number
           timezone: string
           updated_at: string
@@ -955,6 +963,8 @@ export type Database = {
           created_at?: string
           day_start_hour?: number
           display_name?: string | null
+          minimum_fitness?: boolean
+          minimum_work_minutes?: number
           streak_threshold?: number
           timezone?: string
           updated_at?: string
@@ -969,6 +979,8 @@ export type Database = {
           created_at?: string
           day_start_hour?: number
           display_name?: string | null
+          minimum_fitness?: boolean
+          minimum_work_minutes?: number
           streak_threshold?: number
           timezone?: string
           updated_at?: string
@@ -1023,6 +1035,7 @@ export type Database = {
           note: string | null
           storage_path: string
           task_id: string | null
+          topic: string
           updated_at: string
           uploaded_at: string
           user_id: string
@@ -1035,6 +1048,7 @@ export type Database = {
           note?: string | null
           storage_path: string
           task_id?: string | null
+          topic?: string
           updated_at?: string
           uploaded_at?: string
           user_id?: string
@@ -1047,6 +1061,7 @@ export type Database = {
           note?: string | null
           storage_path?: string
           task_id?: string | null
+          topic?: string
           updated_at?: string
           uploaded_at?: string
           user_id?: string
@@ -1573,6 +1588,9 @@ export type Database = {
           habits_done: number
           habits_total: number
           local_date: string
+          minimum_done: number
+          minimum_on: boolean
+          minimum_total: number
           review_done: number
           tasks_done: number
           tasks_total: number

@@ -1,13 +1,14 @@
 "use client";
 
 import { Camera, Trash2 } from "lucide-react";
+import Link from "next/link";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { deleteProof, uploadProof } from "@/app/actions/proof";
 import { SectionCard } from "@/components/section-card";
 import { Sheet } from "@/components/sheet";
 import type { LocalDate } from "@/lib/day";
-import type { ProofItem } from "@/lib/types";
+import type { ProofItem, ProofTopic } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const MAX_SIDE = 1600;
@@ -38,11 +39,14 @@ interface ProofButtonProps {
   onUploaded: (proof: ProofItem) => void;
   className?: string;
   children?: React.ReactNode;
+  /** Offer these as one-tap buttons ("Gym", "Imperium"…); the photo is filed under the one tapped. */
+  topics?: Array<{ topic: ProofTopic; label: string }>;
 }
 
 /** "Add proof": pick or take a photo, and it's saved against the day (and the task or habit). */
-export function ProofButton({ date, taskId, habitId, label, disabled, onUploaded, className, children }: ProofButtonProps) {
+export function ProofButton({ date, taskId, habitId, label, disabled, onUploaded, className, children, topics }: ProofButtonProps) {
   const input = useRef<HTMLInputElement>(null);
+  const topicRef = useRef<ProofTopic | null>(null);
   const [busy, setBusy] = useState(false);
 
   async function send(file: File) {
@@ -55,6 +59,7 @@ export function ProofButton({ date, taskId, habitId, label, disabled, onUploaded
       if (taskId) form.set("taskId", taskId);
       if (habitId) form.set("habitId", habitId);
       if (label) form.set("label", label);
+      if (topicRef.current) form.set("topic", topicRef.current);
       const res = await uploadProof(form);
       if (!res.ok) toast.error(res.error);
       else {
@@ -83,20 +88,54 @@ export function ProofButton({ date, taskId, habitId, label, disabled, onUploaded
           if (file) void send(file);
         }}
       />
-      <button
-        type="button"
-        disabled={disabled || busy}
-        onClick={() => input.current?.click()}
-        className={cn("inline-flex min-h-11 items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground disabled:opacity-60", className)}
-      >
-        <Camera className="size-4" aria-hidden />
-        {busy ? "Uploading…" : children ?? "Add proof"}
-      </button>
+      {topics ? (
+        <div className={cn("grid gap-2", className)}>
+          <p className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
+            <Camera className="size-4" aria-hidden />
+            {busy ? "Uploading…" : "Add proof of"}
+          </p>
+          <div className="grid grid-cols-3 gap-1.5">
+            {topics.map((t) => (
+              <button
+                key={t.topic}
+                type="button"
+                disabled={disabled || busy}
+                onClick={() => {
+                  topicRef.current = t.topic;
+                  input.current?.click();
+                }}
+                className="h-11 rounded-full border border-border text-sm text-foreground/90 transition-colors hover:bg-accent disabled:opacity-60"
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <button
+          type="button"
+          disabled={disabled || busy}
+          onClick={() => input.current?.click()}
+          className={cn("inline-flex min-h-11 items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground disabled:opacity-60", className)}
+        >
+          <Camera className="size-4" aria-hidden />
+          {busy ? "Uploading…" : children ?? "Add proof"}
+        </button>
+      )}
     </>
   );
 }
 
-/** The day's proof photos: small, optional, never in the way. */
+const TOPICS: Array<{ topic: ProofTopic; label: string }> = [
+  { topic: "faith", label: "Faith" },
+  { topic: "gym", label: "Gym" },
+  { topic: "imperium", label: "Imperium" },
+  { topic: "websites", label: "Websites" },
+  { topic: "work", label: "Work" },
+  { topic: "other", label: "Other" },
+];
+
+/** The day's proof photos: small, optional, never in the way. Each lands on the proof wall. */
 export function ProofCard({
   date,
   proofs,
@@ -122,7 +161,15 @@ export function ProofCard({
   }
 
   return (
-    <SectionCard id="proof" title="Proof" meta={proofs.length ? `${proofs.length} today` : undefined}>
+    <SectionCard
+      id="proof"
+      title="Proof"
+      meta={
+        <Link href="/progress?tab=proof" className="inline-flex min-h-11 items-center hover:text-foreground">
+          {proofs.length ? `${proofs.length} today · ` : ""}Proof wall
+        </Link>
+      }
+    >
       {proofs.length > 0 && (
         <ul className="mb-2 grid grid-cols-3 gap-2">
           {proofs.map((p) => (
@@ -144,7 +191,7 @@ export function ProofCard({
           ))}
         </ul>
       )}
-      {!readOnly && <ProofButton date={date} onUploaded={onAdd} />}
+      {!readOnly && <ProofButton date={date} onUploaded={onAdd} topics={TOPICS} />}
       {proofs.length === 0 && readOnly && <p className="text-[15px] text-muted-foreground">No proof for this day.</p>}
 
       <Sheet open={viewing !== null} onClose={() => setViewing(null)} title={viewing?.label ?? "Proof"}>

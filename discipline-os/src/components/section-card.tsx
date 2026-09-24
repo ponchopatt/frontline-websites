@@ -20,10 +20,10 @@ export function SectionCard({ id, title, meta, description, prominent, children,
       id={id}
       aria-labelledby={headingId}
       className={cn(
-        "scroll-mt-6",
+        "scroll-mt-6 rounded-[26px] border px-4 sm:px-5",
         prominent
-          ? "rounded-2xl border border-primary/25 bg-card px-4 pt-5 pb-3 shadow-[0_0_0_1px_var(--lamp-soft)] sm:px-5"
-          : "border-t border-border pt-6",
+          ? "border-primary/25 bg-card pt-5 pb-3 shadow-[0_0_0_1px_var(--lamp-soft)]"
+          : "border-glass-edge bg-glass pt-5 pb-4",
         className,
       )}
     >

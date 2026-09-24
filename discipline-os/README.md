@@ -18,15 +18,16 @@ Zod · date-fns / date-fns-tz · Lucide.
 Big goals say where I'm going. Weekly goals say what matters now. Daily tasks say what to do. The
 scoreboard says whether I actually did it.
 
-Bottom nav (phone): **Today**, **Business**, **Week**, **Goals**, **Bible**. On a phone, Settings
-opens from Today's header, Habits from the habit cards and Settings, and the Work log from the Work
-card; on a wide screen all three are in the nav. A **+** button on every
+Bottom nav (phone): **Today**, **Business**, **Week**, **Goals**, **Progress**. On a phone, Settings
+opens from Today's header, Habits from the habit cards and Settings, the Work log from the Work
+card and Bible notes from the Faith card; on a wide screen they're all in the nav. A **+** button on every
 page adds a task; a running work block shows as a bar with Stop on every page.
 
 **Today** reads top to bottom in order of importance:
 
-1. **Header:** greeting, date, and **Keep My Word %** (the day's number) with "13 of 17 kept",
-   the week's average and the streak.
+1. **Header:** greeting with the day's state, date, and **Keep My Word %** (the day's number)
+   with "13 of 17 kept", the week's average and the streak. Then **What should I do next?** and,
+   for a bad day, **I'm having a shit day** (see *The daily loop* below).
 2. **Today's Big 3**, then up to a few supporting tasks. **+ Add task** takes plain words: "Call 10
    Imperium leads" files itself under Imperium and ties itself to the Leads called counter.
    **Plan my day** suggests a Big 3, a short supporting list (never 25 tasks) and work blocks for
@@ -48,7 +49,7 @@ page adds a task; a running work block shows as a bar with Stop on every page.
 8. **Discipline**, **Goals** (each task's chain Today → Week → Month → Year, tap to open),
    **Proof** (optional photos on any task, a small gallery for the day) and the **Night review**:
    what I accomplished, where I wasted time, where I broke my word, tomorrow's #1, then
-   **Complete day**.
+   **Close day**.
 
 **Business:** Imperium (sales, marketing, revenue), Websites and the AI bot, with day, week, month
 and year totals for every counter, and where to set weekly targets.
@@ -62,6 +63,64 @@ harder") built from your last weeks of numbers, your targets, the hours you have
 say you want, each with a one-line reason. Nothing is added until you approve it. Goals can be
 measured straight from a counter, so the week's leads goal fills as you log leads.
 
+### The daily loop
+
+Plan → execute → see progress → close the day → review → want to do better tomorrow. The user's
+own numbers are the motivation: no quotes, no XP, no coins.
+
+- **The day's state** sits in the greeting: *New day*, *Build the day* (morning), *Keep going*
+  (afternoon), *Close it out* (evening), *Day complete* once it's closed.
+- **What should I do next?** One action, why it's the one, and a Start button that starts the
+  timer (or Done, or Go there). It weighs the Minimum Day first, then a running timer, the
+  morning routine first thing, a work target within 45 minutes, the Big 3 in order, overdue and
+  left-over tasks, business numbers behind today's target, work hours, supporting tasks, habits
+  still due, the AI bot's next step, and in the evening the night review and Close Day. With
+  nothing urgent, it points at the week's biggest gap. "Something else" gives the next one down.
+  (`src/lib/next-action.ts`.)
+- **"One more"** prompts show only when something is nearly done: "18 minutes left. Finish it.",
+  "One more call.", "2 minutes left.", "One commitment left.", "One more gym session this week."
+  Once it's done it turns sage with a tick and the prompt goes. (`src/lib/gradient.ts`.)
+- **Scoreboard bars** fill as things get done and turn sage when a part is complete; the work
+  line shows a trophy at the target. Each business counter shows today's target as a bar.
+- **I'm having a shit day** switches on the **Minimum Day**: Bible, Prayer, Journal, 20 minutes
+  of focused work, gym or 20 minutes of cardio, shower, sleep (change the list in Settings). The
+  rest of the day folds away behind "Show the full day". Once every item is done: *Minimum day
+  secured. You kept the chain alive.* Keep My Word still counts the whole day, so the number never
+  pretends; a secured minimum day keeps the streak alive, and the year view marks it.
+- **Close day** is one tap (it stops a running timer; optional habits don't block it) and opens
+  the **Day complete** screen: Keep My Word, focused work, commitments kept, tasks and habits
+  done, work by business, what got done, records broken, and the **replay**: the day in time
+  order from what was already tracked (ticks, work sessions, tasks, counters, proof, the review).
+  The summary is stored with the day. "Replay the day" reopens it.
+- **Personal records** are spotted the moment they happen (most work in a day or week, most
+  leads or calls in a day, best revenue day/week, longest cardio, most gym sessions in a week,
+  streak records) and show once: *New personal record: 9h 14m of work today. Previous record:
+  8h 42m.* A first time is never a record; there has to be something to beat.
+- **Now and then** cards compare today's history with a month or three ago, on every third
+  day only, and only from stored numbers.
+- **Momentum** and the **Weekly Boss** sit under the scoreboard.
+
+**Progress** (the new tab) has two views. *Scoreboard*: Keep My Word today, this week and this
+month, commitments made / kept / broken, week-by-week and month-by-month; **Momentum** (the
+average of Keep My Word, work hours against the target, habits and tasks over the last seven
+finished days; rising or falling means 5 points against the week before, and every part is
+shown); the **year in squares** (strong, average, poor, not completed; a ring marks a secured
+minimum day; tap a day for its numbers and replay); **streaks** for Keep My Word, the morning
+routine, Bible, prayer, gym, cardio, the work target and the night review, each with its best and
+how often it was kept over 30 days, so one miss never wipes the picture; **personal records**;
+and **what you've done**, plain sentences from the history ("You've called 1,284 Imperium
+leads."). *Proof wall*: every proof photo, newest first by day, filtered by today, this week, this
+month or all, and by Faith, Gym, Imperium, Websites, Work or Other. The Proof card on Today files
+a photo under one of those with one tap.
+
+**Week** opens with the **Weekly Boss**: the week's targets (work hours, Bible and prayer days,
+gym and cardio, leads, reels, revenue, demos, calls…) as one fight, actual against target. It's
+*defeated* when most targets are hit by the end of the week; otherwise it *survived this one*, and
+next week starts from those numbers.
+
+**Not built:** an XP or level system (the brief made it optional; Keep My Word and the records
+already reward only real execution).
+
 ### Keep My Word
 
 Every day you make commitments; the % is how many you kept.
@@ -74,8 +133,8 @@ Every day you make commitments; the % is how many you kept.
 | The night review | All four questions are answered |
 
 Tasks parked for "later" don't count until they're given a day. The streak counts days at or
-above the streak line (default 80%). Complete Day stores the day's % so later changes never
-rewrite it.
+above the streak line (default 80%), and secured minimum days. Close Day stores the day's % and
+its summary so later changes never rewrite it.
 
 ### AI goal suggestions
 
@@ -111,9 +170,9 @@ Sign up with any email: local Supabase does not send confirmation emails.
 
 | Command | What it checks |
 |---|---|
-| `npm test` | Day boundaries (timezones, 04:00 start, daylight saving), Keep My Word, streaks, counter targets, quick add, the scoreboard, Plan my day, reading plans, goal suggestions; goal health, roll-ups, breakdowns and the goal check — 65 unit tests |
-| `npm run db:test` | The database's own rules with pgTAP: seeding, RLS isolation, no future days, locked days, one running timer, no duplicate ticks, one number per counter per day, one current bot milestone, no cross-user references, goal ownership down the hierarchy — 55 tests |
-| `npm run test:e2e` | The V1 definition of done, the execution day (quick add → counter finishes the task → work by business → bot milestone → proof photo → weekly scoreboard → Suggest my goals) and the full goal loop (year → months → weeks → Plan my day → done → progress → weekly review). Runs on a phone-sized screen against a production build and local Supabase; run `npm run build` first — 12 tests |
+| `npm test` | Day boundaries (timezones, 04:00 start, daylight saving), Keep My Word, streaks (with minimum days), counter targets, quick add, the scoreboard, Plan my day, reading plans, goal suggestions, What should I do next, "one more" prompts, personal records and when they fire, momentum, the year view, history sentences, now-and-then cards, the Close Day summary and the replay; goal health, roll-ups, breakdowns and the goal check — 89 unit tests |
+| `npm run db:test` | The database's own rules with pgTAP: seeding, RLS isolation, no future days, locked days, one running timer, no duplicate ticks, one number per counter per day, one current bot milestone, Minimum Day counts and proof topics, no cross-user references, goal ownership down the hierarchy — 64 tests |
+| `npm run test:e2e` | The V1 definition of done, the execution day (quick add → counter finishes the task → work by business → bot milestone → proof photo → weekly scoreboard → Suggest my goals) the full goal loop (year → months → weeks → Plan my day → done → progress → weekly review), a whole day with the browser clock set to morning then evening (morning routine → Big 3 → What should I do next → Start → counters and "one more" → a personal record → cardio → night review → Close day → Day complete and replay → Progress), and a Minimum Day that keeps the streak. Runs on a phone-sized screen against a production build and local Supabase; run `npm run build` first — 14 tests |
 | `npm run typecheck` · `npm run lint` | Types and lint |
 
 ## Deploy
@@ -198,3 +257,9 @@ empty, for "later"), `kind` and `days` on `habits`, `area` on work sessions and 
 a private `proof` storage bucket, `journal` on `bible_entries`, `failure` and `bottleneck` on
 `weekly_reviews`, and `metric_id` on the goal tables. `daily_priorities` was merged into
 `daily_goals` and dropped.
+
+The daily loop adds `habits.minimum`, `profiles.minimum_work_minutes` and `minimum_fitness`,
+`daily_plans.minimum_at`, and `proof_uploads.topic`. `day_summaries()` also returns
+`minimum_on`, `minimum_total` and `minimum_done`. Close Day stores its summary (numbers,
+achievements, records) in `daily_plans.score_breakdown`. Everything else (streaks, records,
+momentum, the year, the replay) is worked out from rows that already existed.

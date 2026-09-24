@@ -3,8 +3,10 @@ import { redirect } from "next/navigation";
 import { cache } from "react";
 import { isWorkArea, type Area, type WorkArea } from "./areas";
 import { isPlanKey, nextInPlan } from "./bible";
+import { asCloseSummary } from "./close-day";
 import { addDays, daysBetween, isoWeekday, localDateAt, startOfWeek, type LocalDate } from "./day";
 import { formatValue } from "./goals/format";
+import { indexHistory, memoryCard, momentum, recordBaseline, type HistoryFacts } from "./history";
 import { chainOf, loadGoalYear, loadLifeAreas, yearOfWeek, type GoalYear } from "./goals/data";
 import { monthStartOf } from "./goals/periods";
 import { dailyTarget, totalOver, weekShare, type DayValues, type Metric } from "./metrics";
@@ -23,11 +25,12 @@ import type {
   MilestoneStep,
   ProfileSettings,
   ProofItem,
+  ProofTopic,
   ReviewState,
   TaskItem,
   WorkSessionItem,
 } from "./types";
-import { REVIEW_FIELDS } from "./types";
+import { PROOF_TOPICS, REVIEW_FIELDS } from "./types";
 
 type TaskRow = Database["public"]["Tables"]["daily_goals"]["Row"];
 type MetricRow = Database["public"]["Tables"]["metrics"]["Row"];
@@ -68,6 +71,8 @@ export const getViewer = cache(async (): Promise<Viewer> => {
     workDays: (row.work_days ?? [1, 2, 3, 4, 5]).map(Number),
     hourTargets: hourTargetsOf(row.area_hour_targets),
     biblePlan: isPlanKey(row.bible_plan) ? row.bible_plan : "bible",
+    minimumWorkMinutes: row.minimum_work_minutes,
+    minimumFitness: row.minimum_fitness,
   };
   return {
     supabase,
@@ -109,6 +114,9 @@ function toSummary(row: Record<string, unknown>): DaySummary {
     work_minutes: Number(row.work_minutes ?? 0),
     final_score: row.final_score === null || row.final_score === undefined ? null : Number(row.final_score),
     completed_at: (row.completed_at as string | null) ?? null,
+    minimum_on: Boolean(row.minimum_on),
+    minimum_total: Number(row.minimum_total ?? 0),
+    minimum_done: Number(row.minimum_done ?? 0),
   };
 }
 
@@ -309,7 +317,7 @@ export async function loadMilestone(supabase: Supabase, area: Area = "trading"):
 
 /** Signed, short-lived links for a day's proof photos. */
 async function loadProofs(supabase: Supabase, date: LocalDate, labels: Map<string, string>): Promise<ProofItem[]> {
-  const { data: rows } = await supabase.from("proof_uploads").select("id,storage_path,task_id,habit_id,note,uploaded_at").eq("local_date", date).order("uploaded_at");
+  const { data: rows } = await supabase.from("proof_uploads").select("id,storage_path,task_id,habit_id,note,topic,uploaded_at").eq("local_date", date).order("uploaded_at");
   if (!rows || rows.length === 0) return [];
   const { data: signed } = await supabase.storage.from("proof").createSignedUrls(rows.map((r) => r.storage_path), 60 * 60);
   const urlFor = new Map((signed ?? []).map((s) => [s.path, s.signedUrl]));
@@ -319,8 +327,13 @@ async function loadProofs(supabase: Supabase, date: LocalDate, labels: Map<strin
     taskId: r.task_id,
     habitId: r.habit_id,
     label: r.note ?? (r.task_id ? labels.get(r.task_id) : r.habit_id ? labels.get(r.habit_id) : null) ?? null,
+    topic: proofTopic(r.topic),
     uploadedAt: r.uploaded_at,
   }));
+}
+
+export function proofTopic(raw: string | null): ProofTopic {
+  return (PROOF_TOPICS as readonly string[]).includes(raw ?? "") ? (raw as ProofTopic) : "other";
 }
 
 /** Today → Week → Month → Year for the year's main goals. */
@@ -355,8 +368,11 @@ function laddersFor(goals: GoalYear, areaKeys: Map<string, Area | null>, date: L
     });
 }
 
-/** Everything the Today screen needs for one day. */
-export async function loadDay(viewer: Viewer, date: LocalDate): Promise<DayView> {
+/**
+ * Everything the Today screen needs for one day. `facts` is the history since the account
+ * started (loadFacts), passed in so it loads alongside everything else.
+ */
+export async function loadDay(viewer: Viewer, date: LocalDate, facts: Promise<HistoryFacts>): Promise<DayView> {
   const { supabase, profile, today } = viewer;
   const weekStart = startOfWeek(date);
   const weekEnd = addDays(weekStart, 6);
@@ -383,7 +399,7 @@ export async function loadDay(viewer: Viewer, date: LocalDate): Promise<DayView>
     goals,
     areas,
   ] = await Promise.all([
-    supabase.from("habits").select("id,name,category,kind,days,sort_order,created_at,archived_at").order("sort_order"),
+    supabase.from("habits").select("id,name,category,kind,days,minimum,sort_order,created_at,archived_at").order("sort_order"),
     supabase.from("habit_completions").select("habit_id,completed_at,edited_at").eq("local_date", date),
     supabase.from("habit_completions").select("habit_id,local_date").gte("local_date", weekStart).lte("local_date", weekEnd),
     supabase.from("daily_goals").select("*").eq("local_date", date).order("rank", { nullsFirst: false }).order("created_at"),
@@ -400,8 +416,8 @@ export async function loadDay(viewer: Viewer, date: LocalDate): Promise<DayView>
     supabase.from("bible_readings").select("book,chapter").lt("local_date", date)
       .order("local_date", { ascending: false }).limit(1).maybeSingle(),
     supabase.from("daily_reviews").select("*").eq("local_date", date).maybeSingle(),
-    supabase.from("daily_plans").select("final_score,completed_at").eq("local_date", date).maybeSingle(),
-    loadHistory(viewer),
+    supabase.from("daily_plans").select("final_score,completed_at,score_breakdown,minimum_at").eq("local_date", date).maybeSingle(),
+    facts,
     loadCounterData(supabase, addDays(weekStart, -60), date),
     loadMilestone(supabase),
     loadGoalYear(viewer, yearOfWeek(weekStart)),
@@ -421,6 +437,7 @@ export async function loadDay(viewer: Viewer, date: LocalDate): Promise<DayView>
     kind: (h.kind as HabitKind | null) ?? null,
     days: h.days,
     due: habitDueOn(h.days, date),
+    minimum: h.minimum,
     sortOrder: h.sort_order,
     completedAt: done.get(h.id)?.completed_at ?? null,
     editedAt: done.get(h.id)?.edited_at ?? null,
@@ -485,6 +502,11 @@ export async function loadDay(viewer: Viewer, date: LocalDate): Promise<DayView>
 
   const areaKeys = new Map(areas.map((a) => [a.id, a.key]));
 
+  // History: the streak, the last 30 days, and (for today) momentum, records and memories.
+  const ix = indexHistory(history);
+  const scores = ix.dates.map((d) => ix.score.get(d)!);
+  const streak = computeStreaks(scores, profile.streakThreshold, today);
+
   return {
     date,
     today,
@@ -512,11 +534,16 @@ export async function loadDay(viewer: Viewer, date: LocalDate): Promise<DayView>
     gymWeek,
     cardioWeek,
     proofs,
-    streak: { current: history.current, best: Math.max(history.best, profile.bestStreak) },
-    history: history.scores.slice(-30),
+    streak: { current: streak.current, best: Math.max(streak.best, profile.bestStreak) },
+    history: scores.slice(-30),
     firstDay: firstDayOf(viewer),
     ladders: laddersFor(goals, areaKeys, date, counters, tasks),
     weekStart,
+    minimumAt: plan?.minimum_at ?? null,
+    closed: locked ? asCloseSummary(plan?.score_breakdown) : null,
+    momentum: isToday ? momentum(ix) : null,
+    baseline: isToday ? recordBaseline(ix) : null,
+    memory: isToday ? memoryCard(ix) : null,
   };
 }
 

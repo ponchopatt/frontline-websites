@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, BriefcaseBusiness, CalendarCheck2, CalendarRange, ListChecks, Mountain, Settings2, Timer } from "lucide-react";
+import { BookOpen, BriefcaseBusiness, CalendarCheck2, CalendarRange, ChartNoAxesColumn, ListChecks, Mountain, Settings2, Timer } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -10,8 +10,10 @@ const ITEMS = [
   { href: "/business", label: "Business", icon: BriefcaseBusiness, wideOnly: false, match: ["/business"] },
   { href: "/week", label: "Week", icon: CalendarRange, wideOnly: false, match: ["/week", "/goals/week"] },
   { href: "/goals", label: "Goals", icon: Mountain, wideOnly: false, match: ["/goals"] },
-  { href: "/bible", label: "Bible", icon: BookOpen, wideOnly: false, match: ["/bible"] },
-  // On phones these sit in Settings and Today's header, keeping the tab bar to five.
+  { href: "/progress", label: "Progress", icon: ChartNoAxesColumn, wideOnly: false, match: ["/progress"] },
+  // On phones these open from Today (the Faith card, the habit cards, the Work card and the
+  // header), keeping the tab bar to five.
+  { href: "/bible", label: "Bible", icon: BookOpen, wideOnly: true, match: ["/bible"] },
   { href: "/habits", label: "Habits", icon: ListChecks, wideOnly: true, match: ["/habits"] },
   { href: "/work", label: "Work log", icon: Timer, wideOnly: true, match: ["/work"] },
   { href: "/settings", label: "Settings", icon: Settings2, wideOnly: true, match: ["/settings"] },
@@ -35,7 +37,7 @@ export function AppNav() {
         "md:sticky md:top-0 md:bottom-auto md:border-t-0 md:border-b md:pb-0",
       )}
     >
-      <ul className="mx-auto grid h-16 max-w-xl grid-cols-5 md:h-14 md:max-w-3xl md:grid-cols-8">
+      <ul className="mx-auto grid h-16 max-w-xl grid-cols-5 md:h-14 md:max-w-4xl md:grid-cols-9">
         {ITEMS.map(({ href, label, icon: Icon, wideOnly, match }) => {
           const active = isActive(pathname, match);
           return (

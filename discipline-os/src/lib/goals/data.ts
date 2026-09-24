@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { fetchAll, type Viewer } from "../data";
 import { addDays, type LocalDate } from "../day";
 import type { Area } from "../areas";
@@ -99,7 +100,7 @@ export interface GoalYear {
  * Every goal for a year with its progress, computed from the goals and from what actually
  * happened (work sessions, habit ticks, completed actions, milestones).
  */
-export async function loadGoalYear(viewer: Viewer, year: number): Promise<GoalYear> {
+export const loadGoalYear = cache(async (viewer: Viewer, year: number): Promise<GoalYear> => {
   const { supabase } = viewer;
   const from = addDays(yearStart(year), -6);
   const to = yearEnd(year);
@@ -179,7 +180,7 @@ export async function loadGoalYear(viewer: Viewer, year: number): Promise<GoalYe
 
   const exec: ExecutionData = { workMinutes, habitDays, actionsByWeekly, milestones, metrics };
   return { year, tree, milestones, progress: evaluateGoals(tree, exec, viewer.today), exec, daily: dailyGoals };
-}
+});
 
 /** The chain above a weekly goal, for "Today → Week → Month → Year". */
 export interface Lineage {

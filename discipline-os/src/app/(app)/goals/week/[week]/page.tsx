@@ -10,7 +10,7 @@ import { WeeklyReview, type ReviewGoal } from "@/components/goals/weekly-review"
 import { DECISIONS, REASONS } from "@/lib/goals/review";
 import { SectionCard } from "@/components/section-card";
 import { WeekScoreboard } from "@/components/week/scoreboard";
-import { loadScoreboard, scoreboardGroups } from "@/components/week/scoreboard-data";
+import { bossOf, loadScoreboard, scoreboardGroups } from "@/components/week/scoreboard-data";
 import { firstDayOf, getViewer, loadSummaries } from "@/lib/data";
 import { addDays, formatHours, isLocalDate } from "@/lib/day";
 import { monthToWeeks } from "@/lib/goals/breakdown";
@@ -48,6 +48,7 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
   ]);
 
   const goals = data.tree.weekly.filter((w) => w.weekStart === week && w.state !== "cancelled");
+  const groups = scoreboardGroups(board, data);
   const majors = goals.filter((g) => g.isMajor);
   const supporting = goals.filter((g) => !g.isMajor);
   const monthly = data.tree.monthly.filter((mg) => mg.monthStart === monthStart && mg.state === "active");
@@ -161,7 +162,7 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
         <p className="text-[15px] text-muted-foreground">{weekRangeLabel(week)}</p>
       </header>
 
-      <WeekScoreboard groups={scoreboardGroups(board, data)} meta={weekOver ? "Week closed" : week <= today ? "So far" : "Not started"} />
+      <WeekScoreboard groups={groups} boss={week <= today ? bossOf(groups, weekOver) : null} meta={weekOver ? "Week closed" : week <= today ? "So far" : "Not started"} />
 
       <section aria-labelledby="outcomes-heading" className="grid gap-4">
         <div className="grid gap-1">

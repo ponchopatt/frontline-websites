@@ -94,7 +94,7 @@ test("the day runs from one screen: tasks, counters, work, the bot, proof and th
   expect(proof!.local_date).toBe(date);
   expect(proof!.storage_path.startsWith(`${userId}/${date}/`)).toBe(true);
 
-  // Keep My Word counts the finished task; Complete Day stores the number.
+  // Keep My Word counts the finished task.
   const [kept, made] = await keptOfMade(page);
   expect(kept).toBeGreaterThanOrEqual(1);
   const live = await ringScore(page);
@@ -103,8 +103,8 @@ test("the day runs from one screen: tasks, counters, work, the bot, proof and th
   // The week's scoreboard has today's leads in it.
   await page.goto("/week");
   await page.waitForURL(`**/goals/week/${startOfWeek(date)}`);
-  await expect(main.getByRole("heading", { name: "Scoreboard" })).toBeVisible();
-  const leadsRow = main.locator("#scoreboard li").filter({ has: page.getByText("Leads", { exact: true }) });
+  await expect(main.getByRole("heading", { name: "Weekly boss" })).toBeVisible();
+  const leadsRow = main.locator("#boss li").filter({ has: page.getByText("Leads", { exact: true }) });
   await expect(leadsRow).toContainText(/^Leads\s*11/);
 
   // Suggest my goals: concrete, with a reason, and nothing saved until approved.

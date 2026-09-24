@@ -200,3 +200,30 @@ export async function moveHabit(input: z.input<typeof moveSchema>): Promise<Acti
   }
   return ok();
 }
+
+const minimumSchema = z.object({
+  habitIds: z.array(uuidSchema).max(40),
+  workMinutes: z.number().int().min(0, "Use 0 to leave work out.").max(240, "Keep it to 4 hours or less."),
+  fitness: z.boolean(),
+});
+
+/** What a Minimum Day asks for: which habits, how many minutes of work, and gym or cardio. */
+export async function saveMinimumDay(input: z.input<typeof minimumSchema>): Promise<ActionResult> {
+  const parsed = minimumSchema.safeParse(input);
+  if (!parsed.success) return invalid(parsed.error);
+  const { habitIds, workMinutes, fitness } = parsed.data;
+  const viewer = await getViewer();
+  const { supabase, userId } = viewer;
+  const off = supabase.from("habits").update({ minimum: false }).eq("user_id", userId).eq("minimum", true);
+  const [clear, profile] = await Promise.all([
+    habitIds.length > 0 ? off.not("id", "in", `(${habitIds.join(",")})`) : off,
+    supabase.from("profiles").update({ minimum_work_minutes: workMinutes, minimum_fitness: fitness }).eq("user_id", userId),
+  ]);
+  if (clear.error || profile.error) return dbFail(clear.error ?? profile.error ?? {}, "Your minimum day wasn't saved. Try again.");
+  if (habitIds.length > 0) {
+    const { error } = await supabase.from("habits").update({ minimum: true }).in("id", habitIds);
+    if (error) return dbFail(error, "Your minimum day wasn't saved. Try again.");
+  }
+  await recomputeBestStreak(viewer);
+  return ok();
+}

@@ -13,6 +13,7 @@ import { AREA_LABEL, type WorkArea } from "@/lib/areas";
 import { PLANS, formatReading } from "@/lib/bible";
 import { clockTime, formatDuration, isoWeekday, type LocalDate } from "@/lib/day";
 import { formatValue } from "@/lib/goals/format";
+import { counterNudge, itemsNudge, minutesNudge } from "@/lib/gradient";
 import { monthShort } from "@/lib/goals/periods";
 import type { ActionResult, BibleState, CounterItem, GoalLadder, HabitItem, MilestoneItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -43,6 +44,8 @@ export function MorningCard({ habits, readOnly, timeZone, onToggle }: { habits: 
   const done = due.filter((h) => h.completedAt).length;
   const complete = due.length > 0 && done === due.length;
   const [open, setOpen] = useState(!complete);
+  const left = due.filter((h) => !h.completedAt);
+  const nudge = itemsNudge(done, due.length, ["item", "items"]) ? `${left.length === 1 ? "One left" : "Two left"}: ${left.map((h) => h.name).join(", ")}.` : null;
 
   return (
     <SectionCard
@@ -50,7 +53,7 @@ export function MorningCard({ habits, readOnly, timeZone, onToggle }: { habits: 
       title={complete ? "Morning complete" : "Morning"}
       meta={
         complete ? (
-          <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} className="inline-flex min-h-11 items-center gap-1 text-primary">
+          <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} className="inline-flex min-h-11 items-center gap-1 text-kept">
             <Check className="size-4" aria-hidden />
             {open ? "Hide" : `${done}/${due.length}`}
           </button>
@@ -71,6 +74,7 @@ export function MorningCard({ habits, readOnly, timeZone, onToggle }: { habits: 
       ) : (
         (open || !complete) && <HabitGrid habits={due} readOnly={readOnly} timeZone={timeZone} onToggle={onToggle} />
       )}
+      {nudge && <p className="mt-2 text-sm font-medium text-primary">{nudge}</p>}
     </SectionCard>
   );
 }
@@ -115,11 +119,16 @@ export function FaithCard({ date, habits, bible, reviewDone, readOnly, timeZone,
           <p className="text-sm text-muted-foreground">Today&apos;s reading · {PLANS[bible.plan].label}</p>
           <p className="text-[20px] font-medium tracking-tight">{formatReading(bible, bible.passage)}</p>
         </div>
-        {!readOnly && !picking && (
-          <button type="button" onClick={() => setPicking(true)} className="min-h-11 shrink-0 text-sm text-muted-foreground hover:text-foreground">
-            Change
-          </button>
-        )}
+        <div className="flex shrink-0 items-center gap-3">
+          {!readOnly && !picking && (
+            <button type="button" onClick={() => setPicking(true)} className="min-h-11 text-sm text-muted-foreground hover:text-foreground">
+              Change
+            </button>
+          )}
+          <Link href="/bible" className="inline-flex min-h-11 items-center text-sm text-muted-foreground hover:text-foreground">
+            Notes
+          </Link>
+        </div>
       </div>
       {picking && (
         <ReadingPicker
@@ -213,7 +222,10 @@ export function FitnessCard({ date, today, habits, gymWeek, cardioWeek, cardio, 
   const week = gymWeek.map((d) => (d.date === date && gym ? { ...d, done: Boolean(gym.completedAt) } : d));
   const gymDone = week.filter((d) => d.done).length;
   const gymDue = week.filter((d) => d.due).length;
+  const gymLeft = week.filter((d) => d.due && !d.done && d.date >= today).length;
+  const gymNudge = gymDone > 0 && gymLeft === 1 && gymDone < gymDue ? "One more gym session this week." : null;
   const cardioDays = cardioWeek.done;
+  const cardioNudge = cardio && !cardioHabit?.completedAt ? minutesNudge(cardio.value, cardio.target) : null;
 
   return (
     <SectionCard
@@ -251,7 +263,7 @@ export function FitnessCard({ date, today, habits, gymWeek, cardioWeek, cardio, 
                   key={d.date}
                   className={cn(
                     "grid h-11 place-items-center rounded-lg border text-[13px]",
-                    state === "done" ? "border-primary/40 bg-lamp-soft text-primary" : "border-border",
+                    state === "done" ? "border-kept/40 bg-kept-soft text-kept" : "border-border",
                     d.date === date && "ring-1 ring-primary/50",
                   )}
                   aria-label={`${["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][isoWeekday(d.date) - 1]}: ${
@@ -267,6 +279,7 @@ export function FitnessCard({ date, today, habits, gymWeek, cardioWeek, cardio, 
             })}
           </ol>
           <CheckChip label={gym.due ? "Gym today" : "Gym (rest day)"} done={Boolean(gym.completedAt)} disabled={readOnly} onToggle={(d) => onToggle(gym, d)} hint={gym.completedAt ? clockTime(gym.completedAt, timeZone) : null} />
+          {gymNudge && <p className="text-sm font-medium text-primary">{gymNudge}</p>}
         </div>
       )}
 
@@ -287,7 +300,11 @@ export function FitnessCard({ date, today, habits, gymWeek, cardioWeek, cardio, 
               </div>
             )}
           </div>
-          {cardio?.target ? <p className="text-xs text-faint">{cardio.target}+ minutes ticks it for you.</p> : null}
+          {cardioNudge ? (
+            <p className="text-sm font-medium text-primary">{cardioNudge}</p>
+          ) : cardio?.target ? (
+            <p className="text-xs text-faint">{cardio.target}+ minutes ticks it for you.</p>
+          ) : null}
         </div>
       )}
 
@@ -313,53 +330,71 @@ interface CountersCardProps {
   onCounter: (counter: CounterItem, value: number) => void;
 }
 
-/** A business's numbers for today: tap + as it happens, or type the number. */
+/**
+ * A business's numbers for today: tap + as it happens, or type the number. A counter with a
+ * target shows how far along it is; the last few get called out, and a hit turns sage.
+ */
 export function CountersCard({ id, title, tab, counters, tasks, readOnly, onCounter }: CountersCardProps) {
   const pinned = counters.filter((c) => c.pinned);
   const targets = pinned.filter((c) => c.target !== null && c.target > 0);
   const met = targets.filter((c) => c.value >= (c.target ?? 0)).length;
   const weekly = pinned.filter((c) => c.weekTarget !== null && c.weekTarget > 0);
+  const money = (c: CounterItem, v: number | null) => formatValue(v, c.unit === "$" ? "$" : null);
 
   return (
     <SectionCard
       id={id}
       title={title}
       meta={
-        <span>
+        <span className={cn(targets.length + tasks.total > 0 && met + tasks.done === targets.length + tasks.total && "text-kept")}>
           <span className="text-foreground">{met + tasks.done}</span>/{targets.length + tasks.total}
         </span>
       }
     >
       <ul className="divide-y divide-border/70">
         {pinned.map((c) => {
-          const hit = c.target !== null && c.target > 0 && c.value >= c.target;
+          const hasTarget = c.aggregation === "sum" && c.target !== null && c.target > 0;
+          const hit = hasTarget && c.value >= (c.target ?? 0);
+          const nudge = hasTarget && !hit ? counterNudge(c.value, c.target, c.unit) : null;
           return (
-            <li key={c.id} className="flex min-h-14 items-center justify-between gap-3 py-1.5">
-              <div className="min-w-0">
-                <p className="truncate text-[16px]">{c.label}</p>
-                <p className={cn("text-[13px]", hit ? "text-primary" : "text-muted-foreground")}>
-                  {c.aggregation === "latest"
-                    ? "Right now"
-                    : c.target !== null && c.target > 0
-                      ? `${hit ? "Hit · " : ""}target ${formatValue(c.target, c.unit === "$" ? "$" : null)}`
-                      : c.weekTarget
-                        ? `Week ${formatValue(c.weekTotal, c.unit === "$" ? "$" : null)} of ${formatValue(c.weekTarget, c.unit === "$" ? "$" : null)}`
-                        : `Week ${formatValue(c.weekTotal, c.unit === "$" ? "$" : null)}`}
-                </p>
+            <li key={c.id} id={`counter-${c.id}`} className="grid scroll-mt-24 gap-1.5 py-2">
+              <div className="flex min-h-12 items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="truncate text-[16px]">{c.label}</p>
+                  <p className={cn("text-[13px] tabular-nums", hit ? "text-kept" : nudge ? "font-medium text-primary" : "text-muted-foreground")}>
+                    {c.aggregation === "latest" ? (
+                      "Right now"
+                    ) : hasTarget ? (
+                      hit ? (
+                        <span className="inline-flex items-center gap-1">
+                          <Check className="size-3" strokeWidth={3} aria-hidden />
+                          {money(c, c.value)} of {money(c, c.target)}
+                        </span>
+                      ) : (
+                        (nudge ?? `${money(c, c.value)} of ${money(c, c.target)} today`)
+                      )
+                    ) : c.weekTarget ? (
+                      `Week ${money(c, c.weekTotal)} of ${money(c, c.weekTarget)}`
+                    ) : (
+                      `Week ${money(c, c.weekTotal)}`
+                    )}
+                  </p>
+                </div>
+                <Stepper label={c.label} value={c.value} unit={c.unit} disabled={readOnly} onCommit={(v) => onCounter(c, v)} />
               </div>
-              <Stepper label={c.label} value={c.value} unit={c.unit} disabled={readOnly} onCommit={(v) => onCounter(c, v)} />
+              {hasTarget && <Meter value={c.value / (c.target ?? 1)} />}
             </li>
           );
         })}
       </ul>
       {weekly.length > 0 && (
-        <div className="mt-2 grid gap-2">
+        <div className="mt-3 grid gap-2 border-t border-border/70 pt-3">
           {weekly.slice(0, 3).map((c) => (
             <div key={c.id} className="grid gap-1">
               <div className="flex justify-between text-[13px] text-muted-foreground">
                 <span>{c.label} this week</span>
-                <span>
-                  <span className="text-foreground">{formatValue(c.weekTotal, c.unit === "$" ? "$" : null)}</span> / {formatValue(c.weekTarget, c.unit === "$" ? "$" : null)}
+                <span className={cn(c.weekTotal >= (c.weekTarget ?? 0) && "text-kept")}>
+                  <span className="text-foreground">{money(c, c.weekTotal)}</span> / {money(c, c.weekTarget)}
                 </span>
               </div>
               <Meter value={(c.weekTotal ?? 0) / (c.weekTarget ?? 1)} />

@@ -157,7 +157,7 @@ test("5. a part of life with no active habits does not break the numbers", async
   expect(await ringScore(page)).toBe(Math.round((1 / made) * 100));
 });
 
-test("6. the night review saves and Complete Day locks the day with its Keep My Word", async ({ page }) => {
+test("6. the night review saves and Close Day locks the day with its Keep My Word", async ({ page }) => {
   const { userId } = await signUp(page);
   await habit(page, "Shower").click();
   const review = page.locator("#review");
@@ -172,9 +172,12 @@ test("6. the night review saves and Complete Day locks the day with its Keep My 
   await expect(page.locator("#faith").getByText("Night review done")).toBeVisible();
 
   const live = await ringScore(page);
-  await review.getByRole("button", { name: "Complete day" }).click();
-  await review.getByRole("button", { name: "Complete day" }).click();
-  await expect(page.getByText(/Completed at \d\d:\d\d\. Kept my word: \d+%/)).toBeVisible();
+  // One tap closes it, and the Day Complete screen shows the same number.
+  await review.getByRole("button", { name: "Close day" }).click();
+  const done = page.getByRole("dialog", { name: "Day complete" });
+  await expect(done.getByRole("img", { name: new RegExp(`^Kept my word: ${live}%`) })).toBeVisible();
+  await done.getByRole("button", { name: "Done" }).click();
+  await expect(page.getByText(/Closed at \d\d:\d\d\. Kept my word: \d+%/)).toBeVisible();
 
   const { data: plan } = await admin.from("daily_plans").select("final_score,completed_at").eq("user_id", userId).single();
   expect(plan?.final_score).toBe(live);

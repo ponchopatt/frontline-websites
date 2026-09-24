@@ -1,8 +1,12 @@
 import { cn } from "@/lib/utils";
 
-/** A thin progress line. Full when done; never over. */
-export function Meter({ value, label, className }: { value: number; label?: string; className?: string }) {
+/**
+ * A progress line. It fills in lamplight and turns sage the moment it's full; never over.
+ * The fill eases in, so ticking something visibly moves the day forward.
+ */
+export function Meter({ value, label, size = "sm", className }: { value: number; label?: string; size?: "sm" | "md"; className?: string }) {
   const pct = Math.round(Math.min(1, Math.max(0, Number.isFinite(value) ? value : 0)) * 100);
+  const full = pct >= 100;
   return (
     <div
       role={label ? "progressbar" : undefined}
@@ -11,9 +15,15 @@ export function Meter({ value, label, className }: { value: number; label?: stri
       aria-valuemax={label ? 100 : undefined}
       aria-valuenow={label ? pct : undefined}
       aria-hidden={label ? undefined : true}
-      className={cn("h-1 overflow-hidden rounded-full bg-border", className)}
+      className={cn("overflow-hidden rounded-full bg-border", size === "md" ? "h-1.5" : "h-1", className)}
     >
-      <div className="h-full rounded-full bg-primary transition-[width] duration-500 ease-(--ease-out-quart)" style={{ width: `${pct}%` }} />
+      <div
+        className={cn(
+          "h-full rounded-full transition-[width,background-color] duration-700 ease-(--ease-out-quart)",
+          full ? "bg-kept" : "bg-primary",
+        )}
+        style={{ width: `${pct}%` }}
+      />
     </div>
   );
 }

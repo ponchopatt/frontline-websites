@@ -1,14 +1,15 @@
 "use client";
 
-import { Play, Plus, Square, Trash2 } from "lucide-react";
+import { Play, Plus, Square, Trash2, Trophy } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Meter } from "@/components/meter";
 import { SectionCard } from "@/components/section-card";
 import { TimerDisplay } from "@/components/timer-display";
 import { useNow } from "@/hooks/use-now";
-import { AREA_LABEL, WORK_AREAS, type WorkArea } from "@/lib/areas";
+import { AREA_LABEL, AREA_SHORT, WORK_AREAS, type WorkArea } from "@/lib/areas";
 import { clockTime, formatDuration, formatElapsed, localDateAt, type LocalDate } from "@/lib/day";
+import { workNudge } from "@/lib/gradient";
 import type { WorkBlockItem, WorkSessionItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -84,24 +85,34 @@ export function WorkSection(props: WorkSectionProps) {
   }
   const noteSession = noteFor ? sessions.find((s) => s.id === noteFor) ?? null : null;
   const areaTotals = WORK_AREAS.filter((a) => (props.byArea[a] ?? 0) >= 1);
+  const targetDone = isToday && targetHours > 0 && minutes >= targetHours * 60;
+  const nudge = isToday ? workNudge(minutes, targetHours * 60) : null;
 
   return (
     <SectionCard
       id="work"
       title="Work"
       meta={
-        <span>
-          <span className="text-foreground">{formatDuration(minutes)}</span> of {targetHours}h
+        <span className={targetDone ? "text-kept" : undefined}>
+          <span className={targetDone ? "text-kept" : "text-foreground"}>{formatDuration(minutes)}</span> of {targetHours}h
         </span>
       }
     >
-      <Meter value={targetHours > 0 ? minutes / (targetHours * 60) : 0} label="Work hours" className="mb-3" />
+      <Meter value={targetHours > 0 ? minutes / (targetHours * 60) : 0} label="Work hours" size="md" className="mb-3" />
+      {targetDone ? (
+        <p className="mb-3 inline-flex items-center gap-2 text-[15px] font-medium text-kept" role="status">
+          <Trophy className="size-4" aria-hidden />
+          Daily work target complete
+        </p>
+      ) : (
+        nudge && <p className="mb-3 text-[15px] font-medium text-primary">{nudge}</p>
+      )}
       {areaTotals.length > 0 && (
-        <dl className="mb-4 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+        <dl className="mb-4 grid grid-cols-[repeat(auto-fit,minmax(6.5rem,1fr))] gap-2 text-sm">
           {areaTotals.map((a) => (
-            <div key={a} className="flex gap-1.5">
-              <dt className="text-muted-foreground">{AREA_LABEL[a]}</dt>
-              <dd className="text-foreground">{formatDuration(props.byArea[a] ?? 0)}</dd>
+            <div key={a} className="grid gap-0.5 rounded-xl border border-border/70 px-3 py-2">
+              <dt className="text-[13px] text-muted-foreground">{AREA_SHORT[a]}</dt>
+              <dd className="text-[16px] text-foreground tabular-nums">{formatDuration(props.byArea[a] ?? 0)}</dd>
             </div>
           ))}
         </dl>

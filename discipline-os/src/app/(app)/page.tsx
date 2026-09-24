@@ -2,8 +2,12 @@ import { formatInTimeZone } from "date-fns-tz";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Today } from "@/components/today/today";
+import { bossOf, loadScoreboard, scoreboardGroups } from "@/components/week/scoreboard-data";
 import { firstDayOf, getViewer, loadDay } from "@/lib/data";
-import { isLocalDate } from "@/lib/day";
+import { isLocalDate, startOfWeek } from "@/lib/day";
+import { loadGoalYear, yearOfWeek } from "@/lib/goals/data";
+import { loadFacts } from "@/lib/history-server";
+import type { BossSummary } from "@/lib/types";
 
 export const metadata: Metadata = { title: "Today" };
 
@@ -22,10 +26,19 @@ export default async function TodayPage({ searchParams }: PageProps<"/">) {
     if (!isLocalDate(requested) || requested >= viewer.today || requested < firstDayOf(viewer)) redirect("/");
   }
   const date = requested ?? viewer.today;
-  const view = await loadDay(viewer, date);
-  const hour = Number(formatInTimeZone(new Date(), viewer.profile.timezone, "H"));
+  const isToday = date === viewer.today;
+  const [view, boss] = await Promise.all([loadDay(viewer, date, loadFacts(viewer)), isToday ? loadBoss(viewer) : Promise.resolve(null)]);
+  const [h, m] = formatInTimeZone(new Date(), viewer.profile.timezone, "H:mm").split(":").map(Number);
+  const hour = h + m / 60;
   const name = viewer.profile.displayName?.split(" ")[0] ?? null;
-  // Remount when the server's lists change (a plan applied, a task moved), so local state starts fresh.
-  const key = [date, view.tasks.map((t) => t.id).join("."), view.blocks.map((b) => b.id).join("."), view.milestone?.id ?? ""].join(":");
-  return <Today key={key} view={view} greeting={greetingFor(hour, name)} />;
+  // A new day starts fresh; within a day, Today takes the server's lists as they change.
+  return <Today key={date} view={view} greeting={greetingFor(hour, name)} hour={hour} boss={boss} />;
+}
+
+/** This week's Weekly Boss, in one line. */
+async function loadBoss(viewer: Awaited<ReturnType<typeof getViewer>>): Promise<BossSummary | null> {
+  const week = startOfWeek(viewer.today);
+  const [board, goals] = await Promise.all([loadScoreboard(viewer, week), loadGoalYear(viewer, yearOfWeek(week))]);
+  const boss = bossOf(scoreboardGroups(board, goals), false);
+  return boss ? { hit: boss.hit, total: boss.total, ratio: boss.ratio, state: boss.state } : null;
 }

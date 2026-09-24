@@ -5,11 +5,13 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
-  Discipline OS — three colours.
+  Discipline OS — three colours, and one for "kept".
     Lampblack  the ground. Near-black with a trace of warmth, like soot from a lamp.
     Bone       text and its greys.
-    Lamplight  the one accent: done, now, the streak line. "A lamp to my feet."
-  Everything else is a tint of those.
+    Lamplight  the accent: now, the next thing, the streak line. "A lamp to my feet."
+    Sage       kept: a target hit, a day complete. It only appears once something is finished,
+               so the screen turns calmer as the day fills in.
+  Cards are glass: a faint tint of bone over the ground, with generous room inside.
 */
 
 @theme inline {
@@ -34,6 +36,10 @@
   --color-faint: var(--faint);
   --color-lamp: var(--primary);
   --color-lamp-soft: var(--lamp-soft);
+  --color-kept: var(--kept);
+  --color-kept-soft: var(--kept-soft);
+  --color-glass: var(--glass);
+  --color-glass-edge: var(--glass-edge);
 
   --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
@@ -72,6 +78,10 @@
   --input: rgb(23 21 15 / 0.22);
   --ring: #8f5f14;
   --radius: 10px;
+  --kept: #2f7549;
+  --kept-soft: rgb(47 117 73 / 0.1);
+  --glass: rgb(255 255 255 / 0.55);
+  --glass-edge: rgb(23 21 15 / 0.08);
 }
 
 .dark {
@@ -95,6 +105,10 @@
   --border: rgb(236 230 218 / 0.09);
   --input: rgb(236 230 218 / 0.18);
   --ring: #e3b366;
+  --kept: #97cda6;
+  --kept-soft: rgb(151 205 166 / 0.1);
+  --glass: rgb(236 230 218 / 0.032);
+  --glass-edge: rgb(236 230 218 / 0.075);
 }
 
 @layer base {

@@ -147,3 +147,9 @@ export function formatDuration(minutes: number): string {
   if (h === 0) return `${m}m`;
   return m === 0 ? `${h}h` : `${h}h ${String(m).padStart(2, "0")}m`;
 }
+
+/** The local time of day in hours (13.5 = 1:30 pm). */
+export function localHourAt(instant: number | Date, timeZone: string): number {
+  const [h, m] = formatInTimeZone(typeof instant === "number" ? new Date(instant) : instant, timeZone, "H:mm").split(":").map(Number);
+  return h + m / 60;
+}

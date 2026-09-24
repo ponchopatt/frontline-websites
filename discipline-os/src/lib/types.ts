@@ -1,13 +1,15 @@
 import type { Area, WorkArea } from "./areas";
 import type { PlanKey } from "./bible";
+import type { CloseSummary } from "./close-day";
 import type { LocalDate } from "./day";
+import type { MemoryCard, Momentum, RecordBaseline } from "./history";
 import type { DayScore } from "./streak";
 
 export type HabitCategory = "morning" | "body" | "discipline" | "god";
 export type HabitKind = "bible" | "journal" | "prayer" | "evening_prayer" | "gym" | "cardio";
 export type TaskStatus = "pending" | "done" | "dropped";
 
-/** The night review: four questions, then Complete Day. */
+/** The night review: four questions, then Close Day. */
 export const REVIEW_FIELDS = ["accomplished", "wasted_time_on", "broke_word_where", "tomorrow_priority"] as const;
 export type ReviewField = (typeof REVIEW_FIELDS)[number];
 export type ReviewState = Record<ReviewField, string>;
@@ -25,6 +27,9 @@ export interface ProfileSettings {
   /** Hours a day to give a business, e.g. { trading: 2 }. */
   hourTargets: Partial<Record<WorkArea, number>>;
   biblePlan: PlanKey;
+  /** Minimum Day: minutes of focused work (0: not part of it), and whether gym or cardio is. */
+  minimumWorkMinutes: number;
+  minimumFitness: boolean;
 }
 
 export interface HabitItem {
@@ -36,6 +41,8 @@ export interface HabitItem {
   days: number[] | null;
   /** Due on the day being shown. */
   due: boolean;
+  /** One of the Minimum Day's non-negotiables. */
+  minimum: boolean;
   sortOrder: number;
   completedAt: string | null;
   editedAt: string | null;
@@ -128,6 +135,9 @@ export interface MilestoneItem {
   steps: MilestoneStep[];
 }
 
+export const PROOF_TOPICS = ["faith", "gym", "imperium", "websites", "work", "other"] as const;
+export type ProofTopic = (typeof PROOF_TOPICS)[number];
+
 export interface ProofItem {
   id: string;
   /** A short-lived link to the photo. */
@@ -135,6 +145,7 @@ export interface ProofItem {
   taskId: string | null;
   habitId: string | null;
   label: string | null;
+  topic: ProofTopic;
   uploadedAt: string;
 }
 
@@ -152,7 +163,7 @@ export interface DayView {
   date: LocalDate;
   today: LocalDate;
   isToday: boolean;
-  /** Set when the day was completed with Complete Day. */
+  /** Set when the day was closed with Close Day. */
   locked: { score: number; completedAt: string } | null;
   profile: ProfileSettings;
   habits: HabitItem[];
@@ -182,6 +193,22 @@ export interface DayView {
   firstDay: LocalDate;
   ladders: GoalLadder[];
   weekStart: LocalDate;
+  /** When Minimum Day was switched on for this day, or null. */
+  minimumAt: string | null;
+  /** The summary stored when the day was closed. */
+  closed: CloseSummary | null;
+  /** Today only: the last seven days, what today's records have to beat, and a now-and-then card. */
+  momentum: Momentum | null;
+  baseline: RecordBaseline | null;
+  memory: MemoryCard | null;
+}
+
+/** The Weekly Boss in one line: targets hit this week, and how far through them. */
+export interface BossSummary {
+  hit: number;
+  total: number;
+  ratio: number;
+  state: "fighting" | "defeated" | "survived";
 }
 
 export type ActionResult<T = undefined> =
