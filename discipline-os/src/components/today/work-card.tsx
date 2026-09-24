@@ -2,7 +2,7 @@
 
 import { Play, Plus, Square, Trash2, Trophy } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Meter } from "@/components/meter";
 import { SectionCard } from "@/components/section-card";
 import { TimerDisplay } from "@/components/timer-display";
@@ -78,6 +78,12 @@ export function WorkSection(props: WorkSectionProps) {
   const [adding, setAdding] = useState(false);
   const [pick, setPick] = useState<WorkArea>("imperium");
   const longRunning = running && now > 0 && now - new Date(running.startedAt).getTime() > LONG_RUNNING_MS;
+  const conflictRef = useRef<HTMLDivElement>(null);
+  // "Stop it and start this one?" can come from a Start elsewhere on the page (what to do next,
+  // the minimum day, the AI bot): bring it into view, so the tap doesn't look like it did nothing.
+  useEffect(() => {
+    if (conflict) conflictRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [conflict]);
 
   const loggedByBlock = new Map<string, number>();
   for (const s of sessions) {
@@ -151,7 +157,7 @@ export function WorkSection(props: WorkSectionProps) {
       )}
 
       {conflict && (
-        <div className="mb-4 rounded-xl border border-border bg-card p-4 text-[15px]" role="alert">
+        <div ref={conflictRef} className="mb-4 scroll-mt-6 scroll-mb-36 rounded-xl border border-border bg-card p-4 text-[15px]" role="alert">
           <p>
             <span className="text-foreground">{workLabel(conflict.running.area, conflict.running.task)}</span> is still running (
             <TimerDisplay startedAt={conflict.running.startedAt} />

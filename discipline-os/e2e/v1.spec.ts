@@ -2,7 +2,7 @@
  * The V1 definition of done, one test per item, against the real app and a real (local)
  * Supabase, on the Today screen as it is now (Keep My Word, the Big 3 as tasks). Run: npm run test:e2e
  */
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "../src/lib/supabase/database.types";
 import {
@@ -189,6 +189,8 @@ test("6. the night review saves and Close Day locks the day with its Keep My Wor
   await waitForApp(page);
   await expect(habit(page, "Water")).toBeDisabled();
   expect(await ringScore(page)).toBe(live);
+  // The card at the top counts what was done: one habit, no tasks.
+  await expect(page.getByText(`Kept my word ${live}% · 1 thing done.`)).toBeVisible();
 
   await page.getByRole("button", { name: "Reopen day" }).click();
   await expect(habit(page, "Water")).toBeEnabled();
@@ -258,24 +260,63 @@ test("8. a missed day breaks the streak and destroys no data", async ({ page }) 
   expect(rows?.filter((r) => r.local_date === d1).length).toBe(HABIT_COUNT);
 });
 
+/** Every visible control on the page shorter than 44px, by name. */
+function smallTargets(page: Page) {
+  return page.evaluate(() =>
+    [...document.querySelectorAll<HTMLElement>("main button, main [role=checkbox], main [role=switch], main input:not([type=hidden]), main select, main textarea, nav[aria-label=Main] a")]
+      .filter((el) => el.offsetParent !== null && !el.classList.contains("sr-only"))
+      // A checkbox or radio inside its label is tapped through the label.
+      .map((el) => ((el as HTMLInputElement).type === "checkbox" || (el as HTMLInputElement).type === "radio") && el.closest("label") ? el.closest("label")! : el)
+      .map((el) => ({ el: (el.getAttribute("aria-label") ?? el.textContent ?? el.tagName).trim().slice(0, 40), h: el.getBoundingClientRect().height }))
+      .filter((t) => t.h < 44),
+  );
+}
+
+/** Every visible tick box on the page whose name is cut off (clamped to two lines, or truncated), by name. */
+function cutLabels(page: Page) {
+  return page.evaluate(() =>
+    [...document.querySelectorAll<HTMLElement>("main [role=checkbox]")]
+      .filter((box) => box.offsetParent !== null)
+      .filter((box) =>
+        [...box.querySelectorAll<HTMLElement>("span")].some((el) => {
+          const s = getComputedStyle(el);
+          const clips = s.overflowX !== "visible" || s.overflowY !== "visible";
+          return clips && (el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1);
+        }),
+      )
+      .map((box) => (box.getAttribute("aria-label") ?? box.textContent ?? "").trim().slice(0, 40)),
+  );
+}
+
 test("9. everything is usable one-handed on a 390px screen", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
+  const main = page.locator("main");
+
+  // First-run setup, at the year's goals: a switch for each.
+  await signUp(page, undefined, { setup: true });
+  await main.getByRole("button", { name: "Next" }).click();
+  await main.getByRole("button", { name: "Set passcode" }).click();
+  await expect(main.getByRole("heading", { name: "What do you want to achieve?" })).toBeVisible();
+  expect(await smallTargets(page), "/welcome has touch targets under 44px").toEqual([]);
+
+  // Then every page, as an account that's set up.
+  await page.context().clearCookies();
   await signUp(page);
   for (const path of ["/", "/business", "/business?tab=websites", "/business?tab=bot", "/week", "/goals", "/goals/suggest", "/habits", "/bible", "/work", "/settings"]) {
     await page.goto(path);
     await page.waitForLoadState("networkidle");
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow, `${path} scrolls sideways`).toBeLessThanOrEqual(0);
-    const small = await page.evaluate(() =>
-      [...document.querySelectorAll<HTMLElement>("main button, main [role=checkbox], main input:not([type=hidden]), main select, main textarea, nav[aria-label=Main] a")]
-        .filter((el) => el.offsetParent !== null && !el.classList.contains("sr-only"))
-        // A checkbox or radio inside its label is tapped through the label.
-        .map((el) => ((el as HTMLInputElement).type === "checkbox" || (el as HTMLInputElement).type === "radio") && el.closest("label") ? el.closest("label")! : el)
-        .map((el) => ({ el: (el.getAttribute("aria-label") ?? el.textContent ?? el.tagName).trim().slice(0, 40), h: el.getBoundingClientRect().height }))
-        .filter((t) => t.h < 44),
-    );
-    expect(small, `${path} has touch targets under 44px`).toEqual([]);
+    expect(await smallTargets(page), `${path} has touch targets under 44px`).toEqual([]);
+    expect(await cutLabels(page), `${path} cuts off tick box names`).toEqual([]);
   }
+
+  // Today with "What should I do next?" open.
+  await page.goto("/");
+  await waitForApp(page);
+  await page.getByRole("button", { name: "What should I do next?" }).click();
+  await expect(main.getByRole("region", { name: "Do this now" })).toBeVisible();
+  expect(await smallTargets(page), "/ with what's next open has touch targets under 44px").toEqual([]);
 });
 
 test("10. a second user sees none of the first user's data", async ({ browser }) => {

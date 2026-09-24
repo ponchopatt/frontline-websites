@@ -53,7 +53,7 @@ export function RecordBanner({ date, events }: { date: LocalDate; events: Record
         <p className="text-[17px] leading-snug font-medium">{event.text}</p>
         <p className="text-sm text-muted-foreground">Previous record: {event.previous}</p>
       </div>
-      <button type="button" onClick={close} aria-label="Dismiss" className="-mt-1 -mr-1 grid size-10 shrink-0 place-items-center rounded-full text-muted-foreground hover:bg-accent">
+      <button type="button" onClick={close} aria-label="Dismiss" className="-mt-1 -mr-1 grid size-11 shrink-0 place-items-center rounded-full text-muted-foreground hover:bg-accent">
         <X className="size-4" aria-hidden />
       </button>
     </section>
@@ -82,7 +82,7 @@ export function MemoryNote({ date, card }: { date: LocalDate; card: MemoryCard }
           setHidden(true);
         }}
         aria-label="Dismiss"
-        className="-mt-1 -mr-1 grid size-10 shrink-0 place-items-center rounded-full text-muted-foreground hover:bg-accent"
+        className="-mt-1 -mr-1 grid size-11 shrink-0 place-items-center rounded-full text-muted-foreground hover:bg-accent"
       >
         <X className="size-4" aria-hidden />
       </button>

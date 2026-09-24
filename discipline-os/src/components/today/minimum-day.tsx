@@ -139,7 +139,7 @@ export function MinimumCard({ state, habits, workMinutes, minWork, running, read
                 </span>
               </span>
               {workMinutes < minWork && !running && !readOnly && (
-                <button type="button" onClick={onStartWork} className="inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground">
+                <button type="button" onClick={onStartWork} className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground">
                   <Play className="size-3.5" aria-hidden />
                   Start
                 </button>

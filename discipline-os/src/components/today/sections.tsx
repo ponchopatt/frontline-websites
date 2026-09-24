@@ -17,6 +17,7 @@ import { counterNudge, itemsNudge, minutesNudge } from "@/lib/gradient";
 import { monthShort } from "@/lib/goals/periods";
 import type { ActionResult, BibleState, CounterItem, GoalLadder, HabitItem, MilestoneItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { gymWeekNudge } from "./helpers";
 
 type ToggleHabit = (habit: HabitItem, done: boolean) => void;
 
@@ -144,7 +145,7 @@ export function FaithCard({ date, habits, bible, reviewDone, readOnly, timeZone,
       {morning.length > 0 && (
         <div className="grid grid-cols-3 gap-2" role="group" aria-label="Reading">
           {morning.map((h) => (
-            <CheckChip key={h.id} label={READING_LABELS[h.kind as keyof typeof READING_LABELS]} done={Boolean(h.completedAt)} disabled={readOnly} onToggle={(d) => onToggle(h, d)} className="px-2.5" />
+            <CheckChip key={h.id} label={READING_LABELS[h.kind as keyof typeof READING_LABELS]} done={Boolean(h.completedAt)} disabled={readOnly} onToggle={(d) => onToggle(h, d)} className="gap-2 px-2" />
           ))}
         </div>
       )}
@@ -222,8 +223,7 @@ export function FitnessCard({ date, today, habits, gymWeek, cardioWeek, cardio, 
   const week = gymWeek.map((d) => (d.date === date && gym ? { ...d, done: Boolean(gym.completedAt) } : d));
   const gymDone = week.filter((d) => d.done).length;
   const gymDue = week.filter((d) => d.due).length;
-  const gymLeft = week.filter((d) => d.due && !d.done && d.date >= today).length;
-  const gymNudge = gymDone > 0 && gymLeft === 1 && gymDone < gymDue ? "One more gym session this week." : null;
+  const gymNudge = gymWeekNudge(week, today);
   const cardioDays = cardioWeek.done;
   const cardioNudge = cardio && !cardioHabit?.completedAt ? minutesNudge(cardio.value, cardio.target) : null;
 

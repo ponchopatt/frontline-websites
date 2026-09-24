@@ -13,7 +13,7 @@ interface CheckChipProps {
   className?: string;
 }
 
-/** One tap to tick. A pill with a check, 48px tall, laid out two to a row. */
+/** One tap to tick. A pill with a check, 48px tall, laid out two to a row. A long name wraps to a second line. */
 export function CheckChip({ label, done, disabled, hint, onToggle, className }: CheckChipProps) {
   return (
     <button
@@ -27,7 +27,7 @@ export function CheckChip({ label, done, disabled, hint, onToggle, className }: 
         onToggle(!done);
       }}
       className={cn(
-        "group flex min-h-12 w-full touch-manipulation items-center gap-2.5 rounded-xl border px-3 py-2 text-left transition-colors disabled:cursor-default",
+        "group flex min-h-12 w-full touch-manipulation items-center gap-2 rounded-xl border px-2.5 py-2 text-left transition-colors disabled:cursor-default",
         done ? "border-primary/35 bg-lamp-soft" : "border-border bg-card/40",
         !disabled && "active:bg-accent/70",
         className,
@@ -43,7 +43,7 @@ export function CheckChip({ label, done, disabled, hint, onToggle, className }: 
         {done && <Check className="size-3 animate-in zoom-in-50 duration-200" strokeWidth={3.2} />}
       </span>
       <span className="grid min-w-0 leading-tight">
-        <span className={cn("truncate text-[15px]", done ? "text-foreground" : "text-foreground/90")}>{label}</span>
+        <span className={cn("line-clamp-2 text-[15px] break-words", done ? "text-foreground" : "text-foreground/90")}>{label}</span>
         {hint && <span className="truncate text-xs text-faint">{hint}</span>}
       </span>
     </button>
