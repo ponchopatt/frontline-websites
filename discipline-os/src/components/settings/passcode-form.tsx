@@ -5,12 +5,16 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { lockNow, removePasscode, setPasscode } from "@/app/actions/lock";
-import { SectionCard } from "@/components/section-card";
+import { Group, PrimaryButton } from "@/components/os";
+import { cn } from "@/lib/utils";
 
 const field =
-  "h-12 w-full rounded-xl border border-input bg-transparent px-3 text-center text-[20px] tracking-[0.5em] outline-none focus-visible:border-primary/70";
+  "h-12 w-full rounded-xl border border-input bg-transparent px-3 text-center text-[20px] tracking-[0.5em] text-foreground outline-none focus-visible:border-primary/70";
 
-/** The passcode asked for when the app opens: change it, lock now, or turn it off. */
+/**
+ * The passcode asked for when the app is opened: change it, lock now, or turn it off. Kept on
+ * the page rather than in a sheet, since the fields are the whole of it.
+ */
 export function PasscodeForm({ passcodeSet }: { passcodeSet: boolean }) {
   const router = useRouter();
   const [current, setCurrent] = useState("");
@@ -37,30 +41,34 @@ export function PasscodeForm({ passcodeSet }: { passcodeSet: boolean }) {
   }
 
   return (
-    <SectionCard id="passcode" title="Passcode" description={passcodeSet ? "Asked for each time the app is opened." : "Off. Set one to lock the app when it's opened."}>
-      <div className="grid gap-3">
-        {passcodeSet && (
-          <label className="grid gap-1.5 text-sm text-muted-foreground">
-            Current passcode
-            <input value={current} onChange={(e) => setCurrent(digits(e.target.value))} inputMode="numeric" autoComplete="off" className={field} />
+    <Group id="passcode" title="Passcode" plain footer={passcodeSet ? "To turn it off, enter the current passcode first." : undefined}>
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-4 p-4">
+        <p className="text-[15px] leading-snug text-muted-foreground">
+          {passcodeSet ? "Asked for each time the app is opened." : "Off. Set one to lock the app when it's opened."}
+        </p>
+        <div className={cn("grid gap-3", passcodeSet && "grid-cols-2")}>
+          {passcodeSet && (
+            <label className="grid gap-1.5 text-[15px] text-muted-foreground">
+              Current passcode
+              <input value={current} onChange={(e) => setCurrent(digits(e.target.value))} inputMode="numeric" autoComplete="off" className={field} />
+            </label>
+          )}
+          <label className="grid gap-1.5 text-[15px] text-muted-foreground">
+            {passcodeSet ? "New passcode" : "Passcode"}
+            <input value={next} onChange={(e) => setNext(digits(e.target.value))} inputMode="numeric" autoComplete="off" className={field} />
           </label>
-        )}
-        <label className="grid gap-1.5 text-sm text-muted-foreground">
-          {passcodeSet ? "New passcode" : "Passcode"}
-          <input value={next} onChange={(e) => setNext(digits(e.target.value))} inputMode="numeric" autoComplete="off" className={field} />
-        </label>
-        <button
-          type="button"
+        </div>
+        <PrimaryButton
           disabled={busy || next.length !== 4 || (passcodeSet && current.length !== 4)}
           onClick={() => void run(() => setPasscode({ pin: next, current: passcodeSet ? current : null }), passcodeSet ? "Passcode changed." : "Passcode set.")}
-          className="h-12 rounded-full bg-primary text-[15px] font-medium text-primary-foreground disabled:opacity-50"
+          className="w-full disabled:opacity-50"
         >
           {passcodeSet ? "Change passcode" : "Set passcode"}
-        </button>
+        </PrimaryButton>
         {passcodeSet && (
-          <div className="flex items-center justify-between gap-3">
+          <div className="-my-1 flex items-center justify-between gap-3">
             <form action={lockNow}>
-              <button type="submit" className="inline-flex min-h-11 items-center gap-1.5 text-sm text-foreground">
+              <button type="submit" className="inline-flex min-h-11 items-center gap-1.5 text-[15px] text-foreground">
                 <Lock className="size-4" aria-hidden />
                 Lock now
               </button>
@@ -69,13 +77,13 @@ export function PasscodeForm({ passcodeSet }: { passcodeSet: boolean }) {
               type="button"
               disabled={busy || current.length !== 4}
               onClick={() => void run(() => removePasscode({ current }), "Passcode turned off.")}
-              className="min-h-11 text-sm text-muted-foreground hover:text-foreground disabled:opacity-50"
+              className="min-h-11 text-[15px] text-muted-foreground hover:text-foreground disabled:opacity-50"
             >
               Turn passcode off
             </button>
           </div>
         )}
       </div>
-    </SectionCard>
+    </Group>
   );
 }

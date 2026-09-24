@@ -1,10 +1,8 @@
+import { Timer } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
-import { SectionCard } from "@/components/section-card";
-import { Stat, StatStrip } from "@/components/stat-strip";
+import { Group, PageHeader, Ring, Row } from "@/components/os";
 import { fetchAll, getViewer, requestTime } from "@/lib/data";
 import { addDays, clockTime, dateRange, formatHours, shortDate, startOfWeek, weekdayName, type LocalDate } from "@/lib/day";
-import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Work" };
 
@@ -36,6 +34,7 @@ function sessionMinutes(s: Session, now: number): number {
   return Math.max(0, (end - new Date(s.started_at).getTime()) / 60000);
 }
 
+/** Work: the week's hours day by day, today's blocks, and what each session got done. */
 export default async function WorkPage() {
   const viewer = await getViewer();
   const { supabase, today, profile } = viewer;
@@ -67,103 +66,86 @@ export default async function WorkPage() {
   const t = perDay[perDay.length - 1];
   const week = perDay.reduce((acc, d) => ({ planned: acc.planned + d.planned, actual: acc.actual + d.actual }), { planned: 0, actual: 0 });
   const target = profile.workTargetHours * 60;
-  const scale = Math.max(target, ...perDay.map((d) => Math.max(d.planned, d.actual)), 60);
   const notes = sessions.filter((s) => s.accomplishment_note).reverse();
 
-  return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
-      <header className="grid gap-6">
-        <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">Work</h1>
-        <StatStrip>
-          <Stat label="Today" value={formatHours(t.actual)} unit={`of ${profile.workTargetHours}h`} />
-          <Stat label="Planned today" value={formatHours(t.planned)} />
-          <Stat label="Blocks done" value={`${loggedBlockIds.size}/${todayBlocks.length}`} />
-        </StatStrip>
-        <Link href="/#work" className="-mt-2 inline-flex min-h-11 items-center text-sm text-primary underline-offset-4 hover:underline">
-          Start or plan blocks on Today
-        </Link>
-      </header>
+  const figures = [
+    { label: "Today", value: formatHours(t.actual), unit: `of ${profile.workTargetHours}h` },
+    { label: "Planned today", value: formatHours(t.planned), unit: "" },
+    { label: "Blocks done", value: `${loggedBlockIds.size}/${todayBlocks.length}`, unit: "" },
+  ];
 
-      <SectionCard
+  return (
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-7">
+      <PageHeader back={{ href: "/you", label: "You" }} title="Work" subtitle="Where the hours went this week. The timer lives on Today." />
+
+      <dl className="grid grid-cols-3 gap-3">
+        {figures.map((f) => (
+          <div key={f.label} className="grid gap-0.5">
+            <dt className="text-[14px] text-muted-foreground">{f.label}</dt>
+            <dd className="text-[30px] leading-none font-light tracking-tight tabular-nums">
+              {f.value}
+              {f.unit && <span className="ml-1 text-[15px] text-muted-foreground">{f.unit}</span>}
+            </dd>
+          </div>
+        ))}
+      </dl>
+
+      <Group
+        id="week"
         title="This week"
-        meta={
-          <span>
-            <span className="text-foreground">{formatHours(week.actual)}</span> done · {formatHours(week.planned)} planned
+        action={
+          <span className="text-[15px] text-muted-foreground">
+            {formatHours(week.actual)} done · {formatHours(week.planned)} planned
           </span>
         }
+        footer={target > 0 ? `The ring fills at your ${profile.workTargetHours}h target.` : undefined}
       >
-        <ul className="grid gap-3" aria-label="Hours by day, planned and done">
-          {perDay.map((d) => (
-            <li key={d.date} className="grid grid-cols-[3.25rem_1fr_3.5rem] items-center gap-3 text-sm">
-              <span className={cn(d.date === today ? "text-foreground" : "text-muted-foreground")}>{weekdayName(d.date).slice(0, 3)}</span>
-              <span className="relative grid h-5 gap-1" aria-label={`${shortDate(d.date)}: ${formatHours(d.actual)} done of ${formatHours(d.planned)} planned`}>
-                <span className="h-1.5 rounded-full bg-muted-foreground/30" style={{ width: `${(d.planned / scale) * 100}%` }} />
-                <span className="h-1.5 rounded-full bg-primary" style={{ width: `${(d.actual / scale) * 100}%` }} />
-                <span
-                  aria-hidden
-                  className="absolute inset-y-0 border-l border-dashed border-muted-foreground/50"
-                  style={{ left: `${(target / scale) * 100}%` }}
-                />
-              </span>
-              <span className="text-right">{formatHours(d.actual)}</span>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-3 flex gap-4 text-xs text-muted-foreground">
-          <span className="inline-flex items-center gap-1.5">
-            <span className="h-1.5 w-4 rounded-full bg-muted-foreground/30" aria-hidden /> Planned
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <span className="h-1.5 w-4 rounded-full bg-primary" aria-hidden /> Done
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <span className="h-3 border-l border-dashed border-muted-foreground/60" aria-hidden /> Target {profile.workTargetHours}h
-          </span>
-        </p>
-      </SectionCard>
+        {[...perDay].reverse().map((d) => (
+          <Row
+            key={d.date}
+            title={d.date === today ? "Today" : d.date === addDays(today, -1) ? "Yesterday" : weekdayName(d.date)}
+            subtitle={d.planned > 0 ? `${formatHours(d.planned)} planned` : "Nothing planned"}
+            value={formatHours(d.actual)}
+            trailing={target > 0 ? <Ring value={d.actual / target} size={26} /> : undefined}
+          />
+        ))}
+      </Group>
 
-      <SectionCard title="Today's blocks" meta={`${todayBlocks.length} planned`}>
+      <Group id="blocks" title="Today's blocks" action={<span className="text-[15px] text-muted-foreground">{todayBlocks.length} planned</span>}>
         {todayBlocks.length === 0 ? (
-          <p className="text-[15px] text-muted-foreground">No blocks planned today. Plan them on Today, where the timer is.</p>
+          <p className="px-4 py-4 text-[15px] text-muted-foreground">No blocks planned today.</p>
         ) : (
-          <ul className="divide-y divide-border/70">
-            {todayBlocks.map((b) => {
-              const logged = todaySessions.filter((s) => s.work_block_id === b.id).reduce((m, s) => m + sessionMinutes(s, now), 0);
-              return (
-                <li key={b.id} className="flex min-h-14 items-center justify-between gap-3 py-2">
-                  <div>
-                    <p className="text-[17px]">{b.task}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {b.planned_start && b.planned_end ? `${b.planned_start.slice(0, 5)}–${b.planned_end.slice(0, 5)}` : "Any time"}
-                      {plannedMinutes(b) > 0 && ` · ${formatHours(plannedMinutes(b))} planned`}
-                    </p>
-                  </div>
-                  <span className={cn("text-[15px]", logged > 0 ? "text-foreground" : "text-faint")}>{formatHours(logged)}</span>
-                </li>
-              );
-            })}
-          </ul>
+          todayBlocks.map((b) => {
+            const logged = todaySessions.filter((s) => s.work_block_id === b.id).reduce((m, s) => m + sessionMinutes(s, now), 0);
+            const planned = plannedMinutes(b);
+            return (
+              <Row
+                key={b.id}
+                title={b.task}
+                subtitle={`${b.planned_start && b.planned_end ? `${b.planned_start.slice(0, 5)}–${b.planned_end.slice(0, 5)}` : "Any time"}${planned > 0 ? ` · ${formatHours(planned)} planned` : ""}`}
+                value={<span className={logged > 0 ? "text-foreground" : undefined}>{formatHours(logged)}</span>}
+              />
+            );
+          })
         )}
-      </SectionCard>
+        <Row href="/#work" leading={<Timer className="size-[22px]" aria-hidden />} title="Start or plan blocks on Today" />
+      </Group>
 
-      <SectionCard title="Session notes" meta="This week">
+      <Group id="notes" title="Session notes" action={<span className="text-[15px] text-muted-foreground">This week</span>}>
         {notes.length === 0 ? (
-          <p className="text-[15px] text-muted-foreground">When you stop the timer, what you accomplished is kept here.</p>
+          <p className="px-4 py-4 text-[15px] leading-snug text-muted-foreground">When you stop the timer, what you accomplished is kept here.</p>
         ) : (
-          <ol className="grid gap-4">
-            {notes.map((s) => (
-              <li key={s.id} className="grid gap-0.5 border-l border-primary/50 pl-3">
-                <span className="text-sm text-muted-foreground">
-                  {s.local_date === today ? "Today" : s.local_date === addDays(today, -1) ? "Yesterday" : shortDate(s.local_date)},{" "}
-                  {clockTime(s.started_at, profile.timezone)} · {formatHours(sessionMinutes(s, now))}
-                </span>
-                <span className="text-[16px]">{s.accomplishment_note}</span>
-              </li>
-            ))}
-          </ol>
+          notes.map((s) => (
+            <div key={s.id} className="grid min-h-14 gap-0.5 px-4 py-3">
+              <span className="text-[14px] text-muted-foreground">
+                {s.local_date === today ? "Today" : s.local_date === addDays(today, -1) ? "Yesterday" : shortDate(s.local_date)}, {clockTime(s.started_at, profile.timezone)} ·{" "}
+                {formatHours(sessionMinutes(s, now))}
+              </span>
+              <span className="text-[17px] leading-snug break-words">{s.accomplishment_note}</span>
+            </div>
+          ))
         )}
-      </SectionCard>
+      </Group>
     </div>
   );
 }
-

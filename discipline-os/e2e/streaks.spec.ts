@@ -54,9 +54,12 @@ test("the Habits page counts a habit's due days only, the same as Progress", asy
   await admin.from("habit_completions").insert(due.map((d) => ({ user_id: userId, habit_id: gym!.id, local_date: d })));
 
   await page.goto("/habits");
-  const row = main.locator("li").filter({ has: page.getByLabel("Name of Gym", { exact: true }) });
-  await expect(row).toContainText("Due 5 days a week");
-  await expect(row).toContainText(`7 days 100% · 30 days 100% · ${due.length} in a row`);
+  const row = main.getByRole("button", { name: /^Gym,/ });
+  await expect(row).toHaveAccessibleName(`Gym, Mon–Fri, ${due.length} in a row, 100% of the last 30 days`);
+  await row.click();
+  const sheet = page.getByRole("dialog", { name: "Gym" });
+  await expect(sheet).toContainText("Due 5 days a week");
+  await expect(sheet).toContainText(`Last 7 days100%Last 30 days100%In a row${due.length}`);
 
   await page.goto("/progress");
   const streak = main.locator("#streaks li").filter({ has: page.getByText("Gym", { exact: true }) });

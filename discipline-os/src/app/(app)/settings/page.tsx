@@ -1,12 +1,12 @@
+import { ListChecks, RotateCcw } from "lucide-react";
 import type { Metadata } from "next";
 import { signOut } from "@/app/actions/account";
+import { Group, PageHeader, Row } from "@/components/os";
 import { MinimumForm } from "@/components/settings/minimum-form";
 import { PasscodeForm } from "@/components/settings/passcode-form";
 import { SettingsForm } from "@/components/settings/settings-form";
 import { ThemeChoice } from "@/components/settings/theme-choice";
-import { SectionCard } from "@/components/section-card";
 import { getViewer } from "@/lib/data";
-import Link from "next/link";
 
 export const metadata: Metadata = { title: "Settings" };
 
@@ -17,6 +17,9 @@ const WHAT_COUNTS: Array<[string, string]> = [
   ["Work", "Kept when your work hours are in."],
 ];
 
+const icon = "size-[22px]";
+
+/** Settings: grouped rows that open a sheet to change them, the passcode, and the look. */
 export default async function SettingsPage() {
   const viewer = await getViewer();
   const [{ data }, habitsRes] = await Promise.all([
@@ -25,11 +28,12 @@ export default async function SettingsPage() {
   ]);
 
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
-      <header className="grid gap-1">
-        <h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.035em]">Settings</h1>
-        {data.user?.email && <p className="text-muted-foreground">Signed in as {data.user.email}</p>}
-      </header>
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-7">
+      <PageHeader
+        back={{ href: "/you", label: "You" }}
+        title="Settings"
+        subtitle={data.user?.email ? <span className="break-words">Signed in as {data.user.email}</span> : undefined}
+      />
 
       <SettingsForm profile={viewer.profile} />
 
@@ -37,44 +41,33 @@ export default async function SettingsPage() {
 
       <PasscodeForm passcodeSet={viewer.passcodeSet} />
 
-      <SectionCard title="Setup" description="Your goals for the year, why they matter, and your daily and weekly numbers.">
-        <Link href="/welcome" className="inline-flex h-12 items-center justify-center rounded-full border border-border px-5 text-[15px] hover:bg-accent">
-          Redo setup
-        </Link>
-      </SectionCard>
-
-      <SectionCard title="Appearance">
+      <Group id="appearance" title="Appearance" plain>
         <ThemeChoice />
-      </SectionCard>
+      </Group>
 
-      <SectionCard title="Habits">
-        <p className="text-[15px] text-muted-foreground">
-          Add, rename, reorder or hide habits, and set which days each one is due.{" "}
-          <Link href="/habits" className="text-foreground underline underline-offset-4">
-            Edit habits
-          </Link>
-        </p>
-      </SectionCard>
+      <Group id="setup" title="Setup">
+        <Row href="/welcome" leading={<RotateCcw className={icon} />} title="Redo setup" subtitle="Your goals for the year, why they matter, and your daily and weekly numbers" />
+        <Row href="/habits" leading={<ListChecks className={icon} />} title="Habits" subtitle="Add, rename, reorder or hide habits, and set the days each is due" />
+      </Group>
 
-      <SectionCard title="How Keep My Word works" description="Of everything you said you'd do today, how much you did.">
-        <dl className="divide-y divide-border/70">
-          {WHAT_COUNTS.map(([label, text]) => (
-            <div key={label} className="grid gap-0.5 py-3">
-              <dt className="text-[17px]">{label}</dt>
-              <dd className="text-sm text-muted-foreground">{text}</dd>
-            </div>
-          ))}
-        </dl>
-        <p className="mt-3 text-sm text-muted-foreground">
-          A day at or above your streak line extends the streak, and so does a secured minimum day. Close day locks the number, so changing habits later never rewrites it.
-        </p>
-      </SectionCard>
+      <Group
+        id="keep-my-word"
+        title="How Keep My Word works"
+        footer="A day at or above your streak line extends the streak, and so does a secured minimum day. Close day locks the number, so changing habits later never rewrites it."
+      >
+        <p className="px-4 py-3.5 text-[15px] leading-snug text-muted-foreground">Of everything you said you&apos;d do today, how much you did.</p>
+        {WHAT_COUNTS.map(([label, text]) => (
+          <Row key={label} title={label} subtitle={text} />
+        ))}
+      </Group>
 
-      <form action={signOut} className="border-t border-border pt-6">
-        <button type="submit" className="h-12 w-full rounded-full border border-input text-[15px] text-muted-foreground hover:text-foreground">
-          Sign out
-        </button>
-      </form>
+      <Group>
+        <form action={signOut}>
+          <button type="submit" className="flex min-h-14 w-full items-center justify-center px-4 text-[17px] text-destructive transition-colors active:bg-accent">
+            Sign out
+          </button>
+        </form>
+      </Group>
     </div>
   );
 }
