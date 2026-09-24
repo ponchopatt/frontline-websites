@@ -49,7 +49,7 @@
     "title": "O'Mara Constructions: Custom Home Builders, Hawkesbury, Hills & Blue Mountains",
     "description": "Family-owned custom home builders since 1964, based at Mulgrave near Windsor. Second storey additions, custom new homes, bushfire and sloping-site homes, renovations. Call Luke O'Mara direct.",
     "ctaLabel": "Call Luke",
-    "kicker": "Mulgrave, near Windsor · since 1964",
+    "kicker": "Family owned · Mulgrave",
     "headline": "Any block.<br>Any design.<br><em>Since 1964.</em>",
     "sub": "Steep bush blocks, flame zones, flood-affected land and heritage homes. Three generations of O'Maras have built custom homes and second storeys on the sites other builders won't touch.",
     "heroSecondary": "Or send the details",
@@ -98,10 +98,6 @@
   },
   "statSublabels": {
     "yearsInBusiness": "since 1964"
-  },
-  "pullQuote": {
-    "text": "Great honest and friendly builder. Provides great work and a great price.",
-    "name": "Lauran Trevena, Google review"
   },
   "owner": {
     "body": "Luke O'Mara runs the company day to day. He finished a Bachelor of Applied Science (Building) with Honours at the University of Technology, Sydney in 1994. The phone number on this page goes straight to him.",
@@ -252,10 +248,10 @@
     "hero": {
       "src": "assets/blue-mountains-hero-1800.webp",
       "srcset": "assets/blue-mountains-hero-480.webp 480w, assets/blue-mountains-hero-800.webp 800w, assets/blue-mountains-hero-1200.webp 1200w, assets/blue-mountains-hero-1800.webp 1800w",
-      "width": 2704,
+      "width": 2954,
       "height": 1800,
       "alt": "At dusk, a glazed upper living level cantilevers over a masonry base on a steep, planted bush block, Blue Mountains",
-      "_comment": "BushfireHome-BlueMountains.jpg (2954x1970) from their bushfire and sloping-site pages, captioned 'Bushfire Protected Home - Blue Mountains'. I cropped 250px off the left and 170px of foreground planting off the bottom so the lit glass box sits in the centre of a phone-width crop. A twilight shot, because lit windows still read under the hero's dark overlay on a phone. Horgan was marked down for a hero too dark on mobile."
+      "_comment": "BushfireHome-BlueMountains.jpg (2954x1970) from their bushfire and sloping-site pages, captioned 'Bushfire Protected Home - Blue Mountains'. I cropped 170px of foreground planting off the bottom so the lit glass box sits in the centre of a phone-width crop. A twilight shot, because lit windows still read under the hero's dark overlay on a phone. Horgan was marked down for a hero too dark on mobile."
     },
     "statement": {
       "src": "assets/central-mcdonald-bushfire-home-1200.webp",
@@ -344,12 +340,7 @@
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
-  "reviews": [
-    {
-      "name": "Lauran Trevena",
-      "text": "Great honest and friendly builder. Provides great work and a great price."
-    }
-  ],
+  "reviews": [],
   "faq": [
     {
       "q": "Can we stay in the house during a second storey addition?",
