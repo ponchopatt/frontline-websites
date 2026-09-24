@@ -86,7 +86,7 @@
     "reviewsIntro": "What people we've built for have written about us on Google."
   },
   "stats": {
-    "_comment": "Google is 4.2 from 5 (data/google_reviews_top25.json, slug si-constructions), below the 4.7 floor, so neither shows. Years: their site says 'over 45 years' and publishes no founding year, so the stat shows 45 with the sublabel 'and counting'.",
+    "_comment": "Google is 4.2 from 5 (data/google_reviews_top25.json, slug si-constructions), below the 4.7 floor, so neither shows. Years: their site says 'over 45 years' and publishes no founding year, so the stat shows 45 with the sublabel 'and counting'. Their 'over 1,000 successful projects' stays as a credential in words: the gate reads a round 1000 stat as a guess.",
     "yearsInBusiness": 45
   },
   "statLabels": {
@@ -323,17 +323,20 @@
     {
       "name": "Greg Catling",
       "text": "Jason is the ultimate professional builder with a great team of trades that all do quality work. His choice of trades is testament to his superior level of professionalism.",
-      "shortened": true
+      "shortened": true,
+      "source": "Google review, shortened"
     },
     {
       "name": "Cath Dawes",
       "text": "Jason and Sarah from S & I Constructions built our dream home for us in 2019. From start to finish they were professional, easy to talk to, very organised, efficient, cost effective and high quality.",
-      "shortened": true
+      "shortened": true,
+      "source": "Google review, shortened"
     },
     {
       "name": "Rachel Marion",
       "text": "We've used S&I Constructions a couple of times now, they converted a garage space into an office for us and also built a side deck on our house.",
-      "shortened": true
+      "shortened": true,
+      "source": "Google review, shortened"
     }
   ],
   "_source": {

@@ -159,12 +159,14 @@
 /* Pause on hover AND on focus, so a keyboard user is not chasing a moving card. */
 .fl-reviews-rows:hover .fl-rv-row,
 .fl-reviews-rows:focus-within .fl-rv-row { animation-play-state: paused; }
-/* One or two reviews: still cards on the page's own grid, no belt. */
+/* Fewer than five reviews: still cards on the page's own grid, no belt. */
 .fl-reviews-rows .fl-rv-row.still {
   animation: none; flex-wrap: wrap; overflow: visible;
   width: min(var(--fl-wrap), 100% - 2 * var(--fl-gut)); margin-inline: auto; padding: 0;
 }
 .fl-rv-row.still .fl-rv { flex: 0 1 min(100%, 560px); }
+.fl-reviews-rows .fl-rv-row.still.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); }
+.fl-rv-row.still.grid .fl-rv { flex: none; }
 .fl-rv {
   flex: 0 0 min(88vw, 400px);
   display: flex; flex-direction: column;
