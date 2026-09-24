@@ -1,0 +1,6 @@
+# DEMO SITE — NOT FOR INDEXING
+# An unsolicited demo built as a proposal for Pinczi Builders.
+# It carries their name, logo and photography. It must never appear in search
+# results or be mistaken for their real site.
+User-agent: *
+Disallow: /
