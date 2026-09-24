@@ -407,19 +407,26 @@ function footer(cfg, { tel, phone, nav }) {
 
 function stickyBar(cfg, { tel, sms, phone }) {
   if (!tel && !sms) return '';
-  const owner = cfg.business?.ownerFirstName;
   return html`
 <div class="stickybar" id="sticky">
   ${sms ? html`<a class="btn" data-sms href="${sms}">${cfg.sms?.label ?? 'Text a photo'}</a>` : ''}
-  ${tel ? html`<a class="btn${raw(sms ? ' ghost' : '')}" href="${tel}">Call${owner ? ` ${owner}` : ''}</a>` : ''}
+  ${tel ? html`<a class="btn${raw(sms ? ' ghost' : '')}" href="${tel}">${callLabel(cfg)}</a>` : ''}
 </div>`;
+}
+
+/**
+ * "Call Peter" promises Peter answers. When the number is an office line,
+ * copy.callLabel overrides it ("Call the team"); otherwise unchanged.
+ */
+function callLabel(cfg) {
+  const owner = cfg.business?.ownerFirstName;
+  return cfg.copy?.callLabel ?? `Call${owner ? ` ${owner}` : ''}`;
 }
 
 function callDock(cfg, { tel, phone }) {
   if (!tel) return '';
-  const owner = cfg.business?.ownerFirstName;
   return html`
-<a class="calldock" id="calldock" href="${tel}" aria-label="Call${owner ? ` ${owner}` : ''} on ${phone.display}">
+<a class="calldock" id="calldock" href="${tel}" aria-label="${callLabel(cfg)} on ${phone.display}">
   ${ICON.phone}<span class="num">${phone.display}</span>
 </a>`;
 }
