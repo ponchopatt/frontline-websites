@@ -548,6 +548,10 @@ Demo: `/omara-constructions`. Custom home builder, Hawkesbury NSW. Luke O'Mara r
 ### Nulook Pools — needs Pat (final 4.0)
 Every fact checks out and 5.0 from 35 is strong, but Nulook has no photos of its own installs anywhere online; all photos are labelled Conquest range shots, which caps Photos at 3. **Ask John for 4-6 photos of his own pools** and it should pass. Owner John Eldridge; Charissa is named in 5 of 8 reviews (role unknown).
 
+### CJG Pools & Earthworks — needs Pat (final 3.83)
+Real Calwell business (ABN since 2014, SPASA and Master Builders members). Owner Craig; crew Mick and Joel. Angle: "Pools, and the earthworks behind them." Facts all check out. Held back only by photos: every photo they have online is a small web copy, so the hero looks smeared when shown large. **Ask Craig for his original phone photos** (hero 1600px+), plus his licence number; more Google reviews (5.0 from 1) is the pitch.
+**Opener:** "I noticed your best work — the Weetangera and Throsby pools, the Denman Prospect site cut — is buried in two old blog posts, while your homepage shows eleven 2016 catalogue shapes and never mentions the earthworks side."
+
 ### Northern Beaches Roofers — not built
 A trading name of Your Local Roofers Pty Ltd (Castle Hill, multi-city, many local-sounding names). Real licensed roofer, but no local owner to pitch. Drop, or pitch the group as a different conversation.
 

@@ -28,9 +28,9 @@
     },
     "logo": {
       "src": "assets/logo-actlc-reverse.webp",
-      "width": 780,
-      "height": 160,
-      "_comment": "Their own logo: ACTLC-logo-primary-reverse.png (1920x395, transparent, white wordmark with the green shield and CONSTRUCTION line), downsized only."
+      "width": 520,
+      "height": 107,
+      "_comment": "Their own logo: ACTLC-logo-primary-reverse.png (1920x395, transparent, white wordmark with the green shield and CONSTRUCTION line), downsized to 520x107 only."
     }
   },
   "icons": {
@@ -69,17 +69,17 @@
     "apertureLine": "Three levels. One build.",
     "workLabel": "Recent work",
     "workHeadline": "Six backyards.<br>Six briefs.",
-    "workIntro": "A grass tennis court in Forrest, corten screens, a pool with its own spa, a courtyard plunge pool, a brick path through grasses, and a long pool in pale stone. Every photo on this page is one of our own jobs. Select any photo to see it larger.",
+    "workIntro": "A grass tennis court in Forrest, corten screens, a pool with its own spa, a courtyard plunge pool, a brick path through grasses, and an outdoor kitchen under a pergola. Every photo on this page is one of our own jobs. Select any photo to see it larger.",
     "processLabel": "How it runs",
-    "processHeadline": "Six steps.<br>No guesswork.",
-    "processIntro": "The same six steps on every job, from the first call to walking you through the finished space.",
+    "processHeadline": "Four steps.<br>No guesswork.",
+    "processIntro": "The same steps on every job, from the first call to walking you through the finished space.",
     "ownerLabel": "Who you are dealing with",
     "recognitionLabel": "Beyond the reviews",
     "recognitionHeadline": "Worth checking first.",
     "recognitionIntro": "Master Builders, the Fyshwick showroom and Harvest Pools: three things you can look up before you ring.",
     "reviewsLabel": "Google reviews",
     "reviewsTitle": "In their words.",
-    "reviewsIntro": "From our Google reviews, word for word. Two of the four run longer on Google and are marked shortened.",
+    "reviewsIntro": "From our Google reviews, word for word. Two of the three below run longer on Google and are marked shortened.",
     "areasLabel": "Where we work",
     "areasHeadline": "Canberra.<br>Queanbeyan.<br>Around both.",
     "areasIntro": "From the showroom in Fyshwick, across Canberra, Queanbeyan and the surrounding areas. Recent jobs include a whole backyard in Forrest, retaining walls and paving in Kaleen, and the Jerrabomberra backyard that won at the 2025 Master Builders Excellence Awards.",
@@ -167,13 +167,13 @@
         "src": "assets/jerra-court-overhead-750.webp",
         "srcset": "assets/jerra-court-overhead-480.webp 480w, assets/jerra-court-overhead-750.webp 750w",
         "width": 750,
-        "height": 999,
+        "height": 859,
         "alt": "A blue and grey half basketball court seen from directly above, with its hoop, garden beds either side and the glass pool fence below, part of the award-winning Jerrabomberra backyard"
       }
     },
     {
-      "title": "Walls, paving and turf",
-      "blurb": "Retaining walls in stone, block, brick, hardwood, concrete sleeper or treated pine. Paving for driveways, paths, alfrescos and pool surrounds. Turf, synthetic grass and irrigation.",
+      "title": "Walls, paving, decks, gardens",
+      "blurb": "Retaining walls in stone, block, brick, hardwood or concrete sleeper. Paving for driveways, paths, alfrescos and pool surrounds. Decks, pergolas, fire pits, turf, irrigation, and planting chosen for Canberra's clay soils and frosts.",
       "photo": {
         "src": "assets/firepit-stone-780.webp",
         "srcset": "assets/firepit-stone-480.webp 480w, assets/firepit-stone-780.webp 780w",
@@ -181,27 +181,12 @@
         "height": 1000,
         "alt": "A sunken paved fire pit terrace with a steel fire box, below two tiers of stone retaining wall, beside a synthetic lawn"
       }
-    },
-    {
-      "title": "Decks, pergolas and outdoor kitchens",
-      "blurb": "Timber and composite decks, pergolas, outdoor kitchens and fire pits, with gardens and planting chosen to handle Canberra's clay soils and frosts.",
-      "photo": {
-        "src": "assets/outdoor-kitchen-800.webp",
-        "srcset": "assets/outdoor-kitchen-480.webp 480w, assets/outdoor-kitchen-800.webp 800w",
-        "width": 800,
-        "height": 1000,
-        "alt": "A stone-clad outdoor kitchen with a built-in barbecue, stainless drawers and a red kamado grill under a slatted pergola at dusk"
-      }
     }
   ],
   "process": [
     {
-      "step": "Discover",
-      "detail": "A quick conversation to understand your goals, ideas, budget and timeline. No pressure, just clarity, and a chance to see if we would be a good fit together."
-    },
-    {
-      "step": "Consult",
-      "detail": "We meet on site or virtually to assess the space and talk through what's possible, with honest advice tailored to how you live and use your outdoor area."
+      "step": "Discover and consult",
+      "detail": "A quick conversation about your goals, ideas, budget and timeline, then we meet on site or virtually to assess the space and give you honest advice on what's possible."
     },
     {
       "step": "Design and scope",
@@ -212,12 +197,8 @@
       "detail": "Once you're happy, we finalise approvals, confirm timelines and lock in your start."
     },
     {
-      "step": "Build",
-      "detail": "Our in-house team builds it, with quality control and respect for your home the whole way through."
-    },
-    {
-      "step": "Handover",
-      "detail": "We walk you through the finished space and make sure every detail is right."
+      "step": "Build and handover",
+      "detail": "Our in-house team builds it with quality control and respect for your home, then walks you through the finished space to make sure every detail is right."
     }
   ],
   "serviceAreas": [
@@ -331,24 +312,20 @@
         "alt": "A curved recycled-brick path running through ornamental grasses, gravel and clipped balls of box, with a tall hedge behind"
       },
       {
-        "src": "assets/pool-lounge-800.webp",
-        "full": "assets/pool-lounge-1800.webp",
-        "srcset": "assets/pool-lounge-480.webp 480w, assets/pool-lounge-800.webp 800w, assets/pool-lounge-1200.webp 1200w",
-        "width": 1800,
-        "height": 1200,
-        "caption": "Pool and pale stone paving",
-        "detail": "Fibreglass pool, stone paving, glass fence",
-        "alt": "A long blue pool with a roller cover, pale stone paving, wicker lounge chairs and a glass fence onto the lawn"
+        "src": "assets/outdoor-kitchen-800.webp",
+        "full": "assets/outdoor-kitchen-1500.webp",
+        "srcset": "assets/outdoor-kitchen-480.webp 480w, assets/outdoor-kitchen-800.webp 800w, assets/outdoor-kitchen-1200.webp 1200w",
+        "width": 1500,
+        "height": 1000,
+        "caption": "Outdoor kitchen",
+        "detail": "Stone-clad benches, pergola, stone paving",
+        "alt": "A stone-clad outdoor kitchen with a built-in barbecue, stainless drawers and a red kamado grill under a slatted pergola at dusk, with stone paving in front"
       }
     ]
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
   "reviews": [
-    {
-      "name": "David C",
-      "text": "Fantastic service from start to finish. The team was professional, reliable, and did an amazing job transforming the garden."
-    },
     {
       "name": "Donovan Rieger",
       "text": "The team at ACT Landscaping provided outstanding support in designing a comprehensive backyard makeover. This project incorporated a new patio featuring an outdoor kitchen, a Pool House, and landscaping for the garden and pool.",
@@ -504,21 +481,9 @@
         "sentence": "We design and construct: Pickleball Courts, Basketball Half & Full Courts, Tennis Courts, Multi-Sport Courts, Private Putting Greens. / Excavation and sub-base preparation, Compaction and structural reinforcement, Drainage installation. / Lighting integration, Fencing solutions.",
         "url": "https://www.act-landscaping.com.au/outdoor-sports-spaces"
       },
-      "Service 'Walls, paving and turf'": {
-        "sentence": "Treated Pine … Hardwood Timber … Concrete Sleepers … Block Retaining Walls … Stone Retaining Walls … Brick Retaining Walls. / Driveway Paving, Pathways & Stepping Stone, Alfresco & Outdoor Living Areas, Pool Surround Paving. / From natural turf installation to artificial grass and automated irrigation systems.",
-        "url": "https://www.act-landscaping.com.au/paving-and-retaining-walls-canberra"
-      },
-      "Service 'Decks, pergolas and outdoor kitchens': timber and composite decks, pergolas, outdoor kitchens, fire pits; plants for Canberra's clay soils and frosts": {
-        "sentence": "Our services include: Landscaping, Pool Installations, Sports Courts, Fire Pits, Concreting, Paving, Softscaping, Pergolas & Decks, Retaining Walls, Turfing. / Decking options (timber & composite) … Outdoor kitchen layouts and appliance integrations (showroom). / This includes plants capable of tolerating seasonal temperature variation, low rainfall and Canberra's clay-based soils.",
-        "url": "https://www.act-landscaping.com.au/our-services"
-      },
       "Credential 'Showroom in Fyshwick' and FAQ 'Can I see the materials before I commit?'": {
         "sentence": "Paving and stone samples, Decking options (timber & composite), Pool coping selections, Outdoor cabinetry finishes … Pergola styles and structural options, Outdoor kitchen layouts … our space allows you to see finishes, explore pool and pergola options, and discuss your project in our private meeting room before construction begins.",
         "url": "https://www.act-landscaping.com.au/our-showroom"
-      },
-      "Process steps Discover, Consult, Design and scope, Approve and schedule, Build, Handover; enquire intro 'no pressure, just clarity … a good fit'": {
-        "sentence": "(01) DISCOVER … We start with a quick conversation to understand your goals, ideas, budget, and timeline, no pressure, just clarity and to see if we would be a good fit together. (02) Consult — We meet on-site or virtually to assess your space … (03) Design & Scope — design concepts, material selections, scope of works, and transparent pricing … (04) Approve & Schedule — We finalise approvals, confirm timelines, and schedule your project … (05) build — Our in-house team brings the design to life … quality control, and respect for your home … (06) Handover & Enjoy — We walk you through the finished space and ensure every detail is right.",
-        "url": "https://www.act-landscaping.com.au/about"
       },
       "Owner team line 'overseen from the first consultation through to completion, with on-site supervision and a clear timeline'": {
         "sentence": "Every project is overseen by experienced team members who guide you from initial consultation through to completion. We prioritise clear communication, structured timelines, and on-site supervision.",
@@ -561,7 +526,7 @@
         "url": "https://www.act-landscaping.com.au/about"
       },
       "Reviews and pull quote": {
-        "sentence": "All four reviews are the best_for_demo entries for act-landscape-construction, names as published, text word for word. Donovan Rieger and Toby Wells are marked shortened: true and show 'Google review, shortened'. Pull quote is David C's full review.",
+        "sentence": "All four best_for_demo reviews for act-landscape-construction are on the page, names as published, text word for word: David C's full review is the pull quote in the statement section; Donovan Rieger, Deatharra and Toby Wells are the review cards. Donovan Rieger and Toby Wells are marked shortened: true and show 'Google review, shortened'.",
         "url": "data/google_reviews_top25.json"
       },
       "Rating not shown": {
@@ -569,12 +534,24 @@
         "url": "data/google_reviews_top25.json"
       },
       "Every photo on the page": {
-        "sentence": "All 16 images are their own, pulled at full resolution from their Duda CDN (irp.cdn-website.com/904fa5d1/dms3rep/multi/). No stock, no upscaling, no sample photos. Hero 151225_0026 (deck, pool, lawn and court at one property); aperture 210624_0068 and court service 210624_0061 (Jerrabomberra, the award job); statement 12.jpg (crew on a mini loader, about page background); services 161025_0023, 210624_0061 (overhead court), 21- web Firepit, 190624_0002 - Outdoor Kitchen; gallery Forrest-Main-1 (Forrest, projects page), 061124_0082 - Screens, 021222_173, 181225_0005, Snapins.ai_468330689 (Instagram export), 160222_011; owner Xav Landscape.jpg (about page, 'Xavier Duffy, Director'); enquiry background 'Image Feb 10, 2026, 11_42_53 AM.png' (showroom page). Apart from the two Jerrabomberra frames, each slot is a different property by shoot code. No captions name a suburb except Forrest and Jerrabomberra, which their projects page names. Crew member in the statement photo is not named.",
+        "sentence": "All 15 images are their own, pulled at full resolution from their Duda CDN (irp.cdn-website.com/904fa5d1/dms3rep/multi/). No stock, no upscaling, no sample photos. Hero 151225_0026 (deck, pool, lawn and court at one property); aperture 210624_0068 and court service 210624_0061 (Jerrabomberra, the award job); statement 12.jpg (crew on a mini loader, about page background); services 161025_0023, 210624_0061 (overhead court), 21- web Firepit; gallery Forrest-Main-1 (Forrest, projects page), 061124_0082 - Screens, 021222_173, 181225_0005, Snapins.ai_468330689 (Instagram export), 190624_0002 - Outdoor Kitchen; owner Xav Landscape.jpg (about page, 'Xavier Duffy, Director'); enquiry background 'Image Feb 10, 2026, 11_42_53 AM.png' (showroom page). Apart from the two Jerrabomberra frames, each slot is a different property by shoot code. No captions name a suburb except Forrest and Jerrabomberra, which their projects page names. Crew member in the statement photo is not named.",
         "url": "https://www.act-landscaping.com.au/projects"
       },
       "Logo": {
-        "sentence": "ACTLC-logo-primary-reverse.png (1920x395) from their site header, downsized to 780x160. Favicon is the shield from ACTLC-logo-primary-Final.png on a dark square.",
+        "sentence": "ACTLC-logo-primary-reverse.png (1920x395) from their site header, downsized to 520x107. Favicon is the shield from ACTLC-logo-primary-Final.png on a dark square.",
         "url": "https://www.act-landscaping.com.au/"
+      },
+      "Process steps Discover and consult, Design and scope, Approve and schedule, Build and handover; enquire intro 'no pressure, just clarity … a good fit'": {
+        "sentence": "(01) DISCOVER … We start with a quick conversation to understand your goals, ideas, budget, and timeline, no pressure, just clarity and to see if we would be a good fit together. (02) Consult — We meet on-site or virtually to assess your space … (03) Design & Scope — design concepts, material selections, scope of works, and transparent pricing … (04) Approve & Schedule — We finalise approvals, confirm timelines, and schedule your project … (05) build — Our in-house team brings the design to life … quality control, and respect for your home … (06) Handover & Enjoy — We walk you through the finished space and ensure every detail is right.",
+        "url": "https://www.act-landscaping.com.au/about"
+      },
+      "Service 'Walls, paving, decks, gardens' (second half): decks, pergolas, fire pits, turf, irrigation; plants for Canberra's clay soils and frosts; gallery 'Outdoor kitchen'": {
+        "sentence": "Our services include: Landscaping, Pool Installations, Sports Courts, Fire Pits, Concreting, Paving, Softscaping, Pergolas & Decks, Retaining Walls, Turfing. / Decking options (timber & composite) … Outdoor kitchen layouts and appliance integrations (showroom). / This includes plants capable of tolerating seasonal temperature variation, low rainfall and Canberra's clay-based soils.",
+        "url": "https://www.act-landscaping.com.au/our-services"
+      },
+      "Service 'Walls, paving, decks, gardens' (first half): retaining wall materials, paving types": {
+        "sentence": "Treated Pine … Hardwood Timber … Concrete Sleepers … Block Retaining Walls … Stone Retaining Walls … Brick Retaining Walls. / Driveway Paving, Pathways & Stepping Stone, Alfresco & Outdoor Living Areas, Pool Surround Paving. / From natural turf installation to artificial grass and automated irrigation systems.",
+        "url": "https://www.act-landscaping.com.au/paving-and-retaining-walls-canberra"
       }
     }
   }

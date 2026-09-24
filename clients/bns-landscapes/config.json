@@ -74,7 +74,7 @@
     "reviewsIntro": "In their own words, from Google.",
     "recognitionLabel": "Licensed & insured",
     "recognitionHeadline": "A Gold Licence,<br>never blemished.",
-    "recognitionIntro": "Gold Licence 269300C. Fully insured, including home warranty insurance through the Home Building Compensation Fund. WHS, Quality Assurance and Environmental Management Systems in place. Proud members of the LNA.",
+    "recognitionIntro": "Accredited, up-to-date WHS, Quality Assurance and Environmental Management Systems on every job. The licences and insurance behind them are below.",
     "areasLabel": "Where we work",
     "areasHeadline": "Caringbah,<br>and the Shire.",
     "areasIntro": "Our base is 14 Woodfield Blvd, Caringbah. Our seawall work is on the Sylvania Waters canals. Not sure you're in range? Call and ask.",
@@ -94,7 +94,7 @@
     "name": "Marilyn Poniris, Google"
   },
   "owner": {
-    "body": "Peter Stubbs has run BNS since 2013. Barry Stubbs co-founded the business and ran it for over 40 years before that. It is still family owned and operated.",
+    "body": "Peter has run BNS since 2013. Barry Stubbs co-founded the business and ran it for over 40 years before that. It is still family owned and operated.",
     "team": "Site teams are run by Patrick Hemsworth, our Construction Manager: highly qualified landscape and horticulture tradespeople and apprentices, hand-picked for their attention to detail.",
     "facts": [
       {
@@ -133,7 +133,6 @@
     {
       "kind": "membership",
       "label": "LNA members",
-      "body": "Proud members.",
       "strip": true
     },
     {
@@ -154,10 +153,10 @@
       "title": "Stone & walls",
       "blurb": "Retaining walls, stonework, stone and concrete, tiling and paving, and the excavation underneath it all.",
       "photo": {
-        "src": "assets/firepit-seat-800.webp",
-        "srcset": "assets/firepit-seat-480.webp 480w, assets/firepit-seat-800.webp 800w",
-        "width": 800,
-        "height": 534,
+        "src": "assets/firepit-seat-p-650.webp",
+        "srcset": "assets/firepit-seat-p-450.webp 450w, assets/firepit-seat-p-650.webp 650w",
+        "width": 650,
+        "height": 867,
         "alt": "A circular sandstone seat wall around a gravel fire-pit area, with hardwood posts behind, mulched beds and a curved lawn edge"
       }
     },
@@ -165,10 +164,10 @@
       "title": "Pools & water",
       "blurb": "Swimming pools and water features, with the paving, decking, irrigation and planting around them.",
       "photo": {
-        "src": "assets/pool-deck-dusk-800.webp",
-        "srcset": "assets/pool-deck-dusk-480.webp 480w, assets/pool-deck-dusk-800.webp 800w",
-        "width": 800,
-        "height": 534,
+        "src": "assets/pool-deck-dusk-p-650.webp",
+        "srcset": "assets/pool-deck-dusk-p-450.webp 450w, assets/pool-deck-dusk-p-650.webp 650w",
+        "width": 650,
+        "height": 867,
         "alt": "A lit pool at dusk with grey stone coping, a timber deck step up to a built-in bench, and palms along a dark fence"
       }
     },
@@ -176,10 +175,10 @@
       "title": "Timber",
       "blurb": "Timber construction and carpentry: decks, stairs, screens and pergolas.",
       "photo": {
-        "src": "assets/hardwood-deck-800.webp",
-        "srcset": "assets/hardwood-deck-480.webp 480w, assets/hardwood-deck-800.webp 800w",
-        "width": 800,
-        "height": 453,
+        "src": "assets/hardwood-deck-p-509.webp",
+        "srcset": "assets/hardwood-deck-p-450.webp 450w, assets/hardwood-deck-p-509.webp 509w",
+        "width": 509,
+        "height": 679,
         "alt": "A raised hardwood deck with stairs, a slatted privacy screen and a pergola against a brick house"
       }
     },
@@ -187,10 +186,10 @@
       "title": "Seawalls",
       "blurb": "Seawall reconstruction, tie-rod installation, capping beams and maintenance, and pontoon removal and replacement, through BNS Innovations.",
       "photo": {
-        "src": "assets/seawall-canal-800.webp",
-        "srcset": "assets/seawall-canal-480.webp 480w, assets/seawall-canal-800.webp 800w",
-        "width": 800,
-        "height": 600,
+        "src": "assets/seawall-canal-p-731.webp",
+        "srcset": "assets/seawall-canal-p-450.webp 450w, assets/seawall-canal-p-731.webp 731w",
+        "width": 731,
+        "height": 975,
         "alt": "A new concrete seawall and capping beam running along a canal, with a gangway down to a pontoon"
       }
     }
@@ -225,25 +224,28 @@
   "photos": {
     "hero": {
       "src": "assets/terraced-stone-walls-1600.webp",
-      "srcset": "assets/terraced-stone-walls-480.webp 480w, assets/terraced-stone-walls-800.webp 800w, assets/terraced-stone-walls-1200.webp 1200w, assets/terraced-stone-walls-1600.webp 1600w, assets/terraced-stone-walls-2000.webp 2000w",
+      "srcset": "assets/terraced-stone-walls-1200.webp 1200w, assets/terraced-stone-walls-1600.webp 1600w, assets/terraced-stone-walls-2000.webp 2000w",
       "width": 2000,
       "height": 1036,
-      "alt": "Terraced sandstone retaining walls, palms and clipped hedging climbing a steep block to a glass-fronted house, built by BNS Landscapes"
+      "alt": "Terraced sandstone retaining walls, palms and clipped hedging climbing a steep block to a glass-fronted house, built by BNS Landscapes",
+      "_comment": "I006.jpg, their own photo and the hero of their own home and Landscapes pages. 2000x1036, given a gentle shadow lift (gamma 0.85) so the stone terraces read under the hero overlay on a phone; no other retouching. The srcset starts at 1200 on purpose: on a phone the hero is height-filled (~1600px rendered), so a 480/800 file would be stretched and soft. 480/800 remain in assets/ unused."
     },
     "statement": {
-      "src": "assets/deck-stairs-pool-1200.webp",
-      "srcset": "assets/deck-stairs-pool-480.webp 480w, assets/deck-stairs-pool-800.webp 800w, assets/deck-stairs-pool-1200.webp 1200w, assets/deck-stairs-pool-1600.webp 1600w",
-      "width": 1600,
-      "height": 1066,
-      "alt": "Hardwood stairs down from a verandah to pale paving, a frangipani and a glass-fenced lap pool"
+      "src": "assets/deck-stairs-pool-p-900.webp",
+      "srcset": "assets/deck-stairs-pool-p-600.webp 600w, assets/deck-stairs-pool-p-900.webp 900w, assets/deck-stairs-pool-p-1066.webp 1066w",
+      "width": 1066,
+      "height": 1333,
+      "alt": "Hardwood stairs down from a verandah to pale paving, a frangipani and a glass-fenced lap pool",
+      "_comment": "IMG_8956.jpg cropped to a 4:5 portrait (x 560-1626 of 2000) so the 581x727 desktop box is filled without upscaling."
     },
     "aperture": {
-      "src": "assets/canal-pool-waterfall-1600.webp",
-      "srcset": "assets/canal-pool-waterfall-480.webp 480w, assets/canal-pool-waterfall-800.webp 800w, assets/canal-pool-waterfall-1200.webp 1200w, assets/canal-pool-waterfall-1600.webp 1600w, assets/canal-pool-waterfall-2000.webp 2000w",
+      "src": "assets/canal-seawall-works-1600.webp",
+      "srcset": "assets/canal-seawall-works-480.webp 480w, assets/canal-seawall-works-800.webp 800w, assets/canal-seawall-works-1200.webp 1200w, assets/canal-seawall-works-1600.webp 1600w, assets/canal-seawall-works-2000.webp 2000w",
       "width": 2000,
-      "height": 750,
-      "alt": "A waterfront pool at dusk with a lit water blade falling from a dark stone wall, a glass fence and boats on the canal behind",
-      "caption": "Waterfront pool and water-blade wall"
+      "height": 1250,
+      "alt": "A long new concrete seawall along a canal, seen from the water, with an excavator working from a barge at the far end and the homes reflected in still water",
+      "caption": "Seawall works, seen from the canal",
+      "_comment": "seawall-banner-inno.jpg (2000x1500), the banner of their own Innovations (seawalls) page, cropped to 16:10 (200px of plain sky off the top, 50px of water off the bottom). Replaced IMG_1452 (2000x750), which is too panoramic for a 1440x900 box and was upscaled 1.5x."
     },
     "gallery": [
       {

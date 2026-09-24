@@ -43,7 +43,7 @@
     "height": 400,
     "title": "CJG Pools & Earthworks — Pools and earthworks, Canberra",
     "description": "Craig and his crew build concrete and fibreglass pools across Canberra, and do the site cuts, excavation, drains and paving too. Based in Calwell.",
-    "alt": "A resprayed concrete pool in Forrest with grey stone paving, a stone wall and a blue pergola in front of a yellow house"
+    "alt": "A concrete pool with grey stone paving, a stone wall and a blue pergola in front of a yellow house"
   },
   "responsePromise": "The first consultation is free. They come to your place, look at the block and talk you through the options.",
   "copy": {
@@ -216,7 +216,7 @@
       "srcset": "assets/forrest-respray-finished-600.webp 600w",
       "width": 600,
       "height": 400,
-      "alt": "A resprayed concrete pool in Forrest with grey stone paving, a stone wall and a blue pergola in front of a yellow house"
+      "alt": "A concrete pool with grey stone paving, a stone wall and a blue pergola in front of a yellow house"
     },
     "statement": {
       "src": "assets/weetangera-statement-584.webp",
