@@ -1,0 +1,325 @@
+{
+  "_comment": "Meyers Building Group, Bowral NSW. Hand-written 2026-09-24 from https://meyersbuildinggroup.com.au because `npm run new` is broken in this container (see HANDOVER.md). Every page of their GoDaddy site was read with curl. Their site names no person and no town, so the owner's name (Darren Meyers) comes from the ABR trading names on their ABN, and Bowral from the ABR postcode and their Yellow Pages listing. No Google rating or reviews exist (data/google_reviews_top25.json), and there are no testimonials on their site, so reviews is empty and the proof is their own sourced facts: 80% returning clients and referrals, over 30 years, fully licensed and insured, and their registered ABN. The builders preset's process, FAQ and responsePromise describe a generic builder and would be invented claims here, so all three are overridden with lines from their own site. All 7 photos are their own (one job), upscaled 2x with Real-ESRGAN because the originals are 960px wide. See BRIEF.md.",
+  "slug": "meyers-building",
+  "template": "trust",
+  "industry": "builders",
+  "live": false,
+  "tagline": "Builders in Bowral. Over 30 years of construction, restoration and renovation, and 80% of our work comes from returning clients and referrals.",
+  "schemaType": "HomeAndConstructionBusiness",
+  "business": {
+    "name": "Meyers Building Group",
+    "ownerName": "Darren Meyers",
+    "ownerFirstName": "Darren",
+    "ownerTitle": "Builder",
+    "phone": {
+      "display": "0407 917 649",
+      "e164": "+61407917649"
+    },
+    "abn": "74 092 054 594",
+    "baseSuburb": "Bowral",
+    "region": "NSW",
+    "currentSite": "meyersbuildinggroup.com.au",
+    "brand": {
+      "accent": "#A9CBBE",
+      "accent2": "#D8BC8C",
+      "themeColor": "#111714",
+      "_comment": "Accent is their own site's theme colour #75978D (sage green, which also matches the cottage in their photos), lightened so it reads as a button on the dark theme. Accent2 is the warm sandstone of the stone walls in their hero photo. Neither is a published brand colour."
+    }
+  },
+  "share": {
+    "image": "assets/share-1200.webp",
+    "width": 1200,
+    "height": 630,
+    "title": "Meyers Building Group: Builders in Bowral",
+    "description": "Over 30 years of construction, restoration and renovation. 80% of our work comes from returning clients and referrals.",
+    "alt": "A sage-green period cottage behind curved stone walls, with a white pergola over the deck and a new lawn"
+  },
+  "responsePromise": "We work flexible hours, and we're happy to come out to the site to talk it through.",
+  "copy": {
+    "title": "Meyers Building Group: Builders in Bowral, Southern Highlands",
+    "description": "Bowral builders with over 30 years in construction, restoration and renovation. New homes, extensions, renovations, kitchens, bathrooms, decks, pergolas and earth moving. Call Darren on 0407 917 649.",
+    "ctaLabel": "Call Darren",
+    "kicker": "Builders · Bowral",
+    "headline": "Most of our work<br>comes by<br><em>word of mouth.</em>",
+    "sub": "80% of our work comes from returning clients and referrals. Over 30 years of construction, restoration and renovation, from new homes to decks, kitchens and our own earth moving.",
+    "heroSecondary": "Or send the details",
+    "heroSecondarySms": "Or text Darren a photo",
+    "navApproach": "Approach",
+    "statementLabel": "Why they come back",
+    "statementHeadline": "Work that lasts,<br>and a team<br>you'll have back.",
+    "statementBody": "We build for quality that will last for many years to come, and we pay attention to the details. Our team is polite and friendly, and treats your home with care. It's why most of our jobs come from people we've built for before, or the friends they send our way.",
+    "servicesLabel": "What we build",
+    "servicesHeadline": "Built new,<br>or brought<br>back to life.",
+    "servicesIntro": "New homes and cottages, commercial builds, extensions and granny flats, kitchens and bathrooms. When a site needs preparing, we do the earth moving ourselves.",
+    "workLabel": "Our work",
+    "workHeadline": "Stone, timber<br>and glass.",
+    "workIntro": "Photos from one of our projects: a period cottage with stone walls, a pergola and deck, glazed garden rooms and a garage.",
+    "processLabel": "How it starts",
+    "processHeadline": "Call, meet,<br>then a quote.",
+    "processIntro": "Tell us what you have in mind. We'll come and see it.",
+    "ownerLabel": "Who you are dealing with",
+    "recognitionLabel": "Why people come back",
+    "recognitionHeadline": "Eight in ten jobs are repeat clients or referrals.",
+    "recognitionIntro": "That comes down to our attention to detail and the quality of our work.",
+    "areasLabel": "Where we work",
+    "areasHeadline": "Based in<br>Bowral.",
+    "areasIntro": "We're based in Bowral and well established in the local area. Call to check we cover your suburb.",
+    "faqLabel": "Before you call",
+    "faqHeadline": "Questions we get asked.",
+    "enquireLabel": "Talk to Darren",
+    "enquireHeadline": "Tell us about<br>the job.",
+    "enquireIntro": "Send us a message, or call for a quote. Tell us a bit about the project and where it is, and we'll get back to you."
+  },
+  "stats": {
+    "_comment": "The years stat can only render as a number. Their site says 'over 30 years', so it shows 30 with the sublabel 'and counting'.",
+    "yearsInBusiness": 30
+  },
+  "statLabels": {
+    "yearsInBusiness": "Years' experience"
+  },
+  "statSublabels": {
+    "yearsInBusiness": "and counting"
+  },
+  "owner": {
+    "body": "We're Darren Meyers's building company, based in Bowral. You may know us from before as Darren Meyers Carpentry or Darren Meyers Constructions.",
+    "team": "Our team is polite and friendly, fully licensed and insured, and will treat your home with care.",
+    "facts": [
+      {
+        "value": "30+",
+        "label": "Years in construction, restoration & renovation"
+      },
+      {
+        "value": "80%",
+        "label": "Of our work is returning clients and referrals"
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "kind": "claim",
+      "label": "80% repeat & referral work",
+      "body": "80% of our work comes from returning clients and referrals.",
+      "strip": true
+    },
+    {
+      "kind": "licence",
+      "label": "Fully licensed and insured",
+      "body": "Our whole team is fully licensed and insured.",
+      "strip": true
+    },
+    {
+      "kind": "claim",
+      "label": "ABN 74 092 054 594",
+      "body": "Meyers Building Group is the registered business name of Thomaselly Pty Ltd, a Bowral company.",
+      "strip": false
+    },
+    {
+      "kind": "claim",
+      "label": "Our own earth moving",
+      "body": "Meyers Earth Moving shifts large quantities of earth and rubble to get a site ready to build: driveways, in-ground pools, landscaping, retaining walls and more.",
+      "strip": false
+    }
+  ],
+  "services": [
+    {
+      "title": "Decks & pergolas",
+      "blurb": "A pool deck, or a deck that joins your living room to the garden. Then a pergola over it for outdoor dinners, weatherproofed so you get the most out of it.",
+      "photo": {
+        "src": "assets/pergola-deck-stone-planters-1200.webp",
+        "srcset": "assets/pergola-deck-stone-planters-480.webp 480w, assets/pergola-deck-stone-planters-800.webp 800w, assets/pergola-deck-stone-planters-1200.webp 1200w, assets/pergola-deck-stone-planters-1800.webp 1800w",
+        "width": 1920,
+        "height": 1440,
+        "alt": "A white timber pergola over a deck with French doors behind, stone planter walls and steppers set into the lawn"
+      }
+    },
+    {
+      "title": "Renovations & restorations",
+      "blurb": "Complete house renovations, and rundown or unfinished projects brought back to life. In a kitchen, we can modernise it or keep the heritage elements.",
+      "photo": {
+        "src": "assets/stone-wall-courtyard-garden-room-1200.webp",
+        "srcset": "assets/stone-wall-courtyard-garden-room-480.webp 480w, assets/stone-wall-courtyard-garden-room-800.webp 800w, assets/stone-wall-courtyard-garden-room-1200.webp 1200w, assets/stone-wall-courtyard-garden-room-1800.webp 1800w",
+        "width": 1920,
+        "height": 1440,
+        "alt": "A stone wall beside a white gravel courtyard, with a sage-green panelled garden room full of pot plants behind"
+      }
+    }
+  ],
+  "process": [
+    {
+      "step": "Call or message",
+      "detail": "Ring 0407 917 649, or use the form below to tell us about the project."
+    },
+    {
+      "step": "We meet on site",
+      "detail": "We work flexible hours, so we can meet when it suits you, and we're happy to come out to the site to go over what you want."
+    },
+    {
+      "step": "Your quote",
+      "detail": "Tell us your vision. Once we've seen the site, we'll quote the job."
+    },
+    {
+      "step": "Site prep to finish",
+      "detail": "If the job needs the ground prepared first, our own earth moving service does it, and then we build."
+    }
+  ],
+  "photos": {
+    "hero": {
+      "src": "assets/cottage-pergola-stone-walls-1800.webp",
+      "srcset": "assets/cottage-pergola-stone-walls-480.webp 480w, assets/cottage-pergola-stone-walls-800.webp 800w, assets/cottage-pergola-stone-walls-1200.webp 1200w, assets/cottage-pergola-stone-walls-1800.webp 1800w",
+      "width": 1920,
+      "height": 1440,
+      "alt": "A sage-green period cottage with a white pergola over its deck, behind curved stone walls with stone urns and a new lawn",
+      "_comment": "IMG_4548.JPG (960x720) from their Project Gallery and home page, upscaled 2x with Real-ESRGAN x2plus. A bright daytime shot, so it still reads under the hero overlay on a phone."
+    },
+    "gallery": [
+      {
+        "src": "assets/cottage-garden-view-1200.webp",
+        "full": "assets/cottage-garden-view-1800.webp",
+        "srcset": "assets/cottage-garden-view-480.webp 480w, assets/cottage-garden-view-800.webp 800w, assets/cottage-garden-view-1200.webp 1200w, assets/cottage-garden-view-1800.webp 1800w",
+        "width": 1920,
+        "height": 1440,
+        "caption": "Cottage and garden",
+        "detail": "Pergola, deck and stone walls from across the lawn",
+        "alt": "A period cottage with a slate roof and chimneys, its white pergola and stone walls seen across a large garden with tall cypresses"
+      },
+      {
+        "src": "assets/panelled-glazing-garden-room-1200.webp",
+        "full": "assets/panelled-glazing-garden-room-1800.webp",
+        "srcset": "assets/panelled-glazing-garden-room-480.webp 480w, assets/panelled-glazing-garden-room-800.webp 800w, assets/panelled-glazing-garden-room-1200.webp 1200w, assets/panelled-glazing-garden-room-1800.webp 1800w",
+        "width": 1920,
+        "height": 1440,
+        "caption": "Garden room",
+        "detail": "Panelled timber glazing, painted sage",
+        "alt": "A long glazed garden room with sage-painted timber frames and panelled walls, beside a white gravel path"
+      },
+      {
+        "src": "assets/garden-room-french-doors-1200.webp",
+        "full": "assets/garden-room-french-doors-1800.webp",
+        "srcset": "assets/garden-room-french-doors-480.webp 480w, assets/garden-room-french-doors-800.webp 800w, assets/garden-room-french-doors-1200.webp 1200w, assets/garden-room-french-doors-1800.webp 1800w",
+        "width": 1920,
+        "height": 1440,
+        "caption": "Garden room entry",
+        "detail": "French doors with fanlights",
+        "alt": "Glazed French doors with fanlights into a sage-green garden room, flanked by two potted cypresses on white gravel"
+      },
+      {
+        "src": "assets/garage-cross-braced-door-1200.webp",
+        "full": "assets/garage-cross-braced-door-1710.webp",
+        "srcset": "assets/garage-cross-braced-door-480.webp 480w, assets/garage-cross-braced-door-800.webp 800w, assets/garage-cross-braced-door-1200.webp 1200w, assets/garage-cross-braced-door-1710.webp 1710w",
+        "width": 1710,
+        "height": 1356,
+        "caption": "Garage",
+        "detail": "Cross-braced door and gravel drive",
+        "alt": "A grey clad garage with a white cross-braced door, a barn light and a white gravel drive under trees"
+      }
+    ],
+    "_comment": "7 real photos, all Meyers Building Group's own, all from their Project Gallery (img1.wsimg.com/isteam/ip/7811a3ed-98ba-483b-8a43-fd6e5038d34b/). All seven show one property. The originals are 960px wide (855px for the garage), so every one was upscaled 2x with Real-ESRGAN x2plus, a proper AI upscaler, and none more than 2x. No stock and no sample photos. Each photo appears once. Their site doesn't name the suburb of this job, so no caption does. Left out: a black-and-white duplicate of the garage photo and three black-and-white GoDaddy template stock images (excavators, a man at a bathtub)."
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [],
+  "faq": [
+    {
+      "q": "Do you take on smaller jobs?",
+      "a": "Yes. As well as new homes and extensions, we build decks and pergolas, and renovate single kitchens and bathrooms."
+    },
+    {
+      "q": "Can you keep the heritage features?",
+      "a": "Yes. In a kitchen we can modernise, or keep the heritage elements. We also restore rundown and unfinished projects and make them new again."
+    },
+    {
+      "q": "Can you add a granny flat?",
+      "a": "Yes. An extension can add rooms, a bathroom, a kitchen or more living space, and we can add a granny flat to your home."
+    },
+    {
+      "q": "Can you prepare the site as well?",
+      "a": "Yes. Our own earth moving service moves large quantities of earth and rubble before a build, and handles driveways, in-ground pools, landscaping and retaining walls."
+    },
+    {
+      "q": "Do you do commercial work?",
+      "a": "Yes. We build or renovate the space your business runs from: offices, warehouses and retail spaces."
+    },
+    {
+      "q": "Can we meet outside business hours?",
+      "a": "We work flexible hours to meet with you about what you need, and we're happy to come out to the site to talk it through."
+    }
+  ],
+  "form": {
+    "notesHint": "Where the property is, what you'd like built or renovated, and roughly when you'd like to start."
+  },
+  "sms": {
+    "label": "Text Darren a photo",
+    "body": "Hi Darren, I'd like a quote.\nSuburb: \nWhat I'm after: \n(Happy to send photos.)"
+  },
+  "_source": {
+    "url": "https://meyersbuildinggroup.com.au/",
+    "platform": "GoDaddy Website Builder 8 ('Construction Company MP Template', footer copyright 2018). Images on img1.wsimg.com; the Project Gallery is loaded by script.",
+    "pagesRead": [
+      "home",
+      "services",
+      "gallery",
+      "contact-us",
+      "meyers-earth-moving"
+    ],
+    "notes": "Read with curl (desktop Chrome user agent) on 2026-09-24. `npm run new` is broken in this container; the Wayback Machine was unreachable, so only the live site was used. Their site names no person, no town, no licence number and no ABN. The owner's name comes from the Australian Business Register, and Bowral from the ABR and Yellow Pages. A search snippet links Thomaselly Pty Ltd to NSW contractor licence 135713C, but I couldn't open the register record, so no licence number is on the page.",
+    "claimSources": {
+      "Business name 'Meyers Building Group'": {
+        "sentence": "<title>Meyers Building Group</title> / site header 'Meyers Building Group'. Google name: 'Meyers Building Group'. ABR: Business name 'Meyers Building Group' from 13 Jun 2018.",
+        "url": "https://meyersbuildinggroup.com.au/"
+      },
+      "Owner Darren Meyers (ownerName, 'Call Darren', 'Talk to Darren', owner body, SMS)": {
+        "sentence": "ABN 74 092 054 594, entity THOMASELLY PTY LTD. Business name: Meyers Building Group (from 13 Jun 2018). Trading name(s): Darren Meyers Carpentry (02 Aug 2006), Darren Meyers Constructions (02 Aug 2006). Directory listings for 'Darren Meyers Constructions, 7 Robinia Dr, Bowral NSW 2576' give the same phone, 0407 917 649.",
+        "url": "https://abr.business.gov.au/ABN/View?abn=74092054594"
+      },
+      "ABN 74 092 054 594, Thomaselly Pty Ltd, a Bowral company": {
+        "sentence": "Entity name: THOMASELLY PTY LTD. ABN status: Active from 16 May 2000. Entity type: Australian Private Company. Main business location: NSW 2576. Business name: Meyers Building Group.",
+        "url": "https://abr.business.gov.au/ABN/View?abn=74092054594"
+      },
+      "Based in Bowral": {
+        "sentence": "Meyers Building Group - Builder 7 Robinia Dr, Bowral NSW 2576. Phone 0407 917 649. ABN 74 092 054 594. (ABR main business location NSW 2576, which is Bowral.)",
+        "url": "https://www.yellowpages.com.au/nsw/bowral/meyers-building-group-13022262-listing.html"
+      },
+      "Phone 0407 917 649": {
+        "sentence": "tel:0407917649 in the header of every page; 'call us for a quote ... 0407 917 649' on the contact page. Google phone '0407 917 649'.",
+        "url": "https://meyersbuildinggroup.com.au/contact-us"
+      },
+      "Over 30 years (stat, sub, owner fact, tagline, description)": {
+        "sentence": "With over 30 years experience in construction, restoration & renovation, we are able to offer quality workmanship that will last for many years to come.",
+        "url": "https://meyersbuildinggroup.com.au/"
+      },
+      "80% returning clients and referrals; 'word of mouth'; 'eight in ten jobs'; attention to detail; well established in the local area": {
+        "sentence": "We are well established in the local area, and 80% of our work comes from returning clients and referrals due to our attention to detail and quality of work.",
+        "url": "https://meyersbuildinggroup.com.au/"
+      },
+      "Fully licensed and insured; polite and friendly team; treat your home with care": {
+        "sentence": "Our polite and friendly team is fully licensed and insured, and will treat your home with care.",
+        "url": "https://meyersbuildinggroup.com.au/"
+      },
+      "Flexible hours and onsite visits (responsePromise, process, FAQ)": {
+        "sentence": "We work flexible hours to meet with you regarding your requirements, and we are happy to do onsite visits to discuss your project.",
+        "url": "https://meyersbuildinggroup.com.au/"
+      },
+      "Call or message for a quote (process, enquiry intro)": {
+        "sentence": "Drop us a line! Send us a message, or call us for a quote. Use our contact form to tell us more about your project, and we will connect you with the services to fit your needs.",
+        "url": "https://meyersbuildinggroup.com.au/contact-us"
+      },
+      "Services: new homes and cottages, commercial (offices, warehouses, retail), extensions and granny flats, renovations, restorations, kitchens (modernise or keep heritage elements), bathrooms, decks, pergolas": {
+        "sentence": "New Residential Builds ... This includes house builds and cottage builds. / Commercial Builds ... This includes office buildings, warehouses, retail spaces, etc. / Extensions ... Maybe we can add on a granny flat to your home. / Renovations ... We can assist you with complete house renovations. / Restorations: Bring a space back to life by a restoring a rundown/unfinished project. We can help you make a space brand new again. / Kitchen Renovations: Whether you are wanting to modernise or keep the heritage elements to your kitchen ... / Bathroom Renovations ... tell us your vision and we can make it come to life. / Deck Construction: Whether a pool deck or a deck to link your indoor/outdoor living space ... / Pergola Constructions: Complete your outdoor living with a pergola for entertaining guests and outdoor dinners. Weather proof your undercover area to ensure you get the most out of your pergola space.",
+        "url": "https://meyersbuildinggroup.com.au/services"
+      },
+      "Our own earth moving: earth and rubble, site preparation, driveways, in-ground pools, landscaping, retaining walls": {
+        "sentence": "When the job needs some preparation, we've got you sorted with our earth moving services. We expanded our business 3+ years ago and have been Earth Moving ever since. This service helps with moving large quantities of earth and rubble in preparation for building purposes. We can assist with developing driveways, in ground pools, landscaping, retaining walls, and more.",
+        "url": "https://meyersbuildinggroup.com.au/meyers-earth-moving"
+      },
+      "Every photo on the page": {
+        "sentence": "All 7 photos are from their Project Gallery (loaded by /gallery's script): IMG_4548.JPG (hero), IMG_4554.JPG (decks & pergolas), IMG_4549.JPG (renovations & restorations), IMG_4553.JPG, IMG_4550.JPG, blob-12c7c23.png and IMG_4552-f7f6957.JPG (gallery). IMG_4548, IMG_4550, IMG_4552 and IMG_4554 are also on their home page. No captions on their site; captions here describe only what each photo shows. All upscaled 2x with Real-ESRGAN x2plus from 960px originals.",
+        "url": "https://meyersbuildinggroup.com.au/gallery"
+      },
+      "No Google rating or reviews": {
+        "sentence": "rating null, review_count 0, flag 'No Google rating or reviews found.' for slug meyers-building.",
+        "url": "data/google_reviews_top25.json"
+      }
+    }
+  },
+  "_check": []
+}
