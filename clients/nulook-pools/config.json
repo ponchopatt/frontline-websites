@@ -1,13 +1,16 @@
 {
-  "_comment": "Built by npm run new from nulookpools.com.au. IMPORTANT: every usable image on their current site is an iStock stock photo, so this demo has NO photographs of their own work and no hero. Ask them for their photo folder before sending it — that is also the strongest thing to open the call with. Reviews are empty until pasted from their Google profile.",
+  "_comment": "Nulook Pools, Canberra ACT. Built by hand: npm run new is broken in this container (Chromium rejects the TLS proxy), so every page of nulookpools.com.au was read with curl and every photo downloaded from their own site at full resolution. Rating and reviews come only from data/google_reviews_top25.json. All photos are Pool Range photos from their own site — the Conquest fibreglass range, which other dealers also use — so every caption names the pool model only and none claims to be a Nulook job. See BRIEF.md.",
   "slug": "nulook-pools",
   "template": "trust",
   "industry": "pools",
   "live": false,
+  "tagline": "In-ground fibreglass pools, paving and landscaping across Canberra and surrounding NSW. John Eldridge and Charissa, from council approval to first swim.",
+  "schemaType": "GeneralContractor",
   "business": {
     "name": "Nulook Pools",
-    "ownerName": "",
-    "ownerFirstName": "",
+    "ownerName": "John Eldridge",
+    "ownerFirstName": "John",
+    "ownerTitle": "Proprietor",
     "phone": {
       "display": "0411 055 329",
       "e164": "+61411055329"
@@ -18,122 +21,410 @@
     "region": "ACT",
     "currentSite": "nulookpools.com.au",
     "brand": {
-      "accent": "#1E8FA8",
-      "accent2": "#E8963C",
-      "themeColor": "#0A1418"
+      "accent": "#00BCE4",
+      "accent2": "#1273B0",
+      "themeColor": "#08141C",
+      "_comment": "Sampled off their own logo file: cyan rgb(0,188,228) and navy rgb(0,46,86). accent2 is a mid blue between the two so it reads on light backgrounds."
+    },
+    "logo": {
+      "src": "assets/logo-nulook-wide.webp",
+      "width": 877,
+      "height": 168,
+      "_comment": "Their own logo (nulook-pools-canberra.png): black wordmark and navy P recoloured white so it reads on the dark header, and the wordmark moved beside the MLP mark so it is legible at header height. Original kept as assets/logo-nulook.png; stacked light version as assets/logo-nulook-light.webp."
     }
   },
-  "responsePromise": "We come back to every enquiry within a day.",
+  "icons": {
+    "favicon": "assets/favicon.png"
+  },
+  "share": {
+    "image": "assets/diamantina-hillside-1200.webp",
+    "width": 1200,
+    "height": 797,
+    "title": "Nulook Pools — Fibreglass pools, Canberra and surrounding NSW",
+    "description": "John Eldridge and Charissa install in-ground fibreglass pools across Canberra and surrounding NSW, with the paving and landscaping in the one package.",
+    "alt": "A freeform fibreglass pool set in a timber deck, with a water blade and tree-covered hills behind"
+  },
+  "responsePromise": "Open 7 days, 6am to 6pm.",
   "copy": {
-    "title": "Nulook Pools | Canberra's swimming pool specialists",
-    "description": "Swimming pool construction and renovation in Canberra. Thirty years building pools across the ACT.",
-    "ctaLabel": "Start a conversation",
-    "kicker": "Canberra, ACT",
-    "headline": "Canberra's pool<br>specialists.",
-    "sub": "Thirty years building and renovating swimming pools across the ACT.",
-    "heroSecondary": "Or send the details",
-    "heroSecondarySms": "Or text us a photo",
-    "servicesLabel": "What we do",
-    "servicesHeadline": "Pools, built<br>and rebuilt.",
+    "title": "Nulook Pools | Fibreglass Pools, Canberra & Surrounding NSW",
+    "description": "John Eldridge and Charissa at Nulook Pools install in-ground fibreglass pools across Canberra and surrounding NSW, with the landscaping, tiling and paving done in the one package. Rated 5.0 on Google from 35 reviews.",
+    "ctaLabel": "Talk to John",
+    "kicker": "Canberra & surrounding NSW",
+    "headline": "From council<br>to first<br><em>swim.</em>",
+    "sub": "John Eldridge and Charissa put in-ground fibreglass pools into backyards across Canberra and the surrounding NSW region — with the paving, tiling and landscaping done in the one package.",
+    "heroSecondary": "Or send John the details",
+    "heroSecondarySms": "Or text John a photo of the yard",
+    "navApproach": "Approach",
+    "statementLabel": "The difference",
+    "statementHeadline": "Council is<br>the slow part.<br><em>They stay patient.</em>",
+    "statementBody": "Karen Milton says John and Charissa were “so patient having to deal with our council” — and once the pool started, “I couldn't believe how quickly and professionally it went in.” Salesh Swami says the whole run, “from approvals to installation”, was “so smooth”.",
+    "servicesLabel": "What Nulook does",
+    "servicesHeadline": "The pool, and<br>everything<br>around it.",
+    "servicesIntro": "Pools, landscaping and maintenance — the same three boxes on their own enquiry form.",
+    "apertureLabel": "One package",
+    "apertureLine": "Pool, paving and garden. One quote.",
+    "workLabel": "The range",
+    "workHeadline": "Fourteen shapes,<br>4 to 13.5 metres.",
+    "workIntro": "Nulook's in-ground fibreglass range runs from the 4-metre Torrens exercise pool to the 13.5-metre Diamantina. These are range photos of each shape finished — ask John to see pools he has put in near you. Select any photo to see it larger.",
     "processLabel": "How it runs",
-    "processHeadline": "Four steps,<br>no surprises.",
-    "reviewsTitle": "What owners say.",
-    "areasLabel": "Where we work",
-    "areasHeadline": "Canberra and<br>the ACT.",
+    "processHeadline": "Survey to<br>paving, on site<br>start to finish.",
+    "processIntro": "Nulook's own twelve-step install, in short.",
+    "ownerLabel": "Who you are dealing with",
+    "reviewsLabel": "In their words",
+    "reviewsTitle": "“Amazing to<br>deal with.”",
+    "reviewsIntro": "Six of their 35 Google reviews, word for word. Where one is marked shortened, Google cut it off and the rest is on their profile.",
+    "recognitionLabel": "Licensed",
+    "recognitionHeadline": "Licensed in the<br>ACT and NSW.",
+    "recognitionIntro": "Licence numbers as published on Nulook's own contact page.",
+    "areasLabel": "Where Nulook works",
+    "areasHeadline": "Canberra and<br>surrounding NSW.",
+    "areasIntro": "The Canberra ACT region and the surrounding NSW towns below — including but not limited to. Further out? Ask John.",
     "faqLabel": "Before you call",
-    "faqHeadline": "Questions we are asked.",
-    "enquireLabel": "Start a conversation",
-    "enquireHeadline": "Tell us about<br>the space.",
-    "enquireIntro": "Tell us about the block and what you want from it, and we will come and look."
+    "faqHeadline": "Questions John<br>gets asked.",
+    "enquireLabel": "Talk to John",
+    "enquireHeadline": "Tell John about<br>the backyard.",
+    "enquireIntro": "Where the pool would go, what the access is like from the street, and roughly what size you have in mind. A photo of the yard helps more than anything."
   },
   "stats": {
-    "yearsInBusiness": 30,
-    "googleRating": null,
-    "reviewCount": null,
-    "jobsDone": null
+    "googleRating": 5.0,
+    "reviewCount": 35
   },
-  "services": [
-    {
-      "title": "Concrete pools",
-      "blurb": "Built to the block and the way you will actually use it."
-    },
-    {
-      "title": "Pool renovations",
-      "blurb": "Resurfacing, tiling, coping and plant, on pools that have earned it."
-    },
-    {
-      "title": "Pool and surrounds",
-      "blurb": "Paving, fencing and planting done with the pool, not after it."
-    }
-  ],
-  "serviceAreas": [
-    {
-      "region": "Canberra",
-      "suburbs": [
-        "Canberra",
-        "Belconnen",
-        "Gungahlin",
-        "Woden",
-        "Tuggeranong",
-        "Queanbeyan"
-      ],
-      "_check": true
-    }
+  "statLabels": {
+    "googleRating": "Google rating",
+    "reviewCount": "Google reviews"
+  },
+  "pullQuote": {
+    "text": "They know what they are talking about with no fluff.",
+    "name": "India Sykes-Baker, Google review"
+  },
+  "owner": {
+    "body": "John Eldridge is Nulook's proprietor, with nearly 30 years in the pool and landscaping industry. Nulook is Canberra owned, and works across the ACT and the surrounding NSW region.",
+    "team": "Charissa works alongside him. Customers don't thank “the company” — they name “John and Charissa”, together, in review after review.",
+    "facts": [
+      {
+        "value": "Nearly 30",
+        "label": "Years in pools and landscaping"
+      },
+      {
+        "value": "7 days",
+        "label": "Open, 6am to 6pm"
+      }
+    ]
+  },
+  "hours": [
+    "Monday to Sunday, 6am to 6pm"
   ],
   "credentials": [
     {
       "kind": "licence",
-      "label": "Licence",
-      "number": "236338C"
+      "label": "NSW Licence 236338C",
+      "body": "Culeld Pty Ltd T/A Nulook Pools.",
+      "strip": true
+    },
+    {
+      "kind": "licence",
+      "label": "ACT Licence 20211046",
+      "body": "John Eldridge.",
+      "strip": true
+    },
+    {
+      "kind": "licence",
+      "label": "NSW Licence 91717S",
+      "body": "John Eldridge.",
+      "strip": false
+    }
+  ],
+  "services": [
+    {
+      "title": "Fibreglass pools",
+      "blurb": "Fourteen in-ground fibreglass shapes from 4 to 13.5 metres, with many colour options. Surveyed, dug, craned in and finished by Nulook.",
+      "photo": {
+        "src": "assets/paroo-deck-800.webp",
+        "srcset": "assets/paroo-deck-480.webp 480w, assets/paroo-deck-800.webp 800w, assets/paroo-deck-1024.webp 1024w",
+        "width": 1024,
+        "height": 768,
+        "alt": "A compact fibreglass pool set flush into weathered hardwood decking, with native grasses along one side"
+      }
+    },
+    {
+      "title": "Landscaping, tiling & paving",
+      "blurb": "Done with the pool as one package, using local contractors — so you are not sourcing separate quotes and organising trades to finish the job.",
+      "photo": {
+        "src": "assets/torrens-sandstone-800.webp",
+        "srcset": "assets/torrens-sandstone-480.webp 480w, assets/torrens-sandstone-800.webp 800w, assets/torrens-sandstone-1296.webp 1296w",
+        "width": 1296,
+        "height": 968,
+        "alt": "A small fibreglass plunge pool edged in crazy-paved sandstone, with a stepped rock waterfall spilling into it"
+      }
+    },
+    {
+      "title": "Pool maintenance",
+      "blurb": "Nulook looks after pools as well as putting them in. Ask John what yours needs when you call.",
+      "photo": {
+        "src": "assets/saxby-shade-sail-800.webp",
+        "srcset": "assets/saxby-shade-sail-480.webp 480w, assets/saxby-shade-sail-800.webp 800w, assets/saxby-shade-sail-1200.webp 1200w, assets/saxby-shade-sail-1500.webp 1500w",
+        "width": 1500,
+        "height": 1000,
+        "alt": "A courtyard fibreglass pool under a shade sail, sandstone-look coping and a planted bed along a black timber fence"
+      }
+    }
+  ],
+  "process": [
+    {
+      "step": "Survey the block",
+      "detail": "Access for the machines, fences, trees and stumps, sprinklers and utilities — all checked first. The equipment needs a clear path from the road to the pool site."
+    },
+    {
+      "step": "See it on the ground",
+      "detail": "A template of the pool is laid where you want it, so you can check the size, shape and spot before anything is dug."
+    },
+    {
+      "step": "Dig and double-check",
+      "detail": "Nulook meets the excavator on site and stays until digging starts. Most digs take a day. Measurements are laser-checked."
+    },
+    {
+      "step": "Crane it in, fill it up",
+      "detail": "The shell is craned onto the prepared base, plumbed and backfilled, then filled and leak-checked. This is where the kids can help."
+    },
+    {
+      "step": "Bond beam, paving, garden",
+      "detail": "A steel-reinforced concrete bond beam is poured round the pool, then the paving and landscaping finish it off."
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "Canberra ACT region",
+      "suburbs": [
+        "Canberra"
+      ]
+    },
+    {
+      "region": "Surrounding NSW",
+      "suburbs": [
+        "Queanbeyan",
+        "Bungendore",
+        "Murrumbateman",
+        "Yass",
+        "Goulburn",
+        "Gundagai"
+      ]
     }
   ],
   "photos": {
-    "gallery": [],
+    "hero": {
+      "src": "assets/diamantina-hillside-1800.webp",
+      "srcset": "assets/diamantina-hillside-480.webp 480w, assets/diamantina-hillside-800.webp 800w, assets/diamantina-hillside-1200.webp 1200w, assets/diamantina-hillside-1800.webp 1800w",
+      "width": 1800,
+      "height": 1195,
+      "alt": "A freeform fibreglass pool set in a timber deck with sandstone coping and a water blade, looking out over tree-covered hills"
+    },
+    "statement": {
+      "src": "assets/saxby-courtyard-1200.webp",
+      "srcset": "assets/saxby-courtyard-480.webp 480w, assets/saxby-courtyard-800.webp 800w, assets/saxby-courtyard-1200.webp 1200w, assets/saxby-courtyard-1600.webp 1600w",
+      "width": 1600,
+      "height": 1200,
+      "alt": "A small rectangular fibreglass pool in a courtyard of charcoal walls, with a water blade, a raised planter of standard trees and pale paving"
+    },
+    "aperture": {
+      "src": "assets/maradona-sunset-1200.webp",
+      "srcset": "assets/maradona-sunset-480.webp 480w, assets/maradona-sunset-800.webp 800w, assets/maradona-sunset-1200.webp 1200w, assets/maradona-sunset-1343.webp 1343w",
+      "width": 1343,
+      "height": 768,
+      "alt": "A long fibreglass pool and spa on a rural block at sunset, frameless glass fencing around it and paddocks beyond",
+      "caption": "The Maradona with spa, rural block"
+    },
+    "owner": {
+      "src": "assets/saxby-water-feature-800.webp",
+      "srcset": "assets/saxby-water-feature-480.webp 480w, assets/saxby-water-feature-800.webp 800w, assets/saxby-water-feature-1200.webp 1200w, assets/saxby-water-feature-1500.webp 1500w",
+      "width": 1500,
+      "height": 1000,
+      "alt": "A water feature spilling into a pool from a stacked-stone planter, with a gabion rock wall and palms against a black fence",
+      "ratio": "1500/1000",
+      "caption": "The Saxby · water feature and planting"
+    },
+    "enquiryBackground": {
+      "src": "assets/macquarie-sandstone-1200.webp",
+      "srcset": "assets/macquarie-sandstone-480.webp 480w, assets/macquarie-sandstone-800.webp 800w, assets/macquarie-sandstone-1200.webp 1200w",
+      "width": 1200,
+      "height": 900
+    },
+    "gallery": [
+      {
+        "src": "assets/maradona-rural-800.webp",
+        "full": "assets/maradona-rural-1024.webp",
+        "srcset": "assets/maradona-rural-480.webp 480w, assets/maradona-rural-800.webp 800w, assets/maradona-rural-1024.webp 1024w",
+        "width": 1024,
+        "height": 768,
+        "caption": "The Maradona",
+        "detail": "Range photo · bluestone coping, timber deck, rural block",
+        "alt": "A long rectangular fibreglass pool with bluestone coping and a timber deck, a palm tree and open paddocks behind a post-and-rail fence"
+      },
+      {
+        "src": "assets/eden-travertine-800.webp",
+        "full": "assets/eden-travertine-1024.webp",
+        "srcset": "assets/eden-travertine-480.webp 480w, assets/eden-travertine-800.webp 800w, assets/eden-travertine-1024.webp 1024w",
+        "width": 1024,
+        "height": 768,
+        "caption": "The Eden",
+        "detail": "Range photo · travertine paving among gum trees",
+        "alt": "A narrow rectangular fibreglass pool surrounded by fresh travertine paving, with gum trees and a newly turned garden behind"
+      },
+      {
+        "src": "assets/hudson-rock-garden-800.webp",
+        "full": "assets/hudson-rock-garden-1600.webp",
+        "srcset": "assets/hudson-rock-garden-480.webp 480w, assets/hudson-rock-garden-800.webp 800w, assets/hudson-rock-garden-1200.webp 1200w, assets/hudson-rock-garden-1600.webp 1600w",
+        "width": 1600,
+        "height": 1289,
+        "caption": "The Hudson",
+        "detail": "Range photo · sandstone paving and boulder waterfall",
+        "alt": "A fibreglass pool with pale sandstone paving, a boulder retaining wall and a small rock waterfall spilling into the far end"
+      },
+      {
+        "src": "assets/maradona-glass-fence-800.webp",
+        "full": "assets/maradona-glass-fence-1366.webp",
+        "srcset": "assets/maradona-glass-fence-480.webp 480w, assets/maradona-glass-fence-800.webp 800w, assets/maradona-glass-fence-1200.webp 1200w, assets/maradona-glass-fence-1366.webp 1366w",
+        "width": 1366,
+        "height": 767,
+        "caption": "The Maradona, 12 m",
+        "detail": "Range photo · sandstone paving, frameless glass fence",
+        "alt": "A long fibreglass pool in sandstone paving behind frameless glass fencing, on a big lawn with tall poplars behind"
+      },
+      {
+        "src": "assets/paroo-steps-800.webp",
+        "full": "assets/paroo-steps-1024.webp",
+        "srcset": "assets/paroo-steps-480.webp 480w, assets/paroo-steps-800.webp 800w, assets/paroo-steps-1024.webp 1024w",
+        "width": 1024,
+        "height": 768,
+        "caption": "The Paroo",
+        "detail": "Range photo · step-down hardwood deck",
+        "alt": "A compact fibreglass pool with a stepped hardwood deck leading down into it and a timber storage box behind"
+      },
+      {
+        "src": "assets/macquarie-sunpod-800.webp",
+        "full": "assets/macquarie-sunpod-1152.webp",
+        "srcset": "assets/macquarie-sunpod-480.webp 480w, assets/macquarie-sunpod-800.webp 800w, assets/macquarie-sunpod-1152.webp 1152w",
+        "width": 1152,
+        "height": 768,
+        "caption": "The Macquarie",
+        "detail": "Range photo · sun shelf with fountain jets",
+        "alt": "A fibreglass pool with a shallow sun shelf and fountain jets, exposed-aggregate surround and a rose garden behind"
+      }
+    ],
     "beforeAfter": []
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
-  "reviews": [],
-  "_todo_reviews": "Paste their Google reviews here, word for word, as {\"name\": \"...\", \"text\": \"...\"}. Never write one.",
+  "reviews": [
+    {
+      "name": "Salesh Swami",
+      "text": "Just got our pool done by the Nulook Pools team. John and Charissa were amazing to deal with. The whole process from approvals to installation was so smooth. I would highly recommend Nulook pools."
+    },
+    {
+      "name": "Karen Milton",
+      "text": "John and Charissa were great to deal with, so patient having to deal with our council. While it was a long process because of that, once the pool started I couldn't believe how quickly and professionally it went in.",
+      "source": "Google review, shortened"
+    },
+    {
+      "name": "India Sykes-Baker",
+      "text": "We couldn’t be happier with our experience with Nulook Pools. From the very beginning John, Charissa and the team were professional, reliable and an absolute pleasure to deal with. They know what they are talking about with no fluff.",
+      "source": "Google review, shortened"
+    },
+    {
+      "name": "Hayden R",
+      "text": "I recently had the pleasure of working with Nulook Pools to build our swimming pool, and I couldn’t be happier with the results! From start to finish, their professionalism, expertise, and commitment to quality stood out."
+    },
+    {
+      "name": "Jane Mackenzie",
+      "text": "John and Charissa are outstanding! Their knowledge, professionalism, and experience are second to none.",
+      "source": "Google review, shortened"
+    },
+    {
+      "name": "Aretha McDonald",
+      "text": "I have always dreamed of living in a house that had a pool. Nulook Pools helped to make that dream a reality.",
+      "source": "Google review, shortened"
+    }
+  ],
+  "faq": [
+    {
+      "q": "What kind of pools does Nulook put in?",
+      "a": "In-ground fibreglass pools, from a range of 14 shapes — from the 4m x 2.8m Torrens flat-bottom exercise pool up to the 13.5m x 5m Diamantina — with many colour options."
+    },
+    {
+      "q": "Do you do the paving and landscaping too?",
+      "a": "Yes. Nulook offers a complete package including full landscaping, tiling and paving using local contractors, so you don't have to source several quotes and organise separate trades to finish the job."
+    },
+    {
+      "q": "Can I see where the pool will sit before you dig?",
+      "a": "Yes. A template of the pool is laid on the ground where you want it, so you can make sure you're happy with the size, shape and location first."
+    },
+    {
+      "q": "How long does the dig take?",
+      "a": "Excavations can usually be completed in one day. Large fibreglass pools, or jobs where dirt has to be re-handled, can take longer."
+    },
+    {
+      "q": "What access do you need?",
+      "a": "A clear, unobstructed path between the road and the pool site, so the equipment can get onto the block. Fences, trees and stumps, sprinklers and utilities are all checked when the property is surveyed."
+    },
+    {
+      "q": "Where do you work?",
+      "a": "The Canberra ACT region and surrounding NSW areas, including but not limited to Murrumbateman, Yass, Goulburn, Bungendore, Queanbeyan and Gundagai."
+    }
+  ],
+  "sms": {
+    "label": "Text John a photo",
+    "body": "Hi John, I'm thinking about a pool.\nSuburb: \nRough size: \n(Happy to send a photo of the yard.)"
+  },
   "form": {
-    "accessKey": ""
+    "notesHint": "Where the pool would go, the access from the street, and roughly what size you have in mind."
   },
   "_source": {
-    "url": "https://nulookpools.com.au",
-    "platform": "unknown",
+    "url": "https://www.nulookpools.com.au/",
+    "readAt": "2026-09-24",
+    "readVia": "curl (generic Mozilla/5.0 user agent) against the live site; every page in their sitemap.xml was fetched. npm run new was not run (Chromium rejects this container's TLS proxy).",
     "pagesRead": [
-      "home",
-      "contact"
+      "https://www.nulookpools.com.au/ (home)",
+      "https://www.nulookpools.com.au/pool-range",
+      "https://www.nulookpools.com.au/pool-installation",
+      "https://www.nulookpools.com.au/contact",
+      "the 14 model pages: /the-maradona, /the-franklin, /the-flinders, /the-paroo, /the-lachlan, /the-darling, /the-saxby, /the-macquarie, /the-conquest, /the-hudson, /the-montague, /the-torrens, /the-eden, /the-diamantina"
     ],
-    "aboutText": "",
-    "socials": {},
-    "stockLookingPhotos": [
-      "https://lirp.cdn-website.com/d9c2c926/dms3rep/multi/opt/iStock-1156523427-1920w.jpg",
-      "https://lirp.cdn-website.com/d9c2c926/dms3rep/multi/opt/iStock-1155925239-1920w.jpg",
-      "https://irp.cdn-website.com//d9c2c926/dms3rep/multi/opt/iStock-1003246122-2880w.jpg"
-    ]
-  },
-  "_check": [
-    "business.name",
-    "business.phone.display",
-    "business.email",
-    "business.abn",
-    "stats.yearsInBusiness",
-    "business.brand.accent",
-    "services",
-    "serviceAreas",
-    "googleReviewsUrl",
-    "googleWriteReviewUrl"
-  ],
-  "tagline": "Canberra's swimming pool specialists.",
-  "schemaType": "GeneralContractor",
-  "owner": {
-    "body": "",
-    "facts": [
-      {
-        "value": "30",
-        "label": "Years building pools"
-      }
+    "aboutText": "Nulook Pools is a Canberra owned business which operates in Canberra, ACT and the surrounding NSW region. With nearly 30 years experience in the pool and landscaping industry, proprietor John Eldridge has the knowledge and experience that is essential to providing first class results for each project.",
+    "claimSources": {
+      "business.ownerName John Eldridge / ownerTitle Proprietor / owner.body 'nearly 30 years in the pool and landscaping industry' / 'Canberra owned'": "Homepage, https://www.nulookpools.com.au/: 'Nulook Pools is a Canberra owned business which operates in Canberra, ACT and the surrounding NSW region. With nearly 30 years experience in the pool and landscaping industry, proprietor John Eldridge has the knowledge and experience that is essential to providing first class results for each project.' The site's sitemap lastmod is 2022-07-07, so the demo keeps their exact 'nearly 30' and never rounds it up to 30 or 30+.",
+      "Charissa": "Not on their website. Named with John in 5 of the 8 Google reviews in data/google_reviews_top25.json (e.g. Salesh Swami: 'John and Charissa were amazing to deal with.'). Surname and role unknown, so the page only says she works alongside John.",
+      "business.phone / 'Call John'": "Every page footer, https://www.nulookpools.com.au/: 'Call John 0411 055 329'. Matches google_phone '0411 055 329' in data/google_reviews_top25.json.",
+      "business.email / business.abn": "https://www.nulookpools.com.au/contact: 'Nulook Pools Canberra ABN: 36 149 626 826 Contact John: 0411 055 329 office@nulookpools.com.au'",
+      "credentials — licences": "https://www.nulookpools.com.au/contact: 'Culeld Pty Ltd T/A Nulook Pools: NSW Licence # 236338C' and 'John Eldridge: ACT Licence # 20211046 NSW Licence # 91717S'. So the page's 'Licensed in the ACT and NSW' / 'licensed' wording rests on these published licence numbers.",
+      "hours / 'Open 7 days, 6am to 6pm'": "https://www.nulookpools.com.au/contact: 'OPEN 7 DAYS WEEK MON - SUN 6AM - 6PM'",
+      "serviceAreas / areasIntro / FAQ 'Where do you work?'": "https://www.nulookpools.com.au/contact: 'We provide pool installations & maintenance in the Canberra ACT region and surrounding NSW areas including but not limited to: Murrumbateman, Yass, Goulburn, Bungendore, Queanbeyan, Gundagai.'",
+      "services — pools / landscaping / maintenance": "Every page footer: 'SWIMMING POOL SALES, PO0L MAINTENANCE AND LANDSCAPING'. Contact form 'I'm interested in' options: 'Pools', 'Landscaping', 'Maintenance'. Contact page: 'We provide pool installations & maintenance in the Canberra ACT region'. Homepage: 'You can be confident choosing Nulook Pools for your complete swimming pool and landscaping requirements.' Nothing more specific about maintenance is published, so the maintenance card says only that they do it.",
+      "one package — landscaping, tiling and paving using local contractors": "https://www.nulookpools.com.au/pool-installation: 'Nulook Pools offer a complete package including full landscaping, tiling and paving using local contractors - this means you don't have to source several different quotes and organise separate trades to finish off the job.' (Hence the aperture line 'Pool, paving and garden. One quote.')",
+      "'on site start to finish' (processHeadline)": "Homepage: 'We will be onsite for the whole process from start to finish and will take the utmost care in the installation of your new pool to minimise interruption to your day-to-day living.'",
+      "range — 14 fibreglass shapes, 4 to 13.5 metres, many colour options": "https://www.nulookpools.com.au/pool-range: 'Our range of quality in-ground fibreglass pools come in a variety of shapes and sizes with many colour options also available.' It lists 14 models: Maradona, Franklin, Flinders, Paroo, Lachlan, Darling, Saxby, Macquarie, Conquest, Hudson, Montague, Torrens, Eden, Diamantina. Sizes read off their own plan drawings: /the-torrens plan image reads 'The TORRENS DIMENSION 4m x 2.8m DEEP END DEPTH 4m = 1.32m FLAT BOTTOM EXERCISE POOL'; /the-diamantina plan image reads 'The DIAMANTINA DIMENSION 13.5m x 5m DEEP END DEPTH 13.5m = 1.8m'; /the-maradona plan lists 8m, 9m, 10.5m and 12m x 4.1m (hence 'The Maradona, 12 m').",
+      "process steps": "https://www.nulookpools.com.au/pool-installation, their 12 steps condensed: '1. SURVEY THE PROPERTY … we check access to the pool site so that we can manoeuvre our equipment onto the block. We check fences, trees or tree stumps, sprinklers and utilities. We need a clear, unobstructed path between the road and the swimming pool site.' '2. LAY THE SWIMMING POOL TEMPLATE … This will allow you to actually see the pool on the property and make sure you are happy with the size, shape and location.' '3. EXCAVATION We will meet the excavator on site and stay until the digging actually begins … Excavations can usually be completed in one day. Large fibreglass pools or jobs requiring re-handling of dirt can take longer.' '4. DOUBLE CHECK LASER MEASUREMENTS'. '6. … Using a crane we maneouvre your fibreglass pool into position … lowered into the prepared base.' '8. BACKFILL … After the plumbing work is completed, dirt will be backfilled around the pool.' '9. FILL THE SWIMMING POOL … this is where the kids can help. At this stage we check for leaks in the fibreglass pool.' '10. Steel reinforced structural bond beam is prepared around the outside of the pool.' '11. The structural concrete bond beam is poured around the swimming pool.' '12. POOL PAVING & LANDSCAPING'.",
+      "hero angle 'From council to first swim' / statement": "Google reviews, data/google_reviews_top25.json best_for_demo: Karen Milton: 'John and Charissa were great to deal with, so patient having to deal with our council. While it was a long process because of that, once the pool started I couldn't believe how quickly and professionally it went in.' Salesh Swami: 'The whole process from approvals to installation was so smooth.'",
+      "stats.googleRating 5.0 / reviewCount 35 / reviews / pullQuote": "data/google_reviews_top25.json key 'nulook-pools': rating 5.0, review_count 35. The six reviews are its best_for_demo list word for word; four are marked shortened there and are labelled 'Google review, shortened' on the page. The pull quote is a sentence from India Sykes-Baker's review.",
+      "brand colours": "Sampled from their logo file https://irp.cdn-website.com/d9c2c926/dms3rep/multi/nulook-pools-canberra.png: cyan rgb(0,188,228), navy rgb(0,46,86).",
+      "page wording for the licences": "The page shows 'Licensed' (section label), 'NSW Licence 236338C', 'ACT Licence 20211046' and 'NSW Licence 91717S'. Source, https://www.nulookpools.com.au/contact, word for word: 'Culeld Pty Ltd T/A Nulook Pools: NSW Licence # 236338C' and 'John Eldridge: ACT Licence # 20211046 NSW Licence # 91717S'. Licensed = holds those published licences; nothing about insurance is claimed.",
+      "page wording for the sizes": "The page says '4 to 13.5 metres', 'the 4-metre Torrens' and 'the 13.5-metre Diamantina'. Source: their own plan drawings, /the-torrens 'DIMENSION 4m x 2.8m' (4 metres) and /the-diamantina 'DIMENSION 13.5m x 5m' (13.5 metres)."
+    },
+    "photoClaims": {
+      "all photos": "Every photo is from the Pool Range model pages on nulookpools.com.au, downloaded full size from irp.cdn-website.com/d9c2c926/dms3rep/multi/. File names (e.g. 'conquest-pools-montague', 'Royal-Blue-CG-Conquest') show this is the Conquest fibreglass range, which other dealers also sell and photograph (e.g. rainwisepoolsmelbourne.com.au/conquest-range). So these cannot be shown as Nulook jobs: every caption names the pool model and finish only, every gallery detail starts 'Range photo', and workIntro says they are range photos. No suburb or client is named.",
+      "hero": "Diamantina_13.5m_HawaiianSequins.jpg (1920x1275), /the-diamantina.",
+      "statement": "5m-Saxby-Pearl.jpeg (1920x1440), /the-saxby.",
+      "aperture": "Maradona-12-wih-Spa-and-Sunpod-Sunset.jpg (1343x768), /the-maradona.",
+      "owner slot": "Saxby_5m_HawaiianSand_1.jpg (1500x1000), /the-saxby. There is no photo of John or Charissa anywhere on their site.",
+      "enquiryBackground": "Macquarie_10.5m_CGNiteBlue_3.jpg (1920x1440), /the-macquarie.",
+      "services": "Paroo-Pebble-Sequins-Decking-Surrounds.jpg (/the-paroo), Torrens_4m_HawaiianSand_2-2ea532aa.jpeg (/the-torrens), Saxby_5m_HawaiianSand.jpg (/the-saxby).",
+      "gallery": "Maradona-12-CG-Dusky-Blue-Rural.jpg, Eden-Pebble-Sequins-Travertine-Landscape-2.jpg, Hudson_9m_SandstoneShimmer-95c225fd.JPG (cropped 140px off the left edge to remove a person), Maradona-12-in-Pebble-Sequins.jpg, Paroo-Pebble-Sequins-Decking-End-On.jpg, Macquarie-with-Sunpod.jpg.",
+      "not used": "7 iStock stock photos (people splashing in pools — their homepage hero and feature images), template leftovers (CrossFit, aerobics, athlete, Unsplash), 12 install-step photos at 480x280 (too small), and the model plan-drawing composites."
+    },
+    "notOnThePage": [
+      "The old skeleton's 'Thirty years' and 'fixed price' are gone: their site says 'nearly 30 years' (used as written) and never says fixed price.",
+      "No warranty, guarantee, insurance or association membership wording appears on their site, so none is claimed.",
+      "Charissa's surname and role are not published anywhere, so neither is guessed.",
+      "No suburb-level Canberra list is published (only the NSW towns), so no Canberra suburbs are invented.",
+      "No prices or timeframes beyond 'excavations can usually be completed in one day' are published, so none are given."
     ]
   }
 }
