@@ -552,6 +552,9 @@ Every fact checks out and 5.0 from 35 is strong, but Nulook has no photos of its
 Real Calwell business (ABN since 2014, SPASA and Master Builders members). Owner Craig; crew Mick and Joel. Angle: "Pools, and the earthworks behind them." Facts all check out. Held back only by photos: every photo they have online is a small web copy, so the hero looks smeared when shown large. **Ask Craig for his original phone photos** (hero 1600px+), plus his licence number; more Google reviews (5.0 from 1) is the pitch.
 **Opener:** "I noticed your best work — the Weetangera and Throsby pools, the Denman Prospect site cut — is buried in two old blog posts, while your homepage shows eleven 2016 catalogue shapes and never mentions the earthworks side."
 
+### ACT Landscape Construction — needs Pat (final 4.33)
+Real business (est. 2021, team of 14, joint winner at the 2025 Master Builders ACT awards with ACT Decks, Harvest Pools partner). Facts all check out; calls work. Held back by photos (hero is 1360px, pinned photo soft on phones) and a thin owner section. **Ask Xavier:** is ACT Decks part of his business? (The page says "every trade in-house" next to "built with ACT Decks".) Full-size originals of the award job, a line or two about himself, and more Google reviews. Quick fixes still to do: the pinned caption shows twice, and the form error says "call Xavier" on the office line.
+
 ### BNS Landscapes — needs Pat (final 4.42)
 Close: every score is 4 or more, and all 16 photos are their own. Held back by some old 2019 wording ("Gold Licence", "Up-to-date WHS") and a filler line about keeping you in the loop, which sits badly next to a "called twice, no reply" review. **Ask Peter:** are licences 269300C / 319080C current (and still "Gold")? Is the free inspection still on? Do they do D.A. work (brings back the stronger headline)? A photo of him, and the suburbs he covers. The missed-quote review is a speed-to-lead pitch.
 
