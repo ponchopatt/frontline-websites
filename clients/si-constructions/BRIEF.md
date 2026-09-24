@@ -75,15 +75,19 @@ The two Mittagong homes are different properties: the custom home (designed and 
 - Gym slider-1/2/4: same job as the service photo. Slider-1 is a dirt schoolyard.
 - PALR2342 / 2347 / 2381 / 2401: good, but more rooms of the same Mittagong home, which already has four slots.
 - HIA "25 years member" badge (1470px PNG): an HIA trademark, so shown as text instead.
-- Logo: their own `SI_constructions_logo_2x.png` (white on transparent, 560×150), with the empty padding trimmed to 106×152. It's a tall house-and-monogram mark, so the business name also appears as text. Favicon: their own 512px favicon, resized.
+- Logo: their own `SI_constructions_logo_2x.png` (white on transparent, 560×150) is a tall house-and-S&I monogram with "CONSTRUCTIONS PTY LTD" in tiny type underneath. In the template's 32px-high header that shrank to a smudge. So `logo-si-lockup.png` keeps their monogram exactly as drawn and sets the word CONSTRUCTIONS beside it, in a bold serif close to theirs. "PTY LTD" is dropped. **Flag for Pat: this is a layout change to their logo, not a redraw.** The trimmed original is kept as `logo-si-white.png`. Favicon: their own 512px favicon, resized.
 
 No sample photos were needed.
 
 ## Reviews decision
-Three Google reviews from `best_for_demo`, word for word, each marked shortened. No pull quote, so no review appears twice. The rating (4.2) and count (5) don't show on the page because they're under the floor. There's no reviews intro that apologises for the numbers.
+Three Google reviews from `best_for_demo`, word for word. Each card's source line reads "Google review, shortened". No pull quote, so no review appears twice. The rating (4.2) and count (5) don't show on the page because they're under the floor. There's no reviews intro that apologises for the numbers.
 
 ## What Pat would need from Jason
 - A mobile number, if he wants a "text us" button (the office line gets none).
 - Sarah's role and surname, if they'd like her named properly.
 - Whether the 1,000+ projects and "over 45 years" figures are ones he's happy to lead with (both are from their own site).
 - Permission to use the Ashley Mackevicius photos on a new site (they're already on the current one).
+
+## Build notes
+- The gate blocks a round `jobsDone: 1000` as a guess, so "over 1,000 projects" appears only in words (credential and work intro). The stats strip shows the 45 years only.
+- On phones, the sticky bar reads "Call Jason", because the template builds it from the owner's first name. The number is the office landline. It's a family firm and the site gives no other number, but Pat should confirm Jason is happy to be the name on the button.

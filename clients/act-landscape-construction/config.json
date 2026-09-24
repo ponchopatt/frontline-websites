@@ -1,5 +1,5 @@
 {
-  "_comment": "ACT Landscape Construction, Fyshwick ACT. Built 2026-09-24 from www.act-landscaping.com.au (read live with curl; not blocked, no Wayback copy needed), the Master Builders ACT awards results page and the ABN register. Every specific fact on the page is quoted in _source.claimSources with the page it came from, or comes from data/google_reviews_top25.json. Google rating 4.3 from 10 is below the 4.7 floor, so no rating is shown. See BRIEF.md.",
+  "_comment": "ACT Landscape Construction, Fyshwick ACT. Built 2026-09-24 from www.act-landscaping.com.au (read live with curl; not blocked, no Wayback copy needed), the Master Builders ACT awards results page and the ABN register. Every specific fact on the page is quoted in _source.claimSources with the page it came from, or comes from data/google_reviews_top25.json. Google rating 4.3 from 10 is below the 4.7 floor, so no rating is shown. See BRIEF.md. Reworked 2026-09-24 after review: award always stated as joint with ACT Decks, one 'we' voice, brighter hero, owner copy rewritten.",
   "slug": "act-landscape-construction",
   "template": "trust",
   "industry": "landscaping",
@@ -9,7 +9,7 @@
   "business": {
     "name": "ACT Landscape Construction",
     "ownerName": "Xavier Duffy",
-    "ownerFirstName": "Xavier",
+    "ownerFirstName": "the team",
     "ownerTitle": "Director",
     "phone": {
       "display": "02 5110 3917",
@@ -42,52 +42,53 @@
     "height": 630,
     "title": "ACT Landscape Construction — Canberra & Queanbeyan",
     "description": "Pools, sports courts, decks and gardens across Canberra and Queanbeyan, designed and built by one team.",
-    "alt": "A backyard with a deck and outdoor dining table, a glass-fenced pool, a lawn on a block retaining wall and a blue basketball court"
+    "alt": "A backyard from above: a plunge pool in grey stone paving, a blue basketball court, a lawn and a covered deck"
   },
-  "responsePromise": "Ring the team on 02 5110 3917, Monday to Friday 9am to 4pm. Saturdays at the showroom are by appointment.",
+  "responsePromise": "Ring us on 02 5110 3917, Monday to Friday 9am to 4pm. Saturdays at the showroom are by appointment.",
   "hours": [
     "Monday to Friday, 9am to 4pm",
     "Saturday by appointment"
   ],
   "copy": {
     "title": "ACT Landscape Construction — Landscaping, Pools & Sports Courts, Canberra",
-    "description": "Pools, sports courts, decks, walls, paving and gardens across Canberra and Queanbeyan, designed and built by one team from a Fyshwick showroom. 2025 Master Builders winner, Landscape Design and Construction Residential.",
-    "ctaLabel": "Talk to Xavier's team",
+    "description": "Pools, sports courts, decks, walls, paving and gardens across Canberra and Queanbeyan, designed and built by one team from our Fyshwick showroom. With ACT Decks, 2025 Master Builders ACT winners, Landscape Design and Construction Residential.",
+    "ctaLabel": "Talk to our team",
     "kicker": "Canberra and Queanbeyan",
     "headline": "Pool. Court.<br>Deck. Garden.<br><em>One team.</em>",
-    "sub": "Xavier Duffy's team of 14 designs and builds whole backyards like this one, with every trade managed in-house. The one they built in Jerrabomberra won a <em>2025 Master Builders award</em>.",
+    "sub": "We're a team of 14 in Fyshwick, led by Director Xavier Duffy, and we design and build whole backyards with every trade managed in-house. This is the Jerrabomberra backyard we built with ACT Decks: a <em>2025 Master Builders ACT award</em> winner.",
     "heroSecondary": "Or send the details",
     "heroSecondarySms": "Or send the details",
     "navApproach": "Approach",
     "statementLabel": "The difference",
     "statementHeadline": "One team.<br>Every trade.",
-    "statementBody": "No lining up a pool builder, a court company, a deck builder and a landscaper yourself. Design, approvals, excavation, construction and the final detail are all managed in-house, on our own mini excavators, tippers and skid steers. You deal with one team from the first conversation to handover.",
+    "statementBody": "No lining up a pool builder, a court company, a deck builder and a landscaper yourself. We manage the design, approvals, excavation, construction and the final detail in-house, with mini excavators, tippers and skid steers on the job. You deal with one team from the first conversation to handover.",
     "servicesLabel": "What we build",
     "servicesHeadline": "The whole<br>backyard.",
     "servicesIntro": "Each part is planned around the rest: how the pool meets the paving and the deck, how a court sits into the levels and the drainage, how the planting ties it together. Built for Canberra's frosty winters and hot, dry summers.",
-    "apertureLabel": "Master Builders 2025 · Winner",
-    "apertureLine": "Three levels. One build.",
+    "apertureLabel": "Planned as one",
+    "apertureLine": "Deck, pool, lawn and court. One backyard.",
     "workLabel": "Recent work",
     "workHeadline": "Six backyards.<br>Six briefs.",
-    "workIntro": "A grass tennis court in Forrest, corten screens, a pool with its own spa, a courtyard plunge pool, a brick path through grasses, and an outdoor kitchen under a pergola. Every photo on this page is one of our own jobs. Select any photo to see it larger.",
+    "workIntro": "A grass tennis court in Forrest, corten screens, a pool with its own spa, a courtyard plunge pool, a brick path through grasses, and an outdoor kitchen under a pergola. Every photo on this page is our own. Select any photo to see it larger.",
     "processLabel": "How it runs",
-    "processHeadline": "Four steps.<br>No guesswork.",
-    "processIntro": "The same steps on every job, from the first call to walking you through the finished space.",
+    "processHeadline": "First call<br>to walkthrough.",
+    "processIntro": "How every job runs, from the first conversation to walking you through the finished space.",
     "ownerLabel": "Who you are dealing with",
     "recognitionLabel": "Beyond the reviews",
     "recognitionHeadline": "Worth checking first.",
-    "recognitionIntro": "Master Builders, the Fyshwick showroom and Harvest Pools: three things you can look up before you ring.",
+    "recognitionIntro": "Master Builders ACT, our Fyshwick showroom and Harvest Pools: three things you can look up before you ring.",
     "reviewsLabel": "Google reviews",
     "reviewsTitle": "In their words.",
     "reviewsIntro": "From our Google reviews, word for word. Two of the three below run longer on Google and are marked shortened.",
     "areasLabel": "Where we work",
     "areasHeadline": "Canberra.<br>Queanbeyan.<br>Around both.",
-    "areasIntro": "From the showroom in Fyshwick, across Canberra, Queanbeyan and the surrounding areas. Recent jobs include a whole backyard in Forrest, retaining walls and paving in Kaleen, and the Jerrabomberra backyard that won at the 2025 Master Builders Excellence Awards.",
+    "areasIntro": "From our showroom in Fyshwick, we work across Canberra, Queanbeyan and the surrounding areas. Recent jobs include a whole backyard in Forrest, retaining walls and paving in Kaleen, and the Jerrabomberra backyard we built with ACT Decks, a 2025 Master Builders ACT award winner.",
     "faqLabel": "Before you ring",
     "faqHeadline": "Questions we get asked.",
     "enquireLabel": "Tell us about the backyard",
     "enquireHeadline": "What do you want<br>the space to do?",
-    "enquireIntro": "It starts with a quick conversation about your goals, ideas, budget and timeline. No pressure, just clarity, and a chance to see if we're a good fit. Photos of the space help."
+    "enquireIntro": "Tell us your goals, ideas, budget and timeline, and we'll give you honest advice on what's possible and whether we're the right fit. Photos of the space help.",
+    "navOwner": "Team"
   },
   "form": {
     "notesHint": "Where the property is, what you'd like built (pool, court, deck, walls, garden), and roughly when you'd like to start."
@@ -105,8 +106,8 @@
     "name": "David C, Google"
   },
   "owner": {
-    "body": "Xavier Duffy is the Director. ACT Landscape Construction was established in 2021, in response to growing demand for high-quality, reliable landscape construction across Canberra and Queanbeyan, and has grown into a team of 14 landscaping and trade professionals.",
-    "team": "Anthony O'Sullivan is the Project Manager. Every project is overseen from the first consultation through to completion, with on-site supervision and a clear timeline, and you can sit down with the team at the Fyshwick showroom before anything is built.",
+    "body": "Xavier Duffy is our Director. We started in 2021 and now number 14: landscapers and tradespeople who build every part of the job between us.",
+    "team": "Anthony O'Sullivan is our Project Manager. Someone experienced oversees each job from the first consultation to completion and supervises on site, and you're welcome to sit down with us at the Fyshwick showroom before anything is built.",
     "facts": [
       {
         "value": "2021",
@@ -125,9 +126,9 @@
   "credentials": [
     {
       "kind": "award",
-      "label": "Master Builders Excellence Awards",
+      "label": "Master Builders ACT Excellence Awards",
       "year": 2025,
-      "body": "Winner, Landscape Design and Construction Residential, with ACT Decks, for a three-level backyard in Jerrabomberra: a Trex deck and Versiclad pergola, a lawn and plunge pool, a putting green, a basketball court and a sauna under the deck.",
+      "body": "Winners with ACT Decks, Landscape Design and Construction Residential, for a three-level backyard in Jerrabomberra: a Trex deck and Versiclad pergola, a lawn and plunge pool, a putting green, a basketball court and a sauna under the deck.",
       "strip": true
     },
     {
@@ -168,7 +169,7 @@
         "srcset": "assets/jerra-court-overhead-480.webp 480w, assets/jerra-court-overhead-750.webp 750w",
         "width": 750,
         "height": 859,
-        "alt": "A blue and grey half basketball court seen from directly above, with its hoop, garden beds either side and the glass pool fence below, part of the award-winning Jerrabomberra backyard"
+        "alt": "A blue and grey half basketball court seen from directly above, with its hoop, garden beds either side and the glass pool fence below, in the Jerrabomberra backyard we built with ACT Decks"
       }
     },
     {
@@ -222,12 +223,12 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/deck-pool-court-1500.webp",
-      "srcset": "assets/deck-pool-court-800.webp 800w, assets/deck-pool-court-1200.webp 1200w, assets/deck-pool-court-1500.webp 1500w",
-      "width": 1500,
-      "height": 840,
-      "alt": "A whole backyard built as one job: a deck with an outdoor dining table, a glass-fenced pool, a new lawn on a block retaining wall, and a blue basketball court under a pergola",
-      "_comment": "151225_0026.jpg, their own photo, cropped to 1500x840 (60px of sky off the top, 100px of shaded paving off the bottom) and given a gentle shadow lift (gamma 0.88) so it reads under the hero overlay on a phone. No other retouching. The one frame on their site that shows all four things the headline names — pool, court, deck and garden. Replaced the Jerrabomberra dusk shot (210624_0013), which went too dark under the hero overlay at 390. 1500px wide — under the 1600 target, FLAGGED in BRIEF.md; the 1920px frames on their site are all single-feature shots. Ask Xavier for the photographer's originals."
+      "src": "assets/jerra-pool-court-1360.webp",
+      "srcset": "assets/jerra-pool-court-800.webp 800w, assets/jerra-pool-court-1200.webp 1200w, assets/jerra-pool-court-1360.webp 1360w",
+      "width": 1360,
+      "height": 999,
+      "alt": "The Jerrabomberra backyard we built with ACT Decks, from above: a plunge pool in grey stone paving behind a glass fence, a blue basketball court, a lawn, a covered deck, timber stairs, garden beds and a putting green",
+      "_comment": "210624_0057.jpg, the 2025 Master Builders ACT winning job (built with ACT Decks), cropped to 1360x999 (140px off the right-hand fence, so the court sits nearer the centre of a phone screen), with a gentle brightening (gamma 0.85) so the pool, court and deck read under the hero overlay at 390 and 1440. Replaces 151225_0026, which the reviewer found too dark (deck lost at 1440, only lawn and a house at 390). 1360px wide after the crop (1500 original), under the 1600 target: flagged in BRIEF.md; ask Xavier for the photographer's originals."
     },
     "statement": {
       "src": "assets/crew-loader-1200.webp",
@@ -237,12 +238,13 @@
       "alt": "An ACT Landscape Construction crew member in uniform and ear muffs working the controls of a tracked mini loader, two more of the crew behind him"
     },
     "aperture": {
-      "src": "assets/jerra-aerial-1500.webp",
-      "srcset": "assets/jerra-aerial-800.webp 800w, assets/jerra-aerial-1200.webp 1200w, assets/jerra-aerial-1500.webp 1500w",
+      "src": "assets/deck-pool-court-1500.webp",
+      "srcset": "assets/deck-pool-court-800.webp 800w, assets/deck-pool-court-1200.webp 1200w, assets/deck-pool-court-1500.webp 1500w",
       "width": 1500,
-      "height": 999,
-      "alt": "The Jerrabomberra backyard from above: a putting green, a lawn and plunge pool in grey stone paving, a blue basketball court and a covered deck",
-      "caption": "Jerrabomberra · Master Builders winner, 2025"
+      "height": 840,
+      "alt": "A backyard with a deck and outdoor dining table, a glass-fenced pool, a new lawn on a block retaining wall, and a blue basketball court under a pergola",
+      "caption": "Deck, pool, lawn and court",
+      "_comment": "151225_0026.jpg, their own photo, cropped to 1500x840 with a gentle shadow lift (gamma 0.88). Was the hero in the first build."
     },
     "owner": {
       "src": "assets/xavier-1200.webp",
@@ -405,10 +407,6 @@
         "sentence": "Landscapers Canberra | ACT Landscape Construction (home page title) — © 2026 ACT Landscape Construction",
         "url": "https://www.act-landscaping.com.au/"
       },
-      "Owner 'Xavier Duffy', title 'Director' (owner section, hero sub, CTA 'Talk to Xavier's team', owner photo caption)": {
-        "sentence": "Meet the ACT Landscape Team — Xavier Duffy, Director — Anthony O'Sullivan, Project Manager",
-        "url": "https://www.act-landscaping.com.au/about"
-      },
       "'Anthony O'Sullivan is the Project Manager' (owner section)": {
         "sentence": "Meet the ACT Landscape Team — Xavier Duffy, Director — Anthony O'Sullivan, Project Manager",
         "url": "https://www.act-landscaping.com.au/about"
@@ -433,37 +431,13 @@
         "sentence": "ABN 67 651 462 449 — Entity name: OUTDOOR ACT PTY LTD. Business name: ACT Landscape Construction, from 10 May 2022. Not published on their own site.",
         "url": "https://abr.business.gov.au/ABN/View?abn=67651462449"
       },
-      "'established in 2021' / owner fact '2021 Established' / stats.establishedYear": {
-        "sentence": "ACT Landscape Construction was established in 2021 in response to growing demand for high-quality, reliable landscape construction across Canberra and Queanbeyan.",
-        "url": "https://www.act-landscaping.com.au/about"
-      },
-      "'team of 14' (hero sub, owner body, owner fact '14 In the team')": {
-        "sentence": "Since then, we've grown into a team of 14 skilled landscaping and trade professionals, delivering complete outdoor projects with precision, care, and consistency.",
-        "url": "https://www.act-landscaping.com.au/about"
-      },
       "Owner fact '500+ Projects completed'": {
         "sentence": "500+ PROJECTS COMPLETED — With over 500 completed projects, our experience ensures reliable delivery and proven results. (home, about, services and every service page)",
         "url": "https://www.act-landscaping.com.au/about"
       },
-      "Award: '2025 Master Builders award' (hero sub, meta description), credential 'Master Builders Excellence Awards 2025 — Winner, Landscape Design and Construction Residential, with ACT Decks, Jerrabomberra', aperture label 'Master Builders 2025 · Winner', aperture caption 'Jerrabomberra · Master Builders winner, 2025', areas intro 'the Jerrabomberra backyard that won at the 2025 Master Builders Excellence Awards', recognition intro 'Master Builders', hero alt 'The award-winning Jerrabomberra backyard'": {
-        "sentence": "2025 Master Builders and Asset Construction Hire Excellence Awards — Landscape Design and Construction Residential — ACT Landscape Construction, ACT Decks — Jerrabomberra. Their own projects page: 'Jerrabomberra — Award Winning Project 2025'. Their own photo of the framed certificate reads 'MASTER BUILDERS AND ASSET CONSTRUCTION HIRE … WINNER — ACT Landscape Construction and ACT Decks — Landscape Design and Construction Residential — Jerrabomberra'.",
-        "url": "https://mba.org.au/awards-result/landscape-design-and-constructions/"
-      },
-      "Award credential detail: three levels, Trex deck, Versiclad pergola, lawn and plunge pool, putting green, basketball court, sauna under the deck; aperture line 'Three levels. One build.'": {
-        "sentence": "ACT Landscape Construction and ACT Decks have created a stunning outdoor retreat that combines entertainment, recreation, and relaxation across three levels. This incredible landscape design really has it all: the Trex deck offers a warm space for gatherings, while a Versiclad pergola provides shade. The middle level features a lush grassed area and a plunge pool, while the highest level features a custom-designed putting green. The lowest level features a Dream Courts basketball court, while a private sauna beneath the deck offers a secluded space for relaxation.",
-        "url": "https://mba.org.au/awards-result/landscape-design-and-constructions/"
-      },
-      "Aperture and court service photos identified as the Jerrabomberra job": {
-        "sentence": "Their projects page places 210624_0068.jpg (the aerial used as the aperture) directly under 'Jerrabomberra — Award Winning Project 2025'. The court service photo, 210624_0061, is from the same 21 June 2024 shoot and shows the same blue half court from above, with the glass pool fence below it, matching the Master Builders description.",
-        "url": "https://www.act-landscaping.com.au/projects"
-      },
       "'designs and builds whole backyards like this one, with every trade managed in-house' (hero sub), 'One team. Every trade.' (statement), 'Design, approvals, excavation, construction and the final detail are all managed in-house', 'No lining up a pool builder, a court company, a deck builder and a landscaper yourself', 'one team from the first conversation to handover', headline 'One team.', tagline 'designed and built by one team'": {
         "sentence": "All Trades Managed In-House — Every trade and stage of your project is managed in-house for consistent quality and clear communication. / One Team. One Build. / Yes. We provide an end-to-end service, handling design, approvals, excavation, construction and final detailing. This ensures a seamless experience and a cohesive result without the need to coordinate multiple contractors. / All processes, trades, and approvals are handled in-house, so you only deal with one team throughout your project.",
         "url": "https://www.act-landscaping.com.au/our-services"
-      },
-      "'on our own mini excavators, tippers and skid steers' (statement)": {
-        "sentence": "State-of-the-art machinery and equipment, including mini excavators, tippers, and skid steers, for efficient, quality construction.",
-        "url": "https://www.act-landscaping.com.au/"
       },
       "Services intro: pool meets paving and deck; court sits into the levels and drainage; planting ties it together; Canberra's frosty winters and hot, dry summers": {
         "sentence": "Our focus is not just the pool itself — but how it connects to your paving, decking, planting, lighting and entertaining areas. (pools) / We consider levels, drainage, access, fencing and surrounding landscaping to ensure the finished space feels integrated, not added on. (courts) / From frost-prone winters to hot, dry summers, every landscaping project we deliver is designed to perform year-round in Canberra conditions. (landscaping)",
@@ -484,10 +458,6 @@
       "Credential 'Showroom in Fyshwick' and FAQ 'Can I see the materials before I commit?'": {
         "sentence": "Paving and stone samples, Decking options (timber & composite), Pool coping selections, Outdoor cabinetry finishes … Pergola styles and structural options, Outdoor kitchen layouts … our space allows you to see finishes, explore pool and pergola options, and discuss your project in our private meeting room before construction begins.",
         "url": "https://www.act-landscaping.com.au/our-showroom"
-      },
-      "Owner team line 'overseen from the first consultation through to completion, with on-site supervision and a clear timeline'": {
-        "sentence": "Every project is overseen by experienced team members who guide you from initial consultation through to completion. We prioritise clear communication, structured timelines, and on-site supervision.",
-        "url": "https://www.act-landscaping.com.au/about"
       },
       "Service area: Canberra, Queanbeyan and surrounding areas (kicker, areas section)": {
         "sentence": "our Fyshwick-based team delivers quality, precision, and hassle-free project management across Canberra, Queanbeyan, and surrounding areas.",
@@ -534,16 +504,12 @@
         "url": "data/google_reviews_top25.json"
       },
       "Every photo on the page": {
-        "sentence": "All 15 images are their own, pulled at full resolution from their Duda CDN (irp.cdn-website.com/904fa5d1/dms3rep/multi/). No stock, no upscaling, no sample photos. Hero 151225_0026 (deck, pool, lawn and court at one property); aperture 210624_0068 and court service 210624_0061 (Jerrabomberra, the award job); statement 12.jpg (crew on a mini loader, about page background); services 161025_0023, 210624_0061 (overhead court), 21- web Firepit; gallery Forrest-Main-1 (Forrest, projects page), 061124_0082 - Screens, 021222_173, 181225_0005, Snapins.ai_468330689 (Instagram export), 190624_0002 - Outdoor Kitchen; owner Xav Landscape.jpg (about page, 'Xavier Duffy, Director'); enquiry background 'Image Feb 10, 2026, 11_42_53 AM.png' (showroom page). Apart from the two Jerrabomberra frames, each slot is a different property by shoot code. No captions name a suburb except Forrest and Jerrabomberra, which their projects page names. Crew member in the statement photo is not named.",
+        "sentence": "All 15 images are their own, pulled at full resolution from their Duda CDN (irp.cdn-website.com/904fa5d1/dms3rep/multi/). No stock, no upscaling, no sample photos. Hero 210624_0057 and court service 210624_0061 (Jerrabomberra, the award job with ACT Decks); aperture 151225_0026 (deck, pool, lawn and court at one property); statement 12.jpg (crew on a mini loader, about page background); services 161025_0023, 210624_0061, 21- web Firepit; gallery Forrest-Main-1 (Forrest, projects page), 061124_0082 - Screens, 021222_173, 181225_0005, Snapins.ai_468330689 (Instagram export), 190624_0002 - Outdoor Kitchen; owner Xav Landscape.jpg (about page, 'Xavier Duffy, Director'); enquiry background 'Image Feb 10, 2026, 11_42_53 AM.png' (showroom page). Apart from the two Jerrabomberra frames, each slot is a different property by shoot code. Work intro says 'Every photo on this page is our own', not that every photo is a job: the crew, Xavier and the showroom are not jobs.",
         "url": "https://www.act-landscaping.com.au/projects"
       },
       "Logo": {
         "sentence": "ACTLC-logo-primary-reverse.png (1920x395) from their site header, downsized to 520x107. Favicon is the shield from ACTLC-logo-primary-Final.png on a dark square.",
         "url": "https://www.act-landscaping.com.au/"
-      },
-      "Process steps Discover and consult, Design and scope, Approve and schedule, Build and handover; enquire intro 'no pressure, just clarity … a good fit'": {
-        "sentence": "(01) DISCOVER … We start with a quick conversation to understand your goals, ideas, budget, and timeline, no pressure, just clarity and to see if we would be a good fit together. (02) Consult — We meet on-site or virtually to assess your space … (03) Design & Scope — design concepts, material selections, scope of works, and transparent pricing … (04) Approve & Schedule — We finalise approvals, confirm timelines, and schedule your project … (05) build — Our in-house team brings the design to life … quality control, and respect for your home … (06) Handover & Enjoy — We walk you through the finished space and ensure every detail is right.",
-        "url": "https://www.act-landscaping.com.au/about"
       },
       "Service 'Walls, paving, decks, gardens' (second half): decks, pergolas, fire pits, turf, irrigation; plants for Canberra's clay soils and frosts; gallery 'Outdoor kitchen'": {
         "sentence": "Our services include: Landscaping, Pool Installations, Sports Courts, Fire Pits, Concreting, Paving, Softscaping, Pergolas & Decks, Retaining Walls, Turfing. / Decking options (timber & composite) … Outdoor kitchen layouts and appliance integrations (showroom). / This includes plants capable of tolerating seasonal temperature variation, low rainfall and Canberra's clay-based soils.",
@@ -552,6 +518,46 @@
       "Service 'Walls, paving, decks, gardens' (first half): retaining wall materials, paving types": {
         "sentence": "Treated Pine … Hardwood Timber … Concrete Sleepers … Block Retaining Walls … Stone Retaining Walls … Brick Retaining Walls. / Driveway Paving, Pathways & Stepping Stone, Alfresco & Outdoor Living Areas, Pool Surround Paving. / From natural turf installation to artificial grass and automated irrigation systems.",
         "url": "https://www.act-landscaping.com.au/paving-and-retaining-walls-canberra"
+      },
+      "Award (always stated as a joint win with ACT Decks, Master Builders ACT): hero sub 'the Jerrabomberra backyard we built with ACT Decks: a 2025 Master Builders ACT award winner', meta description 'With ACT Decks, 2025 Master Builders ACT winners, Landscape Design and Construction Residential', credential 'Master Builders ACT Excellence Awards 2025 — Winners with ACT Decks …', areas intro 'the Jerrabomberra backyard we built with ACT Decks, a 2025 Master Builders ACT award winner', hero alt": {
+        "sentence": "2025 Master Builders and Asset Construction Hire Excellence Awards — Landscape Design and Construction Residential — ACT Landscape Construction, ACT Decks — Jerrabomberra. Their own projects page: 'Jerrabomberra — Award Winning Project 2025'. Their own photo of the framed certificate reads 'MASTER BUILDERS AND ASSET CONSTRUCTION HIRE … WINNER — ACT Landscape Construction and ACT Decks — Landscape Design and Construction Residential — Jerrabomberra'.",
+        "url": "https://mba.org.au/awards-result/landscape-design-and-constructions/"
+      },
+      "Hero and court service photos identified as the Jerrabomberra job": {
+        "sentence": "Their projects page places 210624_0068.jpg (aerial) directly under 'Jerrabomberra — Award Winning Project 2025'. The hero, 210624_0057, and the court service photo, 210624_0061, are from the same 21 June 2024 shoot and show the same plunge pool, half court, deck, stairs and putting green seen in that aerial, matching the Master Builders description.",
+        "url": "https://www.act-landscaping.com.au/projects"
+      },
+      "'with mini excavators, tippers and skid steers on the job' (statement) — no ownership claimed": {
+        "sentence": "State-of-the-art machinery and equipment, including mini excavators, tippers, and skid steers, for efficient, quality construction.",
+        "url": "https://www.act-landscaping.com.au/"
+      },
+      "'We started in 2021' (owner body) / owner fact '2021 Established' / stats.establishedYear": {
+        "sentence": "ACT Landscape Construction was established in 2021 in response to growing demand for high-quality, reliable landscape construction across Canberra and Queanbeyan.",
+        "url": "https://www.act-landscaping.com.au/about"
+      },
+      "'a team of 14' (hero sub), 'now number 14: landscapers and tradespeople' (owner body), owner fact '14 In the team'": {
+        "sentence": "Since then, we've grown into a team of 14 skilled landscaping and trade professionals, delivering complete outdoor projects with precision, care, and consistency.",
+        "url": "https://www.act-landscaping.com.au/about"
+      },
+      "Owner 'Xavier Duffy', title 'Director' (hero sub 'led by Director Xavier Duffy', owner section, owner photo caption)": {
+        "sentence": "Meet the ACT Landscape Team — Xavier Duffy, Director — Anthony O'Sullivan, Project Manager",
+        "url": "https://www.act-landscaping.com.au/about"
+      },
+      "Owner team line 'Someone experienced oversees each job from the first consultation to completion and supervises on site'": {
+        "sentence": "Every project is overseen by experienced team members who guide you from initial consultation through to completion. We prioritise clear communication, structured timelines, and on-site supervision.",
+        "url": "https://www.act-landscaping.com.au/about"
+      },
+      "Enquire intro 'honest advice on what's possible and whether we're the right fit'": {
+        "sentence": "We meet on-site or virtually to assess your space and discuss what's possible. You'll receive expert guidance, honest advice … to see if we would be a good fit together.",
+        "url": "https://www.act-landscaping.com.au/about"
+      },
+      "Award credential detail: three levels, Trex deck, Versiclad pergola, lawn and plunge pool, putting green, basketball court, sauna under the deck": {
+        "sentence": "ACT Landscape Construction and ACT Decks have created a stunning outdoor retreat that combines entertainment, recreation, and relaxation across three levels. This incredible landscape design really has it all: the Trex deck offers a warm space for gatherings, while a Versiclad pergola provides shade. The middle level features a lush grassed area and a plunge pool, while the highest level features a custom-designed putting green. The lowest level features a Dream Courts basketball court, while a private sauna beneath the deck offers a secluded space for relaxation.",
+        "url": "https://mba.org.au/awards-result/landscape-design-and-constructions/"
+      },
+      "Process steps Discover and consult, Design and scope, Approve and schedule, Build and handover": {
+        "sentence": "(01) DISCOVER … We start with a quick conversation to understand your goals, ideas, budget, and timeline, no pressure, just clarity and to see if we would be a good fit together. (02) Consult — We meet on-site or virtually to assess your space … (03) Design & Scope — design concepts, material selections, scope of works, and transparent pricing … (04) Approve & Schedule — We finalise approvals, confirm timelines, and schedule your project … (05) build — Our in-house team brings the design to life … quality control, and respect for your home … (06) Handover & Enjoy — We walk you through the finished space and ensure every detail is right.",
+        "url": "https://www.act-landscaping.com.au/about"
       }
     }
   }
