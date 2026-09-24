@@ -1,0 +1,438 @@
+{
+  "_comment": "Pinczi Builders Pty Ltd, Bowral NSW (Southern Highlands). Hand-written 2026-09-24 from https://pinczibuilders.com.au (live site, read with curl) because `npm run new` is broken in this container (see HANDOVER.md). Legitimacy checked: named builder Steve Pinczi, ABN 51 633 339 885 (ABN Lookup: PINCZI BUILDERS PTY LTD, active, NSW 2576), Lic No. 350923C, one mobile matching Google, 100+ professional photos of six named Highlands projects. Every specific fact on the page is quoted in _source.claimSources with its URL. No Google rating or reviews exist (data/google_reviews_top25.json) and their site has no testimonials, so reviews is empty and nothing shows a rating or count. The builders preset's process, FAQ and responsePromise describe a generic builder (fixed price, reply within a day, one site supervisor), none of which Pinczi publish, so all three are overridden with their own published words. All 13 photos are their own, 13 different photos, none upscaled, no samples. See BRIEF.md.",
+  "slug": "pinczi-builders",
+  "template": "trust",
+  "industry": "builders",
+  "live": false,
+  "tagline": "Custom homes, additions and commercial builds, only in the Southern Highlands, for over twenty years.",
+  "schemaType": "HomeAndConstructionBusiness",
+  "business": {
+    "name": "Pinczi Builders",
+    "ownerName": "Steve Pinczi",
+    "ownerFirstName": "Steve",
+    "ownerTitle": "Builder",
+    "phone": {
+      "display": "0411 540 495",
+      "e164": "+61411540495",
+      "_comment": "The only phone number on their site (Contact Us), and the same as Google. It's a mobile, so the text button renders. The site doesn't say whose phone it is, so copy.callLabel is 'Call Pinczi' rather than 'Call Steve'."
+    },
+    "email": "steve@pinczibuilders.com.au",
+    "baseSuburb": "Bowral",
+    "region": "NSW",
+    "currentSite": "pinczibuilders.com.au",
+    "brand": {
+      "accent": "#CFA968",
+      "accent2": "#C9795B",
+      "themeColor": "#191919",
+      "_comment": "Their logo and site are monochrome charcoal (#292929) and white, so themeColor is that charcoal, deepened. The accent is the aged brass of the pendant lights in their Burradoo home, and accent2 is the recycled-brick red of the chimneys at Burradoo and Burrawang. Neither is a published brand colour."
+    },
+    "logo": {
+      "src": "assets/logo-pinczi-white.png",
+      "width": 107,
+      "height": 75,
+      "_comment": "Their own logo, pinczibuilderslogo.webp (274x83): white PINCZI / BUILDERS lettering on a charcoal wood-grain panel. I made the panel transparent, so the white lettering sits on the dark header without a grey box, and trimmed the empty margin. The lettering is unchanged. The original is kept as assets/logo-pinczi-original.png."
+    }
+  },
+  "icons": {
+    "favicon": "assets/favicon.png"
+  },
+  "share": {
+    "image": "assets/share-1200.webp",
+    "width": 1200,
+    "height": 630,
+    "title": "Pinczi Builders: Southern Highlands Builders, Bowral",
+    "description": "Custom homes, additions and commercial builds, only in the Southern Highlands, for over twenty years.",
+    "alt": "At dusk, a white weatherboard home with a lit bedroom window above a lit swimming pool, Burradoo"
+  },
+  "responsePromise": "Builder's licence 350923C · HIA member · Bowral, Southern Highlands",
+  "copy": {
+    "title": "Pinczi Builders: Custom Home Builders, Bowral & the Southern Highlands",
+    "description": "Bowral builders working only in the Southern Highlands for over twenty years. Custom homes, renovations and additions, commercial projects, planning and hard landscaping. Steve Pinczi, 0411 540 495.",
+    "ctaLabel": "Call Pinczi",
+    "callLabel": "Call Pinczi",
+    "kicker": "Southern Highlands · Bowral",
+    "headline": "Ask anyone<br>in the Highlands<br><em>about Steve.</em>",
+    "sub": "For over twenty years we've built only in the Southern Highlands. Custom homes, additions and renovations, and commercial jobs like Oxley College Junior School.",
+    "heroSecondary": "Or send the details",
+    "heroSecondarySms": "Or text us a photo of the site",
+    "navApproach": "Approach",
+    "statementLabel": "Complete projects",
+    "statementHeadline": "One team,<br>start to<br>handover.",
+    "statementBody": "Over twenty years we've built a loyal network of the Highlands' most skilled contractors. We work closely with draughting professionals, architects and landscape designers, so the whole project is coordinated in one place, from council submissions and organising power and water to the stone walls and the driveway.",
+    "servicesLabel": "What we build",
+    "servicesHeadline": "Homes, additions<br>and commercial<br>sites.",
+    "servicesIntro": "Custom homes, alterations, refurbishments and additions to existing homes, and medium-scale commercial sites. Our commercial work includes Oxley College Junior School and Reekie's Tyres and More.",
+    "apertureLabel": "Exacting standards",
+    "apertureLine": "The same exacting standards on every project, for over two decades.",
+    "workLabel": "Our work",
+    "workHeadline": "Across the<br>Southern<br>Highlands.",
+    "workIntro": "A few of our projects, from Kangaloon to Burradoo.",
+    "processLabel": "How it starts",
+    "processHeadline": "Early advice.<br>Then we build.",
+    "processIntro": "Practical, realistic advice from the first conversation, so you get the best outcome for your build.",
+    "ownerLabel": "Who you are dealing with",
+    "recognitionLabel": "Our standing",
+    "recognitionHeadline": "Licensed, HIA members, and trusted with a school.",
+    "recognitionIntro": "Twenty years of work, all of it in the Southern Highlands.",
+    "areasLabel": "Where we build",
+    "areasHeadline": "Only the<br>Southern<br>Highlands.",
+    "areasIntro": "We're based in Bowral, and for over two decades we've worked only in the Southern Highlands. You'll find our work all across the district, including homes at Burradoo, Kangaloon and Burrawang.",
+    "faqLabel": "Before you call",
+    "faqHeadline": "Questions we get asked.",
+    "enquireLabel": "Talk to us",
+    "enquireHeadline": "Tell us about<br>the project.",
+    "enquireIntro": "Tell us where the house or block is, whether it's a new build, an addition or a renovation, and whether you have plans yet. Or email steve@pinczibuilders.com.au."
+  },
+  "stats": {
+    "_comment": "The years stat can only render as a number. Their site says 'over two decades', so it shows 20 with the sublabel 'and counting'. There's no founding year on the site.",
+    "yearsInBusiness": 20
+  },
+  "statLabels": {
+    "yearsInBusiness": "Years in the Highlands"
+  },
+  "statSublabels": {
+    "yearsInBusiness": "and counting, nowhere else"
+  },
+  "owner": {
+    "body": "Steve Pinczi leads our team. For over two decades we've worked only in the Southern Highlands, bringing exacting standards to every project, and our work is all across the district.",
+    "team": "We're a friendly, skilled team, backed by a loyal and responsive network of local contractors. We enjoy a lot of repeat business, and long-term relationships with our clients.",
+    "facts": [
+      {
+        "value": "350923C",
+        "label": "NSW builder's licence"
+      },
+      {
+        "value": "HIA",
+        "label": "Housing Industry Association member"
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "kind": "membership",
+      "label": "HIA member",
+      "body": "We're members of the Housing Industry Association.",
+      "strip": true
+    },
+    {
+      "kind": "licence",
+      "label": "Builder's licence 350923C",
+      "body": "Pinczi Builders Pty Ltd, ABN 51 633 339 885, PO Box 751, Bowral.",
+      "strip": true
+    },
+    {
+      "kind": "claim",
+      "label": "Oxley College Junior School",
+      "body": "One of several commercial projects we've completed, along with Reekie's Tyres and More.",
+      "strip": false
+    },
+    {
+      "kind": "claim",
+      "label": "Only the Southern Highlands",
+      "body": "We've worked exclusively in the Southern Highlands for over two decades.",
+      "strip": false
+    }
+  ],
+  "services": [
+    {
+      "title": "Custom built homes",
+      "blurb": "A personal service, with attention to detail and a commitment to quality at every level of your new build.",
+      "photo": {
+        "src": "assets/kangaloon-home-1024.webp",
+        "srcset": "assets/kangaloon-home-480.webp 480w, assets/kangaloon-home-800.webp 800w, assets/kangaloon-home-1024.webp 1024w",
+        "width": 1024,
+        "height": 560,
+        "alt": "A long charcoal-clad home with a stone chimney, timber-shingle gables, a red front door and a timber pergola, behind a wide lawn, Kangaloon"
+      }
+    },
+    {
+      "title": "Planning and design",
+      "blurb": "We can be involved from the early stages, for a smooth run from start to handover. We know the local council and suppliers, and help with everything from council submissions to organising power and water.",
+      "photo": {
+        "src": "assets/burradoo-street-front-1200.webp",
+        "srcset": "assets/burradoo-street-front-480.webp 480w, assets/burradoo-street-front-800.webp 800w, assets/burradoo-street-front-1200.webp 1200w, assets/burradoo-street-front-1800.webp 1800w",
+        "width": 2560,
+        "height": 1707,
+        "alt": "Seen from above, a white weatherboard home with a small portico and a curved concrete drive among tall gum trees, Burradoo"
+      }
+    },
+    {
+      "title": "Hard landscaping",
+      "blurb": "We can finish the job outside too, if you need it: driveways, fences, paving, stone walls, tennis courts, pools, pavilions and stables.",
+      "photo": {
+        "src": "assets/burrawang-stone-walls-1200.webp",
+        "srcset": "assets/burrawang-stone-walls-480.webp 480w, assets/burrawang-stone-walls-800.webp 800w, assets/burrawang-stone-walls-1200.webp 1200w, assets/burrawang-stone-walls-1800.webp 1800w",
+        "width": 2560,
+        "height": 1707,
+        "alt": "Dry-stone retaining walls either side of wide pale stone steps, leading across a lawn to a timber pergola gateway, Burrawang Farmhouse"
+      }
+    }
+  ],
+  "process": [
+    {
+      "step": "Talk it through",
+      "detail": "Tell us about the block or the house and what you'd like to build. You'll get practical, realistic advice from the start."
+    },
+    {
+      "step": "Plans and design",
+      "detail": "We work closely with draughting professionals and architects, or with yours, from the early stages."
+    },
+    {
+      "step": "Council and services",
+      "detail": "We know the local council and suppliers, and can help with everything from council submissions to organising power and water supply."
+    },
+    {
+      "step": "Build and handover",
+      "detail": "Our network of skilled Highlands contractors builds it, and we coordinate the whole job, including the landscaping if you want it."
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "Southern Highlands",
+      "suburbs": [
+        "Bowral",
+        "Burradoo",
+        "Kangaloon",
+        "Burrawang"
+      ]
+    }
+  ],
+  "photos": {
+    "hero": {
+      "src": "assets/burradoo-dusk-hero-1800.webp",
+      "srcset": "assets/burradoo-dusk-hero-480.webp 480w, assets/burradoo-dusk-hero-800.webp 800w, assets/burradoo-dusk-hero-1200.webp 1200w, assets/burradoo-dusk-hero-1800.webp 1800w, assets/burradoo-dusk-hero-2400.webp 2400w",
+      "width": 2560,
+      "height": 1707,
+      "alt": "At dusk, a white weatherboard home with a lit bedroom window and a lit swimming pool in front, Burradoo",
+      "_comment": "74a_Burradoo_Road_Dusk_Bodhi_Photo-24-scaled.jpg (2560x1707) from their Burradoo project page. The media library titles it '74A Burradoo Road, Burradoo'. It's a twilight shot, so the lit window and pool still read under the hero's dark overlay on a phone, and a phone-width centre crop keeps the gable, the lit window and the pool."
+    },
+    "statement": {
+      "src": "assets/burrawang-farmhouse-1200.webp",
+      "srcset": "assets/burrawang-farmhouse-480.webp 480w, assets/burrawang-farmhouse-800.webp 800w, assets/burrawang-farmhouse-1200.webp 1200w, assets/burrawang-farmhouse-1800.webp 1800w",
+      "width": 2560,
+      "height": 1709,
+      "alt": "A white farmhouse with a recycled-brick chimney and wood store, a covered deck and wide timber steps down to the lawn, Burrawang",
+      "_comment": "6E31BD76-603B-4996-BC5E-25885630D7F1-min-scaled.jpeg (2560x1709), the portfolio tile and first photo of their 'Burrawang Farmhouse' page."
+    },
+    "aperture": {
+      "src": "assets/burradoo-dining-1800.webp",
+      "srcset": "assets/burradoo-dining-800.webp 800w, assets/burradoo-dining-1200.webp 1200w, assets/burradoo-dining-1800.webp 1800w",
+      "width": 2560,
+      "height": 1706,
+      "alt": "A dining room under a raked white lining-board ceiling, with a brick fireplace wall and sliding doors open to a covered deck, Burradoo",
+      "caption": "Open-plan living, Burradoo"
+    },
+    "enquiryBackground": {
+      "src": "assets/burrawang-outdoor-fireplace-1200.webp",
+      "width": 1200,
+      "height": 800
+    },
+    "gallery": [
+      {
+        "src": "assets/casuarina-front-1024.webp",
+        "full": "assets/casuarina-front.jpg",
+        "srcset": "assets/casuarina-front-480.webp 480w, assets/casuarina-front-800.webp 800w, assets/casuarina-front-1024.webp 1024w",
+        "width": 1024,
+        "height": 683,
+        "caption": "Casuarina",
+        "detail": "Portico entry and paved forecourt",
+        "alt": "A pale grey weatherboard home with a white-columned portico, a brick-paved forecourt and clipped hedges under autumn trees"
+      },
+      {
+        "src": "assets/lakeview-garden-1024.webp",
+        "full": "assets/lakeview-garden.jpg",
+        "srcset": "assets/lakeview-garden-480.webp 480w, assets/lakeview-garden-800.webp 800w, assets/lakeview-garden-1024.webp 1024w",
+        "width": 1024,
+        "height": 683,
+        "caption": "Lakeview",
+        "detail": "Weatherboard home on acreage",
+        "alt": "A charcoal weatherboard home with a steep-roofed dormer wing, behind planted garden beds and a mown lawn path"
+      },
+      {
+        "src": "assets/herald-drive-kitchen-1024.webp",
+        "full": "assets/herald-drive-kitchen.jpg",
+        "srcset": "assets/herald-drive-kitchen-480.webp 480w, assets/herald-drive-kitchen-800.webp 800w, assets/herald-drive-kitchen-1024.webp 1024w",
+        "width": 1024,
+        "height": 682,
+        "caption": "Herald Drive",
+        "detail": "Kitchen",
+        "alt": "A white shaker kitchen with a stone-topped island, four black stools, three black pendant lights and oak floors"
+      },
+      {
+        "src": "assets/lakeview-dining-1024.webp",
+        "full": "assets/lakeview-dining.jpg",
+        "srcset": "assets/lakeview-dining-480.webp 480w, assets/lakeview-dining-800.webp 800w, assets/lakeview-dining-1024.webp 1024w",
+        "width": 1024,
+        "height": 684,
+        "caption": "Lakeview",
+        "detail": "Dining room and stone fireplace",
+        "alt": "A long timber dining table in front of a double-sided stone fireplace, with French doors looking out to the water"
+      },
+      {
+        "src": "assets/burradoo-bathroom-1200.webp",
+        "full": "assets/burradoo-bathroom.jpg",
+        "srcset": "assets/burradoo-bathroom-480.webp 480w, assets/burradoo-bathroom-800.webp 800w, assets/burradoo-bathroom-1200.webp 1200w, assets/burradoo-bathroom-1800.webp 1800w",
+        "width": 2560,
+        "height": 1706,
+        "caption": "Burradoo",
+        "detail": "Bathroom",
+        "alt": "A bathroom with blue gloss tiles, twin stone basins on a white vanity, brass tapware and two arched mirrors"
+      },
+      {
+        "src": "assets/kangaloon-kitchen-1024.webp",
+        "full": "assets/kangaloon-kitchen.jpg",
+        "srcset": "assets/kangaloon-kitchen-480.webp 480w, assets/kangaloon-kitchen-800.webp 800w, assets/kangaloon-kitchen-1024.webp 1024w",
+        "width": 1024,
+        "height": 683,
+        "caption": "Kangaloon",
+        "detail": "Kitchen under a raked ceiling",
+        "alt": "A kitchen with a white marble-topped island, dome pendants, a patterned tile splashback and a wall of dark cabinetry"
+      }
+    ],
+    "_comment": "13 photos, all Pinczi's own, all from pinczibuilders.com.au at the largest size the site serves. None are stock, samples or upscaled. Every slot is a different photo, and every photo appears once. Captions use only the site's own project page titles ('Burradoo', 'Burrawang Farmhouse', 'Lakeview', 'Kangaloon', 'Herald Dr', 'Casuarina'). No suburb is named that their site doesn't name for that job. The 1024px originals are only used in the gallery and service tiles."
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [],
+  "faq": [
+    {
+      "q": "Do you only build in the Southern Highlands?",
+      "a": "Yes. We've worked exclusively in the Southern Highlands for over two decades. We're based in Bowral, and our work is all across the district."
+    },
+    {
+      "q": "Can you help before we have plans?",
+      "a": "Yes. We can be involved from the early stages. We work closely with draughting professionals, architects and landscape designers, and we can help with council submissions and with organising power and water."
+    },
+    {
+      "q": "Do you do renovations and additions?",
+      "a": "Yes. Alterations, refurbishments and additions to existing homes are a big part of our work, alongside custom new homes."
+    },
+    {
+      "q": "Do you take on commercial work?",
+      "a": "Yes, medium-scale commercial sites. We've completed several, including Oxley College Junior School and Reekie's Tyres and More."
+    },
+    {
+      "q": "Can you do the driveway, fencing and landscaping too?",
+      "a": "If you need it, yes: driveways, fences, paving, stone walls, tennis courts, pools, pavilions and stables."
+    },
+    {
+      "q": "Are you licensed?",
+      "a": "Yes. Our builder's licence number is 350923C, and we're members of the Housing Industry Association. Pinczi Builders Pty Ltd, ABN 51 633 339 885."
+    }
+  ],
+  "form": {
+    "notesHint": "Where the house or block is, whether it's a new build, an addition or a renovation, whether you have plans yet, and roughly when you'd like to start."
+  },
+  "sms": {
+    "label": "Text us a photo",
+    "body": "Hi, I'm thinking about a build in the Highlands.\nSuburb: \nWhat I'm after: \n(Happy to send photos or plans.)"
+  },
+  "_source": {
+    "url": "https://pinczibuilders.com.au/",
+    "platform": "WordPress (theme 'PincziBuildersv1', built with Nicepage), LiteSpeed Cache, Contact Form 7. Portfolio tiles are CSS background images; project pages are photo grids with no text.",
+    "pagesRead": [
+      "home",
+      "about-us",
+      "17-2 (Services)",
+      "building-portfolio",
+      "contact-us",
+      "privacy-policy",
+      "lakeview",
+      "kangaloon",
+      "loyalty-ln (Casuarina)",
+      "herald-dr",
+      "page-2 (Burrawang Farmhouse)",
+      "burradoo",
+      "wp-json/wp/v2/pages",
+      "wp-json/wp/v2/media"
+    ],
+    "notes": "Read with curl (standard desktop Chrome user agent) on 2026-09-24, from the live site, not Wayback. `npm run new` is broken in this container. ABN checked on abr.business.gov.au on 2026-09-24: PINCZI BUILDERS PTY LTD, active, GST from 08 May 2019, NSW 2576, business name 'Pinczi Builders' from 27 Nov 2024. The licence number 350923C is quoted from their Contact page and has not been checked against the NSW Fair Trading register. HIA membership comes from the 'HIA member' badge image on their Contact page (wp-content/uploads/2025/05/image3.png), not a sentence; Pat to confirm it's current. The phone's owner isn't stated, hence 'Call Pinczi'.",
+    "claimSources": {
+      "Business name, 'Pinczi Builders', Pinczi Builders Pty Ltd": {
+        "sentence": "Pinczi Builders are proud to offer the following services / © PINCZI BUILDERS. ABN Lookup: Entity name PINCZI BUILDERS PTY LTD, Business name Pinczi Builders.",
+        "url": "https://pinczibuilders.com.au/17-2/"
+      },
+      "Steve Pinczi (owner name, 'Steve', 'about Steve', leads our team)": {
+        "sentence": "Steve Pinczi and the team – building homes, commercial sites and an impeccable reputation. / Ask anyone in the district about Steve Pinczi – you're sure to get a warm and positive response. / e | steve@pinczibuilders.com.au",
+        "url": "https://pinczibuilders.com.au/about-us/"
+      },
+      "Hero headline 'Ask anyone in the Highlands about Steve'": {
+        "sentence": "You will find our work all across the Southern Highlands. Ask anyone in the district about Steve Pinczi – you're sure to get a warm and positive response.",
+        "url": "https://pinczibuilders.com.au/about-us/"
+      },
+      "Only the Southern Highlands for over twenty years / over two decades / 20 years stat / 'nowhere else'": {
+        "sentence": "Pinczi Builders has worked exclusively in the Southern Highlands for over two decades.",
+        "url": "https://pinczibuilders.com.au/about-us/"
+      },
+      "Exacting standards on every project; one of the most professional builders in the district": {
+        "sentence": "By bringing exacting standards to every project over that time, we have earned our reputation as one of the most professional builders in the district.",
+        "url": "https://pinczibuilders.com.au/about-us/"
+      },
+      "Network of skilled Highlands contractors; draughting professionals, architects, landscape designers; coordinate complete projects": {
+        "sentence": "We have established a loyal and responsive network of the Highland's most skilled contractors. We also work closely with draughting professionals, architects and landscape designers to coordinate complete projects.",
+        "url": "https://pinczibuilders.com.au/about-us/"
+      },
+      "Custom homes, medium-scale commercial, alterations, refurbishments and additions": {
+        "sentence": "Our projects include custom residential builds, medium scale commercial sites plus alterations, refurbishments and additions to existing homes.",
+        "url": "https://pinczibuilders.com.au/about-us/"
+      },
+      "Friendly skilled team, practical and realistic advice, best outcome, repeat business and long-term relationships": {
+        "sentence": "We are a friendly, skilled team that enthusiastically helps our clients to the best possible outcomes for their build, with practical and realistic advice. As a result, we enjoy repeat business and long-term relationships with our clients.",
+        "url": "https://pinczibuilders.com.au/about-us/"
+      },
+      "Planning and design: early stages, start to handover, council submissions, power and water": {
+        "sentence": "Planning and design — We can be involved from the early stages to enable a smooth transition from the start to handover. With local council, supplier and industry knowledge we can assist with everything from council submissions to organising power and water supply.",
+        "url": "https://pinczibuilders.com.au/17-2/"
+      },
+      "Custom built homes: personal service, attention to detail, commitment to quality": {
+        "sentence": "Custom Built Homes — We offer a personal service providing attention to detail and commitment to quality at every level of your new build.",
+        "url": "https://pinczibuilders.com.au/17-2/"
+      },
+      "Renovations and additions": {
+        "sentence": "Renovations and Additions — We have extensive experience in renovation works. We can help turn your dream into a reality.",
+        "url": "https://pinczibuilders.com.au/17-2/"
+      },
+      "Oxley College Junior School and Reekie's Tyres and More; several commercial projects": {
+        "sentence": "Commercial Projects — Our company has completed several commercial projects such as Oxley College Junior school and Reekie's Tyres and More.",
+        "url": "https://pinczibuilders.com.au/17-2/"
+      },
+      "Hard landscaping: driveways, fences, paving, stone walls, tennis courts, pools, pavilions, stables, if required": {
+        "sentence": "Hard Landscaping — Completing your projects with landscaping works if required - including driveways, fences, paving, stones walls, tennis courts, pools pavilions and stables and more.",
+        "url": "https://pinczibuilders.com.au/17-2/"
+      },
+      "Phone 0411 540 495, email, PO Box 751 Bowral": {
+        "sentence": "PO Box 751, Bowral NSW 2576 / p | 0411 540 495 / e | steve@pinczibuilders.com.au. Google phone '0411 540 495'.",
+        "url": "https://pinczibuilders.com.au/contact-us/"
+      },
+      "ABN 51 633 339 885": {
+        "sentence": "ABN: 51 633 339 885",
+        "url": "https://pinczibuilders.com.au/contact-us/"
+      },
+      "Builder's licence 350923C, licensed": {
+        "sentence": "Lic No.: 350923C",
+        "url": "https://pinczibuilders.com.au/contact-us/"
+      },
+      "HIA member, Housing Industry Association": {
+        "sentence": "Contact Us page shows the HIA 'member' badge (https://pinczibuilders.com.au/wp-content/uploads/2025/05/image3.png) beside the ABN and licence number.",
+        "url": "https://pinczibuilders.com.au/contact-us/"
+      },
+      "Enquiry types: new build, additions, renovations": {
+        "sentence": "What are you interested in? New Build / Additions / Renovations",
+        "url": "https://pinczibuilders.com.au/contact-us/"
+      },
+      "Places: Bowral, Burradoo, Kangaloon, Burrawang": {
+        "sentence": "Bowral: PO Box 751, Bowral NSW 2576 (Contact Us) and ABN Lookup postcode 2576. Burradoo: project page titled 'Burradoo', photos titled '74A Burradoo Road, Burradoo' in their media library. Kangaloon: project page titled 'Kangaloon'. Burrawang: project page titled 'Burrawang Farmhouse'.",
+        "url": "https://pinczibuilders.com.au/building-portfolio/"
+      },
+      "Every photo on the page": {
+        "sentence": "All 13 photos are Pinczi's own, from their project pages: Burradoo (74a_Burradoo_Road_Dusk_Bodhi_Photo-24, 74a_Burradoo_Road-184, 74a_Burradoo_Road-41, 74A_Burradoo_Road_Drone_Bodhi_Photo-13-Edit), Burrawang Farmhouse (6E31BD76…, 2AFCCFDF…, C64E203C…), Kangaloon (kangaloonrdkangaloon13, kangaloonrdkangaloon5), Casuarina (loyaltylnburradoo1), Lakeview (20230210_HighlandsPhotographyTeam_134 and _13) and Herald Dr (heralddr15).",
+        "url": "https://pinczibuilders.com.au/building-portfolio/"
+      },
+      "Logo": {
+        "sentence": "Their own logo, wp-content/uploads/2025/05/pinczibuilderslogo.webp (274x83), with the charcoal panel made transparent. Favicon: wp-content/themes/PincziBuildersv1/images/favicon.png.",
+        "url": "https://pinczibuilders.com.au/"
+      }
+    }
+  },
+  "_check": []
+}

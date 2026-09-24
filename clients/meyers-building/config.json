@@ -45,9 +45,6 @@
     "heroSecondary": "Or send the details",
     "heroSecondarySms": "Or text Darren a photo",
     "navApproach": "Approach",
-    "statementLabel": "Why they come back",
-    "statementHeadline": "Work that lasts,<br>and a team<br>you'll have back.",
-    "statementBody": "We build for quality that will last for many years to come, and we pay attention to the details. Our team is polite and friendly, and treats your home with care. It's why most of our jobs come from people we've built for before, or the friends they send our way.",
     "servicesLabel": "What we build",
     "servicesHeadline": "Built new,<br>or brought<br>back to life.",
     "servicesIntro": "New homes and cottages, commercial builds, extensions and granny flats, kitchens and bathrooms. When a site needs preparing, we do the earth moving ourselves.",
@@ -59,8 +56,8 @@
     "processIntro": "Tell us what you have in mind. We'll come and see it.",
     "ownerLabel": "Who you are dealing with",
     "recognitionLabel": "Why people come back",
-    "recognitionHeadline": "Most of our jobs are repeat clients or referrals.",
-    "recognitionIntro": "That comes down to our attention to detail and the quality of our work.",
+    "recognitionHeadline": "Well established in the local area.",
+    "recognitionIntro": "What stands behind the work, before you pick up the phone.",
     "areasLabel": "Where we work",
     "areasHeadline": "Based in<br>Bowral.",
     "areasIntro": "We're based in Bowral and well established in the local area. Call to check we cover your suburb.",
@@ -87,10 +84,6 @@
       {
         "value": "30+",
         "label": "Years in construction, restoration & renovation"
-      },
-      {
-        "value": "80%",
-        "label": "Of our work is returning clients and referrals"
       }
     ]
   },
@@ -98,7 +91,7 @@
     {
       "kind": "claim",
       "label": "80% repeat & referral work",
-      "body": "80% of our work comes from returning clients and referrals.",
+      "body": "Returning clients and their referrals bring us 80% of our work, because of our attention to detail and the quality of our work.",
       "strip": true
     },
     {
@@ -141,15 +134,16 @@
       "title": "Earth moving & site prep",
       "blurb": "When a job needs preparing, we do it ourselves. We shift large quantities of earth and rubble before a build, and dig for driveways, in-ground pools, landscaping and retaining walls.",
       "photo": {
-        "src": "assets/sample-track-loader-site-prep-800.webp",
-        "srcset": "assets/sample-track-loader-site-prep-480.webp 480w, assets/sample-track-loader-site-prep-800.webp 800w, assets/sample-track-loader-site-prep-1024.webp 1024w",
-        "width": 1024,
-        "height": 576,
+        "src": "assets/sample-track-loader-site-prep-660.webp",
+        "srcset": "assets/sample-track-loader-site-prep-480.webp 480w, assets/sample-track-loader-site-prep-660.webp 660w",
+        "width": 660,
+        "height": 456,
         "alt": "A yellow tracked loader pushing up a mound of soil on a cleared, levelled site under a blue sky",
         "sample": true,
         "license": "CC0 1.0 (public domain dedication)",
         "sourceUrl": "https://www.flickr.com/photos/15606079@N08/14926230848",
-        "credit": "Julie Brunner, via Flickr and Openverse"
+        "credit": "Julie Brunner, via Flickr and Openverse",
+        "_comment": "Cropped from the 1024x576 original around the machine, so the tile doesn't show mostly sky."
       }
     }
   ],
