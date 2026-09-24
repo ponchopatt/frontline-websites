@@ -1,0 +1,555 @@
+{
+  "_comment": "O'Mara Constructions Pty Ltd, Mulgrave NSW (near Windsor). Hand-written 2026-09-24 from https://www.omara.com.au because `npm run new` is broken in this container (see HANDOVER.md). I read every page with curl. Every specific fact on the page is quoted in _source.claimSources with its URL, or comes from data/google_reviews_top25.json. Google has only 2 reviews, one with no text, so the proof leans on facts from their own site (founder's OAM and MBA presidency, MBA membership since 1968, the Sydney 2000 Olympic Village homes, flame-zone and sloping-site work). The builders preset's process, FAQ and responsePromise describe a generic builder and would be invented claims here, so all three are fully overridden with O'Mara's own published process and answers.",
+  "slug": "omara-constructions",
+  "template": "trust",
+  "industry": "builders",
+  "live": false,
+  "tagline": "Custom homes, second storeys and hard-site builds across the Hawkesbury, the Hills and the Blue Mountains. Family owned since 1964.",
+  "schemaType": "HomeAndConstructionBusiness",
+  "business": {
+    "name": "O'Mara Constructions",
+    "ownerName": "Luke O'Mara",
+    "ownerFirstName": "Luke",
+    "ownerTitle": "Director",
+    "phone": {
+      "display": "0419 979 804",
+      "e164": "+61419979804",
+      "_comment": "Luke's mobile, which their site gives as the number to 'Call & speak to the builder direct'. The office landline (02) 4577 4912 (which matches Google) is shown in the response line and the enquiry intro."
+    },
+    "email": "luke.omara@bigpond.com",
+    "baseSuburb": "Mulgrave",
+    "region": "NSW",
+    "currentSite": "omara.com.au",
+    "brand": {
+      "accent": "#D2A26A",
+      "accent2": "#9CC7DA",
+      "themeColor": "#111518",
+      "_comment": "Accent is the timber of the roof-truss 'A' in their own logo, brightened so it reads as a button on the dark theme. Accent2 is the pale blue of the 'R' in the same logo. Neither is a published brand colour."
+    },
+    "logo": {
+      "src": "assets/logo-omara-mark.webp",
+      "width": 347,
+      "height": 67,
+      "_comment": "Their own logo, taken from the 400px favicon.png on omara.com.au (sharper than the 284px _logo.jpg). I made the white background transparent and cropped off the 'Proudly Family Owned' tagline under it (dark grey text that would be unreadable on the dark header). The saw-blade O, ruler M, truss A, R and square-and-compass A wordmark is unchanged. Original kept as assets/logo-omara-original.jpg."
+    }
+  },
+  "icons": {
+    "favicon": "assets/favicon.png"
+  },
+  "share": {
+    "image": "assets/share-1200.webp",
+    "width": 1200,
+    "height": 630,
+    "title": "O'Mara Constructions: Custom Home Builders Since 1964",
+    "description": "Custom homes, second storeys and hard-site builds across the Hawkesbury, the Hills and the Blue Mountains. Family owned since 1964.",
+    "alt": "At dusk, a glazed upper living level cantilevers over a masonry base on a steep bush block, Blue Mountains"
+  },
+  "responsePromise": "Speak to the builder direct. The office is on (02) 4577 4912, at Unit 1, 103 Railway Road North, Mulgrave.",
+  "copy": {
+    "title": "O'Mara Constructions: Custom Home Builders, Hawkesbury, Hills & Blue Mountains",
+    "description": "Family-owned custom home builders since 1964, based at Mulgrave near Windsor. Second storey additions, custom new homes, bushfire and sloping-site homes, renovations. Call Luke O'Mara direct.",
+    "ctaLabel": "Call Luke",
+    "kicker": "Mulgrave, near Windsor · since 1964",
+    "headline": "Any block.<br>Any design.<br><em>Since 1964.</em>",
+    "sub": "Steep bush blocks, flame zones, flood-affected land and heritage homes. Three generations of O'Maras have built custom homes and second storeys on the sites other builders won't touch.",
+    "heroSecondary": "Or send the details",
+    "heroSecondarySms": "Or text Luke a photo of the block",
+    "navApproach": "Approach",
+    "statementLabel": "Hard sites",
+    "statementHeadline": "We love<br>the difficult<br>blocks.",
+    "statementBody": "Most homes in bushfire country sit on a slope, where a standard slab, brick veneer and tiled roof won't work or costs far too much. O'Mara build pole homes and Spantec steel floors on steep ground, bushfire homes from BAL 12.5 right up to flame zone, and homes on flood-affected, narrow and remote blocks. They've lived in the Hawkesbury all their lives and have seen firsthand what a bushfire does to a house.",
+    "servicesLabel": "What we build",
+    "servicesHeadline": "Up, out,<br>or from<br>the ground.",
+    "servicesIntro": "No standard designs and no project-home rules. Bring your own plans for a price, or get help drawing a concept. You can use any materials from any supplier.",
+    "apertureLabel": "Our own carpenters",
+    "apertureLine": "Every carpenter works full time for O'Mara, from framing to fix-out joinery.",
+    "workLabel": "Selected work",
+    "workHeadline": "Hawkesbury,<br>the Hills and<br>the Mountains.",
+    "workIntro": "Their own project photos: bushfire homes by the river and in the mountains, heritage renovations, and the bathrooms inside them.",
+    "processLabel": "How it starts",
+    "processHeadline": "Concept first.<br>Contract last.",
+    "processIntro": "O'Mara's own advice: don't sign a building contract until council has approved the plans and the builder is ready to start.",
+    "ownerLabel": "Who you are dealing with",
+    "reviewsLabel": "On Google",
+    "reviewsTitle": "Honest and friendly.",
+    "reviewsIntro": "5.0 on Google from 2 reviews. One has no written comment, so the other one is below, word for word.",
+    "recognitionLabel": "Beyond the reviews",
+    "recognitionHeadline": "Master Builders members since 1968.",
+    "recognitionIntro": "Sixty years of standing in the industry, and the cover that protects your build.",
+    "areasLabel": "Where we build",
+    "areasHeadline": "Same rates,<br>every area.",
+    "areasIntro": "Based at Mulgrave near Windsor, with crews across western Sydney. Rates are the same in every area, with no extra charge for travel. These are suburbs where O'Mara have completed projects.",
+    "faqLabel": "Before you call",
+    "faqHeadline": "Questions Luke gets asked.",
+    "enquireLabel": "Talk to Luke",
+    "enquireHeadline": "Tell us about<br>the block.",
+    "enquireIntro": "Send the address, what you want to build and a rough budget. Luke can usually check the site on Street View before he calls you back. Office: (02) 4577 4912."
+  },
+  "stats": {
+    "googleRating": 5.0,
+    "reviewCount": 2,
+    "yearsInBusiness": 60,
+    "_comment": "5.0 from 2 reviews, straight from data/google_reviews_top25.json (slug omara-constructions). 60 is their own figure ('our last 60 years in the building industry', 'For over 60 years O'Mara has been building...'). The founding year 1964 is on their home page."
+  },
+  "statLabels": {
+    "googleRating": "Google rating",
+    "reviewCount": "Google reviews",
+    "yearsInBusiness": "Years building"
+  },
+  "statSublabels": {
+    "yearsInBusiness": "since 1964"
+  },
+  "pullQuote": {
+    "text": "Great honest and friendly builder. Provides great work and a great price.",
+    "name": "Lauran Trevena, Google review"
+  },
+  "owner": {
+    "body": "Luke O'Mara runs the company day to day. He finished a Bachelor of Applied Science (Building) with Honours at the University of Technology, Sydney in 1994. The phone number on this page goes straight to him.",
+    "team": "His father Barry started the company in 1964. Luke's sons Dallas and Colby work full time as carpenters, steel workers and foremen, the third generation. Luke's father-in-law Garry is still an on-site working foreman, and Sharon and Yvette run the office.",
+    "facts": [
+      {
+        "value": "1964",
+        "label": "Founded by Barry O'Mara OAM"
+      },
+      {
+        "value": "3",
+        "label": "Generations in the business"
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "kind": "membership",
+      "label": "MBA NSW members since 1968",
+      "body": "Proud members of the Master Builders Association of NSW since 1968. The standard building contract is the MBA BC4 fixed price contract.",
+      "strip": true
+    },
+    {
+      "kind": "award",
+      "label": "Barry O'Mara OAM",
+      "body": "The founder was awarded the OAM for his service to the building industry. He is a past President of the Master Builders Association of NSW (1987–88) and a Grade 1 Building Arbitrator.",
+      "strip": false
+    },
+    {
+      "kind": "claim",
+      "label": "Sydney 2000 Olympic Village",
+      "body": "O'Mara built 8 homes for athlete accommodation at the Sydney 2000 Olympic Village, under the supervision of the Mirvac Lend Lease Village Consortium.",
+      "strip": false
+    },
+    {
+      "kind": "licence",
+      "label": "Licensed and insured",
+      "body": "A fully licensed company builder, insured for public liability, contract works and workers compensation, with $8,000,000 a year of HBCF (Home Building Compensation Fund) cover available. Luke O'Mara is a qualified supervisor, Lic No: Q14472S.",
+      "strip": false
+    }
+  ],
+  "services": [
+    {
+      "title": "Second storey additions",
+      "blurb": "Their biggest growth area. Most clients stay at home during the build, because the crew comes in over the scaffold and through the roof rather than your front door. The house is usually waterproof again within a few weeks.",
+      "photo": {
+        "src": "assets/st-ives-upper-level-1200.webp",
+        "srcset": "assets/st-ives-upper-level-480.webp 480w, assets/st-ives-upper-level-800.webp 800w, assets/st-ives-upper-level-1200.webp 1200w, assets/st-ives-upper-level-1800.webp 1800w",
+        "width": 2278,
+        "height": 1230,
+        "alt": "A rendered two-storey home with white plantation shutters and a new upper level, a curved stone path across the lawn, St Ives"
+      }
+    },
+    {
+      "title": "Custom new homes",
+      "blurb": "Country cottages on acreage, pole homes on slopes, stone and Timbercrete homes, and period styles from Colonial to Federation. Bushfire sites up to BAL 40 and flame zone are included.",
+      "photo": {
+        "src": "assets/wilberforce-stone-home-1200.webp",
+        "srcset": "assets/wilberforce-stone-home-480.webp 480w, assets/wilberforce-stone-home-800.webp 800w, assets/wilberforce-stone-home-1200.webp 1200w, assets/wilberforce-stone-home-1800.webp 1800w",
+        "width": 3120,
+        "height": 1498,
+        "alt": "A large two-storey stone and weatherboard home with dormer gables, a wide front verandah and a triple garage, Wilberforce"
+      }
+    },
+    {
+      "title": "Renovations, kitchens & bathrooms",
+      "blurb": "Extensions, kitchens, bathrooms and whole-house upgrades, with all trades included. Bathrooms are waterproofed with the Wet-seal Australia system the company has used for the last 40 years.",
+      "photo": {
+        "src": "assets/kurrajong-heights-kitchen-1200.webp",
+        "srcset": "assets/kurrajong-heights-kitchen-480.webp 480w, assets/kurrajong-heights-kitchen-800.webp 800w, assets/kurrajong-heights-kitchen-1200.webp 1200w, assets/kurrajong-heights-kitchen-1800.webp 1800w",
+        "width": 3110,
+        "height": 1986,
+        "alt": "A shaker-style kitchen with a navy island, marble benchtops, glass-front cabinets and a travertine floor, Kurrajong Heights"
+      }
+    }
+  ],
+  "process": [
+    {
+      "step": "Call Luke",
+      "detail": "He can usually look up the address on Street View while you're on the phone and tell you straight away whether, say, a second storey will work. If not, he'll visit the site. There's no fee for this."
+    },
+    {
+      "step": "A concept plan",
+      "detail": "A basic plan drawn to scale, not full council drawings. It starts with a written brief: your budget, a must list, a don't list and a wish list."
+    },
+    {
+      "step": "An exact price",
+      "detail": "O'Mara price the concept at no cost. Every quote is specific to the site, with all site costs included and no hidden costs. Alternative materials or methods can be priced too."
+    },
+    {
+      "step": "Approval, then contract",
+      "detail": "Council approval comes first, and O'Mara can lodge it for you at no fee. Then you sign the MBA BC4 fixed price contract, the HBCF cover goes in and building starts."
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "Hawkesbury",
+      "suburbs": [
+        "Windsor",
+        "Pitt Town",
+        "Wisemans Ferry",
+        "Wilberforce",
+        "Kurrajong",
+        "Richmond",
+        "Glossodia",
+        "Grose Vale",
+        "Lower Portland",
+        "Central McDonald"
+      ]
+    },
+    {
+      "region": "Hills & Upper North Shore",
+      "suburbs": [
+        "Kellyville",
+        "Rouse Hill",
+        "Castle Hill",
+        "Dural",
+        "Stanhope Gardens",
+        "Hornsby",
+        "Berowra",
+        "Beecroft",
+        "Turramurra",
+        "St Ives"
+      ]
+    },
+    {
+      "region": "Blue Mountains",
+      "suburbs": [
+        "Katoomba",
+        "Leura",
+        "Mt Wilson",
+        "Winmalee"
+      ]
+    },
+    {
+      "region": "Greater Sydney",
+      "suburbs": [
+        "Parramatta",
+        "Blacktown",
+        "Penrith",
+        "Mosman",
+        "Vaucluse",
+        "Maroubra"
+      ]
+    }
+  ],
+  "photos": {
+    "hero": {
+      "src": "assets/blue-mountains-hero-1800.webp",
+      "srcset": "assets/blue-mountains-hero-480.webp 480w, assets/blue-mountains-hero-800.webp 800w, assets/blue-mountains-hero-1200.webp 1200w, assets/blue-mountains-hero-1800.webp 1800w",
+      "width": 2704,
+      "height": 1800,
+      "alt": "At dusk, a glazed upper living level cantilevers over a masonry base on a steep, planted bush block, Blue Mountains",
+      "_comment": "BushfireHome-BlueMountains.jpg (2954x1970) from their bushfire and sloping-site pages, captioned 'Bushfire Protected Home - Blue Mountains'. I cropped 250px off the left and 170px of foreground planting off the bottom so the lit glass box sits in the centre of a phone-width crop. A twilight shot, because lit windows still read under the hero's dark overlay on a phone. Horgan was marked down for a hero too dark on mobile."
+    },
+    "statement": {
+      "src": "assets/central-mcdonald-bushfire-home-1200.webp",
+      "srcset": "assets/central-mcdonald-bushfire-home-480.webp 480w, assets/central-mcdonald-bushfire-home-800.webp 800w, assets/central-mcdonald-bushfire-home-1200.webp 1200w, assets/central-mcdonald-bushfire-home-1800.webp 1800w",
+      "width": 3168,
+      "height": 1886,
+      "alt": "A charcoal-clad bushfire home with a skillion roof set into a steep bush block below a forested ridge, Central McDonald",
+      "_comment": "BushfireHome-CentralMcDonald-Ext.jpg (3168x1886), captioned 'Metal clad & fibro bushfire home' on their bushfire page. Central McDonald comes from the filename, and their own captions name several Central McDonald jobs."
+    },
+    "aperture": {
+      "src": "assets/wilberforce-extension-1800.webp",
+      "srcset": "assets/wilberforce-extension-800.webp 800w, assets/wilberforce-extension-1200.webp 1200w, assets/wilberforce-extension-1800.webp 1800w",
+      "width": 3206,
+      "height": 2058,
+      "alt": "At dusk, a gabled clad home with a lit double-height living room and a long verandah stands behind a black post-and-rail fence and lawn, Wilberforce",
+      "caption": "Home extension, Wilberforce"
+    },
+    "enquiryBackground": {
+      "src": "assets/wisemans-ferry-kitchen-1200.webp",
+      "width": 1200,
+      "height": 814
+    },
+    "gallery": [
+      {
+        "src": "assets/turramurra-renovation-1200.webp",
+        "full": "assets/turramurra-renovation.jpg",
+        "srcset": "assets/turramurra-renovation-480.webp 480w, assets/turramurra-renovation-800.webp 800w, assets/turramurra-renovation-1200.webp 1200w, assets/turramurra-renovation-1800.webp 1800w",
+        "width": 1960,
+        "height": 1468,
+        "caption": "Turramurra",
+        "detail": "Renovation and addition",
+        "alt": "A rendered bungalow with a terracotta roof and wall lights glowing at dusk, behind a paved driveway and clipped hedges"
+      },
+      {
+        "src": "assets/lower-portland-bushfire-home-1200.webp",
+        "full": "assets/lower-portland-bushfire-home.jpg",
+        "srcset": "assets/lower-portland-bushfire-home-480.webp 480w, assets/lower-portland-bushfire-home-800.webp 800w, assets/lower-portland-bushfire-home-1200.webp 1200w, assets/lower-portland-bushfire-home-1800.webp 1800w",
+        "width": 2706,
+        "height": 1748,
+        "caption": "Lower Portland",
+        "detail": "Corrugated-clad bushfire home",
+        "alt": "A two-storey corrugated-iron-clad cottage with a covered outdoor dining deck among gum trees, beside the river"
+      },
+      {
+        "src": "assets/granville-heritage-renovation-1200.webp",
+        "full": "assets/granville-heritage-renovation.jpg",
+        "srcset": "assets/granville-heritage-renovation-480.webp 480w, assets/granville-heritage-renovation-800.webp 800w, assets/granville-heritage-renovation-1200.webp 1200w, assets/granville-heritage-renovation-1800.webp 1800w",
+        "width": 2406,
+        "height": 1502,
+        "caption": "Granville",
+        "detail": "Heritage renovation",
+        "alt": "A cream weatherboard cottage with a gabled bay window, bullnose verandah and white picket fence under a dusk sky"
+      },
+      {
+        "src": "assets/kurrajong-heights-renovation-1200.webp",
+        "full": "assets/kurrajong-heights-renovation.jpg",
+        "srcset": "assets/kurrajong-heights-renovation-480.webp 480w, assets/kurrajong-heights-renovation-800.webp 800w, assets/kurrajong-heights-renovation-1200.webp 1200w, assets/kurrajong-heights-renovation-1800.webp 1800w",
+        "width": 3046,
+        "height": 1904,
+        "caption": "Kurrajong",
+        "detail": "Home renovation",
+        "alt": "A two-storey weatherboard home with a sandstone chimney, wrap-around balconies and floor-to-ceiling glass above a pool"
+      },
+      {
+        "src": "assets/central-mcdonald-bathroom-1200.webp",
+        "full": "assets/central-mcdonald-bathroom.jpg",
+        "srcset": "assets/central-mcdonald-bathroom-480.webp 480w, assets/central-mcdonald-bathroom-800.webp 800w, assets/central-mcdonald-bathroom-1200.webp 1200w, assets/central-mcdonald-bathroom-1800.webp 1800w",
+        "width": 3184,
+        "height": 2136,
+        "caption": "Central McDonald",
+        "detail": "Bathroom, glass onto the bush",
+        "alt": "A white bathroom with a freestanding bath, timber vanity and floor-to-ceiling glass and louvres looking into the bush"
+      },
+      {
+        "src": "assets/hawkesbury-bushfire-home-1200.webp",
+        "full": "assets/hawkesbury-bushfire-home.jpg",
+        "srcset": "assets/hawkesbury-bushfire-home-480.webp 480w, assets/hawkesbury-bushfire-home-800.webp 800w, assets/hawkesbury-bushfire-home-1200.webp 1200w, assets/hawkesbury-bushfire-home-1800.webp 1800w",
+        "width": 2606,
+        "height": 1762,
+        "caption": "Hawkesbury",
+        "detail": "Bushfire-protected home",
+        "alt": "A pale block home with a lit, pillared entry portico and a steel roof on a ridge above the valley at dusk"
+      }
+    ],
+    "_comment": "13 real photos, all O'Mara's own, all downloaded at full resolution from omara.com.au/thumbnaillarge/. None are stock, none are samples and none are upscaled. Every photo is a different property and appears once. The Wilberforce extension (aperture) and Wilberforce stone home (service) are different houses. See BRIEF.md for the source file of each and for what was left out (Street View grabs, a duplicate file, a possible repeat shoot)."
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [
+    {
+      "name": "Lauran Trevena",
+      "text": "Great honest and friendly builder. Provides great work and a great price."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can we stay in the house during a second storey addition?",
+      "a": "Most clients do. The crew comes in via the scaffold and through the roof, not your front door. To be honest, we'll likely kill your grass storing materials and we'll make noise early in the morning. But we clean up daily and keep a safe, secure way into your home."
+    },
+    {
+      "q": "Is my house strong enough to build on top of?",
+      "a": "Most homes are, but a builder should check. Homes sitting on brick piers only, or in very poor condition, may not suit. Call Luke with the address. He can usually tell from Street View straight away, or he'll come out to the site."
+    },
+    {
+      "q": "Can you build on a bushfire-prone or steep block?",
+      "a": "Yes. We build from BAL 12.5 right through to flame zone, and on steep ground we use pole homes and Spantec steel floor systems. Flame zone adds real cost, so it pays to plan for it at the concept stage rather than after."
+    },
+    {
+      "q": "Can I supply some of the materials myself?",
+      "a": "Yes. There are no restrictions on suppliers, and owners can supply items like tiles, bathroom fittings or appliances directly. Ask first how it affects insurance, warranties and the construction program."
+    },
+    {
+      "q": "Do you charge extra to travel?",
+      "a": "No. Rates are the same for every area, whether you're building at Pitt Town, Penrith or Katoomba."
+    },
+    {
+      "q": "What contract do you use?",
+      "a": "The Master Builders Association BC4 fixed price building contract, or an MBA NSW cost plus contract. Don't sign any building contract until council approval is in hand."
+    }
+  ],
+  "form": {
+    "notesHint": "The address, what the block is like (sloping, bushfire, flood?), whether you have plans or approval yet, and roughly when you'd like to start."
+  },
+  "sms": {
+    "label": "Text Luke a photo",
+    "body": "Hi Luke, I'm thinking about a build.\nSuburb: \nWhat I'm after: \n(Happy to send a photo of the block.)"
+  },
+  "_source": {
+    "url": "https://www.omara.com.au/",
+    "platform": "Custom CMS by Havealook (footer: 'Website Design by Havealook'), jQuery, background-image galleries at /thumbnailsmall/ with full-size files at /thumbnaillarge/.",
+    "pagesRead": [
+      "home",
+      "custom-new-homes",
+      "bushfire-protected-designed-homes",
+      "sloping-site-solutions",
+      "second-storey-additions",
+      "second-storey-extensions",
+      "existing-house-upgrades",
+      "bathroom-kitchen-renovations",
+      "house-extension-renovation",
+      "other-construction-types",
+      "granny-flats-home-office",
+      "duplexs-multi-unit-developments",
+      "steel-metalworks",
+      "tips-for-home-owners",
+      "the-next-step-",
+      "our-valued-team-references",
+      "optional-upgrades",
+      "contact",
+      "kellyville-extension-builder"
+    ],
+    "notes": "Read with curl (plain 'Mozilla/5.0' user agent) on 2026-09-24. `npm run new` is broken in this container. The team page calls Dallas and Colby 'current apprentice carpenters' while the home page says 'fully qualified tradesman', so the demo avoids both words and uses the home page's job titles only. The Qualified Supervisor number Q14472S is quoted from their team page and has not been checked against the NSW Fair Trading register.",
+    "claimSources": {
+      "Business name, 'O'Mara Constructions'": {
+        "sentence": "O'Mara Constructions Sydney's Custom Home Extension Builders Since 1964 / © Copyright Omara Constructions P/L 2026. Google name: 'O'Mara Constructions Pty Ltd'.",
+        "url": "https://www.omara.com.au/"
+      },
+      "Founded 1964, 'Since 1964' (headline, kicker, owner fact, stat sublabel)": {
+        "sentence": "Established in 1964 O'Mara Constructions is a proudly family owned & operated building company.",
+        "url": "https://www.omara.com.au/"
+      },
+      "60 years building (stat, recognition intro)": {
+        "sentence": "There is not much we haven't done in our last 60 years in the building industry. / For over 60 years O'Mara has been building custom new homes of any design...",
+        "url": "https://www.omara.com.au/custom-new-homes"
+      },
+      "Family owned": {
+        "sentence": "Established in 1964 O'Mara Constructions is a proudly family owned & operated building company.",
+        "url": "https://www.omara.com.au/"
+      },
+      "'Any block. Any design.' angle and 'sites other builders won't touch'": {
+        "sentence": "We build on any site. / We do anything & everything. We build projects that other builders won't or can't. We love difficult jobs, on difficult sites or using new alternate construction methods. / We will build on any site, from any materials and using any construction method ! We specialise in jobs of unusual design and on difficult sites.",
+        "url": "https://www.omara.com.au/"
+      },
+      "Steep bush blocks, flame zones, flood-affected land and heritage homes (hero sub)": {
+        "sentence": "We regularly build on narrow or sloping blocks, in high bushfire areas (including FZ-flame zone), on flood affected sites, in remote or bush locations and sites with difficult access. / Being based in Windsor we have completed many projects on heritage listed buildings on various types from as early as the 1820's",
+        "url": "https://www.omara.com.au/"
+      },
+      "Three generations; Dallas, Colby, Garry, Sharon, Yvette": {
+        "sentence": "Both Luke's sons (Dallas & Colby) now also work full-time for the company as fully qualified tradesman working carpenters / steel workers / foreman, making it 3 generations to date. Luke's father-in-law Garry still works as an on-site working foreman for the company. The office administration is run by Luke's wife Sharon and cousin Yvette.",
+        "url": "https://www.omara.com.au/"
+      },
+      "Luke O'Mara runs the company; B. App. Sc (Building) Honours, UTS, 1994; Director": {
+        "sentence": "His son Luke O'Mara now runs the daily operations of the company after completing in 1994 a Bachelor of Applied Science (Building) with Honours at the University of Technology, Sydney. / LUKE O'MARA B. App. Sc (Building) - Honours ... Current director of O'Mara Constructions P/L",
+        "url": "https://www.omara.com.au/our-valued-team-references"
+      },
+      "Luke's mobile 0419 979 804 as the main number; 'goes straight to him'": {
+        "sentence": "Call & speak to the builder direct - Luke O'Mara / Call the builder direct (Luke O'Mara on 0419 979 804) or send an email to luke.omara@bigpond.com. tel:0419979804 in the header of every page.",
+        "url": "https://www.omara.com.au/second-storey-additions"
+      },
+      "Office phone (02) 4577 4912 and address": {
+        "sentence": "Phone (02) 4577 4912 ... Address Unit 1, No.103 Railway Road (North) MULGRAVE NSW 2756 / VISIT OUR OFFICE & SHOWROOM AT; UNIT 1 - No.103 RAILWAY ROAD NORTH, MULGRAVE 2756 NSW (near Windsor). Google phone '(02) 4577 4912'.",
+        "url": "https://www.omara.com.au/"
+      },
+      "Email luke.omara@bigpond.com": {
+        "sentence": "mailto:luke.omara@bigpond.com in the header of every page.",
+        "url": "https://www.omara.com.au/"
+      },
+      "Barry O'Mara OAM, founder, past MBA NSW President 1987–88, Grade 1 Building Arbitrator": {
+        "sentence": "Barry O'Mara originally started the company in 1964. Barry has received an OAM for his service to the building industry with his achievements including being a past President of the Master Builders Association of NSW, a retired Referee for the Department of Consumer Affairs, a Grade 1 Building Arbitrator, an Expert Witness for ICAC and the Supreme Court, just to name a few. / President MBA NSW 1987-88.",
+        "url": "https://www.omara.com.au/our-valued-team-references"
+      },
+      "MBA NSW members since 1968": {
+        "sentence": "Proud Members of the Master Builders Association of NSW since 1968",
+        "url": "https://www.omara.com.au/"
+      },
+      "MBA BC4 fixed price contract, MBA NSW cost plus contract, HBCF cover, no contract before council approval": {
+        "sentence": "Our standard building contract the the Master Builders Association \"BC4 - Fixed price building contract\" or a MBA NSW Cost Plus Contract / the builder needs to obtain a \"HOME OWNERS WARRANTY\" insurance policy (now called HBCF - HOME BUILDING COMPENSATION FUND) / The most important step is however that the owner should NOT sign a building contract until the council approval has been obtained & the builder is ready to start construction",
+        "url": "https://www.omara.com.au/the-next-step-"
+      },
+      "Fully licensed, insured (public liability, contract works, workers compensation), $8,000,000 HBCF": {
+        "sentence": "O'Mara is a fully licensed company builder with all insurances for public liability, contract works and workers compensation. O'Mara currently also has $8,000,000 per year of HBCF (Home building compensation fund) insurance available.",
+        "url": "https://www.omara.com.au/"
+      },
+      "Qualified supervisor, Lic No: Q14472S": {
+        "sentence": "LUKE O'MARA B. App. Sc (Building) - Honours Qualified supervisors, Lic No: Q14472S",
+        "url": "https://www.omara.com.au/our-valued-team-references"
+      },
+      "Sydney 2000 Olympic Village, 8 homes, MLVC": {
+        "sentence": "We even built 8 homes for for athlete accommodation for the Sydney 2000 Olympic Village under the supervision of MLVC (Mirvac Lend Lease Village Consortium)",
+        "url": "https://www.omara.com.au/"
+      },
+      "Statement: slopes, standard slab/brick veneer/tiled roof won't work; BAL 12.5 to flame zone; lived in the Hawkesbury all their lives": {
+        "sentence": "Many hopes built in bushfire affected area's are on sloping sites. This means standard slab on ground, brick veneer, tiled roof design, similar to many project homes simply don't work or any much too expensive and not practical. / Bushfire affected areas (Bal 12.5 / 19 / 29 / 40 / flame zone - FZ) / Having lived in Hawkesbury all of our lives and with many of our sub-contractors we have experienced many bushfire's and seen the extent of fire on newly constructed homes & existing dwellings.",
+        "url": "https://www.omara.com.au/bushfire-protected-designed-homes"
+      },
+      "Pole homes and Spantec steel floors on steep ground": {
+        "sentence": "If you have a sloping site one of the best ways to build a practical & economical home is by using the patent \"Spantec\" steel floor system. We have been using the Spantec system now for many years and highly recommend it for all sloping sites. / Pole homes or split level on sloping sites",
+        "url": "https://www.omara.com.au/sloping-site-solutions"
+      },
+      "No standard designs; quote from your plans; any materials from any supplier; owners can supply materials": {
+        "sentence": "O'Mara does NOT have any standard designs as we build such a wide variety of projects. / O'Mara can quote from the plans and documentation. / Owners can use any materials from any supplier with no restrictions. / We even allow owners to supply materials directly if they prefer. ... The owner should enquire with us about how this can affect insurances, warranties, home owners warranty insurance and the construction program.",
+        "url": "https://www.omara.com.au/other-construction-types"
+      },
+      "All carpenters work full time for O'Mara, framing to fix-out joinery (aperture line)": {
+        "sentence": "All carpenters work exclusively for O'Mara full time and complete ALL types carpentry work from framing to fix-out joinery.",
+        "url": "https://www.omara.com.au/"
+      },
+      "Second storey additions: biggest growth area; most clients stay home; scaffold and roof access; waterproof within a few weeks; grass, noise, clean up daily": {
+        "sentence": "The biggest growth area in our projects is now undoubtedly second story additions. / Therefore the majority of our clients choose to stay at home during construction. Second storey extensions are often less disruptive than a traditional extension as workers enter the job via the scaffold and thru the roof rather than in the front door ... We will likely kill your grass when storing materials, will make noise early in the morning but we will not fence you in, we clean up daily and will maintain a safe and secure entry to your home. / We usually reach this waterproof stage within a few weeks.",
+        "url": "https://www.omara.com.au/second-storey-additions"
+      },
+      "Is my house strong enough (brick piers, poor condition), Luke checks on Street View or visits": {
+        "sentence": "Most homes are but it should be check by a qualified and experienced builder to make sure. Some homes with brick piers only as support may not be suitable. Some may just be in such poor condition that is not practical to spend money extending to the home. / He can usually google the address & streetview the property immediately to check site conditions & the construction method of the existing home, otherwise he can visit site. Normally he can tell immediately if the home is suitable for a second storey extension",
+        "url": "https://www.omara.com.au/second-storey-additions"
+      },
+      "Custom new homes: cottages on acreage, pole homes, stone and Timbercrete, period styles, BAL 40 and flame zone": {
+        "sentence": "Country cottages on acreage / Pole homes or split level on sloping sites / Bushfire affected sites (including Bal 40 & flame zone areas) / Period style homes and heritage listed properties - Colonial, Victorian, Federation ... / Mud bricks, stonework or Timbercrete blocks",
+        "url": "https://www.omara.com.au/custom-new-homes"
+      },
+      "Wet-seal Australia waterproofing for 40 years; all trades included": {
+        "sentence": "All bathrooms are waterproofed using the well respected Wet-seal Australia system which our company has used for the last 40 years. / All trades can be included such as plumbing, painting & electrical.",
+        "url": "https://www.omara.com.au/bathroom-kitchen-renovations"
+      },
+      "Process: no-fee site appraisal on Street View": {
+        "sentence": "We can usually give a quick site appraisal simply by looking up google maps and street-view. ... There is NO fee or charge for this service, just call our office.",
+        "url": "https://www.omara.com.au/the-next-step-"
+      },
+      "Process: concept plan drawn to scale; design brief of budget, must list, don't list, wish list": {
+        "sentence": "This concept plan is a basic plan only, that is drawn to scale with some basic dimensions, elevations, window sizes and a site plan. / 1. Your BUDGET 2. A \"MUST LIST\" 3. A \"DON'T LIST\" 4. A \"WISH LIST\"",
+        "url": "https://www.omara.com.au/the-next-step-"
+      },
+      "Process: exact price at no cost; site-specific quotes, all site costs, no hidden costs; alternatives priced": {
+        "sentence": "We will submit a very accurate price for construction at NO cost. / We quote all jobs site specific with all site costs included and no hidden costs. / From this concept plan we at O'Mara can submit an accurate construction cost, price alternatives (such as changing the construction materials, building method or design)",
+        "url": "https://www.omara.com.au/the-next-step-"
+      },
+      "Process: O'Mara can lodge council approval at no fee": {
+        "sentence": "O'Mara can do this on the owners behalf (at no cost / fee for our services) or the owners can submit it directly.",
+        "url": "https://www.omara.com.au/the-next-step-"
+      },
+      "FAQ: flame zone adds real cost; plan for bushfire at the concept stage": {
+        "sentence": "These can add a lot of cost to the construction of a home compared to other BAL ratings and can easily be an additional $100,000 to $200,000 or more / The risk of bushfire should be considered at the initial design stage to reduce construction costs",
+        "url": "https://www.omara.com.au/bushfire-protected-designed-homes"
+      },
+      "Same rates every area, no extra for travel; crews across western Sydney; Mulgrave near Windsor": {
+        "sentence": "We are centrally located in western Sydney to service these areas and have crews based in all areas for easy access. Our rates & charges are the same for every area and do not charge extra for travel.",
+        "url": "https://www.omara.com.au/"
+      },
+      "Service area suburbs": {
+        "sentence": "Named on the home page: 'Whether you are building at Pitt Town or Wisemans Ferry in the Hawkesbury, Katoomba in the Blue Mountains, Rouse Hill or Kellyville, Hornsby or Berowra, Parramatta, Blacktown or Penrith, O'Mara will service your area.' The rest are the site's own project captions: Windsor, Wilberforce, Kurrajong, Richmond, Glossodia, Grose Vale, Lower Portland, Central McDonald, Castle Hill, Dural, Stanhope Gardens, Beecroft, Turramurra, St Ives, Leura, Mt Wilson (Mount Wilson), Winmalee, Mosman, Vaucluse, Maroubra.",
+        "url": "https://www.omara.com.au/"
+      },
+      "Rating 5.0 and 2 reviews; Lauran Trevena review": {
+        "sentence": "rating 5.0, review_count 2 for slug omara-constructions. best_for_demo: Lauran Trevena, 'Great honest and friendly builder. Provides great work and a great price.' (not shortened). The other review (Lizz Victory) has no text.",
+        "url": "data/google_reviews_top25.json"
+      },
+      "Every photo on the page": {
+        "sentence": "All 13 photos are O'Mara's own, from omara.com.au/thumbnaillarge/ at full resolution. The site's own captions: 'Metal clad & fibro bushfire home' (BushfireHome-CentralMcDonald-Ext.jpg), 'Bushfire Protected Home - Blue Mountains', 'Upper level addition at St Ives', 'Stone home at Wilberforce', 'Kurrajong Kitchen' (Kitchen-KurrajongHeights.jpg), 'Home extension at Wilberfoce', 'Kitchen at Wiseman's Ferry', 'Home renovation & addition at Turramurra', 'Corrugated metal clad bushfire home' (Bushfirehome-LowerPortland.jpg), 'Granville heritage renovation', 'Kurrajong home renovation' (Renovation-KurrajongHeights.jpg), 'Central McDonald bathroom', 'Bushfire Protected Home - Hawkesbury' (BushfireHome-BowenMountain2.jpg).",
+        "url": "https://www.omara.com.au/custom-new-homes"
+      },
+      "Logo": {
+        "sentence": "Their own logo, omara.com.au/favicon.png (400x400, the same artwork as /thumbnaillarge/_logo.jpg), with the white background made transparent and the 'Proudly Family Owned' tagline cropped off.",
+        "url": "https://www.omara.com.au/"
+      }
+    }
+  },
+  "_check": []
+}

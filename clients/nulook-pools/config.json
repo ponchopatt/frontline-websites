@@ -27,22 +27,22 @@
       "_comment": "Sampled off their own logo file: cyan rgb(0,188,228) and navy rgb(0,46,86). accent2 is a mid blue between the two so it reads on light backgrounds."
     },
     "logo": {
-      "src": "assets/logo-nulook-wide.webp",
-      "width": 877,
+      "src": "assets/logo-nulook-wide2.webp",
+      "width": 1175,
       "height": 168,
-      "_comment": "Their own logo (nulook-pools-canberra.png): black wordmark and navy P recoloured white so it reads on the dark header, and the wordmark moved beside the MLP mark so it is legible at header height. Original kept as assets/logo-nulook.png; stacked light version as assets/logo-nulook-light.webp."
+      "_comment": "Their own logo (nulook-pools-canberra.png): black wordmark and navy P recoloured white for the dark header, and the NULOOK POOLS wordmark set beside the MLP mark at 62% of its height so it reads at header size. Original kept as assets/logo-nulook.png."
     }
   },
   "icons": {
     "favicon": "assets/favicon.png"
   },
   "share": {
-    "image": "assets/diamantina-hillside-1200.webp",
+    "image": "assets/diamantina-hero-1200.webp",
     "width": 1200,
-    "height": 797,
+    "height": 672,
     "title": "Nulook Pools — Fibreglass pools, Canberra and surrounding NSW",
     "description": "John Eldridge and Charissa install in-ground fibreglass pools across Canberra and surrounding NSW, with the paving and landscaping in the one package.",
-    "alt": "A freeform fibreglass pool set in a timber deck, with a water blade and tree-covered hills behind"
+    "alt": "The Diamantina fibreglass pool shape, a range photo: a freeform pool set in a timber deck with a water blade and tree-covered hills behind"
   },
   "responsePromise": "Open 7 days, 6am to 6pm.",
   "copy": {
@@ -60,22 +60,22 @@
     "statementBody": "Karen Milton says John and Charissa were “so patient having to deal with our council” — and once the pool started, “I couldn't believe how quickly and professionally it went in.” Salesh Swami says the whole run, “from approvals to installation”, was “so smooth”.",
     "servicesLabel": "What Nulook does",
     "servicesHeadline": "The pool, and<br>everything<br>around it.",
-    "servicesIntro": "Pools, landscaping and maintenance — the same three boxes on their own enquiry form.",
+    "servicesIntro": "Pools, landscaping and maintenance — the pool and the backyard around it, from one outfit.",
     "apertureLabel": "One package",
     "apertureLine": "Pool, paving and garden. One quote.",
     "workLabel": "The range",
     "workHeadline": "Fourteen shapes,<br>4 to 13.5 metres.",
-    "workIntro": "Nulook's in-ground fibreglass range runs from the 4-metre Torrens exercise pool to the 13.5-metre Diamantina. These are range photos of each shape finished — ask John to see pools he has put in near you. Select any photo to see it larger.",
+    "workIntro": "Nulook's in-ground fibreglass range runs from the 4-metre Torrens exercise pool to the 13.5-metre Diamantina. Every photo on this page is a range photo of the shape, not a Nulook job — ask John to show you pools he has put in near you. Select any photo to see it larger.",
     "processLabel": "How it runs",
     "processHeadline": "Survey to<br>paving, on site<br>start to finish.",
     "processIntro": "Nulook's own twelve-step install, in short.",
     "ownerLabel": "Who you are dealing with",
     "reviewsLabel": "In their words",
-    "reviewsTitle": "“Amazing to<br>deal with.”",
-    "reviewsIntro": "Six of their 35 Google reviews, word for word. Where one is marked shortened, Google cut it off and the rest is on their profile.",
+    "reviewsTitle": "Amazing to deal with.",
+    "reviewsIntro": "From Nulook's Google reviews, word for word. The longer ones are shortened, and marked as shortened.",
     "recognitionLabel": "Licensed",
     "recognitionHeadline": "Licensed in the<br>ACT and NSW.",
-    "recognitionIntro": "Licence numbers as published on Nulook's own contact page.",
+    "recognitionIntro": "Nulook holds a licence in NSW, and John holds his own in the ACT and NSW.",
     "areasLabel": "Where Nulook works",
     "areasHeadline": "Canberra and<br>surrounding NSW.",
     "areasIntro": "The Canberra ACT region and the surrounding NSW towns below — including but not limited to. Further out? Ask John.",
@@ -137,35 +137,47 @@
   "services": [
     {
       "title": "Fibreglass pools",
-      "blurb": "Fourteen in-ground fibreglass shapes from 4 to 13.5 metres, with many colour options. Surveyed, dug, craned in and finished by Nulook.",
+      "blurb": "Fourteen in-ground fibreglass shapes from 4 to 13.5 metres, with many colour options. Pictured: the Paroo, from the range.",
       "photo": {
         "src": "assets/paroo-deck-800.webp",
         "srcset": "assets/paroo-deck-480.webp 480w, assets/paroo-deck-800.webp 800w, assets/paroo-deck-1024.webp 1024w",
         "width": 1024,
         "height": 768,
-        "alt": "A compact fibreglass pool set flush into weathered hardwood decking, with native grasses along one side"
+        "alt": "Range photo of the Paroo fibreglass shape: a compact pool set flush into weathered hardwood decking, native grasses along one side",
+        "sample": true,
+        "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
+        "sourceUrl": "https://www.nulookpools.com.au/the-paroo",
+        "credit": "The Paroo — Conquest range photo, via nulookpools.com.au (Paroo-Pebble-Sequins-Decking-Surrounds.jpg)"
       }
     },
     {
       "title": "Landscaping, tiling & paving",
-      "blurb": "Done with the pool as one package, using local contractors — so you are not sourcing separate quotes and organising trades to finish the job.",
+      "blurb": "Done with the pool as one package, using local contractors — so you are not sourcing separate quotes and organising trades to finish the job. Pictured: the Torrens, from the range.",
       "photo": {
         "src": "assets/torrens-sandstone-800.webp",
         "srcset": "assets/torrens-sandstone-480.webp 480w, assets/torrens-sandstone-800.webp 800w, assets/torrens-sandstone-1296.webp 1296w",
         "width": 1296,
         "height": 968,
-        "alt": "A small fibreglass plunge pool edged in crazy-paved sandstone, with a stepped rock waterfall spilling into it"
+        "alt": "Range photo of the Torrens fibreglass shape: a small plunge pool edged in crazy-paved sandstone, with a stepped rock waterfall spilling into it",
+        "sample": true,
+        "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
+        "sourceUrl": "https://www.nulookpools.com.au/the-torrens",
+        "credit": "The Torrens — Conquest range photo, via nulookpools.com.au (Torrens_4m_HawaiianSand_2-2ea532aa.jpeg)"
       }
     },
     {
       "title": "Pool maintenance",
-      "blurb": "Nulook looks after pools as well as putting them in. Ask John what yours needs when you call.",
+      "blurb": "Nulook looks after pools as well as putting them in. Ask John what yours needs when you call. Pictured: the Darling, from the range.",
       "photo": {
-        "src": "assets/saxby-shade-sail-800.webp",
-        "srcset": "assets/saxby-shade-sail-480.webp 480w, assets/saxby-shade-sail-800.webp 800w, assets/saxby-shade-sail-1200.webp 1200w, assets/saxby-shade-sail-1500.webp 1500w",
-        "width": 1500,
-        "height": 1000,
-        "alt": "A courtyard fibreglass pool under a shade sail, sandstone-look coping and a planted bed along a black timber fence"
+        "src": "assets/darling-granite-800.webp",
+        "srcset": "assets/darling-granite-480.webp 480w, assets/darling-granite-800.webp 800w, assets/darling-granite-1024.webp 1024w",
+        "width": 1024,
+        "height": 683,
+        "alt": "Range photo of the Darling fibreglass shape: a long rectangular pool in a dark granite finish with pale coping, beside a brick house",
+        "sample": true,
+        "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
+        "sourceUrl": "https://www.nulookpools.com.au/the-darling",
+        "credit": "The Darling — Conquest range photo, via nulookpools.com.au (Darling-8m-Crystal-Granite-Marble-Grey.jpg)"
       }
     }
   ],
@@ -212,41 +224,49 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/diamantina-hillside-1800.webp",
-      "srcset": "assets/diamantina-hillside-480.webp 480w, assets/diamantina-hillside-800.webp 800w, assets/diamantina-hillside-1200.webp 1200w, assets/diamantina-hillside-1800.webp 1800w",
+      "src": "assets/diamantina-hero-1800.webp",
+      "srcset": "assets/diamantina-hero-480.webp 480w, assets/diamantina-hero-800.webp 800w, assets/diamantina-hero-1200.webp 1200w, assets/diamantina-hero-1800.webp 1800w",
       "width": 1800,
-      "height": 1195,
-      "alt": "A freeform fibreglass pool set in a timber deck with sandstone coping and a water blade, looking out over tree-covered hills"
+      "height": 1008,
+      "alt": "Range photo of the Diamantina fibreglass shape: a freeform pool set in a timber deck with sandstone coping and a water blade, tree-covered hills behind",
+      "sample": true,
+      "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
+      "sourceUrl": "https://www.nulookpools.com.au/the-diamantina",
+      "credit": "The Diamantina — Conquest range photo, via nulookpools.com.au (Diamantina_13.5m_HawaiianSequins.jpg (top 200px cropped, lightened 12%))"
     },
     "statement": {
       "src": "assets/saxby-courtyard-1200.webp",
       "srcset": "assets/saxby-courtyard-480.webp 480w, assets/saxby-courtyard-800.webp 800w, assets/saxby-courtyard-1200.webp 1200w, assets/saxby-courtyard-1600.webp 1600w",
       "width": 1600,
       "height": 1200,
-      "alt": "A small rectangular fibreglass pool in a courtyard of charcoal walls, with a water blade, a raised planter of standard trees and pale paving"
+      "alt": "Range photo of the Saxby fibreglass shape: a small pool in a courtyard of charcoal walls, with a water blade, a raised planter and pale paving",
+      "sample": true,
+      "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
+      "sourceUrl": "https://www.nulookpools.com.au/the-saxby",
+      "credit": "The Saxby — Conquest range photo, via nulookpools.com.au (5m-Saxby-Pearl.jpeg)"
     },
     "aperture": {
-      "src": "assets/maradona-sunset-1200.webp",
-      "srcset": "assets/maradona-sunset-480.webp 480w, assets/maradona-sunset-800.webp 800w, assets/maradona-sunset-1200.webp 1200w, assets/maradona-sunset-1343.webp 1343w",
-      "width": 1343,
-      "height": 768,
-      "alt": "A long fibreglass pool and spa on a rural block at sunset, frameless glass fencing around it and paddocks beyond",
-      "caption": "The Maradona with spa, rural block"
-    },
-    "owner": {
-      "src": "assets/saxby-water-feature-800.webp",
-      "srcset": "assets/saxby-water-feature-480.webp 480w, assets/saxby-water-feature-800.webp 800w, assets/saxby-water-feature-1200.webp 1200w, assets/saxby-water-feature-1500.webp 1500w",
-      "width": 1500,
-      "height": 1000,
-      "alt": "A water feature spilling into a pool from a stacked-stone planter, with a gabion rock wall and palms against a black fence",
-      "ratio": "1500/1000",
-      "caption": "The Saxby · water feature and planting"
+      "src": "assets/macquarie-sandstone-1600.webp",
+      "srcset": "assets/macquarie-sandstone-480.webp 480w, assets/macquarie-sandstone-800.webp 800w, assets/macquarie-sandstone-1200.webp 1200w, assets/macquarie-sandstone-1600.webp 1600w, assets/macquarie-sandstone-1920.webp 1920w",
+      "width": 1920,
+      "height": 1440,
+      "alt": "Range photo of the Macquarie fibreglass shape: a pool with a curved end in rose sandstone paving, a timber screen and outdoor seating behind",
+      "caption": "Range photo · the Macquarie, sandstone paving",
+      "sample": true,
+      "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
+      "sourceUrl": "https://www.nulookpools.com.au/the-macquarie",
+      "credit": "The Macquarie — Conquest range photo, via nulookpools.com.au (Macquarie_10.5m_CGNiteBlue_3.jpg)"
     },
     "enquiryBackground": {
-      "src": "assets/macquarie-sandstone-1200.webp",
-      "srcset": "assets/macquarie-sandstone-480.webp 480w, assets/macquarie-sandstone-800.webp 800w, assets/macquarie-sandstone-1200.webp 1200w",
+      "src": "assets/montague-aggregate-1200.webp",
+      "srcset": "assets/montague-aggregate-480.webp 480w, assets/montague-aggregate-800.webp 800w, assets/montague-aggregate-1200.webp 1200w",
       "width": 1200,
-      "height": 900
+      "height": 900,
+      "sample": true,
+      "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
+      "sourceUrl": "https://www.nulookpools.com.au/the-montague",
+      "credit": "The Montague — Conquest range photo, via nulookpools.com.au (Montague_8m_NiteBlue_1-scaled.jpg)",
+      "alt": ""
     },
     "gallery": [
       {
@@ -257,7 +277,11 @@
         "height": 768,
         "caption": "The Maradona",
         "detail": "Range photo · bluestone coping, timber deck, rural block",
-        "alt": "A long rectangular fibreglass pool with bluestone coping and a timber deck, a palm tree and open paddocks behind a post-and-rail fence"
+        "alt": "Range photo of the Maradona fibreglass shape: a long rectangular pool with bluestone coping and a timber deck, a palm and open paddocks behind",
+        "sample": true,
+        "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
+        "sourceUrl": "https://www.nulookpools.com.au/the-maradona",
+        "credit": "The Maradona — Conquest range photo, via nulookpools.com.au (Maradona-12-CG-Dusky-Blue-Rural.jpg)"
       },
       {
         "src": "assets/eden-travertine-800.webp",
@@ -267,7 +291,11 @@
         "height": 768,
         "caption": "The Eden",
         "detail": "Range photo · travertine paving among gum trees",
-        "alt": "A narrow rectangular fibreglass pool surrounded by fresh travertine paving, with gum trees and a newly turned garden behind"
+        "alt": "Range photo of the Eden fibreglass shape: a narrow rectangular pool in fresh travertine paving, gum trees behind",
+        "sample": true,
+        "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
+        "sourceUrl": "https://www.nulookpools.com.au/the-eden",
+        "credit": "The Eden — Conquest range photo, via nulookpools.com.au (Eden-Pebble-Sequins-Travertine-Landscape-2.jpg)"
       },
       {
         "src": "assets/hudson-rock-garden-800.webp",
@@ -277,40 +305,61 @@
         "height": 1289,
         "caption": "The Hudson",
         "detail": "Range photo · sandstone paving and boulder waterfall",
-        "alt": "A fibreglass pool with pale sandstone paving, a boulder retaining wall and a small rock waterfall spilling into the far end"
+        "alt": "Range photo of the Hudson fibreglass shape: a pool with pale sandstone paving, a boulder wall and a small rock waterfall",
+        "sample": true,
+        "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
+        "sourceUrl": "https://www.nulookpools.com.au/the-hudson",
+        "credit": "The Hudson — Conquest range photo, via nulookpools.com.au (Hudson_9m_SandstoneShimmer-95c225fd.JPG)"
       },
       {
-        "src": "assets/maradona-glass-fence-800.webp",
-        "full": "assets/maradona-glass-fence-1366.webp",
-        "srcset": "assets/maradona-glass-fence-480.webp 480w, assets/maradona-glass-fence-800.webp 800w, assets/maradona-glass-fence-1200.webp 1200w, assets/maradona-glass-fence-1366.webp 1366w",
-        "width": 1366,
-        "height": 767,
-        "caption": "The Maradona, 12 m",
-        "detail": "Range photo · sandstone paving, frameless glass fence",
-        "alt": "A long fibreglass pool in sandstone paving behind frameless glass fencing, on a big lawn with tall poplars behind"
-      },
-      {
-        "src": "assets/paroo-steps-800.webp",
-        "full": "assets/paroo-steps-1024.webp",
-        "srcset": "assets/paroo-steps-480.webp 480w, assets/paroo-steps-800.webp 800w, assets/paroo-steps-1024.webp 1024w",
+        "src": "assets/lachlan-deck-800.webp",
+        "full": "assets/lachlan-deck-1024.webp",
+        "srcset": "assets/lachlan-deck-480.webp 480w, assets/lachlan-deck-800.webp 800w, assets/lachlan-deck-1024.webp 1024w",
         "width": 1024,
         "height": 768,
-        "caption": "The Paroo",
-        "detail": "Range photo · step-down hardwood deck",
-        "alt": "A compact fibreglass pool with a stepped hardwood deck leading down into it and a timber storage box behind"
+        "caption": "The Lachlan",
+        "detail": "Range photo · bluestone coping inside a hardwood deck",
+        "alt": "Range photo of the Lachlan fibreglass shape: a rectangular pool with bluestone coping inside a hardwood deck and glass fence, farm shed behind",
+        "sample": true,
+        "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
+        "sourceUrl": "https://www.nulookpools.com.au/the-lachlan",
+        "credit": "The Lachlan — Conquest range photo, via nulookpools.com.au (Lachlan-Bluestone-Sequins.jpg)"
       },
       {
-        "src": "assets/macquarie-sunpod-800.webp",
-        "full": "assets/macquarie-sunpod-1152.webp",
-        "srcset": "assets/macquarie-sunpod-480.webp 480w, assets/macquarie-sunpod-800.webp 800w, assets/macquarie-sunpod-1152.webp 1152w",
-        "width": 1152,
+        "src": "assets/franklin-grey-800.webp",
+        "full": "assets/franklin-grey-1024.webp",
+        "srcset": "assets/franklin-grey-480.webp 480w, assets/franklin-grey-800.webp 800w, assets/franklin-grey-1024.webp 1024w",
+        "width": 1024,
         "height": 768,
-        "caption": "The Macquarie",
-        "detail": "Range photo · sun shelf with fountain jets",
-        "alt": "A fibreglass pool with a shallow sun shelf and fountain jets, exposed-aggregate surround and a rose garden behind"
+        "caption": "The Franklin",
+        "detail": "Range photo · grey finish, rendered courtyard walls",
+        "alt": "Range photo of the Franklin fibreglass shape: a pool in a grey finish in a courtyard of charcoal walls, glass fencing and sun lounges",
+        "sample": true,
+        "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
+        "sourceUrl": "https://www.nulookpools.com.au/the-franklin",
+        "credit": "The Franklin — Conquest range photo, via nulookpools.com.au (FRANKLIN-MARBLE-GREY-SEQ-eeab40e5.jpg)"
+      },
+      {
+        "src": "assets/conquest-palms-800.webp",
+        "full": "assets/conquest-palms-1024.webp",
+        "srcset": "assets/conquest-palms-480.webp 480w, assets/conquest-palms-800.webp 800w, assets/conquest-palms-1024.webp 1024w",
+        "width": 1024,
+        "height": 768,
+        "caption": "The Conquest",
+        "detail": "Range photo · deck jets and exposed aggregate",
+        "alt": "Range photo of the Conquest fibreglass shape: a freeform pool with deck jets, exposed-aggregate surround and palms",
+        "sample": true,
+        "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client's own site, nulookpools.com.au. Not stock, and not a Nulook job: shown only to illustrate the pool shape.",
+        "sourceUrl": "https://www.nulookpools.com.au/the-conquest",
+        "credit": "The Conquest — Conquest range photo, via nulookpools.com.au (Royal-Blue-CG-Conquest.jpg)"
       }
     ],
-    "beforeAfter": []
+    "beforeAfter": [],
+    "stockApproved": {
+      "by": "Pat (standing approval)",
+      "on": "2026-09-23",
+      "reason": "Nulook's site has no photos of their own jobs — only Conquest manufacturer range photos (plus iStock). Every range photo is flagged sample:true so the page tags each one 'Sample photo', and every alt/caption names it a range photo of the shape. No Openverse/Pexels stock used."
+    }
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
@@ -394,7 +443,7 @@
       "Charissa": "Not on their website. Named with John in 5 of the 8 Google reviews in data/google_reviews_top25.json (e.g. Salesh Swami: 'John and Charissa were amazing to deal with.'). Surname and role unknown, so the page only says she works alongside John.",
       "business.phone / 'Call John'": "Every page footer, https://www.nulookpools.com.au/: 'Call John 0411 055 329'. Matches google_phone '0411 055 329' in data/google_reviews_top25.json.",
       "business.email / business.abn": "https://www.nulookpools.com.au/contact: 'Nulook Pools Canberra ABN: 36 149 626 826 Contact John: 0411 055 329 office@nulookpools.com.au'",
-      "credentials — licences": "https://www.nulookpools.com.au/contact: 'Culeld Pty Ltd T/A Nulook Pools: NSW Licence # 236338C' and 'John Eldridge: ACT Licence # 20211046 NSW Licence # 91717S'. So the page's 'Licensed in the ACT and NSW' / 'licensed' wording rests on these published licence numbers.",
+      "credentials — licences": "https://www.nulookpools.com.au/contact: 'Culeld Pty Ltd T/A Nulook Pools: NSW Licence # 236338C' and 'John Eldridge: ACT Licence # 20211046 NSW Licence # 91717S'. So the page's 'Licensed in the ACT and NSW' / 'licensed' wording rests on these published licence numbers. recognitionIntro 'Nulook holds a builder's licence in NSW, and John holds his own in the ACT and NSW' restates exactly these three published licence numbers.",
       "hours / 'Open 7 days, 6am to 6pm'": "https://www.nulookpools.com.au/contact: 'OPEN 7 DAYS WEEK MON - SUN 6AM - 6PM'",
       "serviceAreas / areasIntro / FAQ 'Where do you work?'": "https://www.nulookpools.com.au/contact: 'We provide pool installations & maintenance in the Canberra ACT region and surrounding NSW areas including but not limited to: Murrumbateman, Yass, Goulburn, Bungendore, Queanbeyan, Gundagai.'",
       "services — pools / landscaping / maintenance": "Every page footer: 'SWIMMING POOL SALES, PO0L MAINTENANCE AND LANDSCAPING'. Contact form 'I'm interested in' options: 'Pools', 'Landscaping', 'Maintenance'. Contact page: 'We provide pool installations & maintenance in the Canberra ACT region'. Homepage: 'You can be confident choosing Nulook Pools for your complete swimming pool and landscaping requirements.' Nothing more specific about maintenance is published, so the maintenance card says only that they do it.",
@@ -409,14 +458,14 @@
       "page wording for the sizes": "The page says '4 to 13.5 metres', 'the 4-metre Torrens' and 'the 13.5-metre Diamantina'. Source: their own plan drawings, /the-torrens 'DIMENSION 4m x 2.8m' (4 metres) and /the-diamantina 'DIMENSION 13.5m x 5m' (13.5 metres)."
     },
     "photoClaims": {
-      "all photos": "Every photo is from the Pool Range model pages on nulookpools.com.au, downloaded full size from irp.cdn-website.com/d9c2c926/dms3rep/multi/. File names (e.g. 'conquest-pools-montague', 'Royal-Blue-CG-Conquest') show this is the Conquest fibreglass range, which other dealers also sell and photograph (e.g. rainwisepoolsmelbourne.com.au/conquest-range). So these cannot be shown as Nulook jobs: every caption names the pool model and finish only, every gallery detail starts 'Range photo', and workIntro says they are range photos. No suburb or client is named.",
-      "hero": "Diamantina_13.5m_HawaiianSequins.jpg (1920x1275), /the-diamantina.",
+      "all photos": "Every photo is from the Pool Range model pages on nulookpools.com.au, downloaded full size from irp.cdn-website.com/d9c2c926/dms3rep/multi/. File names (e.g. 'conquest-pools-montague', 'Royal-Blue-CG-Conquest') show this is the Conquest fibreglass range, which other dealers also sell and photograph (e.g. rainwisepoolsmelbourne.com.au/conquest-range). So these cannot be shown as Nulook jobs: every caption names the pool model and finish only, every gallery detail starts 'Range photo', and workIntro says they are range photos. No suburb or client is named. Round 2 (reviewer feedback): every range photo, in every slot, now carries sample:true (the page tags it 'Sample photo'), its alt text starts 'Range photo of the …', and each is a different model and yard — 13 models, none repeated. The owner slot no longer has a photo, so nothing sits beside John's name. Service blurbs say 'Pictured: the … , from the range' and no longer claim Nulook built the pictured pool.",
+      "hero": "Diamantina_13.5m_HawaiianSequins.jpg (1920x1275), /the-diamantina. Cropped 200px off the top (trees) and lightened 12% so the pool reads under the template's dark overlay on phones.",
       "statement": "5m-Saxby-Pearl.jpeg (1920x1440), /the-saxby.",
-      "aperture": "Maradona-12-wih-Spa-and-Sunpod-Sunset.jpg (1343x768), /the-maradona.",
-      "owner slot": "Saxby_5m_HawaiianSand_1.jpg (1500x1000), /the-saxby. There is no photo of John or Charissa anywhere on their site.",
-      "enquiryBackground": "Macquarie_10.5m_CGNiteBlue_3.jpg (1920x1440), /the-macquarie.",
-      "services": "Paroo-Pebble-Sequins-Decking-Surrounds.jpg (/the-paroo), Torrens_4m_HawaiianSand_2-2ea532aa.jpeg (/the-torrens), Saxby_5m_HawaiianSand.jpg (/the-saxby).",
-      "gallery": "Maradona-12-CG-Dusky-Blue-Rural.jpg, Eden-Pebble-Sequins-Travertine-Landscape-2.jpg, Hudson_9m_SandstoneShimmer-95c225fd.JPG (cropped 140px off the left edge to remove a person), Maradona-12-in-Pebble-Sequins.jpg, Paroo-Pebble-Sequins-Decking-End-On.jpg, Macquarie-with-Sunpod.jpg.",
+      "aperture": "Macquarie_10.5m_CGNiteBlue_3.jpg (1920x1440, sharp), /the-macquarie — replaces the soft 1343px Maradona sunset.",
+      "owner slot": "No photo: there is no photo of John or Charissa anywhere on their site, and a range photo beside John's name would read as his work.",
+      "enquiryBackground": "Montague_8m_NiteBlue_1-scaled.jpg (1920x1440), /the-montague.",
+      "services": "Paroo-Pebble-Sequins-Decking-Surrounds.jpg (/the-paroo), Torrens_4m_HawaiianSand_2-2ea532aa.jpeg (/the-torrens), Darling-8m-Crystal-Granite-Marble-Grey.jpg (/the-darling).",
+      "gallery": "Maradona-12-CG-Dusky-Blue-Rural.jpg, Eden-Pebble-Sequins-Travertine-Landscape-2.jpg, Hudson_9m_SandstoneShimmer-95c225fd.JPG (140px cropped off the left to remove a person), Lachlan-Bluestone-Sequins.jpg, FRANKLIN-MARBLE-GREY-SEQ-eeab40e5.jpg, Royal-Blue-CG-Conquest.jpg.",
       "not used": "7 iStock stock photos (people splashing in pools — their homepage hero and feature images), template leftovers (CrossFit, aerobics, athlete, Unsplash), 12 install-step photos at 480x280 (too small), and the model plan-drawing composites."
     },
     "notOnThePage": [
@@ -425,6 +474,9 @@
       "Charissa's surname and role are not published anywhere, so neither is guessed.",
       "No suburb-level Canberra list is published (only the NSW towns), so no Canberra suburbs are invented.",
       "No prices or timeframes beyond 'excavations can usually be completed in one day' are published, so none are given."
+    ],
+    "stockLookingPhotos": [
+      "All 13 photos are Conquest manufacturer range photos taken from nulookpools.com.au's own model pages (sourceUrl on each). Marked sample:true; see photos.stockApproved."
     ]
   }
 }
