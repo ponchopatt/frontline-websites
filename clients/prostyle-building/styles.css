@@ -2,13 +2,21 @@
  * ProStyle Building Group: client layer over the trust template.
  * Appended after the template's CSS (lib/build.js), so it only touches this site.
  *
- * Hero: garran-dusk-portrait is a 4:5 crop of their Garran dusk shot, cropped so the
- * lit upper verandah sits in the top third, where the hero veil is lightest.
- * On a phone the whole image height shows, and x 44% keeps the columns, verandah
- * and garage in frame. On desktop the focal point is raised to the roofline.
+ * Hero on phones: their best hero shot is a wide dusk facade (2500x1666). Cropped to
+ * cover the full 390x812 hero, it showed only a ceiling light and a rail. So on narrow
+ * screens the photo sits in a wider frame just under the header (40% of the hero),
+ * which keeps the lit verandah, balustrade and garage in view. The frame fades into
+ * the dark field under the headline, and the veil is lightened so the house reads.
  */
-.hero img.bg{object-position:50% 8%}
-@media(max-width:700px){.hero img.bg{object-position:44% 50%}}
+@media(max-width:700px){
+  .hero .bgwrap{top:56px;bottom:auto;height:40%;
+    -webkit-mask-image:linear-gradient(to bottom,#000 60%,transparent 100%);
+            mask-image:linear-gradient(to bottom,#000 60%,transparent 100%)}
+  .hero img.bg{object-position:50% 50%}
+  .hero .veil{opacity:.7}
+  .hero .t-label{color:var(--fg);text-shadow:0 1px 3px rgba(4,10,13,.95),0 0 16px rgba(4,10,13,.95)}
+  .hero h1{text-shadow:0 2px 18px rgba(4,10,13,.7)}
+}
 
 /* Team photo: their original is only 858px wide, so it isn't shown wider than that renders sharply. */
 @media(min-width:960px){.about .figure{max-width:440px}}

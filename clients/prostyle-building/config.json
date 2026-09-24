@@ -50,7 +50,7 @@
     "ctaLabel": "Send the details",
     "kicker": "Extensions & new homes · Canberra",
     "headline": "Your extension,<br>reported<br><em>every week.</em>",
-    "sub": "On extensions and renovations, a dedicated construction manager runs the programme, with site meetings and weekly progress reports. We build new homes and knock-down rebuilds too, and our team has over 30 years in the building industry.",
+    "sub": "On extensions and renovations, a dedicated construction manager runs the programme, with site meetings and weekly progress reports. Our team has over 30 years in the building industry.",
     "heroSecondary": "Or send the details",
     "heroSecondarySms": "Or send the details",
     "navApproach": "Approach",
@@ -82,7 +82,8 @@
     "enquireIntro": "Tell us your suburb, what you'd like to build or change, and whether you have plans yet. Or call the office on (02) 6282 0770.",
     "reviewsLabel": "On Google",
     "reviewsTitle": "Josh, Craig and the team.",
-    "reviewsIntro": "What clients have written about us on Google."
+    "reviewsIntro": "What clients have written about us on Google.",
+    "callLabel": "Call ProStyle"
   },
   "owner": {
     "body": "Josh Fogg is one of our co-directors. Many of our clients have worked with him directly on their build.",
@@ -241,12 +242,12 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/garran-dusk-portrait-1600.webp",
-      "srcset": "assets/garran-dusk-portrait-1200.webp 1200w, assets/garran-dusk-portrait-1600.webp 1600w, assets/garran-dusk-portrait-2000.webp 2000w",
+      "src": "assets/garran-dusk-1800.webp",
+      "srcset": "assets/garran-dusk-1200.webp 1200w, assets/garran-dusk-1800.webp 1800w, assets/garran-dusk-2500.webp 2500w",
       "width": 2500,
-      "height": 3125,
-      "alt": "A rendered two-storey home at dusk, its upper verandah lit behind a glass balustrade, above a double garage and a steep driveway, Garran",
-      "_comment": "PS -120330 2279.jpg (2500x3750 portrait) from their Garran portfolio page, cropped to 2500x3125 (4:5; 450px of sky off the top, 175px of driveway off the bottom, so the lit verandah sits in the top third where the veil is lightest). Rework: the first hero (landscape PS -120330 2276.jpg) showed only a ceiling light and rail at 390px. A portrait original keeps the whole lit verandah and garage in a phone crop, and the focal point is set in styles.css. The srcset starts at 1200w on purpose: the template uses sizes=100vw, and a 480/800 file stretched across a phone looked soft."
+      "height": 1666,
+      "alt": "A rendered two-storey home at dusk, its upper verandah lit behind a glass balustrade, above a double garage, Garran",
+      "_comment": "PS -120330 2276.jpg (2500x1666) from their Garran portfolio page, the only shoot they publish above 1000px. A dusk shot with the whole upper verandah lit. Rework: at 390px the template's cover crop showed only a ceiling light and a rail, so on phones styles.css puts the photo in a wider frame just under the header (40% of the hero), which holds the lit verandah and garage, and fades it into the dark field under the headline. I tried two portrait crops from the same shoot first, but a wide house can't fit a 390x812 cover crop. The srcset starts at 1200w on purpose: the template uses sizes=100vw, and a 480/800 file looked soft."
     },
     "statement": {
       "src": "assets/curtin-deck-stairs-667.webp",
@@ -516,7 +517,7 @@
         "url": "data/google_reviews_top25.json"
       },
       "Every photo on the page": {
-        "sentence": "All 16 photos are ProStyle's own, from prostylehomes.com.au: Garran portfolio 'PS -120330 2279.jpg' (hero, 2500x3750 portrait cropped to 2500x3125) and 'PS -120330 2218.jpg' (aperture, 2500x1667); Curtin portfolio '_MG_6709-Edit-20160224.jpg' (statement, 667x1000 portrait); Extensions page 02.jpg; New Homes page 02.jpg; Knock Down Rebuilds page '1 copy.jpg'; New Developments page 01.jpg; Bathrooms page 02.jpg; About page 'team copy.jpg'; Torrens cover 'PS-0557-May 15, 2019.jpg'; Hawker 'PS-0765-160316.jpg'; Campbell 'Garsia-00075.jpg'; Red Hill 'StewH 007.jpg'; Yarralumla 'PS-1003-May 23, 2019.jpg'; Collector 02.jpg; O'Connor 'PS-6356-180221.jpg'. Gallery captions use the portfolio page titles.",
+        "sentence": "All 16 photos are ProStyle's own, from prostylehomes.com.au: Garran portfolio 'PS -120330 2276.jpg' (hero, 2500x1666) and 'PS -120330 2218.jpg' (aperture, 2500x1667); Curtin portfolio '_MG_6709-Edit-20160224.jpg' (statement, 667x1000 portrait); Extensions page 02.jpg; New Homes page 02.jpg; Knock Down Rebuilds page '1 copy.jpg'; New Developments page 01.jpg; Bathrooms page 02.jpg; About page 'team copy.jpg'; Torrens cover 'PS-0557-May 15, 2019.jpg'; Hawker 'PS-0765-160316.jpg'; Campbell 'Garsia-00075.jpg'; Red Hill 'StewH 007.jpg'; Yarralumla 'PS-1003-May 23, 2019.jpg'; Collector 02.jpg; O'Connor 'PS-6356-180221.jpg'. Gallery captions use the portfolio page titles.",
         "url": "https://www.prostylehomes.com.au/portfolio"
       },
       "Logo": {
