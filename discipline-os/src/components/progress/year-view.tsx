@@ -1,14 +1,15 @@
 "use client";
 
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { dayDetails, type DayDetails } from "@/app/actions/day";
 import { ReplayList } from "@/components/replay-list";
 import { ScoreRing } from "@/components/score-ring";
 import { Sheet } from "@/components/sheet";
 import { verdictLine } from "@/lib/close-day";
-import { formatDuration, isoWeekday, shortDate, type LocalDate } from "@/lib/day";
+import { addDays, formatDuration, isoWeekday, shortDate, type LocalDate } from "@/lib/day";
 import type { DayState, YearDay } from "@/lib/history";
 import { cn } from "@/lib/utils";
 
@@ -39,23 +40,35 @@ interface YearViewProps {
   timeZone: string;
 }
 
+function tappable(state: DayState | undefined): boolean {
+  return state !== undefined && state !== "future" && state !== "before";
+}
+
 /**
  * The year in squares: one per day, sage by how much of the word was kept. A ring marks a
- * secured minimum day. Tap a day for its numbers and replay.
+ * secured minimum day. Tap a day for its numbers and replay; the arrows step to the days either
+ * side, so a square missed by a thumb is one tap to put right.
  */
 export function YearView({ days, today, threshold, timeZone }: YearViewProps) {
   const [open, setOpen] = useState<LocalDate | null>(null);
   const [details, setDetails] = useState<DayDetails | null>(null);
+  // The day asked for last. Stepping quickly, an older answer arriving late is dropped.
+  const asked = useRef<LocalDate | null>(null);
+  const stateOf = new Map(days.map((d) => [d.date, d.state]));
+  const prev = open ? addDays(open, -1) : null;
+  const next = open ? addDays(open, 1) : null;
 
   async function show(date: LocalDate) {
+    asked.current = date;
     setOpen(date);
     setDetails(null);
     try {
       const res = await dayDetails({ date });
+      if (asked.current !== date) return;
       if (res.ok) setDetails(res.data);
       else toast.error(res.error);
     } catch {
-      toast.error("That day couldn't be loaded. Check your connection and try again.");
+      if (asked.current === date) toast.error("That day couldn't be loaded. Check your connection and try again.");
     }
   }
 
@@ -75,17 +88,18 @@ export function YearView({ days, today, threshold, timeZone }: YearViewProps) {
                 <li key={`lead-${i}`} aria-hidden />
               ))}
               {month.list.map((d) => {
-                const tappable = d.state !== "future" && d.state !== "before";
-                const label = `${shortDate(d.date)}: ${tappable ? `${d.score}%, ${WORD[d.state]}${d.minimum === "secured" ? ", minimum day secured" : ""}` : d.state === "future" ? "to come" : "before you started"}`;
+                const canTap = tappable(d.state);
+                const label = `${shortDate(d.date)}: ${canTap ? `${d.score}%, ${WORD[d.state]}${d.minimum === "secured" ? ", minimum day secured" : ""}` : d.state === "future" ? "to come" : "before you started"}`;
                 return (
                   <li key={d.date} className="aspect-square">
-                    {tappable ? (
+                    {/* A square's tap area reaches halfway across the gap to each neighbour, so no tap lands on nothing. */}
+                    {canTap ? (
                       <button
                         type="button"
                         aria-label={label}
                         onClick={() => void show(d.date)}
                         className={cn(
-                          "block size-full rounded-[3px] transition-transform active:scale-90",
+                          "relative block size-full rounded-[3px] transition-transform before:absolute before:-inset-[1.5px] active:scale-90",
                           FILL[d.state],
                           d.minimum === "secured" && "ring-1 ring-primary ring-inset",
                           d.date === today && "outline outline-1 outline-offset-1 outline-foreground",
@@ -111,6 +125,14 @@ export function YearView({ days, today, threshold, timeZone }: YearViewProps) {
       </ul>
 
       <Sheet open={open !== null} onClose={() => setOpen(null)} title={open ? shortDate(open) : "Day"}>
+        <div className="-mt-1 mb-3 flex items-center justify-between gap-3">
+          <DayStep label="Previous day" disabled={!prev || !tappable(stateOf.get(prev))} onClick={() => prev && void show(prev)}>
+            <ChevronLeft className="size-5" aria-hidden />
+          </DayStep>
+          <DayStep label="Next day" disabled={!next || !tappable(stateOf.get(next))} onClick={() => next && void show(next)}>
+            <ChevronRight className="size-5" aria-hidden />
+          </DayStep>
+        </div>
         {!details ? (
           <p className="py-6 text-[15px] text-muted-foreground">Loading the day…</p>
         ) : (
@@ -146,6 +168,20 @@ export function YearView({ days, today, threshold, timeZone }: YearViewProps) {
         )}
       </Sheet>
     </>
+  );
+}
+
+function DayStep({ label, disabled, onClick, children }: { label: string; disabled: boolean; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      disabled={disabled}
+      onClick={onClick}
+      className="grid size-11 place-items-center rounded-full border border-border text-foreground hover:bg-accent disabled:text-faint/60 disabled:hover:bg-transparent"
+    >
+      {children}
+    </button>
   );
 }
 

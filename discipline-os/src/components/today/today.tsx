@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { saveMilestone } from "@/app/actions/bot";
 import { setCounter } from "@/app/actions/counters";
@@ -41,6 +41,7 @@ import type {
 import { REVIEW_FIELDS } from "@/lib/types";
 import { BigThree } from "./big-three";
 import { Scoreboard, TodayHeader, WeekGlance } from "./header";
+import { thingsDone, withEnded, withTask } from "./helpers";
 import { MinimumCard, MinimumSwitch, minimumItems } from "./minimum-day";
 import { MemoryNote, RecordBanner } from "./moments";
 import { NextActionCard } from "./next-action";
@@ -129,6 +130,8 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
   const [askMinimum, setAskMinimum] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [closing, setClosing] = useState<{ data: DayCompleteData; heading: string } | null>(null);
+  // Tasks being moved right now. A second tap while the first is saving does nothing.
+  const moving = useRef(new Set<string>());
 
   // When the server's lists change (a plan applied, a task moved, a block added), take its
   // lists. Everything else on screen stays as it is, so a refresh never undoes a number just
@@ -142,6 +145,17 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
     setLater(view.later);
     setBlocks(view.blocks);
     setMilestone(view.milestone);
+  }
+
+  // The same for the timer: a session started or stopped elsewhere (another device, Close day)
+  // shows here once the server has it. It takes only the sessions, so a timer starting or
+  // stopping never undoes a tick still saving.
+  const sessionsKey = [view.sessions.map((s) => `${s.id}-${s.endedAt ?? ""}`).join("."), view.openSession?.id ?? ""].join(":");
+  const [seenSessions, setSeenSessions] = useState(sessionsKey);
+  if (seenSessions !== sessionsKey) {
+    setSeenSessions(sessionsKey);
+    setSessions(view.sessions);
+    setRunning(view.openSession);
   }
 
   const readOnly = Boolean(locked);
@@ -251,8 +265,8 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
   }
 
   function added(task: TaskItem) {
-    if (task.localDate === date) setTasks((list) => [...list, task]);
-    else if (task.localDate === null) setLater((list) => [task, ...list]);
+    if (task.localDate === date) setTasks((list) => withTask(list, task));
+    else if (task.localDate === null) setLater((list) => withTask(list, task, "start"));
   }
 
   function saveTask(task: TaskItem, patch: TaskPatch) {
@@ -282,15 +296,21 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
   }
 
   async function move(task: TaskItem, to: "today" | "later") {
-    const res = await call(() => moveTask({ id: task.id, to }));
-    if (!res.ok) return;
-    const moved = res.data;
-    setUnfinished((list) => list.filter((t) => t.id !== task.id));
-    setLater((list) => list.filter((t) => t.id !== task.id));
-    setTasks((list) => list.filter((t) => t.id !== task.id));
-    added(moved);
-    setOpenTask(null);
-    toast.success(to === "today" ? "Moved to today." : "Moved to later.");
+    if (moving.current.has(task.id)) return;
+    moving.current.add(task.id);
+    try {
+      const res = await call(() => moveTask({ id: task.id, to }));
+      if (!res.ok) return;
+      const moved = res.data;
+      setUnfinished((list) => list.filter((t) => t.id !== task.id));
+      setLater((list) => list.filter((t) => t.id !== task.id));
+      setTasks((list) => list.filter((t) => t.id !== task.id));
+      added(moved);
+      setOpenTask(null);
+      toast.success(to === "today" ? "Moved to today." : "Moved to later.");
+    } finally {
+      moving.current.delete(task.id);
+    }
   }
 
   async function removeTask(task: TaskItem) {
@@ -356,6 +376,9 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
 
   /* ------------------------------------------------------------- work */
   async function start(blockId: string | null, replaceRunning = false, area: WorkArea | null = null) {
+    // The timer a replace stops: this screen's, or one started on another device that the
+    // server has just told us about.
+    const previous = running ?? conflict?.running ?? null;
     setConflict(null);
     const res = await call(() => startSession({ blockId, replaceRunning, area }));
     if (!res.ok) return;
@@ -365,10 +388,7 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
     }
     const started = res.data.started;
     const task = blocks.find((b) => b.id === blockId)?.task ?? null;
-    if (replaceRunning && running) {
-      const stoppedId = running.id;
-      setSessions((list) => list.map((s) => (s.id === stoppedId ? { ...s, endedAt: started.startedAt } : s)));
-    }
+    if (replaceRunning && previous) setSessions((list) => withEnded(list, previous, started.startedAt, date));
     setRunning({ ...started, task });
     if (started.localDate === date) setSessions((list) => [...list, started]);
     router.refresh();
@@ -418,9 +438,11 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
   async function complete() {
     const res = await call(() => completeDay({ date }));
     if (res.ok) {
-      const { summary, replay, score, completedAt } = res.data;
+      const { summary, replay, score, completedAt, stopped } = res.data;
       setLocked({ score, completedAt });
       setRunning((r) => (r && r.localDate === date ? null : r));
+      // The timer stopped with the day: its minutes stop counting too.
+      if (stopped) setSessions((list) => list.map((s) => (s.id === stopped.id ? { ...s, endedAt: stopped.endedAt } : s)));
       setClosing({
         heading: "Day complete",
         data: { date, score, made: summary.made, kept: summary.kept, workMinutes: summary.workMinutes, minimum: summary.minimum, summary, replay },
@@ -516,6 +538,7 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
   const workAction = actions.find((a) => a.do.type === "work")?.do;
   const minimumWorkArea: WorkArea = workAction?.type === "work" ? workAction.area : "imperium";
   const full = !minimumOn || showAll;
+  const closedDone = thingsDone(view.closed);
 
   const habitsLine = [
     `Morning ${morning.total}`,
@@ -559,7 +582,7 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
               Day complete
             </span>
             <span className="text-sm text-muted-foreground">
-              Kept my word {locked.score}%{view.closed ? ` · ${view.closed.achievements.length} things done` : ""}. Reopen it at the bottom to change it.
+              Kept my word {locked.score}%{closedDone ? ` · ${closedDone}` : ""}. Reopen it at the bottom to change it.
             </span>
           </span>
           <span className="inline-flex shrink-0 items-center gap-1.5 text-sm">
@@ -592,7 +615,7 @@ export function Today({ view, partOfDay, name, hour: serverHour, boss }: { view:
             onCloseDay={() => void complete()}
           />
           {!minimumOn && (
-            <button type="button" onClick={() => setAskMinimum(true)} className="min-h-11 justify-self-end px-1 text-sm text-muted-foreground hover:text-foreground">
+            <button type="button" onClick={() => setAskMinimum(true)} className="glow-ink min-h-11 justify-self-end px-1 text-sm text-muted-foreground hover:text-foreground">
               I&apos;m having a shit day
             </button>
           )}

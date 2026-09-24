@@ -4,8 +4,13 @@
  * goals". Run: npm run test:e2e
  */
 import { expect, test, type Locator } from "@playwright/test";
-import { startOfWeek } from "../src/lib/day";
-import { admin, keptOfMade, ringScore, signUp, today, waitForApp } from "./helpers";
+import { dayBounds, startOfWeek } from "../src/lib/day";
+import { TZ, addDays, admin, backdateAccount, keptOfMade, ringScore, signUp, today, waitForApp } from "./helpers";
+
+/** `ms` ago, but never before the start of today: a session's day is set by when it started. */
+function earlierToday(ms: number): string {
+  return new Date(Math.max(Date.now() - ms, dayBounds(today(), TZ, 4).start.getTime() + 1_000)).toISOString();
+}
 
 async function ready(locator: Locator) {
   await expect(locator).toBeVisible();
@@ -121,4 +126,79 @@ test("the day runs from one screen: tasks, counters, work, the bot, proof and th
   const calls = weekly!.find((w) => /cold calls/.test(w.title))!;
   expect(calls).toMatchObject({ progress_source: "metric", week_start: startOfWeek(date) });
   expect(calls.metric_id).not.toBeNull();
+});
+
+test("a double tap on Today carries an unfinished task over once", async ({ page }) => {
+  const { userId } = await signUp(page);
+  await backdateAccount(userId, 2);
+  const { data: old } = await admin
+    .from("daily_goals")
+    .insert({ user_id: userId, local_date: addDays(today(), -1), title: "Chase the Smith quote" })
+    .select("id")
+    .single();
+  await page.reload();
+  await waitForApp(page);
+
+  const big3 = page.locator("#big3");
+  await big3.getByText("1 unfinished from earlier").click();
+  await big3.getByRole("button", { name: 'Do "Chase the Smith quote" today' }).dblclick();
+  const task = page.getByRole("checkbox", { name: 'Mark "Chase the Smith quote" done' });
+  await expect(task).toHaveCount(1);
+  await expect(big3.getByText("1 unfinished from earlier")).toHaveCount(0);
+  const copies = async () => (await admin.from("daily_goals").select("id").eq("carried_from_id", old!.id)).data?.length;
+  expect(await copies()).toBe(1);
+
+  await page.reload();
+  await waitForApp(page);
+  await expect(task).toHaveCount(1);
+  expect(await copies()).toBe(1);
+});
+
+test("Start with a timer running on another device asks first, in view, and counts the stopped time", async ({ page }) => {
+  const { userId } = await signUp(page);
+  // Websites work, started on another device after this page loaded.
+  const { data: other } = await admin
+    .from("work_sessions")
+    .insert({ user_id: userId, local_date: today(), started_at: earlierToday(2 * 3_600_000), area: "websites" })
+    .select("id")
+    .single();
+
+  // Start from the AI bot card, far below the Work card: the question comes into view.
+  await page.locator("#trading").getByRole("button", { name: "Start", exact: true }).click();
+  const work = page.locator("#work");
+  const ask = work.getByRole("alert");
+  await expect(ask).toContainText("Websites is still running");
+  await expect(ask).toBeInViewport();
+  await ask.getByRole("button", { name: "Stop it and start" }).click();
+
+  // The stopped session counts straight away, next to the new one.
+  await expect(work.getByRole("timer")).toBeVisible();
+  await expect(work.getByText("2 sessions logged")).toBeVisible();
+  const { data: sessions } = await admin.from("work_sessions").select("id,area,ended_at").eq("user_id", userId);
+  expect(sessions!.find((s) => s.id === other!.id)!.ended_at).not.toBeNull();
+  expect(sessions!.find((s) => s.id !== other!.id)).toMatchObject({ area: "trading", ended_at: null });
+});
+
+test("closing the day stops a running timer, and its time stops counting", async ({ page }) => {
+  const { userId } = await signUp(page);
+  const { data: open } = await admin
+    .from("work_sessions")
+    .insert({ user_id: userId, local_date: today(), started_at: earlierToday(3_600_000), area: "websites" })
+    .select("id")
+    .single();
+  await page.reload();
+  await waitForApp(page);
+  const work = page.locator("#work");
+  await expect(work.getByRole("timer")).toBeVisible();
+
+  await page.locator("#review").getByRole("button", { name: "Close day" }).click();
+  await page.getByRole("dialog", { name: "Day complete" }).getByRole("button", { name: "Done" }).click();
+  await expect(work.getByRole("timer")).toHaveCount(0);
+  const { data: stopped } = await admin.from("work_sessions").select("ended_at").eq("id", open!.id).single();
+  expect(stopped!.ended_at).not.toBeNull();
+
+  // The session shows when it ended, not "now", so the day's hours stand still.
+  await work.getByText("1 session logged").click();
+  await expect(work.locator("details li")).toHaveCount(1);
+  await expect(work.locator("details li")).not.toContainText("now");
 });

@@ -55,7 +55,7 @@ export function NextActionCard({ actions, running, onStart, onTaskDone, onHabitD
           <Compass className="size-4" aria-hidden />
           Do this now
         </h2>
-        <button type="button" onClick={() => setOpen(false)} aria-label="Hide" className="-mr-2 grid size-10 place-items-center rounded-full text-muted-foreground hover:bg-accent">
+        <button type="button" onClick={() => setOpen(false)} aria-label="Hide" className="-mr-2 grid size-11 place-items-center rounded-full text-muted-foreground hover:bg-accent">
           <X className="size-4" aria-hidden />
         </button>
       </div>

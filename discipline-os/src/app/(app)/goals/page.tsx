@@ -104,7 +104,7 @@ export default async function GoalsPage({ searchParams }: PageProps<"/goals">) {
         </nav>
       </header>
 
-      <section aria-labelledby="ladder-heading">
+      <section aria-labelledby="ladder-heading" className="glow-ink">
         <h2 id="ladder-heading" className="sr-only">
           From your life to today
         </h2>

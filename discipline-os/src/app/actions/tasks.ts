@@ -199,7 +199,9 @@ const moveSchema = z.object({ id: uuidSchema, to: z.enum(["today", "later"]) });
 
 /**
  * Moves a task on. A task from an earlier day is copied forward (the old day keeps its record
- * of what happened); a task parked for later, or today's task, just changes day.
+ * of what happened), once: moving it again (a double tap, or a screen that hadn't caught up)
+ * moves that copy instead of making another. A task parked for later, or today's task, just
+ * changes day.
  */
 export async function moveTask(input: z.input<typeof moveSchema>): Promise<ActionResult<TaskItem>> {
   const parsed = moveSchema.safeParse(input);
@@ -212,6 +214,23 @@ export async function moveTask(input: z.input<typeof moveSchema>): Promise<Actio
   const target = to === "today" ? today : null;
 
   if (task.local_date && task.local_date < today) {
+    const { data: copy, error: copyError } = await supabase
+      .from("daily_goals")
+      .select("*")
+      .eq("carried_from_id", task.id)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (copyError) return dbFail(copyError, "The task wasn't moved. Try again.");
+    if (copy) {
+      if (copy.local_date === target) return ok(mapTask(copy, null));
+      // A copy that's been done, or left on an earlier day, keeps its own record: leave it be.
+      if (copy.status !== "pending" || (copy.local_date !== null && copy.local_date < today)) return fail("That task was already moved on.");
+      const { data, error } = await supabase.from("daily_goals").update({ local_date: target, rank: null }).eq("id", copy.id).select("*").single();
+      if (error || !data) return dbFail(error ?? {}, "The task wasn't moved. Try again.");
+      return ok(mapTask(data, null));
+    }
+
     const { data, error } = await supabase
       .from("daily_goals")
       .insert({
@@ -247,9 +266,10 @@ const idSchema = z.object({ id: uuidSchema });
 export async function deleteTask(input: z.input<typeof idSchema>): Promise<ActionResult> {
   const parsed = idSchema.safeParse(input);
   if (!parsed.success) return invalid(parsed.error);
-  const { supabase } = await getViewer();
-  const { error } = await supabase.from("daily_goals").delete().eq("id", parsed.data.id);
+  const viewer = await getViewer();
+  const { data, error } = await viewer.supabase.from("daily_goals").delete().eq("id", parsed.data.id).select("local_date").maybeSingle();
   if (error) return dbFail(error, "The task wasn't deleted. Try again.");
+  if (data?.local_date && data.local_date < viewer.today) await recomputeBestStreak(viewer);
   return ok();
 }
 

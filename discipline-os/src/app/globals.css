@@ -14,7 +14,8 @@
 
   Spark — after the "Spark" habit app. A warm orange glow across the top of each page with a
     dotted texture, fading into cream; plain white cards with soft warm shadows; orange for
-    streaks, dots and the current tab. Text on the glow is white, on cream dark brown.
+    streaks, dots and the current tab. The header on the glow is white; other text is dark brown,
+    even where the glow reaches down behind it.
 
   Dark — three colours, and one for "kept".
     Lampblack  the ground. Near-black with a trace of warmth, like soot from a lamp.
@@ -168,8 +169,9 @@
   --secondary: rgb(23 33 27 / 0.05);
   --secondary-foreground: #17211b;
   --muted: rgb(23 33 27 / 0.05);
-  --muted-foreground: #4a5a50;
-  --faint: #748379;
+  /* Dark enough to read on the dimmest card at the foot of the page (faint about 5:1). */
+  --muted-foreground: #2f3d35;
+  --faint: #3d4c43;
   --accent: rgb(23 33 27 / 0.06);
   --accent-foreground: #17211b;
   --destructive: #8a3b12;
@@ -331,6 +333,13 @@
   --kept: #e2470f;
   --ring: #ee4f1c;
   color: var(--foreground);
+}
+
+/* Below the header but still on the glow: dark ink, which reads on the orange and the cream. */
+.spark .glow-ink {
+  --primary: #2b1a10;
+  --muted-foreground: #4a2f1f;
+  --border: rgb(43 26 16 / 0.25);
 }
 
 .spark .surface,

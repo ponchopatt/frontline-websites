@@ -37,11 +37,12 @@ export function DayStrip({ days, threshold, selected, today, firstDay }: DayStri
           }
           return (
             <li key={d.date} className="flex h-full flex-1 items-end">
+              {/* The tap area spans half the gap either side, so a tap between two bars opens one of them. */}
               <Link
                 href={d.date === today ? "/" : `/?d=${d.date}`}
                 aria-label={`${shortDate(d.date)}: score ${d.score}`}
                 aria-current={isSelected ? "date" : undefined}
-                className="flex h-full w-full items-end rounded-[2px] focus-visible:outline-offset-1"
+                className="relative flex h-full w-full items-end rounded-[2px] before:absolute before:inset-y-0 before:-inset-x-[1.5px] focus-visible:outline-offset-1"
                 prefetch={false}
               >
                 <span

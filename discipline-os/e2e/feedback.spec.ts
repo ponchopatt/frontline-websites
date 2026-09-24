@@ -6,7 +6,7 @@
  */
 import { expect, test, type Locator } from "@playwright/test";
 import { fromZonedTime } from "date-fns-tz";
-import { addDays, shortDate } from "../src/lib/day";
+import { addDays, dayBounds, shortDate } from "../src/lib/day";
 import { TZ, admin, backdateAccount, habit, signUp, today, waitForApp } from "./helpers";
 
 const MORNING = ["Wake up on time", "Shower", "Make bed", "Water", "Bible", "Journal", "Pray", "Plan day"];
@@ -159,9 +159,16 @@ test("minimum day: a bad day cut to the non-negotiables keeps the chain alive", 
   await expect.poll(async () => (await admin.from("daily_plans").select("minimum_at").eq("user_id", userId).single()).data?.minimum_at).not.toBeNull();
 
   for (const name of ["Shower", "Bible", "Journal", "Pray", "Sleep target", "Cardio"]) await card.getByRole("checkbox", { name, exact: true }).click();
-  // Twenty-five minutes of work, logged earlier.
-  const start = Date.now() - 30 * 60_000;
-  await admin.from("work_sessions").insert({ user_id: userId, local_date: date, started_at: new Date(start).toISOString(), ended_at: new Date(start + 25 * 60_000).toISOString(), area: "websites" });
+  // Twenty-five minutes of work, logged earlier. The day is set by when it started, so it starts
+  // inside today even in the first half hour after 04:00.
+  const start = Math.max(Date.now() - 30 * 60_000, dayBounds(date, TZ, 4).start.getTime() + 1_000);
+  const { data: logged, error } = await admin
+    .from("work_sessions")
+    .insert({ user_id: userId, local_date: date, started_at: new Date(start).toISOString(), ended_at: new Date(start + 25 * 60_000).toISOString(), area: "websites" })
+    .select("local_date")
+    .single();
+  expect(error).toBeNull();
+  expect(logged!.local_date).toBe(date);
   await expect.poll(async () => (await admin.from("habit_completions").select("id").eq("user_id", userId)).data?.length).toBe(6);
   await page.reload();
   await waitForApp(page);

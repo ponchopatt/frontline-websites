@@ -6,7 +6,8 @@ import { ensureReading } from "@/lib/bible-server";
 import { dbFail, fail, guardDate, invalid, localDateSchema, ok } from "@/lib/action-helpers";
 import { isWorkArea, type WorkArea } from "@/lib/areas";
 import { asCloseSummary, closeSummary, type CloseSummary } from "@/lib/close-day";
-import { getViewer, loadDay, loadSummaries, recomputeBestStreak } from "@/lib/data";
+import { getViewer, loadDay, loadSummaries, recomputeBestStreak, type Viewer } from "@/lib/data";
+import type { LocalDate } from "@/lib/day";
 import { indexHistory, liveFromHistory, newRecords, recordBaseline } from "@/lib/history";
 import { loadFacts, loadReplay } from "@/lib/history-server";
 import { keepWord } from "@/lib/keep-word";
@@ -152,28 +153,12 @@ export interface Closed {
   best: number;
   summary: CloseSummary;
   replay: ReplayEvent[];
+  /** The timer that was still running on the day, and when closing it stopped it. */
+  stopped: { id: string; endedAt: string } | null;
 }
 
-/**
- * Closes the day: stops a timer still running on it, stores its Keep My Word with the full
- * summary (numbers, what it achieved, records broken), and returns the replay. The number is
- * worked out here from the database, not taken from the browser. Optional habits left undone
- * don't stop a day being closed; they count as commitments not kept.
- */
-export async function completeDay(input: z.input<typeof dateOnly>): Promise<ActionResult<Closed>> {
-  const parsed = dateOnly.safeParse(input);
-  if (!parsed.success) return invalid(parsed.error);
-  const { date } = parsed.data;
-  const viewer = await getViewer();
-  const refused = guardDate(viewer, date);
-  if (refused) return refused;
-
-  const { data: running } = await viewer.supabase.from("work_sessions").select("id").is("ended_at", null).eq("local_date", date).maybeSingle();
-  if (running) {
-    const { error: stopError } = await viewer.supabase.from("work_sessions").update({ ended_at: new Date().toISOString() }).eq("id", running.id);
-    if (stopError) return dbFail(stopError, "The running timer couldn't be stopped. Stop it and try again.");
-  }
-
+/** Scores the day from the database and stores it as closed, with its summary. */
+async function scoreAndClose(viewer: Viewer, date: LocalDate): Promise<ActionResult<{ score: number; completedAt: string; summary: CloseSummary }>> {
   const facts = loadFacts(viewer);
   const [[summary], view] = await Promise.all([loadSummaries(viewer.supabase, date, date), loadDay(viewer, date, facts)]);
   if (!summary) return fail("This day couldn't be scored. Try again.");
@@ -229,9 +214,52 @@ export async function completeDay(input: z.input<typeof dateOnly>): Promise<Acti
     { onConflict: "user_id,local_date" },
   );
   if (error) return dbFail(error, "The day wasn't closed. Try again.");
+  return ok({ score, completedAt, summary: summaryOut });
+}
 
+/**
+ * Closes the day: stops a timer still running on it, stores its Keep My Word with the full
+ * summary (numbers, what it achieved, records broken), and returns the replay. The number is
+ * worked out here from the database, not taken from the browser. Optional habits left undone
+ * don't stop a day being closed; they count as commitments not kept.
+ */
+export async function completeDay(input: z.input<typeof dateOnly>): Promise<ActionResult<Closed>> {
+  const parsed = dateOnly.safeParse(input);
+  if (!parsed.success) return invalid(parsed.error);
+  const { date } = parsed.data;
+  const viewer = await getViewer();
+  const refused = guardDate(viewer, date);
+  if (refused) return refused;
+
+  const { data: running } = await viewer.supabase.from("work_sessions").select("id").is("ended_at", null).eq("local_date", date).maybeSingle();
+  let stopped: Closed["stopped"] = null;
+  if (running) {
+    const endedAt = new Date().toISOString();
+    const { error: stopError } = await viewer.supabase.from("work_sessions").update({ ended_at: endedAt }).eq("id", running.id);
+    if (stopError) return dbFail(stopError, "The running timer couldn't be stopped. Stop it and try again.");
+    stopped = { id: running.id, endedAt };
+  }
+
+  // If the day can't be closed after all, the timer carries on from when it started, as the
+  // screen still shows it.
+  const restart = async () => {
+    if (stopped) await viewer.supabase.from("work_sessions").update({ ended_at: null }).eq("id", stopped.id);
+  };
+  let closed: Awaited<ReturnType<typeof scoreAndClose>>;
+  try {
+    closed = await scoreAndClose(viewer, date);
+  } catch (e) {
+    await restart();
+    throw e;
+  }
+  if (!closed.ok) {
+    await restart();
+    return closed;
+  }
+
+  const { score, completedAt, summary } = closed.data;
   const [best, replay] = await Promise.all([recomputeBestStreak(viewer), loadReplay(viewer, date)]);
-  return ok({ score, completedAt, best, summary: summaryOut, replay });
+  return ok({ score, completedAt, best, summary, replay, stopped });
 }
 
 export interface DayDetails {
