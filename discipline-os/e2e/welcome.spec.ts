@@ -374,7 +374,7 @@ test("a forgotten passcode is replaced after asking for it and signing in again"
 test("settings: change the passcode, lock now, and turn it off", async ({ page }) => {
   test.setTimeout(120_000);
   const { userId } = await withPasscode(page);
-  const card = page.locator("#passcode");
+  const card = page.locator("#passcode").filter({ visible: true });
 
   // 1906 becomes 2222.
   await page.goto("/settings");
