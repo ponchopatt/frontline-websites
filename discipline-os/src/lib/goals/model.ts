@@ -1,4 +1,4 @@
-import type { LocalDate } from "../day";
+import { localDateAt, type LocalDate } from "../day";
 
 /**
  * The goal hierarchy: My Life → Year → (Quarter) → Month → Week → Day.
@@ -10,7 +10,7 @@ export type GoalType = "outcome" | "performance" | "process" | "habit" | "milest
 export type GoalState = "draft" | "active" | "completed" | "missed" | "cancelled";
 export type Cadence = "total" | "per_week" | "per_month";
 export type Aggregation = "sum" | "latest";
-export type ProgressSource = "manual" | "children" | "work_hours" | "habit" | "actions" | "milestones" | "metric";
+export type ProgressSource = "manual" | "children" | "work_hours" | "habit" | "actions" | "milestones" | "metric" | "keep_word";
 export type DailyStatus = "pending" | "done" | "dropped";
 
 export const GOAL_TYPES: Array<{ value: GoalType; label: string; hint: string; example: string }> = [
@@ -50,7 +50,7 @@ export interface GoalCore {
   deadline: LocalDate | null;
   completedAt: string | null;
   sortOrder: number;
-  /** The day it was set (UTC date of creation). Pace is judged from here, not from 1 January. */
+  /** The day it was set, in the user's own days. Pace is judged from here, not from 1 January. */
   createdOn: LocalDate | null;
 }
 
@@ -149,7 +149,13 @@ function num(v: number | string | null): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-export function coreFromRow(r: GoalRow): GoalCore {
+/** Where a user's days fall: their timezone and the hour their day starts. */
+export interface DayZone {
+  timezone: string;
+  dayStartHour: number;
+}
+
+export function coreFromRow(r: GoalRow, zone: DayZone): GoalCore {
   return {
     id: r.id,
     title: r.title,
@@ -173,6 +179,7 @@ export function coreFromRow(r: GoalRow): GoalCore {
     deadline: r.deadline,
     completedAt: r.completed_at,
     sortOrder: r.sort_order,
-    createdOn: r.created_at ? r.created_at.slice(0, 10) : null,
+    // 9am on a Thursday in Sydney is still Wednesday in UTC, so go by the user's own day.
+    createdOn: r.created_at ? localDateAt(new Date(r.created_at), zone.timezone, zone.dayStartHour) : null,
   };
 }

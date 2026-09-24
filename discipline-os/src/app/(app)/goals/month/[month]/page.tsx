@@ -13,6 +13,7 @@ import { loadGoalYear, loadLifeAreas } from "@/lib/goals/data";
 import { formatTarget, formatValue } from "@/lib/goals/format";
 import { isNumeric } from "@/lib/goals/model";
 import { addMonths, monthEndOf, monthLabel, weekNumberInMonth, weekRangeLabel, weeksOfMonth } from "@/lib/goals/periods";
+import { withProgress } from "@/lib/goals/progress";
 
 export const metadata: Metadata = { title: "Month" };
 
@@ -73,7 +74,7 @@ export default async function MonthPage({ params }: PageProps<"/goals/month/[mon
             const children = data.tree.weekly.filter((w) => w.parentMonthlyId === o.id && w.state !== "cancelled");
             const covered = new Set(children.map((c) => c.weekStart));
             const areaName = areas.find((a) => a.id === (o.lifeAreaId ?? parent?.lifeAreaId))?.name ?? null;
-            const drafts = monthToWeeks(o, areaName, viewer.today).filter((d) => !covered.has(d.periodStart));
+            const drafts = monthToWeeks(withProgress(o, p), areaName, viewer.today).filter((d) => !covered.has(d.periodStart));
             const manual = isNumeric(o.goalType) && (o.progressSource === "manual" || (o.progressSource === "children" && !children.some((c) => (c.unit ?? "") === (o.unit ?? ""))));
             return (
               <li key={o.id} className="grid gap-3 rounded-2xl border border-border p-4">

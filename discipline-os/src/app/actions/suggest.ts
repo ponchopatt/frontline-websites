@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { AREAS, type Area } from "@/lib/areas";
 import { dbFail, fail, invalid, ok, uuidSchema } from "@/lib/action-helpers";
-import { fetchAll, firstDayOf, getViewer, loadCounterData, loadMilestone } from "@/lib/data";
+import { fetchAll, firstDayOf, getViewer, loadCounterData, loadMilestone, type Viewer } from "@/lib/data";
 import { addDays, daysBetween, startOfWeek } from "@/lib/day";
 import { monthStartOf } from "@/lib/goals/periods";
 import { aiConfigured, refineWithAI } from "@/lib/goals/suggest-ai";
@@ -16,6 +16,18 @@ const answersSchema = z.object({
   hoursPerWeek: z.number().min(0).max(120).nullable(),
   commitments: z.string().trim().max(1000, "Keep this under 1000 characters."),
 });
+
+/**
+ * Whether this account may spend the AI key. Anyone can sign up to a public deploy, so
+ * AI_ALLOWED_EMAILS (comma-separated) keeps it to the owner. Unset, every account may.
+ */
+async function aiAllowed(supabase: Viewer["supabase"]): Promise<boolean> {
+  const allowed = (process.env.AI_ALLOWED_EMAILS ?? "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean);
+  if (allowed.length === 0) return true;
+  const { data } = await supabase.auth.getClaims();
+  const email = data?.claims.email?.trim().toLowerCase();
+  return Boolean(email && allowed.includes(email));
+}
 
 /**
  * Suggests this week's goals from the last four weeks of real numbers (and, with an API key,
@@ -37,7 +49,7 @@ export async function suggestMyGoals(
   const [counterData, habitsRes, completions, milestone, weekGoals] = await Promise.all([
     loadCounterData(supabase, from, lastDay),
     supabase.from("habits").select("id,kind,days").eq("is_active", true).in("kind", ["bible", "prayer", "gym", "cardio"]),
-    fetchAll<{ habit_id: string }>((a, b) => supabase.from("habit_completions").select("habit_id").gte("local_date", from).lte("local_date", lastDay).range(a, b)),
+    fetchAll<{ habit_id: string }>((a, b) => supabase.from("habit_completions").select("habit_id").gte("local_date", from).lte("local_date", lastDay).order("id").range(a, b)),
     loadMilestone(supabase),
     supabase.from("weekly_goals").select("metric_id,habit_id").eq("week_start", weekStart).neq("state", "cancelled"),
   ]);
@@ -66,15 +78,18 @@ export async function suggestMyGoals(
       kind: h.kind as HabitKind,
       habitId: h.id,
       daysPerWeek: weeks > 0 && (doneCount.get(h.id) ?? 0) > 0 ? (doneCount.get(h.id) ?? 0) / weeks : null,
-      dueDays: h.days?.length ?? 7,
+      // No days set means every day.
+      dueDays: h.days?.length || 7,
     })),
     milestone: milestone ? { title: milestone.title, nextStep: milestone.steps.find((s) => !s.done)?.title ?? null } : null,
     taken: new Set((weekGoals.data ?? []).flatMap((g) => [g.metric_id ? `metric:${g.metric_id}` : "", g.habit_id ? `habit:${g.habit_id}` : ""]).filter(Boolean)),
   };
 
   const rules = suggestGoals(ctx, parsed.data);
-  const refined = aiConfigured() ? await refineWithAI(ctx, parsed.data, rules) : null;
-  return ok(refined ? { source: "ai", suggestions: refined } : { source: "rules", suggestions: rules });
+  const refined = aiConfigured() && (await aiAllowed(supabase)) ? await refineWithAI(ctx, parsed.data, rules) : null;
+  // Every suggestion starts ticked, and a number of zero can't be saved: leave those out.
+  const usable = (list: GoalSuggestion[]) => list.filter((s) => s.target === null || s.target > 0);
+  return ok(refined ? { source: "ai", suggestions: usable(refined) } : { source: "rules", suggestions: usable(rules) });
 }
 
 const itemSchema = z.object({

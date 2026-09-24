@@ -18,6 +18,7 @@ import { loadGoalYear, loadLifeAreas, yearOfWeek } from "@/lib/goals/data";
 import { formatTarget, formatValue } from "@/lib/goals/format";
 import type { WeeklyGoal } from "@/lib/goals/model";
 import { monthLabel, monthOfWeek, weekEndOf, weekNumberInMonth, weekRangeLabel } from "@/lib/goals/periods";
+import { withProgress } from "@/lib/goals/progress";
 import { scoreForSummary } from "@/lib/streak";
 import { cn } from "@/lib/utils";
 
@@ -64,7 +65,7 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
     .filter((mg) => !goals.some((g) => g.parentMonthlyId === mg.id))
     .map((mg) => {
       const area = areas.find((a) => a.id === mg.lifeAreaId)?.name ?? null;
-      return { goal: mg, drafts: monthToWeeks(mg, area, week > today ? week : today).filter((dr) => dr.periodStart === week) };
+      return { goal: mg, drafts: monthToWeeks(withProgress(mg, data.progress.get(mg.id)), area, week > today ? week : today).filter((dr) => dr.periodStart === week) };
     })
     .filter((x) => x.drafts.length > 0);
 
@@ -133,6 +134,7 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
           )}
           {g.progressSource === "actions" && " · counted from your daily actions"}
           {g.progressSource === "work_hours" && " · counted from the work timer"}
+          {g.progressSource === "keep_word" && " · counted from the days you kept your word"}
         </p>
         <GoalBreadcrumb chain={{ weekly: null, monthly: parent, yearly }} />
         {g.progressSource === "manual" && g.targetValue !== null && g.state === "active" && (

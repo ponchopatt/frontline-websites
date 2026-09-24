@@ -7,10 +7,12 @@ import { elapsedFraction, monthEndOf, weekEndOf, yearEnd, yearStart, type Period
 
 /**
  * Progress and health for every goal, from the goals themselves plus what actually happened:
- * work sessions, habit ticks, completed daily actions and milestones. Pure and synchronous.
+ * work sessions, habit ticks, completed daily actions, milestones and Keep My Word. Pure and
+ * synchronous.
  *
  * Health is a plain pace check: how much of the target is done against how much of the time
- * has passed. It makes no prediction about anything outside the user's control.
+ * has passed. It makes no prediction about anything outside the user's control. Keep My Word
+ * is the exception: a share of days is a level, so it's judged as it stands.
  */
 
 export interface ExecutionData {
@@ -23,6 +25,8 @@ export interface ExecutionData {
   milestones: Milestone[];
   /** Counter values by day, for goals measured by a counter. */
   metrics?: Map<string, { aggregation: "sum" | "latest"; values: DayValues }>;
+  /** Days with a settled Keep My Word score (over, or closed today), and whether each kept it. */
+  wordKept?: Map<LocalDate, boolean>;
 }
 
 export interface GoalTree {
@@ -96,6 +100,21 @@ function sumOver(period: Period, today: LocalDate, perDay: (d: LocalDate) => num
   return total;
 }
 
+/** Keep My Word over the part of a period that has happened: days scored, days kept, the first one scored. */
+function wordDays(period: Period, today: LocalDate, days: Map<LocalDate, boolean> | undefined) {
+  const end = today < period.end ? today : period.end;
+  let scored = 0;
+  let kept = 0;
+  let first: LocalDate | null = null;
+  for (const [d, k] of days ?? []) {
+    if (d < period.start || d > end) continue;
+    scored += 1;
+    if (k) kept += 1;
+    if (first === null || d < first) first = d;
+  }
+  return { scored, kept, first };
+}
+
 /** Whole weeks / months elapsed, at least 1, for turning a total into a rate. */
 function elapsedUnits(goal: AnyGoal, today: LocalDate): number {
   const p = periodOf(goal);
@@ -143,6 +162,12 @@ export function evaluateGoals(tree: GoalTree, exec: ExecutionData, today: LocalD
         value = m ? totalOver(m.values, whole.start, end, m.aggregation) : 0;
         break;
       }
+      case "keep_word": {
+        // The share of days since the goal was set that kept my word, as a whole percent.
+        const { scored, kept } = wordDays(p, today, exec.wordKept);
+        value = scored > 0 ? Math.round((kept / scored) * 100) : null;
+        break;
+      }
       case "actions": {
         if (goal.level === "weekly") value = exec.actionsByWeekly.get(goal.id) ?? 0;
         else value = childrenOf(goal).reduce((s, c) => s + (accumulate(c) ?? 0), 0);
@@ -175,6 +200,8 @@ export function evaluateGoals(tree: GoalTree, exec: ExecutionData, today: LocalD
   function currentOf(goal: AnyGoal): number | null {
     if (!isNumeric(goal.goalType)) return null;
     if (goal.progressSource === "manual" || goal.progressSource === "milestones") return goal.currentValue;
+    // A share of days stands as it is: no start value, no average, nothing logged by hand.
+    if (goal.progressSource === "keep_word") return accumulate(goal);
     const acc = accumulate(goal);
     if (acc === null) return goal.currentValue; // nothing below it yet: fall back to what was logged
     if (isRate(goal)) return acc / elapsedUnits(goal, today);
@@ -189,6 +216,14 @@ export function evaluateGoals(tree: GoalTree, exec: ExecutionData, today: LocalD
   return out;
 }
 
+/**
+ * The goal with its measured progress as its current value. Only goals logged by hand store
+ * one, so a breakdown of anything counted or timed needs this to plan from what's left.
+ */
+export function withProgress<G extends AnyGoal>(goal: G, progress: GoalProgress | undefined): G {
+  return { ...goal, currentValue: progress?.current ?? goal.currentValue };
+}
+
 function ratioFor(goal: AnyGoal, current: number | null, exec: ExecutionData): number | null {
   if (goal.state === "completed") return 1;
   if (goal.goalType === "binary") return 0;
@@ -198,7 +233,8 @@ function ratioFor(goal: AnyGoal, current: number | null, exec: ExecutionData): n
     return own.filter((m) => m.done).length / own.length;
   }
   if (goal.targetValue === null || current === null) return current === null && goal.targetValue !== null ? 0 : null;
-  if (isRate(goal)) return clamp(goal.targetValue === 0 ? 1 : current / goal.targetValue);
+  // Rates and shares of days are measured from zero.
+  if (isRate(goal) || goal.progressSource === "keep_word") return clamp(goal.targetValue === 0 ? 1 : current / goal.targetValue);
   const start = goal.startValue ?? 0;
   if (goal.targetValue === start) return current >= goal.targetValue ? 1 : 0;
   return clamp((current - start) / (goal.targetValue - start));
@@ -215,11 +251,12 @@ export function assess(goal: AnyGoal, current: number | null, exec: ExecutionDat
   const base = { current, ratio, expected };
 
   if (goal.state === "cancelled") return { ...base, health: "cancelled", explanation: "Cancelled." };
+  if (goal.progressSource === "keep_word" && goal.state !== "completed") return assessWord(goal, base, period, exec, today);
   if (goal.state === "completed" || (ratio !== null && ratio >= 1)) {
     return { ...base, health: "complete", explanation: "Target reached." };
   }
   if (today < period.start) {
-    return { ...base, health: "not_started", explanation: `Starts ${period.start.slice(8, 10).replace(/^0/, "")} ${monthName(period.start)}.` };
+    return { ...base, health: "not_started", explanation: `Starts ${dayLabel(period.start)}.` };
   }
 
   // Yes/no goals: nothing to pace against until the end nears.
@@ -264,7 +301,40 @@ export function assess(goal: AnyGoal, current: number | null, exec: ExecutionDat
   return { ...base, health: "behind", explanation: `Below the pace needed to reach the target: ${numbers}.` };
 }
 
+/**
+ * Keep My Word: the share of days kept since the goal was set, against its line. It's a level
+ * that can still fall, so it's judged as it stands and is never complete before the period ends.
+ */
+function assessWord(
+  goal: AnyGoal,
+  base: Pick<GoalProgress, "current" | "ratio" | "expected">,
+  period: Period,
+  exec: ExecutionData,
+  today: LocalDate,
+): GoalProgress {
+  if (today < period.start) return { ...base, health: "not_started", explanation: `Starts ${dayLabel(period.start)}.` };
+  if (goal.targetValue === null) return { ...base, health: "not_started", explanation: "Set a target to track progress." };
+  if (base.current === null) return { ...base, health: "not_started", explanation: "No days scored yet." };
+  const kept = Math.round(base.current);
+  const line = `${formatValue(goal.targetValue, null)}%`;
+  if (today > period.end) {
+    return kept >= goal.targetValue
+      ? { ...base, health: "complete", explanation: `Target reached: you kept your word on ${kept}% of days.` }
+      : { ...base, health: "behind", explanation: `Ended at ${kept}% of days kept, against ${line}.` };
+  }
+  const since = dayLabel(wordDays(period, today, exec.wordKept).first ?? period.start);
+  const explanation = `Kept your word on ${kept}% of days since ${since}, against ${line}.`;
+  if (kept >= goal.targetValue) return { ...base, health: "on_track", explanation };
+  if (kept >= goal.targetValue - 5) return { ...base, health: "at_risk", explanation };
+  return { ...base, health: "behind", explanation };
+}
+
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 function monthName(date: LocalDate): string {
   return MONTHS[Number(date.slice(5, 7)) - 1];
+}
+
+/** "24 Sep" */
+function dayLabel(date: LocalDate): string {
+  return `${Number(date.slice(8, 10))} ${monthName(date)}`;
 }

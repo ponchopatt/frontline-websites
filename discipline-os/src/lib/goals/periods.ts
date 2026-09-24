@@ -39,10 +39,6 @@ export function quarterOf(monthStart: LocalDate): 1 | 2 | 3 | 4 {
   return (Math.floor((Number(monthStart.slice(5, 7)) - 1) / 3) + 1) as 1 | 2 | 3 | 4;
 }
 
-export function monthsOfYear(year: number): LocalDate[] {
-  return Array.from({ length: 12 }, (_, i) => `${year}-${String(i + 1).padStart(2, "0")}-01`);
-}
-
 export function yearStart(year: number): LocalDate {
   return `${year}-01-01`;
 }

@@ -1,11 +1,14 @@
 import { describe, expect, it } from "vitest";
+import { dateRange } from "../day";
 import { distribute, monthToWeeks, sourceFor, yearToMonths } from "./breakdown";
 import { formatCompact, formatTarget, formatValue } from "./format";
-import type { DailyGoal, GoalCore, MonthlyGoal, WeeklyGoal, YearlyGoal } from "./model";
+import { coreFromRow, type DailyGoal, type GoalCore, type GoalRow, type MonthlyGoal, type WeeklyGoal, type YearlyGoal } from "./model";
 import { elapsedFraction, monthOfWeek, weekRangeLabel, weeksOfMonth } from "./periods";
-import { assess, evaluateGoals, type ExecutionData } from "./progress";
+import { assess, evaluateGoals, withProgress, type ExecutionData } from "./progress";
 import { checkGoal, isVague } from "./quality";
+import { carriedTitle } from "./review";
 import { suggestToday, type WeeklyContext } from "./suggest";
+import { suggestGoals, type SuggestContext } from "./suggest-goals";
 
 const core: GoalCore = {
   id: "g",
@@ -93,6 +96,22 @@ describe("goal health", () => {
     expect(assess(g, 170, noExec, "2027-07-02").ratio).toBeCloseTo(0.5);
   });
 
+  it("dates a goal by the user's own day, not the UTC date", () => {
+    const row: GoalRow = {
+      id: "w", title: "Revenue", description: null, why: null, success: null, life_area_id: null, goal_type: "outcome", metric: null,
+      unit: "$", cadence: "total", aggregation: "sum", progress_source: "manual", start_value: null, target_value: 2000, current_value: null,
+      habit_id: null, metric_id: null, priority: 2, state: "active", deadline: null, completed_at: null, sort_order: 0,
+      // 9am on Thursday 24 Sep in Sydney, still Wednesday in UTC.
+      created_at: "2026-09-23T23:00:00+00:00",
+    };
+    const sydney = { timezone: "Australia/Sydney", dayStartHour: 4 };
+    const core = coreFromRow(row, sydney);
+    expect(core.createdOn).toBe("2026-09-24");
+    expect(assess(weekly({ ...core }), 0, noExec, "2026-09-24").health).toBe("not_started");
+    // 3:30am is before the day starts, so it still belongs to Wednesday.
+    expect(coreFromRow({ ...row, created_at: "2026-09-23T17:30:00+00:00" }, sydney).createdOn).toBe("2026-09-23");
+  });
+
   it("flags overdue milestones", () => {
     const g = yearly({ id: "y1", goalType: "milestone", progressSource: "milestones" });
     const exec = {
@@ -134,6 +153,52 @@ describe("progress rolls up the hierarchy", () => {
     // 40 hours over the first 14 days = 20 hours a week against 40.
     expect(out.get("y")?.current).toBeCloseTo(20);
     expect(out.get("y")?.health).toBe("behind");
+  });
+});
+
+describe("keep my word goals", () => {
+  // Setup's "Keep my word on 85% of days", set on 24 Sep. Old rows stored a current value of 0.
+  const word = (p: Partial<YearlyGoal> = {}) =>
+    yearly({ id: "k", year: 2026, title: "Keep my word on 85% of days", goalType: "performance", unit: "%", targetValue: 85, currentValue: 0, aggregation: "latest", progressSource: "keep_word", createdOn: "2026-09-24", ...p });
+  const days = (kept: string[], broken: string[] = []): ExecutionData => ({
+    ...noExec,
+    wordKept: new Map([...kept.map((d) => [d, true] as const), ...broken.map((d) => [d, false] as const)]),
+  });
+  const run = (exec: ExecutionData, today: string) => evaluateGoals({ yearly: [word()], monthly: [], weekly: [] }, exec, today).get("k")!;
+
+  it("isn't started until a day is scored", () => {
+    expect(run(days([]), "2026-09-24")).toMatchObject({ current: null, health: "not_started", explanation: "No days scored yet." });
+  });
+
+  it("is the share of days kept since it was set, judged against the line", () => {
+    // 6 of 7 days kept is 86%. A broken day before the goal was set doesn't count.
+    const exec = days(["2026-09-24", "2026-09-25", "2026-09-26", "2026-09-27", "2026-09-28", "2026-09-29"], ["2026-09-20", "2026-09-30"]);
+    expect(run(exec, "2026-10-01")).toMatchObject({ current: 86, health: "on_track", explanation: "Kept your word on 86% of days since 24 Sep, against 85%." });
+    const since = days(["2026-09-24"]);
+    expect(assess(word(), 82, since, "2026-10-01").health).toBe("at_risk");
+    expect(assess(word(), 79, since, "2026-10-01").health).toBe("behind");
+  });
+
+  it("isn't behind for the time gone, and isn't complete before the year ends", () => {
+    // Every day kept up to 19 Oct, when a running total would read a quarter of the time gone.
+    const kept = dateRange("2026-09-24", "2026-10-18");
+    expect(run(days(kept), "2026-10-19")).toMatchObject({ current: 100, ratio: 1, health: "on_track" });
+    expect(assess(word(), 88, days(kept), "2027-01-01")).toMatchObject({ health: "complete", explanation: "Target reached: you kept your word on 88% of days." });
+    expect(assess(word(), 80, days(kept), "2027-01-01")).toMatchObject({ health: "behind", explanation: "Ended at 80% of days kept, against 85%." });
+  });
+
+  it("holds every month and week of a breakdown to the same line", () => {
+    const months = yearToMonths(word(), "2026-09-24");
+    expect(months.map((m) => [m.periodStart, m.targetValue, m.progressSource])).toEqual([
+      ["2026-09-01", 85, "keep_word"],
+      ["2026-10-01", 85, "keep_word"],
+      ["2026-11-01", 85, "keep_word"],
+      ["2026-12-01", 85, "keep_word"],
+    ]);
+    const october = monthly({ monthStart: "2026-10-01", title: "Keep my word on 85% of days", goalType: "performance", unit: "%", targetValue: 85, aggregation: "latest", progressSource: "keep_word" });
+    const weeks = monthToWeeks(october, null, "2026-09-24").filter((d) => d.isMajor);
+    expect(weeks).toHaveLength(5);
+    expect(weeks.every((w) => w.targetValue === 85 && w.progressSource === "keep_word" && w.title === october.title)).toBe(true);
   });
 });
 
@@ -211,11 +276,59 @@ describe("month → week breakdown", () => {
     expect(drafts.find((d) => d.title === "Contact prospects")?.progressSource).toBe("actions");
   });
 
+  it("plans only what's left of a goal measured by a counter", () => {
+    // $15,000 of September's $20,000 is on the revenue counter; the stored value is empty.
+    const exec = { ...noExec, metrics: new Map([["rev", { aggregation: "sum" as const, values: new Map([["2026-09-05", 15000]]) }]]) };
+    const m = monthly({ id: "m", monthStart: "2026-09-01", metric: "Revenue", title: "Revenue", targetValue: 20000, startValue: 0, unit: "$", progressSource: "metric", metricId: "rev" });
+    const progress = evaluateGoals({ yearly: [], monthly: [m], weekly: [] }, exec, "2026-09-24").get("m");
+    expect(progress?.current).toBe(15000);
+    const share = (goal: MonthlyGoal) => monthToWeeks(goal, "Business", "2026-09-24").filter((d) => d.isMajor).reduce((s, d) => s + d.targetValue!, 0);
+    expect(share(withProgress(m, progress))).toBe(5000);
+    expect(share(m)).toBe(20000); // what the stored value alone would plan
+
+    const y = yearly({ id: "y", year: 2026, metric: "Revenue", targetValue: 150000, startValue: 0, unit: "$", progressSource: "metric", metricId: "rev" });
+    const counted = { ...noExec, metrics: new Map([["rev", { aggregation: "sum" as const, values: new Map([["2026-03-02", 65000]]) }]]) };
+    const yp = evaluateGoals({ yearly: [y], monthly: [], weekly: [] }, counted, "2026-09-24").get("y");
+    expect(yearToMonths(withProgress(y, yp), "2026-09-24").reduce((s, d) => s + d.targetValue!, 0)).toBe(85000);
+  });
+
   it("uses the timer for hours and daily actions for counted activities", () => {
     expect(sourceFor("weekly", { progressSource: "work_hours", unit: "hours" })).toBe("work_hours");
     expect(sourceFor("weekly", { progressSource: "children", unit: "leads" })).toBe("actions");
     expect(sourceFor("weekly", { progressSource: "children", unit: "$" })).toBe("manual");
     expect(sourceFor("monthly", { progressSource: "children", unit: "$" })).toBe("children");
+    expect(sourceFor("weekly", { progressSource: "keep_word", unit: "%" })).toBe("keep_word");
+  });
+});
+
+describe("carrying a goal into next week", () => {
+  it("names what's left in the title", () => {
+    expect(carriedTitle("$2,000 revenue", 2000, 1500, "$")).toBe("$1,500 revenue");
+    expect(carriedTitle("Call 60 qualified leads this week", 60, 50, "leads")).toBe("Call 50 qualified leads this week");
+    expect(carriedTitle("Make 100 cold calls this week", 100, 40, "calls")).toBe("Make 40 cold calls this week");
+  });
+
+  it("leaves the title alone when the number isn't clearly the target", () => {
+    expect(carriedTitle("Call 160 leads", 60, 50, "leads")).toBe("Call 160 leads");
+    expect(carriedTitle("Train 4 days a week for 4 weeks", 4, 2, "sessions")).toBe("Train 4 days a week for 4 weeks");
+    expect(carriedTitle("Finish the offer", 1, 1, null)).toBe("Finish the offer");
+  });
+});
+
+describe("suggest my goals", () => {
+  const ctx: SuggestContext = { weeks: 4, counters: [], habits: [], workDays: 5, milestone: null, taken: new Set() };
+  const money = (aim: string) => suggestGoals(ctx, { aims: { money: aim }, hoursPerWeek: null, commitments: "" }).find((s) => s.key === "money");
+
+  it("reads thousands written short", () => {
+    // $5,000 over about 4.3 weeks is $1,163, to the nearest $10.
+    expect(money("Save $5k this month")).toMatchObject({ target: 1160, title: "Put aside $1,160 this week" });
+    expect(money("Save $5k this month")?.reason).toContain("You want $5,000.");
+    expect(money("save 1.5k by the end of the month")?.target).toBe(350);
+    expect(money("Save $2,000 more this month")?.target).toBe(470);
+  });
+
+  it("suggests nothing for an amount too small to split into weeks", () => {
+    expect(money("$20")).toBeUndefined();
   });
 });
 
@@ -329,6 +442,7 @@ describe("formatting", () => {
     expect(formatValue(300000, "$")).toBe("$300,000");
     expect(formatValue(162.5, "kg")).toBe("162.5 kg");
     expect(formatCompact(300000, "$")).toBe("$300k");
+    expect(formatValue(85, "%")).toBe("85%");
     expect(formatTarget({ goalType: "process", targetValue: 40, unit: "hours", cadence: "per_week" })).toBe("40 hours a week");
   });
 });

@@ -1,3 +1,5 @@
+import { formatValue } from "./format";
+
 /** The weekly review's vocabulary, shared by the form and the saved summary. */
 
 export type Outcome = "completed" | "partial" | "missed";
@@ -20,4 +22,25 @@ export const DECISIONS: Array<{ value: Decision; label: string; hint: string }> 
   { value: "replace", label: "Replace", hint: "Close it; plan something better next week." },
   { value: "cancel", label: "Cancel", hint: "Close it. The history stays." },
 ];
+
+/**
+ * A carried goal's name with what's left: "$2,000 revenue" with $1,500 left becomes "$1,500
+ * revenue", and "Call 60 qualified leads this week" with 50 left says 50. The target is looked
+ * for with its unit, then as a bare number, and only swapped when it appears once and not inside
+ * a bigger number (not the 60 in "160" or "60.5"). Any other name stays as written.
+ */
+export function carriedTitle(title: string, target: number | null, left: number | null, unit: string | null): string {
+  if (target === null || left === null || left === Number(target)) return title;
+  const forms: Array<[string, string]> = [
+    [formatValue(Number(target), unit), formatValue(left, unit)],
+    [formatValue(Number(target), null), formatValue(left, null)],
+  ];
+  for (const [was, now] of forms) {
+    const re = new RegExp(`(^|[^\\d.,])${was.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?!\\d|[.,]\\d)`, "g");
+    const found = title.match(re)?.length ?? 0;
+    if (found === 1) return title.replace(re, (_, before: string) => before + now);
+    if (found > 1) return title;
+  }
+  return title;
+}
 

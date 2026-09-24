@@ -11,7 +11,7 @@ import { checkGoal } from "@/lib/goals/quality";
 import { cn } from "@/lib/utils";
 
 const UNITS = ["$", "kg", "hours", "sessions", "days", "books"];
-type Source = "log" | "timer" | "habit" | "counter";
+type Source = "log" | "timer" | "habit" | "counter" | "word";
 
 interface GoalFormProps {
   year: number;
@@ -85,7 +85,11 @@ export function GoalForm({ year, today, areas, habits, counters, defaultAreaId }
         ? "habit"
         : source === "counter" && counterId
           ? "metric"
-          : "children";
+          : source === "word"
+            ? "keep_word"
+            : "children";
+  // A share of days is a level for the whole year, not a total or a weekly rate.
+  const word = numeric && source === "word";
 
   async function submit() {
     setError(null);
@@ -93,6 +97,7 @@ export function GoalForm({ year, today, areas, habits, counters, defaultAreaId }
     if (numeric && num(target) === null) return setError("Add a target number, so progress can be tracked.");
     if (source === "habit" && !habitId) return setError("Pick the habit that counts towards this.");
     if (source === "counter" && !counterId) return setError("Pick the counter that measures this.");
+    if (word && (num(target) ?? 0) > 100) return setError("Set a target of 100% or less.");
     setBusy(true);
     try {
       const process = quality.process;
@@ -106,8 +111,8 @@ export function GoalForm({ year, today, areas, habits, counters, defaultAreaId }
         goalType,
         metric: numeric ? metric || null : null,
         unit: numeric ? unit || null : null,
-        cadence: numeric ? cadence : "total",
-        aggregation: goalType === "performance" ? "latest" : "sum",
+        cadence: numeric && !word ? cadence : "total",
+        aggregation: goalType === "performance" || word ? "latest" : "sum",
         progressSource,
         startValue: numeric ? num(start) : null,
         targetValue: numeric ? num(target) : null,
@@ -221,7 +226,7 @@ export function GoalForm({ year, today, areas, habits, counters, defaultAreaId }
               <input inputMode="decimal" value={target} onChange={(e) => setTarget(e.target.value)} placeholder="300000" className={field} />
             </label>
           </div>
-          {(goalType === "process" || goalType === "habit") && (
+          {(goalType === "process" || goalType === "habit") && !word && (
             <label className={labelCls}>
               The target is
               <select value={cadence} onChange={(e) => setCadence(e.target.value as Cadence)} className={field}>
@@ -233,10 +238,18 @@ export function GoalForm({ year, today, areas, habits, counters, defaultAreaId }
           )}
           <label className={labelCls}>
             Progress comes from
-            <select value={source} onChange={(e) => setSource(e.target.value as Source)} className={field}>
+            <select
+              value={source}
+              onChange={(e) => {
+                setSource(e.target.value as Source);
+                if (e.target.value === "word") setUnit("%");
+              }}
+              className={field}
+            >
               <option value="log">What I log (it adds up from the months below)</option>
               <option value="timer">The work timer (focused hours)</option>
               <option value="habit">Ticks of a habit</option>
+              <option value="word">Days I kept my word (% of days)</option>
               {areaCounters.length > 0 && <option value="counter">A business counter (fills in from Today)</option>}
             </select>
           </label>

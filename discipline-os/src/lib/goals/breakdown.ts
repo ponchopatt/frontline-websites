@@ -100,8 +100,8 @@ const MEASURED_UNITS = new Set(["$", "kg", "lb", "lbs", "%", "cm"]);
  * in activities (leads, calls, sessions) is counted from completed daily actions.
  */
 export function sourceFor(level: "monthly" | "weekly", parent: { progressSource: ProgressSource; unit: string | null }): ProgressSource {
-  // Hours, habit ticks and counters run all the way down: each level reads the same source.
-  if (parent.progressSource === "work_hours" || parent.progressSource === "habit" || parent.progressSource === "metric") return parent.progressSource;
+  // Hours, habit ticks, counters and Keep My Word run all the way down: each level reads the same source.
+  if (["work_hours", "habit", "metric", "keep_word"].includes(parent.progressSource)) return parent.progressSource;
   if (level === "monthly") return "children";
   return MEASURED_UNITS.has((parent.unit ?? "").trim().toLowerCase()) ? "manual" : "actions";
 }
@@ -184,6 +184,11 @@ export function yearToMonths(goal: YearlyGoal, today: LocalDate, milestones: Arr
   }
 
   const source = sourceFor("monthly", goal);
+
+  // Keep My Word is a share of days, so every month is held to the same line as the year.
+  if (goal.progressSource === "keep_word") {
+    return months.map((m) => ({ ...base, key: `m-${m}`, periodStart: m, title: goal.title, goalType: goal.goalType, cadence: "total" as const, aggregation: "latest" as const, progressSource: "keep_word" as const, startValue: null, targetValue: goal.targetValue }));
+  }
 
   // Rates (40 hours a week, Bible study 6 days a week): each month gets its own total.
   if (goal.cadence !== "total") {
@@ -337,7 +342,12 @@ export function monthToWeeks(goal: MonthlyGoal, areaName: string | null, today: 
   const base = { metric: goal.metric, why: goal.why, optional: false, metricId: goal.progressSource === "metric" ? goal.metricId : null, metricKey: null };
 
   if (isNumeric(goal.goalType) && goal.targetValue !== null) {
-    if (goal.aggregation === "latest" || goal.goalType === "performance") {
+    if (goal.progressSource === "keep_word") {
+      // A share of days: every week is held to the month's line.
+      for (const w of weeks) {
+        out.push({ ...base, key: `w-${w}-main`, periodStart: w, title: goal.title, goalType: goal.goalType, unit: goal.unit, cadence: "total", aggregation: "latest", progressSource: "keep_word", startValue: null, targetValue: goal.targetValue, isMajor: true });
+      }
+    } else if (goal.aggregation === "latest" || goal.goalType === "performance") {
       // Levels: step towards the month's target week by week.
       const start = goal.currentValue ?? goal.startValue ?? goal.targetValue;
       weeks.forEach((w, i) => {
