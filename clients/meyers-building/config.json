@@ -247,7 +247,7 @@
     },
     {
       "q": "Can you prepare the site as well?",
-      "a": "Yes. We run our own earth moving, so site preparation doesn't wait on another company."
+      "a": "Yes. When a job needs some preparation, our own earth moving service moves the earth and rubble first, and then we build."
     },
     {
       "q": "Do you do commercial work?",
@@ -332,6 +332,10 @@
       "No Google rating or reviews": {
         "sentence": "rating null, review_count 0, flag 'No Google rating or reviews found.' for slug meyers-building.",
         "url": "data/google_reviews_top25.json"
+      },
+      "Sample photo on the earth moving tile": {
+        "sentence": "CC0 1.0, '20140831_161618_resized' by Julie Brunner (a Cat track loader on a dirt pad). Found through the Openverse API (license=cc0,pdm), downloaded from live.staticflickr.com. Labelled 'Sample photo' on the page by the template.",
+        "url": "https://www.flickr.com/photos/15606079@N08/14926230848"
       }
     }
   },
