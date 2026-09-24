@@ -87,33 +87,41 @@ that: a drainage rescue.
 ## Photo inventory
 All 60 files in their WordPress media library were listed (wp-json/wp/v2/media).
 Every candidate was downloaded at its full published size and opened. Nothing
-reaches 1600px. Their own job photos are phone shots, 360–1000px wide. **Nothing
-is upscaled.** Each is used at or below its native width.
+reaches 1600px. Their own job photos are phone shots, 359–1000px wide. **No file
+is upscaled**, but the hero still displays enlarged (see below).
 
-**Used: their own jobs, one slot each**
+**Used: their own jobs, one slot each (rework 2026-09-24)**
 
 | File on their site | Size | Shows | Slot |
 |---|---|---|---|
-| 2022/05/canberra-pool.jpg | 1000×639 | Lead photo of "Our Latest Pools in Canberra": tiled concrete pool, stone feature wall, travertine paving, roller cover | hero |
-| 2020/03/newpool.jpg | 600×400 | Finished pool, yellow house, blue pergola. It sits in the "Concrete Pool Respray Forrest, ACT" block of the 2019 post: same tile band, blue pot and hedge as the respray after-shot | statement |
+| 2020/03/newpool.jpg | 600×400 | Finished pool, yellow house, blue pergola. It sits in the "Concrete Pool Respray Forrest, ACT" block of the 2019 post: same tile band, cobalt pot and hedge as the after-shot | hero |
+| 2022/05/New-Canberra-Pool.jpg | 480×640 | "Concrete Pool in Weetangera": paved concrete pool, solar cover | statement (native, on a mat) |
 | 2022/05/googong-pool.jpg | 428×571 | "New Pool in Googong": crew setting a pool, formwork round it | services: new pools |
-| 2020/03/site-cut1.jpg | 360×480 | "Site Cut Denman Prospect": excavator on a pegged-out block | services: earthworks |
-| 2020/03/paving1.jpg | 480×308 | "Concrete & Paving Forrest, ACT": finished grey paving | services: paving |
-| 2020/03/pool-infill-1.jpg | 437×573 | "Filling In A Swimming Pool": slab poured over mesh | owner |
-| 2022/05/New-Canberra-Pool.jpg | 480×640 | "Concrete Pool in Weetangera": paved concrete pool, solar cover | gallery |
-| 2022/05/Throsby-Pool.jpg | 462×563 | "Fibreglass Pool in Throsby": shell arriving on a truck at the units | gallery |
-| 2020/03/newpool1.jpg | 360×480 | Forrest respray, after: fresh blue interior | gallery |
-| 2020/03/site-cut-denman2.jpg | 359×247 | Denman Prospect site cut, benched and cleared | gallery |
+| 2020/03/site-cut1.jpg | 360×480 | Excavator on a pegged-out block. It's in the 2019 post's media but not shown under a named job, so no suburb is claimed | services: site cuts |
+| 2020/03/pool-infill-2.jpg | 437×573 | "Filling In A Swimming Pool": after, terracotta paving over it | services: paving, resprays and infills |
+| 2020/03/pool-infill-1.jpg | 437×573 | "Filling In A Swimming Pool": slab poured over mesh | owner (native, on a mat) |
+| 2022/05/canberra-pool.jpg | 1000×639 | Lead photo of "Our Latest Pools in Canberra": tiled concrete pool, stone wall, travertine | gallery (a true 852×639 crop) |
+| 2022/05/Throsby-Pool.jpg | 462×563 | "Fibreglass Pool in Throsby": shell arriving at the units | gallery |
+| 2020/03/newpool2.jpg | 360×480 | Forrest respray, before | gallery |
+| 2020/03/newpool1.jpg | 360×480 | Forrest respray, after | gallery |
+| 2020/03/site-cut-denman2.jpg | 359×247 | "Site Cut Denman Prospect": benched and cleared | gallery |
 | 2020/03/pool-infill.jpg | 599×399 | Pool infill: the old pool, before | gallery |
-| 2020/03/pool-infill-2.jpg | 437×573 | Pool infill: after, terracotta paving over it | gallery |
+
+**How big they display.** No file is upscaled. The gallery, statement and
+owner slots never show a photo above its real size: each file sits on a mat in
+the page's card colour, sized to the slot. **Two slots still stretch a small
+file**, because the template fills them edge to edge:
+- **The hero** (600px wide): about 2.1x on a phone and 2.4x at 1440. It was
+  moved off canberra-pool.jpg because that photo has a pink pool float behind
+  the headline. A float-free crop of it left a deck chair as the subject, at
+  2.5x.
+- **The excavator service card** (360px): about 1.16x.
 
 **Held back**
-- 2020/03/paving.jpg (Forrest wet pour): real, but it's the same courtyard as
-  the paving service card.
+- 2020/03/paving.jpg and paving1.jpg (Concrete & Paving Forrest): real, but
+  small (480×308) and landscape, so they'd display tiny on a mat.
 - 2020/03/site-cut-denman.jpg and site-cut.jpg: near-duplicates of the
-  excavator shot already used.
-- 2020/03/newpool2.jpg (Forrest before): a grey empty shell, and weak on its
-  own.
+  site-cut shots already used.
 - 2020/03/pool-building.jpg (fibreglass shell in sand): possibly theirs, but it
   sits on a generic cost article with no job named, so it's left out.
 

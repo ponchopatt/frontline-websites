@@ -29,21 +29,21 @@
     },
     "logo": {
       "src": "assets/logo-cjg-light.webp",
-      "width": 816,
-      "height": 240,
-      "_comment": "Their own marks: the water-drop emblem from cjg-site-icon-1024.png on its white disc, and the 'C.J.G / Pools & EarthWorks' wordmark lifted off cjg-logo-1.jpg with the navy 'C.J.G' recoloured white so it reads on the dark header. Set side by side. Ask Craig for the original artwork."
+      "width": 943,
+      "height": 256,
+      "_comment": "Their own water-drop emblem (cjg-site-icon-1024.png) on its white disc, with their name 'C.J.G / POOLS & EARTHWORKS' set in the page's own display face (Big Shoulders) in white and their cyan, so it reads at the 32px header height. Their original wordmark (cjg-logo-1.jpg) is a small JPEG that was unreadable at that size. Ask Craig for the original artwork."
     }
   },
   "icons": {
     "favicon": "assets/favicon.png"
   },
   "share": {
-    "image": "assets/latest-pool-stone-wall-1000.webp",
-    "width": 1000,
-    "height": 639,
+    "image": "assets/forrest-respray-finished-600.webp",
+    "width": 600,
+    "height": 400,
     "title": "CJG Pools & Earthworks — Pools and earthworks, Canberra",
     "description": "Craig and his crew build concrete and fibreglass pools across Canberra, and do the site cuts, excavation, drains and paving too. Based in Calwell.",
-    "alt": "A blue-tiled concrete pool with travertine paving and a stacked-stone feature wall, one of CJG's latest Canberra pools"
+    "alt": "A resprayed concrete pool in Forrest with grey stone paving, a stone wall and a blue pergola in front of a yellow house"
   },
   "responsePromise": "The first consultation is free. They come to your place, look at the block and talk you through the options.",
   "copy": {
@@ -58,47 +58,36 @@
     "navApproach": "Approach",
     "statementLabel": "The difference",
     "statementHeadline": "It's in<br>the name.<br><em>Pools &amp; Earthworks.</em>",
-    "statementBody": "One multi-skilled team for the pool, the site cut, the excavation, the drains and the paving — and they'll do several on the one job. Their one Google review is a drainage rescue, not a pool.",
+    "statementBody": "One multi-skilled team for the pool, the site cut, the excavation, the drains and the paving. They can do several on the one job — the pool, the landscaping and the paving together.",
     "servicesLabel": "What they do",
     "servicesHeadline": "Dig it, build it,<br>pave it.",
     "servicesIntro": "Pools are what they're known for. The ground work is just as in demand.",
-    "workLabel": "Their jobs",
-    "workHeadline": "Weetangera to<br>Denman Prospect.",
-    "workIntro": "Real jobs from their own project posts, suburb by suburb. Phone photos taken on the day. Select any photo to see it larger.",
+    "workLabel": "Recent jobs",
+    "workHeadline": "Throsby to<br>Denman Prospect.",
+    "workIntro": "New pools, a respray, a site cut and an old pool about to be filled in. Select any photo to see it larger.",
     "processLabel": "How it runs",
     "processHeadline": "Site visit to<br>first swim.",
     "processIntro": "",
     "ownerLabel": "Who you are dealing with",
     "reviewsLabel": "In their words",
     "reviewsTitle": "“Quiet achievers.”",
-    "reviewsIntro": "Their one Google review so far, word for word. It's marked shortened because Google cuts it off — the rest is on their profile.",
+    "reviewsIntro": "Rated 5.0 on Google from 1 review. A drainage job had gone wrong, and Craig's crew came in to fix it.",
     "recognitionLabel": "Members",
     "recognitionHeadline": "SPASA and<br>Master Builders.",
-    "recognitionIntro": "Both memberships as published on their own site. ABN 12 603 200 200.",
+    "recognitionIntro": "A member of the Swimming Pool and Spa Association and the Master Builders Association.",
     "areasLabel": "Where they work",
     "areasHeadline": "All of Canberra,<br>and over the border.",
-    "areasIntro": "Based in Calwell. These are suburbs named on their own site and project posts. Not listed? Ask Craig.",
+    "areasIntro": "Based in Calwell, working right across Canberra and over the border into Queanbeyan, Jerrabomberra and Googong. Not listed? Ask Craig.",
     "faqLabel": "Before you call",
     "faqHeadline": "Questions Craig<br>gets asked.",
     "enquireLabel": "Talk to Craig",
     "enquireHeadline": "Tell Craig about<br>the block.",
     "enquireIntro": "Pool, earthworks or both — say what you're after, where the block is and what the access is like from the street. A photo of the yard helps more than anything."
   },
-  "stats": {
-    "googleRating": 5.0,
-    "reviewCount": 1
-  },
-  "statLabels": {
-    "googleRating": "Google rating",
-    "reviewCount": "Google review"
-  },
-  "pullQuote": {
-    "text": "Craig and his team of quiet achievers, Mick and Joel, stepped in to rescue us…",
-    "name": "Kerry G, Google review, shortened"
-  },
+  "stats": {},
   "owner": {
     "body": "Craig leads the team at CJG Pools & Earthworks, based in Calwell in Canberra's south. It's a multi-skilled crew: known for pool building, with the excavation, site cuts, paving and drains just as in demand.",
-    "team": "Mick and Joel are on the crew — their one Google review names all three, not “the company”.",
+    "team": "Mick and Joel are on the crew with him.",
     "facts": [
       {
         "value": "4–6 wks",
@@ -114,13 +103,12 @@
     {
       "kind": "membership",
       "label": "SPASA Australia member",
-      "body": "The Swimming Pool and Spa Association. Named on their site as a member.",
+      "body": "Members are bound by SPASA's code of ethics.",
       "strip": true
     },
     {
       "kind": "membership",
       "label": "Master Builders Association member",
-      "body": "Named on their site alongside SPASA.",
       "strip": true
     }
   ],
@@ -140,22 +128,22 @@
       "title": "Site cuts & excavation",
       "blurb": "Clearing and levelling land ready to build on — for a house, a shed or a pool — plus the excavation and drains that go with it.",
       "photo": {
-        "src": "assets/denman-prospect-excavator-360.webp",
-        "srcset": "assets/denman-prospect-excavator-360.webp 360w",
+        "src": "assets/excavator-site-cut-360.webp",
+        "srcset": "assets/excavator-site-cut-360.webp 360w",
         "width": 360,
-        "height": 370,
-        "alt": "An excavator on a pegged-out block at Denman Prospect, ready to start a site cut, new homes behind"
+        "height": 480,
+        "alt": "An excavator on a pegged-out block, ready to start a site cut, new homes behind"
       }
     },
     {
       "title": "Paving, resprays & infills",
       "blurb": "New or tired paving and concrete, old concrete pools resprayed and repaved, and pools you no longer use filled in and paved over.",
       "photo": {
-        "src": "assets/forrest-paving-480.webp",
-        "srcset": "assets/forrest-paving-480.webp 480w",
-        "width": 480,
-        "height": 308,
-        "alt": "New grey paving laid across a front courtyard in Forrest, up to the entry steps"
+        "src": "assets/pool-infill-paved-437.webp",
+        "srcset": "assets/pool-infill-paved-437.webp 437w",
+        "width": 437,
+        "height": 573,
+        "alt": "Terracotta tile paving laid flat over an old swimming pool that was filled in, a timber fence and garden behind"
       }
     }
   ],
@@ -224,88 +212,88 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/hero-pool-stone-wall-860.webp",
-      "srcset": "assets/hero-pool-stone-wall-480.webp 480w, assets/hero-pool-stone-wall-800.webp 800w, assets/hero-pool-stone-wall-860.webp 860w",
-      "width": 860,
-      "height": 639,
-      "alt": "A blue-tiled concrete pool with travertine paving, a stacked-stone feature wall and a roller cover, one of CJG's latest Canberra pools"
-    },
-    "statement": {
       "src": "assets/forrest-respray-finished-600.webp",
-      "srcset": "assets/forrest-respray-finished-480.webp 480w, assets/forrest-respray-finished-600.webp 600w",
+      "srcset": "assets/forrest-respray-finished-600.webp 600w",
       "width": 600,
       "height": 400,
-      "alt": "The finished Forrest pool after its respray: bright blue interior, grey stone paving, a stone wall and a blue pergola in front of a yellow house"
+      "alt": "A resprayed concrete pool in Forrest with grey stone paving, a stone wall and a blue pergola in front of a yellow house"
+    },
+    "statement": {
+      "src": "assets/weetangera-statement-584.webp",
+      "srcset": "assets/weetangera-statement-584.webp 584w",
+      "width": 584,
+      "height": 730,
+      "alt": "A new concrete pool in Weetangera with wide sandstone-coloured pavers and a solar cover on the water"
     },
     "owner": {
-      "src": "assets/pool-infill-pour-437.webp",
-      "srcset": "assets/pool-infill-pour-437.webp 437w",
-      "width": 437,
-      "height": 573,
-      "ratio": "437/573",
+      "src": "assets/pool-infill-pour-owner-580.webp",
+      "srcset": "assets/pool-infill-pour-owner-580.webp 580w",
+      "width": 580,
+      "height": 640,
+      "ratio": "580/640",
       "alt": "One of the crew spreading concrete over reinforcing mesh where an old swimming pool used to be",
       "caption": "Pouring the slab over an old pool"
     },
     "gallery": [
       {
-        "src": "assets/weetangera-concrete-pool-480.webp",
-        "full": "assets/weetangera-concrete-pool-480.webp",
-        "srcset": "assets/weetangera-concrete-pool-480.webp 480w",
-        "width": 480,
-        "height": 640,
-        "caption": "Weetangera",
-        "detail": "New concrete pool, paved surrounds",
-        "alt": "A new concrete pool in Weetangera with wide sandstone-coloured pavers and a solar cover on the water"
+        "src": "assets/latest-pool-tile-852.webp",
+        "full": "assets/latest-pool-stone-wall-1000.webp",
+        "srcset": "assets/latest-pool-tile-852.webp 852w",
+        "width": 852,
+        "height": 639,
+        "caption": "Latest build",
+        "detail": "Tiled concrete pool, travertine and stone",
+        "alt": "A blue-tiled concrete pool with travertine paving, a stacked-stone feature wall and a roller cover"
       },
       {
-        "src": "assets/throsby-fibreglass-shell-462.webp",
+        "src": "assets/throsby-fibreglass-shell-tile.webp",
         "full": "assets/throsby-fibreglass-shell-462.webp",
-        "srcset": "assets/throsby-fibreglass-shell-462.webp 462w",
-        "width": 462,
-        "height": 563,
+        "srcset": "assets/throsby-fibreglass-shell-tile.webp 752w",
+        "width": 752,
+        "height": 564,
         "caption": "Throsby",
         "detail": "Fibreglass pool for a block of units",
         "alt": "A fibreglass pool shell arriving on a truck at a new block of townhouses in Throsby, excavator buckets in the foreground"
       },
       {
-        "src": "assets/forrest-respray-after-360.webp",
-        "full": "assets/forrest-respray-after-360.webp",
-        "srcset": "assets/forrest-respray-after-360.webp 360w",
-        "width": 360,
+        "src": "assets/forrest-respray-before-tile.webp",
+        "full": "assets/forrest-respray-before-360.webp",
+        "srcset": "assets/forrest-respray-before-tile.webp 640w",
+        "width": 640,
         "height": 480,
-        "caption": "Forrest",
-        "detail": "Concrete pool resprayed — after",
-        "alt": "A drained concrete pool in Forrest freshly resprayed bright blue, grey paving and hedges around it"
+        "caption": "Forrest · before",
+        "detail": "Old concrete pool, drained for its respray",
+        "alt": "A drained concrete pool in Forrest with a stained grey interior and a pump sitting in the deep end"
       },
       {
-        "src": "assets/denman-prospect-site-cut-359.webp",
+        "src": "assets/forrest-respray-after-tile.webp",
+        "full": "assets/forrest-respray-after-360.webp",
+        "srcset": "assets/forrest-respray-after-tile.webp 640w",
+        "width": 640,
+        "height": 480,
+        "caption": "Forrest · after",
+        "detail": "The same pool, resprayed",
+        "alt": "The same Forrest pool freshly resprayed bright blue, grey paving and hedges around it"
+      },
+      {
+        "src": "assets/denman-prospect-site-cut-tile.webp",
         "full": "assets/denman-prospect-site-cut-359.webp",
-        "srcset": "assets/denman-prospect-site-cut-359.webp 359w",
-        "width": 359,
-        "height": 247,
+        "srcset": "assets/denman-prospect-site-cut-tile.webp 628w",
+        "width": 628,
+        "height": 471,
         "caption": "Denman Prospect",
         "detail": "Site cut, benched and cleared",
         "alt": "A cleared and benched site cut on a new block at Denman Prospect, the excavator at the edge of frame"
       },
       {
-        "src": "assets/pool-infill-before-480.webp",
+        "src": "assets/pool-infill-before-tile.webp",
         "full": "assets/pool-infill-before-599.webp",
-        "srcset": "assets/pool-infill-before-480.webp 480w, assets/pool-infill-before-599.webp 599w",
-        "width": 599,
-        "height": 399,
-        "caption": "Pool infill · before",
-        "detail": "An old pool the owner no longer used",
+        "srcset": "assets/pool-infill-before-tile.webp 628w",
+        "width": 628,
+        "height": 471,
+        "caption": "Pool infill",
+        "detail": "An old pool, before it was filled in and paved over",
         "alt": "An old drained concrete pool with cracked walls, leaf litter in the bottom and red-tiled edges"
-      },
-      {
-        "src": "assets/pool-infill-paved-437.webp",
-        "full": "assets/pool-infill-paved-437.webp",
-        "srcset": "assets/pool-infill-paved-437.webp 437w",
-        "width": 437,
-        "height": 573,
-        "caption": "Pool infill · after",
-        "detail": "Filled in and paved over",
-        "alt": "Terracotta tile paving laid flat where the old pool used to be, a timber fence and garden behind"
       }
     ],
     "beforeAfter": []
@@ -385,7 +373,6 @@
       "business.baseSuburb Calwell": "Footer: 'PO Box 450 Calwell ACT 2905'. /about/: 'Based locally in Calwell, we cover all of Canberra and surrounding areas.' /contact/: 'Your Local Calwell Pool Builder' and 'Address: Calwell, ACT'.",
       "free consultation / free site visit / responsePromise": "/pool/: 'We offer a free consultation service where we visit your home, assess the landscape and talk you through a range of options.' /about/: 'We also offer a free consultation service.' /canberra-pools-landscaping/: 'Contact us today to arrange a free site visit'. /tuggeranong/: 'The pool building process starts with a site visit and a discussion about possible designs. After this, we provide a free cost estimate'.",
       "angle — pools and earthworks, one multi-skilled team, several tasks on one job": "/our-work-in-pictures/: 'We offer a wide range of services, including pool building, excavation, site cuts, paving and drains' and 'C.J.G Pools & Earthworks has a multi-skilled team available to tackle any minor or major project you have in mind. We are known for our pool building, but our other services are just as in demand. We can also carry out multiple tasks on the one job – poolbuilding, landscaping and paving for example.'",
-      "statementBody 'Their one Google review is a drainage rescue'": "data/google_reviews_top25.json, Kerry G: 'stepped in to rescue us after we’d been left in the lurch with a drainage job.'",
       "services — concrete and fibreglass pools, spas and swim spas": "/pools-in-canberra/: 'Whether you are looking for a concrete pool or fibreglass pool, we can help design and install the pool of your dreams.' Homepage: 'C.J.G Pools and Earthworks can build you a spa to suit your lifestyle. … Swim Spas are a popular choice'.",
       "services — site cuts: 'clearing and levelling land ready to build on — for a house, a shed or a pool'": "/our-work-in-pictures/: 'a site cut is the clearing of land so it is ready to be built on. It could be for a single house, a housing estate or even smaller outbuildings like sheds.' Excavation and drains: same page, 'pool building, excavation, site cuts, paving and drains'.",
       "services — paving, resprays, pool infills": "/our-work-in-pictures/: 'If your pool is in need of a makeover, we can respray the interior and repave the surrounds.' 'Whether you have a new home that needs paving or existing paving that has seen better days, the team at CJG can help.' 'Our client no longer wanted his swimming pool so we filled it in and paved over it.'",
@@ -397,20 +384,23 @@
       "FAQ — concrete vs fibreglass": "/concrete-vs-fibreglass-pools/: fibreglass 'Easy to clean and require less cleaning and fewer chemicals', installation 'a couple of weeks'; concrete 'The biggest benefit of a concrete pool is its ability to be fully customised', 'a concrete pool tends to fit more organically into it’s environment'; 'The size and shape of your yard will also influence your decision, as will the soil type'.",
       "credentials — SPASA Australia and Master Builders Association members": "/canberra-pools-landscaping/: 'Our memberships with SPASA Australia and Master Builders Association gives our clients an assurance of quality work and great value for money.' /belconnen/, /kingston/, /gungahlin/, /weston-creek/, /woden-valley/: 'As members of both SPASA Australia and the Master Builders Association'. /proud-spasa-members/: 'CJG Pools and Earthworks is proud to be a SPASA member'. Footer carries the SPASA and MBA member logos.",
       "serviceAreas": "/pool/: 'Belconnen, Canberra Central, Gungahlin, Jerrabomberra, Weston Creek, Woden Valley and Tuggeranong.' /services/: 'Kambah, Jerrabomberra, Ngunnawal, Karabar and Gordon, as well as Queanbeyan, Kaleen, Bruce, Palmerston, Narrabundah, Monash and Macgregor.' /gungahlin/: 'Casey, Throsby, Palmerston, Ngunnawal'. /weston-creek/: 'suburbs like Duffy'. /pools-in-canberra/: jobs in Weetangera, Throsby and Googong; 'Tuggeranong, Queanbeyan, Kingston, Braddon, Belconnen and Bruce'. /our-work-in-pictures/: jobs in Forrest and Denman Prospect. Calwell: their base.",
-      "stats / reviews / pullQuote": "data/google_reviews_top25.json, key 'cjg-pools': rating 5.0, review_count 1. The single review used is its best_for_demo entry, word for word, marked shortened as the file says. The pull quote is the opening of that same review's second sentence, with an ellipsis, and is labelled shortened."
+      "stats / reviews / pullQuote": "data/google_reviews_top25.json, key 'cjg-pools': rating 5.0, review_count 1. The single review used is its best_for_demo entry, word for word, marked shortened as the file says. It appears once on the page (the pull quote was removed).",
+      "reviewsIntro 'A drainage job had gone wrong, and Craig's crew came in to fix it' / 'Rated 5.0 on Google'": "data/google_reviews_top25.json, key 'cjg-pools': rating 5.0; Kerry G: 'Craig and his team of quiet achievers, Mick and Joel, stepped in to rescue us after we’d been left in the lurch with a drainage job.'",
+      "credentials[0].body 'bound by SPASA's code of ethics'": "/proud-spasa-members/: 'All SPASA members are bound by a strict code of ethics, ensuring that all of their clients are treated fairly.'"
     },
     "photoClaims": {
-      "hero — latest-pool-stone-wall": "wp-content/uploads/2022/05/canberra-pool.jpg (1000x639, their largest job photo), the lead image of /pools-in-canberra/ 'Our Latest Pools in Canberra'. The post does not name its suburb, so the caption and alt don't either. Cropped to its left 860px (dropping the brick wall and sun lounger at the right edge) so the phone crop lands on the water instead of the stone wall. The uncropped 1000px copy is the social share image.",
-      "statement — forrest-respray-finished": "wp-content/uploads/2020/03/newpool.jpg (600x400), in the 'Concrete Pool Respray Forrest, ACT' block of /our-work-in-pictures/ with the before (newpool2.jpg) and after (newpool1.jpg) shots. Same pool as the after-shot: same dark tile band, grey paving, hedge and cobalt pot.",
       "services[0] — googong-new-pool": "wp-content/uploads/2022/05/googong-pool.jpg (428x571), under 'New Pool in Googong' on /pools-in-canberra/.",
-      "services[1] — denman-prospect-excavator": "wp-content/uploads/2020/03/site-cut1.jpg (360x480), 'Site Cutting' images for 'Site Cut Denman Prospect, ACT' on /our-work-in-pictures/ (media library alt 'Site Cut for Pool in Canberra'). Cropped to 360x370 (top 110px of empty sky removed).",
-      "services[2] — forrest-paving": "wp-content/uploads/2020/03/paving1.jpg (480x308), 'Concrete & Paving Forrest, ACT' on /our-work-in-pictures/.",
-      "owner — pool-infill-pour": "wp-content/uploads/2020/03/pool-infill-1.jpg (437x573), alt 'A Swimming Pool being Filled In', 'Filling In A Swimming Pool' on /our-work-in-pictures/. The worker is not named, so the caption doesn't name him.",
-      "gallery — Weetangera": "wp-content/uploads/2022/05/New-Canberra-Pool.jpg (480x640), under 'Concrete Pool in Weetangera' on /pools-in-canberra/.",
+      "hero — forrest-respray-finished": "wp-content/uploads/2020/03/newpool.jpg (600x400), in the 'Concrete Pool Respray Forrest, ACT' block of /our-work-in-pictures/ with the before (newpool2.jpg) and after (newpool1.jpg) shots: same dark tile band, grey paving, hedge and cobalt pot as the after-shot. Replaced the earlier hero (2022/05/canberra-pool.jpg) because that photo has a pool float in the left third that sat behind the headline, and a float-free crop of it left a deck chair as the subject. Used at its native 600px; the browser enlarges it to fill the hero (about 2.1x on a phone, 2.4x at 1440). Flagged: the original from Craig's phone is needed.",
+      "statement — Weetangera": "wp-content/uploads/2022/05/New-Canberra-Pool.jpg (480x640), under 'Concrete Pool in Weetangera' on /pools-in-canberra/. Set at native size, centred on a 584x730 card-coloured mat so the 4:5 frame never enlarges it.",
+      "services[1] — excavator": "wp-content/uploads/2020/03/site-cut1.jpg (360x480), attached to the 2019 /our-work-in-pictures/ post in their media library (alt 'Site Cut for Pool in Canberra') but not shown under a named job, so no suburb is claimed. Displays at about 1.16x in the 416px service card.",
+      "services[2] — pool infill paved": "wp-content/uploads/2020/03/pool-infill-2.jpg (437x573, alt 'Terracotta Pool Paving in Canberra'), 'Filling In A Swimming Pool' on /our-work-in-pictures/.",
+      "owner — pool-infill-pour": "wp-content/uploads/2020/03/pool-infill-1.jpg (437x573, alt 'A Swimming Pool being Filled In'), 'Filling In A Swimming Pool'. Set native at the bottom-left of a 580x640 mat in the section's own background colour, so it never displays above 1x. The worker is not named.",
+      "gallery — latest build": "wp-content/uploads/2022/05/canberra-pool.jpg (1000x639), lead image of /pools-in-canberra/ 'Our Latest Pools in Canberra'; the post names no suburb. A true 852x639 4:3 crop, shown at about 0.74x.",
       "gallery — Throsby": "wp-content/uploads/2022/05/Throsby-Pool.jpg (462x563), under 'Fibreglass Pool in Throsby': 'We installed this fibreglass pool at a block of units in Throsby'.",
-      "gallery — Forrest respray after": "wp-content/uploads/2020/03/newpool1.jpg (360x480), 'Concrete Pool Respray Forrest, ACT'.",
-      "gallery — Denman Prospect site cut": "wp-content/uploads/2020/03/site-cut-denman2.jpg (359x247), 'Site Cut Denman Prospect, ACT'.",
-      "gallery — pool infill before / after": "wp-content/uploads/2020/03/pool-infill.jpg (599x399, alt 'Pool Infilling in Canberra Backyard') and pool-infill-2.jpg (437x573, alt 'Terracotta Pool Paving in Canberra'), 'Filling In A Swimming Pool'. The post doesn't give the suburb, so neither caption does."
+      "gallery — Forrest before / after": "wp-content/uploads/2020/03/newpool2.jpg and newpool1.jpg (360x480 each), 'Concrete Pool Respray Forrest, ACT': 'Before and after pictures of a concrete pool that we resprayed.'",
+      "gallery — Denman Prospect": "wp-content/uploads/2020/03/site-cut-denman2.jpg (359x247), shown under 'Site Cut Denman Prospect, ACT'.",
+      "gallery — pool infill": "wp-content/uploads/2020/03/pool-infill.jpg (599x399, alt 'Pool Infilling in Canberra Backyard'), 'Filling In A Swimming Pool'. No suburb given.",
+      "gallery tiles — mats": "The gallery tile is 628x471 at 1440px. Every tile file is at least that size, with the photo pasted at its native pixels on a card-coloured (#101E24) mat where the photo is smaller, so no gallery photo displays above 1x on desktop. The lightbox 'full' file is the native photo."
     },
     "notOnThePage": [
       "No builder or pool licence number is published anywhere on their site, so no licence is claimed and the word 'licensed' is not used.",
@@ -421,6 +411,6 @@
       "The 11 'pool design' images on their homepage (2016 uploads) look like manufacturer range photos, not CJG jobs, so they are not used. Nor are their Shutterstock blog images or old theme headers.",
       "The one Google review is shown only in its best_for_demo form, marked shortened. No other reviews exist to use."
     ],
-    "photoNote": "12 of their own job photos, each in exactly one slot (hero, statement, owner, 3 services, 6 gallery). All are web copies from their WordPress site at 359–1000px wide. Each is used at or below its native width with a light unsharp mask; nothing is upscaled. No sample or stock photos are used. The originals from Craig's phone or their Facebook page would make every slot sharper."
+    "photoNote": "12 of their own job photos, each in exactly one slot (hero, statement, owner, 3 services, 6 gallery). All are web copies from their WordPress site, 359–1000px wide, and none is upscaled in the file. The gallery, statement and owner slots show every photo at or below native size, using mats where needed. Two slots still display above native because the template stretches them: the hero (600px file, about 2.1–2.4x) and the excavator service card (about 1.16x). No sample or stock photos are used. The originals from Craig's phone or their Facebook page are needed for a sharp hero."
   }
 }
