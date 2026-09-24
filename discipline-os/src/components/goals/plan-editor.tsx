@@ -78,16 +78,7 @@ export function PlanEditor({ drafts: initial, groupLabel, approveLabel, onApprov
                     <label className="flex h-11 min-w-20 items-center justify-end gap-1 rounded-lg border border-input px-2 focus-within:border-primary/70">
                       <span className="sr-only">Target for {d.title}</span>
                       {d.unit === "$" && <span className="text-muted-foreground">$</span>}
-                      <input
-                        inputMode="decimal"
-                        value={Number.isFinite(d.targetValue) ? String(d.targetValue) : ""}
-                        onChange={(e) => {
-                          const n = Number(e.target.value.replace(/[^0-9.]/g, ""));
-                          update(d.key, { targetValue: Number.isFinite(n) ? n : 0 });
-                        }}
-                        size={Math.max(2, String(d.targetValue).length)}
-                        className="min-w-0 bg-transparent text-right text-[15px] outline-none"
-                      />
+                      <TargetInput value={d.targetValue} onChange={(n) => update(d.key, { targetValue: n })} />
                       {d.unit && d.unit !== "$" && <span className="max-w-[5.5rem] truncate text-xs text-muted-foreground">{d.unit}</span>}
                     </label>
                   ) : (
@@ -132,5 +123,26 @@ export function PlanEditor({ drafts: initial, groupLabel, approveLabel, onApprov
         </button>
       </div>
     </div>
+  );
+}
+
+/** A number typed as text: "1." stays on screen while typing, and the saved number shows on blur. */
+function TargetInput({ value, onChange }: { value: number; onChange: (n: number) => void }) {
+  const [draft, setDraft] = useState<string | null>(null);
+  const shown = draft ?? (Number.isFinite(value) ? String(value) : "");
+  return (
+    <input
+      inputMode="decimal"
+      value={shown}
+      onChange={(e) => {
+        const text = e.target.value.replace(/[^0-9.]/g, "");
+        setDraft(text);
+        const n = Number(text);
+        onChange(text !== "" && Number.isFinite(n) ? n : 0);
+      }}
+      onBlur={() => setDraft(null)}
+      size={Math.max(2, shown.length)}
+      className="min-w-0 bg-transparent text-right text-[15px] outline-none"
+    />
   );
 }

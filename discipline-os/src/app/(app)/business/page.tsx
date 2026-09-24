@@ -145,6 +145,7 @@ async function loadHours(viewer: Viewer, area: WorkArea): Promise<HoursData> {
         .eq("area", area)
         .gte("local_date", from)
         .order("started_at")
+        .order("id")
         .range(a, b),
     ),
     supabase.from("work_sessions").select("id,area,local_date,started_at,work_blocks(task)").is("ended_at", null).maybeSingle(),

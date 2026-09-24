@@ -114,7 +114,7 @@ month, commitments made / kept / broken, week-by-week and month-by-month; **Mome
 average of Keep My Word, work hours against the target, habits and tasks over the last seven
 finished days; rising or falling means 5 points against the week before, and every part is
 shown); the **year in squares** (strong, average, poor, not completed; a ring marks a secured
-minimum day; tap a day for its numbers and replay); **streaks** for Keep My Word, the morning
+minimum day; tap a day for its numbers and replay, then step to the day before or after); **streaks** for Keep My Word, the morning
 routine, Bible, prayer, gym, cardio, the work target and the night review, each on its own card
 with its best, how many due days were kept in the last six weeks, and those six weeks as a grid of
 dots, so one miss never wipes the picture; and **what you've done**, plain sentences from the history ("You've called 1,284 Imperium
@@ -166,14 +166,19 @@ A new account starts at **Welcome**, one question a screen:
    revenue, websites sold, the AI trading bot, Bible days, gym sessions, Keep My Word and savings.
    Each is on or off, renamed or re-numbered in place; a year already under way gets its share.
    Every goal is tied to what already measures it: Imperium revenue and websites sold to their
-   counters, Bible and gym to their habits.
+   counters, Bible and gym to their habits, Keep My Word to the days themselves (judged as a
+   level against the target, not as a total). Revenue and websites sold count from 1 January, so
+   once their counters have entries this year they suggest the full-year number.
 4. **Who are you becoming, and why?** (shown on the Goals page.)
 5. **What does a good day look like?** Work hours and days, AI bot hours, gym days, cardio
    minutes, the streak line.
 6. **What numbers will you hit each week?** Leads, reels, revenue, website calls and demos; Today
    splits them into a target for each work day.
 
-"Skip the rest" is there from step 3; everything can be redone from **Settings → Redo setup**.
+"Skip the rest" is there from step 3 and keeps what's already answered (goals, why, the day's
+numbers once that step is passed); the rest keeps its defaults. Everything can be redone from
+**Settings → Redo setup**: an area that already has a goal that year is switched off, and no goal
+is ever added twice, even if Finish is tapped again after a lost connection.
 
 **The passcode** sits on top of the account sign-in: it keeps out someone holding an unlocked
 phone. Its hash, failed tries and signing key are in a table no client can read; the database
@@ -210,9 +215,9 @@ Sign up with any email: local Supabase does not send confirmation emails.
 
 | Command | What it checks |
 |---|---|
-| `npm test` | Day boundaries (timezones, 04:00 start, daylight saving), Keep My Word, streaks (with minimum days), counter targets, quick add, the scoreboard, Plan my day, reading plans, goal suggestions, What should I do next, "one more" prompts, personal records and when they fire, momentum, the year view, history sentences, now-and-then cards, the Close Day summary and the replay; goal health, roll-ups, breakdowns and the goal check — 90 unit tests |
-| `npm run db:test` | The database's own rules with pgTAP: seeding, RLS isolation, no future days, locked days, one running timer, no duplicate ticks, one number per counter per day, one current bot milestone, Minimum Day counts and proof topics, the passcode lock (unreadable hash, wrong tries and the block, forged tokens, reset only after a fresh sign-in), no cross-user references, goal ownership down the hierarchy — 79 tests |
-| `npm run test:e2e` | The V1 definition of done, the execution day (quick add → counter finishes the task → work by business → bot milestone → proof photo → weekly scoreboard → Suggest my goals) the full goal loop (year → months → weeks → Plan my day → done → progress → weekly review), a whole day with the browser clock set to morning then evening (morning routine → Big 3 → What should I do next → Start → counters and "one more" → a personal record → cardio → night review → Close day → Day complete and replay → Progress), a Minimum Day that keeps the streak, first-run setup (name, 1906 passcode, goals, why, day, week), and the lock (wrong passcode, right passcode, lock now, skip). Runs on a phone-sized screen against a production build and local Supabase; run `npm run build` first — 16 tests |
+| `npm test` | Day boundaries (timezones, 04:00 start, daylight saving), Keep My Word, streaks (with minimum days), counter targets, quick add, the scoreboard, Plan my day, reading plans, goal suggestions, What should I do next, "one more" prompts, personal records and when they fire, momentum, the year view, history sentences, now-and-then cards, the Close Day summary and the replay; goal health, roll-ups, breakdowns (from the progress already made), Keep My Word goals and the goal check; habit rates over due days only; safe paging of long histories; setup's goal matching — 141 unit tests |
+| `npm run db:test` | The database's own rules with pgTAP: seeding, RLS isolation, no future days, locked days, one running timer, no duplicate ticks, one number per counter per day, one current bot milestone, Minimum Day counts and proof topics, the passcode lock (unreadable hash, wrong tries and a block that tops out at 15 minutes, forged tokens, change and turn off, reset only after asking and signing in again), no cross-user references or local dates, goal ownership down the hierarchy — 91 tests |
+| `npm run test:e2e` | The V1 definition of done, the execution day (quick add → counter finishes the task → work by business → bot milestone → proof photo → weekly scoreboard → Suggest my goals) the full goal loop (year → months → weeks → Plan my day → done → progress → weekly review), a whole day with the browser clock set to morning then evening (morning routine → Big 3 → What should I do next → Start → counters and "one more" → a personal record → cardio → night review → Close day → Day complete and replay → Progress), a Minimum Day that keeps the streak, first-run setup (name, 1906 passcode, goals, why, day, week; skipping, redoing and retrying without doubling goals), the lock (wrong passcode, right passcode, lock now, change, turn off, a forgotten passcode), streaks that end when a day closes under the line, counter goals carried into next week, and timers across Close day and other devices. Runs on a phone-sized screen against a production build and local Supabase; run `npm run build` first — 30 tests |
 | `npm run typecheck` · `npm run lint` | Types and lint |
 
 ## Deploy
@@ -245,7 +250,7 @@ Sign up with any email: local Supabase does not send confirmation emails.
 - **Database changes go live on their own, once connected.** Add a new file to
   `supabase/migrations/` (never edit one that's already live). Its name must sort after the
   newest file already there: until 29 September 2026 `npx supabase migration new` makes an
-  earlier name, so rename it (for example `20260929000100_<name>.sql`). Make each change safe for
+  earlier name, so rename it (for example `20260929000200_<name>.sql`). Make each change safe for
   the code that's live now (add columns; don't rename or drop them in the same release), because
   the app can deploy a few minutes before its migration runs. After the checks pass on `main`,
   `.github/workflows/discipline-os-migrate.yml` runs `supabase db push` against the live project.
@@ -277,7 +282,7 @@ changes to a completed day until it is reopened.
 
 **Streaks.** A streak is consecutive days at or above `streak_threshold` (default 80). Days are
 scored from stored rows (`public.day_summaries()` counts; `src/lib/keep-word.ts` turns the counts
-into Keep My Word), never from a counter. Today only joins the streak once it reaches the line. `best_streak` is stored but derived:
+into Keep My Word), never from a counter. Today only joins the streak once it reaches the line; a day closed below it counts as missed straight away. `best_streak` is stored but derived:
 recomputed after completing, reopening or editing an earlier day, or changing settings. No grace
 days. A missed day ends the streak and deletes nothing.
 

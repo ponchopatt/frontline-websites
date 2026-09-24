@@ -44,10 +44,10 @@ export default async function WorkPage() {
 
   const [blocks, sessions] = await Promise.all([
     fetchAll<Block>((from, to) =>
-      supabase.from("work_blocks").select("id,local_date,task,planned_start,planned_end").gte("local_date", weekStart).order("planned_start").range(from, to),
+      supabase.from("work_blocks").select("id,local_date,task,planned_start,planned_end").gte("local_date", weekStart).order("planned_start").order("id").range(from, to),
     ),
     fetchAll<Session>((from, to) =>
-      supabase.from("work_sessions").select("*").gte("local_date", weekStart).order("started_at").range(from, to),
+      supabase.from("work_sessions").select("*").gte("local_date", weekStart).order("started_at").order("id").range(from, to),
     ),
   ]);
 
