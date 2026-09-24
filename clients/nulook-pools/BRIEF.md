@@ -107,4 +107,47 @@ Used (each once):
 | gallery | Paroo-Pebble-Sequins-Decking-End-On.jpg | 1024x768 | Pool with timber step-down deck |
 | gallery | Hudson_9m_SandstoneShimmer-95c225fd.JPG | 1920x1434 | Pool with boulder garden and rock waterfall (cropped to remove a person at the left edge) |
 
-No sample (Openverse) photos were needed.
+No sample (Openverse) photos were needed in the build rounds. See Finish round below.
+
+## Finish round (2026-09-24)
+Pat now allows labelled sample photos. Review 2 gave 4.0: Photos 3, because every photo was a
+Conquest manufacturer range photo. Nulook still has no photos of its own installs online.
+
+**Photos.** Openly licensed sample photos replace the range photos in every large spot. Each has
+`sample: true`, `license` and `sourceUrl`, and the page tags it "Sample photo". Alt text is generic
+and never names Nulook, a suburb or a client. None is AI-upscaled. Every file is at or below its source size.
+
+| Slot | Sample | Licence | Source |
+|---|---|---|---|
+| hero | Pool with stone coping in a timber deck, gum trees (sky cropped off, 2048x1136) | CC0, Michael Burridge | wordpress.org/photos/photo/7056228e44 |
+| statement | Angular pool, stencilled paving, lawn (portrait crop, 1600x2000) | CC BY 2.0, corsi photo | flickr.com/photos/11211909@N00/52097588417 |
+| full-screen (aperture) | Pool in pale stone paving and lawn (2048x1536) | CC0, Rámon van Raaij | wordpress.org/photos/photo/118662e8d9 |
+| enquiry background | Empty pool shell (decorative, 22% opacity) | CC0, Javier Casares | wordpress.org/photos/photo/62264079f1 |
+| Landscaping card | Pool in crazy paving (portrait crop) | CC0, markvanjaarsveld | wordpress.org/photos/photo/6116300b69 |
+| Maintenance card | Automatic pool cleaner and hose in a pool (crop) | CC BY 2.0, Dru Bloomfield | flickr.com/photos/14544437@N07/5193397096 |
+
+Rejected: Mitcham crane-lift photos of a fibreglass shell (CC BY-ND, which isn't on the allowed list),
+and StockSnap (downloads return 403).
+
+Range photos stay in two small spots only, each labelled once as a range photo: the six tiles in
+"The range" (now 3 across on desktop and 2 on a phone, captioned "The Maradona" / "Range photo · …")
+and the Fibreglass pools card ("Pictured: the Paroo, from the range."). They no longer carry
+`sample: true`, which removes the triple label (tag + "Sample photo ·" + "Range photo ·") the
+reviewer flagged.
+
+**Fixes from the review notes**
+- Phone hero: the photo now sits in a bright frame at the top of the hero instead of a dark wash
+  behind the words. srcset starts at 1200w so a phone never gets a small file. Desktop veil is
+  lighter so the pool shows.
+- Full-screen photo is now a sharp 2048px original.
+- Each photo is labelled once.
+- John's section on desktop: the empty photo column is gone. The words sit on the left and
+  "Nearly 30" / "7 days" stand in the right column (clients/nulook-pools/styles.css).
+- Words: the two service cards no longer say "Pictured: the Torrens/Darling" under sample photos.
+  workIntro now says the tiles are range photos of six shapes, not Nulook jobs. The hero sub is
+  shorter. The enquiry headline breaks as 3 even lines. The redundant full-screen caption is gone.
+- Facts, the rating (5.0 from 35) and the six reviews are unchanged, still word for word.
+  Lighthouse mobile performance is 89 (the aperture photo loads eagerly per the template), the same as before.
+
+**Still needs Pat:** 4–6 photos of John's own installs (hero at least 1600px wide), which would
+replace every sample. Charissa's role, and a photo of John and Charissa.
