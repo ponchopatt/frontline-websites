@@ -147,3 +147,66 @@ file**, because the template fills them edge to edge:
 2. **Their ACT builder or pool licence number**, so it can go on the page.
 3. **Craig's surname and role**, if he wants them used.
 4. **More Google reviews.** One review is the biggest gap. It's the pitch.
+
+## Finish round (2026-09-24, after the final review at 3.83)
+
+Pat now allows labelled sample photos. The review held this back on photos
+(Hero 3, Photos 3): every photo they have online is a small web copy, so the
+600px hero was enlarged 2.1–2.4x and looked smeared, and the matted gallery
+cards read as thumbnails. The "No sample photos needed" line above is
+superseded.
+
+**Two sample photos, in the two large slots only.** Both are from the same
+Flickr set, CC BY 2.0, by billjacobus1 (a backyard concrete pool being built,
+2006). Originals are 2048×1536, downloaded from live.staticflickr.com, used at
+native size or smaller, never upscaled. Each has `sample: true`, `license`,
+`sourceUrl` and `credit`, and the page tags it "Sample photo". The alt text
+describes the photo only and makes no claim about CJG, Craig or Canberra.
+`photos.stockApproved` = Pat, 2026-09-24.
+
+| Slot | File | Source | Shows |
+|---|---|---|---|
+| Hero | sample-pool-steel-1600/2048.webp, plus a 740w portrait crop for phones | flickr.com/photos/67513462@N00/125509297 | A concrete pool dug out with steel and plumbing in, spa ring at one end. This is "Pools, and the earthworks behind them" in one frame. |
+| Statement (4:5) | sample-pool-dig-720/1229.webp | flickr.com/photos/67513462@N00/125509027 | Three workers in a freshly dug pool. They are not CJG's crew, and nothing on the page says they are. |
+
+The phone hero file is a portrait crop (x 900–1720 of the original), so a phone
+at 1–1.75x never gets a landscape file enlarged to portrait height. At 2–3x
+the browser picks the 1600 file. `object-position: 72% 50%` keeps the spa ring
+in frame either way.
+
+**Their own photos now go only where they stay sharp at native size.**
+- **Gallery:** no mats. Six 3:2 cards cut at native pixels. The grid in
+  `clients/cjg-pools/styles.css` is one column on a phone (about 350px), two
+  from 480px and three from 900px (389px at 1440). Nothing shows above about
+  1.08x (the 360px Forrest files and the Denman Prospect file, at 1440 only).
+  Weetangera moved here from the statement slot. The pool-infill "before" card
+  was dropped: infill already has a service card and the owner photo.
+  Order: Latest build, Weetangera, Throsby, Forrest before, Forrest after,
+  Denman Prospect. The work intro now names them in that order.
+- **Lightbox:** `object-fit: scale-down`, so a 360px photo opens at 360px
+  instead of being stretched across the screen.
+- **Service cards and owner photo:** unchanged (native, excavator card about
+  1.16x at 1440).
+- **Share image:** still their own 600px Forrest shot. A stock photo in a link
+  preview would carry no "Sample" tag.
+- Deleted the matted tile files and pool-infill-before files the page no longer
+  uses.
+
+**Other review points**
+- The one review shows once, as a still card (not a belt), now set at reading
+  size (client CSS for a lone card). Word for word from `best_for_demo`,
+  marked "Google review, shortened". It isn't in a pull quote.
+- There's no `<br>` or markup in any escaped field. The only `<br>`/`<em>` are
+  in headline fields, which the template splits into lines.
+- "Call Craig" (sticky bar, call dock) dials tel:+61413997889. "Talk to Craig"
+  is `copy.ctaLabel` and goes to the form.
+- The copy and facts are unchanged apart from the work intro.
+
+**Checked:** `npm run check -- cjg-pools` shows no blockers and READY TO SEND
+(Lighthouse mobile 92 / 97 / 100). Playwright captures at 390×844 (1x and 3x)
+and 1440×900 show no horizontal overflow, the hero sharp at both sizes with
+the tag bottom right, and the lightbox at native size.
+
+**Still needed from Craig:** his own originals, above all a pool at the dig or
+steel stage for the hero. Swap out both samples before this goes live. Also his
+licence number and more Google reviews.

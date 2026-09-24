@@ -1,0 +1,67 @@
+/*
+ * Nulook Pools: client layer over the trust template.
+ * Appended after the template's CSS (lib/build.js), so it only touches this site.
+ */
+
+/*
+ * Hero. The sample photo is a bright pool on a timber deck, with the sky
+ * already cropped off the file. The template veil darkened the whole bottom
+ * band, which is where the water is, so here the dark sits behind the words
+ * (left side, and a shorter band at the bottom) and the pool stays lit.
+ */
+.hero img.bg{object-position:50% 55%}
+.hero .veil{background:
+  linear-gradient(to top,rgba(6,13,16,.9) 0%,rgba(6,13,16,.55) 20%,rgba(6,13,16,.12) 44%,rgba(6,13,16,0) 72%,rgba(6,13,16,.5) 100%),
+  linear-gradient(to right,rgba(6,13,16,.84) 0%,rgba(6,13,16,.56) 36%,rgba(6,13,16,.08) 60%,rgba(6,13,16,0) 72%)}
+.hero h1{text-shadow:0 2px 24px rgba(4,10,13,.5)}
+.hero .sub{text-shadow:0 1px 14px rgba(4,10,13,.9)}
+
+/*
+ * On a phone the words fill most of the screen, so a full-height photo only
+ * ever showed as a dark wash behind them. Here the photo sits in a frame at the
+ * top of the hero (pool steps and deck in view) and fades into the dark ground
+ * under the headline. The frame is short enough that the 1200px file is shown
+ * close to 1:1 on a 2x phone.
+ */
+@media(max-width:700px){
+  .hero .bgwrap{top:0;bottom:auto;height:min(52%,430px);
+    -webkit-mask-image:linear-gradient(to bottom,#000 70%,transparent 100%);
+            mask-image:linear-gradient(to bottom,#000 70%,transparent 100%)}
+  .hero img.bg{object-position:62% 50%}
+  .hero .veil{background:
+    linear-gradient(to bottom,rgba(6,13,16,.55) 0%,rgba(6,13,16,.05) 20%,rgba(6,13,16,0) 45%,rgba(6,13,16,.45) 72%,rgba(6,13,16,.9) 100%)}
+  .hero .t-label{text-shadow:0 1px 3px rgba(4,10,13,.95),0 0 12px rgba(4,10,13,.95),0 0 24px rgba(4,10,13,.8)}
+  .hero h1{text-shadow:0 2px 16px rgba(4,10,13,.8)}
+  .hero .sub{font-size:1.06rem}
+  /* the frame fades out at its foot, so the tag goes to its top corner */
+  .hero .fl-sample.fl-sample-b{top:calc(var(--header-h) + 6px);bottom:auto}
+}
+
+/*
+ * The range. These are the manufacturer's photos of the shapes, so they are
+ * shown as small tiles, not as big work plates: three across on a desktop, two
+ * on a phone. Each is labelled once, in its caption line ("Range photo · …").
+ */
+.plates{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s32) var(--s16)}
+@media(min-width:900px){.plates{grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s48) var(--s32)}}
+.plate-item figcaption{margin-top:var(--s12);padding-top:var(--s12);gap:var(--s4) var(--s12);
+  flex-direction:column;align-items:flex-start}
+.plate-item figcaption .nm{font-size:1.05rem}
+.plate-item figcaption .t-cap{font-size:.8rem;line-height:1.35}
+@media(min-width:900px){.plate-item figcaption .nm{font-size:1.2rem}}
+
+/*
+ * John's section has no photo (there is none of him or Charissa anywhere), so
+ * the template's photo column sat empty on a desktop. The words take the left,
+ * and the two numbers stand in the right-hand column instead.
+ */
+@media(min-width:960px){
+  #owner .wrap{grid-template-columns:1fr}
+  #owner .wrap>div{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);
+    column-gap:clamp(48px,7vw,128px);align-items:start}
+  #owner .wrap>div>*{grid-column:1}
+  #owner .facts{grid-column:2;grid-row:1 / span 5;align-self:center;
+    grid-template-columns:1fr !important;gap:var(--s48);margin-top:0;
+    padding:var(--s16) 0 var(--s16) clamp(32px,4vw,64px);
+    border-top:0;border-left:1px solid var(--line)}
+}

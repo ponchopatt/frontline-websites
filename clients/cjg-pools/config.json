@@ -1,5 +1,5 @@
 {
-  "_comment": "CJG Pools & Earthworks, Calwell ACT. Built by hand: npm run new is broken in this container (see HANDOVER.md), so every page of www.cjgpoolsandearthworks.com.au was read with curl (generic Mozilla/5.0 user agent) and every photo was downloaded from their own wp-content/uploads at its full published size. Rating and review come only from data/google_reviews_top25.json. All 12 photos are their own jobs from their 2019 and 2022 project posts, one slot each, used at native size (nothing upscaled). See BRIEF.md.",
+  "_comment": "CJG Pools & Earthworks, Calwell ACT. Built by hand: npm run new is broken in this container (see HANDOVER.md), so every page of www.cjgpoolsandearthworks.com.au was read with curl (generic Mozilla/5.0 user agent) and every photo was downloaded from their own wp-content/uploads at its full published size. Rating and review come only from data/google_reviews_top25.json. 10 of their own job photos (2019 and 2022 project posts) at native size, plus 2 labelled sample photos Pat approved for the hero and statement (finish round). See BRIEF.md.",
   "slug": "cjg-pools",
   "template": "trust",
   "industry": "pools",
@@ -213,7 +213,7 @@
   "photos": {
     "hero": {
       "src": "assets/sample-pool-steel-1600.webp",
-      "srcset": "assets/sample-pool-steel-portrait-820.webp 820w, assets/sample-pool-steel-1600.webp 1600w, assets/sample-pool-steel-2048.webp 2048w",
+      "srcset": "assets/sample-pool-steel-portrait-740.webp 740w, assets/sample-pool-steel-1600.webp 1600w, assets/sample-pool-steel-2048.webp 2048w",
       "width": 2048,
       "height": 1536,
       "alt": "Sample photo: a concrete pool dug out and ready for concrete, with the steel and plumbing in place",
@@ -222,7 +222,7 @@
       "license": "CC BY 2.0",
       "sourceUrl": "https://www.flickr.com/photos/67513462@N00/125509297",
       "credit": "billjacobus1 on Flickr",
-      "_comment": "Sample (stock) photo, approved by Pat 2026-09-24. Not a CJG job. Flickr original 2048x1536, used at native size or smaller: 1600 and 2048 are straight resizes; the 820w file is a native-pixel 820x1536 portrait crop (x 900-1720) so a phone at 1-2x DPR gets a portrait frame that is never enlarged. Replace with Craig's own photo of a pool at the steel or dig stage."
+      "_comment": "Sample (stock) photo, approved by Pat 2026-09-24. Not a CJG job. Flickr original 2048x1536, used at native size or smaller: 1600 and 2048 are straight resizes; the 740w file is an 820x1536 portrait crop (x 900-1720) resized down to 740x1386 so a phone at 1-2x DPR gets a portrait frame that is never enlarged. Replace with Craig's own photo of a pool at the steel or dig stage."
     },
     "statement": {
       "src": "assets/sample-pool-dig-1229.webp",
@@ -400,17 +400,17 @@
     },
     "photoClaims": {
       "services[0] — googong-new-pool": "wp-content/uploads/2022/05/googong-pool.jpg (428x571), under 'New Pool in Googong' on /pools-in-canberra/.",
-      "hero — forrest-respray-finished": "wp-content/uploads/2020/03/newpool.jpg (600x400), in the 'Concrete Pool Respray Forrest, ACT' block of /our-work-in-pictures/ with the before (newpool2.jpg) and after (newpool1.jpg) shots: same dark tile band, grey paving, hedge and cobalt pot as the after-shot. Replaced the earlier hero (2022/05/canberra-pool.jpg) because that photo has a pool float in the left third that sat behind the headline, and a float-free crop of it left a deck chair as the subject. Used at its native 600px; the browser enlarges it to fill the hero (about 2.1x on a phone, 2.4x at 1440). Flagged: the original from Craig's phone is needed.",
-      "statement — Weetangera": "wp-content/uploads/2022/05/New-Canberra-Pool.jpg (480x640), under 'Concrete Pool in Weetangera' on /pools-in-canberra/. Set at native size, centred on a 584x730 card-coloured mat so the 4:5 frame never enlarges it.",
+      "hero — SAMPLE": "Not theirs. Flickr, billjacobus1, \"Pool Construction - PVC Pipe and Rebar Installation\" (https://www.flickr.com/photos/67513462@N00/125509297), CC BY 2.0, original 2048x1536 downloaded from live.staticflickr.com. Tagged Sample photo on the page; alt makes no claim about CJG. Approved by Pat 2026-09-24 (photos.stockApproved). The old hero, their 600px Forrest shot (2020/03/newpool.jpg), was enlarged 2.1-2.4x and looked smeared; it stays as the share image only.",
+      "statement — SAMPLE": "Not theirs. Flickr, billjacobus1, \"Pool Construction - Early Stages\" (https://www.flickr.com/photos/67513462@N00/125509027), CC BY 2.0, 2048x1536 original, cropped 4:5 at native pixels. Tagged Sample photo; the workers are not CJG crew and nothing says they are. Approved by Pat 2026-09-24.",
       "services[1] — excavator": "wp-content/uploads/2020/03/site-cut1.jpg (360x480), attached to the 2019 /our-work-in-pictures/ post in their media library (alt 'Site Cut for Pool in Canberra') but not shown under a named job, so no suburb is claimed. Displays at about 1.16x in the 416px service card.",
       "services[2] — pool infill paved": "wp-content/uploads/2020/03/pool-infill-2.jpg (437x573, alt 'Terracotta Pool Paving in Canberra'), 'Filling In A Swimming Pool' on /our-work-in-pictures/.",
       "owner — pool-infill-pour": "wp-content/uploads/2020/03/pool-infill-1.jpg (437x573, alt 'A Swimming Pool being Filled In'), 'Filling In A Swimming Pool'. Set native at the bottom-left of a 580x640 mat in the section's own background colour, so it never displays above 1x. The worker is not named.",
-      "gallery — latest build": "wp-content/uploads/2022/05/canberra-pool.jpg (1000x639), lead image of /pools-in-canberra/ 'Our Latest Pools in Canberra'; the post names no suburb. A true 852x639 4:3 crop, shown at about 0.74x.",
+      "gallery — latest build": "wp-content/uploads/2022/05/canberra-pool.jpg (1000x639), lead image of /pools-in-canberra/ 'Our Latest Pools in Canberra'; the post names no suburb. A 958x639 3:2 crop, resized to 810x540 for the card.",
+      "gallery — Weetangera": "wp-content/uploads/2022/05/New-Canberra-Pool.jpg (480x640), under \"Concrete Pool in Weetangera\" on /pools-in-canberra/. Moved from the statement slot (where it sat small on a mat) to the gallery.",
       "gallery — Throsby": "wp-content/uploads/2022/05/Throsby-Pool.jpg (462x563), under 'Fibreglass Pool in Throsby': 'We installed this fibreglass pool at a block of units in Throsby'.",
       "gallery — Forrest before / after": "wp-content/uploads/2020/03/newpool2.jpg and newpool1.jpg (360x480 each), 'Concrete Pool Respray Forrest, ACT': 'Before and after pictures of a concrete pool that we resprayed.'",
       "gallery — Denman Prospect": "wp-content/uploads/2020/03/site-cut-denman2.jpg (359x247), shown under 'Site Cut Denman Prospect, ACT'.",
-      "gallery — pool infill": "wp-content/uploads/2020/03/pool-infill.jpg (599x399, alt 'Pool Infilling in Canberra Backyard'), 'Filling In A Swimming Pool'. No suburb given.",
-      "gallery tiles — mats": "The gallery tile is 628x471 at 1440px. Every tile file is at least that size, with the photo pasted at its native pixels on a card-coloured (#101E24) mat where the photo is smaller, so no gallery photo displays above 1x on desktop. The lightbox 'full' file is the native photo."
+      "gallery tiles — native 3:2 crops": "No mats any more. Each card is a 3:2 crop of their photo at its own pixels (latest build 958x639 resized to 810x540; Weetangera 480x320; Throsby 462x308; Forrest before and after 360x240; Denman Prospect 359x239). clients/cjg-pools/styles.css sets the grid to one column on a phone (about 350px wide), two from 480px, three from 900px (389px at 1440), so the largest display is about 1.08x at 1440 for the 360px files and at or below 1x on a phone at 1x. The lightbox full file is the uncropped native photo, and the viewer uses object-fit: scale-down, so it is never stretched."
     },
     "notOnThePage": [
       "No builder or pool licence number is published anywhere on their site, so no licence is claimed and the word 'licensed' is not used.",
@@ -421,6 +421,6 @@
       "The 11 'pool design' images on their homepage (2016 uploads) look like manufacturer range photos, not CJG jobs, so they are not used. Nor are their Shutterstock blog images or old theme headers.",
       "The one Google review is shown only in its best_for_demo form, marked shortened. No other reviews exist to use."
     ],
-    "photoNote": "12 of their own job photos, each in exactly one slot (hero, statement, owner, 3 services, 6 gallery). All are web copies from their WordPress site, 359–1000px wide, and none is upscaled in the file. The gallery, statement and owner slots show every photo at or below native size, using mats where needed. Two slots still display above native because the template stretches them: the hero (600px file, about 2.1–2.4x) and the excavator service card (about 1.16x). No sample or stock photos are used. The originals from Craig's phone or their Facebook page are needed for a sharp hero."
+    "photoNote": "Finish round 2026-09-24: 2 labelled SAMPLE photos (hero and statement, both CC BY 2.0 from Flickr user billjacobus1, licence and source on each photo object, approved by Pat) in the two large slots, where their small web copies were enlarged. 10 of their own job photos in the slots that stay sharp at native size: 3 service cards, the owner photo (native on a mat), and 6 gallery cards cut at native pixels. Their photos are all web copies from their WordPress site, 359-1000px wide; none is upscaled in the file. The excavator service card still displays at about 1.16x at 1440. Replace both samples with Craig's own originals before this goes live."
   }
 }

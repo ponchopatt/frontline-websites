@@ -37,12 +37,12 @@
     "favicon": "assets/favicon.png"
   },
   "share": {
-    "image": "assets/diamantina-hero-1200.webp",
+    "image": "assets/sample-pool-timber-deck-1200.webp",
     "width": 1200,
-    "height": 672,
+    "height": 666,
     "title": "Nulook Pools — Fibreglass pools, Canberra and surrounding NSW",
     "description": "John Eldridge and Charissa install in-ground fibreglass pools across Canberra and surrounding NSW, with the paving and landscaping in the one package.",
-    "alt": "The Diamantina fibreglass pool shape, a range photo: a freeform pool set in a timber deck with a water blade and tree-covered hills behind"
+    "alt": "A rectangular in-ground pool edged in grey stone coping, set into a timber deck, with gum trees and palms behind"
   },
   "responsePromise": "Open 7 days, 6am to 6pm.",
   "copy": {
@@ -51,7 +51,7 @@
     "ctaLabel": "Talk to John",
     "kicker": "Canberra & surrounding NSW",
     "headline": "From council<br>to first<br><em>swim.</em>",
-    "sub": "John Eldridge and Charissa put in-ground fibreglass pools into backyards across Canberra and the surrounding NSW region — with the paving, tiling and landscaping done in the one package.",
+    "sub": "John Eldridge and Charissa put in-ground fibreglass pools into backyards across Canberra and surrounding NSW, with the paving and landscaping done in the one package.",
     "heroSecondary": "Or send John the details",
     "heroSecondarySms": "Or text John a photo of the yard",
     "navApproach": "Approach",
@@ -65,7 +65,7 @@
     "apertureLine": "Pool, paving and garden. One quote.",
     "workLabel": "The range",
     "workHeadline": "Fourteen shapes,<br>4 to 13.5 metres.",
-    "workIntro": "Nulook's in-ground fibreglass range runs from the 4-metre Torrens exercise pool to the 13.5-metre Diamantina. Every photo on this page is a range photo of the shape, not a Nulook job — ask John to show you pools he has put in near you. Select any photo to see it larger.",
+    "workIntro": "Nulook’s in-ground fibreglass range runs from the 4-metre Torrens exercise pool to the 13.5-metre Diamantina. Below are range photos of six of the shapes, not Nulook jobs. Ask John to show you pools he has put in near you.",
     "processLabel": "How it runs",
     "processHeadline": "Survey to<br>paving, on site<br>start to finish.",
     "processIntro": "Nulook's own twelve-step install, in short.",
@@ -151,7 +151,7 @@
     },
     {
       "title": "Landscaping, tiling & paving",
-      "blurb": "Done with the pool as one package, using local contractors — so you are not sourcing separate quotes and organising trades to finish the job. Pictured: the Torrens, from the range.",
+      "blurb": "Done with the pool as one package, using local contractors, so you are not sourcing separate quotes and organising trades to finish the job.",
       "photo": {
         "src": "assets/sample-pool-crazy-paving-800.webp",
         "srcset": "assets/sample-pool-crazy-paving-480.webp 480w, assets/sample-pool-crazy-paving-800.webp 800w, assets/sample-pool-crazy-paving-1156.webp 1156w",
@@ -166,7 +166,7 @@
     },
     {
       "title": "Pool maintenance",
-      "blurb": "Nulook looks after pools as well as putting them in. Ask John what yours needs when you call. Pictured: the Darling, from the range.",
+      "blurb": "Nulook looks after pools as well as putting them in. Ask John what yours needs when you call.",
       "photo": {
         "src": "assets/sample-pool-cleaner-800.webp",
         "srcset": "assets/sample-pool-cleaner-480.webp 480w, assets/sample-pool-cleaner-800.webp 800w, assets/sample-pool-cleaner-1200.webp 1200w",
@@ -224,14 +224,14 @@
   "photos": {
     "hero": {
       "src": "assets/sample-pool-timber-deck-1600.webp",
-      "srcset": "assets/sample-pool-timber-deck-480.webp 480w, assets/sample-pool-timber-deck-800.webp 800w, assets/sample-pool-timber-deck-1200.webp 1200w, assets/sample-pool-timber-deck-1600.webp 1600w, assets/sample-pool-timber-deck-2048.webp 2048w",
+      "srcset": "assets/sample-pool-timber-deck-1200.webp 1200w, assets/sample-pool-timber-deck-1600.webp 1600w, assets/sample-pool-timber-deck-2048.webp 2048w",
       "width": 2048,
-      "height": 1536,
+      "height": 1136,
       "alt": "A rectangular in-ground pool edged in grey stone coping, set into a timber deck, with gum trees and palms behind",
       "sample": true,
       "license": "CC0 1.0 (public domain), WordPress Photo Directory, photo by Michael Burridge",
       "sourceUrl": "https://wordpress.org/photos/photo/7056228e44/",
-      "credit": "Sample photo: “Swimming Pool” by Michael Burridge, CC0, wordpress.org/photos"
+      "credit": "Sample photo: “Swimming Pool” by Michael Burridge, CC0, wordpress.org/photos (sky cropped off the top)"
     },
     "statement": {
       "src": "assets/sample-pool-paved-lawn-1200.webp",
@@ -275,7 +275,7 @@
         "width": 1024,
         "height": 768,
         "caption": "The Maradona",
-        "detail": "Range photo · bluestone coping, timber deck, rural block",
+        "detail": "Range photo · bluestone coping, deck",
         "alt": "Range photo of the Maradona fibreglass shape: a long rectangular pool with bluestone coping and a timber deck, a palm and open paddocks behind",
         "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client’s own site, nulookpools.com.au. Not stock and not a Nulook job: shown only to illustrate the pool shape, and labelled “Range photo” on the page.",
         "sourceUrl": "https://www.nulookpools.com.au/the-maradona",
@@ -288,7 +288,7 @@
         "width": 1024,
         "height": 768,
         "caption": "The Eden",
-        "detail": "Range photo · travertine paving among gum trees",
+        "detail": "Range photo · travertine paving",
         "alt": "Range photo of the Eden fibreglass shape: a narrow rectangular pool in fresh travertine paving, gum trees behind",
         "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client’s own site, nulookpools.com.au. Not stock and not a Nulook job: shown only to illustrate the pool shape, and labelled “Range photo” on the page.",
         "sourceUrl": "https://www.nulookpools.com.au/the-eden",
@@ -301,7 +301,7 @@
         "width": 1600,
         "height": 1289,
         "caption": "The Hudson",
-        "detail": "Range photo · sandstone paving and boulder waterfall",
+        "detail": "Range photo · boulder waterfall",
         "alt": "Range photo of the Hudson fibreglass shape: a pool with pale sandstone paving, a boulder wall and a small rock waterfall",
         "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client’s own site, nulookpools.com.au. Not stock and not a Nulook job: shown only to illustrate the pool shape, and labelled “Range photo” on the page.",
         "sourceUrl": "https://www.nulookpools.com.au/the-hudson",
@@ -314,7 +314,7 @@
         "width": 1024,
         "height": 768,
         "caption": "The Lachlan",
-        "detail": "Range photo · bluestone coping inside a hardwood deck",
+        "detail": "Range photo · hardwood deck",
         "alt": "Range photo of the Lachlan fibreglass shape: a rectangular pool with bluestone coping inside a hardwood deck and glass fence, farm shed behind",
         "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client’s own site, nulookpools.com.au. Not stock and not a Nulook job: shown only to illustrate the pool shape, and labelled “Range photo” on the page.",
         "sourceUrl": "https://www.nulookpools.com.au/the-lachlan",
@@ -327,7 +327,7 @@
         "width": 1024,
         "height": 768,
         "caption": "The Franklin",
-        "detail": "Range photo · grey finish, rendered courtyard walls",
+        "detail": "Range photo · grey finish",
         "alt": "Range photo of the Franklin fibreglass shape: a pool in a grey finish in a courtyard of charcoal walls, glass fencing and sun lounges",
         "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client’s own site, nulookpools.com.au. Not stock and not a Nulook job: shown only to illustrate the pool shape, and labelled “Range photo” on the page.",
         "sourceUrl": "https://www.nulookpools.com.au/the-franklin",
@@ -340,7 +340,7 @@
         "width": 1024,
         "height": 768,
         "caption": "The Conquest",
-        "detail": "Range photo · deck jets and exposed aggregate",
+        "detail": "Range photo · deck jets",
         "alt": "Range photo of the Conquest fibreglass shape: a freeform pool with deck jets, exposed-aggregate surround and palms",
         "license": "Manufacturer range photo (Conquest fibreglass range) as published on the client’s own site, nulookpools.com.au. Not stock and not a Nulook job: shown only to illustrate the pool shape, and labelled “Range photo” on the page.",
         "sourceUrl": "https://www.nulookpools.com.au/the-conquest",

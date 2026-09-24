@@ -57,7 +57,7 @@
     "ownerLabel": "Who you are dealing with",
     "recognitionLabel": "Why people come back",
     "recognitionHeadline": "Well established in the local area.",
-    "recognitionIntro": "What stands behind the work, before you pick up the phone.",
+    "recognitionIntro": "A registered Bowral company, with a polite and friendly team that will treat your home with care.",
     "areasLabel": "Where we work",
     "areasHeadline": "Based in<br>Bowral.",
     "areasIntro": "We're based in Bowral and well established in the local area. Call to check we cover your suburb.",
@@ -92,7 +92,7 @@
     {
       "kind": "licence",
       "label": "Fully licensed and insured",
-      "body": "Our whole team is fully licensed and insured.",
+      "body": "Our team is fully licensed and insured.",
       "strip": true
     },
     {
@@ -123,7 +123,7 @@
       "blurb": "Complete house renovations, and rundown or unfinished projects brought back to life. In a kitchen, we can modernise it or keep the heritage elements.",
       "photo": {
         "src": "assets/stone-wall-courtyard-garden-room-960.webp",
-        "srcset": "assets/stone-wall-courtyard-garden-room-480.webp 480w, assets/stone-wall-courtyard-garden-room-960.webp 960w",
+        "srcset": "assets/stone-wall-courtyard-garden-room-960.webp 960w",
         "width": 960,
         "height": 720,
         "alt": "A stone wall beside a white gravel courtyard, with a sage-green panelled garden room full of pot plants behind"
@@ -134,7 +134,7 @@
       "blurb": "A pool deck, or a deck that joins your living room to the garden. Then a pergola over it for outdoor dinners, weatherproofed so you get the most out of it.",
       "photo": {
         "src": "assets/pergola-deck-stone-planters-960.webp",
-        "srcset": "assets/pergola-deck-stone-planters-480.webp 480w, assets/pergola-deck-stone-planters-960.webp 960w",
+        "srcset": "assets/pergola-deck-stone-planters-960.webp 960w",
         "width": 960,
         "height": 720,
         "alt": "A white timber pergola over a deck with French doors behind, stone planter walls and steppers set into the lawn"
@@ -161,8 +161,8 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/sample-sandstone-cottage-1800.webp",
-      "srcset": "assets/sample-sandstone-cottage-480.webp 480w, assets/sample-sandstone-cottage-800.webp 800w, assets/sample-sandstone-cottage-1200.webp 1200w, assets/sample-sandstone-cottage-1800.webp 1800w",
+      "src": "assets/sample-sandstone-cottage-1200.webp",
+      "srcset": "assets/sample-sandstone-cottage-1200.webp 1200w, assets/sample-sandstone-cottage-1800.webp 1800w",
       "width": 1800,
       "height": 1200,
       "alt": "A sandstone cottage with two timber dormers, a brick chimney and a white picket fence",
@@ -170,11 +170,11 @@
       "license": "CC BY-SA 2.0",
       "sourceUrl": "https://www.flickr.com/photos/25287507@N02/5406893693",
       "credit": "Rexness, via Flickr (CC BY-SA 2.0). Heritage plaque blurred.",
-      "_comment": "Sample photo (their own photos are 960px, too small for a full-bleed hero, and upscaling isn't allowed). 1800x1200 original from Flickr. A small name plaque on the wall is blurred so the house isn't identifiable; the adapted image stays under CC BY-SA 2.0."
+      "_comment": "Sample photo (their own photos are 960px, too small for a full-bleed hero, and upscaling isn't allowed). 1800x1200 original from Flickr. A small name plaque on the wall is blurred so the house isn't identifiable; the adapted image stays under CC BY-SA 2.0. Only the 1200 and 1800 files are offered: the hero is a portrait crop on phones, so a smaller file would be stretched."
     },
     "statement": {
-      "src": "assets/sample-brick-stone-verandah-1568.webp",
-      "srcset": "assets/sample-brick-stone-verandah-480.webp 480w, assets/sample-brick-stone-verandah-800.webp 800w, assets/sample-brick-stone-verandah-1200.webp 1200w, assets/sample-brick-stone-verandah-1568.webp 1568w",
+      "src": "assets/sample-brick-stone-verandah-1200.webp",
+      "srcset": "assets/sample-brick-stone-verandah-1200.webp 1200w, assets/sample-brick-stone-verandah-1568.webp 1568w",
       "width": 1568,
       "height": 1156,
       "alt": "A stone and red-brick cottage with a long timber verandah and an autumn tree",
@@ -184,15 +184,15 @@
       "credit": "Michael Coghlan, via Flickr (CC BY-SA 2.0)"
     },
     "aperture": {
-      "src": "assets/sample-weatherboard-cottage-1800.webp",
-      "srcset": "assets/sample-weatherboard-cottage-800.webp 800w, assets/sample-weatherboard-cottage-1200.webp 1200w, assets/sample-weatherboard-cottage-1800.webp 1800w, assets/sample-weatherboard-cottage-2321.webp 2321w",
-      "width": 2321,
-      "height": 1777,
-      "alt": "A weatherboard cottage with a red iron roof, twin chimneys and a timber-fretwork verandah",
+      "src": "assets/sample-federation-porch-2000.webp",
+      "srcset": "assets/sample-federation-porch-2000.webp 2000w",
+      "width": 2000,
+      "height": 1125,
+      "alt": "The front porch of a Federation-style weatherboard bungalow, with red-brick piers, green trim and a camellia in flower",
       "sample": true,
-      "license": "CC BY-SA 2.0",
-      "sourceUrl": "https://www.flickr.com/photos/89165847@N00/53608915817",
-      "credit": "Michael Coghlan, via Flickr (CC BY-SA 2.0). Name sign blurred; 150px cropped off the left."
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/82727312@N00/36376433690",
+      "credit": "sbittinger, via Flickr (CC BY 2.0)"
     },
     "gallery": [
       {
@@ -248,10 +248,6 @@
   "reviews": [],
   "faq": [
     {
-      "q": "Do you take on smaller jobs?",
-      "a": "Yes. As well as new homes and extensions, we build decks and pergolas, and renovate single kitchens and bathrooms."
-    },
-    {
       "q": "Can you keep the heritage features?",
       "a": "Yes. In a kitchen we can modernise, or keep the heritage elements. We also restore rundown and unfinished projects and make them new again."
     },
@@ -276,7 +272,7 @@
     "notesHint": "Where the property is, what you'd like built or renovated, and roughly when you'd like to start."
   },
   "sms": {
-    "label": "Text Darren a photo",
+    "label": "Text Darren",
     "body": "Hi Darren, I'd like a quote.\nSuburb: \nWhat I'm after: \n(Happy to send photos.)"
   },
   "_source": {
@@ -348,8 +344,12 @@
         "url": "data/google_reviews_top25.json"
       },
       "Sample photos (hero, statement, aperture, new homes card)": {
-        "sentence": "All five are openly licensed, tagged 'Sample photo' by the template, and described generically: Rexness 'Sandstone Cottage, Richmond, Tasmania' (CC BY-SA 2.0, plaque blurred); Michael Coghlan 'Sandstone Cottages' and 'Weatherboard House' (CC BY-SA 2.0, sign blurred on the latter); Peg Syverson 'House framing' (CC BY 2.0). Found via Openverse, downloaded from live.staticflickr.com at native size.",
+        "sentence": "All four are openly licensed, tagged 'Sample photo' by the template, and described generically: Rexness 'Sandstone Cottage, Richmond, Tasmania' (CC BY-SA 2.0, plaque blurred); Michael Coghlan 'Sandstone Cottages' (CC BY-SA 2.0); sbittinger 'Federation Cottage in St Helens' (CC BY 2.0); Peg Syverson 'House framing' (CC BY 2.0). Found via Openverse, downloaded from live.staticflickr.com at native size.",
         "url": "https://api.openverse.org/v1/images/"
+      },
+      "Recognition intro: registered Bowral company; polite and friendly team; treat your home with care": {
+        "sentence": "ABR: Business name Meyers Building Group, entity THOMASELLY PTY LTD, main business location NSW 2576 (Bowral). Site: 'Our polite and friendly team is fully licensed and insured, and will treat your home with care.'",
+        "url": "https://abr.business.gov.au/ABN/View?abn=74092054594"
       }
     }
   },

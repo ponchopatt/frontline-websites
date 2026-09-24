@@ -1,0 +1,12 @@
+/*
+ * Meyers Building Group: client layer over the trust template.
+ * Appended after the template's CSS (lib/build.js), so it only touches this site.
+ *
+ * Service cards: their own photos are 960x720 phone shots. In the template's tall
+ * 3:4 card they were cropped and enlarged past their native width, and looked soft
+ * (the Renovations crop also cut off the stone wall). Here each photo keeps its own
+ * 4:3 frame, so it is shown whole and never wider than the file, with the text beneath.
+ */
+.svc .ph{aspect-ratio:4/3}
+.svc .ph::after{display:none}
+.svc .cap{position:static;padding:var(--s24) var(--s24) var(--s32)}
