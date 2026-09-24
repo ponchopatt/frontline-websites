@@ -257,8 +257,13 @@ export async function completeDay(input: z.input<typeof dateOnly>): Promise<Acti
     return closed;
   }
 
+  // The day is closed now, so nothing after this may report it as unsaved: the screen would keep
+  // the day open and the timer running. Without the streak or the replay, it shows what it has.
   const { score, completedAt, summary } = closed.data;
-  const [best, replay] = await Promise.all([recomputeBestStreak(viewer), loadReplay(viewer, date)]);
+  const [best, replay] = await Promise.all([
+    recomputeBestStreak(viewer).catch(() => viewer.profile.bestStreak),
+    loadReplay(viewer, date).catch((): ReplayEvent[] => []),
+  ]);
   return ok({ score, completedAt, best, summary, replay, stopped });
 }
 

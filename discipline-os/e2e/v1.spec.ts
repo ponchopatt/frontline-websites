@@ -272,6 +272,22 @@ function smallTargets(page: Page) {
   );
 }
 
+/** Every visible tick box on the page whose name is cut off (clamped to two lines, or truncated), by name. */
+function cutLabels(page: Page) {
+  return page.evaluate(() =>
+    [...document.querySelectorAll<HTMLElement>("main [role=checkbox]")]
+      .filter((box) => box.offsetParent !== null)
+      .filter((box) =>
+        [...box.querySelectorAll<HTMLElement>("span")].some((el) => {
+          const s = getComputedStyle(el);
+          const clips = s.overflowX !== "visible" || s.overflowY !== "visible";
+          return clips && (el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1);
+        }),
+      )
+      .map((box) => (box.getAttribute("aria-label") ?? box.textContent ?? "").trim().slice(0, 40)),
+  );
+}
+
 test("9. everything is usable one-handed on a 390px screen", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   const main = page.locator("main");
@@ -292,6 +308,7 @@ test("9. everything is usable one-handed on a 390px screen", async ({ page }) =>
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow, `${path} scrolls sideways`).toBeLessThanOrEqual(0);
     expect(await smallTargets(page), `${path} has touch targets under 44px`).toEqual([]);
+    expect(await cutLabels(page), `${path} cuts off tick box names`).toEqual([]);
   }
 
   // Today with "What should I do next?" open.

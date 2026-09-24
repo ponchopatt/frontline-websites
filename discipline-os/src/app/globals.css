@@ -335,11 +335,14 @@
   color: var(--foreground);
 }
 
-/* Below the header but still on the glow: dark ink, which reads on the orange and the cream. */
+/* Below the header but still on the glow: dark ink, 4.5:1 or better even on the deepest orange
+   just under the header, and far more on the cream. */
 .spark .glow-ink {
-  --primary: #2b1a10;
-  --muted-foreground: #4a2f1f;
-  --border: rgb(43 26 16 / 0.25);
+  --foreground: #1c1009;
+  --primary: #1c1009;
+  --muted-foreground: #1f120a;
+  --border: rgb(28 16 9 / 0.25);
+  color: var(--foreground);
 }
 
 .spark .surface,
