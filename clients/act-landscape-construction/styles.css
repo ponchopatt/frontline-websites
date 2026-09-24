@@ -1,0 +1,10 @@
+/* ACT: the pinned aperture is the Forrest aerial, a portrait frame (1920x2168).
+   Desktop shows a landscape band of it: aim at the court, pool and pergola,
+   not the roofs at the top or the hedge at the bottom.
+   Phone shows the full height and about half the width: keep the court's net
+   and baseline on the left and the pool and spa on the right. */
+.ap img{object-position:50% 57%}
+@media(max-width:767px){.ap img{object-position:44% 50%}}
+/* Gallery card is 4:3 from a 3:2 frame: trim the house wall on the left, not
+   the blue court on the right, so the card shows what its caption says. */
+.plate-item img[src*="deck-pool-court"]{object-position:100% 50%}

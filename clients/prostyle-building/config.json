@@ -48,20 +48,15 @@
     "title": "ProStyle Building Group: Extensions, Knock-Down Rebuilds & New Homes, Canberra",
     "description": "Canberra builders of extensions, renovations, knock-down rebuilds, new homes, multi-unit developments and bathrooms. Extensions run by a dedicated construction manager, with weekly progress reports. Phillip ACT.",
     "ctaLabel": "Send the details",
-    "kicker": "Extensions & new homes · Canberra",
-    "headline": "Your extension,<br>reported<br><em>every week.</em>",
-    "sub": "On extensions and renovations, a dedicated construction manager runs the programme, with site meetings and weekly progress reports. Our team has over 30 years in the building industry.",
+    "kicker": "Extensions · Rebuilds · New homes",
+    "headline": "Your design,<br>built across<br><em>Canberra.</em>",
+    "sub": "Our project managers and builders work with your architect or designer. On extensions and renovations, a dedicated construction manager runs the programme, with weekly progress reports.",
     "heroSecondary": "Or send the details",
     "heroSecondarySms": "Or send the details",
     "navApproach": "Approach",
-    "statementLabel": "Your designer, our build",
-    "statementHeadline": "Your design.<br>Your say on<br>the finishes.",
-    "statementBody": "Our project managers and builders work with your architect or designer on a home that's modern, functional and personal to you. We encourage your input on every part of the design, and the final decisions on finishes and fittings are yours.",
     "servicesLabel": "What we build",
     "servicesHeadline": "Extend, rebuild<br>or start<br>new.",
     "servicesIntro": "Our project managers and builders work with your architect or designer, and our construction team looks after the build.",
-    "apertureLabel": "Local",
-    "apertureLine": "Canberra homes, built by a Canberra team using local suppliers.",
     "workLabel": "Selected work",
     "workHeadline": "Hawker to<br>Red Hill, and<br>out to Collector.",
     "workIntro": "A few homes from our portfolio, from Canberra's inner suburbs out to the country near Lake George.",
@@ -70,7 +65,7 @@
     "processIntro": "From the first consultation to handing back the keys, here's how an extension or renovation runs with us.",
     "ownerLabel": "Who you are dealing with",
     "recognitionLabel": "Beyond the reviews",
-    "recognitionHeadline": "Licensed in the ACT. Part of the community.",
+    "recognitionHeadline": "Licensed in the ACT. Backing local causes.",
     "recognitionIntro": "Our licence details, and some of the local causes we back.",
     "areasLabel": "Where we build",
     "areasHeadline": "Right across<br>Canberra.",
@@ -86,18 +81,8 @@
     "callLabel": "Call ProStyle"
   },
   "owner": {
-    "body": "Josh Fogg is one of our co-directors. Many of our clients have worked with him directly on their build.",
-    "team": "You'll probably meet Craig too. Families we've built for in Waramanga and Hughes named him for staying responsive and keeping them in the loop. Behind them is our experienced construction team.",
-    "facts": [
-      {
-        "value": "$400k+",
-        "label": "Raised for Sids N Kids since 2004"
-      },
-      {
-        "value": "Class B",
-        "label": "ACT builder's licence"
-      }
-    ]
+    "body": "Josh Fogg is one of our co-directors, and several of our clients name him in their Google reviews.",
+    "team": "Clients in Waramanga and Hughes named Craig in their testimonials, for going above and beyond and for staying responsive to their questions. Behind them is our experienced construction team."
   },
   "credentials": [
     {
@@ -110,12 +95,6 @@
       "kind": "claim",
       "label": "Sids N Kids Golf Day",
       "body": "We've been the major sponsor of the Sids N Kids Golf Day, and have raised over $400,000 since 2004.",
-      "strip": false
-    },
-    {
-      "kind": "claim",
-      "label": "Local sponsors, local suppliers",
-      "body": "We also sponsor the Royals Football Club and Camp Quality, and took part in The Canberra Times' Newspaper in Education Program with Lyons Early Childhood School. We support the local community by using local suppliers.",
       "strip": false
     }
   ],
@@ -242,38 +221,12 @@
   ],
   "photos": {
     "hero": {
-      "src": "assets/garran-dusk-1800.webp",
-      "srcset": "assets/garran-dusk-1200.webp 1200w, assets/garran-dusk-1800.webp 1800w, assets/garran-dusk-2500.webp 2500w",
+      "src": "assets/garran-dusk-tall-1600.webp",
+      "srcset": "assets/garran-dusk-tall-1200.webp 1200w, assets/garran-dusk-tall-1600.webp 1600w, assets/garran-dusk-tall-2000.webp 2000w",
       "width": 2500,
-      "height": 1666,
-      "alt": "A rendered two-storey home at dusk, its upper verandah lit behind a glass balustrade, above a double garage, Garran",
-      "_comment": "PS -120330 2276.jpg (2500x1666) from their Garran portfolio page, the only shoot they publish above 1000px. A dusk shot with the whole upper verandah lit. Rework: at 390px the template's cover crop showed only a ceiling light and a rail, so on phones styles.css puts the photo in a wider frame just under the header (40% of the hero), which holds the lit verandah and garage, and fades it into the dark field under the headline. I tried two portrait crops from the same shoot first, but a wide house can't fit a 390x812 cover crop. The srcset starts at 1200w on purpose: the template uses sizes=100vw, and a 480/800 file looked soft."
-    },
-    "statement": {
-      "src": "assets/curtin-deck-stairs-667.webp",
-      "srcset": "assets/curtin-deck-stairs-480.webp 480w, assets/curtin-deck-stairs-667.webp 667w",
-      "width": 667,
-      "height": 1000,
-      "alt": "Wide timber stairs rising from a paved courtyard to a covered deck and upper balcony on a brick and render two-storey home, Curtin",
-      "_comment": "_MG_6709-Edit-20160224.jpg (667x1000) from their Curtin portfolio page. A portrait original, so it fills the tall statement frame without being enlarged (their extension-page photos are 966x534 and looked soft stretched to that frame). The statement makes no claim about this job."
-    },
-    "aperture": {
-      "src": "assets/garran-balcony-view-1800.webp",
-      "srcset": "assets/garran-balcony-view-480.webp 480w, assets/garran-balcony-view-800.webp 800w, assets/garran-balcony-view-1200.webp 1200w, assets/garran-balcony-view-1800.webp 1800w",
-      "width": 2500,
-      "height": 1667,
-      "alt": "A covered balcony with a glass balustrade and an outdoor table, looking over Woden to the Brindabella Ranges at sunset, Garran",
-      "caption": "Garran"
-    },
-    "owner": {
-      "src": "assets/team-858.webp",
-      "srcset": "assets/team-480.webp 480w, assets/team-858.webp 858w",
-      "width": 858,
-      "height": 429,
-      "ratio": "2/1",
-      "alt": "Ten of the ProStyle team in branded jumpers and work gear, standing in front of an old brick and render wall",
-      "caption": "The ProStyle team",
-      "_comment": "team copy.jpg (858x429) from their About page. It's published with a dark overlay baked in, which I lifted with autocontrast (+12% brightness). No crop. Nobody is named in the photo, so the caption doesn't name anyone."
+      "height": 3750,
+      "alt": "A rendered two-storey home at dusk, its upper verandah lit behind a glass balustrade, above a double garage at the top of a steep driveway, Garran",
+      "_comment": "PS -120330 2279.jpg (2500x3750 portrait, uncropped) from their Garran portfolio page, their only shoot above 1000px. Finish round: a portrait original fills a 390x844 phone hero full-height, with the whole lit house in the upper half and the dark driveway under the headline and buttons. styles.css sets the focal point for desktop. The headline no longer says 'extension', because the site doesn't say what kind of job Garran was. The srcset starts at 1200w on purpose: the template uses sizes=100vw."
     },
     "enquiryBackground": {
       "src": "assets/torrens-kitchen-1000.webp",
@@ -342,7 +295,7 @@
         "alt": "A two-storey rendered home with a pergola over a timber deck, lit at dusk above a new lawn"
       }
     ],
-    "_comment": "16 real photos, all ProStyle's own, from prostylehomes.com.au. No stock, no samples, no upscaling. Each photo appears once. The hero and aperture are two different photos of the same Garran house (its shoot is the only one above 1000px). The service photos come from the matching service page. Gallery captions are the portfolio page's suburb title plus what's visible, because their site doesn't say which jobs were extensions and which were new builds."
+    "_comment": "13 real photos, all ProStyle's own, from prostylehomes.com.au. No stock, no samples, no upscaling. Each photo appears once. The service photos come from the matching service page. Gallery captions are the portfolio page's suburb title plus what's visible, because their site doesn't say which jobs were extensions and which were new builds."
   },
   "googleReviewsUrl": "",
   "googleWriteReviewUrl": "",
@@ -364,18 +317,6 @@
       "source": "Google review, shortened"
     },
     {
-      "name": "Stuart Turner",
-      "text": "We found Joshua and the team at Prostyle to be extremely professional and knowledgeable in all aspects of our renovation. They listened to us, gave us what we wanted and delivered the work to a high standard.",
-      "shortened": true,
-      "source": "Google review, shortened"
-    },
-    {
-      "name": "Ella Edwards",
-      "text": "I highly recommend Prostyle Building – professional, experienced, responsive, efficient and friendly. Prostlye finished on time and on budget with quality workmanship and attention to detail.",
-      "shortened": true,
-      "source": "Google review, shortened"
-    },
-    {
       "name": "Dave & Evina C",
       "text": "Prostyle Building Group and the subcontractors they utilize are the best in the business. Josh Fogg and his team did an amazing job in transforming our town house both inside and out.",
       "shortened": true,
@@ -393,7 +334,7 @@
     },
     {
       "q": "Can we live at home during a renovation?",
-      "a": "It's often possible. A family in Waramanga lived on site through a major renovation with us. Tell us early if you plan to stay, so we can talk through how the work will affect you."
+      "a": "A family in Waramanga lived on site through a major renovation with us."
     },
     {
       "q": "Will an extension look tacked on?",
@@ -456,11 +397,11 @@
         "sentence": "With over 30 years in the building industry, our team has a wealth of knowledge and experience to deliver on your building project with excellence.",
         "url": "https://www.prostylehomes.com.au/"
       },
-      "Joshua (Josh) Fogg, Co-Director; project-manages jobs; clients deal with him directly": {
+      "Joshua (Josh) Fogg, Co-Director; several clients name him in Google reviews": {
         "sentence": "ProStyle Group in particular my dealing with the Co-Director Mr Joshua Fogg was very helpful where Josh was able to provide me with suggestions and different ideas (testimonial on their knock-down page) / Google: 'Josh provided excellent project management and was always available to answer our questions.' (Julian Barnard) / 'We worked directly with Josh and he was amazing.' (Jabs Dheadfactor) / 'Josh Fogg and his team' (Dave & Evina C)",
         "url": "https://www.prostylehomes.com.au/knock-down-rebuilds"
       },
-      "Craig named by families in Waramanga and Hughes for being responsive and communicating": {
+      "Craig named in testimonials from Waramanga and Hughes clients, for going above and beyond and being responsive": {
         "sentence": "Craig and the Prostyle team completed a major renovation for us in Waramanga. We were really happy throughout the build - communication was excellent and Craig went above and beyond (PHILIPPA P., new-homes page) / Craig and the Prostyle team were great. They recently completed a fairly major extension to our place in Hughes ... Craig was also always responsive to any queries or concerns. (GREG H., extensions page)",
         "url": "https://www.prostylehomes.com.au/extensions-renovations"
       },
@@ -500,7 +441,7 @@
         "sentence": "Book in a consultation today to see how we can make your home building dreams a reality.",
         "url": "https://www.prostylehomes.com.au/"
       },
-      "FAQ: clients have lived on site; site kept clean and safe": {
+      "FAQ: a Waramanga family lived on site through a major renovation": {
         "sentence": "We lived on-site through the build and appreciated how respectful the Prostyle team were about keeping the site clean and safe at all times. (PHILIPPA P., Waramanga renovation, testimonial on their new-homes page)",
         "url": "https://www.prostylehomes.com.au/new-homes"
       },
@@ -513,11 +454,11 @@
         "url": "https://www.prostylehomes.com.au/portfolio"
       },
       "Reviews (6) and no rating shown": {
-        "sentence": "data/google_reviews_top25.json, slug prostyle-building: rating 3.5, review_count 19 (below the 4.7 floor, so no rating renders). best_for_demo used word for word: Julian Barnard (full), Alexander Claudianos, Stuart Turner, Ella Edwards, Dave & Evina C (shortened: true). Pam Courtier is from the same pull's reviews list (5 stars), cut word for word at the end of her second sentence (shortened: true), in place of Jabs Dheadfactor at the reviewer's request because it backs the keep-you-updated angle. They name Josh, Joshua, Josh Fogg, Craig, Canberra, 'on time and on budget'.",
+        "sentence": "data/google_reviews_top25.json, slug prostyle-building: rating 3.5, review_count 19 (below the 4.7 floor, so no rating renders). best_for_demo used word for word: Julian Barnard (full), Alexander Claudianos, Dave & Evina C (shortened: true). Stuart Turner and Ella Edwards were dropped in the finish round to shorten the page. Pam Courtier is from the same pull's reviews list (5 stars), cut word for word at the end of her second sentence (shortened: true), in place of Jabs Dheadfactor at the reviewer's request because it backs the keep-you-updated angle. They name Josh, Joshua, Josh Fogg, Craig, Canberra, 'on time and on budget'.",
         "url": "data/google_reviews_top25.json"
       },
       "Every photo on the page": {
-        "sentence": "All 16 photos are ProStyle's own, from prostylehomes.com.au: Garran portfolio 'PS -120330 2276.jpg' (hero, 2500x1666) and 'PS -120330 2218.jpg' (aperture, 2500x1667); Curtin portfolio '_MG_6709-Edit-20160224.jpg' (statement, 667x1000 portrait); Extensions page 02.jpg; New Homes page 02.jpg; Knock Down Rebuilds page '1 copy.jpg'; New Developments page 01.jpg; Bathrooms page 02.jpg; About page 'team copy.jpg'; Torrens cover 'PS-0557-May 15, 2019.jpg'; Hawker 'PS-0765-160316.jpg'; Campbell 'Garsia-00075.jpg'; Red Hill 'StewH 007.jpg'; Yarralumla 'PS-1003-May 23, 2019.jpg'; Collector 02.jpg; O'Connor 'PS-6356-180221.jpg'. Gallery captions use the portfolio page titles.",
+        "sentence": "All 13 photos are ProStyle's own, from prostylehomes.com.au: Garran portfolio 'PS -120330 2279.jpg' (hero, 2500x3750 portrait); New Homes page 02.jpg; Extensions page 02.jpg; Knock Down Rebuilds page '1 copy.jpg'; New Developments page 01.jpg; Bathrooms page 02.jpg; Torrens cover 'PS-0557-May 15, 2019.jpg' (enquiry background); Hawker 'PS-0765-160316.jpg'; Campbell 'Garsia-00075.jpg'; Red Hill 'StewH 007.jpg'; Yarralumla 'PS-1003-May 23, 2019.jpg'; Collector 02.jpg; O'Connor 'PS-6356-180221.jpg'. Gallery captions use the portfolio page titles. No sample photos were needed.",
         "url": "https://www.prostylehomes.com.au/portfolio"
       },
       "Logo": {

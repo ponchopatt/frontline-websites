@@ -1,5 +1,5 @@
 {
-  "_comment": "ACT Landscape Construction, Fyshwick ACT. Built 2026-09-24 from www.act-landscaping.com.au (read live with curl; not blocked, no Wayback copy needed), the Master Builders ACT awards results page and the ABN register. Every specific fact on the page is quoted in _source.claimSources with the page it came from, or comes from data/google_reviews_top25.json. Google rating 4.3 from 10 is below the 4.7 floor, so no rating is shown. See BRIEF.md. Reworked 2026-09-24 after review: award always stated as joint with ACT Decks, one 'we' voice, brighter hero, owner copy rewritten.",
+  "_comment": "ACT Landscape Construction, Fyshwick ACT. Built 2026-09-24 from www.act-landscaping.com.au (read live with curl; not blocked, no Wayback copy needed), the Master Builders ACT awards results page and the ABN register. Every specific fact on the page is quoted in _source.claimSources with the page it came from, or comes from data/google_reviews_top25.json. Google rating 4.3 from 10 is below the 4.7 floor, so no rating is shown. See BRIEF.md. Reworked 2026-09-24 after review: award always stated as joint with ACT Decks, one 'we' voice, brighter hero, owner copy rewritten. Finish round 2026-09-24: aperture swapped to the Forrest aerial (sharp at 390), caption shown once, form messages say 'the team', 'every trade in-house' dropped next to ACT Decks, owner paragraph rewritten from sourced facts.",
   "slug": "act-landscape-construction",
   "template": "trust",
   "industry": "landscaping",
@@ -55,21 +55,21 @@
     "ctaLabel": "Talk to our team",
     "kicker": "Canberra and Queanbeyan",
     "headline": "Pool. Court.<br>Deck. Garden.<br><em>One team.</em>",
-    "sub": "We're a team of 14 in Fyshwick, led by Director Xavier Duffy, and we design and build whole backyards with every trade managed in-house. This is the Jerrabomberra backyard we built with ACT Decks: a <em>2025 Master Builders ACT award</em> winner.",
+    "sub": "We're a team of 14 in Fyshwick, led by Director Xavier Duffy. We design and build whole backyards, and you deal with one team from the first plan to handover. This is the Jerrabomberra backyard we built with ACT Decks: a <em>2025 Master Builders ACT award</em> winner.",
     "heroSecondary": "Or send the details",
     "heroSecondarySms": "Or send the details",
     "navApproach": "Approach",
     "statementLabel": "The difference",
-    "statementHeadline": "One team.<br>Every trade.",
-    "statementBody": "No lining up a pool builder, a court company, a deck builder and a landscaper yourself. We manage the design, approvals, excavation, construction and the final detail in-house, with mini excavators, tippers and skid steers on the job. You deal with one team from the first conversation to handover.",
+    "statementHeadline": "One team.<br>One build.",
+    "statementBody": "No lining up a pool builder, a court company and a landscaper yourself. We handle the design, approvals, excavation, construction and the final detail, with mini excavators, tippers and skid steers on the job. You deal with one team from the first conversation to handover.",
     "servicesLabel": "What we build",
     "servicesHeadline": "The whole<br>backyard.",
     "servicesIntro": "Each part is planned around the rest: how the pool meets the paving and the deck, how a court sits into the levels and the drainage, how the planting ties it together. Built for Canberra's frosty winters and hot, dry summers.",
     "apertureLabel": "Planned as one",
-    "apertureLine": "Deck, pool, lawn and court. One backyard.",
+    "apertureLine": "Court, pool and garden. One backyard.",
     "workLabel": "Recent work",
     "workHeadline": "Six backyards.<br>Six briefs.",
-    "workIntro": "A grass tennis court in Forrest, corten screens, a pool with its own spa, a courtyard plunge pool, a brick path through grasses, and an outdoor kitchen under a pergola. Every photo on this page is our own. Select any photo to see it larger.",
+    "workIntro": "A deck, pool, lawn and court in one backyard, corten screens, a pool with its own spa, a courtyard plunge pool, a brick path through grasses, and an outdoor kitchen under a pergola. Every photo on this page is our own. Select any photo to see it larger.",
     "processLabel": "How it runs",
     "processHeadline": "First call<br>to walkthrough.",
     "processIntro": "How every job runs, from the first conversation to walking you through the finished space.",
@@ -91,7 +91,9 @@
     "callLabel": "Call the team"
   },
   "form": {
-    "notesHint": "Where the property is, what you'd like built (pool, court, deck, walls, garden), and roughly when you'd like to start."
+    "notesHint": "Where the property is, what you'd like built (pool, court, deck, walls, garden), and roughly when you'd like to start.",
+    "successBody": "Your enquiry is with the team. We'll be in touch on {phone}.",
+    "errorBody": "Please call the team on {phone} instead."
   },
   "stats": {
     "googleRating": 4.3,
@@ -106,8 +108,8 @@
     "name": "David C, Google"
   },
   "owner": {
-    "body": "Xavier Duffy is our Director. We started in 2021 and now number 14: landscapers and tradespeople who build every part of the job between us.",
-    "team": "Anthony O'Sullivan is our Project Manager. Someone experienced oversees each job from the first consultation to completion and supervises on site, and you're welcome to sit down with us at the Fyshwick showroom before anything is built.",
+    "body": "Xavier is our Director. We started in 2021 to meet growing demand for reliable, high-quality landscape construction across Canberra and Queanbeyan. Since then we've grown to a team of 14, finished more than 500 projects, and in 2025 won a Master Builders ACT award with ACT Decks for a backyard in Jerrabomberra.",
+    "team": "Anthony O'Sullivan is our Project Manager. Someone experienced oversees each job from the first consultation to completion and supervises on site. Our fibreglass pools come from Harvest Pools, our exclusive pool partner, and you're welcome to go through their shapes and finishes, and ours, at the Fyshwick showroom before anything is built.",
     "facts": [
       {
         "value": "2021",
@@ -238,13 +240,13 @@
       "alt": "An ACT Landscape Construction crew member in uniform and ear muffs working the controls of a tracked mini loader, two more of the crew behind him"
     },
     "aperture": {
-      "src": "assets/deck-pool-court-1500.webp",
-      "srcset": "assets/deck-pool-court-800.webp 800w, assets/deck-pool-court-1200.webp 1200w, assets/deck-pool-court-1500.webp 1500w",
-      "width": 1500,
-      "height": 840,
-      "alt": "A backyard with a deck and outdoor dining table, a glass-fenced pool, a new lawn on a block retaining wall, and a blue basketball court under a pergola",
-      "caption": "Deck, pool, lawn and court",
-      "_comment": "151225_0026.jpg, their own photo, cropped to 1500x840 with a gentle shadow lift (gamma 0.88). Was the hero in the first build."
+      "src": "assets/forrest-planned-1920.webp",
+      "srcset": "assets/forrest-planned-1200.webp 1200w, assets/forrest-planned-1920.webp 1920w",
+      "width": 1920,
+      "height": 2168,
+      "alt": "A Forrest backyard from above: a grass tennis court, a pool with its spa, a pergola, new turf and garden beds, photographed as the crew finished",
+      "caption": "Forrest",
+      "_comment": "Forrest-Main-1.jpg (1920x2688), their own photo from the projects page, under 'Forrest — Full Scale Landscape Project' (Swimming Pool, Tennis Court, Vegetable Garden, Deck, Pergola, Paving). Street and neighbours cropped off the top; native size, no upscaling. A portrait frame so the pinned section stays sharp at 390 (about 2.5 source px per CSS px) as well as 1440 (1.33). Object position is set per breakpoint in clients/act-landscape-construction/styles.css. Replaces 151225_0026, which was soft at 390 and showed only the pool and lawn there; that photo moves to the gallery at full frame."
     },
     "owner": {
       "src": "assets/xavier-1200.webp",
@@ -264,14 +266,15 @@
     },
     "gallery": [
       {
-        "src": "assets/forrest-aerial-800.webp",
-        "full": "assets/forrest-aerial-1800.webp",
-        "srcset": "assets/forrest-aerial-480.webp 480w, assets/forrest-aerial-800.webp 800w, assets/forrest-aerial-1200.webp 1200w",
-        "width": 1800,
-        "height": 1200,
-        "caption": "Forrest",
-        "detail": "Tennis court, pool and spa, pool house",
-        "alt": "A Forrest property from above: a grass tennis court beside a pool and spa, a pool house and new turf, photographed as the crew finished"
+        "src": "assets/deck-pool-court-800.webp",
+        "full": "assets/deck-pool-court-1500.webp",
+        "srcset": "assets/deck-pool-court-480.webp 480w, assets/deck-pool-court-800.webp 800w, assets/deck-pool-court-1200.webp 1200w",
+        "width": 1500,
+        "height": 1000,
+        "caption": "Deck, pool and court",
+        "detail": "Deck, glass-fenced pool, lawn, half court",
+        "alt": "A backyard with a deck and outdoor dining table, a glass-fenced pool, a new lawn on a block retaining wall, and a blue basketball court under a pergola",
+        "_comment": "151225_0026.jpg, their own photo, full 1500x1000 frame with a gentle shadow lift (gamma 0.88). Was the pinned aperture photo; moved here in the finish round."
       },
       {
         "src": "assets/corten-screens-800.webp",
@@ -435,10 +438,6 @@
         "sentence": "500+ PROJECTS COMPLETED — With over 500 completed projects, our experience ensures reliable delivery and proven results. (home, about, services and every service page)",
         "url": "https://www.act-landscaping.com.au/about"
       },
-      "'designs and builds whole backyards like this one, with every trade managed in-house' (hero sub), 'One team. Every trade.' (statement), 'Design, approvals, excavation, construction and the final detail are all managed in-house', 'No lining up a pool builder, a court company, a deck builder and a landscaper yourself', 'one team from the first conversation to handover', headline 'One team.', tagline 'designed and built by one team'": {
-        "sentence": "All Trades Managed In-House — Every trade and stage of your project is managed in-house for consistent quality and clear communication. / One Team. One Build. / Yes. We provide an end-to-end service, handling design, approvals, excavation, construction and final detailing. This ensures a seamless experience and a cohesive result without the need to coordinate multiple contractors. / All processes, trades, and approvals are handled in-house, so you only deal with one team throughout your project.",
-        "url": "https://www.act-landscaping.com.au/our-services"
-      },
       "Services intro: pool meets paving and deck; court sits into the levels and drainage; planting ties it together; Canberra's frosty winters and hot, dry summers": {
         "sentence": "Our focus is not just the pool itself — but how it connects to your paving, decking, planting, lighting and entertaining areas. (pools) / We consider levels, drainage, access, fencing and surrounding landscaping to ensure the finished space feels integrated, not added on. (courts) / From frost-prone winters to hot, dry summers, every landscaping project we deliver is designed to perform year-round in Canberra conditions. (landscaping)",
         "url": "https://www.act-landscaping.com.au/swimming-pool-installation-canberra"
@@ -558,7 +557,26 @@
       "Process steps Discover and consult, Design and scope, Approve and schedule, Build and handover": {
         "sentence": "(01) DISCOVER … We start with a quick conversation to understand your goals, ideas, budget, and timeline, no pressure, just clarity and to see if we would be a good fit together. (02) Consult — We meet on-site or virtually to assess your space … (03) Design & Scope — design concepts, material selections, scope of works, and transparent pricing … (04) Approve & Schedule — We finalise approvals, confirm timelines, and schedule your project … (05) build — Our in-house team brings the design to life … quality control, and respect for your home … (06) Handover & Enjoy — We walk you through the finished space and ensure every detail is right.",
         "url": "https://www.act-landscaping.com.au/about"
+      },
+      "Hero sub 'you deal with one team from the first plan to handover', statement 'One team. One build.', 'We handle the design, approvals, excavation, construction and the final detail', 'No lining up a pool builder, a court company and a landscaper yourself', 'one team from the first conversation to handover', headline 'One team.', tagline 'designed and built by one team'. (The 'every trade in-house' wording was dropped in the finish round: the award job was built with ACT Decks, a separate business.)": {
+        "sentence": "One Team. One Build. (home) / Yes. We provide an end-to-end service, handling design, approvals, excavation, construction and final detailing. This ensures a seamless experience and a cohesive result without the need to coordinate multiple contractors. / All processes, trades, and approvals are handled in-house, so you only deal with one team throughout your project. (landscaping-canberra)",
+        "url": "https://www.act-landscaping.com.au/our-services"
+      },
+      "Owner body: 'We started in 2021 to meet growing demand for reliable, high-quality landscape construction across Canberra and Queanbeyan', 'a team of 14', 'more than 500 projects', 'in 2025 won a Master Builders ACT award with ACT Decks for a backyard in Jerrabomberra'": {
+        "sentence": "ACT Landscape Construction was established in 2021 in response to growing demand for high-quality, reliable landscape construction across Canberra and Queanbeyan. Since then, we've grown into a team of 14 skilled landscaping and trade professionals (about) / 500+ PROJECTS COMPLETED (every page) / Master Builders ACT 2025 results: ACT Landscape Construction, ACT Decks — Jerrabomberra.",
+        "url": "https://www.act-landscaping.com.au/about"
+      },
+      "Owner team line: 'Our fibreglass pools come from Harvest Pools, our exclusive pool partner … go through their shapes and finishes … at the Fyshwick showroom'": {
+        "sentence": "we proudly partner exclusively with Harvest Pools (pools page) / As partners with Harvest Pools, we provide access to brochures, pool designs and finish options … Review pool shapes and sizes, Compare colour finishes (showroom page)",
+        "url": "https://www.act-landscaping.com.au/our-showroom"
+      },
+      "Aperture 'Forrest' — 'Court, pool and garden. One backyard.'": {
+        "sentence": "Forrest — Full Scale Landscape Project — DSB Landscape Architecture Project … From relaxing by the pool and enjoying a game on the court to tending to your vegetable garden and chooks … Swimming Pool, Tennis Court, Vegetable Garden, Deck, Pergola, Paving. Photo Forrest-Main-1.jpg sits under this heading.",
+        "url": "https://www.act-landscaping.com.au/projects"
       }
     }
+  },
+  "demo": {
+    "formNote": "Demo mode — on the live site this goes straight to the team's inbox."
   }
 }

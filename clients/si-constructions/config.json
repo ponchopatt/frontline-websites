@@ -51,7 +51,7 @@
     "ctaLabel": "Talk to us",
     "kicker": "Family owned · Mittagong",
     "headline": "Building the<br>Highlands for<br><em>45 years.</em>",
-    "sub": "Our owner, Jason Stokes, started here as an apprentice in 1991. He still gets on the tools himself, with local trades, many of whom have been part of our team for years.",
+    "sub": "Our owner, Jason Stokes, started here as an apprentice in 1991. Today he runs the company, and he still gets on the tools himself.",
     "heroSecondary": "Or send the details",
     "heroSecondarySms": "Or send the details",
     "navApproach": "Approach",
@@ -61,8 +61,8 @@
     "servicesLabel": "What we build",
     "servicesHeadline": "Homes, additions<br>and commercial<br>builds.",
     "servicesIntro": "From a school gymnasium at Burradoo to a garage turned into a home office. We can draw a custom design for you, or build from your architect's or interior designer's plans.",
-    "apertureLabel": "Your architect, our build",
-    "apertureLine": "A local architect designed this High Range home around the owners' gardens. We built it in rendered double brick.",
+    "apertureLabel": "The finish",
+    "apertureLine": "Premium materials, fitted by our trusted local tradespeople.",
     "workLabel": "Selected work",
     "workHeadline": "Bowral, Mittagong,<br>High Range.",
     "workIntro": "A few homes from over 1,000 projects we've completed, and some of the rooms inside them.",
@@ -97,8 +97,8 @@
     "yearsInBusiness": "and counting, in the Highlands"
   },
   "owner": {
-    "body": "Jason is our owner and managing director. He started his apprenticeship with S&I Constructions in 1991 and has spent his whole career with the business. He still works on the tools himself.",
-    "team": "Jason chooses our trades himself. Most are local subcontractors, and many have worked with us for years.",
+    "body": "Jason is our owner and managing director. He started his apprenticeship with S&I Constructions in 1991 and has spent his whole career with the business.",
+    "team": "We work with a network of highly qualified, fully insured local subcontractors, many of whom have been part of our team for years.",
     "facts": [
       {
         "value": "1991",
@@ -121,19 +121,19 @@
       "kind": "licence",
       "label": "Builder's Licence No. 30559",
       "body": "S&I Constructions Pty Ltd is a fully licensed and insured building company. ABN 62 001 128 767.",
-      "strip": false
+      "strip": true
     },
     {
       "kind": "claim",
       "label": "Over 1,000 projects",
       "body": "New homes, renovations and commercial builds across the Southern Highlands, including medical centres, industrial units, school projects, sporting facilities and car showrooms.",
-      "strip": false
+      "strip": true
     }
   ],
   "services": [
     {
       "title": "New homes",
-      "blurb": "From design and council approval to overseeing the build. Bring your architect's drawings and we'll build them as intended, or we'll design a home around your block, your lifestyle and your budget.",
+      "blurb": "Bring your architect's drawings and we'll build them as intended, or we'll design a home around your block, your lifestyle and your budget.",
       "photo": {
         "src": "assets/bowral-living-room-1200.webp",
         "srcset": "assets/bowral-living-room-480.webp 480w, assets/bowral-living-room-800.webp 800w, assets/bowral-living-room-1200.webp 1200w, assets/bowral-living-room-1800.webp 1800w",
@@ -146,22 +146,24 @@
       "title": "Renovations, extensions & decks",
       "blurb": "Change your home, not your address. At Exeter we turned a carport into two bedrooms and a living room linked to the house, and added a new garage. We build decks and pergolas too.",
       "photo": {
-        "src": "assets/exeter-garage-addition-800.webp",
-        "srcset": "assets/exeter-garage-addition-480.webp 480w, assets/exeter-garage-addition-800.webp 800w",
-        "width": 1180,
-        "height": 700,
-        "alt": "A new triple garage with timber-look doors and corrugated wall cladding, part of our renovation and addition at Exeter"
+        "src": "assets/exeter-garage-doors-820.webp",
+        "srcset": "assets/exeter-garage-doors-480.webp 480w, assets/exeter-garage-doors-820.webp 820w",
+        "width": 820,
+        "height": 530,
+        "alt": "Three new garage doors with timber-look panels set in corrugated wall cladding, part of our renovation and addition at Exeter",
+        "_comment": "SI-constructions-protfolio-renovations.jpg (1180x700), cropped to x0-820, y170-700 so the doors fill the card instead of the roof, solar panels and hedge."
       }
     },
     {
       "title": "Commercial builds",
-      "blurb": "Medical centres, industrial units, commercial buildings, school projects, sporting facilities and car showrooms around the Southern Highlands. We built this gymnasium at Burradoo with the school's architect.",
+      "blurb": "Medical centres, industrial units, commercial buildings, school projects, sporting facilities and car showrooms around the Southern Highlands. This school gymnasium at Burradoo was built with the school's architect.",
       "photo": {
-        "src": "assets/burradoo-school-gym-1200.webp",
-        "srcset": "assets/burradoo-school-gym-480.webp 480w, assets/burradoo-school-gym-800.webp 800w, assets/burradoo-school-gym-1200.webp 1200w",
-        "width": 1806,
-        "height": 985,
-        "alt": "Inside a school gymnasium with a blue sports court, brick and plywood walls and a steel roof with skylights, Burradoo"
+        "src": "assets/burradoo-gym-court-785.webp",
+        "srcset": "assets/burradoo-gym-court-480.webp 480w, assets/burradoo-gym-court-785.webp 785w",
+        "width": 785,
+        "height": 1180,
+        "alt": "Inside a school gymnasium: a blue sports court under a steel roof with clerestory windows, and a glazed brick foyer beyond, Burradoo",
+        "_comment": "SI-constructions-portfolio-commerical.jpg (785x1180), the portrait tile for Commercial Projects on their Work & Projects page. It's a native-size file and noticeably sharper than the upscaled 1806px slider-3 used before, and its portrait shape suits the card."
       }
     }
   ],
@@ -176,7 +178,7 @@
     },
     {
       "step": "Council approval",
-      "detail": "Design and council approval are part of our job, before we start overseeing the build."
+      "detail": "We take your project from design through council approval, then oversee the construction."
     },
     {
       "step": "The build",
@@ -206,7 +208,7 @@
     },
     {
       "q": "Who does the work on site?",
-      "a": "Jason, and a network of local subcontractors, many of whom have been part of our team for years. We support local businesses first, and bring in materials and trades from further afield when a job needs them."
+      "a": "Jason and our local subcontractors. We support local businesses first, and bring in materials and trades from further afield when a job needs them."
     },
     {
       "q": "Do you take on smaller jobs?",
@@ -242,13 +244,13 @@
       "_comment": "PALR2305-scaled.jpg (2560x1918), the lead photo of 'Featured New Home @ Mittagong' on their Custom Builds page, the home S&I designed and drew themselves."
     },
     "aperture": {
-      "src": "assets/high-range-front-1800.webp",
-      "srcset": "assets/high-range-front-800.webp 800w, assets/high-range-front-1200.webp 1200w, assets/high-range-front-1800.webp 1800w",
-      "width": 1806,
-      "height": 985,
-      "alt": "A rendered double brick home with a dark tiled roof and a cupola, behind a gravel path lined with clipped conifers and lawn, High Range",
-      "caption": "New home, High Range",
-      "_comment": "SI-constructions-architectural-design-slider-1.jpg (1806x985), the first photo of 'Featured project: New Home @ High Range' on their Architectural Design page. Replaced the bright Mittagong living room after review: the lower half here is shaded lawn and dark conifers, so the white aperture text reads clearly. A different photo of the same house as gallery 3 (side view)."
+      "src": "assets/mittagong-pantry-1800.webp",
+      "srcset": "assets/mittagong-pantry-800.webp 800w, assets/mittagong-pantry-1200.webp 1200w, assets/mittagong-pantry-1800.webp 1800w",
+      "width": 2560,
+      "height": 1708,
+      "alt": "A walk-in pantry with open white shelving, a white subway-tile splashback, a black sink and charcoal cabinets with black handles",
+      "caption": "Custom home, Mittagong",
+      "_comment": "PALR2401-scaled.jpg (2560x1708) from the 2024 shoot of 'Featured New Home @ Mittagong' on their Custom Builds page. Replaced the soft High Range photo after the final review. The charcoal cabinets fill the lower part of the frame, under the aperture text."
     },
     "enquiryBackground": {
       "src": "assets/mittagong-bedroom-1200.webp",
@@ -317,16 +319,25 @@
         "alt": "An island kitchen with white stools and black pendant lights, open to a timber dining table and glass doors onto the lawn"
       }
     ],
-    "_comment": "14 real photos, all S&I's own, from siconstructions.com.au/wp-content/uploads at the largest size published. None are stock, samples or upscaled. Each image is used once. The High Range house appears twice (front in the aperture, side in the gallery) and the Mittagong custom home appears in several rooms. The architect-designed Mittagong home (owner photo) is a different house. See BRIEF.md.",
+    "_comment": "13 of S&I's own photos plus 1 labelled sample (the owner section). Their photos are from siconstructions.com.au/wp-content/uploads at the largest size published. None are upscaled. Each image is used once. See BRIEF.md.",
     "owner": {
-      "src": "assets/mittagong-project-home-1200.webp",
-      "srcset": "assets/mittagong-project-home-480.webp 480w, assets/mittagong-project-home-800.webp 800w, assets/mittagong-project-home-1200.webp 1200w",
-      "width": 1313,
-      "height": 985,
-      "ratio": "4/3",
-      "alt": "A grey weatherboard home with a gabled front porch, a double garage and a white picket fence, Mittagong",
-      "caption": "Mittagong · architect-designed home we project-managed",
-      "_comment": "SI-constructions-project-management-38-spencer-slider-2.jpg (1806x985), cropped to 4:3 from the centre. From 'Featured project: New Home @ Mittagong' on their Project Management page. Not a photo of Jason, so it isn't captioned as him. This house's kitchen was gallery 6; that slot now uses a different home, so this house appears once."
+      "src": "assets/sample-timber-frame-1024.webp",
+      "srcset": "assets/sample-timber-frame-480.webp 480w, assets/sample-timber-frame-800.webp 800w, assets/sample-timber-frame-1024.webp 1024w",
+      "width": 1024,
+      "height": 683,
+      "ratio": "3/2",
+      "alt": "The timber wall frame and roof trusses of a house under construction, against a grey sky",
+      "caption": "Timber frame and roof trusses",
+      "sample": true,
+      "license": "CC BY 2.0",
+      "sourceUrl": "https://www.flickr.com/photos/66526224@N02/7706518320",
+      "credit": "ArmchairBuilder.com on Flickr, 'New Home Under Construction'",
+      "_comment": "Sample photo, not S&I's work. The final reviewer marked down the lens-flared Mittagong exterior, and the site has no photo of Jason or of work in progress. Found through the Openverse API and downloaded at its native 1024px from live.staticflickr.com. Swap it for a photo of Jason on site when he supplies one."
+    },
+    "stockApproved": {
+      "by": "Pat",
+      "on": "2026-09-24",
+      "reason": "Finish round: S&I publish no photo of Jason or of work in progress for the owner section."
     }
   },
   "googleReviewsUrl": "",
@@ -479,7 +490,7 @@
         "url": "data/google_reviews_top25.json"
       },
       "Every photo on the page": {
-        "sentence": "All 14 photos are S&I's own, from siconstructions.com.au/wp-content/uploads/. Bowral (New Homes page, 'Featured project: New home @ Bowral', 'Photography by Ashley Mackevicius'): 121A-Bowral-Street-slider1 (hero), slider2 (kitchen), slider3 (living), slider4 (alfresco). Mittagong custom home (Custom Builds page, 'Featured New Home @ Mittagong'): PALR2305, 2421, 2410, 2318, 2381-1. Exeter (Renovations page): protfolio-renovations. Burradoo (Commercial page): commercial-oxley-gym-slider-3. High Range (Architectural Design page): architectural-design-slider-1 (aperture) and slider-2 (gallery). Mittagong architect-designed home (Project Management page): project-management-38-spencer-slider-2 (owner photo).",
+        "sentence": "All photos except the owner-section sample are S&I's own, from siconstructions.com.au/wp-content/uploads/. Bowral (New Homes page, 'Featured project: New home @ Bowral', 'Photography by Ashley Mackevicius'): 121A-Bowral-Street-slider1 (hero), slider2 (kitchen), slider3 (living), slider4 (alfresco). Mittagong custom home (Custom Builds page, 'Featured New Home @ Mittagong'): PALR2305, 2401 (aperture), 2421, 2410, 2318, 2381-1. Exeter (Renovations page): protfolio-renovations (cropped). Burradoo: SI-constructions-portfolio-commerical.jpg (Work & Projects, Commercial Projects tile; same job as 'School Gymnasium @ Burradoo'). High Range (Architectural Design page): architectural-design-slider-2 (gallery). Owner section: sample photo, CC BY 2.0, ArmchairBuilder.com.",
         "url": "https://www.siconstructions.com.au/work-projects/"
       },
       "Logo and favicon": {
@@ -494,13 +505,13 @@
         "sentence": "Featured project: New home @ Bowral. In partnership with the developer and the architect, this home was built as a speculative project. Photography by Ashley Mackevicius",
         "url": "https://www.siconstructions.com.au/projects/new-homes/"
       },
-      "Jason picks the trades (owner team line)": {
-        "sentence": "Google review by Greg Catling: 'Jason is the ultimate professional builder with a great team of trades that all do quality work. His choice of trades is testament to his superior level of professionalism.' / Site testimonial: 'The tradespeople that Jason uses are local, on time, polite, and high quality.' / About: 'we work with a trusted network of highly qualified, fully insured local subcontractors, many of whom have been part of our team for years.'",
-        "url": "https://www.siconstructions.com.au/about/"
-      },
       "Garage turned into a home office (services intro)": {
         "sentence": "Google review by Rachel Marion: 'they converted a garage space into an office for us and also built a side deck on our house.'",
         "url": "data/google_reviews_top25.json"
+      },
+      "Premium materials, trusted local tradespeople (aperture line)": {
+        "sentence": "By combining premium quality materials with expertise of our trusted local tradespeople, we deliver exceptional homes built to the highest standards.",
+        "url": "https://www.siconstructions.com.au/"
       }
     }
   },

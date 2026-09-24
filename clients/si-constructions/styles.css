@@ -1,0 +1,6 @@
+/* S&I: the trust stats strip has only one stat (45 years; the gate blocks a round 1,000).
+   Centre it and set the number beside its label so it reads as a deliberate line, not a lone number. */
+.fl-stats .wrap:has(li:only-child){justify-content:center}
+.fl-stats .wrap:has(li:only-child) li{display:flex;align-items:center;gap:18px}
+/* Exeter card: keep the big timber-look door in frame on the tall desktop card, not the fascia and panels. */
+.svc .ph img[src*="exeter-garage-doors"]{object-position:28% 70%}

@@ -2,21 +2,24 @@
  * ProStyle Building Group: client layer over the trust template.
  * Appended after the template's CSS (lib/build.js), so it only touches this site.
  *
- * Hero on phones: their best hero shot is a wide dusk facade (2500x1666). Cropped to
- * cover the full 390x812 hero, it showed only a ceiling light and a rail. So on narrow
- * screens the photo sits in a wider frame just under the header (40% of the hero),
- * which keeps the lit verandah, balustrade and garage in view. The frame fades into
- * the dark field under the headline, and the veil is lightened so the house reads.
+ * Hero: garran-dusk-tall is their 2500x3750 portrait of the Garran home at dusk.
+ * The house sits between 15% and 55% of the frame height, with the dark driveway
+ * below it. On a phone the whole height shows, so the house fills the top half
+ * and the headline and buttons sit over the driveway. On desktop the focal point
+ * is raised so the band shows the house rather than the driveway.
  */
+.hero img.bg{object-position:50% 26%}
 @media(max-width:700px){
-  .hero .bgwrap{top:56px;bottom:auto;height:40%;
-    -webkit-mask-image:linear-gradient(to bottom,#000 60%,transparent 100%);
-            mask-image:linear-gradient(to bottom,#000 60%,transparent 100%)}
-  .hero img.bg{object-position:50% 50%}
-  .hero .veil{opacity:.7}
-  .hero .t-label{color:var(--fg);text-shadow:0 1px 3px rgba(4,10,13,.95),0 0 16px rgba(4,10,13,.95)}
-  .hero h1{text-shadow:0 2px 18px rgba(4,10,13,.7)}
+  .hero img.bg{object-position:62% 50%}
+  .hero .veil{opacity:.78}
+  .hero h1{text-shadow:0 2px 18px rgba(4,10,13,.6)}
 }
 
-/* Team photo: their original is only 858px wide, so it isn't shown wider than that renders sharply. */
-@media(min-width:960px){.about .figure{max-width:440px}}
+/*
+ * Service cards: their service-page photos are 966x534. In the template's tall 3:4
+ * card they were cropped and enlarged, and looked soft. Here the photo keeps a
+ * landscape 16:10 frame it can fill sharply (even at 2x), with the text beneath it.
+ */
+.svc .ph{aspect-ratio:16/10}
+.svc .ph::after{display:none}
+.svc .cap{position:static;padding:var(--s24) var(--s24) var(--s32)}
