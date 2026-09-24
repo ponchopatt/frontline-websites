@@ -184,15 +184,16 @@
       "credit": "Michael Coghlan, via Flickr (CC BY-SA 2.0)"
     },
     "aperture": {
-      "src": "assets/sample-federation-porch-2000.webp",
-      "srcset": "assets/sample-federation-porch-2000.webp 2000w",
-      "width": 2000,
-      "height": 1125,
+      "src": "assets/sample-federation-porch-1600.webp",
+      "srcset": "assets/sample-federation-porch-1600.webp 1600w",
+      "width": 1600,
+      "height": 900,
       "alt": "The front porch of a Federation-style weatherboard bungalow, with red-brick piers, green trim and a camellia in flower",
       "sample": true,
       "license": "CC BY 2.0",
       "sourceUrl": "https://www.flickr.com/photos/82727312@N00/36376433690",
-      "credit": "sbittinger, via Flickr (CC BY 2.0)"
+      "credit": "sbittinger, via Flickr (CC BY 2.0)",
+      "_comment": "2000x1125 original, served as a single 1600x900 file: tall enough to fill the 900px desktop frame and the phone's portrait crop without stretching."
     },
     "gallery": [
       {

@@ -1,5 +1,5 @@
 {
-  "_comment": "Nulook Pools, Canberra ACT. Built by hand: npm run new is broken in this container (Chromium rejects the TLS proxy), so every page of nulookpools.com.au was read with curl and every photo downloaded from their own site at full resolution. Rating and reviews come only from data/google_reviews_top25.json. All photos are Pool Range photos from their own site — the Conquest fibreglass range, which other dealers also use — so every caption names the pool model only and none claims to be a Nulook job. See BRIEF.md.",
+  "_comment": "Nulook Pools, Canberra ACT. Built by hand from every page of nulookpools.com.au (curl). Rating and reviews come only from data/google_reviews_top25.json. Nulook has no photos of its own installs online. Finish round (2026-09-24, Pat allows labelled samples): the hero, statement, full-screen, enquiry background and two service cards are openly licensed sample photos (sample:true, licence and source on each, tagged on the page). The only manufacturer (Conquest range) photos left are the small tiles in The range section and the Fibreglass pools card, each labelled once as a range photo of the named shape. See BRIEF.md.",
   "slug": "nulook-pools",
   "template": "trust",
   "industry": "pools",
@@ -169,14 +169,14 @@
       "blurb": "Nulook looks after pools as well as putting them in. Ask John what yours needs when you call.",
       "photo": {
         "src": "assets/sample-pool-cleaner-800.webp",
-        "srcset": "assets/sample-pool-cleaner-480.webp 480w, assets/sample-pool-cleaner-800.webp 800w, assets/sample-pool-cleaner-1200.webp 1200w",
-        "width": 1200,
-        "height": 1600,
-        "alt": "A backyard pool with an automatic pool cleaner and its hose in the water, fruit trees behind",
+        "srcset": "assets/sample-pool-cleaner-480.webp 480w, assets/sample-pool-cleaner-800.webp 800w, assets/sample-pool-cleaner-1011.webp 1011w",
+        "width": 1011,
+        "height": 1348,
+        "alt": "An automatic pool cleaner and its hose in a backyard pool, with fruit trees and outdoor chairs behind",
         "sample": true,
         "license": "CC BY 2.0, photo by Dru Bloomfield on Flickr",
         "sourceUrl": "https://www.flickr.com/photos/14544437@N07/5193397096",
-        "credit": "Sample photo: “Camelback in the Backyard” by Dru Bloomfield - At Home in Scottsdale, CC BY 2.0 (cropped to portrait)"
+        "credit": "Sample photo: “Camelback in the Backyard” by Dru Bloomfield - At Home in Scottsdale, CC BY 2.0 (cropped to the pool cleaner)"
       }
     }
   ],
@@ -452,14 +452,15 @@
     },
     "photoClaims": {
       "all photos": "Every photo is from the Pool Range model pages on nulookpools.com.au, downloaded full size from irp.cdn-website.com/d9c2c926/dms3rep/multi/. File names (e.g. 'conquest-pools-montague', 'Royal-Blue-CG-Conquest') show this is the Conquest fibreglass range, which other dealers also sell and photograph (e.g. rainwisepoolsmelbourne.com.au/conquest-range). So these cannot be shown as Nulook jobs: every caption names the pool model and finish only, every gallery detail starts 'Range photo', and workIntro says they are range photos. No suburb or client is named. Round 2 (reviewer feedback): every range photo, in every slot, now carries sample:true (the page tags it 'Sample photo'), its alt text starts 'Range photo of the …', and each is a different model and yard — 13 models, none repeated. The owner slot no longer has a photo, so nothing sits beside John's name. Service blurbs say 'Pictured: the … , from the range' and no longer claim Nulook built the pictured pool.",
-      "hero": "Diamantina_13.5m_HawaiianSequins.jpg (1920x1275), /the-diamantina. Cropped 200px off the top (trees) and lightened 12% so the pool reads under the template's dark overlay on phones.",
-      "statement": "5m-Saxby-Pearl.jpeg (1920x1440), /the-saxby.",
-      "aperture": "Macquarie_10.5m_CGNiteBlue_3.jpg (1920x1440, sharp), /the-macquarie — replaces the soft 1343px Maradona sunset.",
+      "hero": "Replaced in the finish round; see \"finish round (2026-09-24)\". Previous range photo: Diamantina_13.5m_HawaiianSequins.jpg (1920x1275), /the-diamantina. Cropped 200px off the top (trees) and lightened 12% so the pool reads under the template's dark overlay on phones.",
+      "statement": "Replaced in the finish round; see \"finish round (2026-09-24)\". Previous range photo: 5m-Saxby-Pearl.jpeg (1920x1440), /the-saxby.",
+      "aperture": "Replaced in the finish round; see \"finish round (2026-09-24)\". Previous range photo: Macquarie_10.5m_CGNiteBlue_3.jpg (1920x1440, sharp), /the-macquarie — replaces the soft 1343px Maradona sunset.",
       "owner slot": "No photo: there is no photo of John or Charissa anywhere on their site, and a range photo beside John's name would read as his work.",
-      "enquiryBackground": "Montague_8m_NiteBlue_1-scaled.jpg (1920x1440), /the-montague.",
-      "services": "Paroo-Pebble-Sequins-Decking-Surrounds.jpg (/the-paroo), Torrens_4m_HawaiianSand_2-2ea532aa.jpeg (/the-torrens), Darling-8m-Crystal-Granite-Marble-Grey.jpg (/the-darling).",
+      "enquiryBackground": "Replaced in the finish round; see \"finish round (2026-09-24)\". Previous range photo: Montague_8m_NiteBlue_1-scaled.jpg (1920x1440), /the-montague.",
+      "services": "Replaced in the finish round; see \"finish round (2026-09-24)\". Previous range photo: Paroo-Pebble-Sequins-Decking-Surrounds.jpg (/the-paroo), Torrens_4m_HawaiianSand_2-2ea532aa.jpeg (/the-torrens), Darling-8m-Crystal-Granite-Marble-Grey.jpg (/the-darling).",
       "gallery": "Maradona-12-CG-Dusky-Blue-Rural.jpg, Eden-Pebble-Sequins-Travertine-Landscape-2.jpg, Hudson_9m_SandstoneShimmer-95c225fd.JPG (140px cropped off the left to remove a person), Lachlan-Bluestone-Sequins.jpg, FRANKLIN-MARBLE-GREY-SEQ-eeab40e5.jpg, Royal-Blue-CG-Conquest.jpg.",
-      "not used": "7 iStock stock photos (people splashing in pools — their homepage hero and feature images), template leftovers (CrossFit, aerobics, athlete, Unsplash), 12 install-step photos at 480x280 (too small), and the model plan-drawing composites."
+      "not used": "7 iStock stock photos (people splashing in pools — their homepage hero and feature images), template leftovers (CrossFit, aerobics, athlete, Unsplash), 12 install-step photos at 480x280 (too small), and the model plan-drawing composites.",
+      "finish round (2026-09-24)": "Pat now allows labelled sample photos. Six openly licensed samples replace the range photos in every large slot: hero = wordpress.org/photos/photo/7056228e44 (CC0, Michael Burridge; sky cropped off); statement = flickr 11211909@N00/52097588417 (CC BY 2.0, corsi photo; portrait crop); aperture = wordpress.org/photos/photo/118662e8d9 (CC0, Rámon van Raaij); enquiry background = wordpress.org/photos/photo/62264079f1 (CC0, Javier Casares); landscaping card = wordpress.org/photos/photo/6116300b69 (CC0, markvanjaarsveld; portrait crop); maintenance card = flickr 14544437@N07/5193397096 (CC BY 2.0, Dru Bloomfield; cropped to the pool cleaner). None is AI-upscaled; every file is at or below its source size. Alt text and captions describe each generically and never name Nulook, a suburb or a client. Range photos stay only as small labelled tiles (The range) and in the Fibreglass pools card (blurb: Pictured: the Paroo, from the range). They no longer carry sample:true, because each is already labelled once in its own caption/blurb as a range photo; the earlier triple label (tag + Sample photo + Range photo) was a reviewer complaint."
     },
     "notOnThePage": [
       "The old skeleton's 'Thirty years' and 'fixed price' are gone: their site says 'nearly 30 years' (used as written) and never says fixed price.",
@@ -469,7 +470,7 @@
       "No prices or timeframes beyond 'excavations can usually be completed in one day' are published, so none are given."
     ],
     "stockLookingPhotos": [
-      "All 13 photos are Conquest manufacturer range photos taken from nulookpools.com.au's own model pages (sourceUrl on each). Marked sample:true; see photos.stockApproved."
+      "Six openly licensed sample photos (CC0 / CC BY 2.0), each sample:true with license and sourceUrl, approved by Pat 2026-09-24 (photos.stockApproved). Seven Conquest manufacturer range photos from nulookpools.com.au remain as small labelled tiles and one service card."
     ]
   }
 }
