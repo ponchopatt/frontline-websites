@@ -43,7 +43,7 @@ All seven are the same property (same sage paint, stone, gravel). All 960px wide
 
 | File | Size | Upscaled | Shows | Use |
 |---|---|---|---|---|
-| IMG_4548.JPG | 960×720 | 1920×1440 | Front of a sage-green weatherboard cottage, white pergola over a deck, curved stone retaining wall with urns, new lawn, blue sky | Hero |
+| IMG_4548.JPG | 960×720 | (superseded, see Finish round) | Front of a sage-green weatherboard cottage, white pergola over a deck, curved stone retaining wall with urns, new lawn, blue sky | Hero |
 | IMG_4554.JPG | 960×720 | 1920×1440 | Pergola, deck and stone planter walls with pavers, close up | Service: decks & pergolas |
 | IMG_4549.JPG | 960×720 | 1920×1440 | Stone wall in foreground, courtyard of white gravel, panelled glazed room behind | Service: renovations & restorations |
 | IMG_4553.JPG | 960×720 | 1920×1440 | Whole cottage across a big garden, pergola and stone walls, cypress trees | Gallery |
@@ -66,3 +66,17 @@ Hero treatment: IMG_4548 upscaled to 1920×1440, shadows lifted (gamma 0.72) so 
 - Where the photographed job is, and which parts they built.
 - More photos: new homes, kitchens, bathrooms, earth moving machine, him on site. Original full-size files rather than Facebook copies.
 - Suburbs they work in around the Highlands.
+
+## Finish round (2026-09-24, Pat's call: labelled samples allowed, no upscaling)
+Supersedes the upscaling notes above. **All Real-ESRGAN images were deleted.** Nothing on the page is upscaled or brightened.
+
+- **Their own photos (6 used, native 960px or smaller, untouched):** gallery: pergola and stone walls (IMG_4548), cottage and garden (IMG_4553), garden room (IMG_4550), garden room entry (blob-12c7c23); service cards: Renovations & restorations (IMG_4549), Decks & pergolas (IMG_4554). The garage (IMG_4552) is left out so the gallery stays an even 2×2.
+- **Samples (4, each tagged "Sample photo", alt generic, never called their work):**
+  - Hero: sandstone cottage with dormers and a picket fence, 1800×1200, Rexness, CC BY-SA 2.0, https://www.flickr.com/photos/25287507@N02/5406893693 (heritage plaque blurred).
+  - Statement: stone and red-brick cottage with a verandah, 1568×1156, Michael Coghlan, CC BY-SA 2.0, https://www.flickr.com/photos/89165847@N00/35145678841.
+  - Aperture: weatherboard cottage with a red iron roof, 2321×1777 (cropped), Michael Coghlan, CC BY-SA 2.0, https://www.flickr.com/photos/89165847@N00/53608915817 (name sign blurred).
+  - New homes & extensions card: timber wall frames on a slab, 2048×1536, Peg Syverson, CC BY 2.0, https://www.flickr.com/photos/18045697@N00/1459074925.
+- **Sections back:** statement ("Why they come back": quality that lasts, attention to detail, polite team, repeat and referral work) and aperture ("Over 30 years of building, restoring and renovating homes, with our own earth moving"). Both use only sourced facts. Still no licence number, no suburbs and no stats strip.
+- **Services:** New homes & extensions, Renovations & restorations, Decks & pergolas. Earth moving now appears in the hero sub, the services intro, the aperture line, process step 4 and the FAQ. A 4th tile sat alone on a second row.
+- Hero CTA label is now "Send the details" (the check requires every "Call" label to dial). The call bar still says "Call Darren" and dials 0407 917 649.
+- `noGoogleReviews: true` is kept. `npm run check`: READY TO SEND, Lighthouse mobile 93 / 100 / 100. Captures checked at 390×844 and 1440×900 (port 8981).
