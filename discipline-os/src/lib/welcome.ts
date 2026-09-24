@@ -15,14 +15,16 @@ export interface GoalTemplate {
   /** For the whole year; null for a finish-line goal. */
   target: number | null;
   unit: string | null;
+  /** The counter in its area that measures it. A counter totals the whole year, from 1 January. */
+  counter?: string;
   /** The goal's name for a target. */
   title: (target: number | null) => string;
   on: boolean;
 }
 
 export const GOAL_TEMPLATES: GoalTemplate[] = [
-  { key: "imperium", area: "imperium", label: "Imperium", target: 250000, unit: "$", title: (t) => `Make ${formatValue(t, "$")} in Imperium revenue`, on: true },
-  { key: "websites", area: "websites", label: "Websites", target: 24, unit: "websites", title: (t) => `Sell ${formatValue(t, null)} websites`, on: true },
+  { key: "imperium", area: "imperium", label: "Imperium", target: 250000, unit: "$", counter: "revenue", title: (t) => `Make ${formatValue(t, "$")} in Imperium revenue`, on: true },
+  { key: "websites", area: "websites", label: "Websites", target: 24, unit: "websites", counter: "closed", title: (t) => `Sell ${formatValue(t, null)} websites`, on: true },
   { key: "trading", area: "trading", label: "AI Trading", target: null, unit: null, title: () => "Finish the AI trading bot and run it live", on: true },
   { key: "faith", area: "faith", label: "Faith", target: 300, unit: "days", title: (t) => `Read my Bible on ${formatValue(t, null)} days`, on: true },
   { key: "fitness", area: "fitness", label: "Fitness", target: 250, unit: "sessions", title: (t) => `Train ${formatValue(t, null)} sessions at the gym`, on: true },
@@ -38,14 +40,39 @@ export function roundGoal(n: number): number {
   return Math.round(n / mag) * mag;
 }
 
-/** The suggested target for a year: all of it for a year ahead, the weeks left for this one. */
-export function suggestedTarget(t: GoalTemplate, year: number, today: string): number | null {
+/**
+ * The suggested target for a year: all of it for a year ahead, the weeks left for this one.
+ * `soFar` is what the goal's counter already holds this year. The counter counts from 1
+ * January, so once it has entries the full-year number is the fair one.
+ */
+export function suggestedTarget(t: GoalTemplate, year: number, today: string, soFar = 0): number | null {
   if (t.target === null) return null;
   if (t.unit === "%") return t.target;
   const thisYear = Number(today.slice(0, 4));
-  if (year !== thisYear) return t.target;
+  if (year !== thisYear || soFar > 0) return t.target;
   const end = Date.UTC(year, 11, 31);
   const [y, m, d] = today.split("-").map(Number);
   const weeksLeft = Math.max(1, (end - Date.UTC(y, m - 1, d)) / (7 * 86_400_000));
   return Math.max(1, roundGoal((t.target * Math.min(52, weeksLeft)) / 52));
+}
+
+interface NamedGoal {
+  title: string;
+  life_area_id: string | null;
+}
+
+/**
+ * The goals setup still has to add for a year. One whose area already has a goal, or whose
+ * name is taken, is left out, so a retry, a double tap or Redo setup never doubles up.
+ */
+export function goalsToAdd<T extends NamedGoal>(goals: T[], existing: NamedGoal[]): T[] {
+  const areas = new Set(existing.map((g) => g.life_area_id).filter(Boolean));
+  const titles = new Set(existing.map((g) => g.title.trim().toLowerCase()));
+  return goals.filter((g) => {
+    const title = g.title.trim().toLowerCase();
+    if ((g.life_area_id && areas.has(g.life_area_id)) || titles.has(title)) return false;
+    if (g.life_area_id) areas.add(g.life_area_id);
+    titles.add(title);
+    return true;
+  });
 }
