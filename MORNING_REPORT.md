@@ -576,7 +576,9 @@ Real Mittagong family builder: 45+ years, licence 30559, HIA 25+ years, owner Ja
 ### ACT Landscape Construction — needs Pat (final 4.33)
 Real business (est. 2021, team of 14, joint winner at the 2025 Master Builders ACT awards with ACT Decks, Harvest Pools partner). Facts all check out; calls work. Held back by photos (hero is 1360px, pinned photo soft on phones) and a thin owner section. **Ask Xavier:** is ACT Decks part of his business? (The page says "every trade in-house" next to "built with ACT Decks".) Full-size originals of the award job, a line or two about himself, and more Google reviews. Quick fixes still to do: the pinned caption shows twice, and the form error says "call Xavier" on the office line.
 
-### BNS Landscapes — needs Pat (final 4.42)
+### BNS Landscapes — PASS 4.58 after finish round, shipped
+Finish round: statement now "Peter runs it. Patrick runs the crews." (all sourced); "own equipment" kept to seawalls only; "Gold" and "Up-to-date" dropped; hero shows the stonework on phones; seawall photo re-cropped. Headline changed to "One family. Over 45 years. Design and build." All own photos. Earlier notes below still stand.
+
 Close: every score is 4 or more, and all 16 photos are their own. Held back by some old 2019 wording ("Gold Licence", "Up-to-date WHS") and a filler line about keeping you in the loop, which sits badly next to a "called twice, no reply" review. **Ask Peter:** are licences 269300C / 319080C current (and still "Gold")? Is the free inspection still on? Do they do D.A. work (brings back the stronger headline)? A photo of him, and the suburbs he covers. The missed-quote review is a speed-to-lead pitch.
 
 ### Northern Beaches Roofers — not built
