@@ -1,0 +1,426 @@
+{
+  "_comment": "CJG Pools & Earthworks, Calwell ACT. Built by hand: npm run new is broken in this container (see HANDOVER.md), so every page of www.cjgpoolsandearthworks.com.au was read with curl (generic Mozilla/5.0 user agent) and every photo was downloaded from their own wp-content/uploads at its full published size. Rating and review come only from data/google_reviews_top25.json. All 12 photos are their own jobs from their 2019 and 2022 project posts, one slot each, used at native size (nothing upscaled). See BRIEF.md.",
+  "slug": "cjg-pools",
+  "template": "trust",
+  "industry": "pools",
+  "live": false,
+  "tagline": "Concrete and fibreglass pools, plus the site cuts, excavation, drains and paving around them. Craig and his crew, based in Calwell, working across Canberra.",
+  "schemaType": "GeneralContractor",
+  "business": {
+    "name": "CJG Pools & Earthworks",
+    "ownerName": "Craig",
+    "ownerFirstName": "Craig",
+    "ownerTitle": "Leads the crew",
+    "phone": {
+      "display": "0413 997 889",
+      "e164": "+61413997889"
+    },
+    "email": "craigabsolutepools@hotmail.com",
+    "abn": "12 603 200 200",
+    "baseSuburb": "Calwell",
+    "region": "ACT",
+    "founder": false,
+    "currentSite": "cjgpoolsandearthworks.com.au",
+    "brand": {
+      "accent": "#00AEEF",
+      "accent2": "#004A8F",
+      "themeColor": "#06121C",
+      "_comment": "Sampled off their own emblem (wp-content/uploads/2026/08/cjg-site-icon-1024.png): cyan rgb(0,174,238) and navy rgb(0,74,143)."
+    },
+    "logo": {
+      "src": "assets/logo-cjg-light.webp",
+      "width": 816,
+      "height": 240,
+      "_comment": "Their own marks: the water-drop emblem from cjg-site-icon-1024.png on its white disc, and the 'C.J.G / Pools & EarthWorks' wordmark lifted off cjg-logo-1.jpg with the navy 'C.J.G' recoloured white so it reads on the dark header. Set side by side. Ask Craig for the original artwork."
+    }
+  },
+  "icons": {
+    "favicon": "assets/favicon.png"
+  },
+  "share": {
+    "image": "assets/latest-pool-stone-wall-1000.webp",
+    "width": 1000,
+    "height": 639,
+    "title": "CJG Pools & Earthworks — Pools and earthworks, Canberra",
+    "description": "Craig and his crew build concrete and fibreglass pools across Canberra, and do the site cuts, excavation, drains and paving too. Based in Calwell.",
+    "alt": "A blue-tiled concrete pool with travertine paving and a stacked-stone feature wall, one of CJG's latest Canberra pools"
+  },
+  "responsePromise": "The first consultation is free. They come to your place, look at the block and talk you through the options.",
+  "copy": {
+    "title": "CJG Pools & Earthworks | Pool Builder & Earthworks, Calwell ACT",
+    "description": "CJG Pools & Earthworks build concrete and fibreglass pools across Canberra and do the site cuts, excavation, drains and paving themselves. Based in Calwell. Free consultation.",
+    "ctaLabel": "Talk to Craig",
+    "kicker": "Calwell · all of Canberra",
+    "headline": "Pools, and the<br>earthworks<br><em>behind them.</em>",
+    "sub": "Craig and his crew build concrete and fibreglass pools across Canberra — and do the site cuts, excavation, drains and paving too.",
+    "heroSecondary": "Or send Craig the details",
+    "heroSecondarySms": "Or text Craig a photo of the yard",
+    "navApproach": "Approach",
+    "statementLabel": "The difference",
+    "statementHeadline": "It's in<br>the name.<br><em>Pools &amp; Earthworks.</em>",
+    "statementBody": "One multi-skilled team for the pool, the site cut, the excavation, the drains and the paving — and they'll do several on the one job. Their one Google review is a drainage rescue, not a pool.",
+    "servicesLabel": "What they do",
+    "servicesHeadline": "Dig it, build it,<br>pave it.",
+    "servicesIntro": "Pools are what they're known for. The ground work is just as in demand.",
+    "workLabel": "Their jobs",
+    "workHeadline": "Weetangera to<br>Denman Prospect.",
+    "workIntro": "Real jobs from their own project posts, suburb by suburb. Phone photos taken on the day. Select any photo to see it larger.",
+    "processLabel": "How it runs",
+    "processHeadline": "Site visit to<br>first swim.",
+    "processIntro": "",
+    "ownerLabel": "Who you are dealing with",
+    "reviewsLabel": "In their words",
+    "reviewsTitle": "“Quiet achievers.”",
+    "reviewsIntro": "Their one Google review so far, word for word. It's marked shortened because Google cuts it off — the rest is on their profile.",
+    "recognitionLabel": "Members",
+    "recognitionHeadline": "SPASA and<br>Master Builders.",
+    "recognitionIntro": "Both memberships as published on their own site. ABN 12 603 200 200.",
+    "areasLabel": "Where they work",
+    "areasHeadline": "All of Canberra,<br>and over the border.",
+    "areasIntro": "Based in Calwell. These are suburbs named on their own site and project posts. Not listed? Ask Craig.",
+    "faqLabel": "Before you call",
+    "faqHeadline": "Questions Craig<br>gets asked.",
+    "enquireLabel": "Talk to Craig",
+    "enquireHeadline": "Tell Craig about<br>the block.",
+    "enquireIntro": "Pool, earthworks or both — say what you're after, where the block is and what the access is like from the street. A photo of the yard helps more than anything."
+  },
+  "stats": {
+    "googleRating": 5.0,
+    "reviewCount": 1
+  },
+  "statLabels": {
+    "googleRating": "Google rating",
+    "reviewCount": "Google review"
+  },
+  "pullQuote": {
+    "text": "Craig and his team of quiet achievers, Mick and Joel, stepped in to rescue us…",
+    "name": "Kerry G, Google review, shortened"
+  },
+  "owner": {
+    "body": "Craig runs CJG Pools & Earthworks out of Calwell, in Canberra's south. It's a multi-skilled team: known for pool building, with the excavation, site cuts, paving and drains just as in demand.",
+    "team": "Mick and Joel are on the crew — their one Google review names all three, not “the company”.",
+    "facts": [
+      {
+        "value": "4–6 wks",
+        "label": "Most fibreglass pools, start to finish"
+      },
+      {
+        "value": "3–4 mths",
+        "label": "Most custom concrete pools"
+      }
+    ]
+  },
+  "credentials": [
+    {
+      "kind": "membership",
+      "label": "SPASA Australia member",
+      "body": "The Swimming Pool and Spa Association. Named on their site as a member.",
+      "strip": true
+    },
+    {
+      "kind": "membership",
+      "label": "Master Builders Association member",
+      "body": "Named on their site alongside SPASA.",
+      "strip": true
+    }
+  ],
+  "services": [
+    {
+      "title": "New pools & spas",
+      "blurb": "Custom concrete pools, fibreglass pools, spas and swim spas. They visit, assess the block and talk you through designs, and they handle the ACT approval.",
+      "photo": {
+        "src": "assets/googong-new-pool-428.webp",
+        "srcset": "assets/googong-new-pool-428.webp 428w",
+        "width": 428,
+        "height": 571,
+        "alt": "Two of the crew working round the formwork of a new pool in Googong, the shell already filled with water"
+      }
+    },
+    {
+      "title": "Site cuts & excavation",
+      "blurb": "Clearing and levelling land ready to build on — for a house, a shed or a pool — plus the excavation and drains that go with it.",
+      "photo": {
+        "src": "assets/denman-prospect-excavator-360.webp",
+        "srcset": "assets/denman-prospect-excavator-360.webp 360w",
+        "width": 360,
+        "height": 480,
+        "alt": "An excavator on a pegged-out block at Denman Prospect, ready to start a site cut, new homes behind"
+      }
+    },
+    {
+      "title": "Paving, resprays & infills",
+      "blurb": "New or tired paving and concrete, old concrete pools resprayed and repaved, and pools you no longer use filled in and paved over.",
+      "photo": {
+        "src": "assets/forrest-paving-480.webp",
+        "srcset": "assets/forrest-paving-480.webp 480w",
+        "width": 480,
+        "height": 308,
+        "alt": "New grey paving laid across a front courtyard in Forrest, up to the entry steps"
+      }
+    }
+  ],
+  "process": [
+    {
+      "step": "Free site visit",
+      "detail": "They come to your place, assess the block and talk you through a range of designs."
+    },
+    {
+      "step": "Design and approval",
+      "detail": "A few weeks to settle the design and get building approval. In the ACT that includes a compliant pool barrier — they handle it."
+    },
+    {
+      "step": "Dig and build",
+      "detail": "The pool is dug out, usually in a day or two. Then steel, plumbing and the concrete shell — or a fibreglass shell craned in and set within days."
+    },
+    {
+      "step": "Finish and handover",
+      "detail": "Interior, coping, paving, fencing, water in and final checks. Add decking or landscaping to the same job."
+    }
+  ],
+  "serviceAreas": [
+    {
+      "region": "Tuggeranong & Woden",
+      "suburbs": [
+        "Calwell",
+        "Kambah",
+        "Monash",
+        "Gordon",
+        "Macgregor",
+        "Woden Valley"
+      ]
+    },
+    {
+      "region": "Inner Canberra & Weston Creek",
+      "suburbs": [
+        "Forrest",
+        "Kingston",
+        "Narrabundah",
+        "Braddon",
+        "Duffy",
+        "Denman Prospect"
+      ]
+    },
+    {
+      "region": "Belconnen & Gungahlin",
+      "suburbs": [
+        "Weetangera",
+        "Bruce",
+        "Kaleen",
+        "Casey",
+        "Throsby",
+        "Palmerston",
+        "Ngunnawal"
+      ]
+    },
+    {
+      "region": "Over the border (NSW)",
+      "suburbs": [
+        "Queanbeyan",
+        "Karabar",
+        "Jerrabomberra",
+        "Googong"
+      ]
+    }
+  ],
+  "photos": {
+    "hero": {
+      "src": "assets/hero-pool-stone-wall-860.webp",
+      "srcset": "assets/hero-pool-stone-wall-480.webp 480w, assets/hero-pool-stone-wall-800.webp 800w, assets/hero-pool-stone-wall-860.webp 860w",
+      "width": 860,
+      "height": 639,
+      "alt": "A blue-tiled concrete pool with travertine paving, a stacked-stone feature wall and a roller cover, one of CJG's latest Canberra pools"
+    },
+    "statement": {
+      "src": "assets/forrest-respray-finished-600.webp",
+      "srcset": "assets/forrest-respray-finished-480.webp 480w, assets/forrest-respray-finished-600.webp 600w",
+      "width": 600,
+      "height": 400,
+      "alt": "The finished Forrest pool after its respray: bright blue interior, grey stone paving, a stone wall and a blue pergola in front of a yellow house"
+    },
+    "owner": {
+      "src": "assets/pool-infill-pour-437.webp",
+      "srcset": "assets/pool-infill-pour-437.webp 437w",
+      "width": 437,
+      "height": 573,
+      "ratio": "437/573",
+      "alt": "One of the crew spreading concrete over reinforcing mesh where an old swimming pool used to be",
+      "caption": "Pouring the slab over an old pool"
+    },
+    "gallery": [
+      {
+        "src": "assets/weetangera-concrete-pool-480.webp",
+        "full": "assets/weetangera-concrete-pool-480.webp",
+        "srcset": "assets/weetangera-concrete-pool-480.webp 480w",
+        "width": 480,
+        "height": 640,
+        "caption": "Weetangera",
+        "detail": "New concrete pool, paved surrounds",
+        "alt": "A new concrete pool in Weetangera with wide sandstone-coloured pavers and a solar cover on the water"
+      },
+      {
+        "src": "assets/throsby-fibreglass-shell-462.webp",
+        "full": "assets/throsby-fibreglass-shell-462.webp",
+        "srcset": "assets/throsby-fibreglass-shell-462.webp 462w",
+        "width": 462,
+        "height": 563,
+        "caption": "Throsby",
+        "detail": "Fibreglass pool for a block of units",
+        "alt": "A fibreglass pool shell arriving on a truck at a new block of townhouses in Throsby, excavator buckets in the foreground"
+      },
+      {
+        "src": "assets/forrest-respray-after-360.webp",
+        "full": "assets/forrest-respray-after-360.webp",
+        "srcset": "assets/forrest-respray-after-360.webp 360w",
+        "width": 360,
+        "height": 480,
+        "caption": "Forrest",
+        "detail": "Concrete pool resprayed — after",
+        "alt": "A drained concrete pool in Forrest freshly resprayed bright blue, grey paving and hedges around it"
+      },
+      {
+        "src": "assets/denman-prospect-site-cut-359.webp",
+        "full": "assets/denman-prospect-site-cut-359.webp",
+        "srcset": "assets/denman-prospect-site-cut-359.webp 359w",
+        "width": 359,
+        "height": 247,
+        "caption": "Denman Prospect",
+        "detail": "Site cut, benched and cleared",
+        "alt": "A cleared and benched site cut on a new block at Denman Prospect, the excavator at the edge of frame"
+      },
+      {
+        "src": "assets/pool-infill-before-480.webp",
+        "full": "assets/pool-infill-before-599.webp",
+        "srcset": "assets/pool-infill-before-480.webp 480w, assets/pool-infill-before-599.webp 599w",
+        "width": 599,
+        "height": 399,
+        "caption": "Pool infill · before",
+        "detail": "An old pool the owner no longer used",
+        "alt": "An old drained concrete pool with cracked walls, leaf litter in the bottom and red-tiled edges"
+      },
+      {
+        "src": "assets/pool-infill-paved-437.webp",
+        "full": "assets/pool-infill-paved-437.webp",
+        "srcset": "assets/pool-infill-paved-437.webp 437w",
+        "width": 437,
+        "height": 573,
+        "caption": "Pool infill · after",
+        "detail": "Filled in and paved over",
+        "alt": "Terracotta tile paving laid flat where the old pool used to be, a timber fence and garden behind"
+      }
+    ],
+    "beforeAfter": []
+  },
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "reviews": [
+    {
+      "name": "Kerry G",
+      "text": "I can’t recommend CJG Earthworks & Pools highly enough. Craig and his team of quiet achievers, Mick and Joel, stepped in to rescue us after we’d been left in the lurch with a drainage job.",
+      "source": "Google review, shortened"
+    }
+  ],
+  "faq": [
+    {
+      "q": "How long does a pool take to build?",
+      "a": "It depends on the pool and the site. Most fibreglass projects are done in about four to six weeks. A custom concrete pool usually takes around three to four months from signing to swimming. Both include design, approvals, site works and the finishing touches."
+    },
+    {
+      "q": "When is the best time to start?",
+      "a": "Autumn or winter. Spring is the busiest time for pool builders and lead times stretch out. Building through the cooler months means the pool is finished and filled before Canberra's swimming season starts."
+    },
+    {
+      "q": "Do you build concrete or fibreglass?",
+      "a": "Both. Fibreglass is quicker to install and needs less cleaning. Concrete can be any size and shape and fits more naturally into a landscape. The site, soil and budget usually decide it — the free consultation is the time to talk it through."
+    },
+    {
+      "q": "Do you handle the ACT approval?",
+      "a": "Yes. In the ACT a new pool needs building approval and a compliant pool barrier before it can be used. They handle the approval process and make sure the pool and fencing meet the current safety rules."
+    },
+    {
+      "q": "Do you only do pools?",
+      "a": "No. Site cuts for houses, sheds and estates, excavation, drains, concrete and paving are just as in demand. They'll also fill in a pool you no longer use and pave over it, or respray and repave a tired concrete pool."
+    },
+    {
+      "q": "Do you do the landscaping and decking too?",
+      "a": "Yes. Decking, landscaping, water features and general backyard renovation can go on the same quote as the pool."
+    }
+  ],
+  "sms": {
+    "label": "Text Craig a photo",
+    "body": "Hi Craig, I'd like a quote.\nSuburb: \nPool, earthworks or both: \n(Happy to send a photo of the yard.)"
+  },
+  "form": {
+    "notesHint": "Pool, earthworks or both. Where the block is, what the access is like from the street, and anything you already have in mind."
+  },
+  "_source": {
+    "url": "https://www.cjgpoolsandearthworks.com.au/",
+    "readAt": "2026-09-24",
+    "readVia": "curl with a generic Mozilla/5.0 user agent against the live site (HTTP 200, no bot block). npm run new was not run (broken in this container, see HANDOVER.md). The media library was listed through their own WordPress REST API (wp-json/wp/v2/media) and every photo downloaded from wp-content/uploads at its full published size. The ABN was checked on abr.business.gov.au.",
+    "pagesRead": [
+      "https://www.cjgpoolsandearthworks.com.au/ (home)",
+      "https://www.cjgpoolsandearthworks.com.au/about/",
+      "https://www.cjgpoolsandearthworks.com.au/pool/",
+      "https://www.cjgpoolsandearthworks.com.au/services/",
+      "https://www.cjgpoolsandearthworks.com.au/canberra-pools-landscaping/",
+      "https://www.cjgpoolsandearthworks.com.au/contact/",
+      "https://www.cjgpoolsandearthworks.com.au/belconnen/, /gungahlin/, /kingston/, /tuggeranong/, /weston-creek/, /woden-valley/",
+      "https://www.cjgpoolsandearthworks.com.au/blog/",
+      "https://www.cjgpoolsandearthworks.com.au/pools-in-canberra/ (Our Latest Pools in Canberra, 10 May 2022)",
+      "https://www.cjgpoolsandearthworks.com.au/our-work-in-pictures/ (Showcasing 2019: Our Work In Pictures, 11 Dec 2019)",
+      "https://www.cjgpoolsandearthworks.com.au/how-long-to-build-a-pool-canberra/ (15 Jul 2026)",
+      "https://www.cjgpoolsandearthworks.com.au/best-time-to-build-a-pool-canberra/ (8 Apr 2026)",
+      "https://www.cjgpoolsandearthworks.com.au/the-process-of-building-a-pool/",
+      "https://www.cjgpoolsandearthworks.com.au/pool-building-step-by-step-guide/",
+      "https://www.cjgpoolsandearthworks.com.au/concrete-vs-fibreglass-pools/",
+      "https://www.cjgpoolsandearthworks.com.au/how-much-does-a-swimming-pool-cost/",
+      "https://www.cjgpoolsandearthworks.com.au/proud-spasa-members/",
+      "https://abr.business.gov.au/ABN/View?abn=12603200200 (ABN Lookup)"
+    ],
+    "aboutText": "https://www.cjgpoolsandearthworks.com.au/about/: “C.J.G Pool & Earthworks don’t just build pools, we build lifestyles. … We have many years of experience in the pool building industry. … Other services we offer include decking, water feature maintenance, landscaping and remodeling as well as laying concrete and fiberglass surfaces. Based locally in Calwell, we cover all of Canberra and surrounding areas. We also offer a free consultation service.”",
+    "claimSources": {
+      "business.name 'CJG Pools & Earthworks'": "Google profile name in data/google_reviews_top25.json: 'CJG Pools & Earthworks'. Their site uses 'C.J.G Pools & Earthworks' (and the blog byline 'CJG Pools & Earthworks'). ABN Lookup: 'CJG EARTHWORKS & POOLS PTY LTD'.",
+      "business.ownerFirstName Craig / ownerTitle 'Leads the crew' / owner.team Mick and Joel": "Google review, data/google_reviews_top25.json (Kerry G): 'Craig and his team of quiet achievers, Mick and Joel, stepped in to rescue us'. The site's own contact email is craigabsolutepools@hotmail.com (header of every page). No surname or formal title is published anywhere, so none is used.",
+      "business.phone 0413 997 889": "Header and footer of every page, and the contact page: 'Phone: 0413 997 889'. The Jul 2026 blog post: 'Call C.J.G Pools & Earthworks on 0413 997 889.' Matches google_phone '0413 997 889' in data/google_reviews_top25.json.",
+      "business.abn 12 603 200 200": "Footer of every page: '© 2026 C. J. G Pools & Earthworks | ABN: 12 603 200 200'. ABN Lookup: entity CJG EARTHWORKS & POOLS PTY LTD, ABN active from 04 Dec 2014.",
+      "business.baseSuburb Calwell": "Footer: 'PO Box 450 Calwell ACT 2905'. /about/: 'Based locally in Calwell, we cover all of Canberra and surrounding areas.' /contact/: 'Your Local Calwell Pool Builder' and 'Address: Calwell, ACT'.",
+      "free consultation / free site visit / responsePromise": "/pool/: 'We offer a free consultation service where we visit your home, assess the landscape and talk you through a range of options.' /about/: 'We also offer a free consultation service.' /canberra-pools-landscaping/: 'Contact us today to arrange a free site visit'. /tuggeranong/: 'The pool building process starts with a site visit and a discussion about possible designs. After this, we provide a free cost estimate'.",
+      "angle — pools and earthworks, one multi-skilled team, several tasks on one job": "/our-work-in-pictures/: 'We offer a wide range of services, including pool building, excavation, site cuts, paving and drains' and 'C.J.G Pools & Earthworks has a multi-skilled team available to tackle any minor or major project you have in mind. We are known for our pool building, but our other services are just as in demand. We can also carry out multiple tasks on the one job – poolbuilding, landscaping and paving for example.'",
+      "statementBody 'Their one Google review is a drainage rescue'": "data/google_reviews_top25.json, Kerry G: 'stepped in to rescue us after we’d been left in the lurch with a drainage job.'",
+      "services — concrete and fibreglass pools, spas and swim spas": "/pools-in-canberra/: 'Whether you are looking for a concrete pool or fibreglass pool, we can help design and install the pool of your dreams.' Homepage: 'C.J.G Pools and Earthworks can build you a spa to suit your lifestyle. … Swim Spas are a popular choice'.",
+      "services — site cuts: 'clearing and levelling land ready to build on — for a house, a shed or a pool'": "/our-work-in-pictures/: 'a site cut is the clearing of land so it is ready to be built on. It could be for a single house, a housing estate or even smaller outbuildings like sheds.' Excavation and drains: same page, 'pool building, excavation, site cuts, paving and drains'.",
+      "services — paving, resprays, pool infills": "/our-work-in-pictures/: 'If your pool is in need of a makeover, we can respray the interior and repave the surrounds.' 'Whether you have a new home that needs paving or existing paving that has seen better days, the team at CJG can help.' 'Our client no longer wanted his swimming pool so we filled it in and paved over it.'",
+      "services / FAQ — decking, landscaping, water features, backyard renovation on the same quote": "/services/: 'Our builders are experienced in decking, landscaping, water feature maintenance, laying concrete or fiberglass surfaces, as well as general renovation work.' /tuggeranong/: 'At C.J.G Pools we don’t just build pools and can include any of our add-on services to your quote.'",
+      "owner.facts / FAQ — 4 to 6 weeks fibreglass, 3 to 4 months concrete": "/how-long-to-build-a-pool-canberra/ (15 Jul 2026): 'most fibreglass projects are complete in about four to six weeks.' 'A custom concrete pool usually takes around three to four months from the day you sign to the day you swim. Both timelines include design, approvals, site works and the finishing touches'. (Their 2018 post says 'five to six months'; the demo follows the current 2026 post.)",
+      "process — dig in a day or two, shell craned in and set within days, a few weeks for design and approval": "/how-long-to-build-a-pool-canberra/: 'Design and approval: a few weeks to finalise the design and obtain building approval.' 'Excavation: the pool shape is dug out, usually in a day or two.' 'Steel and plumbing … Concrete shell … Interior, coping and paving … Fencing, fill and handover: a compliant barrier, water and final checks.' 'the shell can be craned in and set within days.'",
+      "FAQ — ACT approval handled": "/how-long-to-build-a-pool-canberra/: 'In the ACT, a new pool needs building approval and a compliant pool barrier before it can be used. We handle the approval process and make sure your pool and fencing meet the current safety rules'.",
+      "FAQ — best time to build": "/best-time-to-build-a-pool-canberra/: 'Spring is the busiest time of year for pool builders, so lead times stretch out.' 'Building over the cooler months means the digging, concreting, tiling and fencing are all done before that window opens.' '…the swimming season runs roughly from November to March.'",
+      "FAQ — concrete vs fibreglass": "/concrete-vs-fibreglass-pools/: fibreglass 'Easy to clean and require less cleaning and fewer chemicals', installation 'a couple of weeks'; concrete 'The biggest benefit of a concrete pool is its ability to be fully customised', 'a concrete pool tends to fit more organically into it’s environment'; 'The size and shape of your yard will also influence your decision, as will the soil type'.",
+      "credentials — SPASA Australia and Master Builders Association members": "/canberra-pools-landscaping/: 'Our memberships with SPASA Australia and Master Builders Association gives our clients an assurance of quality work and great value for money.' /belconnen/, /kingston/, /gungahlin/, /weston-creek/, /woden-valley/: 'As members of both SPASA Australia and the Master Builders Association'. /proud-spasa-members/: 'CJG Pools and Earthworks is proud to be a SPASA member'. Footer carries the SPASA and MBA member logos.",
+      "serviceAreas": "/pool/: 'Belconnen, Canberra Central, Gungahlin, Jerrabomberra, Weston Creek, Woden Valley and Tuggeranong.' /services/: 'Kambah, Jerrabomberra, Ngunnawal, Karabar and Gordon, as well as Queanbeyan, Kaleen, Bruce, Palmerston, Narrabundah, Monash and Macgregor.' /gungahlin/: 'Casey, Throsby, Palmerston, Ngunnawal'. /weston-creek/: 'suburbs like Duffy'. /pools-in-canberra/: jobs in Weetangera, Throsby and Googong; 'Tuggeranong, Queanbeyan, Kingston, Braddon, Belconnen and Bruce'. /our-work-in-pictures/: jobs in Forrest and Denman Prospect. Calwell: their base.",
+      "stats / reviews / pullQuote": "data/google_reviews_top25.json, key 'cjg-pools': rating 5.0, review_count 1. The single review used is its best_for_demo entry, word for word, marked shortened as the file says. The pull quote is the opening of that same review's second sentence, with an ellipsis, and is labelled shortened."
+    },
+    "photoClaims": {
+      "hero — latest-pool-stone-wall": "wp-content/uploads/2022/05/canberra-pool.jpg (1000x639, their largest job photo), the lead image of /pools-in-canberra/ 'Our Latest Pools in Canberra'. The post does not name its suburb, so the caption and alt don't either. Cropped to its left 860px (dropping the brick wall and sun lounger at the right edge) so the phone crop lands on the water instead of the stone wall. The uncropped 1000px copy is the social share image.",
+      "statement — forrest-respray-finished": "wp-content/uploads/2020/03/newpool.jpg (600x400), in the 'Concrete Pool Respray Forrest, ACT' block of /our-work-in-pictures/ with the before (newpool2.jpg) and after (newpool1.jpg) shots. Same pool as the after-shot: same dark tile band, grey paving, hedge and cobalt pot.",
+      "services[0] — googong-new-pool": "wp-content/uploads/2022/05/googong-pool.jpg (428x571), under 'New Pool in Googong' on /pools-in-canberra/.",
+      "services[1] — denman-prospect-excavator": "wp-content/uploads/2020/03/site-cut1.jpg (360x480), 'Site Cutting' images for 'Site Cut Denman Prospect, ACT' on /our-work-in-pictures/ (media library alt 'Site Cut for Pool in Canberra').",
+      "services[2] — forrest-paving": "wp-content/uploads/2020/03/paving1.jpg (480x308), 'Concrete & Paving Forrest, ACT' on /our-work-in-pictures/.",
+      "owner — pool-infill-pour": "wp-content/uploads/2020/03/pool-infill-1.jpg (437x573), alt 'A Swimming Pool being Filled In', 'Filling In A Swimming Pool' on /our-work-in-pictures/. The worker is not named, so the caption doesn't name him.",
+      "gallery — Weetangera": "wp-content/uploads/2022/05/New-Canberra-Pool.jpg (480x640), under 'Concrete Pool in Weetangera' on /pools-in-canberra/.",
+      "gallery — Throsby": "wp-content/uploads/2022/05/Throsby-Pool.jpg (462x563), under 'Fibreglass Pool in Throsby': 'We installed this fibreglass pool at a block of units in Throsby'.",
+      "gallery — Forrest respray after": "wp-content/uploads/2020/03/newpool1.jpg (360x480), 'Concrete Pool Respray Forrest, ACT'.",
+      "gallery — Denman Prospect site cut": "wp-content/uploads/2020/03/site-cut-denman2.jpg (359x247), 'Site Cut Denman Prospect, ACT'.",
+      "gallery — pool infill before / after": "wp-content/uploads/2020/03/pool-infill.jpg (599x399, alt 'Pool Infilling in Canberra Backyard') and pool-infill-2.jpg (437x573, alt 'Terracotta Pool Paving in Canberra'), 'Filling In A Swimming Pool'. The post doesn't give the suburb, so neither caption does."
+    },
+    "notOnThePage": [
+      "No builder or pool licence number is published anywhere on their site, so no licence is claimed and the word 'licensed' is not used.",
+      "No insurance, warranty or guarantee wording is published, so none is claimed.",
+      "No number of years is published (only 'many years of experience'), so no years figure is used. ABN Lookup shows the company since Dec 2014, but that is not on their site.",
+      "Craig's surname and formal role aren't published, so neither is used. Mick and Joel appear only in the review.",
+      "No prices are published. The 2020 blog's '20-30% cheaper' fibreglass figure is general industry talk, not their pricing, so it is left out.",
+      "The 11 'pool design' images on their homepage (2016 uploads) look like manufacturer range photos, not CJG jobs, so they are not used. Nor are their Shutterstock blog images or old theme headers.",
+      "The one Google review is shown only in its best_for_demo form, marked shortened. No other reviews exist to use."
+    ],
+    "photoNote": "12 of their own job photos, each in exactly one slot (hero, statement, owner, 3 services, 6 gallery). All are web copies from their WordPress site at 359–1000px wide. Each is used at or below its native width with a light unsharp mask; nothing is upscaled. No sample or stock photos are used. The originals from Craig's phone or their Facebook page would make every slot sharper."
+  }
+}
