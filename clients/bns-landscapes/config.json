@@ -50,14 +50,14 @@
     "description": "Family-owned landscape construction in Caringbah for over 45 years. Retaining walls, stone and concrete, paving, pools, timber decks, irrigation, and seawall reconstruction in Sylvania Waters. Call 02 9542 8900.",
     "ctaLabel": "Book a site inspection",
     "kicker": "Caringbah · Sutherland Shire",
-    "headline": "One family.<br>Over 45 years.<br><em>Our own machines.</em>",
-    "sub": "Landscape design and the build, from a family-owned firm in Caringbah. <em>Our own site teams, trucks, excavators and bobcats.</em>",
+    "headline": "One family.<br>Over 45 years.<br><em>Design and build.</em>",
+    "sub": "Stonework, pools, timber and turf, from a family-owned firm in Caringbah. <em>And canal seawalls, built with our own equipment.</em>",
     "heroSecondary": "Or send the details",
     "heroSecondarySms": "Or send the details",
     "navApproach": "How we work",
     "statementLabel": "Why BNS",
-    "statementHeadline": "One team keeps<br>you in the loop.",
-    "statementBody": "Our team talks with everyone involved in your job, from the first visit to the finish, so you always know where it's at. Patrick Hemsworth, our Construction Manager, runs the site teams to the program, the quality and the budget.",
+    "statementHeadline": "Barry co-founded it.<br>Peter runs it.<br>Patrick runs the crews.",
+    "statementBody": "Barry Stubbs ran BNS for over 40 years. Peter Stubbs took over in 2013. Patrick Hemsworth, our Construction Manager, manages the site teams to the program, the quality and the budget, with trucks, excavators and bobcats at our disposal. On seawalls, we own all our own equipment.",
     "servicesLabel": "What we do",
     "servicesHeadline": "Stone, water,<br>timber, seawalls.",
     "servicesIntro": "Retaining walls, excavation, stone and concrete, tiling and paving, pools, timber construction, turf, planting and irrigation. Can't see your job here? Call and ask.",
@@ -74,7 +74,7 @@
     "reviewsIntro": "In their own words, from Google.",
     "recognitionLabel": "Licensed & insured",
     "recognitionHeadline": "Licensed and<br>fully insured.",
-    "recognitionIntro": "Up-to-date, accredited WHS, Quality Assurance and Environmental Management Systems. The licences and insurance behind them are below.",
+    "recognitionIntro": "We have accredited WHS, Quality Assurance and Environmental Management Systems in place. Our licences and insurance are below.",
     "areasLabel": "Where we work",
     "areasHeadline": "Based in<br>Caringbah.",
     "areasIntro": "Our base is 14 Woodfield Blvd, Caringbah. Our seawall work is mostly on the Sylvania Waters canals. Not sure you're in range? Call and ask.",
@@ -95,8 +95,8 @@
     "name": "Marilyn Poniris, Google"
   },
   "owner": {
-    "body": "Peter has run BNS since 2013. Barry Stubbs co-founded the business and ran it for over 40 years before that. It is still family owned and operated.",
-    "team": "Site teams are run by Patrick Hemsworth, our Construction Manager: highly qualified landscape and horticulture tradespeople and apprentices, hand-picked for their attention to detail.",
+    "body": "Peter took over BNS in 2013 and has kept it growing. It is family owned and operated, and was established over 45 years ago.",
+    "team": "Our site teams are highly qualified landscape and horticulture tradespeople and apprentices, hand-picked for their attention to detail and personable natures.",
     "facts": [
       {
         "value": "45+",
@@ -115,7 +115,7 @@
   "credentials": [
     {
       "kind": "licence",
-      "label": "Gold Licence 269300C",
+      "label": "Licence 269300C",
       "body": "Landscaping.",
       "strip": true
     },
@@ -227,7 +227,7 @@
     },
     {
       "step": "The build",
-      "detail": "Our own site teams, run by Patrick Hemsworth, with our own trucks, excavators and bobcats, through to final completion."
+      "detail": "Our site teams build it, managed by Patrick Hemsworth, with trucks, excavators and bobcats at our disposal."
     }
   ],
   "serviceAreas": [
@@ -365,7 +365,7 @@
   "faq": [
     {
       "q": "Do you do the whole job, or just the garden?",
-      "a": "The whole job. Excavation, retaining walls, stone and concrete, tiling and paving, pools, timber construction, irrigation and planting, with our own site teams and our own trucks, excavators and bobcats."
+      "a": "The whole job. Excavation, retaining walls, stone and concrete, tiling and paving, pools, timber construction, irrigation and planting, by our own site teams, with trucks, excavators and bobcats at our disposal."
     },
     {
       "q": "Is the site inspection free?",
@@ -377,7 +377,7 @@
     },
     {
       "q": "Are you licensed and insured?",
-      "a": "Yes. We hold Gold Licence 269300C, and we are fully insured, including home warranty insurance through the Home Building Compensation Fund. We have accredited WHS, Quality Assurance and Environmental Management Systems in place."
+      "a": "Yes. We hold licence 269300C, and we are fully insured, including home warranty insurance through the Home Building Compensation Fund. We have accredited WHS, Quality Assurance and Environmental Management Systems in place."
     },
     {
       "q": "Do you do commercial work?",
@@ -385,7 +385,7 @@
     },
     {
       "q": "Can you replace an old seawall?",
-      "a": "Yes, through BNS Innovations, under seawall licence 319080C. We have specialised in seawall reconstruction, maintenance and repairs for over 30 years, mostly in Sylvania Waters: tie rods, capping beams and complete seawalls. Our own patented replacement system gives a 100 year design life. The new wall goes in about 700mm in front of the old one, without percussion or vibration, so the old wall stays in place. We also remove and replace pontoons."
+      "a": "Yes, through BNS Innovations, under seawall licence 319080C. We have specialised in seawall reconstruction, maintenance and repairs for over 30 years, mostly in Sylvania Waters: tie rods, capping beams and complete seawalls. Our own patented replacement system gives a 100 year design life. The new wall goes in about 700mm in front of the old one, without percussion or vibration, so the old wall stays in place. We own all our own equipment for seawall work, and we also remove and replace pontoons."
     }
   ],
   "sms": {
@@ -481,6 +481,10 @@
       {
         "url": "https://bnslandscapes.com.au/innovations/",
         "text": "BNS Innovations has specialised in Seawall reconstruction, maintenance and repairs for over 30 years mostly in Sylvania Waters replacing and renewing Tie Rods, Capping Beams & complete Seawalls – A few years back we developed a unique system for Seawall reconstruction in Sylvania Waters that offers a 100 year design life using our premium all concrete precast system."
+      },
+      {
+        "url": "https://bnslandscapes.com.au/innovations/",
+        "text": "We own all our own equipment essential for your seawall project and are always ready to start straight away"
       }
     ],
     "reviews": "data/google_reviews_top25.json, bns-landscapes: rating 4.2 from 9 (below the floor, not shown). Every review and the pull quote are from best_for_demo, word for word.",
