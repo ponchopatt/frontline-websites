@@ -9,7 +9,7 @@
   "business": {
     "name": "ACT Landscape Construction",
     "ownerName": "Xavier Duffy",
-    "ownerFirstName": "the team",
+    "ownerFirstName": "Xavier",
     "ownerTitle": "Director",
     "phone": {
       "display": "02 5110 3917",
@@ -88,7 +88,7 @@
     "enquireLabel": "Tell us about the backyard",
     "enquireHeadline": "What do you want<br>the space to do?",
     "enquireIntro": "Tell us your goals, ideas, budget and timeline, and we'll give you honest advice on what's possible and whether we're the right fit. Photos of the space help.",
-    "navOwner": "Team"
+    "callLabel": "Call the team"
   },
   "form": {
     "notesHint": "Where the property is, what you'd like built (pool, court, deck, walls, garden), and roughly when you'd like to start."
@@ -226,9 +226,9 @@
       "src": "assets/jerra-pool-court-1360.webp",
       "srcset": "assets/jerra-pool-court-800.webp 800w, assets/jerra-pool-court-1200.webp 1200w, assets/jerra-pool-court-1360.webp 1360w",
       "width": 1360,
-      "height": 999,
+      "height": 860,
       "alt": "The Jerrabomberra backyard we built with ACT Decks, from above: a plunge pool in grey stone paving behind a glass fence, a blue basketball court, a lawn, a covered deck, timber stairs, garden beds and a putting green",
-      "_comment": "210624_0057.jpg, the 2025 Master Builders ACT winning job (built with ACT Decks), cropped to 1360x999 (140px off the right-hand fence, so the court sits nearer the centre of a phone screen), with a gentle brightening (gamma 0.85) so the pool, court and deck read under the hero overlay at 390 and 1440. Replaces 151225_0026, which the reviewer found too dark (deck lost at 1440, only lawn and a house at 390). 1360px wide after the crop (1500 original), under the 1600 target: flagged in BRIEF.md; ask Xavier for the photographer's originals."
+      "_comment": "210624_0057.jpg, the 2025 Master Builders ACT winning job (built with ACT Decks), cropped to 1360x860 (140px off the right-hand fence and 139px of garden bed off the bottom, so the court sits nearer the centre of a phone screen), with a gentle brightening (gamma 0.85) so the pool, court and deck read under the hero overlay at 390 and 1440. Replaces 151225_0026, which the reviewer found too dark (deck lost at 1440, only lawn and a house at 390). 1360px wide after the crop (1500 original), under the 1600 target: flagged in BRIEF.md; ask Xavier for the photographer's originals."
     },
     "statement": {
       "src": "assets/crew-loader-1200.webp",

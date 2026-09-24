@@ -47,17 +47,17 @@
   "responsePromise": "We'll get back to you and talk it through.",
   "copy": {
     "title": "BNS Landscapes — Landscaping, Stonework, Pools & Seawalls, Caringbah",
-    "description": "Family-owned landscape construction in Caringbah for over 45 years. Retaining walls, stone and concrete, paving, pools, timber decks, irrigation and Sylvania Waters seawalls. Call 02 9542 8900.",
+    "description": "Family-owned landscape construction in Caringbah for over 45 years. Retaining walls, stone and concrete, paving, pools, timber decks, irrigation, and seawall reconstruction in Sylvania Waters. Call 02 9542 8900.",
     "ctaLabel": "Book a site inspection",
     "kicker": "Caringbah · Sutherland Shire",
-    "headline": "From the D.A.<br>to the last<br><em>roll of turf.</em>",
-    "sub": "Design, approvals and the build, from one family-owned firm in Caringbah for over 45 years. <em>Our own site teams, trucks, excavators and bobcats.</em>",
+    "headline": "One family.<br>Over 45 years.<br><em>Our own machines.</em>",
+    "sub": "Landscape design and the build, from a family-owned firm in Caringbah. <em>Our own site teams, trucks, excavators and bobcats.</em>",
     "heroSecondary": "Or send the details",
     "heroSecondarySms": "Or send the details",
     "navApproach": "How we work",
     "statementLabel": "Why BNS",
-    "statementHeadline": "Everyone on the job<br>keeps talking.",
-    "statementBody": "Our team keeps every party in the loop for the whole job, and brings a true “can do” attitude whatever their role on site. Patrick Hemsworth, our Construction Manager, runs the site teams to the program, the quality and the budget.",
+    "statementHeadline": "One team keeps<br>you in the loop.",
+    "statementBody": "Our team talks with everyone involved in your job, from the first visit to the finish, so you always know where it's at. Patrick Hemsworth, our Construction Manager, runs the site teams to the program, the quality and the budget.",
     "servicesLabel": "What we do",
     "servicesHeadline": "Stone, water,<br>timber, seawalls.",
     "servicesIntro": "Retaining walls, excavation, stone and concrete, tiling and paving, pools, timber construction, turf, planting and irrigation. Can't see your job here? Call and ask.",
@@ -73,16 +73,17 @@
     "reviewsTitle": "What customers say.",
     "reviewsIntro": "In their own words, from Google.",
     "recognitionLabel": "Licensed & insured",
-    "recognitionHeadline": "A Gold Licence,<br>never blemished.",
-    "recognitionIntro": "Accredited, up-to-date WHS, Quality Assurance and Environmental Management Systems on every job. The licences and insurance behind them are below.",
+    "recognitionHeadline": "Licensed and<br>fully insured.",
+    "recognitionIntro": "Up-to-date, accredited WHS, Quality Assurance and Environmental Management Systems. The licences and insurance behind them are below.",
     "areasLabel": "Where we work",
-    "areasHeadline": "Caringbah,<br>and the Shire.",
-    "areasIntro": "Our base is 14 Woodfield Blvd, Caringbah. Our seawall work is on the Sylvania Waters canals. Not sure you're in range? Call and ask.",
+    "areasHeadline": "Based in<br>Caringbah.",
+    "areasIntro": "Our yard is at 14 Woodfield Blvd, Caringbah. Our seawall work is mostly on the Sylvania Waters canals. Not sure you're in range? Call and ask.",
     "faqLabel": "Before you call",
     "faqHeadline": "Questions we get asked.",
     "enquireLabel": "Book a site inspection",
     "enquireHeadline": "Tell us about<br>the job.",
-    "enquireIntro": "The suburb, what's there now, and what you want out of it. Residential or commercial. We'll get back to you and talk through the best way to do it."
+    "enquireIntro": "The suburb, what's there now, and what you want out of it. Residential or commercial. We'll get back to you and talk through the best way to do it.",
+    "callLabel": "Call BNS"
   },
   "stats": {
     "googleRating": 4.2,
@@ -106,8 +107,8 @@
         "label": "Peter Stubbs takes over"
       },
       {
-        "value": "Gold",
-        "label": "Licence 269300C"
+        "value": "30+",
+        "label": "Years rebuilding seawalls"
       }
     ]
   },
@@ -115,7 +116,7 @@
     {
       "kind": "licence",
       "label": "Gold Licence 269300C",
-      "body": "Landscaping. Never been blemished.",
+      "body": "Landscaping.",
       "strip": true
     },
     {
@@ -131,15 +132,10 @@
       "strip": true
     },
     {
-      "kind": "membership",
-      "label": "LNA members",
-      "strip": true
-    },
-    {
       "kind": "claim",
-      "label": "Patented seawall system",
-      "body": "All-FRP components, no concrete cancer, a 100 year design life.",
-      "strip": false
+      "label": "Seawalls for over 30 years",
+      "body": "Reconstruction, maintenance and repairs, mostly in Sylvania Waters.",
+      "strip": true
     }
   ],
   "priceLines": {
@@ -226,8 +222,8 @@
       "detail": "We come out and look at the site with you, residential or commercial."
     },
     {
-      "step": "Design & approvals",
-      "detail": "We design it with you. Where a job needs council approval, we're with you from the D.A. application on."
+      "step": "Design",
+      "detail": "Landscaping design and installation: we design the job with you, then build it."
     },
     {
       "step": "The build",
@@ -381,7 +377,7 @@
     },
     {
       "q": "Are you licensed and insured?",
-      "a": "Yes. We hold Gold Licence 269300C, and it has never been blemished. We are fully insured, including home warranty insurance through the Home Building Compensation Fund, and we have accredited WHS, Quality Assurance and Environmental Management Systems in place."
+      "a": "Yes. We hold Gold Licence 269300C, and we are fully insured, including home warranty insurance through the Home Building Compensation Fund. We have accredited WHS, Quality Assurance and Environmental Management Systems in place."
     },
     {
       "q": "Do you do commercial work?",
@@ -389,7 +385,7 @@
     },
     {
       "q": "Can you replace an old seawall?",
-      "a": "Yes, through BNS Innovations, under seawall licence 319080C. We developed and patented a system for replacing the old concrete seawalls in Sylvania Waters with all-FRP components: no concrete cancer, and a 100 year design life. The new wall goes in about 700mm in front of the old one, with no percussion or vibration, and the old wall stays in place. We also do tie-rod installation, capping beams and maintenance, and pontoons."
+      "a": "Yes, through BNS Innovations, under seawall licence 319080C. We have specialised in seawall reconstruction, maintenance and repairs for over 30 years, mostly in Sylvania Waters: tie rods, capping beams and complete seawalls. Our own patented replacement system gives a 100 year design life. The new wall goes in about 700mm in front of the old one, without percussion or vibration, so the old wall stays in place. We also remove and replace pontoons."
     }
   ],
   "sms": {
@@ -481,10 +477,15 @@
       {
         "url": "https://bnslandscapes.com.au/innovations/",
         "text": "Our Seawall services include: Seawall Reconstruction, Tie Rod Installation, Capping Beams and Maintenance. [Enquiry form:] Tie-Rod Installation, Seawall Reconstruction, Capping Beam replacements, Pontoon removal & replacement, Geotechnical engineering"
+      },
+      {
+        "url": "https://bnslandscapes.com.au/innovations/",
+        "text": "BNS Innovations has specialised in Seawall reconstruction, maintenance and repairs for over 30 years mostly in Sylvania Waters replacing and renewing Tie Rods, Capping Beams & complete Seawalls – A few years back we developed a unique system for Seawall reconstruction in Sylvania Waters that offers a 100 year design life using our premium all concrete precast system."
       }
     ],
-    "reviews": "data/google_reviews_top25.json, bns-landscapes: rating 4.2 from 9 (below the floor, not shown). Every review and the pull quote are from best_for_demo, word for word. 'D.A application to final completion of works' (Lauren Mehanna) is the source for the headline's 'From the D.A.' and the approvals step; 'from driveway crossovee concreting through to turf laying' (Rangi Ivaiti) for 'the last roll of turf'.",
+    "reviews": "data/google_reviews_top25.json, bns-landscapes: rating 4.2 from 9 (below the floor, not shown). Every review and the pull quote are from best_for_demo, word for word.",
     "photos": "Every photo is from their own media library at bnslandscapes.com.au/wp-content/uploads/. Hero I006.jpg is their own home-page and Landscapes-page hero. The aperture is seawall-banner-inno.jpg, their Innovations-page banner. The team photo 0.jpg and IMG_3801.jpg are from their Seawalls and Innovations galleries; Park.jpg and IMG_0239.jpg are from their Commercial gallery. Captions describe what is in the frame only; their site never names a garden job's suburb, so none is named. Full inventory with pixel sizes in BRIEF.md.",
-    "notUsed": "Not on the page for want of a checkable source or because it may be stale: 'received many awards of excellence in the Industry' (no award named); 'BNS offers a 24 hour emergency service on all Sylvania Waterways Seawalls' (2019 text, ask Peter); geotechnical engineering (only a form option); ABN (from ABN Lookup, not their site)."
+    "notUsed": "Not on the page for want of a checkable source or because it may be stale: 'received many awards of excellence in the Industry' (no award named); 'BNS offers a 24 hour emergency service on all Sylvania Waterways Seawalls' (2019 text, ask Peter); geotechnical engineering (only a form option); ABN (from ABN Lookup, not their site).",
+    "reviewRound": "2026-09-24 rework: hero no longer claims approvals (their site never mentions D.A. or council; only Lauren Mehanna's review does). Seawall material claim dropped: their Innovations page says both 'all FRP components' and 'premium all concrete precast system'. 'LNA members' and 'never been blemished' dropped as unverifiable 2019 text. Call button reads 'Call BNS' because 02 9542 8900 is the office landline."
   }
 }

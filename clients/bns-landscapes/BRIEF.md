@@ -72,10 +72,11 @@ in Sylvania Waters.
 
 ## THE ANGLE
 
-**One family firm does the whole job — design, D.A., the build, their own machines — for
-over 45 years.** Hero headline built on Lauren's and Rangi's words:
-**"From the D.A. to the last roll of turf."** Hero photo is the terraced sandstone job their
-own site uses as its hero, so Peter will recognise it straight away.
+**One family firm, over 45 years, with its own site teams and machines.** (Reworked after
+review: the first headline, "From the D.A. to the last roll of turf", leaned on Lauren
+Mehanna's review for approvals their site never mentions.) Hero headline, every word from
+their site: **"One family. Over 45 years. Our own machines."** Hero photo is the terraced
+sandstone job their own site uses as its hero, so Peter will recognise it straight away.
 
 ## Google rating — not shown
 
@@ -144,8 +145,13 @@ No sample photos needed. No AI upscaling.
 
 ## What Pat would need from Peter
 
-- Is licence 269300C still current and still Gold? Still LNA members? (all text is from 2019)
+- **Does BNS handle D.A.s / council approvals?** Only Lauren Mehanna's review says so. If yes,
+  the old "From the D.A. to the last roll of turf" headline can come back.
+- Seawall system: FRP or precast concrete? Their Innovations page says both.
+- A photo of Peter and the crew.
+- The suburbs they want to be found in (the site names only Caringbah and Sylvania Waters).
+- Is licence 269300C current and still Gold? Still Landscape Association members?
+
 - Is the free on-site inspection still offered?
 - Is BNS Innovations still doing Sylvania Waters seawalls under 319080C?
-- An email address to show (none published), and a photo of Peter / the crew.
-- Suburbs they want to be found in.
+- An email address to show (none published).
