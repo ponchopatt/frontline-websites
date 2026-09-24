@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 /** Same shape as the dashboard, so nothing jumps when it arrives. */
 export default function Loading() {
   return (
-    <div className="grid gap-8" aria-busy="true" aria-label="Loading today">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-8" aria-busy="true" aria-label="Loading today">
       <div className="grid gap-5 pt-2">
         <div className="flex items-start justify-between gap-4">
           <div className="grid gap-2">

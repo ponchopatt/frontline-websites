@@ -332,7 +332,7 @@ export function Dashboard({ view }: { view: DayView }) {
   };
 
   return (
-    <div className="grid gap-8">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-8">
       <DayHeader
         date={date}
         today={today}

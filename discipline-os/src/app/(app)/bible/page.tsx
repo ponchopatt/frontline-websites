@@ -39,7 +39,7 @@ export default async function BiblePage({ searchParams }: PageProps<"/bible">) {
   const suggested = lastRes.data ? nextReading(lastRes.data) : FIRST_READING;
 
   return (
-    <div className="grid gap-10">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
       <header className="grid gap-1">
         <p className="text-muted-foreground">{relativeDayLabel(date, today)}</p>
         <h1 className="text-[34px] leading-tight font-medium tracking-tight">Bible</h1>

@@ -71,7 +71,7 @@ export default async function WorkPage() {
   const notes = sessions.filter((s) => s.accomplishment_note).reverse();
 
   return (
-    <div className="grid gap-10">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
       <header className="grid gap-6">
         <h1 className="text-[34px] leading-tight font-medium tracking-tight">Work</h1>
         <StatStrip>

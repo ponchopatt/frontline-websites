@@ -28,7 +28,7 @@ export function SettingsForm({ profile }: { profile: ProfileSettings }) {
 
   return (
     <form
-      className="grid gap-10"
+      className="grid grid-cols-[minmax(0,1fr)] gap-10"
       onSubmit={async (e) => {
         e.preventDefault();
         setBusy(true);

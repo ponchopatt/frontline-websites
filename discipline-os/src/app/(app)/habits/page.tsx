@@ -17,7 +17,7 @@ export default async function HabitsPage() {
   const firstDay = firstDayOf(viewer);
 
   return (
-    <div className="grid gap-10">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
       <header className="grid gap-6">
         <h1 className="text-[34px] leading-tight font-medium tracking-tight">Habits</h1>
         <StatStrip>

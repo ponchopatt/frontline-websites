@@ -83,7 +83,7 @@ export function HabitsManager({ initial }: { initial: HabitStats[] }) {
   }
 
   return (
-    <div className="grid gap-10">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
       <AddHabit onAdd={add} />
 
       {SECTIONS.map((section) => {
@@ -246,7 +246,7 @@ function AddHabit({ onAdd }: { onAdd: (name: string, category: HabitCategory) =>
       }}
     >
       <h2 className="text-xl font-medium tracking-tight">Add a habit</h2>
-      <div className="grid grid-cols-[1fr_auto] gap-2">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2">
         <label className="sr-only" htmlFor="new-habit">
           Habit name
         </label>
@@ -256,12 +256,12 @@ function AddHabit({ onAdd }: { onAdd: (name: string, category: HabitCategory) =>
           maxLength={80}
           onChange={(e) => setName(e.target.value)}
           placeholder="Cold shower"
-          className={cn(field, "placeholder:text-faint")}
+          className={cn(field, "w-full min-w-0 placeholder:text-faint")}
         />
         <label className="sr-only" htmlFor="new-habit-section">
           Section
         </label>
-        <select id="new-habit-section" value={category} onChange={(e) => setCategory(e.target.value as HabitCategory)} className={field}>
+        <select id="new-habit-section" value={category} onChange={(e) => setCategory(e.target.value as HabitCategory)} className={cn(field, "max-w-[11rem]")}>
           {SECTIONS.map((s) => (
             <option key={s.key} value={s.key}>
               {s.title}

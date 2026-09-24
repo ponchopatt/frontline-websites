@@ -21,7 +21,7 @@ export default async function SettingsPage() {
   const { data } = await viewer.supabase.auth.getUser();
 
   return (
-    <div className="grid gap-10">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
       <header className="grid gap-1">
         <h1 className="text-[34px] leading-tight font-medium tracking-tight">Settings</h1>
         {data.user?.email && <p className="text-muted-foreground">Signed in as {data.user.email}</p>}
