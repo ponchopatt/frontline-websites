@@ -1,0 +1,42 @@
+/*
+ * BNS Landscapes: client layer over the trust template.
+ * Appended after the template's CSS (lib/build.js), so it only touches this site.
+ */
+
+/*
+ * Hero. Their own hero photo (I006.jpg) is terraced sandstone walls climbing to a
+ * glass-fronted house. The template's veil was dark enough to hide the stone, so
+ * it is lighter here: dark only where the words sit (left side, bottom band).
+ */
+.hero .veil{background:
+  linear-gradient(to top,rgba(6,13,16,.9) 0%,rgba(6,13,16,.62) 26%,rgba(6,13,16,.16) 52%,rgba(6,13,16,0) 76%,rgba(6,13,16,.38) 100%),
+  linear-gradient(to right,rgba(6,13,16,.72) 0%,rgba(6,13,16,.34) 40%,rgba(6,13,16,0) 66%)}
+.hero h1{text-shadow:0 2px 24px rgba(4,10,13,.55)}
+.hero .sub{text-shadow:0 1px 14px rgba(4,10,13,.9)}
+
+/*
+ * On a phone, height-filling the wide photo showed the house and palms at the top
+ * and put all the stonework behind the words. So on narrow screens the photo sits
+ * in a frame at the top of the hero, zoomed so its top third (the house) is cut
+ * off and the stone terraces, door and stairs fill it. The frame fades into the
+ * dark ground under the headline. Sized so the 1200px file is shown at about 1:1
+ * (frame about 400px tall, image 1.5x that, about 1160px wide), never stretched.
+ */
+@media(max-width:700px){
+  .hero .bgwrap{top:0;bottom:auto;height:min(54%,420px);
+    -webkit-mask-image:linear-gradient(to bottom,#000 58%,transparent 100%);
+            mask-image:linear-gradient(to bottom,#000 58%,transparent 100%)}
+  .hero img.bg{top:auto;bottom:0;height:150%;object-position:58% 100%}
+  .hero .veil{background:
+    linear-gradient(to bottom,rgba(6,13,16,.55) 0%,rgba(6,13,16,.12) 16%,rgba(6,13,16,0) 30%,rgba(6,13,16,.25) 44%,rgba(6,13,16,.8) 58%,rgba(6,13,16,.94) 72%)}
+  .hero .t-label{text-shadow:0 1px 3px rgba(4,10,13,.95),0 0 16px rgba(4,10,13,.95)}
+}
+
+/*
+ * Aperture: their seawall banner, seen from the canal. The excavator on its barge
+ * is at the far right of the frame (about 79% across), so a centred phone crop
+ * showed only houses across the water. Keep the machine and barge in frame.
+ */
+@media(max-width:767px){
+  .ap img{object-position:88% 50%}
+}

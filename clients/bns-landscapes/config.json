@@ -258,7 +258,7 @@
     },
     "aperture": {
       "src": "assets/canal-seawall-works-1600.webp",
-      "srcset": "assets/canal-seawall-works-480.webp 480w, assets/canal-seawall-works-800.webp 800w, assets/canal-seawall-works-1200.webp 1200w, assets/canal-seawall-works-1600.webp 1600w, assets/canal-seawall-works-2000.webp 2000w",
+      "srcset": "assets/canal-seawall-works-1400.webp 1400w, assets/canal-seawall-works-1600.webp 1600w, assets/canal-seawall-works-2000.webp 2000w",
       "width": 2000,
       "height": 1250,
       "alt": "A long new concrete seawall along a canal, seen from the water, with an excavator working from a barge at the far end and the homes reflected in still water",
