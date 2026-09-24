@@ -24,7 +24,7 @@ export function ScoreCalendar({ scores, today, firstDay, threshold, weeks = 5 }:
 
   return (
     <div>
-      <div className="mb-1.5 grid grid-cols-7 gap-1.5 text-center text-xs text-faint" aria-hidden>
+      <div className="mb-1.5 grid grid-cols-7 gap-1.5 text-center text-[13px] text-muted-foreground" aria-hidden>
         {WEEKDAYS.map((d, i) => (
           <span key={i}>{d}</span>
         ))}
@@ -43,7 +43,7 @@ export function ScoreCalendar({ scores, today, firstDay, threshold, weeks = 5 }:
                 href={date === today ? "/" : `/?d=${date}`}
                 aria-label={`${shortDate(date)}: ${score}${met ? ", on the streak" : ""}`}
                 className={cn(
-                  "grid aspect-square place-items-center rounded-md text-[11px] transition-colors",
+                  "grid aspect-square place-items-center rounded-md text-[13px] transition-colors",
                   met
                     ? "bg-primary text-primary-foreground"
                     : score > 0

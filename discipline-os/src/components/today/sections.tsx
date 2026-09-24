@@ -311,7 +311,7 @@ export function FitnessCard({ date, today, habits, gymWeek, cardioWeek, cardio, 
           {cardioNudge ? (
             <p className="text-sm font-medium text-primary">{cardioNudge}</p>
           ) : cardio?.target ? (
-            <p className="text-xs text-faint">{cardio.target}+ minutes ticks it for you.</p>
+            <p className="text-[13px] text-muted-foreground">{cardio.target}+ minutes ticks it for you.</p>
           ) : null}
         </div>
       )}

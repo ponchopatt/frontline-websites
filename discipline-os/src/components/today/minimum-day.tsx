@@ -134,7 +134,7 @@ export function MinimumCard({ state, habits, workMinutes, minWork, running, read
             <div className="flex items-center justify-between gap-3">
               <span className="text-[15px]">
                 {minWork} minutes of focused work
-                <span className="block text-xs text-faint">
+                <span className="block text-[13px] text-muted-foreground">
                   {workMinutes >= minWork ? `Done: ${formatDuration(workMinutes)}` : `${formatDuration(workMinutes)} so far`}
                 </span>
               </span>

@@ -42,7 +42,7 @@ export function AppNav() {
                   href={href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-full text-[12px] leading-none font-medium transition-colors",
+                    "flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-full text-[13px] leading-none font-medium transition-colors",
                     active ? "nav-active text-foreground" : "text-foreground/70 hover:text-foreground",
                   )}
                 >

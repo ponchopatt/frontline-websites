@@ -53,7 +53,7 @@ export default async function HabitsPage() {
           <p className="text-[15px] text-muted-foreground">Streak line {threshold}%</p>
         </div>
         {/* The calendar's own labels are set smaller; nothing on this page reads under 13 points. */}
-        <div className="[&_a]:text-[13px] [&_span]:text-[13px]">
+        <div>
           <ScoreCalendar scores={history.scores} today={viewer.today} firstDay={firstDay} threshold={threshold} />
         </div>
         <p className="px-1 text-[13px] leading-snug text-muted-foreground">

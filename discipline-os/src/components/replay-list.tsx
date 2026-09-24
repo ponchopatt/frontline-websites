@@ -37,7 +37,7 @@ export function ReplayList({ events, timeZone, className }: { events: ReplayEven
             <span className="grid min-w-0 leading-snug">
               <span className={cn("text-[15px]", strong && "font-medium")}>
                 {e.title}
-                {e.later && <span className="ml-2 text-xs text-faint">added later</span>}
+                {e.later && <span className="ml-2 text-[13px] text-muted-foreground">added later</span>}
               </span>
               {e.detail && <span className="text-[13px] break-words text-muted-foreground">{e.detail}</span>}
             </span>

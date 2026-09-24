@@ -186,7 +186,7 @@ export function ProofCard({
                   <img src={p.url} alt="" className="size-full object-cover" loading="lazy" />
                 ) : null}
               </button>
-              {p.label && <p className="mt-1 truncate text-xs text-muted-foreground">{p.label}</p>}
+              {p.label && <p className="mt-1 truncate text-[13px] text-muted-foreground">{p.label}</p>}
             </li>
           ))}
         </ul>

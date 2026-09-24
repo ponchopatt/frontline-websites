@@ -43,7 +43,7 @@ export function AuthForm({ mode, action }: AuthFormProps) {
           aria-describedby={signup ? "password-hint" : undefined}
         />
         {signup && (
-          <span id="password-hint" className="text-xs text-faint">
+          <span id="password-hint" className="text-[13px] text-muted-foreground">
             At least 8 characters.
           </span>
         )}

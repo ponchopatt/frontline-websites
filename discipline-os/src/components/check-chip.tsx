@@ -44,7 +44,7 @@ export function CheckChip({ label, done, disabled, hint, onToggle, className }: 
       </span>
       <span className="grid min-w-0 leading-tight">
         <span className={cn("line-clamp-2 text-[15px] break-words", done ? "text-foreground" : "text-foreground/90")}>{label}</span>
-        {hint && <span className="truncate text-xs text-faint">{hint}</span>}
+        {hint && <span className="truncate text-[13px] text-muted-foreground">{hint}</span>}
       </span>
     </button>
   );

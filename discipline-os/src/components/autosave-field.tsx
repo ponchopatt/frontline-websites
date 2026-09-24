@@ -74,7 +74,7 @@ export function AutosaveField({
         <label htmlFor={id} className="text-sm text-muted-foreground">
           {label}
         </label>
-        <span id={`${id}-status`} aria-live="polite" className="text-xs text-faint">
+        <span id={`${id}-status`} aria-live="polite" className="text-[13px] text-muted-foreground">
           {status === "saving" ? "Saving…" : status === "saved" ? "Saved" : status === "error" ? "Not saved" : ""}
         </span>
       </div>
