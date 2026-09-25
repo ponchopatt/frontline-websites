@@ -8,7 +8,8 @@ import { BeforeAfter } from "@/components/site/before-after";
 import { getService } from "@/lib/services";
 import { prices } from "@/lib/site";
 import { Process } from "@/components/site/process";
-import { ReviewsMarquee } from "@/components/site/reviews-marquee";
+import { ReviewsGrid } from "@/components/site/reviews-grid";
+import { AreasStrip } from "@/components/site/areas-strip";
 import { Booking } from "@/components/site/booking";
 import { PriceGuide } from "@/components/site/price-guide";
 import { DetailSteps } from "@/components/site/detail-steps";
@@ -40,8 +41,9 @@ export default function HomePage() {
       <Work />
       <DetailSteps />
       <Process />
-      <ReviewsMarquee />
+      <ReviewsGrid />
       <Booking />
+      <AreasStrip />
     </>
   );
 }

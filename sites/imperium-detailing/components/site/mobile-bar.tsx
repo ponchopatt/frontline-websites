@@ -26,7 +26,7 @@ export function MobileBar() {
   }, []);
 
   useEffect(() => {
-    const targets = ["#book", "#footer-cta"].map((s) => document.querySelector(s)).filter((el): el is Element => el !== null);
+    const targets = ["#book"].map((s) => document.querySelector(s)).filter((el): el is Element => el !== null);
     // The observer reports each target as soon as it is observed, so a route change resets the state.
     const visible = new Set<Element>();
     const io = new IntersectionObserver(

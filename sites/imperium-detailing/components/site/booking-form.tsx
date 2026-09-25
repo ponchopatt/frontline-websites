@@ -25,7 +25,7 @@ type Status = "idle" | "sending" | "sent" | "fallback" | "error";
 // Matched to the Input component beside it: same radius, same fill, same padding.
 // They sit in one grid, so a different corner and a different ground read as a bug.
 const selectClass =
-  "flex h-11 w-full rounded-lg border border-input bg-transparent px-2.5 text-base text-foreground outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30";
+  "flex h-12 w-full rounded-lg border border-input bg-transparent px-2.5 text-base text-foreground outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30";
 
 export function BookingForm({ compact = false, defaultService = "" }: { compact?: boolean; defaultService?: string }) {
   const [status, setStatus] = useState<Status>("idle");
@@ -182,23 +182,23 @@ export function BookingForm({ compact = false, defaultService = "" }: { compact?
         </div>
         <div className="grid gap-2">
           <Label htmlFor="bf-vehicle">Your car (make, model, year)</Label>
-          <Input id="bf-vehicle" name="vehicle" required placeholder="BMW M4 Competition, 2023" autoComplete="off" className="h-11 text-base" />
+          <Input id="bf-vehicle" name="vehicle" required placeholder="BMW M4 Competition, 2023" autoComplete="off" className="h-12 text-base" />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="bf-suburb">Your suburb</Label>
-          <Input id="bf-suburb" name="suburb" required placeholder="Gungahlin" autoComplete="address-level2" className="h-11 text-base" />
+          <Input id="bf-suburb" name="suburb" required placeholder="Gungahlin" autoComplete="address-level2" className="h-12 text-base" />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="bf-name">Your name</Label>
-          <Input id="bf-name" name="name" required placeholder="Alex Smith" autoComplete="name" className="h-11 text-base" />
+          <Input id="bf-name" name="name" required placeholder="Alex Smith" autoComplete="name" className="h-12 text-base" />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="bf-phone">Mobile number</Label>
-          <Input id="bf-phone" name="phone" type="tel" required placeholder="0400 000 000" autoComplete="tel" className="h-11 text-base" />
+          <Input id="bf-phone" name="phone" type="tel" required placeholder="0400 000 000" autoComplete="tel" className="h-12 text-base" />
         </div>
         <div className={`grid gap-2 ${compact ? "" : "sm:col-span-2"}`}>
           <Label htmlFor="bf-email">Email (optional)</Label>
-          <Input id="bf-email" name="email" type="email" placeholder="you@example.com" autoComplete="email" className="h-11 text-base" />
+          <Input id="bf-email" name="email" type="email" placeholder="you@example.com" autoComplete="email" className="h-12 text-base" />
         </div>
         <div className={`grid gap-2 ${compact ? "" : "sm:col-span-2"}`}>
           <Label htmlFor="bf-notes">Anything we should know? (optional)</Label>
@@ -216,7 +216,7 @@ export function BookingForm({ compact = false, defaultService = "" }: { compact?
         <button
           type="submit"
           disabled={status === "sending"}
-          className={`${buttonClass("primary")} disabled:opacity-60`}
+          className={`${buttonClass("primary")} w-full disabled:opacity-60 sm:w-auto`}
         >
           {status === "sending" ? "Sending…" : "Request my quote"}
         </button>
