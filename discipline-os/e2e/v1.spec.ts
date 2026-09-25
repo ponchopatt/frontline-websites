@@ -300,7 +300,8 @@ function smallTargets(page: Page) {
       .filter((el) => el.offsetParent !== null && !el.classList.contains("sr-only"))
       // A checkbox or radio inside its label is tapped through the label.
       .map((el) => ((el as HTMLInputElement).type === "checkbox" || (el as HTMLInputElement).type === "radio") && el.closest("label") ? el.closest("label")! : el)
-      .map((el) => ({ el: (el.getAttribute("aria-label") ?? el.textContent ?? el.tagName).trim().slice(0, 40), h: el.getBoundingClientRect().height }))
+      // Rounded: a sheet still sliding in measures 44px as 43.99997.
+      .map((el) => ({ el: (el.getAttribute("aria-label") ?? el.textContent ?? el.tagName).trim().slice(0, 40), h: Math.round(el.getBoundingClientRect().height * 100) / 100 }))
       .filter((t) => t.h < 44),
   );
 }

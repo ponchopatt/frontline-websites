@@ -123,7 +123,7 @@ test("minimum day minutes keep a quick Save", async ({ page, browserName }) => {
   const { userId } = await signUp(page);
   await page.goto("/settings");
   await page.waitForLoadState("networkidle");
-  await press(page.locator("#minimum").getByRole("button", { name: /Focused work/ }), browserName);
+  await press(page.getByRole("region", { name: "Minimum day" }).getByRole("button", { name: /Focused work/ }), browserName);
   const sheet = page.getByRole("dialog", { name: "Minimum day" });
   await expect(sheet).toBeVisible();
   const more = sheet.getByRole("button", { name: "Minimum day work minutes: one more" });
@@ -132,7 +132,7 @@ test("minimum day minutes keep a quick Save", async ({ page, browserName }) => {
   await sheet.getByRole("button", { name: "Save minimum day" }).click();
   await expect.poll(async () => (await admin.from("profiles").select("minimum_work_minutes").eq("user_id", userId).single()).data?.minimum_work_minutes).toBe(30);
   await page.reload();
-  await expect(page.locator("#minimum")).toContainText("30 min");
+  await expect(page.getByRole("region", { name: "Minimum day" })).toContainText("30 min");
 });
 
 test("closing a proof photo leaves the night review open; the proof wall link shows", async ({ page, browserName }) => {
