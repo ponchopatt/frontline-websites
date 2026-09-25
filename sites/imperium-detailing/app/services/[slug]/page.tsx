@@ -65,29 +65,58 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
 
-      <section className="container-x mx-auto grid max-w-6xl gap-10 py-14 md:grid-cols-12 md:items-center md:py-20">
-        <div className="md:col-span-7">
-          <Breadcrumbs items={[{ href: "/services/", label: "Services" }, { href: `/services/${s.slug}/`, label: s.name }]} />
-          <p className="m-0 mt-4 text-[15px] text-muted-foreground">
-            From <b className="font-medium text-foreground">{formatPrice(s.priceFrom)}</b> · {s.duration}
+      {/* Hero. Laptops: the words on the left, the service's own 9:16 clip in a
+          glow panel on the right. Phones: breadcrumb, headline, intro and the
+          price strip, then the clip, then who it's for. A phone gets no buttons
+          here: the phone bar is the call to action from the first screen.
+          The entrance reuses the home hero's CSS (globals.css, "The hero is the
+          intro"), so it starts on first paint and leaves nothing hidden. */}
+      <section className="relative overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-40 top-0 -z-10 hidden size-[860px] bg-[radial-gradient(closest-side,rgba(31,111,196,0.28),rgba(15,61,110,0.1),rgba(5,6,8,0)_70%)] lg:block"
+        />
+        <div className="container-x mx-auto flex max-w-6xl flex-col pb-14 pt-5 md:pb-24 md:pt-12 lg:grid lg:grid-cols-[minmax(0,1fr)_clamp(300px,27.8vw,400px)] lg:grid-rows-[repeat(5,auto)_1fr] lg:gap-x-24 lg:pb-28">
+          <div className="lg:col-start-1 lg:row-start-1">
+            <Breadcrumbs items={[{ href: "/services/", label: "Services" }, { href: `/services/${s.slug}/`, label: s.name }]} />
+            <h1 className="display-caps mt-5 max-w-[760px] text-[min(13.85vw,3.375rem)] md:mt-10 md:text-[clamp(3.375rem,7.2vw,6.5rem)]">{s.h1}</h1>
+            <p className="hero-sub m-0 mt-4 max-w-[58ch] text-base text-secondary-foreground md:mt-8 md:text-[19px]">{s.intro}</p>
+          </div>
+          <p className="hero-sub order-4 m-0 mt-5 max-w-[60ch] text-[15px] text-muted-foreground md:text-base lg:order-none lg:col-start-1 lg:row-start-2 lg:mt-4">
+            {s.forWho}
           </p>
-          <h1 className="display-caps mt-3 text-5xl md:text-7xl">{s.h1}</h1>
-          <p className="mt-6 max-w-[60ch] text-lg text-secondary-foreground">{s.intro}</p>
-          <p className="mt-4 max-w-[60ch] text-muted-foreground">{s.forWho}</p>
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+          <div className="hero-strip order-2 mt-[18px] flex max-w-[700px] items-baseline justify-between gap-6 border-y border-border py-3.5 md:mt-9 md:items-center md:justify-start md:gap-10 md:py-5 lg:order-none lg:col-start-1 lg:row-start-3">
+            <span className="shrink-0 text-sm md:text-[15px]">
+              from <span className="display-caps text-[44px] leading-none md:text-[56px]">{formatPrice(s.priceFrom)}</span>
+            </span>
+            <span className="max-w-[22ch] text-right text-[13px] text-muted-foreground md:max-w-none md:text-left md:text-[15px]">{s.duration}</span>
+          </div>
+          <div className="hero-cta order-5 mt-8 hidden gap-3 md:flex lg:order-none lg:col-start-1 lg:row-start-4">
             <QuoteCta sms={smsHref(`Hi Imperium, I'd like a quote for ${anA(s.name.toLowerCase())}.\nCar: \nSuburb: `)} />
             <LinkButton href={telHref} variant="ghost">
               Call {site.phoneDisplay}
             </LinkButton>
           </div>
-          <p className="mt-4 text-[15px] text-muted-foreground">{site.quotePromise}</p>
-        </div>
-        <div className="md:col-span-5">
-          {s.video ? (
-            <LoopVideo base={s.video.base} poster={s.video.poster} label={s.imageAlt} className="panel-glow aspect-[4/5] w-full rounded-xl bg-card object-cover" lazyPoster={false} />
-          ) : (
-            <Picture name={s.image} alt={s.imageAlt} sizes="(min-width: 768px) 40vw, 100vw" priority className="panel-glow aspect-[4/5] w-full rounded-xl object-cover" />
-          )}
+          <p className="hero-note order-6 m-0 mt-4 hidden text-[15px] text-muted-foreground md:block lg:order-none lg:col-start-1 lg:row-start-5">{site.quotePromise}</p>
+          <div className="hero-panel order-3 mt-5 md:mt-10 lg:order-none lg:col-start-2 lg:row-span-6 lg:row-start-1 lg:mt-0">
+            {s.video ? (
+              <LoopVideo
+                base={s.video.base}
+                poster={s.video.poster}
+                label={s.imageAlt}
+                className="panel-glow block h-[300px] w-full rounded-xl bg-card object-cover object-[50%_30%] md:h-[440px] lg:aspect-[9/16] lg:h-auto lg:rounded-[14px] lg:object-center"
+                lazyPoster={false}
+              />
+            ) : (
+              <Picture
+                name={s.image}
+                alt={s.imageAlt}
+                sizes="(min-width: 1024px) 400px, 100vw"
+                priority
+                className="panel-glow block h-[300px] w-full rounded-xl object-cover md:h-[440px] lg:aspect-[9/16] lg:h-auto lg:rounded-[14px]"
+              />
+            )}
+          </div>
         </div>
       </section>
 
