@@ -197,10 +197,16 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
 
       {s.slug === "ceramic-coating-canberra" && <WarrantyBand />}
 
-      <section className="border-t border-border">
-        <div className="container-x mx-auto max-w-6xl py-14 md:py-20">
-          <Faq items={s.faq} />
-          <div className="mt-12 grid gap-6 border-t border-border pt-8 md:grid-cols-2">
+      {/* FAQ in a 4/8 split on laptops: the heading on the left, the questions
+          on the right, and the reading links under the questions. Faq itself is
+          shared and unchanged; the split and the mockup's sizes are applied to
+          its heading and list from here. */}
+      <section className="section-y border-t border-border">
+        <div className="container-x mx-auto max-w-6xl">
+          <div className="[&>div>div]:mt-5 [&>div>h2]:text-[clamp(2.75rem,5.6vw,5rem)] md:[&_details_p]:text-base md:[&_summary]:py-[22px] md:[&_summary]:text-[19px] lg:[&>div>div]:col-span-8 lg:[&>div>div]:mt-0 lg:[&>div>h2]:col-span-4 lg:[&>div]:grid lg:[&>div]:grid-cols-12 lg:[&>div]:gap-x-20">
+            <Faq items={s.faq} />
+          </div>
+          <div className="mt-12 grid gap-6 border-t border-border pt-8 md:grid-cols-2 lg:ml-[calc((100%+5rem)/3)]">
             <div>
               <h2 className="text-lg font-semibold">Keep reading</h2>
               <ul className="m-0 mt-3 grid list-none gap-2 p-0 text-[15px]">
@@ -227,7 +233,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
             </div>
           </div>
           {related.length > 0 && (
-            <p className="mt-10 text-[15px] text-muted-foreground">
+            <p className="mt-10 text-[15px] text-muted-foreground lg:ml-[calc((100%+5rem)/3)]">
               Also see:{" "}
               {related.map((r, i) => (
                 <span key={r!.slug}>
