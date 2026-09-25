@@ -5,9 +5,13 @@ import { usePathname } from "next/navigation";
 import { site, smsHref, telHref } from "@/lib/site";
 import { buttonClass } from "@/components/site/link-button";
 
-// Phones only: Text and Call pinned to the bottom. On the home page and the
-// service pages it is there from the first screen, because their heroes have no
-// buttons of their own on a phone; elsewhere it arrives once the hero (and its
+// Pages whose phone hero has no buttons of its own (the 2026 redesign: home,
+// the service pages, /maintenance/ and the area pages), so the bar is there
+// from the first screen.
+const barFromTop = /^\/(|services\/[^/]+\/?|maintenance\/?|service-areas\/[^/]+\/?)$/;
+
+// Phones only: Text and Call pinned to the bottom. On the pages above it is
+// there from the first screen; elsewhere it arrives once the hero (and its
 // buttons) has scrolled away.
 // It steps aside while the quote form is on screen, which on the home page now
 // sits near the bottom, just above the areas and the footer.
@@ -44,8 +48,7 @@ export function MobileBar() {
     return () => io.disconnect();
   }, [pathname]);
 
-  const fromTop = pathname === "/" || /^\/services\/[^/]+\/?$/.test(pathname);
-  const show = (fromTop || scrolled) && !covered;
+  const show = (barFromTop.test(pathname) || scrolled) && !covered;
 
   return (
     <>
