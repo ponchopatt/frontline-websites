@@ -19,10 +19,10 @@ export default function WarrantyPage() {
       <section className="container-x mx-auto max-w-6xl py-14 md:py-20">
         <h1 className="display-caps max-w-4xl text-5xl md:text-7xl">Coating warranty, in writing.</h1>
         <P>
-          Every ceramic coating we apply comes with a written warranty: 3, 5 or 7 years depending on the tier you choose. The full terms are handed to you with the car and match what's on this page. Local competitors don't publish theirs. We do.
+          Every ceramic coating we apply comes with a written warranty: 3, 5 or 7 years depending on the tier you choose. The full terms are handed to you with the car and match what&apos;s on this page. Local competitors don&apos;t publish theirs. We do.
         </P>
 
-        <H>What's covered</H>
+        <H>What&apos;s covered</H>
         <P>Loss of gloss and loss of hydrophobic behaviour (water beading and sheeting) on coated panels, where the coating has been maintained as described below. If the coating fails within the warranty period under those conditions, we re-prep and re-apply the affected panels at no charge.</P>
 
         <H>What keeps it valid</H>
@@ -41,11 +41,11 @@ export default function WarrantyPage() {
           ))}
         </ul>
 
-        <H>What isn't covered</H>
+        <H>What isn&apos;t covered</H>
         <P>Damage from accidents, stone chips, scratches through the coating, paint failure underneath it, improper washing, chemical spills, or work on the coated panels by anyone else. Coatings protect against the environment; they are not a substitute for paint protection film against impact, and they do not protect against hail.</P>
 
         <H>Annual inspection</H>
-        <P>An optional annual check is included at no extra cost. We inspect the coating, decontaminate the panels and top up the hydrophobic layer if needed. It's the easiest way to get the full life out of the coating.{" If you'd rather not think about washing at all, a "}
+        <P>An optional annual check is included at no extra cost. We inspect the coating, decontaminate the panels and top up the hydrophobic layer if needed. It&apos;s the easiest way to get the full life out of the coating.{" If you'd rather not think about washing at all, a "}
           <Link href="/maintenance/" className="underline underline-offset-4">
             maintenance plan
           </Link>{" "}
@@ -54,7 +54,7 @@ export default function WarrantyPage() {
 
         <H>How to claim</H>
         <P>
-          Text or call {site.phoneDisplay}, or email {site.email}, with your name, the car and a couple of photos. We'll book an inspection at your place, confirm what's happened and, if it's covered, re-apply the affected panels. Your rights under the Australian Consumer Law sit alongside this warranty, not beneath it.
+          Text or call {site.phoneDisplay}, or email <span className="wrap-anywhere">{site.email}</span>, with your name, the car and a couple of photos. We&apos;ll book an inspection at your place, confirm what&apos;s happened and, if it&apos;s covered, re-apply the affected panels. Your rights under the Australian Consumer Law sit alongside this warranty, not beneath it.
         </P>
 
         <p className="mt-10 text-[15px] text-muted-foreground">

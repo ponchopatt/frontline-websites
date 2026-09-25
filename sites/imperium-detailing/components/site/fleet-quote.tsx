@@ -30,7 +30,7 @@ const chip = (on: boolean) =>
 // Matched to the Input component beside it: same radius, same fill, same padding.
 // They sit in one grid, so a different corner and a different ground read as a bug.
 const selectClass =
-  "flex h-11 w-full rounded-lg border border-input bg-transparent px-2.5 text-base text-foreground outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30";
+  "flex h-11 w-full rounded-lg border border-input bg-transparent px-2.5 text-base text-foreground focus-visible:border-ring dark:bg-input/30";
 
 const stepBtn =
   "flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-border text-xl leading-none text-foreground transition-colors hover:border-secondary-foreground/50 aria-disabled:opacity-35";
@@ -340,7 +340,7 @@ export function FleetQuote() {
                             value={n}
                             onChange={(e) => setCount(i, s.id, e.currentTarget.valueAsNumber)}
                             aria-label={`How many ${s.label}`}
-                            className="h-11 w-14 rounded-md border border-input bg-background text-center text-base tabular-nums text-foreground outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                            className="h-11 w-14 rounded-md border border-input bg-background text-center text-base tabular-nums text-foreground focus-visible:border-ring"
                           />
                           <button
                             type="button"
@@ -577,7 +577,7 @@ export function FleetQuote() {
                 {"On a phone your messages app should have opened with the details filled in. If it didn't, copy them and text "}
                 {site.phoneDisplay}
                 {", or email "}
-                <a href={`mailto:${site.email}?subject=Fleet%20quote&body=${encodeURIComponent(message)}`} className="underline underline-offset-4">
+                <a href={`mailto:${site.email}?subject=Fleet%20quote&body=${encodeURIComponent(message)}`} className="underline underline-offset-4 wrap-anywhere">
                   {site.email}
                 </a>
                 .

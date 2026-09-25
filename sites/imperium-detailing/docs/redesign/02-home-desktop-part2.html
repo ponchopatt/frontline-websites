@@ -1,0 +1,149 @@
+<!-- Imperium redesign reference: 02-home-desktop-part2. Static design mockup (a design-tool file). Visual source of truth only; do not copy this markup into the app. Text in {{braces}} is filled by the script at the bottom (price guide logic). -->
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<title>Home, desktop, part 2</title>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#050608}
+a{color:#F3F5F8}a:hover{color:#FFFFFF}
+.cap{font-family:'Big Shoulders','Arial Narrow',sans-serif;font-weight:800;text-transform:uppercase;line-height:.88;letter-spacing:.006em;margin:0;text-wrap:balance}
+.wm{font-family:'Big Shoulders','Arial Narrow',sans-serif;font-weight:800;letter-spacing:.025em;font-size:20px;line-height:1}
+.bp{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;background:#3A8FE0;color:#050608;font-weight:600;font-size:16px;text-decoration:none;white-space:nowrap;box-shadow:0 0 0 1px rgba(58,143,224,.35),0 10px 36px rgba(58,143,224,.32)}
+.bp:hover{background:#5AA6F0;color:#050608}
+.bg{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;border:1px solid rgba(194,200,208,.28);color:#F3F5F8;font-weight:600;font-size:16px;text-decoration:none;white-space:nowrap}
+.mu{color:#8A909A}.se{color:#C2C8D0}
+.lnk{color:#C2C8D0;text-decoration:none;font-size:15px}
+.ph{object-fit:cover;display:block}
+.chip{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border:1px solid rgba(194,200,208,.12);border-radius:10px;color:#C2C8D0;cursor:pointer}
+.chip.on{border-color:#3A8FE0;background:rgba(58,143,224,.1);color:#F3F5F8}
+.chip b{font-size:15px;font-weight:600}.chip small{font-size:12px;color:#8A909A}
+.fl{display:flex;flex-direction:column;gap:8px}
+.fl label{font-size:14px;font-weight:500}
+.in{height:48px;box-sizing:border-box;border:1px solid rgba(194,200,208,.46);border-radius:8px;background:rgba(194,200,208,.06);color:#F3F5F8;font:400 16px 'Instrument Sans',sans-serif;padding:0 14px}
+.in::placeholder{color:#8A909A}
+</style>
+</helmet>
+<div style="width: 1440px; height: 5560px; overflow: hidden; background: #050608; color: #F3F5F8; font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; position: relative"><!-- Our work -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 112px 120px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end">
+<h2 class="cap" style="font-size: 92px; max-width: 760px">Finishes that speak for themselves.</h2>
+<a class="lnk" href="#" style="margin-bottom: 10px">More on Instagram, @imperiumdetailing_</a>
+</div>
+<div style="margin-top: 56px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<figure style="margin: 0"><img class="ph" src="../../public/images/mclaren-650s-1026.webp" alt="White McLaren 650S on a Canberra driveway" style="width: 100%; height: 480px; border-radius: 12px"><figcaption class="mu" style="margin-top: 12px; font-size: 14px">McLaren 650S</figcaption></figure>
+<figure style="margin: 0"><img class="ph" src="../../public/images/huracan-driveway-883.webp" alt="Satin-black Lamborghini Huracán in a driveway" style="width: 100%; height: 480px; border-radius: 12px; object-position: 50% 35%"><figcaption class="mu" style="margin-top: 12px; font-size: 14px">Lamborghini Huracán</figcaption></figure>
+<figure style="margin: 0"><img class="ph" src="../../public/media/r8-detail-poster.webp" alt="Black Audi R8 outside a garage" style="width: 100%; height: 480px; border-radius: 12px"><figcaption class="mu" style="margin-top: 12px; font-size: 14px">Audi R8</figcaption></figure>
+<figure style="margin: 0"><img class="ph" src="../../public/images/ranger-wildtrak-1125.webp" alt="Ford Ranger Wildtrak in a shed" style="width: 100%; height: 480px; border-radius: 12px"><figcaption class="mu" style="margin-top: 12px; font-size: 14px">Ford Ranger Wildtrak</figcaption></figure>
+</div>
+</section>
+
+<!-- The wash -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 112px 120px">
+<h2 class="cap" style="font-size: 92px">What's included in a detail.</h2>
+<p class="mu" style="margin: 24px 0 0; font-size: 18px; max-width: 58ch">Five steps before anything is called finished. Tap one to watch it.</p>
+<ol style="margin: 56px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px">
+<li><img class="ph" src="../../public/images/m4-foam-wide-1080.webp" alt="Snow foam on a green BMW M4" style="width: 100%; height: 340px; border-radius: 12px"><p style="margin: 16px 0 0; display: flex; gap: 10px; align-items: baseline"><span class="cap" style="font-size: 22px; color: #3A8FE0">01</span><span class="cap" style="font-size: 30px">Prewash</span></p><p class="mu" style="margin: 8px 0 0; font-size: 14px">A thick layer of foam sits on the paint and lifts the loose grit off before anything touches it.</p></li>
+<li><img class="ph" src="../../public/images/m4-mitt-1080.webp" alt="A wash mitt on the bonnet of a BMW M4" style="width: 100%; height: 340px; border-radius: 12px"><p style="margin: 16px 0 0; display: flex; gap: 10px; align-items: baseline"><span class="cap" style="font-size: 22px; color: #3A8FE0">02</span><span class="cap" style="font-size: 30px">Touch wash</span></p><p class="mu" style="margin: 8px 0 0; font-size: 14px">Two buckets, a clean mitt and pH-neutral shampoo, one panel at a time, rinsing after every pass.</p></li>
+<li><div style="width: 100%; height: 340px; border-radius: 12px; border: 1px dashed rgba(194,200,208,.28); background: #0C0F14; display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; box-sizing: border-box"><span class="mu" style="font-size: 13px">[Iron decon clip, 9:16. Not in the repo yet]</span></div><p style="margin: 16px 0 0; display: flex; gap: 10px; align-items: baseline"><span class="cap" style="font-size: 22px; color: #3A8FE0">03</span><span class="cap" style="font-size: 30px">Iron decon</span></p><p class="mu" style="margin: 8px 0 0; font-size: 14px">A chemical that reacts with the iron thrown off your brakes and turns deep purple as it dissolves it.</p></li>
+<li><div style="width: 100%; height: 340px; border-radius: 12px; border: 1px dashed rgba(194,200,208,.28); background: #0C0F14; display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; box-sizing: border-box"><span class="mu" style="font-size: 13px">[Clay bar clip, 9:16. Not in the repo yet]</span></div><p style="margin: 16px 0 0; display: flex; gap: 10px; align-items: baseline"><span class="cap" style="font-size: 22px; color: #3A8FE0">04</span><span class="cap" style="font-size: 30px">Clay bar</span></p><p class="mu" style="margin: 8px 0 0; font-size: 14px">Clay glides over lubricated paint and pulls out what's bonded into it: overspray, rail dust and sap.</p></li>
+<li><img class="ph" src="../../public/images/beading-blue-1024.webp" alt="Water beading on coated paint" style="width: 100%; height: 340px; border-radius: 12px"><p style="margin: 16px 0 0; display: flex; gap: 10px; align-items: baseline"><span class="cap" style="font-size: 22px; color: #3A8FE0">05</span><span class="cap" style="font-size: 30px">Ceramic sealant</span></p><p class="mu" style="margin: 8px 0 0; font-size: 14px">The protection goes on last, panel by panel, and cures hard onto the clear coat.</p></li>
+</ol>
+</section>
+
+<!-- How it works -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 112px 120px">
+<h2 class="cap" style="font-size: 92px">We come to you.</h2>
+<p class="mu" style="margin: 24px 0 0; font-size: 18px; max-width: 58ch">No shop to drop the car at. Your driveway, your apartment car park or your workplace, anywhere in Canberra and Queanbeyan, for the same price.</p>
+<ol style="margin: 56px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px">
+<li style="border-top: 1px solid rgba(194,200,208,.12); padding-top: 28px"><span class="cap" style="font-size: 72px; color: #1F6FC4">1</span><h3 style="margin: 16px 0 0; font-size: 22px; font-weight: 600">Text us your car and suburb</h3><p class="mu" style="margin: 10px 0 0; font-size: 15px">A photo helps. You'll have a quote back within a few hours, 7 days a week. The quote is fixed once we've seen the car: no surprise invoices.</p></li>
+<li style="border-top: 1px solid rgba(194,200,208,.12); padding-top: 28px"><span class="cap" style="font-size: 72px; color: #1F6FC4">2</span><h3 style="margin: 16px 0 0; font-size: 22px; font-weight: 600">We arrive with everything</h3><p class="mu" style="margin: 10px 0 0; font-size: 15px">An unmarked van with the gear, the product and the people. You need an outdoor tap and a 240V power point within reach; correction and coating also need a garage or covered space.</p></li>
+<li style="border-top: 1px solid rgba(194,200,208,.12); padding-top: 28px"><span class="cap" style="font-size: 72px; color: #1F6FC4">3</span><h3 style="margin: 16px 0 0; font-size: 22px; font-weight: 600">Handover</h3><p class="mu" style="margin: 10px 0 0; font-size: 15px">We send a photo when we're done, walk you through the finish, and take card or transfer once you're happy. Coated cars leave with a wash guide and a written warranty.</p></li>
+</ol>
+</section>
+
+<!-- Reviews -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); background: rgba(12,15,20,.4); padding: 112px 120px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 48px">
+<h2 class="cap" style="font-size: 92px; max-width: 820px">Trusted by Canberra's most particular owners.</h2>
+<div style="text-align: right; margin-bottom: 6px"><span class="cap" style="font-size: 56px; line-height: 1">4.9</span><p class="mu" style="margin: 6px 0 0; font-size: 14px">45 Google reviews</p><a class="lnk" href="#" style="font-size: 14px">Read them all</a></div>
+</div>
+<div style="margin-top: 56px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+<figure style="margin: 0; padding: 32px; border: 1px solid rgba(194,200,208,.12); border-radius: 12px; background: #0C0F14"><blockquote style="margin: 0; font-size: 19px; line-height: 1.5">"Car came back looking better than new, spotless inside and out, unreal attention to detail, and top-tier service."</blockquote><figcaption class="mu" style="margin-top: 20px; font-size: 14px">Bradley</figcaption></figure>
+<figure style="margin: 0; padding: 32px; border: 1px solid rgba(194,200,208,.12); border-radius: 12px; background: #0C0F14"><blockquote style="margin: 0; font-size: 19px; line-height: 1.5">"Guys were extra thorough in cleaning the car. (I thought it was clean and they told me there was an hour to go to get it perfect)."</blockquote><figcaption class="mu" style="margin-top: 20px; font-size: 14px">Simon Wilson</figcaption></figure>
+<figure style="margin: 0; padding: 32px; border: 1px solid rgba(194,200,208,.12); border-radius: 12px; background: #0C0F14"><blockquote style="margin: 0; font-size: 19px; line-height: 1.5">"Mobile service that came to my house at 9am on a public holiday for a detail organised last minute. Haven't seen my car cleaner since I bought it."</blockquote><figcaption class="mu" style="margin-top: 20px; font-size: 14px">SoyBean Sensei</figcaption></figure>
+<figure style="margin: 0; padding: 32px; border: 1px solid rgba(194,200,208,.12); border-radius: 12px; background: #0C0F14"><blockquote style="margin: 0; font-size: 19px; line-height: 1.5">"Ananth nailed it. Stage 2 correction + ceramic on both cars, came up mint. Easy 5/5."</blockquote><figcaption class="mu" style="margin-top: 20px; font-size: 14px">Hammad Kamal</figcaption></figure>
+<figure style="margin: 0; padding: 32px; border: 1px solid rgba(194,200,208,.12); border-radius: 12px; background: #0C0F14"><blockquote style="margin: 0; font-size: 19px; line-height: 1.5">"They made our two year old Tesla Y look better than brand new!"</blockquote><figcaption class="mu" style="margin-top: 20px; font-size: 14px">Matt Yannopoulos</figcaption></figure>
+<div style="padding: 32px; border-radius: 12px; border: 1px solid rgba(58,143,224,.4); display: flex; flex-direction: column; justify-content: space-between"><p class="se" style="margin: 0; font-size: 19px">45 reviews on Google, every one from a real customer.</p><a class="bg" href="#" style="align-self: flex-start; margin-top: 24px">See all reviews</a></div>
+</div>
+</section>
+
+<!-- Quote form -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 112px 120px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 80px">
+<div>
+<h2 class="cap" style="font-size: 92px">Book your detail.</h2>
+<p class="mu" style="margin: 24px 0 0; font-size: 18px; max-width: 40ch">You'll have a quote back within a few hours, 7 days a week.</p>
+<dl style="margin: 48px 0 0; display: grid; gap: 20px; font-size: 15px">
+<div><dt class="mu">Text or call</dt><dd style="margin: 4px 0 0; font-size: 20px; font-weight: 600">0426 661 820</dd></div>
+<div><dt class="mu">Hours</dt><dd style="margin: 4px 0 0">Every day, 8:30am to 5:30pm</dd></div>
+<div><dt class="mu">Notice</dt><dd style="margin: 4px 0 0">Book at least a day ahead. Same-day is sometimes possible by phone.</dd></div>
+<div><dt class="mu">On the day, we need</dt><dd style="margin: 4px 0 0">An outdoor tap and a 240V power point. Correction and coating also need a garage or covered space.</dd></div>
+</dl>
+</div>
+<form style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-content: start; padding: 40px; border: 1px solid rgba(194,200,208,.12); border-radius: 14px; background: #0C0F14">
+<div class="fl"><label for="d1">Which service?</label><select id="d1" class="in"><option>Ceramic coating</option></select></div>
+<div class="fl"><label for="d2">When do you want it done?</label><select id="d2" class="in"><option>This week</option></select></div>
+<div class="fl"><label for="d3">Your car (make, model, year)</label><input id="d3" class="in" placeholder="BMW M4 Competition, 2023"></div>
+<div class="fl"><label for="d4">Your suburb</label><input id="d4" class="in" placeholder="Gungahlin"></div>
+<div class="fl"><label for="d5">Your name</label><input id="d5" class="in" placeholder="Alex Smith"></div>
+<div class="fl"><label for="d6">Mobile number</label><input id="d6" class="in" placeholder="0400 000 000"></div>
+<div class="fl" style="grid-column: span 2"><label for="d7">Email (optional)</label><input id="d7" class="in" placeholder="you@example.com"></div>
+<div class="fl" style="grid-column: span 2"><label for="d8">Anything we should know? (optional)</label><textarea id="d8" class="in" style="height: 96px; padding: 12px 14px" placeholder="Paint condition, swirl marks, pet hair, preferred days"></textarea></div>
+<div style="grid-column: span 2; display: flex; align-items: center; gap: 20px"><button class="bp" type="submit" style="border: 0; font-family: inherit; cursor: pointer">Send for a quote</button><span class="mu" style="font-size: 15px">Rather talk? <a href="#" style="text-underline-offset: 4px">Call 0426 661 820</a></span></div>
+</form>
+</section>
+
+<!-- Areas -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 96px 120px">
+<div style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 80px; align-items: start">
+<div><h2 class="cap" style="font-size: 64px">Canberra and Queanbeyan.</h2><p class="mu" style="margin: 20px 0 0; font-size: 16px">One van, nine districts, no call-out fee.</p></div>
+<ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid rgba(194,200,208,.12)">
+<li style="border-bottom: 1px solid rgba(194,200,208,.12)"><a href="#" style="display: block; padding: 18px 0; text-decoration: none; font-size: 18px">Inner North</a></li>
+<li style="border-bottom: 1px solid rgba(194,200,208,.12)"><a href="#" style="display: block; padding: 18px 0; text-decoration: none; font-size: 18px">Inner South</a></li>
+<li style="border-bottom: 1px solid rgba(194,200,208,.12)"><a href="#" style="display: block; padding: 18px 0; text-decoration: none; font-size: 18px">Gungahlin</a></li>
+<li style="border-bottom: 1px solid rgba(194,200,208,.12)"><a href="#" style="display: block; padding: 18px 0; text-decoration: none; font-size: 18px">Belconnen</a></li>
+<li style="border-bottom: 1px solid rgba(194,200,208,.12)"><a href="#" style="display: block; padding: 18px 0; text-decoration: none; font-size: 18px">Woden Valley</a></li>
+<li style="border-bottom: 1px solid rgba(194,200,208,.12)"><a href="#" style="display: block; padding: 18px 0; text-decoration: none; font-size: 18px">Weston Creek</a></li>
+<li style="border-bottom: 1px solid rgba(194,200,208,.12)"><a href="#" style="display: block; padding: 18px 0; text-decoration: none; font-size: 18px">Tuggeranong</a></li>
+<li style="border-bottom: 1px solid rgba(194,200,208,.12)"><a href="#" style="display: block; padding: 18px 0; text-decoration: none; font-size: 18px">Molonglo Valley</a></li>
+<li style="border-bottom: 1px solid rgba(194,200,208,.12)"><a href="#" style="display: block; padding: 18px 0; text-decoration: none; font-size: 18px">Queanbeyan</a></li>
+</ul>
+</div>
+</section>
+
+<!-- Footer -->
+<footer style="border-top: 1px solid rgba(194,200,208,.12); padding: 80px 120px 0; overflow: hidden">
+<div style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 2fr) minmax(0, 2fr) minmax(0, 3fr); gap: 40px">
+<div><img src="../../public/brand/logo-full-dark.png" alt="Imperium Detailing" style="height: 96px; width: auto"><p class="se" style="margin: 20px 0 0; font-size: 15px">Showroom finish. Every time.</p><p class="mu" style="margin: 8px 0 0; font-size: 14px">Every day, 8:30am to 5:30pm</p></div>
+<div style="display: flex; flex-direction: column; gap: 10px; font-size: 15px"><span class="mu" style="font-size: 13px">Services</span><a class="lnk" href="#">Ceramic coating</a><a class="lnk" href="#">Paint correction</a><a class="lnk" href="#">Full detail</a><a class="lnk" href="#">Interior detail</a><a class="lnk" href="#">Exterior detail</a><a class="lnk" href="#">Maintenance plans</a><a class="lnk" href="#">Fleet detailing</a><a class="lnk" href="#">Tesla and EV detailing</a></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><span class="mu" style="font-size: 13px">Company</span><a class="lnk" href="#">Reviews</a><a class="lnk" href="#">Warranty</a><a class="lnk" href="#">Guides</a><a class="lnk" href="#">Areas</a><a class="lnk" href="#">Privacy</a><a class="lnk" href="#">Terms</a></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><span class="mu" style="font-size: 13px">Contact</span><a class="lnk" href="#">0426 661 820</a><a class="lnk" href="#">imperiumdetailingmanagement@gmail.com</a><a class="lnk" href="#">@imperiumdetailing_</a></div>
+</div>
+<p class="mu" style="margin: 56px 0 0; font-size: 13px">© 2026 Imperium Detailing. ABN 81 254 863 265</p>
+<div aria-hidden="true" class="cap" style="margin-top: 24px; font-size: 330px; line-height: .8; letter-spacing: -.01em; background: linear-gradient(180deg, rgba(243,245,248,.9) 0%, rgba(243,245,248,.06) 90%); -webkit-background-clip: text; background-clip: text; color: transparent; white-space: nowrap">Imperium</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":5560}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

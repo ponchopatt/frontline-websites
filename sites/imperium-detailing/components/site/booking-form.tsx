@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { site, smsHref, telHref } from "@/lib/site";
 import { track } from "@/lib/track";
+import { buttonClass } from "@/components/site/link-button";
 
 // The playbook's four qualifying questions plus contact details.
 const serviceOptions = [
@@ -23,8 +24,10 @@ type Status = "idle" | "sending" | "sent" | "fallback" | "error";
 
 // Matched to the Input component beside it: same radius, same fill, same padding.
 // They sit in one grid, so a different corner and a different ground read as a bug.
+// Focus is the site's own ring (globals.css, :focus-visible), the same 2px blue
+// outline every other control gets, plus the border turning blue.
 const selectClass =
-  "flex h-11 w-full rounded-lg border border-input bg-transparent px-2.5 text-base text-foreground outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30";
+  "flex h-12 w-full rounded-lg border border-input bg-transparent px-2.5 text-base text-foreground focus-visible:border-ring dark:bg-input/30";
 
 export function BookingForm({ compact = false, defaultService = "" }: { compact?: boolean; defaultService?: string }) {
   const [status, setStatus] = useState<Status>("idle");
@@ -32,11 +35,23 @@ export function BookingForm({ compact = false, defaultService = "" }: { compact?
   const [copied, setCopied] = useState(false);
   const serviceRef = useRef<HTMLSelectElement>(null);
   const fallbackRef = useRef<HTMLDivElement>(null);
+  const sentRef = useRef<HTMLHeadingElement>(null);
 
   // The fallback panel appends below the submit button, so on a laptop it can
   // land off-screen and read as "nothing happened". Bring it into view.
+  //
+  // A sent form swaps itself for a short thank-you. On a phone the submit button
+  // is two screens below where that note lands, so the page used to be left
+  // showing whatever came after the form, and the confirmation went unseen.
+  // Bring it into view and put focus on its heading, so a screen reader reads it
+  // and the next Tab starts from there. No smooth scroll for reduced motion.
   useEffect(() => {
-    if (status === "fallback" || status === "error") fallbackRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    const behavior: ScrollBehavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    if (status === "fallback" || status === "error") fallbackRef.current?.scrollIntoView({ block: "nearest", behavior });
+    if (status === "sent" && sentRef.current) {
+      sentRef.current.scrollIntoView({ block: "center", behavior });
+      sentRef.current.focus({ preventScroll: true });
+    }
   }, [status]);
 
   // A link can pre-pick the service: /book/?service=Ceramic%20coating
@@ -128,7 +143,9 @@ export function BookingForm({ compact = false, defaultService = "" }: { compact?
   if (status === "sent") {
     return (
       <div className="rounded-lg border border-border bg-card p-6" role="status">
-        <h3 className="text-xl font-semibold">{"Done. We'll text you shortly."}</h3>
+        <h3 ref={sentRef} tabIndex={-1} className="scroll-mt-24 text-xl font-semibold outline-none">
+          {"Done. We'll text you shortly."}
+        </h3>
         <p className="mt-2 text-muted-foreground">
           {site.quotePromise} It will come from {site.phoneDisplay}, so save the number.
         </p>
@@ -167,23 +184,23 @@ export function BookingForm({ compact = false, defaultService = "" }: { compact?
         </div>
         <div className="grid gap-2">
           <Label htmlFor="bf-vehicle">Your car (make, model, year)</Label>
-          <Input id="bf-vehicle" name="vehicle" required placeholder="BMW M4 Competition, 2023" autoComplete="off" className="h-11 text-base" />
+          <Input id="bf-vehicle" name="vehicle" required placeholder="BMW M4 Competition, 2023" autoComplete="off" className="h-12 text-base" />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="bf-suburb">Your suburb</Label>
-          <Input id="bf-suburb" name="suburb" required placeholder="Gungahlin" autoComplete="address-level2" className="h-11 text-base" />
+          <Input id="bf-suburb" name="suburb" required placeholder="Gungahlin" autoComplete="address-level2" className="h-12 text-base" />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="bf-name">Your name</Label>
-          <Input id="bf-name" name="name" required placeholder="Alex Smith" autoComplete="name" className="h-11 text-base" />
+          <Input id="bf-name" name="name" required placeholder="Alex Smith" autoComplete="name" className="h-12 text-base" />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="bf-phone">Mobile number</Label>
-          <Input id="bf-phone" name="phone" type="tel" required placeholder="0400 000 000" autoComplete="tel" className="h-11 text-base" />
+          <Input id="bf-phone" name="phone" type="tel" required placeholder="0400 000 000" autoComplete="tel" className="h-12 text-base" />
         </div>
         <div className={`grid gap-2 ${compact ? "" : "sm:col-span-2"}`}>
           <Label htmlFor="bf-email">Email (optional)</Label>
-          <Input id="bf-email" name="email" type="email" placeholder="you@example.com" autoComplete="email" className="h-11 text-base" />
+          <Input id="bf-email" name="email" type="email" placeholder="you@example.com" autoComplete="email" className="h-12 text-base" />
         </div>
         <div className={`grid gap-2 ${compact ? "" : "sm:col-span-2"}`}>
           <Label htmlFor="bf-notes">Anything we should know? (optional)</Label>
@@ -201,7 +218,7 @@ export function BookingForm({ compact = false, defaultService = "" }: { compact?
         <button
           type="submit"
           disabled={status === "sending"}
-          className="lift inline-flex min-h-[52px] items-center justify-center rounded-lg bg-accent px-6 text-base font-semibold text-accent-foreground hover:bg-[#5aa6f0] disabled:opacity-60"
+          className={`${buttonClass("primary")} w-full disabled:opacity-60 sm:w-auto`}
         >
           {status === "sending" ? "Sending…" : "Request my quote"}
         </button>
@@ -235,7 +252,7 @@ export function BookingForm({ compact = false, defaultService = "" }: { compact?
             {"On a phone, your messages app should have opened with the details filled in. If it didn't, copy them and text "}
             {site.phoneDisplay}
             {", or email "}
-            <a href={`mailto:${site.email}?subject=Quote%20request&body=${encodeURIComponent(message)}`} className="underline underline-offset-4">
+            <a href={`mailto:${site.email}?subject=Quote%20request&body=${encodeURIComponent(message)}`} className="underline underline-offset-4 wrap-anywhere">
               {site.email}
             </a>
             .

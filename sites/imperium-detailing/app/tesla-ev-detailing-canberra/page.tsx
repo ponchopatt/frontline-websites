@@ -79,7 +79,7 @@ export default function EvPage() {
           <p className="mt-4 text-[15px] text-muted-foreground">{site.quotePromise}</p>
         </div>
         <div className="md:col-span-5">
-          <LoopVideo base="/media/beading-720" poster="/media/beading-poster.webp" label="Water beading tightly on freshly coated paint" className="panel-glow aspect-[4/5] w-full rounded-xl bg-card object-cover" />
+          <LoopVideo base="/media/beading-720" poster="/media/beading-poster.webp" label="Water beading tightly on freshly coated paint" className="panel-glow aspect-[4/5] w-full rounded-xl bg-card object-cover" lazyPoster={false} />
         </div>
       </section>
 

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { nav, site, telHref } from "@/lib/site";
+import { buttonClass } from "@/components/site/link-button";
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -28,9 +29,13 @@ export function Header() {
   const [solid, setSolid] = useState(false);
   const [tucked, setTucked] = useState(false);
 
-  useEffect(() => {
+  // Close the menu when the page changes (set during render, React's pattern for
+  // resetting state on a changed value, rather than in an effect).
+  const [menuPath, setMenuPath] = useState(pathname);
+  if (menuPath !== pathname) {
+    setMenuPath(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   // Escape is how anyone expects to back out of an open menu, and without it a
   // keyboard user has to tab through every link to get out of one.
@@ -100,7 +105,7 @@ export function Header() {
           </a>
           <Link
             href="/book/"
-            className="lift inline-flex h-11 items-center rounded-full bg-accent px-5 text-[15px] font-semibold text-accent-foreground no-underline hover:bg-[#5aa6f0]"
+            className="lift cta-glow inline-flex h-11 items-center rounded-full bg-accent px-[22px] text-[15px] font-semibold text-accent-foreground no-underline hover:bg-[#5aa6f0]"
           >
             Get a quote
           </Link>
@@ -134,11 +139,7 @@ export function Header() {
           <a href={telHref} className="border-b border-border py-4 text-lg text-foreground no-underline">
             Call {site.phoneDisplay}
           </a>
-          <Link
-            href="/book/"
-           
-            className="my-4 inline-flex min-h-[52px] items-center justify-center rounded-lg bg-accent text-base font-semibold text-accent-foreground no-underline"
-          >
+          <Link href="/book/" className={`my-4 ${buttonClass("primary")}`}>
             Get a quote
           </Link>
         </nav>

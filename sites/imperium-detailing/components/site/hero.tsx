@@ -1,48 +1,103 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { preload } from "react-dom";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import Link from "next/link";
 import { site, smsHref, telHref, prices } from "@/lib/site";
-import { services } from "@/lib/services";
-import { Marquee } from "@/components/site/marquee";
+import { getService } from "@/lib/services";
+import { hasWebm } from "@/lib/media";
+import { QuoteCta } from "@/components/site/quote-cta";
+import { buttonVariants, pill } from "@/components/site/link-button";
 
-gsap.registerPlugin(useGSAP);
+// TODO(pat): swap for one calm continuous shot of a finished car.
+// The brief's placeholder, m3-gtr-720, turned out to be a fast-cut reel (six
+// shots of two cars in nine seconds), which is exactly what the hero is meant
+// to stop doing. This is the calmest single-car clip in public/media: one
+// unbroken pan along a corrected black Mercedes. There is no 1080 cut of it,
+// so `hd` is empty and laptops get the 720 file too; add one here when there is.
+const clip = {
+  base: "/media/paint-correction-720",
+  hd: null as string | null,
+  poster: "/media/paint-correction-poster.webp",
+  // Phones show the clip as a short landscape band (412x259 on a Lighthouse
+  // phone), so they get a 720x540 cut of the 720x1280 poster instead: cropped
+  // around the same 58% line the band's object-position shows, so the pixels
+  // on screen are the same ones, at under half the bytes (34KB against 74KB).
+  // Cut from the full poster with sharp; recut it if the poster changes.
+  posterPhone: "/media/paint-correction-poster-phone.webp",
+  label: "A slow pan along a black Mercedes after paint correction, the garage lights reflected sharp in the paint",
+};
 
-type PlayState = "playing" | "blocked" | "reduced";
+// waiting: page still loading, the poster shows. playing: the clip runs.
+// blocked: the browser refused autoplay.
+type PlayState = "waiting" | "playing" | "blocked";
+
+// Reduced motion or Save-Data: the clip is never fetched unless they press play.
+const REDUCE = "(prefers-reduced-motion: reduce)";
+const holdClip = () =>
+  window.matchMedia(REDUCE).matches || (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
+const onHoldChange = (cb: () => void) => {
+  const mq = window.matchMedia(REDUCE);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+};
+
+// Pick the size for this screen; WebM first when it is the smaller file, MP4 as
+// the fallback. Only ever called once the page has loaded or someone pressed play.
+function attachSources(video: HTMLVideoElement) {
+  if (video.querySelector("source")) return;
+  const base = clip.hd && window.matchMedia("(min-width: 900px)").matches ? clip.hd : clip.base;
+  const pairs = hasWebm(base)
+    ? ([
+        ["webm", "video/webm"],
+        ["mp4", "video/mp4"],
+      ] as const)
+    : ([["mp4", "video/mp4"]] as const);
+  for (const [ext, type] of pairs) {
+    const s = document.createElement("source");
+    s.src = `${base}.${ext}`;
+    s.type = type;
+    video.appendChild(s);
+  }
+  video.load();
+}
+
+const strip = [
+  { slug: "ceramic-coating-canberra", price: prices.ceramic },
+  { slug: "paint-correction-canberra", price: prices.correction },
+  { slug: "full-car-detail-canberra", price: prices.full },
+].map((p) => ({ ...p, service: getService(p.slug)! }));
 
 export function Hero() {
-  preload("/media/hero-poster.webp", { as: "image", fetchPriority: "high" });
-  const root = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [state, setState] = useState<PlayState>("playing");
+  const [state, setState] = useState<PlayState>("waiting");
+  const held = useSyncExternalStore(onHoldChange, holdClip, () => false);
 
+  // The poster carries the first screen and the clip starts once the page has
+  // loaded and the browser has a free moment, so it never races the page's own
+  // CSS, fonts and scripts. Reduced motion and Save-Data never fetch it. This is
+  // the only video the first screen loads.
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const wide = window.matchMedia("(min-width: 900px)").matches;
+    if (!video || held) return;
+    let idle = 0;
+    const start = () => {
+      const go = () => {
+        attachSources(video);
+        video.play().then(() => setState("playing")).catch(() => setState("blocked"));
+      };
+      if (typeof window.requestIdleCallback === "function") idle = window.requestIdleCallback(go, { timeout: 1500 });
+      else idle = window.setTimeout(go, 200);
+    };
+    if (document.readyState === "complete") start();
+    else window.addEventListener("load", start, { once: true });
+    return () => {
+      window.removeEventListener("load", start);
+      if (typeof window.cancelIdleCallback === "function") window.cancelIdleCallback(idle);
+      else window.clearTimeout(idle);
+    };
+  }, [held]);
 
-    // Pick the size for this screen; WebM first, MP4 as the fallback.
-    const base = wide ? "/media/hero-1080" : "/media/hero-720";
-    while (video.firstChild) video.removeChild(video.firstChild);
-    for (const [ext, type] of [["webm", "video/webm"], ["mp4", "video/mp4"]] as const) {
-      const s = document.createElement("source");
-      s.src = `${base}.${ext}`;
-      s.type = type;
-      video.appendChild(s);
-    }
-    video.preload = "auto";
-    video.load();
-
-    if (reduced) setState("reduced");
-    else video.play().then(() => setState("playing")).catch(() => setState("blocked"));
-  }, []);
-
-  // Otherwise the hero keeps decoding the whole way down the page: a full video
-  // stream's worth of work while you are looking at something else entirely. On a
-  // phone that is the difference between the gallery scrolling smoothly and not.
+  // Stop decoding once the hero has scrolled away.
   useEffect(() => {
     const v = videoRef.current;
     if (!v || state !== "playing") return;
@@ -60,121 +115,119 @@ export function Hero() {
   const replay = () => {
     const v = videoRef.current;
     if (!v) return;
+    attachSources(v);
     v.currentTime = 0;
     v.play().then(() => setState("playing")).catch(() => setState("blocked"));
   };
 
-  // The one orchestrated moment: waits for the intro curtain, then lines rise out of
-  // their masks while the panel settles into place.
-  useGSAP(
-    () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      const tl = gsap.timeline({ paused: true, defaults: { ease: "expo.out" } });
-      tl.from(".hero-panel", { opacity: 0, y: 28, duration: 1.0 }, 0)
-        .from(".hero-line > span", { yPercent: 110, duration: 0.9, stagger: 0.09 }, 0.1)
-        .from(".hero-sub", { opacity: 0, y: 12, duration: 0.55 }, 0.55)
-        .from(".hero-cta > *", { opacity: 0, y: 12, duration: 0.55, stagger: 0.06 }, 0.65)
-        .from(".hero-note", { opacity: 0, duration: 0.5 }, 0.8)
-        .from(".hero-strip", { opacity: 0, duration: 0.6 }, 0.85);
-      const root = document.documentElement;
-      if (root.dataset.intro === "done" && !root.dataset.wipe) tl.play();
-      else window.addEventListener("intro:lifting", () => tl.play(), { once: true });
-    },
-    { scope: root },
-  );
+  const playLabel = state === "blocked" || (held && state !== "playing") ? "Play the clip" : null;
 
-  const playLabel = state === "blocked" || state === "reduced" ? "Play the clip" : null;
-  const strip = [...services.map((s) => s.name), "Mobile across Canberra and Queanbeyan", "No call-out fee"];
-
+  // The entrance is CSS (globals.css, "The hero is the intro"): it starts on first
+  // paint rather than after hydration, and it cannot leave anything hidden. The
+  // headline itself is not animated, so it paints with the HTML.
+  //
+  // Phones: the clip is a band across the top with the car's face in its top
+  // third, fading into the page (280px on a 390x844 phone, shorter on a shorter
+  // screen so the prices still clear the phone bar); the headline and the price strip sit under it,
+  // all above the phone bar, which is the call to action (no buttons here).
+  // Tablets: the same, with the buttons back (there is no phone bar).
+  // Laptops: two columns, the words on the left and one tall 9:16 panel on the
+  // right. The bottom-right corner stays empty for the chat bubble (60px, 20px
+  // in from the corner): below 1400px wide the panel reaches into the last
+  // 100px on the right, so there it is also capped by the screen's height, to
+  // end 100px above the bottom of the first screen (72px header + 72px top
+  // padding + 8px + 100px, plus 8px to spare = 260px). From 1400px up it clears the corner anyway.
   return (
-    <section ref={root} aria-label="Imperium Detailing" className="relative overflow-hidden">
-      {/* Full-bleed backdrop: a blurred frame of the footage, so the header floats over it. */}
-      <div aria-hidden="true" className="absolute inset-x-0 -top-[72px] bottom-0 -z-10 hidden md:block">
-        <img src="/media/hero-poster.webp" width={720} height={1280} alt="" className="h-full w-full scale-125 object-cover opacity-40 blur-3xl saturate-125" />
-        <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_70%_40%,rgba(31,111,196,0.22),transparent_70%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(5,6,8,0.55),rgba(5,6,8,0.15)_35%,rgba(5,6,8,0.6)_75%,#050608_100%)]" />
-      </div>
-
-      <div className="container-x relative mx-auto grid min-h-[calc(100svh-72px)] max-w-6xl items-end pb-10 md:min-h-[calc(92vh-72px)] md:grid-cols-12 md:items-center md:pb-0 md:pt-6">
-        {/* Video: a glowing portrait panel on desktop, the full background on phones. */}
-        <div className="hero-panel absolute inset-0 md:relative md:col-span-5 md:col-start-8 md:row-start-1 md:aspect-[9/16] md:h-[min(76vh,780px)] md:w-auto md:justify-self-end">
-          <video
-            ref={videoRef}
-            muted
-            loop
-            playsInline
-            preload="none"
-            poster="/media/hero-poster.webp"
-            aria-label="Washing and drying a green BMW M4 in a Canberra driveway, ending on an Imperium Detailing towel"
-            className="panel-glow absolute inset-0 h-full w-full bg-card object-cover md:static md:rounded-xl"
-          >
-            {/* No <source> here on purpose. The effect above picks the right size
-                for the screen and appends its own pair; a hard-coded one was
-                fetched in full on every load and then thrown away — 1.9MB wasted
-                before anyone had scrolled. Without JS the poster stands in, which
-                is what a preload="none" video with no autoplay would show anyway. */}
-          </video>
-          {playLabel && (
-            <button
-              type="button"
-              onClick={replay}
-              className="absolute right-4 top-4 z-10 rounded-full border border-white/20 bg-background/60 px-4 py-2 text-sm text-foreground backdrop-blur hover:bg-background/80"
+    <section aria-label="Imperium Detailing" className="relative overflow-hidden">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-[120px] top-10 -z-10 hidden size-[900px] bg-[radial-gradient(closest-side,rgba(31,111,196,0.30),rgba(15,61,110,0.12),rgba(5,6,8,0)_70%)] lg:block"
+      />
+      <div className="mx-auto max-w-6xl lg:container-x lg:grid lg:grid-cols-[minmax(0,1fr)_clamp(300px,29.2vw,420px)] lg:gap-x-20 lg:max-[1400px]:grid-cols-[minmax(0,1fr)_min(clamp(300px,29.2vw,420px),max(240px,calc((100svh-260px)*9/16)))] lg:pb-[120px] lg:pt-[72px]">
+        <div className="hero-panel relative lg:col-start-2 lg:row-start-1 lg:pt-2">
+          <div className="relative h-[clamp(170px,calc(100svh-564px),280px)] overflow-hidden bg-card md:h-[440px] lg:aspect-[9/16] lg:h-auto lg:rounded-[14px] lg:shadow-[0_30px_80px_rgba(0,0,0,0.7),0_0_120px_rgba(31,111,196,0.25)]">
+            {/* The poster is a real <picture> under the video rather than the
+                video's poster attribute, so phones can be sent their own crop.
+                It is the first screen's largest paint, so it loads eagerly at
+                high priority straight from the HTML. The video has no poster
+                of its own and stays transparent until its first frame covers
+                this; if autoplay is refused or held, this is what stays. */}
+            <picture>
+              <source media="(min-width: 768px)" srcSet={clip.poster} width={720} height={1280} />
+              <img
+                src={clip.posterPhone}
+                width={720}
+                height={540}
+                alt=""
+                fetchPriority="high"
+                className="absolute inset-0 h-full w-full object-cover object-[50%_58%] lg:object-center"
+              />
+            </picture>
+            <video
+              ref={videoRef}
+              muted
+              loop
+              playsInline
+              preload="none"
+              aria-label={clip.label}
+              className="absolute inset-0 h-full w-full object-cover object-[50%_58%] lg:object-center"
             >
-              {playLabel}
-            </button>
-          )}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 md:hidden"
-            style={{ background: "linear-gradient(to top, rgba(5,6,8,.96) 0%, rgba(5,6,8,.66) 40%, rgba(5,6,8,.2) 70%, rgba(5,6,8,0) 100%)" }}
-          />
+              {/* No <source> here on purpose. The effect above picks the file and
+                  appends it once the page has loaded. Without JS the picture
+                  above stands in. */}
+            </video>
+            <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[90px] bg-gradient-to-b from-background/0 to-background lg:hidden" />
+            {playLabel && (
+              <button
+                type="button"
+                onClick={replay}
+                className="absolute right-4 top-4 z-10 min-h-11 rounded-full border border-white/20 bg-background/60 px-4 py-2 text-sm text-foreground backdrop-blur hover:bg-background/80"
+              >
+                {playLabel}
+              </button>
+            )}
+          </div>
         </div>
 
-        {/* Copy: sits on top of the panel's inner edge on desktop. */}
-        <div className="relative z-10 pt-[40vh] md:col-span-8 md:col-start-1 md:row-start-1 md:pt-0">
-          <h1 className="display-caps text-[clamp(2.5rem,5.7vw,6.1rem)] max-[399px]:text-[8.6vw]">
-            <span className="hero-line block overflow-x-visible overflow-y-clip pb-[.06em] -mb-[.06em] text-secondary-foreground">
-              <span className="inline-block whitespace-nowrap will-change-transform">Not the cheapest</span>
-            </span>
-            <span className="hero-line block overflow-x-visible overflow-y-clip pb-[.06em] -mb-[.06em] text-secondary-foreground">
-              <span className="inline-block whitespace-nowrap will-change-transform">detailer in Canberra.</span>
-            </span>
-            <span className="hero-line block overflow-x-visible overflow-y-clip pb-[.06em] -mb-[.06em]">
-              <span className="inline-block whitespace-nowrap will-change-transform">The most careful one.</span>
-            </span>
-          </h1>
-          <p className="hero-sub mt-6 max-w-[32rem] text-base text-secondary-foreground md:mt-8 md:text-lg">
-            Ceramic coating from <b className="font-semibold text-foreground">${prices.ceramic}</b>. Paint correction from{" "}
-            <b className="font-semibold text-foreground">${prices.correction}</b>. Full detail from{" "}
-            <b className="font-semibold text-foreground">${prices.full}</b>. We come to your driveway or office car park, anywhere in {site.area}.
+        <div className="container-x relative z-10 -mt-2.5 md:mt-8 lg:col-start-1 lg:row-start-1 lg:mt-0 lg:flex lg:flex-col lg:justify-center lg:px-0">
+          <h1 className="display-caps max-w-[800px] text-[min(12vw,2.9375rem)] md:text-[clamp(2.9375rem,7.2vw,6.5rem)]">{site.tagline}</h1>
+          {/* TODO(pat): confirm this line. It is new wording for the redesign,
+              put together from sentences already on the site. */}
+          <p className="hero-sub mt-[18px] max-w-[54ch] text-base text-secondary-foreground md:mt-8 md:text-[19px]">
+            Mobile detailing at your driveway or office car park<span className="hidden md:inline">, anywhere in {site.area}</span>. No call-out
+            fee.<span className="hidden md:inline"> The number you&apos;re quoted is the number you pay.</span>
           </p>
-          {/* Phones text; laptops can't, so there the main button jumps to the quote form. */}
-          <div className="hero-cta mt-7 flex flex-col gap-3 sm:flex-row md:mt-8">
-            <a
-              href="#book"
-              className="hidden min-h-[54px] items-center justify-center rounded-full bg-accent px-7 text-base font-semibold text-accent-foreground no-underline shadow-[0_0_40px_rgba(58,143,224,0.35)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_60px_rgba(58,143,224,0.5)] md:inline-flex"
-            >
-              Get a quote
-            </a>
-            <a
-              href={smsHref()}
-              className="inline-flex min-h-[54px] items-center justify-center rounded-full bg-accent px-7 text-base font-semibold text-accent-foreground no-underline shadow-[0_0_40px_rgba(58,143,224,0.35)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_60px_rgba(58,143,224,0.5)] md:hidden"
-            >
-              Text us your car
-            </a>
-            <a
-              href={telHref}
-              className="inline-flex min-h-[54px] items-center justify-center rounded-full border border-white/20 bg-background/40 px-7 text-base font-semibold text-foreground no-underline backdrop-blur transition-colors hover:border-white/50"
-            >
+
+          <ul className="hero-strip m-0 mt-5 grid max-w-[660px] list-none grid-cols-3 border-y border-border p-0 md:mt-9">
+            {strip.map((p, i) => (
+              <li key={p.slug} className={i > 0 ? "border-l border-border" : ""}>
+                <Link
+                  href={`/services/${p.slug}/`}
+                  className={`flex h-full flex-col gap-0.5 py-3 text-foreground no-underline hover:text-white md:py-[18px] ${i > 0 ? "pl-3.5 md:pl-6" : ""}`}
+                >
+                  <span className="text-xs text-muted-foreground md:text-sm">
+                    <span className="md:hidden">{p.service.short}</span>
+                    <span className="hidden md:inline">{p.service.name}</span>
+                  </span>
+                  <span className="text-[15px]">
+                    <span className="sr-only md:not-sr-only">from </span>
+                    <span className="display-caps text-[30px] leading-none md:text-4xl">${p.price}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <p className="hero-note m-0 mt-2 text-xs text-muted-foreground md:hidden">From-prices for a hatch or sedan.</p>
+
+          {/* No buttons on a phone: the bar pinned to the bottom is the call to action. */}
+          <div className="hero-cta mt-9 hidden gap-3 md:flex">
+            <QuoteCta sms={smsHref()} />
+            <a href={telHref} className={`inline-flex ${pill} ${buttonVariants.ghost}`}>
               Call {site.phoneDisplay}
             </a>
           </div>
-          <p className="hero-note mt-4 text-[15px] text-muted-foreground">{site.quotePromise}</p>
+          <p className="hero-note m-0 mt-4 hidden text-[15px] text-muted-foreground md:block">{site.quotePromise}</p>
         </div>
-      </div>
-
-      <div className="hero-strip relative border-t border-white/10 py-4">
-        <Marquee items={strip} />
       </div>
     </section>
   );

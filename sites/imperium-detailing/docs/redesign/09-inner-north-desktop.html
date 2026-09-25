@@ -1,0 +1,153 @@
+<!-- Imperium redesign reference: 09-inner-north-desktop. Static design mockup (a design-tool file). Visual source of truth only; do not copy this markup into the app. Text in {{braces}} is filled by the script at the bottom (price guide logic). -->
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<title>Inner North area page, desktop</title>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#050608}
+a{color:#F3F5F8}a:hover{color:#FFFFFF}
+.cap{font-family:'Big Shoulders','Arial Narrow',sans-serif;font-weight:800;text-transform:uppercase;line-height:.88;letter-spacing:.006em;margin:0;text-wrap:balance}
+.wm{font-family:'Big Shoulders','Arial Narrow',sans-serif;font-weight:800;letter-spacing:.025em;font-size:20px;line-height:1}
+.bp{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;background:#3A8FE0;color:#050608;font-weight:600;font-size:16px;text-decoration:none;white-space:nowrap;box-shadow:0 0 0 1px rgba(58,143,224,.35),0 10px 36px rgba(58,143,224,.32)}
+.bp:hover{background:#5AA6F0;color:#050608}
+.bg{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;border:1px solid rgba(194,200,208,.28);color:#F3F5F8;font-weight:600;font-size:16px;text-decoration:none;white-space:nowrap}
+.mu{color:#8A909A}.se{color:#C2C8D0}
+.lnk{color:#C2C8D0;text-decoration:none;font-size:15px}
+.ph{object-fit:cover;display:block}
+.chip{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border:1px solid rgba(194,200,208,.12);border-radius:10px;color:#C2C8D0;cursor:pointer}
+.chip.on{border-color:#3A8FE0;background:rgba(58,143,224,.1);color:#F3F5F8}
+.chip b{font-size:15px;font-weight:600}.chip small{font-size:12px;color:#8A909A}
+.fl{display:flex;flex-direction:column;gap:8px}
+.fl label{font-size:14px;font-weight:500}
+.in{height:48px;box-sizing:border-box;border:1px solid rgba(194,200,208,.46);border-radius:8px;background:rgba(194,200,208,.06);color:#F3F5F8;font:400 16px 'Instrument Sans',sans-serif;padding:0 14px}
+.in::placeholder{color:#8A909A}
+</style>
+</helmet>
+<div style="width: 1440px; height: 4180px; overflow: hidden; background: #050608; color: #F3F5F8; font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; position: relative">
+<!-- Header -->
+<header style="height: 80px; padding: 0 120px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(194,200,208,.12)">
+<a href="#" style="display: flex; align-items: center; gap: 12px; text-decoration: none"><img src="../../public/brand/logo-mark.png" alt="" style="height: 30px; width: auto"><span class="wm">Imperium Detailing</span></a>
+<nav aria-label="Primary" style="display: flex; gap: 32px">
+<a class="lnk" href="#">Services</a><a class="lnk" href="#">Our work</a><a class="lnk" href="#">Areas</a><a class="lnk" href="#">Reviews</a><a class="lnk" href="#">Guides</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 24px"><a class="lnk" href="#">0426 661 820</a><a class="bp" href="#" style="min-height: 44px; padding: 0 22px; font-size: 15px">Get a quote</a></div>
+</header>
+
+
+<!-- Hero -->
+<section style="position: relative; padding: 48px 120px 112px; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 96px; overflow: hidden">
+<div style="position: absolute; right: -200px; top: -100px; width: 860px; height: 860px; background: radial-gradient(closest-side, rgba(31,111,196,.22), rgba(15,61,110,.08), rgba(5,6,8,0) 70%)"></div>
+<div style="position: relative">
+<nav aria-label="Breadcrumb" class="mu" style="font-size: 14px"><a class="lnk" href="#" style="font-size: 14px">Areas</a> <span aria-hidden="true">/</span> <span>Inner North</span></nav>
+<h1 class="cap" style="margin-top: 40px; font-size: 112px">Mobile car detailing in Inner North.</h1>
+<p class="se" style="margin: 32px 0 0; font-size: 19px; max-width: 56ch">Apartment and townhouse living. No driveway, no problem: we detail at your building or workplace.</p>
+<p class="mu" style="margin: 16px 0 0; font-size: 16px; max-width: 64ch">At the 2021 census, flats were the most common home in the inner north — 42.6 per cent of dwellings, ahead of separate houses. Most come with parking, but it is a numbered bay under a building, not a driveway. So the first question on a job here is not the car. It is where the car sits, and whether a van, a hose and a power point can reach it. Exterior detailing starts at $110, interior at $140.</p>
+<div style="margin-top: 36px; display: flex; gap: 12px"><a class="bp" href="#">Get a quote</a><a class="bg" href="#">Call 0426 661 820</a></div>
+<p class="mu" style="margin: 16px 0 0; font-size: 15px">You'll have a quote back within a few hours, 7 days a week.</p>
+</div>
+<aside style="position: relative; display: grid; gap: 16px; align-content: start; padding-top: 56px">
+<div style="padding: 32px; border: 1px solid rgba(194,200,208,.12); border-radius: 14px; background: #0C0F14">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Suburbs we cover in Inner North</h2>
+<ul class="se" style="margin: 20px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; font-size: 15px">
+<li style="padding: 9px 0; border-top: 1px solid rgba(194,200,208,.12)">Braddon</li><li style="padding: 9px 0; border-top: 1px solid rgba(194,200,208,.12)">Dickson</li>
+<li style="padding: 9px 0; border-top: 1px solid rgba(194,200,208,.12)">Lyneham</li><li style="padding: 9px 0; border-top: 1px solid rgba(194,200,208,.12)">O'Connor</li>
+<li style="padding: 9px 0; border-top: 1px solid rgba(194,200,208,.12)">Ainslie</li><li style="padding: 9px 0; border-top: 1px solid rgba(194,200,208,.12)">Turner</li>
+<li style="padding: 9px 0; border-top: 1px solid rgba(194,200,208,.12)">Watson</li><li style="padding: 9px 0; border-top: 1px solid rgba(194,200,208,.12)">Downer</li>
+<li style="padding: 9px 0; border-top: 1px solid rgba(194,200,208,.12)">Hackett</li><li style="padding: 9px 0; border-top: 1px solid rgba(194,200,208,.12)">Campbell</li>
+<li style="padding: 9px 0; border-top: 1px solid rgba(194,200,208,.12)">Reid</li>
+</ul>
+</div>
+<a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 28px 32px; border: 1px solid #3A8FE0; border-radius: 14px; text-decoration: none; box-shadow: 0 0 80px rgba(31,111,196,.18)">
+<div><span class="mu" style="font-size: 14px">Most booked in Inner North</span><h2 class="cap" style="margin-top: 6px; font-size: 40px">Full detail</h2></div>
+<span style="font-size: 15px">from <span class="cap" style="font-size: 48px; line-height: 1">$225</span></span>
+</a>
+</aside>
+</section>
+
+<!-- Local sections -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 112px 120px; display: grid; gap: 80px">
+<article style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 80px">
+<h2 class="cap" style="font-size: 64px">Braddon is not Ainslie</h2>
+<div class="se" style="display: grid; gap: 18px; font-size: 17px; max-width: 66ch">
+<p style="margin: 0">Braddon and Turner are nearly all flats. A short drive out, Ainslie and O'Connor are still mostly houses. The two jobs look nothing alike.</p>
+<p style="margin: 0">In the older streets we are beside a cottage where the garage went in decades later at the back of the block, down a long narrow drive. The drive decides whether the van gets past the house at all.</p>
+<p style="margin: 0">In the flats the car is in a numbered bay, and access is the whole question. Ramp clearance first. Then an outdoor tap we can reach with a hose, and a 240V point near the bay rather than three levels up. We bring the rest.</p>
+<p style="margin: 0">The last one is permission. Some complexes are fine with a detailer in the car park and some are not, so that gets asked before the booking, not on the morning. Water, power and a yes from the building, and we are down there.</p>
+</div>
+</article>
+<article style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 80px; padding-top: 80px; border-top: 1px solid rgba(194,200,208,.12)">
+<h2 class="cap" style="font-size: 64px">Covered space beats a back yard</h2>
+<div class="se" style="display: grid; gap: 18px; font-size: 17px; max-width: 66ch">
+<p style="margin: 0">Paint correction from $397 and ceramic coating from $997 both need a garage or covered space for the day. A car park can be a better room for that than a back yard. No wind, no pollen landing on a wet panel, no sun tracking across the bonnet.</p>
+<p style="margin: 0">The limit is height. Sprinkler heads, ducts and pipe runs hang below the slab, so the clear height is always less than the ceiling looks. We measure the ramp and the lowest point overhead before a coating goes in the diary.</p>
+<p style="margin: 0">Coating runs from $997 for three years up to $1,597 for seven years on a large 4WD.</p>
+</div>
+</article>
+<article style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 80px; padding-top: 80px; border-top: 1px solid rgba(194,200,208,.12)">
+<h2 class="cap" style="font-size: 64px">Pines overhead, cold panels</h2>
+<div class="se" style="display: grid; gap: 18px; font-size: 17px; max-width: 66ch">
+<p style="margin: 0">This is the leafy end of Canberra. Park under the pines at Haig Park, or along the older streets, and needles collect in shuts, cowls and roof rails. Resin marks the flat panels. Spring adds pollen on top. A full detail from $225 takes that back off. The monthly plan, from $90 for the exterior, is what keeps it off.</p>
+<p style="margin: 0">Cold is the other half of a winter job. Panels are cold, water will not leave the surface and a coating cures slowly. Winter coating work gets a longer booking window, and we will move a day before we cut a cure short.</p>
+<p style="margin: 0">Two of us, one van, three jobs a day across the inner north. No shop and no drop-off. We do not fit paint protection film, window tinting or rim repairs.</p>
+</div>
+</article>
+</section>
+
+<!-- Every service -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); background: rgba(12,15,20,.4); padding: 96px 120px">
+<h2 class="cap" style="font-size: 64px">Every service, at your door</h2>
+<div style="margin-top: 40px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px">
+<a href="#" style="padding: 24px; border: 1px solid rgba(194,200,208,.12); border-radius: 12px; text-decoration: none; background: #0C0F14"><span class="mu" style="font-size: 14px">Ceramic coating</span><span class="cap" style="display: block; margin-top: 10px; font-size: 40px">$997</span></a>
+<a href="#" style="padding: 24px; border: 1px solid rgba(194,200,208,.12); border-radius: 12px; text-decoration: none; background: #0C0F14"><span class="mu" style="font-size: 14px">Paint correction</span><span class="cap" style="display: block; margin-top: 10px; font-size: 40px">$397</span></a>
+<a href="#" style="padding: 24px; border: 1px solid rgba(194,200,208,.12); border-radius: 12px; text-decoration: none; background: #0C0F14"><span class="mu" style="font-size: 14px">Full detail</span><span class="cap" style="display: block; margin-top: 10px; font-size: 40px">$225</span></a>
+<a href="#" style="padding: 24px; border: 1px solid rgba(194,200,208,.12); border-radius: 12px; text-decoration: none; background: #0C0F14"><span class="mu" style="font-size: 14px">Interior detail</span><span class="cap" style="display: block; margin-top: 10px; font-size: 40px">$140</span></a>
+<a href="#" style="padding: 24px; border: 1px solid rgba(194,200,208,.12); border-radius: 12px; text-decoration: none; background: #0C0F14"><span class="mu" style="font-size: 14px">Exterior detail</span><span class="cap" style="display: block; margin-top: 10px; font-size: 40px">$110</span></a>
+<a href="#" style="padding: 24px; border: 1px solid rgba(194,200,208,.12); border-radius: 12px; text-decoration: none; background: #0C0F14"><span class="mu" style="font-size: 14px">Maintenance plan</span><span class="cap" style="display: block; margin-top: 10px; font-size: 40px">$90<span style="font-size: 20px"> /mo</span></span></a>
+</div>
+<p class="mu" style="margin: 20px 0 0; font-size: 14px">From-prices for a hatch or sedan. No call-out fee in Inner North.</p>
+</section>
+
+<!-- Booking -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 112px 120px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 80px">
+<div>
+<h2 class="cap" style="font-size: 92px">Book a detail in Inner North.</h2>
+<p class="mu" style="margin: 24px 0 0; font-size: 18px">You'll have a quote back within a few hours, 7 days a week.</p>
+<p class="se" style="margin: 24px 0 0; font-size: 16px">Water, power and a yes from the building, and we are down there.</p>
+</div>
+<form style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-content: start; padding: 40px; border: 1px solid rgba(194,200,208,.12); border-radius: 14px; background: #0C0F14">
+<div class="fl"><label for="a1">Which service?</label><select id="a1" class="in"><option>Full detail</option></select></div>
+<div class="fl"><label for="a2">When do you want it done?</label><select id="a2" class="in"><option>This week</option></select></div>
+<div class="fl"><label for="a3">Your car (make, model, year)</label><input id="a3" class="in" placeholder="BMW M4 Competition, 2023"></div>
+<div class="fl"><label for="a4">Your suburb</label><input id="a4" class="in" placeholder="Braddon"></div>
+<div class="fl"><label for="a5">Your name</label><input id="a5" class="in" placeholder="Alex Smith"></div>
+<div class="fl"><label for="a6">Mobile number</label><input id="a6" class="in" placeholder="0400 000 000"></div>
+<div style="grid-column: span 2; display: flex; align-items: center; gap: 20px"><button class="bp" type="submit" style="border: 0; font-family: inherit; cursor: pointer">Send for a quote</button><span class="mu" style="font-size: 15px">Rather talk? <a href="#" style="text-underline-offset: 4px">Call 0426 661 820</a></span></div>
+</form>
+</section>
+<!-- Footer -->
+<footer style="border-top: 1px solid rgba(194,200,208,.12); padding: 80px 120px 0; overflow: hidden">
+<div style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 2fr) minmax(0, 2fr) minmax(0, 3fr); gap: 40px">
+<div><img src="../../public/brand/logo-full-dark.png" alt="Imperium Detailing" style="height: 96px; width: auto"><p class="se" style="margin: 20px 0 0; font-size: 15px">Showroom finish. Every time.</p><p class="mu" style="margin: 8px 0 0; font-size: 14px">Every day, 8:30am to 5:30pm</p></div>
+<div style="display: flex; flex-direction: column; gap: 10px; font-size: 15px"><span class="mu" style="font-size: 13px">Services</span><a class="lnk" href="#">Ceramic coating</a><a class="lnk" href="#">Paint correction</a><a class="lnk" href="#">Full detail</a><a class="lnk" href="#">Interior detail</a><a class="lnk" href="#">Exterior detail</a><a class="lnk" href="#">Maintenance plans</a><a class="lnk" href="#">Fleet detailing</a><a class="lnk" href="#">Tesla and EV detailing</a></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><span class="mu" style="font-size: 13px">Company</span><a class="lnk" href="#">Reviews</a><a class="lnk" href="#">Warranty</a><a class="lnk" href="#">Guides</a><a class="lnk" href="#">Areas</a><a class="lnk" href="#">Privacy</a><a class="lnk" href="#">Terms</a></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><span class="mu" style="font-size: 13px">Contact</span><a class="lnk" href="#">0426 661 820</a><a class="lnk" href="#">imperiumdetailingmanagement@gmail.com</a><a class="lnk" href="#">@imperiumdetailing_</a></div>
+</div>
+<p class="mu" style="margin: 56px 0 0; font-size: 13px">© 2026 Imperium Detailing. ABN 81 254 863 265</p>
+<div aria-hidden="true" class="cap" style="margin-top: 24px; font-size: 330px; line-height: .8; letter-spacing: -.01em; background: linear-gradient(180deg, rgba(243,245,248,.9) 0%, rgba(243,245,248,.06) 90%); -webkit-background-clip: text; background-clip: text; color: transparent; white-space: nowrap">Imperium</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":4180}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

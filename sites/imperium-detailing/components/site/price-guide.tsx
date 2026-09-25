@@ -7,9 +7,10 @@ import { site, smsHref, telHref } from "@/lib/site";
 import { formatPrice } from "@/lib/services";
 import { sizes, jobs, tiers, ceramicTiers, guidePrice, type JobId, type SizeId, type Tier } from "@/lib/pricing";
 import { SectionHeading } from "@/components/site/section-heading";
+import { buttonClass, buttonVariants, pill } from "@/components/site/link-button";
 
 const chip = (on: boolean) =>
-  `flex cursor-pointer flex-col rounded-lg border px-4 py-3 text-left transition-[border-color,background-color,transform] duration-200 active:scale-[0.985] has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring ${
+  `flex cursor-pointer flex-col gap-0.5 rounded-[10px] border px-3.5 py-3 text-left md:px-4 md:py-3.5 transition-[border-color,background-color,transform] duration-200 active:scale-[0.985] has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring ${
     on ? "border-accent bg-accent/10 text-foreground" : "border-border text-secondary-foreground hover:border-secondary-foreground/50"
   }`;
 
@@ -51,6 +52,7 @@ export function PriceGuide({ title = "Your price in ten seconds." }: { title?: s
     panel.current?.scrollIntoView({ behavior: instant ? "auto" : "smooth", block: "start" });
   }, [job, tier]);
 
+  const formHref = `/book/?service=${encodeURIComponent(formService)}`;
   const label = jobMeta.label.toLowerCase();
   const vehicle = sizeMeta.label.toLowerCase();
   const sms =
@@ -59,28 +61,30 @@ export function PriceGuide({ title = "Your price in ten seconds." }: { title?: s
       : smsHref(`Hi Imperium, I'd like to lock in a ${label} for my ${vehicle}. Guide price ${formatPrice(guide.price)}${guide.suffix}.\nVehicle: \nSuburb: `);
 
   return (
-    <section id="price-guide" className="border-t border-border py-20 md:py-28">
+    <section id="price-guide" className="section-y border-t border-border">
       <div className="container-x mx-auto max-w-6xl">
-        <SectionHeading title={title} intro="Pick the vehicle and the job. That's the number, not a hook to get you on the phone." />
-        <div className="grid gap-8 md:grid-cols-12 md:gap-12">
-          <div className="grid gap-8 md:col-span-7">
+        {/* Choices on the left under the heading, the answer on the right, held in
+            view while you pick (the panel is sticky on tablets and laptops). */}
+        <div className="grid gap-6 md:grid-cols-12 md:gap-16">
+          <div className="md:col-span-7">
+            <SectionHeading title={title} intro="Pick the vehicle and the job. That's the number, not a hook to get you on the phone." />
             <fieldset className="m-0 min-w-0 border-0 p-0">
               <legend className="mb-3 text-sm font-semibold text-foreground">Your vehicle</legend>
-              <div className="grid gap-2 sm:grid-cols-2">
+              <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
                 {sizes.map((s) => (
                   <label key={s.id} className={chip(size === s.id)}>
                     <input type="radio" name="pg-size" value={s.id} checked={size === s.id} onChange={() => setSize(s.id)} className="sr-only" />
                     <span className="text-[15px] font-semibold">{s.label}</span>
-                    <span className="mt-0.5 text-xs text-muted-foreground">{s.eg}</span>
+                    <span className="text-xs text-muted-foreground">{s.eg}</span>
                   </label>
                 ))}
               </div>
-              <p className="mt-3 text-sm text-muted-foreground">Trucks are quoted by phone.</p>
+              <p className="mt-2.5 text-sm text-muted-foreground">Trucks are quoted by phone.</p>
             </fieldset>
 
-            <fieldset className="m-0 min-w-0 border-0 p-0">
+            <fieldset className="m-0 mt-6 min-w-0 border-0 p-0 md:mt-8">
               <legend className="mb-3 text-sm font-semibold text-foreground">The job</legend>
-              <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-2 gap-2 lg:grid-cols-3">
                 {jobs.map((j) => (
                   <label key={j.id} className={chip(job === j.id)}>
                     <input
@@ -101,9 +105,9 @@ export function PriceGuide({ title = "Your price in ten seconds." }: { title?: s
             </fieldset>
 
             {job === "ceramic" && (
-              <fieldset className="m-0 min-w-0 border-0 p-0">
+              <fieldset className="m-0 mt-6 min-w-0 border-0 p-0 md:mt-8">
                 <legend className="mb-3 text-sm font-semibold text-foreground">Warranty</legend>
-                <div className="grid gap-2 sm:grid-cols-3">
+                <div className="grid grid-cols-3 gap-2">
                   {tiers.map((t) => (
                     <label key={t} className={chip(tier === t)}>
                       <input
@@ -118,7 +122,7 @@ export function PriceGuide({ title = "Your price in ten seconds." }: { title?: s
                         className="sr-only"
                       />
                       <span className="text-[15px] font-semibold">{t} years</span>
-                      <span className="mt-0.5 text-xs text-muted-foreground">{formatPrice(ceramicTiers[size][t])}</span>
+                      <span className="text-xs text-muted-foreground">{formatPrice(ceramicTiers[size][t])}</span>
                     </label>
                   ))}
                 </div>
@@ -126,19 +130,19 @@ export function PriceGuide({ title = "Your price in ten seconds." }: { title?: s
             )}
           </div>
 
-          <div className="md:col-span-5">
-            <div ref={panel} style={{ scrollMarginTop: 88 }} className="panel-glow rounded-xl border border-border bg-card p-6 md:sticky md:top-24 md:p-8">
+          <div className="md:col-span-5 md:pt-6">
+            <div ref={panel} style={{ scrollMarginTop: 88 }} className="panel-glow rounded-[14px] border border-border bg-card p-6 md:sticky md:top-24 md:p-9">
               <p className="m-0 text-sm text-muted-foreground">
                 {jobMeta.label}, {vehicle}
               </p>
               {guide.price === null ? (
-                <p key="quoted" className="price-in display-caps m-0 mt-2 text-4xl md:text-5xl">
+                <p key="quoted" className="price-in display-caps m-0 mt-3 text-5xl md:text-[64px]">
                   Quoted for you
                 </p>
               ) : (
-                <p key={`${guide.price}${guide.suffix}`} className="price-in m-0 mt-2 flex items-baseline gap-2">
-                  <span className="text-sm text-muted-foreground">from</span>
-                  <span aria-hidden="true" className="display-caps text-6xl tabular-nums md:text-7xl">
+                <p key={`${guide.price}${guide.suffix}`} className="price-in m-0 mt-1.5 flex items-baseline gap-2 md:mt-2.5 md:gap-2.5">
+                  <span className="text-sm text-muted-foreground md:text-[15px]">from</span>
+                  <span aria-hidden="true" className="display-caps text-[72px] tabular-nums md:text-8xl">
                     {formatPrice(display)}
                   </span>
                   {guide.suffix && <span className="text-lg text-muted-foreground">{guide.suffix.trim()}</span>}
@@ -148,22 +152,23 @@ export function PriceGuide({ title = "Your price in ten seconds." }: { title?: s
                   </span>
                 </p>
               )}
-              <p className="mt-4 text-[15px] text-secondary-foreground">{guide.why}</p>
+              <p className="mt-3.5 text-[15px] text-secondary-foreground md:mt-5">{guide.why}</p>
               <p className="mt-2 text-[15px] text-muted-foreground">{jobMeta.note}</p>
-              <div className="mt-6 flex flex-col gap-3">
-                <a href={sms} className="lift inline-flex min-h-[52px] items-center justify-center rounded-lg bg-accent px-6 text-base font-semibold text-accent-foreground no-underline hover:bg-[#5aa6f0]">
+              <div className="mt-7 flex flex-col gap-3">
+                {/* On a laptop a tel: and an sms: link both do nothing, so there the
+                    text button goes and the form link, with the service carried
+                    across, becomes the filled one. Phones keep the text first, and
+                    the call button lives in the phone bar at the bottom. */}
+                <a href={sms} className={`${buttonClass("primary")} md:hidden`}>
                   {guide.cta}
                 </a>
-                {/* On a laptop a tel: and an sms: link both do nothing, so without
-                    this there was no way to act at the moment someone has just
-                    been shown their price. The service carries across. */}
-                <Link
-                  href={`/book/?service=${encodeURIComponent(formService)}`}
-                  className="lift inline-flex min-h-[52px] items-center justify-center rounded-lg border border-border px-6 text-base font-semibold text-foreground no-underline hover:border-secondary-foreground/50"
-                >
+                <Link href={formHref} className={`${buttonClass("ghost")} md:hidden`}>
                   Send it through the form
                 </Link>
-                <a href={telHref} className="lift inline-flex min-h-[52px] items-center justify-center rounded-lg border border-border px-6 text-base font-semibold text-foreground no-underline hover:border-secondary-foreground/50">
+                <Link href={formHref} className={`${pill} ${buttonVariants.primary} hidden md:inline-flex`}>
+                  Send it through the form
+                </Link>
+                <a href={telHref} className={`${pill} ${buttonVariants.ghost} hidden md:inline-flex`}>
                   Call {site.phoneDisplay}
                 </a>
               </div>

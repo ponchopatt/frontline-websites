@@ -6,6 +6,8 @@ export type Service = {
   slug: string;
   name: string;
   short: string;
+  /** One line under the name wherever the services are listed (home list, carousel). */
+  line: string;
   title: string;
   description: string;
   h1: string;
@@ -38,6 +40,7 @@ export const services: Service[] = [
     slug: "ceramic-coating-canberra",
     name: "Ceramic coating",
     short: "Ceramic",
+    line: "Written 3, 5 or 7-year warranty",
     title: "Ceramic Coating Canberra (Mobile)",
     description:
       "Multi-layer SiO2 ceramic coating applied at your home, with a written 3, 5 or 7-year warranty. Prep, polish and coating by the same two people, from $997.",
@@ -102,6 +105,7 @@ export const services: Service[] = [
     slug: "paint-correction-canberra",
     name: "Paint correction",
     short: "Correction",
+    line: "Measured, corrected, photographed",
     title: "Paint Correction Canberra",
     description:
       "Mobile paint correction in Canberra from $397. Swirl marks, scratches and haze machine-polished out at your home, with photos before and after.",
@@ -160,6 +164,7 @@ export const services: Service[] = [
     slug: "full-car-detail-canberra",
     name: "Full detail",
     short: "Full detail",
+    line: "Inside and out, in your driveway",
     title: "Full Car Detailing Canberra (Mobile)",
     description:
       "A complete inside-and-out reset: decontamination wash, machine-applied protection, and a top-to-bottom interior clean, in your driveway. From $225.",
@@ -212,6 +217,7 @@ export const services: Service[] = [
     slug: "interior-car-detailing-canberra",
     name: "Interior detail",
     short: "Interior",
+    line: "Steam and extraction, no perfume",
     title: "Interior Car Detailing Canberra",
     description:
       "Interior car detailing in Canberra from $140: vacuum, steam, hot-water extraction and leather conditioning at your home or work. No call-out fee.",
@@ -265,6 +271,7 @@ export const services: Service[] = [
     slug: "exterior-car-detailing-canberra",
     name: "Exterior detail",
     short: "Exterior",
+    line: "Decontaminated, then sealed",
     title: "Exterior Car Detailing Canberra",
     description:
       "Proper wash and chemical decontamination of paint, wheels, glass and trim, finished with a spray coating or sealant that protects for months. From $110.",
