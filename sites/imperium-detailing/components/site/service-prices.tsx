@@ -50,17 +50,31 @@ export function ServicePrices({ slug, name }: { slug: string; name: string }) {
         </div>
 
         <div className="lg:col-span-8">
-          <table className="hidden w-full border-collapse text-base md:table">
+          {/* The single-row tables (every service but ceramic) have one price per
+              column, so with automatic widths each column was only as wide as
+              its own header and the four prices sat at uneven gaps. There the
+              table is fixed: four equal size columns, the service name gets the
+              rest, and a long size header wraps onto a second line (balanced, so
+              "8-seater" stays whole), bottom-aligned. */}
+          <table className={`hidden w-full border-collapse text-base md:table ${ceramic ? "" : "table-fixed"}`}>
             <caption className="sr-only">
               {ceramic ? `${name} prices by written warranty and vehicle size` : `${name} prices by vehicle size`}
             </caption>
+            {!ceramic && (
+              <colgroup>
+                <col />
+                {sizes.map((z) => (
+                  <col key={z.id} className="w-[15%]" />
+                ))}
+              </colgroup>
+            )}
             <thead>
               <tr className="text-left text-sm text-muted-foreground">
-                <th scope="col" className="pb-4 font-medium">
+                <th scope="col" className="pb-4 align-bottom font-medium">
                   {ceramic ? "Written warranty" : "Service"}
                 </th>
                 {sizes.map((z) => (
-                  <th key={z.id} scope="col" className="pb-4 pl-4 text-right font-medium">
+                  <th key={z.id} scope="col" className="pb-4 pl-4 text-right align-bottom font-medium text-balance">
                     {z.label}
                   </th>
                 ))}
