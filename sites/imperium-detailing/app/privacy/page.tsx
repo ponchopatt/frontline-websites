@@ -31,7 +31,7 @@ export default function PrivacyPage() {
       <P>Enquiry and booking records are kept while you&apos;re a customer and for as long as a coating warranty on your car is active, then deleted or de-identified. You can ask us to delete your details earlier at any time.</P>
 
       <H>Your choices</H>
-      <P>You can ask to see, correct or delete the information we hold about you, or opt out of any marketing, by texting or calling {site.phoneDisplay} or emailing {site.email}. We&apos;ll respond within a reasonable time and won&apos;t make it difficult.</P>
+      <P>You can ask to see, correct or delete the information we hold about you, or opt out of any marketing, by texting or calling {site.phoneDisplay} or emailing <span className="wrap-anywhere">{site.email}</span>. We&apos;ll respond within a reasonable time and won&apos;t make it difficult.</P>
 
       <H>Changes</H>
       <P>If this policy changes, the new version will be published here with the date it took effect. This version applies from September 2026.</P>

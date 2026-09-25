@@ -54,7 +54,7 @@ export default function WarrantyPage() {
 
         <H>How to claim</H>
         <P>
-          Text or call {site.phoneDisplay}, or email {site.email}, with your name, the car and a couple of photos. We&apos;ll book an inspection at your place, confirm what&apos;s happened and, if it&apos;s covered, re-apply the affected panels. Your rights under the Australian Consumer Law sit alongside this warranty, not beneath it.
+          Text or call {site.phoneDisplay}, or email <span className="wrap-anywhere">{site.email}</span>, with your name, the car and a couple of photos. We&apos;ll book an inspection at your place, confirm what&apos;s happened and, if it&apos;s covered, re-apply the affected panels. Your rights under the Australian Consumer Law sit alongside this warranty, not beneath it.
         </P>
 
         <p className="mt-10 text-[15px] text-muted-foreground">

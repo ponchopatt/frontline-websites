@@ -37,7 +37,7 @@ export default function TermsPage() {
       <P>We tell you before we start what will and won&apos;t come out. Scratches through the clear coat, deep etching, existing paint failure and mechanical faults are outside what detailing can fix, and we&apos;ll say so rather than guess.</P>
 
       <H>Contact</H>
-      <P>Questions about these terms: {site.phoneDisplay} or {site.email}. Your rights under the Australian Consumer Law apply in addition to anything here.</P>
+      <P>Questions about these terms: {site.phoneDisplay} or <span className="wrap-anywhere">{site.email}</span>. Your rights under the Australian Consumer Law apply in addition to anything here.</P>
     </section>
   );
 }

@@ -252,7 +252,7 @@ export function BookingForm({ compact = false, defaultService = "" }: { compact?
             {"On a phone, your messages app should have opened with the details filled in. If it didn't, copy them and text "}
             {site.phoneDisplay}
             {", or email "}
-            <a href={`mailto:${site.email}?subject=Quote%20request&body=${encodeURIComponent(message)}`} className="underline underline-offset-4">
+            <a href={`mailto:${site.email}?subject=Quote%20request&body=${encodeURIComponent(message)}`} className="underline underline-offset-4 wrap-anywhere">
               {site.email}
             </a>
             .
