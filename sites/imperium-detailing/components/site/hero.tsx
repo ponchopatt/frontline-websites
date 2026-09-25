@@ -123,7 +123,8 @@ export function Hero() {
   // headline itself is not animated, so it paints with the HTML.
   //
   // Phones: the clip is a band across the top with the car's face in its top
-  // third, fading into the page; the headline and the price strip sit under it,
+  // third, fading into the page (280px on a 390x844 phone, shorter on a shorter
+  // screen so the prices still clear the phone bar); the headline and the price strip sit under it,
   // all above the phone bar, which is the call to action (no buttons here).
   // Tablets: the same, with the buttons back (there is no phone bar).
   // Laptops: two columns, the words on the left and one tall 9:16 panel on the
@@ -136,7 +137,7 @@ export function Hero() {
       />
       <div className="mx-auto max-w-6xl lg:container-x lg:grid lg:grid-cols-[minmax(0,1fr)_clamp(300px,29.2vw,420px)] lg:gap-x-20 lg:pb-[120px] lg:pt-[72px]">
         <div className="hero-panel relative lg:col-start-2 lg:row-start-1 lg:pt-2">
-          <div className="relative h-[280px] overflow-hidden bg-card md:h-[440px] lg:aspect-[9/16] lg:h-auto lg:rounded-[14px] lg:shadow-[0_30px_80px_rgba(0,0,0,0.7),0_0_120px_rgba(31,111,196,0.25)]">
+          <div className="relative h-[clamp(170px,calc(100svh-564px),280px)] overflow-hidden bg-card md:h-[440px] lg:aspect-[9/16] lg:h-auto lg:rounded-[14px] lg:shadow-[0_30px_80px_rgba(0,0,0,0.7),0_0_120px_rgba(31,111,196,0.25)]">
             <video
               ref={videoRef}
               muted
@@ -165,7 +166,7 @@ export function Hero() {
         </div>
 
         <div className="container-x relative z-10 -mt-2.5 md:mt-8 lg:col-start-1 lg:row-start-1 lg:mt-0 lg:flex lg:flex-col lg:justify-center lg:px-0">
-          <h1 className="display-caps max-w-[800px] text-[clamp(2.9375rem,7.2vw,6.5rem)]">{site.tagline}</h1>
+          <h1 className="display-caps max-w-[800px] text-[min(12vw,2.9375rem)] md:text-[clamp(2.9375rem,7.2vw,6.5rem)]">{site.tagline}</h1>
           {/* TODO(pat): confirm this line. It is new wording for the redesign,
               put together from sentences already on the site. */}
           <p className="hero-sub mt-[18px] max-w-[54ch] text-base text-secondary-foreground md:mt-8 md:text-[19px]">
