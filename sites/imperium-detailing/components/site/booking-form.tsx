@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { site, smsHref, telHref } from "@/lib/site";
 import { track } from "@/lib/track";
+import { buttonClass } from "@/components/site/link-button";
 
 // The playbook's four qualifying questions plus contact details.
 const serviceOptions = [
@@ -215,7 +216,7 @@ export function BookingForm({ compact = false, defaultService = "" }: { compact?
         <button
           type="submit"
           disabled={status === "sending"}
-          className="lift inline-flex min-h-[52px] items-center justify-center rounded-lg bg-accent px-6 text-base font-semibold text-accent-foreground hover:bg-[#5aa6f0] disabled:opacity-60"
+          className={`${buttonClass("primary")} disabled:opacity-60`}
         >
           {status === "sending" ? "Sending…" : "Request my quote"}
         </button>

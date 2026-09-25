@@ -18,7 +18,7 @@ type Props = {
 export function SectionHeading({ id, title, intro, as = "h2", size = "lg" }: Props) {
   const Tag = as;
   const reveal = as !== "h1";
-  const cls = size === "xl" ? "display-caps text-[clamp(3rem,8vw,7.4rem)]" : "display-caps text-[clamp(2.6rem,6.4vw,5.8rem)]";
+  const cls = size === "xl" ? "display-caps text-[clamp(3rem,8vw,7.4rem)]" : "display-caps text-[clamp(3.375rem,6.4vw,5.75rem)]";
   return (
     <div className="mb-10 max-w-4xl md:mb-14">
       <Tag id={id} className={cls} data-reveal={reveal ? "lines" : undefined}>

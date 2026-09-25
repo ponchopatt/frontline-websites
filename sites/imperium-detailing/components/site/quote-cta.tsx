@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { pill, buttonVariants } from "@/components/site/link-button";
 
 /**
  * The primary button above the fold on the service pages was an sms: link. On a
@@ -13,8 +14,7 @@ import Link from "next/link";
  * display utilities on one element resolve by stylesheet order, not by the
  * order they appear in the attribute.
  */
-const base =
-  "lift min-h-[52px] whitespace-nowrap items-center justify-center rounded-lg px-6 text-base font-semibold no-underline bg-accent text-accent-foreground hover:bg-[#5aa6f0]";
+const base = `${pill} ${buttonVariants.primary}`;
 
 type Props = {
   sms: string;

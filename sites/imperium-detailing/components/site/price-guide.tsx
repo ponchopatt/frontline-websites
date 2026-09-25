@@ -7,6 +7,7 @@ import { site, smsHref, telHref } from "@/lib/site";
 import { formatPrice } from "@/lib/services";
 import { sizes, jobs, tiers, ceramicTiers, guidePrice, type JobId, type SizeId, type Tier } from "@/lib/pricing";
 import { SectionHeading } from "@/components/site/section-heading";
+import { buttonClass, buttonVariants, pill } from "@/components/site/link-button";
 
 const chip = (on: boolean) =>
   `flex cursor-pointer flex-col rounded-lg border px-4 py-3 text-left transition-[border-color,background-color,transform] duration-200 active:scale-[0.985] has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring ${
@@ -51,6 +52,7 @@ export function PriceGuide({ title = "Your price in ten seconds." }: { title?: s
     panel.current?.scrollIntoView({ behavior: instant ? "auto" : "smooth", block: "start" });
   }, [job, tier]);
 
+  const formHref = `/book/?service=${encodeURIComponent(formService)}`;
   const label = jobMeta.label.toLowerCase();
   const vehicle = sizeMeta.label.toLowerCase();
   const sms =
@@ -150,20 +152,21 @@ export function PriceGuide({ title = "Your price in ten seconds." }: { title?: s
               )}
               <p className="mt-4 text-[15px] text-secondary-foreground">{guide.why}</p>
               <p className="mt-2 text-[15px] text-muted-foreground">{jobMeta.note}</p>
-              <div className="mt-6 flex flex-col gap-3">
+              <div className="mt-7 flex flex-col gap-3">
                 {/* On a laptop a tel: and an sms: link both do nothing, so there the
                     text button goes and the form link, with the service carried
-                    across, becomes the filled one. Phones keep the text first. */}
-                <a href={sms} className="lift inline-flex min-h-[52px] items-center justify-center rounded-lg bg-accent px-6 text-base font-semibold text-accent-foreground no-underline hover:bg-[#5aa6f0] md:hidden">
+                    across, becomes the filled one. Phones keep the text first, and
+                    the call button lives in the phone bar at the bottom. */}
+                <a href={sms} className={`${buttonClass("primary")} md:hidden`}>
                   {guide.cta}
                 </a>
-                <Link
-                  href={`/book/?service=${encodeURIComponent(formService)}`}
-                  className="lift inline-flex min-h-[52px] items-center justify-center rounded-lg border border-border px-6 text-base font-semibold text-foreground no-underline hover:border-secondary-foreground/50 md:border-transparent md:bg-accent md:text-accent-foreground md:hover:border-transparent md:hover:bg-[#5aa6f0]"
-                >
+                <Link href={formHref} className={`${buttonClass("ghost")} md:hidden`}>
                   Send it through the form
                 </Link>
-                <a href={telHref} className="lift inline-flex min-h-[52px] items-center justify-center rounded-lg border border-border px-6 text-base font-semibold text-foreground no-underline hover:border-secondary-foreground/50">
+                <Link href={formHref} className={`${pill} ${buttonVariants.primary} hidden md:inline-flex`}>
+                  Send it through the form
+                </Link>
+                <a href={telHref} className={`${pill} ${buttonVariants.ghost} hidden md:inline-flex`}>
                   Call {site.phoneDisplay}
                 </a>
               </div>

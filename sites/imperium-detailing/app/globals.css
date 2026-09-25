@@ -28,6 +28,8 @@
      --border stays at 0.12: it draws dividers and card edges, which are decoration,
      not controls, so the rule does not apply to it. */
   --input: rgba(194, 200, 208, 0.46);
+  /* The ghost button's edge: stronger than a divider, so it reads as a control. */
+  --border-strong: rgba(194, 200, 208, 0.28);
   --ring: #3a8fe0;
   --radius: 0.5rem;
   --glow: #1f6fc4;
@@ -52,6 +54,7 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-glow: var(--glow);
@@ -61,6 +64,13 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* 2026 redesign: content runs to 1200px, which at 1440 leaves 120px either side
+   (64px of margin plus the 56px gutter below). Every section's container is
+   max-w-6xl, so widening it here widens them all together. */
+@theme {
+  --container-6xl: 82rem;
 }
 
 @layer base {
@@ -88,9 +98,17 @@
   }
 }
 
-/* Side gutter used by every section: never less than 16px, scales with the viewport. */
+/* Side gutter used by every section: 20px on a phone, scales with the viewport. */
 @utility container-x {
-  padding-inline: clamp(1rem, 4vw, 3.5rem);
+  padding-inline: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+/* Section rhythm: 72px top and bottom on a phone, 112px from tablets up. */
+@utility section-y {
+  padding-block: 4.5rem;
+  @media (width >= 48rem) {
+    padding-block: 7rem;
+  }
 }
 
 /* Display type: the condensed face carries every headline. */
@@ -277,6 +295,22 @@ body::after {
 .lift:active {
   transform: translateY(0) scale(0.985);
   box-shadow: none;
+}
+
+/* The primary button's soft blue glow. Written after .lift so the glow, not
+   lift's grey drop shadow, is what shows on hover; it only brightens. */
+.cta-glow {
+  box-shadow:
+    0 0 0 1px rgba(58, 143, 224, 0.35),
+    0 10px 36px rgba(58, 143, 224, 0.32);
+}
+.cta-glow:hover {
+  box-shadow:
+    0 0 0 1px rgba(58, 143, 224, 0.45),
+    0 14px 44px rgba(58, 143, 224, 0.42);
+}
+.cta-glow:active {
+  box-shadow: 0 0 0 1px rgba(58, 143, 224, 0.35);
 }
 @keyframes price-in {
   from {
