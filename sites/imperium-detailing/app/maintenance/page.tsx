@@ -204,7 +204,7 @@ export default function MaintenancePage() {
                     <>
                       <span className="text-sm text-muted-foreground md:text-[15px]">from </span>
                       <span className="display-caps text-[56px] leading-none md:text-[clamp(3.5rem,5.6vw,5rem)]">{formatPrice(r.price)}</span>
-                      <span className="text-sm text-muted-foreground md:text-[15px]"> a month</span>
+                      <span className="whitespace-nowrap text-sm text-muted-foreground md:text-[15px]"> a month</span>
                     </>
                   )}
                 </p>
