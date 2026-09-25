@@ -8,7 +8,7 @@ import { Picture } from "@/components/site/picture";
 import { Faq } from "@/components/site/faq";
 import { LinkButton, pill, buttonVariants } from "@/components/site/link-button";
 import { QuoteCta } from "@/components/site/quote-cta";
-import { Booking } from "@/components/site/booking";
+import { CtaBand } from "@/components/site/cta-band";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 
 export const metadata: Metadata = {
@@ -159,7 +159,7 @@ export default function MaintenancePage() {
             </ul>
 
             <div className="mt-9 hidden gap-3 md:flex">
-              <QuoteCta sms={sms} />
+              <QuoteCta sms={sms} formHref={formHref} />
               <LinkButton href={telHref} variant="ghost">
                 Call {site.phoneDisplay}
               </LinkButton>
@@ -225,43 +225,45 @@ export default function MaintenancePage() {
         </div>
       </section>
 
-      <section className="border-t border-border">
-        <div className="container-x mx-auto grid max-w-6xl gap-12 py-14 md:grid-cols-12 md:py-20">
-          <div className="md:col-span-7">
-            <h2 className="display-caps text-3xl md:text-5xl">What a visit covers</h2>
-            <h3 className="mt-6 text-lg font-semibold">
-              Every visit, from {formatPrice(prices.maintenanceExterior)} a month
-            </h3>
-            <ul className="mt-4 grid max-w-[64ch] list-none gap-2.5 p-0 text-[17px] text-secondary-foreground">
-              {outside.map((t) => (
-                <li key={t} className="flex gap-3">
-                  <span aria-hidden="true" className="mt-[.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                  {t}
-                </li>
-              ))}
-            </ul>
-            <h3 className="mt-8 text-lg font-semibold">
-              Inside and out adds, from {formatPrice(prices.maintenanceMonthly)} a month
-            </h3>
-            <ul className="mt-4 grid max-w-[64ch] list-none gap-2.5 p-0 text-[17px] text-secondary-foreground">
-              {inside.map((t) => (
-                <li key={t} className="flex gap-3">
-                  <span aria-hidden="true" className="mt-[.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                  {t}
-                </li>
-              ))}
-            </ul>
+      <section aria-labelledby="covers-heading" className="section-y border-t border-border">
+        <div className="container-x mx-auto grid max-w-6xl gap-6 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] md:gap-12 lg:gap-20">
+          <div>
+            <h2 id="covers-heading" className="display-caps text-[clamp(3rem,5.6vw,5rem)]" data-reveal="lines">
+              What a visit covers
+            </h2>
+            <div className="mt-5 grid gap-5 md:mt-10 md:grid-cols-2 md:gap-12">
+              <div>
+                <h3 className="m-0 text-sm font-semibold md:text-[15px]">Every visit, from {formatPrice(prices.maintenanceExterior)} a month</h3>
+                <ul className="m-0 mt-2.5 grid list-none p-0 text-sm text-secondary-foreground md:mt-4 md:gap-3 md:text-[15px]">
+                  {outside.map((t) => (
+                    <li key={t} className="border-t border-border py-2.5 md:pb-0 md:pt-3">
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 className="m-0 text-sm font-semibold md:text-[15px]">Inside and out adds, from {formatPrice(prices.maintenanceMonthly)} a month</h3>
+                <ul className="m-0 mt-2.5 grid list-none border-b border-border p-0 text-sm text-secondary-foreground md:mt-4 md:gap-3 md:border-b-0 md:text-[15px]">
+                  {inside.map((t) => (
+                    <li key={t} className="border-t border-border py-2.5 md:pb-0 md:pt-3">
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
-          <aside className="md:col-span-5">
-            <div className="rounded-lg border border-border bg-card p-6">
-              <h2 className="text-lg font-semibold">Why not a car wash?</h2>
-              <p className="mt-3 text-[15px] text-secondary-foreground">
+          <aside className="grid content-start gap-4">
+            <div className="rounded-xl border border-border bg-card p-5 md:p-8">
+              <h3 className="m-0 text-base font-semibold md:text-lg">Why not a car wash?</h3>
+              <p className="m-0 mt-2.5 text-sm text-secondary-foreground md:mt-3 md:text-[15px]">
                 Spinning brushes are the fastest way to put swirl marks back into corrected paint, and they void a coating warranty. A plan is the same two people and the same method as the day it was detailed, on your driveway.
               </p>
             </div>
-            <div className="mt-4 rounded-lg border border-border p-6">
-              <h2 className="text-lg font-semibold">On the day, we need</h2>
-              <ul className="mt-4 grid list-none gap-2.5 p-0 text-[15px] text-muted-foreground">
+            <div className="rounded-xl border border-border p-5 md:p-8">
+              <h3 className="m-0 text-base font-semibold md:text-lg">On the day, we need</h3>
+              <ul className="m-0 mt-4 grid list-none gap-2.5 p-0 text-sm text-muted-foreground md:text-[15px]">
                 <li>Access to water: an outdoor tap we can hook a hose to.</li>
                 <li>Access to power: a standard 240V power point within reach.</li>
                 <li>Somewhere to park the car that we can walk around.</li>
@@ -271,37 +273,44 @@ export default function MaintenancePage() {
         </div>
       </section>
 
-      <section className="border-t border-border">
-        <div className="container-x mx-auto grid max-w-6xl items-center gap-10 py-14 md:grid-cols-12 md:py-20">
-          <div className="md:col-span-5">
-            <LoopVideo
-              base="/media/maintenance-wash-720"
-              poster="/media/maintenance-wash-poster.webp"
-              label="A monthly maintenance wash on a work ute: snow foam, a hand wash with a mitt, the wheels, then dried by hand"
-              className="panel-glow aspect-[4/5] w-full rounded-xl bg-card object-cover"
-            />
-          </div>
-          <div className="md:col-span-7">
-            <h2 className="display-caps text-3xl md:text-5xl">One visit, start to finish.</h2>
-            <p className="mt-5 max-w-[56ch] text-lg text-secondary-foreground">
+      {/* The one clip on the page: LoopVideo plays it only while it is on screen,
+          and shows the poster alone for reduced motion. */}
+      <section aria-labelledby="visit-heading" className="section-y border-t border-border">
+        <div className="container-x mx-auto grid max-w-6xl items-center gap-8 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-12 lg:gap-20">
+          <LoopVideo
+            base="/media/maintenance-wash-720"
+            poster="/media/maintenance-wash-poster.webp"
+            label="A monthly maintenance wash on a work ute: snow foam, a hand wash with a mitt, the wheels, then dried by hand"
+            className="panel-glow aspect-[4/5] w-full rounded-[14px] bg-card object-cover"
+          />
+          <div>
+            <h2 id="visit-heading" className="display-caps text-[clamp(3rem,5.6vw,5rem)]" data-reveal="lines">
+              One visit, start to finish.
+            </h2>
+            <p className="m-0 mt-5 max-w-[56ch] text-base text-secondary-foreground md:mt-8 md:text-lg">
               Snow foam first so the grit lifts off, then a hand wash with a clean mitt, the wheels and arches, and a hand dry. No brushes touch the
               paint. That is the whole visit, and it looks the same every month.
             </p>
-            <p className="mt-4 max-w-[56ch] text-muted-foreground">
+            <p className="m-0 mt-4 max-w-[56ch] text-[15px] text-muted-foreground md:text-base">
               This one is a work ute on a monthly exterior plan. The exterior maintenance plan starts at{" "}
               <b className="font-medium text-foreground">{formatPrice(prices.maintenanceExterior)} a month</b>, quoted for your vehicle.
             </p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <QuoteCta sms={sms} />
+            <div className="mt-8 hidden gap-3 md:flex">
+              <QuoteCta sms={sms} formHref={formHref} />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="border-t border-border">
-        <div className="container-x mx-auto max-w-6xl py-14 md:py-20">
-          <Faq items={faq} />
-          <p className="mt-10 text-[15px] text-muted-foreground">
+      {/* FAQ in a 4/8 split on laptops: the heading on the left, the questions on
+          the right. Faq draws its own heading and list; `contents` lets the two
+          sit straight in this grid without changing the shared component. */}
+      <section className="section-y border-t border-border">
+        <div className="container-x mx-auto max-w-6xl">
+          <div className="md:grid md:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] md:gap-12 lg:gap-20 [&>div>h2]:text-[clamp(2.75rem,5.6vw,5rem)] [&>div]:contents md:[&>div>div]:mt-0">
+            <Faq items={faq} />
+          </div>
+          <p className="m-0 mt-10 text-[15px] text-muted-foreground md:ml-[calc((100%-3rem)/3+3rem)] lg:ml-[calc((100%-5rem)/3+5rem)]">
             Also see:{" "}
             <Link href="/services/ceramic-coating-canberra/" className="text-foreground underline underline-offset-4">
               Ceramic coating
@@ -315,7 +324,7 @@ export default function MaintenancePage() {
         </div>
       </section>
 
-      <Booking title="Start a maintenance plan." defaultService="Regular maintenance plan" />
+      <CtaBand />
     </>
   );
 }
