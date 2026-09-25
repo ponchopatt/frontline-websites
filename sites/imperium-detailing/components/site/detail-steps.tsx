@@ -1,81 +1,60 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { detailSteps, type DetailStep, type StepId } from "@/lib/detail-steps";
 import { SectionHeading } from "@/components/site/section-heading";
-import { useSpin, hintPillClass } from "@/lib/use-spin";
 import { WashWipe } from "@/components/site/wash-wipe";
 
-const icons: Record<StepId, React.ReactNode> = {
-  prewash: (
-    <>
-      <circle cx="8.5" cy="8.5" r="3.3" />
-      <circle cx="15.8" cy="6.9" r="2.1" />
-      <circle cx="14.2" cy="14.6" r="4.2" />
-    </>
-  ),
-  wash: (
-    <>
-      <path d="M4.5 8.5h9a3 3 0 0 1 3 3v1a3 3 0 0 1-3 3h-9a1.5 1.5 0 0 1-1.5-1.5v-4A1.5 1.5 0 0 1 4.5 8.5Z" />
-      <path d="M19 9.5c1.3 1.4 1.3 4.6 0 6" />
-    </>
-  ),
-  iron: (
-    <>
-      <path d="M12 2.6c3.3 4.1 5 6.7 5 8.9a5 5 0 0 1-10 0c0-2.2 1.7-4.8 5-8.9Z" />
-      <path d="M8.4 18.8v2.6M12 19.6v2M15.6 18.8v2.6" />
-    </>
-  ),
-  clay: (
-    <>
-      <rect x="4.5" y="5.5" width="15" height="6.4" rx="2.6" />
-      <circle cx="8" cy="17" r="1" />
-      <circle cx="12.4" cy="18.4" r="1" />
-      <circle cx="16.6" cy="16.4" r="1" />
-    </>
-  ),
-  coat: (
-    <>
-      <path d="M12 2.8 19 5.4v5.1c0 4.4-2.9 8-7 9.1-4.1-1.1-7-4.7-7-9.1V5.4l7-2.6Z" />
-      <circle cx="12" cy="10.4" r="2.2" />
-    </>
-  ),
+// The clips are 16:9 and the cards are tall, so each one is cropped to where
+// the work is happening in its frame.
+const focus: Partial<Record<StepId, string>> = {
+  prewash: "40% 50%",
+  iron: "72% 50%",
+  clay: "50% 50%",
+  coat: "45% 50%",
 };
 
-// One step's media. Only mounted once its button has been used, so nothing loads
-// for a step nobody opened. The poster sits under the video at all times, which
-// covers a slow load, a failed load, and reduced motion with the same markup.
-function StepMedia({ step, active, reduced, onScreen }: { step: DetailStep; active: boolean; reduced: boolean; onScreen: boolean }) {
-  const ref = useRef<HTMLVideoElement>(null);
-  const [broken, setBroken] = useState(false);
+const PlayIcon = ({ playing }: { playing: boolean }) => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    {playing ? <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" /> : <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.2-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z" />}
+  </svg>
+);
 
-  const spinnable = Boolean(step.spin && step.video && !broken && !reduced);
-  const spin = useSpin(ref, spinnable);
-  const { clear } = spin;
+// One step's card media. The poster is always there underneath, which covers a
+// slow load, a failed load and reduced motion with the same markup. The clip is
+// only created once its step has been played, so nothing loads for a step
+// nobody opened, and it runs only while the section is on screen.
+function StepMedia({ step, playing, reduced, onScreen, onToggle }: { step: DetailStep; playing: boolean; reduced: boolean; onScreen: boolean; onToggle: () => void }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [mounted, setMounted] = useState(playing);
+  const [broken, setBroken] = useState(false);
+  if (playing && !mounted) setMounted(true);
 
   useEffect(() => {
     const v = ref.current;
     if (!v || reduced) return;
-    if (active && onScreen) void v.play().catch(() => {});
+    if (playing && onScreen) void v.play().catch(() => {});
     else v.pause();
-    return clear;
-  }, [active, onScreen, reduced, clear]);
+  }, [playing, onScreen, reduced, mounted]);
 
+  if (step.widget === "wash") {
+    // The two-bucket wash is a hands-on panel rather than footage: it wipes itself
+    // clean while the section is on screen, and a finger or mouse can take over.
+    return <WashWipe live={onScreen} reduced={reduced} fill />;
+  }
+
+  const canPlay = Boolean(step.video && !broken && !reduced);
   return (
-    <div
-      aria-hidden={!active}
-      // The steps are stacked, so the ones behind have to stop taking pointers or
-      // whichever was opened last would swallow every drag meant for the front one.
-      className={`absolute inset-0 transition-opacity duration-[250ms] ease-out motion-reduce:transition-none ${
-        active ? "opacity-100" : "pointer-events-none opacity-0"
-      }`}
-    >
-      {step.widget === "wash" ? (
-        <WashWipe live={active} reduced={reduced} />
-      ) : (
-        <img src={step.poster} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
-      )}
-      {step.video && !broken && !reduced && (
+    <>
+      <img
+        src={step.poster}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover"
+        style={{ objectPosition: focus[step.id] }}
+      />
+      {canPlay && mounted && (
         <video
           ref={ref}
           muted
@@ -85,38 +64,43 @@ function StepMedia({ step, active, reduced, onScreen }: { step: DetailStep; acti
           poster={step.poster}
           aria-label={step.alt}
           onError={() => setBroken(true)}
-          {...spin.handlers}
-          className={`absolute inset-0 h-full w-full object-cover ${spin.className}`}
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{ objectPosition: focus[step.id] }}
         >
-          <source src={step.video} type="video/mp4" />
+          <source src={step.video!} type="video/mp4" />
         </video>
       )}
-      {spinnable && !spin.dragged && <span className={hintPillClass}>Drag to turn the car</span>}
+      {canPlay && (
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-pressed={playing}
+          aria-label={`${playing ? "Pause" : "Play"} the ${step.label.toLowerCase()} clip`}
+          className="group absolute inset-0 flex items-end justify-start p-3 text-foreground focus-visible:outline-offset-[-4px]"
+        >
+          <span className="flex size-10 items-center justify-center rounded-full bg-background/70 backdrop-blur transition-colors group-hover:bg-background/90">
+            <PlayIcon playing={playing} />
+          </span>
+        </button>
+      )}
       {!step.video && !step.widget && (
-        <span className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-border bg-background/80 px-4 py-2 text-sm text-muted-foreground backdrop-blur">
+        <span className="absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-border bg-background/80 px-4 py-2 text-sm text-muted-foreground backdrop-blur">
           Footage coming soon
         </span>
       )}
-    </div>
+    </>
   );
 }
 
+// The five stages as five tall cards in a row on a laptop, a swipe row on a
+// phone. One clip plays at a time: the first starts when the section comes into
+// view, and tapping another card switches to it (tap the playing one to pause).
 export function DetailSteps() {
-  const [active, setActive] = useState<StepId>(detailSteps[0].id);
-  // A step's media is created the first time it is opened, and kept from then on.
-  const [opened, setOpened] = useState<StepId[]>([detailSteps[0].id]);
+  const firstClip = detailSteps.find((s) => s.video)?.id ?? null;
+  const [playing, setPlaying] = useState<StepId | null>(firstClip);
   const [reduced, setReduced] = useState(false);
-
-  const sectionRef = useRef<HTMLElement>(null);
-  // The first step is active from mount, so on the home page — where this sits
-  // seven sections down — its video downloaded before anyone had scrolled to it.
-  // Nothing plays until the section is actually near the viewport.
   const [onScreen, setOnScreen] = useState(false);
-  const railRef = useRef<HTMLDivElement>(null);
-  const settled = useRef(false);
-  const [pill, setPill] = useState<{ left: number; width: number } | null>(null);
-
-  const step = detailSteps.find((s) => s.id === active)!;
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -126,140 +110,49 @@ export function DetailSteps() {
     return () => mq.removeEventListener("change", update);
   }, []);
 
+  // Nothing plays or downloads until the section is actually near the screen.
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting), { rootMargin: "200px" });
+    const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting), { rootMargin: "100px" });
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
-  const open = useCallback((id: StepId) => {
-    setActive(id);
-    setOpened((prev) => (prev.includes(id) ? prev : [...prev, id]));
-  }, []);
-
-  // The sliding marker behind the buttons, measured so it holds at any text size.
-  const movePill = useCallback(() => {
-    const rail = railRef.current;
-    const btn = rail?.querySelector<HTMLButtonElement>(`[data-step="${active}"]`);
-    if (!rail || !btn) return;
-    setPill({ left: btn.offsetLeft, width: btn.offsetWidth });
-
-    // Scroll the rail itself rather than calling scrollIntoView on the button.
-    // scrollIntoView walks every scrollable ancestor, so on mount — when this
-    // section is still far below the fold — it dragged the whole page down to
-    // meet it. Moving scrollLeft by hand keeps the active tab in view and
-    // leaves the page where the visitor put it.
-    const target = btn.offsetLeft - (rail.clientWidth - btn.offsetWidth) / 2;
-    const left = Math.max(0, Math.min(target, rail.scrollWidth - rail.clientWidth));
-    // The first pass is the initial layout, so it should not animate.
-    rail.scrollTo({ left, behavior: settled.current ? "smooth" : "auto" });
-    settled.current = true;
-  }, [active]);
-
-  useEffect(() => {
-    movePill();
-    const ro = new ResizeObserver(movePill);
-    if (railRef.current) ro.observe(railRef.current);
-    return () => ro.disconnect();
-  }, [movePill]);
-
-  const onKeyDown = (e: React.KeyboardEvent) => {
-    const i = detailSteps.findIndex((s) => s.id === active);
-    let next = -1;
-    if (e.key === "ArrowRight") next = (i + 1) % detailSteps.length;
-    else if (e.key === "ArrowLeft") next = (i - 1 + detailSteps.length) % detailSteps.length;
-    else if (e.key === "Home") next = 0;
-    else if (e.key === "End") next = detailSteps.length - 1;
-    if (next < 0) return;
-    e.preventDefault();
-    open(detailSteps[next].id);
-    railRef.current?.querySelector<HTMLButtonElement>(`[data-step="${detailSteps[next].id}"]`)?.focus();
-  };
-
   return (
-    <section ref={sectionRef} id="in-a-detail" className="border-t border-border py-20 md:py-28">
+    <section ref={sectionRef} id="in-a-detail" className="section-y border-t border-border">
       <div className="container-x mx-auto max-w-6xl">
         <SectionHeading
           title="What's included in a detail."
           intro="Five stages, in the order they happen. Pick one to see it on the car. Most of it is invisible by the time you get the keys back, which is exactly why people think a detail is just a wash."
         />
       </div>
-
-      {/* Buttons: one row on a laptop, a scrolling strip on a phone. Never five stacked blocks. */}
-      <div className="container-x mx-auto max-w-5xl">
-        <div
-          ref={railRef}
-          role="tablist"
+      <div className="mx-auto max-w-6xl lg:container-x">
+        <ol
           aria-label="Stages of a detail"
-          onKeyDown={onKeyDown}
-          className="relative flex snap-x snap-mandatory gap-1 overflow-x-auto rounded-full border border-border bg-card/60 p-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="m-0 flex list-none snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-5 pb-2 [scrollbar-width:none] md:scroll-px-[4vw] md:px-[4vw] lg:grid lg:grid-cols-5 lg:gap-4 lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden"
         >
-          {pill && (
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-y-1.5 rounded-full bg-accent/15 ring-1 ring-accent/50 transition-[left,width] duration-500 ease-[cubic-bezier(0.2,0.7,0.2,1)] motion-reduce:transition-none"
-              style={{ left: pill.left, width: pill.width }}
-            />
-          )}
-          {detailSteps.map((s) => {
-            const on = s.id === active;
-            return (
-              <button
-                key={s.id}
-                type="button"
-                role="tab"
-                id={`step-tab-${s.id}`}
-                data-step={s.id}
-                aria-selected={on}
-                aria-controls="step-panel"
-                tabIndex={on ? 0 : -1}
-                onClick={() => open(s.id)}
-                className={`relative z-10 flex min-h-[52px] flex-1 shrink-0 snap-start items-center justify-center gap-2.5 whitespace-nowrap rounded-full px-4 text-[15px] font-semibold transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:px-5 ${
-                  on ? "text-foreground" : "text-muted-foreground hover:text-secondary-foreground"
-                }`}
-              >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                  className={`shrink-0 transition-colors duration-300 ${on ? "text-accent" : ""}`}
-                >
-                  {icons[s.id]}
-                </svg>
-                {s.label}
-              </button>
-            );
-          })}
-        </div>
+          {detailSteps.map((s, i) => (
+            <li key={s.id} className="w-[200px] shrink-0 snap-start md:w-[240px] lg:w-auto">
+              <div className="relative h-[300px] overflow-hidden rounded-xl border border-border bg-[#0a0e14] lg:h-[340px]">
+                <StepMedia
+                  step={s}
+                  playing={playing === s.id}
+                  reduced={reduced}
+                  onScreen={onScreen}
+                  onToggle={() => setPlaying((p) => (p === s.id ? null : s.id))}
+                />
+              </div>
+              <p className="m-0 mt-3 flex items-baseline gap-2.5 md:mt-4">
+                <span className="display-caps text-lg text-accent md:text-[22px]">{String(i + 1).padStart(2, "0")}</span>
+                <span className="display-caps text-[26px] xl:text-[28px]">{s.label}</span>
+              </p>
+              <p className="m-0 mt-1.5 text-[13px] text-muted-foreground md:mt-2 md:text-sm">{s.short}</p>
+            </li>
+          ))}
+        </ol>
       </div>
-
-      {/* The stage. Its 16:9 box is reserved up front, so the page never jumps while it loads. */}
-      <div className="container-x mx-auto mt-6 max-w-5xl md:mt-8">
-        <div
-          id="step-panel"
-          role="tabpanel"
-          aria-labelledby={`step-tab-${active}`}
-          className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-[#0a0e14]"
-        >
-          {detailSteps
-            .filter((s) => opened.includes(s.id))
-            .map((s) => (
-              <StepMedia key={s.id} step={s} active={s.id === active} reduced={reduced} onScreen={onScreen} />
-            ))}
-        </div>
-
-        <p key={step.id} className="price-in mt-5 max-w-[70ch] text-[17px] text-secondary-foreground">
-          <b className="font-semibold text-foreground">{step.label}.</b> {step.short}
-        </p>
-      </div>
+      <p className="container-x m-0 mt-3.5 text-[13px] text-muted-foreground lg:hidden">Swipe through all five stages.</p>
     </section>
   );
 }

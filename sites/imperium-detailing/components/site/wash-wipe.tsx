@@ -190,7 +190,11 @@ function bake(e: Engine) {
   e.strength = 1;
 }
 
-export function WashWipe({ live = true, reduced = false }: { live?: boolean; reduced?: boolean }) {
+/**
+ * `fill`: take the whole of a box of any shape (the home page's tall step card)
+ * instead of holding the photos' own landscape proportions.
+ */
+export function WashWipe({ live = true, reduced = false, fill = false }: { live?: boolean; reduced?: boolean; fill?: boolean }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cursorRef = useRef<HTMLSpanElement>(null);
@@ -503,7 +507,7 @@ export function WashWipe({ live = true, reduced = false }: { live?: boolean; red
       ref={hostRef}
       aria-hidden="true"
       className="absolute inset-0 overflow-hidden bg-[#0a0e14]"
-      style={{ aspectRatio: `${NATURAL_W} / ${NATURAL_H}` }}
+      style={fill ? undefined : { aspectRatio: `${NATURAL_W} / ${NATURAL_H}` }}
     >
       <img
         src={CLEAN[2].webp}
@@ -595,7 +599,9 @@ export function WashWipe({ live = true, reduced = false }: { live?: boolean; red
         </div>
       )}
 
-      {canvasMode && ready && !touched && <span className={hintPillClass}>Drag to wash the car</span>}
+      {canvasMode && ready && !touched && (
+        <span className={`${hintPillClass} whitespace-nowrap ${fill ? "!right-3 !top-3 !px-3 !py-1.5 !text-xs" : ""}`}>Drag to wash the car</span>
+      )}
     </div>
   );
 }
