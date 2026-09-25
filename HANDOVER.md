@@ -56,7 +56,7 @@ Plain static files, no build step — same as the other live sites in this repo.
 
 - **Branch:** `demos-live` (its own history, not `factory`). Contains only the
   built output of every shipped demo, plus an index page.
-- **Link format:** `<project-domain>.vercel.app/<slug>` — e.g. `/sunset-pools`.
+- **Link format:** `frontline-demo-five.vercel.app/<slug>` (Vercel project "frontline-demos") — e.g. `/sunset-pools`.
 - **Adding a new demo:** after a client passes review and gets `demo/<slug>`,
   rebuild and push `demos-live`:
   ```

@@ -16,7 +16,7 @@ below 4) and `npm run check` before it counts.
 | **Needs Pat** | 2 — horgan-building (4.33 after one rework round), forest-joinery (4.33 after one rework round) — both need more/better photos |
 
 Each done demo has its own branch (`demo/<slug>`) and is live on the
-`frontline-demos` Vercel project at `frontline-demos.vercel.app/<slug>`.
+`frontline-demos` Vercel project at `frontline-demo-five.vercel.app/<slug>`.
 Nothing touches `main`.
 
 ## Invented facts are now impossible, not just caught
@@ -54,7 +54,7 @@ panel.
 ## What to do first
 
 1. **Look at all twelve done demos** — the whole original queue is worked
-   through — live at `frontline-demos.vercel.app/<slug>` for sunset-pools,
+   through — live at `frontline-demo-five.vercel.app/<slug>` for sunset-pools,
    utopian-landscaping, greenway-landscapes, south-coast-landscapes, lmac,
    arizona-roofing, dp-landscaping, karanda-interiors, nb-earthmoving,
    ab-roof-tiling, dimension-gardenscape and great-southern-pools. Or
@@ -80,7 +80,7 @@ shots). Phase 1 was never emptied, so Phase 2 correctly did not start.
 
 **Arizona Roofing** · Oscar (Asghar Khan on his site) · 5.0 from 20 · quote template
 Lighthouse 94 / 96 / 100. Branch `demo/arizona-roofing`.
-Demo: `frontline-demos.vercel.app/arizona-roofing`
+Demo: `frontline-demo-five.vercel.app/arizona-roofing`
 
 Two review rounds (3.83, 3.8) found real issues each time: a hero line clipped
 by the sticky call bar, one phrase repeated 8 times across the page, an empty
@@ -108,7 +108,7 @@ say Oscar or Asghar.
 
 **Sunset Pools** · Ben Thompson · 4.7 from 25 · 1300 000 412 · trust template
 Lighthouse 92 / 97 / 100. Branch `demo/sunset-pools`.
-Demo: `frontline-demos.vercel.app/sunset-pools`
+Demo: `frontline-demo-five.vercel.app/sunset-pools`
 
 Seven independent reviews: 4.0, 4.3, 4.25, 4.08, 4.42, 4.33, **4.5**. Each round
 found a factory bug or a claim that went past the source, and each was fixed.
@@ -137,7 +137,7 @@ along the top.
 
 **Utopian Landscaping and Paving** · Derek · 5.0 from 25 · 0423 814 300 · trust
 Lighthouse 91 / 97 / 100. Branch `demo/utopian-landscaping`.
-Demo: `frontline-demos.vercel.app/utopian-landscaping`
+Demo: `frontline-demo-five.vercel.app/utopian-landscaping`
 
 Three reviews: 3.7, 3.58, **4.5**. Fixed along the way: the clipped "utopian"
 wordmark (the "p" now has its tail); one property used in five photo slots (now
@@ -160,7 +160,7 @@ Do not lead with "your site is http" — it redirects to https, so it is secure.
 
 **South Coast Landscapes** · Ryan · 4.8 from 24 · 0402 130 046 · trust
 Lighthouse 97 / 97 / 100. Branch `demo/south-coast-landscapes`.
-Demo: `frontline-demos.vercel.app/south-coast-landscapes`
+Demo: `frontline-demo-five.vercel.app/south-coast-landscapes`
 I predicted this one would be blocked. It was not — the builder got through the
 SiteGround challenge on about one attempt in three, with the real user agent and
 TLS verification left on.
@@ -202,7 +202,7 @@ four shortened reviews; and his surname if he is happy for it to appear.
 **Lower Mountains AirConditioning** · Andrew and Anthea Strathdee · 4.8 from
 **331** reviews · (02) 4735 6411 · quote template
 Lighthouse 99 / 96 / 100. Branch `demo/lmac`.
-Demo: `frontline-demos.vercel.app/lmac`
+Demo: `frontline-demo-five.vercel.app/lmac`
 
 Two review rounds (3.5, 4.33) both caught real problems, the second one an
 invented service guarantee: "within one business hour" repeated 6 times, when
@@ -241,7 +241,7 @@ and first names to be published.
 
 **Greenway Landscapes** · Trent · 5.0 from 16 · 0418 607 124 · trust
 Lighthouse 90 / 97 / 100. Branch `demo/greenway-landscapes`.
-Demo: `frontline-demos.vercel.app/greenway-landscapes`
+Demo: `frontline-demo-five.vercel.app/greenway-landscapes`
 
 Built, then two review rounds (3.4, 3.5) came back before I noticed my own
 screenshot tool was the problem: it captured the hero mid fade-in animation
@@ -262,7 +262,7 @@ HANDOVER.md — real visitors see it as a scroll animation, not a blank page.
 
 **DP Landscaping & Design** · Dale · 5.0 from 10 · 0402 469 118 · trust
 Lighthouse 99 / 97 / 100. Branch `demo/dp-landscaping`.
-Demo: `frontline-demos.vercel.app/dp-landscaping`
+Demo: `frontline-demo-five.vercel.app/dp-landscaping`
 
 The angle: his customers keep him for years, no competitor can copy it.
 *"15 years ago, Dale landscaped our property & has continued to maintain the
@@ -296,7 +296,7 @@ years-in-business figure, since their own site contradicts itself ("started
 
 **Karanda** · Toni Ford, F.D.I.A. · 5.0 from 15 · (02) 9525 8053 (landline) · trust
 Lighthouse 94 / 97 / 100. Branch `demo/karanda-interiors`.
-Demo: `frontline-demos.vercel.app/karanda-interiors`
+Demo: `frontline-demo-five.vercel.app/karanda-interiors`
 
 Queued under "kitchens-joinery", but they're an interior DESIGN studio — Toni
 is a Design Institute of Australia Fellow with 40+ years' experience, and
@@ -362,7 +362,7 @@ inventory of what exists and what's weak); confirmation the 23-years/
 **Northern Beaches Earthmoving** · Jim Brigden (wife Lynette handles admin) ·
 5.0 from 14 · 0422 929 660 · trust
 Lighthouse 91 / 97 / 100. Branch `demo/nb-earthmoving`.
-Demo: `frontline-demos.vercel.app/nb-earthmoving`
+Demo: `frontline-demo-five.vercel.app/nb-earthmoving`
 
 Built from scratch — `npm run new` is broken in this session (Chromium
 doesn't trust the environment's TLS proxy; see the factory note in
@@ -396,7 +396,7 @@ the header.
 
 **AB Roof Tiling** · Tony · 4.8 from 16 · North Narrabeen NSW · quote
 Lighthouse 97 / 96 / 100. Branch `demo/ab-roof-tiling`.
-Demo: `frontline-demos.vercel.app/ab-roof-tiling`
+Demo: `frontline-demo-five.vercel.app/ab-roof-tiling`
 
 Their live site is a 2013-era template with content spread across
 `document.write` JS includes — a plain fetch of the homepage gets you a
@@ -462,7 +462,7 @@ fine but a real portrait would be better if he has one.
 **Dimension Gardenscape** · Trevor Fuller · 4.5 from 54 (reviews shown, no
 star figure — see below) · Queanbeyan NSW · trust
 Lighthouse 93 / 97 / 100. Branch `demo/dimension-gardenscape`.
-Demo: `frontline-demos.vercel.app/dimension-gardenscape`
+Demo: `frontline-demo-five.vercel.app/dimension-gardenscape`
 
 Their live site is fully bot-blocked (SiteGround sgcaptcha challenge on every
 page — confirmed not a proxy/TLS issue, it blocks the Internet Archive's own
@@ -499,7 +499,7 @@ hero-quality photo if one exists — the best available is 800px, under the
 **Great Southern Pools** · David, Dianne & Michael Moore · 4.7 from 12 ·
 Greater Sydney · trust
 Lighthouse 94 / 97 / 100. Branch `demo/great-southern-pools`.
-Demo: `frontline-demos.vercel.app/great-southern-pools`
+Demo: `frontline-demo-five.vercel.app/great-southern-pools`
 
 Their main site (gspools.com.au) fails for `curl` and Node's `fetch()`
 specifically — every attempt got a proxy tunnel closing mid-exchange,
