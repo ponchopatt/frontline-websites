@@ -139,6 +139,8 @@ export function Today({ view, partOfDay, name, hour: serverHour }: { view: DayVi
   const [sheet, setSheet] = useState<AreaKey | null>(null);
   // Tasks being moved right now. A second tap while the first is saving does nothing.
   const moving = useRef(new Set<string>());
+  // Habits whose tick is on its way to the server.
+  const savingHabits = useRef(new Set<string>());
 
   // When the server's lists change (a plan applied, a task moved, a block added), take its
   // lists. Everything else on screen stays as it is, so a refresh never undoes a number just
@@ -163,6 +165,27 @@ export function Today({ view, partOfDay, name, hour: serverHour }: { view: DayVi
     setSeenSessions(sessionsKey);
     setSessions(view.sessions);
     setRunning(view.openSession);
+  }
+
+  // Ticks, the reading and the review done on another screen (the Faith tab, another device)
+  // show here once the server has them. A tick still saving keeps what was tapped.
+  const habitsKey = view.habits.map((h) => `${h.id}-${h.completedAt ? 1 : 0}`).join(".");
+  const [seenHabits, setSeenHabits] = useState(habitsKey);
+  if (seenHabits !== habitsKey) {
+    setSeenHabits(habitsKey);
+    setHabits((list) => view.habits.map((h) => (savingHabits.current.has(h.id) ? (list.find((x) => x.id === h.id) ?? h) : h)));
+  }
+  const bibleKey = [view.bible.book, view.bible.chapter, view.bible.passage ?? "", view.bible.suggested, view.bible.journal].join("|");
+  const [seenBible, setSeenBible] = useState(bibleKey);
+  if (seenBible !== bibleKey) {
+    setSeenBible(bibleKey);
+    setBible(view.bible);
+  }
+  const reviewKey = REVIEW_FIELDS.map((f) => view.review[f]).join("|");
+  const [seenReview, setSeenReview] = useState(reviewKey);
+  if (seenReview !== reviewKey) {
+    setSeenReview(reviewKey);
+    setReview(view.review);
   }
 
   const readOnly = Boolean(locked);
@@ -239,10 +262,15 @@ export function Today({ view, partOfDay, name, hour: serverHour }: { view: DayVi
       () => setHabits((list) => list.map((h) => (h.id === habit.id ? { ...h, completedAt: done ? stamp : null, editedAt: done && !isToday ? stamp : null } : h))),
       () => setHabits((list) => list.map((h) => (h.id === habit.id && before ? before : h))),
       async () => {
-        const res = await setHabitDone({ habitId: habit.id, date, done });
-        if (res.ok) setHabits((list) => list.map((h) => (h.id === habit.id ? { ...h, completedAt: res.data.completedAt, editedAt: res.data.editedAt } : h)));
-        if (res.ok && habit.kind === "bible") setBible((b) => ({ ...b, suggested: false }));
-        return res;
+        savingHabits.current.add(habit.id);
+        try {
+          const res = await setHabitDone({ habitId: habit.id, date, done });
+          if (res.ok) setHabits((list) => list.map((h) => (h.id === habit.id ? { ...h, completedAt: res.data.completedAt, editedAt: res.data.editedAt } : h)));
+          if (res.ok && habit.kind === "bible") setBible((b) => ({ ...b, suggested: false }));
+          return res;
+        } finally {
+          savingHabits.current.delete(habit.id);
+        }
       },
     );
   }

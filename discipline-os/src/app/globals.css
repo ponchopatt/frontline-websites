@@ -609,3 +609,8 @@ dialog.sheet-closing::backdrop {
     scroll-behavior: auto !important;
   }
 }
+
+/* A tap made before the page was ready: dimmed until it's played (see lib/early-taps). */
+[data-early-tap] {
+  opacity: 0.6;
+}

@@ -57,6 +57,7 @@ export default async function FaithPage({ searchParams }: PageProps<"/faith">) {
       <FaithToday
         key={date}
         date={date}
+        isToday={date === today}
         locked={Boolean(planRes.data?.completed_at)}
         reading={{
           book: reading?.book ?? suggested.book,

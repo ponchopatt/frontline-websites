@@ -21,6 +21,8 @@ export interface FaithTick {
 
 interface FaithTodayProps {
   date: LocalDate;
+  /** False for a day before today, looked back on. */
+  isToday: boolean;
   locked: boolean;
   reading: { book: string; chapter: number; passage: string | null; suggested: boolean };
   /** Name of the reading plan today's chapter comes from. */
@@ -32,11 +34,19 @@ interface FaithTodayProps {
 /**
  * The day with God, kept quiet: the chapter, three ticks, and one place to write.
  */
-export function FaithToday({ date, locked, reading: initial, planLabel, journal, ticks: initialTicks }: FaithTodayProps) {
+export function FaithToday({ date, isToday, locked, reading: initial, planLabel, journal, ticks: initialTicks }: FaithTodayProps) {
   const [reading, setReadingState] = useState(initial);
   const [editing, setEditing] = useState(false);
   const [ticks, setTicks] = useState(initialTicks);
   const ref = { book: reading.book, chapter: reading.chapter };
+
+  // Ticks changed on another screen show here once the server has them.
+  const ticksKey = initialTicks.map((t) => `${t.id}-${t.done ? 1 : 0}`).join(".");
+  const [seenTicks, setSeenTicks] = useState(ticksKey);
+  if (seenTicks !== ticksKey) {
+    setSeenTicks(ticksKey);
+    setTicks(initialTicks);
+  }
 
   async function toggle(t: FaithTick) {
     const done = !t.done;
@@ -53,7 +63,7 @@ export function FaithToday({ date, locked, reading: initial, planLabel, journal,
   return (
     <>
       <section aria-labelledby="reading-heading" className="grid gap-2">
-        <p className="text-[15px] text-muted-foreground">{reading.suggested ? `Next in ${planLabel}` : "Today's reading"}</p>
+        <p className="text-[15px] text-muted-foreground">{reading.suggested ? `Next in ${planLabel}` : isToday ? "Today's reading" : "The reading"}</p>
         <div className="flex items-baseline justify-between gap-3">
           <h2 id="reading-heading" className="text-[30px] leading-tight font-light tracking-[-0.02em]">
             {formatReading(reading, reading.passage)}
@@ -85,7 +95,7 @@ export function FaithToday({ date, locked, reading: initial, planLabel, journal,
       </section>
 
       {ticks.length > 0 && (
-        <Group title="Today">
+        <Group title={isToday ? "Today" : "That day"}>
           {ticks.map((t) => (
             <button
               key={t.id}

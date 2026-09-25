@@ -276,7 +276,7 @@ export function nextActions(input: NextInput): NextAction[] {
     const target = input.hourTargets[area];
     add({
       key: "work",
-      title: `Start a ${AREA_LABEL[area]} work block.`,
+      title: `Start ${/^[AEIOU]/.test(AREA_LABEL[area]) ? "an" : "a"} ${AREA_LABEL[area]} work block.`,
       why:
         target && target > 0
           ? `${AREA_LABEL[area]} gets ${target}h a day; ${formatDuration(input.byArea[area] ?? 0)} so far.`

@@ -45,7 +45,11 @@ export function Sheet({ open, onClose, title, subtitle, children, className }: S
     <dialog
       ref={ref}
       aria-label={title}
-      onClose={onClose}
+      // A sheet opened from inside this one closes by itself; React passes its close event up
+      // the tree, and it mustn't close this one too.
+      onClose={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
       onClick={(e) => {
         if (e.target === ref.current) onClose();
       }}

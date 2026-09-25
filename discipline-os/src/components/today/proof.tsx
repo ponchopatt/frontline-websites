@@ -161,15 +161,7 @@ export function ProofCard({
   }
 
   return (
-    <SectionCard
-      id="proof"
-      title="Proof"
-      meta={
-        <Link href="/progress?tab=proof" className="inline-flex min-h-11 items-center hover:text-foreground">
-          {proofs.length ? `${proofs.length} today · ` : ""}Proof wall
-        </Link>
-      }
-    >
+    <SectionCard id="proof" title="Proof">
       {proofs.length > 0 && (
         <ul className="mb-2 grid grid-cols-3 gap-2">
           {proofs.map((p) => (
@@ -193,6 +185,12 @@ export function ProofCard({
       )}
       {!readOnly && <ProofButton date={date} onUploaded={onAdd} topics={TOPICS} />}
       {proofs.length === 0 && readOnly && <p className="text-[15px] text-muted-foreground">No proof for this day.</p>}
+      <div className="flex items-center justify-between gap-3 text-[15px] text-muted-foreground">
+        <span>{proofs.length === 1 ? "1 photo today" : proofs.length > 1 ? `${proofs.length} photos today` : ""}</span>
+        <Link href="/progress?tab=proof" className="inline-flex min-h-11 items-center hover:text-foreground">
+          Proof wall
+        </Link>
+      </div>
 
       <Sheet open={viewing !== null} onClose={() => setViewing(null)} title={viewing?.label ?? "Proof"}>
         {viewing?.url && (

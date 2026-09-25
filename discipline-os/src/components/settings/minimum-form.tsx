@@ -97,7 +97,7 @@ function MinimumSheet({ habits, saved, onSaved }: { habits: MinimumFormProps["ha
           <span className="text-[17px]">Minutes of focused work</span>
           <span className="text-[14px] text-muted-foreground">0 leaves work out</span>
         </span>
-        <Stepper label="Minimum day work minutes" value={minutes} step={5} onCommit={(v) => setMinutes(Math.max(0, Math.min(240, Math.round(v))))} />
+        <Stepper label="Minimum day work minutes" value={minutes} step={5} delay={0} onCommit={(v) => setMinutes(Math.max(0, Math.min(240, Math.round(v))))} />
       </div>
       <CheckChip label="Gym, or 20 minutes of cardio" done={fitness} onToggle={setFitness} />
       <PrimaryButton disabled={busy} onClick={() => void save()} className="w-full">

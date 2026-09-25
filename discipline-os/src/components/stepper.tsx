@@ -14,13 +14,15 @@ interface StepperProps {
   unit?: string | null;
   disabled?: boolean;
   className?: string;
+  /** How long taps wait to be sent as one. 0 in a form, where Save sends the number. */
+  delay?: number;
 }
 
 /**
  * A number you change in a tap: − and + for counts (taps in a burst save once), or a plain
  * money field for revenue. Tap the number to type it.
  */
-export function Stepper({ label, value, onCommit, step = 1, unit, disabled, className }: StepperProps) {
+export function Stepper({ label, value, onCommit, step = 1, unit, disabled, className, delay = 600 }: StepperProps) {
   const [draft, setDraft] = useState(String(value));
   const [editing, setEditing] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -49,15 +51,19 @@ export function Stepper({ label, value, onCommit, step = 1, unit, disabled, clas
   );
 
   function settle(next: number) {
-    pending.current = next;
     setDraft(String(next));
+    if (delay === 0) {
+      if (next !== value) onCommit(next);
+      return;
+    }
+    pending.current = next;
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => {
       timer.current = null;
       const v = pending.current;
       pending.current = null;
       if (v !== null && v !== latest.current.value) latest.current.onCommit(v);
-    }, 600);
+    }, delay);
   }
 
   function commitTyped() {
