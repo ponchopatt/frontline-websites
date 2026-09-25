@@ -1,0 +1,135 @@
+<!-- Imperium redesign reference: 08-maintenance-phone. Static design mockup (a design-tool file). Visual source of truth only; do not copy this markup into the app. Text in {{braces}} is filled by the script at the bottom (price guide logic). -->
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<title>Maintenance plans page, phone</title>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#050608}
+a{color:#F3F5F8}a:hover{color:#FFFFFF}
+.cap{font-family:'Big Shoulders','Arial Narrow',sans-serif;font-weight:800;text-transform:uppercase;line-height:.88;letter-spacing:.006em;margin:0;text-wrap:balance}
+.wm{font-family:'Big Shoulders','Arial Narrow',sans-serif;font-weight:800;letter-spacing:.025em;font-size:18px;line-height:1}
+.bp{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 24px;border-radius:999px;background:#3A8FE0;color:#050608;font-weight:600;font-size:16px;text-decoration:none;white-space:nowrap;box-shadow:0 0 0 1px rgba(58,143,224,.35),0 10px 30px rgba(58,143,224,.3)}
+.bg{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 24px;border-radius:999px;border:1px solid rgba(194,200,208,.28);color:#F3F5F8;font-weight:600;font-size:16px;text-decoration:none;white-space:nowrap}
+.mu{color:#8A909A}.se{color:#C2C8D0}
+.ph{object-fit:cover;display:block}
+.hr{border-top:1px solid rgba(194,200,208,.12)}
+.chip{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border:1px solid rgba(194,200,208,.12);border-radius:10px;color:#C2C8D0}
+.chip.on{border-color:#3A8FE0;background:rgba(58,143,224,.1);color:#F3F5F8}
+.chip b{font-size:15px;font-weight:600}.chip small{font-size:12px;color:#8A909A}
+.fl{display:flex;flex-direction:column;gap:8px}.fl label{font-size:14px;font-weight:500}
+.in{height:48px;box-sizing:border-box;border:1px solid rgba(194,200,208,.46);border-radius:8px;background:rgba(194,200,208,.06);color:#F3F5F8;font:400 16px 'Instrument Sans',sans-serif;padding:0 14px;width:100%}
+.in::placeholder{color:#8A909A}
+button.chip{font:inherit;text-align:left;background:transparent;width:100%;box-sizing:border-box}
+button.chip:focus-visible{outline:2px solid #3A8FE0;outline-offset:2px}
+
+.row{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;padding:16px 0;border-bottom:1px solid rgba(194,200,208,.12);text-decoration:none}
+</style>
+</helmet>
+<div style="width: 390px; height: 3880px; overflow: hidden; background: #050608; color: #F3F5F8; font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 16px; line-height: 1.55; position: relative">
+<header style="height: 64px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(194,200,208,.12)">
+<a href="#" style="display: flex; align-items: center; gap: 10px; text-decoration: none"><img src="../../public/brand/logo-mark.png" alt="" style="height: 26px; width: auto"><span class="wm">Imperium Detailing</span></a>
+<button aria-label="Open menu" style="width: 44px; height: 44px; border-radius: 8px; border: 1px solid rgba(194,200,208,.28); background: transparent; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F3F5F8" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</header>
+<!-- Hero -->
+<section style="padding: 20px 20px 0">
+<nav aria-label="Breadcrumb" class="mu" style="font-size: 13px"><a href="#" style="color: #C2C8D0; text-decoration: none">Services</a> / Maintenance plans</nav>
+<h1 class="cap" style="margin-top: 20px; font-size: 62px">Detailed once. Kept that way.</h1>
+<p class="se" style="margin: 16px 0 0; font-size: 16px">A maintenance plan is us coming back on a schedule: a proper hand wash, the interior reset, the protection topped up.</p>
+<div style="margin-top: 18px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid rgba(194,200,208,.12); border-bottom: 1px solid rgba(194,200,208,.12)">
+<div style="padding: 12px 0"><span class="mu" style="display: block; font-size: 12px">Exterior, monthly</span><span class="cap" style="font-size: 32px; line-height: 1">$90</span><span class="mu" style="font-size: 12px"> /month</span></div>
+<div style="padding: 12px 0 12px 14px; border-left: 1px solid rgba(194,200,208,.12)"><span class="mu" style="display: block; font-size: 12px">Inside and out</span><span class="cap" style="font-size: 32px; line-height: 1">$150</span><span class="mu" style="font-size: 12px"> /month</span></div>
+</div>
+<img class="ph" src="../../public/images/m4-mitt-1080.webp" alt="A wash mitt on the bonnet of a BMW M4 during a maintenance wash" style="margin-top: 20px; width: 350px; height: 250px; border-radius: 12px; object-position: 50% 60%">
+</section>
+<div aria-hidden="true" style="position: absolute; right: 16px; top: 684px; width: 52px; height: 52px; border-radius: 999px; background: #1F6FC4; box-shadow: 0 8px 24px rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; z-index: 3"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F3F5F8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg></div>
+<nav aria-label="Quick contact" style="position: absolute; left: 0; top: 752px; width: 390px; height: 92px; box-sizing: border-box; padding: 12px 16px 28px; display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 8px; background: rgba(5,6,8,.92); border-top: 1px solid rgba(194,200,208,.12); z-index: 3">
+<a class="bp" href="#" style="padding: 0 12px">Text us your car</a><a class="bg" href="#" style="padding: 0 12px">Call</a>
+</nav>
+<div style="height: 40px"></div>
+
+<!-- Plans -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 56px 20px">
+<h2 class="cap" style="font-size: 52px">Pick a plan.</h2>
+<p class="mu" style="margin: 14px 0 0; font-size: 15px">We'll suggest one when we quote. You can change it any time.</p>
+<div style="margin-top: 24px; display: grid; gap: 12px">
+<article style="padding: 24px; border: 1px solid #3A8FE0; border-radius: 14px; background: #0C0F14; box-shadow: 0 0 60px rgba(31,111,196,.2)">
+<h3 class="cap" style="font-size: 32px">Inside and out, monthly</h3>
+<p style="margin: 14px 0 0"><span class="mu" style="font-size: 14px">from </span><span class="cap" style="font-size: 56px; line-height: 1">$150</span><span class="mu" style="font-size: 14px"> a month</span></p>
+<p class="se" style="margin: 14px 0 0; font-size: 14px">The exterior visit plus the interior reset. The rhythm we recommend for coated cars.</p>
+<a class="bp" href="#" style="margin-top: 18px">Get it quoted</a>
+</article>
+<article style="padding: 24px; border: 1px solid rgba(194,200,208,.12); border-radius: 14px; background: #0C0F14">
+<h3 class="cap" style="font-size: 32px">Exterior, monthly</h3>
+<p style="margin: 14px 0 0"><span class="mu" style="font-size: 14px">from </span><span class="cap" style="font-size: 56px; line-height: 1">$90</span><span class="mu" style="font-size: 14px"> a month</span></p>
+<p class="se" style="margin: 14px 0 0; font-size: 14px">The outside kept the way we left it. The cheapest way onto a schedule.</p>
+<a class="bg" href="#" style="margin-top: 18px">Get it quoted</a>
+</article>
+<article style="padding: 24px; border: 1px solid rgba(194,200,208,.12); border-radius: 14px; background: #0C0F14">
+<h3 class="cap" style="font-size: 32px">Every 2 weeks</h3>
+<p class="cap" style="margin: 14px 0 0; font-size: 56px; line-height: 1">Quoted</p>
+<p class="se" style="margin: 14px 0 0; font-size: 14px">Daily drivers that live on the street, dark colours, cars that carry kids or dogs. It never looks washed. It looks detailed.</p>
+<a class="bg" href="#" style="margin-top: 18px">Text us the car</a>
+</article>
+</div>
+<p class="se" style="margin: 18px 0 0; font-size: 14px">Same number every month. The number you're quoted is the number you pay.</p>
+</section>
+
+<!-- What a visit covers -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 56px 20px">
+<h2 class="cap" style="font-size: 48px">What a visit covers</h2>
+<p style="margin: 20px 0 0; font-size: 14px; font-weight: 600">Every visit, from $90 a month</p>
+<ul class="se" style="margin: 10px 0 0; padding: 0; list-style: none; font-size: 14px">
+<li style="padding: 10px 0; border-top: 1px solid rgba(194,200,208,.12)">Pre-rinse and snow foam, so grit lifts off before anything touches the paint</li>
+<li style="padding: 10px 0; border-top: 1px solid rgba(194,200,208,.12)">Two-bucket, pH-neutral hand wash with clean mitts, never a brush</li>
+<li style="padding: 10px 0; border-top: 1px solid rgba(194,200,208,.12)">Wheels, tyres and arches cleaned, tyres dressed</li>
+<li style="padding: 10px 0; border-top: 1px solid rgba(194,200,208,.12)">Door jambs and exterior glass</li>
+<li style="padding: 10px 0; border-top: 1px solid rgba(194,200,208,.12)">Bonded contamination checked and spot-treated</li>
+<li style="padding: 10px 0; border-top: 1px solid rgba(194,200,208,.12)">Protection topped up: a coating booster on coated cars, a sealant on the rest</li>
+<li style="padding: 10px 0; border-top: 1px solid rgba(194,200,208,.12)">A quick note on anything we notice: stone chips, swirl marks, coating health</li>
+</ul>
+<p style="margin: 20px 0 0; font-size: 14px; font-weight: 600">Inside and out adds, from $150 a month</p>
+<ul class="se" style="margin: 10px 0 0; padding: 0; list-style: none; font-size: 14px">
+<li style="padding: 10px 0; border-top: 1px solid rgba(194,200,208,.12)">Interior vacuum, front and back</li>
+<li style="padding: 10px 0; border-top: 1px solid rgba(194,200,208,.12)">Dash, console and door cards wiped down</li>
+<li style="padding: 10px 0; border-top: 1px solid rgba(194,200,208,.12); border-bottom: 1px solid rgba(194,200,208,.12)">Interior glass</li>
+</ul>
+<div style="margin-top: 24px; padding: 20px; border: 1px solid rgba(194,200,208,.12); border-radius: 12px; background: #0C0F14">
+<h3 style="margin: 0; font-size: 16px; font-weight: 600">Why not a car wash?</h3>
+<p class="se" style="margin: 10px 0 0; font-size: 14px">Spinning brushes are the fastest way to put swirl marks back into corrected paint, and they void a coating warranty.</p>
+</div>
+</section>
+
+<!-- FAQ -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 56px 20px">
+<h2 class="cap" style="font-size: 44px">Common questions</h2>
+<div style="margin-top: 20px; border-top: 1px solid rgba(194,200,208,.12)">
+<details open="" style="border-bottom: 1px solid rgba(194,200,208,.12)"><summary style="display: flex; justify-content: space-between; gap: 12px; padding: 16px 0; font-size: 17px; font-weight: 500; list-style: none">Does the car need a full detail first?<span class="mu" aria-hidden="true" style="font-size: 22px; transform: rotate(45deg)">+</span></summary><p class="mu" style="margin: 0; padding-bottom: 18px; font-size: 14px">Usually, unless we've detailed it in the last few months. A plan keeps a finish; it doesn't chase one.</p></details>
+<details style="border-bottom: 1px solid rgba(194,200,208,.12)"><summary style="display: flex; justify-content: space-between; gap: 12px; padding: 16px 0; font-size: 17px; font-weight: 500; list-style: none">How is it priced?<span class="mu" aria-hidden="true" style="font-size: 22px">+</span></summary></details>
+<details style="border-bottom: 1px solid rgba(194,200,208,.12)"><summary style="display: flex; justify-content: space-between; gap: 12px; padding: 16px 0; font-size: 17px; font-weight: 500; list-style: none">Do I need to be home?<span class="mu" aria-hidden="true" style="font-size: 22px">+</span></summary></details>
+<details style="border-bottom: 1px solid rgba(194,200,208,.12)"><summary style="display: flex; justify-content: space-between; gap: 12px; padding: 16px 0; font-size: 17px; font-weight: 500; list-style: none">Can I change how often you come?<span class="mu" aria-hidden="true" style="font-size: 22px">+</span></summary></details>
+</div>
+</section>
+<footer style="border-top: 1px solid rgba(194,200,208,.12); padding: 48px 20px 0; overflow: hidden">
+<img src="../../public/brand/logo-full-dark.png" alt="Imperium Detailing" style="height: 80px; width: auto">
+<p class="se" style="margin: 16px 0 0; font-size: 15px">Showroom finish. Every time.</p>
+<p class="mu" style="margin: 6px 0 0; font-size: 14px">0426 661 820 · Every day, 8:30am to 5:30pm</p>
+<p class="mu" style="margin: 24px 0 0; font-size: 12px">© 2026 Imperium Detailing. ABN 81 254 863 265</p>
+<div aria-hidden="true" class="cap" style="margin-top: 16px; font-size: 104px; line-height: .8; background: linear-gradient(180deg, rgba(243,245,248,.9), rgba(243,245,248,.06)); -webkit-background-clip: text; background-clip: text; color: transparent">Imperium</div>
+<div style="height: 110px"></div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":3880}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
