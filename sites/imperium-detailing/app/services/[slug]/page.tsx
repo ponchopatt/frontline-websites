@@ -11,12 +11,17 @@ import { Faq } from "@/components/site/faq";
 import { LinkButton } from "@/components/site/link-button";
 import { QuoteCta } from "@/components/site/quote-cta";
 import { Booking } from "@/components/site/booking";
-import { SectionHeading } from "@/components/site/section-heading";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
-import { ServicePrices } from "@/components/site/service-prices";
+import { ServicePrices, splitHeading } from "@/components/site/service-prices";
 import { articles } from "@/lib/articles";
 
 type Params = { slug: string };
+
+const tick = (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="mt-[3px] shrink-0 text-accent">
+    <path d="M5 12l5 5L19 7" />
+  </svg>
+);
 
 export function generateStaticParams(): Params[] {
   return services.map((s) => ({ slug: s.slug }));
@@ -123,26 +128,41 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
 
       <ServicePrices slug={s.slug} name={s.name} />
 
+      {/* The wide showpiece (ceramic's one lap around the M4). Laptops: heading
+          and caption on one line, the clip full width under them. Phones:
+          heading, clip, caption. The clip is MP4 only (there is no WebM cut). */}
       {s.showcase && (
-        <section className="border-t border-border py-16 md:py-24">
-          <div className="container-x mx-auto max-w-6xl">
-            <SectionHeading title={s.showcase.title} intro={s.showcase.caption} />
-          </div>
-          <div className="container-x mx-auto max-w-5xl">
-            <div className="overflow-hidden rounded-2xl border border-border bg-[#0a0e14]">
-              <LoopVideo base={s.showcase.base} poster={s.showcase.poster} label={s.showcase.label} className="block aspect-[1200/456] w-full" webm={false} spin />
+        <section aria-labelledby="showcase-heading" className="section-y border-t border-border">
+          <div className="container-x mx-auto grid max-w-6xl gap-y-5 md:grid-cols-[minmax(0,1fr)_minmax(0,42ch)] md:gap-x-12 md:gap-y-12">
+            <h2 id="showcase-heading" className="display-caps text-[clamp(3rem,6.4vw,5.75rem)] md:row-start-1 md:self-end" data-reveal="lines">
+              {s.showcase.title}
+            </h2>
+            <div className="overflow-hidden rounded-xl bg-card md:col-span-2 md:row-start-2 md:rounded-[14px]">
+              <LoopVideo
+                base={s.showcase.base}
+                poster={s.showcase.poster}
+                label={s.showcase.label}
+                className="block aspect-[7/4] w-full object-cover md:aspect-[1200/456]"
+                webm={false}
+                spin
+              />
             </div>
+            <p className="m-0 max-w-[42ch] text-sm text-muted-foreground md:col-start-2 md:row-start-1 md:mb-2 md:self-end md:text-[17px]">{s.showcase.caption}</p>
           </div>
         </section>
       )}
 
       {s.compare && <BeforeAfter {...s.compare} title="Swirls in. Gloss out." />}
 
-      <section className="border-t border-border">
-        <div className="container-x mx-auto grid max-w-6xl gap-12 py-14 md:grid-cols-12 md:py-20">
-          <div className="md:col-span-7">
-            <h2 className="display-caps text-3xl md:text-5xl">How we do it</h2>
-            <div className="mt-6 grid max-w-[64ch] gap-4 text-[17px] text-secondary-foreground">
+      {/* How we do it: the service's own paragraphs on the left; on the right
+          what every job includes (blue ticks) and what we need on the day. */}
+      <section aria-labelledby="how-heading" className="section-y border-t border-border">
+        <div className="container-x mx-auto grid max-w-6xl gap-y-6 lg:grid-cols-12 lg:gap-x-20">
+          <div className="lg:col-span-7">
+            <h2 id="how-heading" className={splitHeading} data-reveal="lines">
+              How we do it
+            </h2>
+            <div className="mt-[18px] grid max-w-[64ch] gap-3.5 text-[15px] text-secondary-foreground md:mt-8 md:gap-5 md:text-[17px]">
               {s.why.map((p) => (
                 <p key={p.slice(0, 40)} className="m-0">
                   {p}
@@ -150,21 +170,21 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
               ))}
             </div>
           </div>
-          <aside className="md:col-span-5">
-            <div className="rounded-lg border border-border bg-card p-6">
-              <h2 className="text-lg font-semibold">Every job, every time</h2>
-              <ul className="mt-4 grid list-none gap-2.5 p-0 text-[15px] text-secondary-foreground">
+          <aside aria-label={`What ${anA(s.name.toLowerCase())} includes`} className="grid content-start gap-3 lg:col-span-5 lg:gap-4">
+            <div className="rounded-xl border border-border bg-card p-5 md:p-8">
+              <h3 className="m-0 text-base font-semibold md:text-lg">Every job, every time</h3>
+              <ul className="m-0 mt-3 grid list-none gap-2.5 p-0 text-sm text-secondary-foreground md:mt-4 md:text-[15px]">
                 {s.included.map((i) => (
                   <li key={i} className="flex gap-3">
-                    <span aria-hidden="true" className="mt-[.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                    {tick}
                     {i}
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="mt-4 rounded-lg border border-border p-6">
-              <h2 className="text-lg font-semibold">On the day, we need</h2>
-              <ul className="mt-4 grid list-none gap-2.5 p-0 text-[15px] text-muted-foreground">
+            <div className="rounded-xl border border-border p-5 md:p-8">
+              <h3 className="m-0 text-base font-semibold md:text-lg">On the day, we need</h3>
+              <ul className="m-0 mt-3 grid list-none gap-2.5 p-0 text-sm text-muted-foreground md:mt-4 md:text-[15px]">
                 {s.needs.map((n) => (
                   <li key={n}>{n}</li>
                 ))}
