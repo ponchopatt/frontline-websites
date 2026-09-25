@@ -5,6 +5,10 @@ import { usePathname } from "next/navigation";
 import { site, smsHref, telHref } from "@/lib/site";
 import { buttonClass } from "@/components/site/link-button";
 
+// Other pages whose phone hero has no buttons of its own (the 2026 redesign:
+// /maintenance/ and the area pages), so the bar is there from the first screen.
+const barFromTop = /^\/(maintenance|service-areas\/[^/]+)\/?$/;
+
 // Phones only: Text and Call pinned to the bottom. On the home page it is there
 // from the first screen, because the home hero has no buttons of its own on a
 // phone; elsewhere it arrives once the hero (and its buttons) has scrolled away.
@@ -43,7 +47,7 @@ export function MobileBar() {
     return () => io.disconnect();
   }, [pathname]);
 
-  const show = (pathname === "/" || scrolled) && !covered;
+  const show = (pathname === "/" || barFromTop.test(pathname) || scrolled) && !covered;
 
   return (
     <>
