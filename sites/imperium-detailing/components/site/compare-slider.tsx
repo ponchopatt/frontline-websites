@@ -40,12 +40,12 @@ export function CompareSlider({ before, after, beforeAlt, afterAlt, className = 
   return (
     <div
       ref={root}
-      className={`panel-glow relative aspect-[4/5] select-none overflow-hidden rounded-xl bg-card focus-within:ring-2 focus-within:ring-ring ${className}`}
+      className={`relative aspect-[4/5] select-none overflow-hidden rounded-xl bg-card shadow-[0_30px_80px_rgba(0,0,0,0.7)] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background md:rounded-[14px] ${className}`}
     >
       <img
         src={imageSrc(before, 960)}
         srcSet={imageSrcSet(before)}
-        sizes="(min-width: 768px) 42vw, 100vw"
+        sizes="(min-width: 1440px) 640px, (min-width: 768px) 55vw, 100vw"
         {...imageSize(before)}
         alt={beforeAlt}
         loading="lazy"
@@ -56,7 +56,7 @@ export function CompareSlider({ before, after, beforeAlt, afterAlt, className = 
       <img
         src={imageSrc(after, 960)}
         srcSet={imageSrcSet(after)}
-        sizes="(min-width: 768px) 42vw, 100vw"
+        sizes="(min-width: 1440px) 640px, (min-width: 768px) 55vw, 100vw"
         {...imageSize(after)}
         alt={afterAlt}
         loading="lazy"
@@ -66,17 +66,17 @@ export function CompareSlider({ before, after, beforeAlt, afterAlt, className = 
         style={{ clipPath: `inset(0 0 0 ${pos}%)` }}
       />
 
-      <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 w-px bg-white/90" style={{ left: `${pos}%` }}>
-        <span className="absolute left-1/2 top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-background/80 text-foreground shadow-lg backdrop-blur">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 w-0.5 -translate-x-1/2 bg-foreground" style={{ left: `${pos}%` }}>
+        <span className="absolute left-1/2 top-1/2 flex size-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-foreground text-background shadow-[0_6px_20px_rgba(0,0,0,0.5)] md:size-14">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
           </svg>
         </span>
       </div>
-      <span aria-hidden="true" className="pointer-events-none absolute left-3 top-3 rounded-full bg-background/70 px-3 py-1 text-xs font-medium text-foreground backdrop-blur">
+      <span aria-hidden="true" className="pointer-events-none absolute bottom-4 left-4 rounded-full bg-background/75 px-3 py-1.5 text-[13px] font-semibold text-foreground md:bottom-5 md:left-5">
         Before
       </span>
-      <span aria-hidden="true" className="pointer-events-none absolute right-3 top-3 rounded-full bg-background/70 px-3 py-1 text-xs font-medium text-foreground backdrop-blur">
+      <span aria-hidden="true" className="pointer-events-none absolute bottom-4 right-4 rounded-full bg-background/75 px-3 py-1.5 text-[13px] font-semibold text-foreground md:bottom-5 md:right-5">
         After
       </span>
 

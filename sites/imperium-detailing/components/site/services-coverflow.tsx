@@ -5,18 +5,10 @@ import { imageSrc, imageSrcSet } from "@/components/site/picture";
 import { SectionHeading } from "@/components/site/section-heading";
 import { hasWebm } from "@/lib/media";
 
-const lines: Record<string, string> = {
-  "ceramic-coating-canberra": "Written 3, 5 or 7-year warranty",
-  "paint-correction-canberra": "Measured, corrected, photographed",
-  "full-car-detail-canberra": "Inside and out, in your driveway",
-  "interior-car-detailing-canberra": "Steam and extraction, no perfume",
-  "exterior-car-detailing-canberra": "Decontaminated, then sealed",
-};
-
 const items: CarouselItem[] = services.map((s) => ({
   tag: `From ${formatPrice(s.priceFrom)}`,
   titleLine1: s.name,
-  titleLine2: lines[s.slug],
+  titleLine2: s.line,
   desc: s.forWho,
   img: imageSrc(s.image, 480),
   imgSrcSet: imageSrcSet(s.image),
