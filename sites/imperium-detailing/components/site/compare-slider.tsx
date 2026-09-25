@@ -17,12 +17,21 @@ export function CompareSlider({ before, after, beforeAlt, afterAlt, className = 
   const root = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState(50);
   const touched = useRef(false);
+  const nudge = useRef<gsap.core.Tween | null>(null);
+
+  // Any hand on the control (pointer, key or focus) ends the nudge for good,
+  // so it can never pull the handle away from where someone has put it.
+  const takeOver = () => {
+    touched.current = true;
+    nudge.current?.kill();
+    nudge.current = null;
+  };
 
   useGSAP(
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const state = { v: 50 };
-      gsap.to(state, {
+      nudge.current = gsap.to(state, {
         v: 34,
         duration: 0.7,
         yoyo: true,
@@ -86,9 +95,9 @@ export function CompareSlider({ before, after, beforeAlt, afterAlt, className = 
         max={100}
         value={Math.round(pos)}
         onChange={(e) => setPos(Number(e.target.value))}
-        onPointerDown={() => {
-          touched.current = true;
-        }}
+        onPointerDown={takeOver}
+        onKeyDown={takeOver}
+        onFocus={takeOver}
         aria-label="Drag to compare the paint before and after correction"
         className="absolute inset-0 m-0 h-full w-full cursor-ew-resize opacity-0 [touch-action:pan-y]"
       />
