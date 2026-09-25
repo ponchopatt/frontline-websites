@@ -38,11 +38,9 @@ export function ServicesList() {
           <h2 id="services-heading" className="display-caps max-w-[820px] text-[clamp(3.375rem,6.4vw,5.75rem)]" data-reveal="lines">
             What we do, and what it costs.
           </h2>
-          {/* TODO(pat): the mockup says "Bigger cars are listed on each page". That
-              is only true once the service pages get their size tables (brief §4),
-              so until then this points at the price guide, which has them. */}
+          {/* Every service page has its price table by vehicle size. */}
           <p className="m-0 max-w-[34ch] text-[15px] text-muted-foreground md:mb-2 md:text-lg">
-            Prices are for a hatch or sedan.<span className="hidden md:inline"> Bigger cars are in the price guide below.</span>
+            Prices are for a hatch or sedan.<span className="hidden md:inline"> Bigger cars are listed on each page.</span>
           </p>
         </div>
 

@@ -13,6 +13,7 @@ import { QuoteCta } from "@/components/site/quote-cta";
 import { Booking } from "@/components/site/booking";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
+import { ServicePrices } from "@/components/site/service-prices";
 import { articles } from "@/lib/articles";
 
 type Params = { slug: string };
@@ -119,6 +120,8 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
           </div>
         </div>
       </section>
+
+      <ServicePrices slug={s.slug} name={s.name} />
 
       {s.showcase && (
         <section className="border-t border-border py-16 md:py-24">
