@@ -80,7 +80,15 @@ export default async function MonthPage({ params }: PageProps<"/goals/month/[mon
           const areaName = areas.find((a) => a.id === (o.lifeAreaId ?? parent?.lifeAreaId))?.name ?? null;
           const drafts = monthToWeeks(withProgress(o, p), areaName, viewer.today).filter((d) => !covered.has(d.periodStart));
           const manual = isNumeric(o.goalType) && (o.progressSource === "manual" || (o.progressSource === "children" && !children.some((c) => (c.unit ?? "") === (o.unit ?? ""))));
-          const soFar = p?.current !== null && p?.current !== undefined ? formatValue(p.current, o.unit) : p && p.ratio !== null ? `${Math.round(p.ratio * 100)}%` : null;
+          // "$500 of $3,000" from the start ("$0 of $3,000"), never a bare "0% of $3,000".
+          const soFar =
+            p?.current !== null && p?.current !== undefined
+              ? formatValue(p.current, o.unit)
+              : p && p.ratio !== null
+                ? o.targetValue !== null
+                  ? formatValue(Math.round(p.ratio * o.targetValue), o.unit)
+                  : `${Math.round(p.ratio * 100)}%`
+                : null;
           return (
             <Group key={o.id} className={i > 0 ? "mt-3" : undefined}>
               <div className="grid gap-2.5 px-4 py-4">

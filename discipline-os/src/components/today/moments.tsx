@@ -23,7 +23,8 @@ function remember(key: string) {
 
 /**
  * A personal record the moment it's broken: the new number and the one it beat. Each shows
- * once; dismissing it (or seeing it) is remembered on this device for the day.
+ * once; dismissing it (or seeing it) is remembered on this device for the day. It floats over
+ * the top of the screen rather than pushing the day down after it has drawn, and goes by itself.
  */
 export function RecordBanner({ date, events }: { date: LocalDate; events: RecordEvent[] }) {
   const [seen, setSeen] = useState<Set<string>>(new Set());
@@ -40,20 +41,32 @@ export function RecordBanner({ date, events }: { date: LocalDate; events: Record
   }, [date]);
 
   const event = ready ? events.find((e) => !seen.has(e.key)) : undefined;
-  if (!event) return null;
-  const close = () => {
-    remember(`pr:${date}:${event.key}`);
-    setSeen((s) => new Set(s).add(event.key));
+  const close = (key: string) => {
+    remember(`pr:${date}:${key}`);
+    setSeen((s) => new Set(s).add(key));
   };
+  const key = event?.key;
+  useEffect(() => {
+    if (!key) return;
+    const t = setTimeout(() => close(key), 9000);
+    return () => clearTimeout(t);
+    // close only writes storage and state for this day.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key]);
+  if (!event) return null;
   return (
-    <section role="status" aria-label="New personal record" className="surface-strong flex gap-3 rounded-[24px] border p-4 animate-in fade-in-0 slide-in-from-top-2 duration-300">
+    <section
+      role="status"
+      aria-label="New personal record"
+      className="surface-strong fixed inset-x-0 top-[max(12px,env(safe-area-inset-top))] z-40 mx-auto flex w-[calc(100%-2rem)] max-w-md gap-3 rounded-[24px] border p-4 shadow-lg animate-in fade-in-0 slide-in-from-top-2 duration-300"
+    >
       <Trophy className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden />
       <div className="grid min-w-0 flex-1 gap-0.5">
         <p className="text-sm text-primary">New personal record</p>
         <p className="text-[17px] leading-snug font-medium">{event.text}</p>
         <p className="text-sm text-muted-foreground">Previous record: {event.previous}</p>
       </div>
-      <button type="button" onClick={close} aria-label="Dismiss" className="-mt-1 -mr-1 grid size-11 shrink-0 place-items-center rounded-full text-muted-foreground hover:bg-accent">
+      <button type="button" onClick={() => close(event.key)} aria-label="Dismiss" className="-mt-1 -mr-1 grid size-11 shrink-0 place-items-center rounded-full text-muted-foreground hover:bg-accent">
         <X className="size-4" aria-hidden />
       </button>
     </section>

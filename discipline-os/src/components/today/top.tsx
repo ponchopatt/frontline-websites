@@ -46,12 +46,12 @@ export function TodayTop(props: TodayTopProps) {
   return (
     <header className="grid gap-4">
       <div className="-mr-2 flex min-h-11 items-center justify-between gap-3">
-        <p className="min-w-0 truncate text-[15px] text-muted-foreground">
-          {isToday ? `${weekdayName(date)} ${partOfDay} · ${dayMonth(date)}` : "Looking back"}
+        <p className="flex min-w-0 items-center gap-1.5 text-[15px] text-muted-foreground">
+          <span className="truncate">{isToday ? `${weekdayName(date)} ${partOfDay} · ${dayMonth(date)}` : "Looking back"}</span>
           {!isToday && (
             <>
-              {" · "}
-              <Link href="/" className="text-foreground underline underline-offset-4">
+              <span aria-hidden>·</span>
+              <Link href="/" className="inline-flex min-h-11 shrink-0 items-center text-foreground underline underline-offset-4">
                 Back to today
               </Link>
             </>

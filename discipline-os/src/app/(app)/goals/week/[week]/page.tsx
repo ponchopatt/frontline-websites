@@ -58,7 +58,7 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
   const reviewed = Boolean(review?.completed_at);
   const weekOver = end < today;
   // The review opens at the weekend, when the week is over, or early on request.
-  const reviewTime = weekOver || today >= addDays(week, 5) || (reviewParam === "now" && week <= today);
+  const reviewTime = reviewed || weekOver || today >= addDays(week, 5) || (reviewParam === "now" && week <= today);
   const planning = !weekOver;
 
   // Monthly objectives with nothing planned for this week yet: suggest their share of it.

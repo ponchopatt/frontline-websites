@@ -501,12 +501,14 @@
 .dark .nav-active {
   background-color: rgb(236 230 218 / 0.1);
 }
+/* Sage: a deeper pill, so the white label stays clear on it. */
 .sage .nav-active {
-  background-color: rgb(255 255 255 / 0.2);
+  background-color: rgb(20 36 27 / 0.34);
 }
+/* Spark: a darker orange label, clear against the peach pill. */
 .spark .nav-active {
   background-color: rgb(238 79 28 / 0.12);
-  color: #d9420f;
+  color: #b3350a;
 }
 
 /* Two paler cards peeking out from behind a stacked card. */
@@ -552,16 +554,17 @@
 dialog[open] {
   animation-timing-function: var(--ease-out-quart);
 }
+/* Down and away, from wherever a drag let go of it. */
 dialog.sheet-closing {
-  animation: sheet-out 180ms var(--ease-out-quart) forwards;
+  animation: sheet-out 220ms cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 dialog.sheet-closing::backdrop {
-  animation: backdrop-out 180ms ease-out forwards;
+  animation: backdrop-out 220ms ease-out forwards;
 }
 @keyframes sheet-out {
   to {
-    transform: translateY(28px);
-    opacity: 0;
+    transform: translateY(100%);
+    opacity: 0.6;
   }
 }
 @keyframes backdrop-out {
@@ -578,12 +581,6 @@ dialog.sheet-closing::backdrop {
 }
 .ring-fill {
   animation: ring-in 700ms var(--ease-out-quart) both;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
 }
 
 @keyframes pin-shake {

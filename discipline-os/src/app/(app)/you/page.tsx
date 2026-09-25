@@ -36,7 +36,7 @@ export default async function YouPage() {
     <div className="grid grid-cols-[minmax(0,1fr)] gap-7">
       <PageHeader eyebrow="You" title={name ?? "Your progress"} subtitle="What you said you'd do, what you did, and how it's adding up." />
 
-      <dl className="grid grid-cols-3 gap-3">
+      <dl className="glow-ink grid grid-cols-3 gap-3">
         {stats.map((s) => (
           <div key={s.label} className="grid gap-0.5">
             <dt className="text-[14px] text-muted-foreground">{s.label}</dt>

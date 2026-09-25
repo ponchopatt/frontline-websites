@@ -40,6 +40,8 @@ export interface SuggestContext {
   milestone: { title: string; nextStep: string | null } | null;
   /** Keys already covered by a goal this week, e.g. "metric:<id>", "habit:<id>". */
   taken: Set<string>;
+  /** The part of this week the account has existed for (a new account on Friday: 3/7). */
+  weekShare?: number;
 }
 
 export interface Answers {
@@ -112,11 +114,18 @@ export function suggestGoals(ctx: SuggestContext, answers: Answers): GoalSuggest
     // Deals start at one; with no history and no target there's nothing honest to suggest.
     if (target === null && c.key === "closed") target = 1;
     if (target === null || target <= 0) continue;
+    // A week joined part-way through gets that part of the number, as the weekly boss does.
+    const share = ctx.weekShare ?? 1;
+    const part = share < 1 && c.weeklyAvg === null ? tidy(target * share, c.unit) : null;
+    const scaled = part !== null && part < target;
+    if (scaled) target = part;
     const avg = c.weeklyAvg;
     const reason =
       avg !== null && avg > 0
         ? `You averaged ${formatValue(Math.round(avg), c.unit === "$" ? "$" : null)} a week over the last ${ctx.weeks} ${ctx.weeks === 1 ? "week" : "weeks"}. ${formatValue(target, c.unit === "$" ? "$" : null)} is a ${Math.round(((target - avg) / avg) * 100)}% step up: about ${perDay(target, ctx.workDays, c.unit)} a work day.`
-        : `No history yet, so this starts from your weekly target: about ${perDay(target, ctx.workDays, c.unit)} a work day. Adjust it after a week.`;
+        : scaled
+          ? `No history yet, and only part of this week left, so this is that part of your weekly target. Adjust it after a week.`
+          : `No history yet, so this starts from your weekly target: about ${perDay(target, ctx.workDays, c.unit)} a work day. Adjust it after a week.`;
     out.push({
       key: `m-${c.metricId}`,
       area: c.area,
@@ -133,7 +142,7 @@ export function suggestGoals(ctx: SuggestContext, answers: Answers): GoalSuggest
   const habitGoal = (kind: HabitKind, area: Area, make: (n: number) => string, full: number) => {
     const h = ctx.habits.find((x) => x.kind === kind);
     if (!h || ctx.taken.has(`habit:${h.habitId}`)) return;
-    const due = Math.min(full, h.dueDays);
+    const due = Math.min(full, h.dueDays, Math.max(1, Math.round(7 * (ctx.weekShare ?? 1))));
     const avg = h.daysPerWeek;
     const target = avg === null ? due : Math.min(due, Math.max(1, Math.ceil(avg + (avg < due ? 1 : 0))));
     const reason =

@@ -24,12 +24,33 @@ if(b.matches(${JSON.stringify(TOGGLE)})&&q.indexOf(b)!==-1)return;
 b.setAttribute("data-early-tap","");q.push(b)}
 document.addEventListener("click",tap,true)})();`;
 
-/** Plays the taps noted before the page was ready. Called once React is running. */
+/** True once React has taken over this element and its tap handler is attached. */
+function hydrated(el: Element): boolean {
+  return Object.keys(el).some((k) => k.startsWith("__reactProps$"));
+}
+
+/**
+ * Plays the taps noted before the page was ready, each as soon as its own button is live (parts
+ * of a page come alive at slightly different moments). Gives up on any still waiting after 10 s.
+ */
 export function replayEarlyTaps() {
   const w = window as Window & { __earlyTaps?: HTMLElement[] };
-  const taps = w.__earlyTaps?.splice(0) ?? [];
-  for (const el of taps) {
-    el.removeAttribute("data-early-tap");
-    if (el.isConnected && !(el as HTMLButtonElement).disabled) el.click();
-  }
+  const waiting = w.__earlyTaps?.splice(0) ?? [];
+  if (!waiting.length) return;
+  const until = Date.now() + 10_000;
+  const tick = () => {
+    for (let i = 0; i < waiting.length; ) {
+      const el = waiting[i];
+      if (!el.isConnected) {
+        waiting.splice(i, 1);
+      } else if (hydrated(el)) {
+        waiting.splice(i, 1);
+        el.removeAttribute("data-early-tap");
+        if (!(el as HTMLButtonElement).disabled) el.click();
+      } else i += 1;
+    }
+    if (waiting.length && Date.now() < until) requestAnimationFrame(tick);
+    else for (const el of waiting) el.removeAttribute("data-early-tap");
+  };
+  tick();
 }

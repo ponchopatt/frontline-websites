@@ -62,7 +62,7 @@ export function FaithToday({ date, isToday, locked, reading: initial, planLabel,
 
   return (
     <>
-      <section aria-labelledby="reading-heading" className="grid gap-2">
+      <section aria-labelledby="reading-heading" className="glow-ink grid gap-2">
         <p className="text-[15px] text-muted-foreground">{reading.suggested ? `Next in ${planLabel}` : isToday ? "Today's reading" : "The reading"}</p>
         <div className="flex items-baseline justify-between gap-3">
           <h2 id="reading-heading" className="text-[30px] leading-tight font-light tracking-[-0.02em]">

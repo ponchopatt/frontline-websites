@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { AppNav } from "@/components/app-nav";
 import { GlobalBar } from "@/components/global-bar";
+import { ScrollTop } from "@/components/scroll-top";
 import { isWorkArea } from "@/lib/areas";
 import { getViewer } from "@/lib/data";
 
@@ -23,6 +24,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
       </main>
       <GlobalBar running={open ? { id: open.id, area: isWorkArea(open.area) ? open.area : null, startedAt: open.started_at } : null} />
       <AppNav />
+      <ScrollTop />
     </div>
   );
 }

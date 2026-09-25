@@ -82,6 +82,7 @@ export async function suggestMyGoals(
       dueDays: h.days?.length || 7,
     })),
     milestone: milestone ? { title: milestone.title, nextStep: milestone.steps.find((s) => !s.done)?.title ?? null } : null,
+    weekShare: (daysBetween(first > weekStart ? first : weekStart, addDays(weekStart, 6)) + 1) / 7,
     taken: new Set((weekGoals.data ?? []).flatMap((g) => [g.metric_id ? `metric:${g.metric_id}` : "", g.habit_id ? `habit:${g.habit_id}` : ""]).filter(Boolean)),
   };
 

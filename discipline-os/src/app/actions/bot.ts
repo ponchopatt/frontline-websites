@@ -9,7 +9,7 @@ import type { ActionResult, MilestoneItem } from "@/lib/types";
  * The AI trading bot: one current milestone, its steps, and one notes area. No trade journal.
  */
 
-const DEFAULT_STEPS = ["Implement", "Test", "Backtest", "Compare", "Fix", "Document", "Complete milestone"];
+const DEFAULT_STEPS = ["Implement", "Test", "Backtest", "Compare", "Fix", "Document", "Go live"];
 const titleSchema = z.string().trim().min(1, "Name the milestone.").max(120, "Keep the name under 120 characters.");
 const stepsSchema = z
   .array(z.object({ title: z.string().trim().min(1, "A step needs a name.").max(60, "Keep a step under 60 characters."), done: z.boolean() }))

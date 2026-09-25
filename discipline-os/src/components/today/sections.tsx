@@ -125,11 +125,11 @@ export function FaithCard({ date, habits, bible, reviewDone, readOnly, timeZone,
         </div>
         <div className="flex shrink-0 items-center gap-3">
           {!readOnly && !picking && (
-            <button type="button" onClick={() => setPicking(true)} className="min-h-11 text-sm text-muted-foreground hover:text-foreground">
+            <button type="button" onClick={() => setPicking(true)} className="min-h-11 min-w-11 text-sm text-muted-foreground hover:text-foreground">
               Change
             </button>
           )}
-          <Link href="/faith" className="inline-flex min-h-11 items-center text-[15px] text-muted-foreground hover:text-foreground">
+          <Link href="/faith" className="inline-flex min-h-11 min-w-11 items-center justify-center text-[15px] text-muted-foreground hover:text-foreground">
             Notes
           </Link>
         </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { Play, Square } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { startSession, stopSession } from "@/app/actions/work";
@@ -42,7 +43,18 @@ export function AreaHours({ data }: { data: HoursData }) {
   const [running, setRunning] = useState(data.running);
   const [conflict, setConflict] = useState<RunningTimer | null>(null);
   const [busy, setBusy] = useState(false);
+  const router = useRouter();
   const name = AREA_LABEL[area];
+
+  // A timer started or stopped elsewhere (the bar above the tabs, Today, another device) shows
+  // here once the server has it.
+  const serverKey = [data.sessions.map((s) => `${s.id}-${s.endedAt ?? ""}`).join("."), data.running?.id ?? ""].join(":");
+  const [seen, setSeen] = useState(serverKey);
+  if (seen !== serverKey) {
+    setSeen(serverKey);
+    setSessions(data.sessions);
+    setRunning(data.running);
+  }
 
   const todayMin = minutesSince(sessions, today, now);
   const weekMin = minutesSince(sessions, weekStart, now);
@@ -72,6 +84,8 @@ export function AreaHours({ data }: { data: HoursData }) {
       { id: s.id, localDate: s.localDate, startedAt: s.startedAt, endedAt: null },
     ]);
     setRunning({ id: s.id, area: s.area, localDate: s.localDate, startedAt: s.startedAt, task: null });
+    // The bar above the tabs shows the timer on every other page.
+    router.refresh();
   }
 
   async function stop(r: RunningTimer) {
@@ -83,7 +97,8 @@ export function AreaHours({ data }: { data: HoursData }) {
     setRunning(null);
     setSessions((list) => list.map((x) => (x.id === r.id ? { ...x, endedAt } : x)));
     const logged = (new Date(endedAt).getTime() - new Date(r.startedAt).getTime()) / 60000;
-    toast.success(`Logged ${hours(logged)} on ${name}.`);
+    toast.success(`Logged ${logged < 1 ? "under a minute" : hours(logged)} on ${name}.`);
+    router.refresh();
   }
 
   return (

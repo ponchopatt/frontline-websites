@@ -30,7 +30,7 @@ export default async function ProgressPage({ searchParams }: PageProps<"/progres
   return (
     <div className="grid grid-cols-[minmax(0,1fr)] gap-7">
       <PageHeader back={{ href: "/you", label: "You" }} title="My progress" />
-      <div className="-mt-3">
+      <div className="glow-ink -mt-3">
         <Segmented
           label="Progress"
           items={[
