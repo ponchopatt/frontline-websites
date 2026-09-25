@@ -46,10 +46,19 @@ export function CompareSlider({ before, after, beforeAlt, afterAlt, className = 
     { scope: root },
   );
 
+  // Tabbing to the slider: at 1440x900 it is taller (833px) than the room
+  // under the sticky header, so the browser centres it on focus and its top and
+  // focus ring went under the header. html's scroll-padding-top already allows
+  // for the header; the input's 40px scroll-margin-top moves that centring down
+  // far enough for the top and its ring to clear the header, while the
+  // Before/After labels stay on screen. The margin only counts if the box
+  // around the input is not a scroll container, hence overflow: clip (hidden
+  // where clip is unsupported). On shorter laptop screens the slider is still
+  // taller than the screen, so part of it is always off one edge.
   return (
     <div
       ref={root}
-      className={`relative aspect-[4/5] select-none overflow-hidden rounded-xl bg-card shadow-[0_30px_80px_rgba(0,0,0,0.7)] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background md:rounded-[14px] ${className}`}
+      className={`relative aspect-[4/5] select-none overflow-hidden supports-[overflow:clip]:overflow-clip rounded-xl bg-card shadow-[0_30px_80px_rgba(0,0,0,0.7)] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background md:rounded-[14px] ${className}`}
     >
       <img
         src={imageSrc(before, 960)}
@@ -99,7 +108,7 @@ export function CompareSlider({ before, after, beforeAlt, afterAlt, className = 
         onKeyDown={takeOver}
         onFocus={takeOver}
         aria-label="Drag to compare the paint before and after correction"
-        className="absolute inset-0 m-0 h-full w-full cursor-ew-resize opacity-0 [touch-action:pan-y]"
+        className="absolute inset-0 m-0 h-full w-full scroll-mt-10 cursor-ew-resize opacity-0 [touch-action:pan-y]"
       />
     </div>
   );

@@ -378,6 +378,15 @@ html {
   scroll-padding-top: 88px;
 }
 
+/* Phones: the same for the phone bar pinned to the bottom (WCAG 2.4.11). A
+   field, link or FAQ question tabbed to near the bottom of the screen stops
+   12px above the bar instead of behind it. */
+@media (max-width: 767px) {
+  html {
+    scroll-padding-bottom: calc(var(--phone-bar-h) + 12px);
+  }
+}
+
 /* Glow behind the hero panel and the coverflow. */
 .panel-glow {
   box-shadow:
