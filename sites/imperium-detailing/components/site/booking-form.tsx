@@ -24,8 +24,10 @@ type Status = "idle" | "sending" | "sent" | "fallback" | "error";
 
 // Matched to the Input component beside it: same radius, same fill, same padding.
 // They sit in one grid, so a different corner and a different ground read as a bug.
+// Focus is the site's own ring (globals.css, :focus-visible), the same 2px blue
+// outline every other control gets, plus the border turning blue.
 const selectClass =
-  "flex h-12 w-full rounded-lg border border-input bg-transparent px-2.5 text-base text-foreground outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30";
+  "flex h-12 w-full rounded-lg border border-input bg-transparent px-2.5 text-base text-foreground focus-visible:border-ring dark:bg-input/30";
 
 export function BookingForm({ compact = false, defaultService = "" }: { compact?: boolean; defaultService?: string }) {
   const [status, setStatus] = useState<Status>("idle");
