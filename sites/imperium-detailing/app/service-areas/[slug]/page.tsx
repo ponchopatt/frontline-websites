@@ -76,7 +76,14 @@ export default async function AreaPage({ params }: { params: Promise<Params> }) 
             )}
             <div className="rounded-xl border border-border bg-card px-5 py-[18px] md:rounded-[14px] md:p-8">
               <h2 className="m-0 text-[15px] font-semibold md:text-lg">Suburbs we cover in {a.name}</h2>
-              <ul className="m-0 mt-2 list-none p-0 text-sm text-secondary-foreground md:mt-5 md:grid md:grid-cols-2 md:gap-x-6 md:text-[15px]">
+              {/* One comma-separated line on a phone; a two-column list with hairlines
+                  on a laptop, three for Belconnen's 25 so the most-booked card
+                  still sits in the first screen. */}
+              <ul
+                className={`m-0 mt-2 list-none p-0 text-sm text-secondary-foreground md:mt-5 md:grid md:grid-cols-2 md:gap-x-6 md:text-[15px] ${
+                  a.suburbs.length > 18 ? "lg:grid-cols-3" : ""
+                }`}
+              >
                 {a.suburbs.map((sub) => (
                   <li key={sub} className="inline after:content-[',_'] last:after:content-none md:block md:border-t md:border-border md:py-[9px] md:after:content-none">
                     {sub}
@@ -164,7 +171,8 @@ export default async function AreaPage({ params }: { params: Promise<Params> }) 
         </div>
       </section>
 
-      <Booking title={`Book a detail in ${a.name}.`} />
+      {/* The form opens on the district's most-booked service; a ?service= link still wins. */}
+      <Booking title={`Book a detail in ${a.name}.`} defaultService={best?.name} />
     </>
   );
 }
