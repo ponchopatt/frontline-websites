@@ -164,10 +164,12 @@ html[data-js] [data-reveal="lines"] {
    backwards fill, so nothing is hidden without the animation running, with JS
    off it still plays, and once it ends nothing is left holding `transform`.
    The headline is not animated at all: it paints with the HTML. Everything is
-   in by 0.6s. Reduced motion gets the finished hero at once. */
+   in by 0.6s. Reduced motion gets the finished hero at once.
+   The panel only rises, it does not fade: its poster is the page's largest
+   paint, and a browser does not count that paint until the image is visible,
+   so an opacity fade here pushed LCP back by the length of the fade. */
 @keyframes hero-panel-in {
   from {
-    opacity: 0;
     transform: translateY(16px);
   }
 }

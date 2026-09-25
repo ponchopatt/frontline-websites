@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { preload } from "react-dom";
 import { site, smsHref, telHref, prices } from "@/lib/site";
 import { getService } from "@/lib/services";
 import { hasWebm } from "@/lib/media";
@@ -19,6 +18,12 @@ const clip = {
   base: "/media/paint-correction-720",
   hd: null as string | null,
   poster: "/media/paint-correction-poster.webp",
+  // Phones show the clip as a short landscape band (412x259 on a Lighthouse
+  // phone), so they get a 720x540 cut of the 720x1280 poster instead: cropped
+  // around the same 58% line the band's object-position shows, so the pixels
+  // on screen are the same ones, at under half the bytes (34KB against 74KB).
+  // Cut from the full poster with sharp; recut it if the poster changes.
+  posterPhone: "/media/paint-correction-poster-phone.webp",
   label: "A slow pan along a black Mercedes after paint correction, the garage lights reflected sharp in the paint",
 };
 
@@ -63,7 +68,6 @@ const strip = [
 ].map((p) => ({ ...p, service: getService(p.slug)! }));
 
 export function Hero() {
-  preload(clip.poster, { as: "image", fetchPriority: "high" });
   const videoRef = useRef<HTMLVideoElement>(null);
   const [state, setState] = useState<PlayState>("waiting");
   const held = useSyncExternalStore(onHoldChange, holdClip, () => false);
@@ -138,19 +142,35 @@ export function Hero() {
       <div className="mx-auto max-w-6xl lg:container-x lg:grid lg:grid-cols-[minmax(0,1fr)_clamp(300px,29.2vw,420px)] lg:gap-x-20 lg:pb-[120px] lg:pt-[72px]">
         <div className="hero-panel relative lg:col-start-2 lg:row-start-1 lg:pt-2">
           <div className="relative h-[clamp(170px,calc(100svh-564px),280px)] overflow-hidden bg-card md:h-[440px] lg:aspect-[9/16] lg:h-auto lg:rounded-[14px] lg:shadow-[0_30px_80px_rgba(0,0,0,0.7),0_0_120px_rgba(31,111,196,0.25)]">
+            {/* The poster is a real <picture> under the video rather than the
+                video's poster attribute, so phones can be sent their own crop.
+                It is the first screen's largest paint, so it loads eagerly at
+                high priority straight from the HTML. The video has no poster
+                of its own and stays transparent until its first frame covers
+                this; if autoplay is refused or held, this is what stays. */}
+            <picture>
+              <source media="(min-width: 768px)" srcSet={clip.poster} width={720} height={1280} />
+              <img
+                src={clip.posterPhone}
+                width={720}
+                height={540}
+                alt=""
+                fetchPriority="high"
+                className="absolute inset-0 h-full w-full object-cover object-[50%_58%] lg:object-center"
+              />
+            </picture>
             <video
               ref={videoRef}
               muted
               loop
               playsInline
               preload="none"
-              poster={clip.poster}
               aria-label={clip.label}
               className="absolute inset-0 h-full w-full object-cover object-[50%_58%] lg:object-center"
             >
               {/* No <source> here on purpose. The effect above picks the file and
-                  appends it once the page has loaded. Without JS the poster
-                  stands in, which is what a preload="none" video shows anyway. */}
+                  appends it once the page has loaded. Without JS the picture
+                  above stands in. */}
             </video>
             <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[90px] bg-gradient-to-b from-background/0 to-background lg:hidden" />
             {playLabel && (

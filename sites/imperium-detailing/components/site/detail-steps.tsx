@@ -21,7 +21,10 @@ const PlayIcon = ({ playing }: { playing: boolean }) => (
 );
 
 // One step's card media. The poster is always there underneath, which covers a
-// slow load, a failed load and reduced motion with the same markup. The clip is
+// slow load, a failed load and reduced motion with the same markup. The video
+// has no poster attribute of its own: it would be the same picture, and a
+// poster attribute is fetched at once, far down the page, while the lazy <img>
+// waits until the section is near. The video stays clear until its first frame. The clip is
 // only created once its step has been played, so nothing loads for a step
 // nobody opened, and it runs only while the section is on screen.
 function StepMedia({ step, playing, reduced, onScreen, onToggle }: { step: DetailStep; playing: boolean; reduced: boolean; onScreen: boolean; onToggle: () => void }) {
@@ -61,7 +64,6 @@ function StepMedia({ step, playing, reduced, onScreen, onToggle }: { step: Detai
           loop
           playsInline
           preload="none"
-          poster={step.poster}
           aria-label={step.alt}
           onError={() => setBroken(true)}
           className="absolute inset-0 h-full w-full object-cover"
