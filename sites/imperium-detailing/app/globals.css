@@ -159,22 +159,16 @@ html[data-js] [data-reveal="lines"] {
 
 /* The hero is the intro. Plain CSS keyframes rather than a GSAP timeline, so the
    sequence starts on the very first paint instead of waiting for the page's
-   JavaScript to hydrate (on a mid-range phone that is 1 to 3 seconds, and the
-   server-rendered hero would have flashed, vanished, then risen again). Every
+   JavaScript to hydrate (on a mid-range phone that is 1 to 3 seconds). Every
    keyframe runs *from* a hidden state *to* the element's own style with a
-   backwards fill, so: nothing is hidden without the animation running; with JS
-   off it still plays; and once it ends nothing is left holding `transform`,
-   which is what kept the hero buttons parked 12px low when GSAP owned them.
-   Everything is in by 0.82s. Reduced motion gets the finished hero at once. */
+   backwards fill, so nothing is hidden without the animation running, with JS
+   off it still plays, and once it ends nothing is left holding `transform`.
+   The headline is not animated at all: it paints with the HTML. Everything is
+   in by 0.6s. Reduced motion gets the finished hero at once. */
 @keyframes hero-panel-in {
   from {
     opacity: 0;
     transform: translateY(16px);
-  }
-}
-@keyframes hero-line-in {
-  from {
-    transform: translateY(110%);
   }
 }
 @keyframes hero-up-in {
@@ -192,32 +186,22 @@ html[data-js] [data-reveal="lines"] {
   .hero-panel {
     animation: hero-panel-in 0.6s cubic-bezier(0.23, 1, 0.32, 1) backwards;
   }
-  /* The mask is the line's own overflow clip; the words rise into it. */
-  .hero-line > span {
-    animation: hero-line-in 0.7s cubic-bezier(0.23, 1, 0.32, 1) backwards;
-  }
-  .hero-line:nth-child(2) > span {
-    animation-delay: 0.06s;
-  }
-  .hero-line:nth-child(3) > span {
-    animation-delay: 0.12s;
-  }
   .hero-sub {
     animation: hero-up-in 0.35s cubic-bezier(0.23, 1, 0.32, 1) 0.08s backwards;
   }
+  .hero-strip {
+    animation: hero-fade-in 0.4s ease-out 0.14s backwards;
+  }
   /* The first two are the same button (form on laptops, text on phones), so
-     only the call button, third, trails. In by 0.36s. */
+     only the call button, third, trails. */
   .hero-cta > * {
-    animation: hero-up-in 0.28s cubic-bezier(0.23, 1, 0.32, 1) 0.03s backwards;
+    animation: hero-up-in 0.28s cubic-bezier(0.23, 1, 0.32, 1) 0.18s backwards;
   }
   .hero-cta > :nth-child(3) {
-    animation-delay: 0.08s;
+    animation-delay: 0.24s;
   }
   .hero-note {
-    animation: hero-fade-in 0.3s ease-out 0.12s backwards;
-  }
-  .hero-strip {
-    animation: hero-fade-in 0.4s ease-out 0.2s backwards;
+    animation: hero-fade-in 0.3s ease-out 0.26s backwards;
   }
 }
 
@@ -350,6 +334,32 @@ details[open] > :not(summary) {
   .zoom-media video {
     transition: none;
     transform: none;
+  }
+}
+
+/* The phone bar (mobile-bar.tsx): 12px + a 52px pill + 12px, plus the
+   home-indicator inset. The spacer under the footer is this tall too. */
+:root {
+  --phone-bar-h: calc(76px + env(safe-area-inset-bottom));
+}
+
+/* The LeadConnector chat bubble (loaded by analytics.tsx) pins itself 20px
+   from the bottom-right corner. On a phone that corner belongs to the phone
+   bar's Call button, so the bubble is lifted to sit 12px above the bar. These
+   are the selectors the widget has rendered under: its light-DOM container and
+   bubble, and the iframes it uses on some plans. If a later version renders
+   inside a closed shadow root, CSS cannot reach it; set the mobile bottom
+   offset in the widget's own settings to the same 88px instead.
+   Today analytics.tsx only loads the widget from 768px up, so on phones this
+   is a guard for the day it is switched on there. */
+@media (max-width: 767px) {
+  #lc_text-widget,
+  .lc_text-widget,
+  .lc_text-widget--bubble,
+  .lc_text-widget--btn,
+  iframe[src*="leadconnectorhq.com"],
+  iframe[src*="msgsndr.com"] {
+    bottom: calc(var(--phone-bar-h) + 12px) !important;
   }
 }
 

@@ -3,9 +3,16 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { site, smsHref, telHref } from "@/lib/site";
+import { buttonClass } from "@/components/site/link-button";
 
-// Phones only: Text and Call pinned to the bottom once the hero has scrolled away.
-// It steps aside while the quote form or the footer's own buttons are on screen.
+// Phones only: Text and Call pinned to the bottom. On the home page it is there
+// from the first screen, because the home hero has no buttons of its own on a
+// phone; elsewhere it arrives once the hero (and its buttons) has scrolled away.
+// It steps aside while the quote form is on screen, which on the home page now
+// sits near the bottom, just above the areas and the footer.
+//
+// Its height (12 + 52 + 12px, plus the home-indicator inset) is --phone-bar-h
+// in globals.css, which is also what lifts the chat bubble clear of it.
 export function MobileBar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -36,28 +43,27 @@ export function MobileBar() {
     return () => io.disconnect();
   }, [pathname]);
 
-  const show = scrolled && !covered;
-  const btn = "inline-flex min-h-[48px] items-center justify-center rounded-lg text-[15px] font-semibold no-underline active:scale-[0.985]";
+  const show = (pathname === "/" || scrolled) && !covered;
 
   return (
     <>
-      <div aria-hidden="true" className="h-[70px] md:hidden" />
+      <div aria-hidden="true" className="h-[var(--phone-bar-h)] md:hidden" />
       <div
         id="phone-bar"
         inert={!show}
-        className={`fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 transition-transform duration-300 ease-out motion-reduce:transition-none md:hidden ${
+        className={`fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/[0.92] transition-transform duration-300 ease-out motion-reduce:transition-none md:hidden ${
           show ? "translate-y-0" : "translate-y-full"
         }`}
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
-        <div className="container-x grid grid-cols-2 gap-3 py-2.5">
-          <a href={smsHref()} className={`${btn} bg-accent text-accent-foreground`}>
+        <nav aria-label="Quick contact" className="grid grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-2 px-4 py-3">
+          <a href={smsHref()} className={`${buttonClass("primary")} px-3`}>
             Text us your car
           </a>
-          <a href={telHref} className={`${btn} border border-border text-foreground`}>
-            Call {site.phoneDisplay}
+          <a href={telHref} aria-label={`Call ${site.phoneDisplay}`} className={`${buttonClass("ghost")} px-3`}>
+            Call
           </a>
-        </div>
+        </nav>
       </div>
     </>
   );
