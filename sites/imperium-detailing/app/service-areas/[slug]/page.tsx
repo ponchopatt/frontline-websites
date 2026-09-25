@@ -4,13 +4,20 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { areas, getArea } from "@/lib/areas";
 import { getService, services, formatPrice } from "@/lib/services";
-import { site, smsHref, telHref } from "@/lib/site";
+import { site, prices, smsHref, telHref } from "@/lib/site";
 import { LinkButton } from "@/components/site/link-button";
 import { QuoteCta } from "@/components/site/quote-cta";
 import { Booking } from "@/components/site/booking";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 
 type Params = { slug: string };
+
+// "Every service, at your door": the five services in the order lib/services.ts
+// lists them, then the exterior maintenance plan, which is per month.
+const priceCards = [
+  ...services.map((s) => ({ name: s.name, href: `/services/${s.slug}/`, price: s.priceFrom, monthly: false })),
+  { name: "Maintenance plan", href: "/maintenance/", price: prices.maintenanceExterior, monthly: true },
+];
 
 export function generateStaticParams(): Params[] {
   return areas.map((a) => ({ slug: a.slug }));
@@ -96,36 +103,67 @@ export default async function AreaPage({ params }: { params: Promise<Params> }) 
         </div>
       </section>
 
-      <section className="container-x mx-auto max-w-6xl py-14 md:py-20">
-        {/* The substance of the page. Nine near-identical pages is how a set of
-            location pages gets ignored, and this is what makes each its own. */}
-        <div className="mt-12 grid gap-x-10 gap-y-10 md:grid-cols-3">
-          {a.sections.map((sec) => (
-            <section key={sec.h}>
-              <h2 className="display-caps text-2xl md:text-[1.75rem]">{sec.h}</h2>
-              {sec.p.map((t, i) => (
-                <p key={i} className="mt-3 text-[15px] leading-relaxed text-secondary-foreground">
-                  {t}
-                </p>
-              ))}
-            </section>
+      {/* The substance of the page. Nine near-identical pages is how a set of
+          location pages gets ignored, and this is what makes each its own. Each
+          section: the heading on the left, its paragraphs on the right. */}
+      <section aria-label={`Detailing in ${a.name}`} className="section-y border-t border-border">
+        <div className="container-x mx-auto grid max-w-6xl gap-12 md:gap-20">
+          {a.sections.map((sec, i) => (
+            <article
+              key={sec.h}
+              className={`grid gap-3.5 md:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] md:gap-12 lg:gap-20 ${i > 0 ? "border-t border-border pt-10 md:pt-20" : ""}`}
+            >
+              <h2 className="display-caps text-[clamp(2.5rem,4.5vw,4rem)]" data-reveal="lines">
+                {sec.h}
+              </h2>
+              <div className="grid max-w-[66ch] content-start gap-3 text-[15px] text-secondary-foreground md:gap-[18px] md:text-[17px]">
+                {sec.p.map((t, j) => (
+                  <p key={j} className="m-0">
+                    {t}
+                  </p>
+                ))}
+              </div>
+            </article>
           ))}
         </div>
+      </section>
 
-        <div className="mt-12">
-          <h2 className="text-lg font-semibold">Every service, at your door</h2>
-          <ul className="mt-3 grid list-none gap-2 p-0 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((s) => (
-              <li key={s.slug}>
-                <Link href={`/services/${s.slug}/`} className="flex items-center justify-between rounded-md border border-border px-4 py-3 text-[15px] no-underline hover:bg-card">
-                  <span className="text-foreground">{s.name}</span>
-                  <span className="text-muted-foreground">from {formatPrice(s.priceFrom)}</span>
+      {/* The five services and the maintenance plan, each a small card with its
+          from-price. Every number comes from lib/services.ts and lib/site.ts. */}
+      <section aria-labelledby="every-service" className="border-t border-border bg-card/40 py-14 md:py-24">
+        <div className="container-x mx-auto max-w-6xl">
+          <h2 id="every-service" className="display-caps text-[clamp(2.5rem,4.5vw,4rem)]" data-reveal="lines">
+            Every service, at your door
+          </h2>
+          <ul className="m-0 mt-5 grid list-none grid-cols-2 gap-2 p-0 md:mt-10 md:grid-cols-3 md:gap-3 lg:grid-cols-6">
+            {priceCards.map((c) => (
+              <li key={c.href}>
+                <Link
+                  href={c.href}
+                  className="block h-full rounded-[10px] border border-border bg-card p-4 text-foreground no-underline transition-colors hover:border-secondary-foreground/40 motion-reduce:transition-none md:rounded-xl md:p-6"
+                >
+                  <span className="block text-[13px] text-muted-foreground md:text-sm">{c.name}</span>
+                  <span className="display-caps mt-1.5 block text-[32px] md:mt-2.5 md:text-[40px]">
+                    <span className="sr-only">from </span>
+                    {formatPrice(c.price)}
+                    {c.monthly && (
+                      <span className="text-base md:text-xl">
+                        {" "}
+                        <span aria-hidden="true">/mo</span>
+                        <span className="sr-only">a month</span>
+                      </span>
+                    )}
+                  </span>
                 </Link>
               </li>
             ))}
           </ul>
+          <p className="m-0 mt-3.5 text-[13px] text-muted-foreground md:mt-5 md:text-sm">
+            From-prices for a hatch or sedan. No call-out fee in {a.name}.
+          </p>
         </div>
       </section>
+
       <Booking title={`Book a detail in ${a.name}.`} />
     </>
   );
