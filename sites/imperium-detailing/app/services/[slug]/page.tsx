@@ -13,6 +13,7 @@ import { QuoteCta } from "@/components/site/quote-cta";
 import { Booking } from "@/components/site/booking";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { ServicePrices, splitHeading } from "@/components/site/service-prices";
+import { WarrantyBand } from "@/components/site/warranty-band";
 import { articles } from "@/lib/articles";
 
 type Params = { slug: string };
@@ -193,6 +194,8 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
           </aside>
         </div>
       </section>
+
+      {s.slug === "ceramic-coating-canberra" && <WarrantyBand />}
 
       <section className="border-t border-border">
         <div className="container-x mx-auto max-w-6xl py-14 md:py-20">
