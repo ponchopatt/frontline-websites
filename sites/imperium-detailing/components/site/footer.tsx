@@ -4,6 +4,7 @@ import { services } from "@/lib/services";
 import { areas } from "@/lib/areas";
 import { articles } from "@/lib/articles";
 import { Marquee } from "@/components/site/marquee";
+import { QuoteCta } from "@/components/site/quote-cta";
 
 const col = "flex flex-col text-[15px]";
 // py-2.5 on a 19px line is a 44px target, which is what a thumb needs.
@@ -23,12 +24,12 @@ export function Footer() {
           </p>
         </div>
         <div id="footer-cta" className="flex shrink-0 flex-col gap-3 sm:flex-row" data-reveal="up">
-          <a
-            href={smsHref()}
-            className="inline-flex min-h-[54px] items-center justify-center rounded-full bg-accent px-7 text-base font-semibold text-accent-foreground no-underline shadow-[0_0_40px_rgba(58,143,224,0.3)] transition-transform duration-300 hover:-translate-y-0.5"
-          >
-            Text us your car
-          </a>
+          {/* A text on a phone; on a laptop, where sms: does nothing, the quote form. */}
+          <QuoteCta
+            sms={smsHref()}
+            formHref="/book/"
+            className="min-h-[54px] items-center justify-center rounded-full bg-accent px-7 text-base font-semibold text-accent-foreground no-underline shadow-[0_0_40px_rgba(58,143,224,0.3)] transition-[translate] duration-200 ease-out hover:-translate-y-0.5 motion-reduce:transition-none"
+          />
           <a
             href={telHref}
             className="inline-flex min-h-[54px] items-center justify-center rounded-full border border-white/20 px-7 text-base font-semibold text-foreground no-underline transition-colors hover:border-white/50"

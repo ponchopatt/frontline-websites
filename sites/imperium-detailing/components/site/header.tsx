@@ -28,9 +28,13 @@ export function Header() {
   const [solid, setSolid] = useState(false);
   const [tucked, setTucked] = useState(false);
 
-  useEffect(() => {
+  // Close the menu when the page changes (set during render, React's pattern for
+  // resetting state on a changed value, rather than in an effect).
+  const [menuPath, setMenuPath] = useState(pathname);
+  if (menuPath !== pathname) {
+    setMenuPath(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   // Escape is how anyone expects to back out of an open menu, and without it a
   // keyboard user has to tab through every link to get out of one.

@@ -139,8 +139,73 @@ html[data-js] [data-reveal="lines"] {
   }
 }
 
-/* Intro curtain: skipped instantly on repeat visits within the same tab. */
-html[data-intro="done"] .intro {
+/* The hero is the intro. Plain CSS keyframes rather than a GSAP timeline, so the
+   sequence starts on the very first paint instead of waiting for the page's
+   JavaScript to hydrate (on a mid-range phone that is 1 to 3 seconds, and the
+   server-rendered hero would have flashed, vanished, then risen again). Every
+   keyframe runs *from* a hidden state *to* the element's own style with a
+   backwards fill, so: nothing is hidden without the animation running; with JS
+   off it still plays; and once it ends nothing is left holding `transform`,
+   which is what kept the hero buttons parked 12px low when GSAP owned them.
+   Everything is in by 0.82s. Reduced motion gets the finished hero at once. */
+@keyframes hero-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes hero-line-in {
+  from {
+    transform: translateY(110%);
+  }
+}
+@keyframes hero-up-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-panel {
+    animation: hero-panel-in 0.6s cubic-bezier(0.23, 1, 0.32, 1) backwards;
+  }
+  /* The mask is the line's own overflow clip; the words rise into it. */
+  .hero-line > span {
+    animation: hero-line-in 0.7s cubic-bezier(0.23, 1, 0.32, 1) backwards;
+  }
+  .hero-line:nth-child(2) > span {
+    animation-delay: 0.06s;
+  }
+  .hero-line:nth-child(3) > span {
+    animation-delay: 0.12s;
+  }
+  .hero-sub {
+    animation: hero-up-in 0.35s cubic-bezier(0.23, 1, 0.32, 1) 0.08s backwards;
+  }
+  /* The first two are the same button (form on laptops, text on phones), so
+     only the call button, third, trails. In by 0.36s. */
+  .hero-cta > * {
+    animation: hero-up-in 0.28s cubic-bezier(0.23, 1, 0.32, 1) 0.03s backwards;
+  }
+  .hero-cta > :nth-child(3) {
+    animation-delay: 0.08s;
+  }
+  .hero-note {
+    animation: hero-fade-in 0.3s ease-out 0.12s backwards;
+  }
+  .hero-strip {
+    animation: hero-fade-in 0.4s ease-out 0.2s backwards;
+  }
+}
+
+/* A lazy-postered loop video has no poster without JS, so its <noscript> still
+   stands in and the empty video steps aside (data-js is set by the flags script). */
+html:not([data-js]) video[data-lazy-poster] {
   display: none;
 }
 
@@ -252,14 +317,6 @@ details[open] > :not(summary) {
     transition: none;
     transform: none;
   }
-}
-
-/* Page-wipe curtain: parked below the viewport, covering from first paint when a wipe started this load. */
-.wipe {
-  transform: translateY(100%);
-}
-html[data-wipe] .wipe {
-  transform: none;
 }
 
 /* Anchor targets stop just under the sticky header. */

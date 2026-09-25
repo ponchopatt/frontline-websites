@@ -1,6 +1,6 @@
 # Imperium Detailing — website
 
-Premium mobile car detailing, Canberra and Queanbeyan. Built with Next.js (static export), TypeScript, Tailwind CSS v4 and shadcn/ui, with GSAP for the hero sequence and framer-motion for the reviews marquee.
+Premium mobile car detailing, Canberra and Queanbeyan. Built with Next.js (static export), TypeScript, Tailwind CSS v4 and shadcn/ui, with GSAP for the scroll reveals and the pinned gallery, and framer-motion for the reviews marquee. The hero entrance is plain CSS (`app/globals.css`), so it plays on first paint.
 
 ## Run it
 

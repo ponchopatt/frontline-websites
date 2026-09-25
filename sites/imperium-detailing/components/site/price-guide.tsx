@@ -151,15 +151,15 @@ export function PriceGuide({ title = "Your price in ten seconds." }: { title?: s
               <p className="mt-4 text-[15px] text-secondary-foreground">{guide.why}</p>
               <p className="mt-2 text-[15px] text-muted-foreground">{jobMeta.note}</p>
               <div className="mt-6 flex flex-col gap-3">
-                <a href={sms} className="lift inline-flex min-h-[52px] items-center justify-center rounded-lg bg-accent px-6 text-base font-semibold text-accent-foreground no-underline hover:bg-[#5aa6f0]">
+                {/* On a laptop a tel: and an sms: link both do nothing, so there the
+                    text button goes and the form link, with the service carried
+                    across, becomes the filled one. Phones keep the text first. */}
+                <a href={sms} className="lift inline-flex min-h-[52px] items-center justify-center rounded-lg bg-accent px-6 text-base font-semibold text-accent-foreground no-underline hover:bg-[#5aa6f0] md:hidden">
                   {guide.cta}
                 </a>
-                {/* On a laptop a tel: and an sms: link both do nothing, so without
-                    this there was no way to act at the moment someone has just
-                    been shown their price. The service carries across. */}
                 <Link
                   href={`/book/?service=${encodeURIComponent(formService)}`}
-                  className="lift inline-flex min-h-[52px] items-center justify-center rounded-lg border border-border px-6 text-base font-semibold text-foreground no-underline hover:border-secondary-foreground/50"
+                  className="lift inline-flex min-h-[52px] items-center justify-center rounded-lg border border-border px-6 text-base font-semibold text-foreground no-underline hover:border-secondary-foreground/50 md:border-transparent md:bg-accent md:text-accent-foreground md:hover:border-transparent md:hover:bg-[#5aa6f0]"
                 >
                   Send it through the form
                 </Link>

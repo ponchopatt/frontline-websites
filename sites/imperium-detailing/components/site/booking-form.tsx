@@ -32,11 +32,23 @@ export function BookingForm({ compact = false, defaultService = "" }: { compact?
   const [copied, setCopied] = useState(false);
   const serviceRef = useRef<HTMLSelectElement>(null);
   const fallbackRef = useRef<HTMLDivElement>(null);
+  const sentRef = useRef<HTMLHeadingElement>(null);
 
   // The fallback panel appends below the submit button, so on a laptop it can
   // land off-screen and read as "nothing happened". Bring it into view.
+  //
+  // A sent form swaps itself for a short thank-you. On a phone the submit button
+  // is two screens below where that note lands, so the page used to be left
+  // showing whatever came after the form, and the confirmation went unseen.
+  // Bring it into view and put focus on its heading, so a screen reader reads it
+  // and the next Tab starts from there. No smooth scroll for reduced motion.
   useEffect(() => {
-    if (status === "fallback" || status === "error") fallbackRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    const behavior: ScrollBehavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    if (status === "fallback" || status === "error") fallbackRef.current?.scrollIntoView({ block: "nearest", behavior });
+    if (status === "sent" && sentRef.current) {
+      sentRef.current.scrollIntoView({ block: "center", behavior });
+      sentRef.current.focus({ preventScroll: true });
+    }
   }, [status]);
 
   // A link can pre-pick the service: /book/?service=Ceramic%20coating
@@ -128,7 +140,9 @@ export function BookingForm({ compact = false, defaultService = "" }: { compact?
   if (status === "sent") {
     return (
       <div className="rounded-lg border border-border bg-card p-6" role="status">
-        <h3 className="text-xl font-semibold">{"Done. We'll text you shortly."}</h3>
+        <h3 ref={sentRef} tabIndex={-1} className="scroll-mt-24 text-xl font-semibold outline-none">
+          {"Done. We'll text you shortly."}
+        </h3>
         <p className="mt-2 text-muted-foreground">
           {site.quotePromise} It will come from {site.phoneDisplay}, so save the number.
         </p>

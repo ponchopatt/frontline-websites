@@ -6,11 +6,9 @@ import { Header } from "@/components/site/header";
 import { Footer } from "@/components/site/footer";
 import { JsonLd } from "@/components/site/json-ld";
 import { Analytics } from "@/components/site/analytics";
-import { Intro } from "@/components/site/intro";
 import { SmoothScroll } from "@/components/site/smooth-scroll";
 import { ScrollFx } from "@/components/site/scroll-fx";
 import { MobileBar } from "@/components/site/mobile-bar";
-import { PageWipe } from "@/components/site/page-wipe";
 import { site } from "@/lib/site";
 
 // Google folded "Big Shoulders Display" into the variable "Big Shoulders" family;
@@ -59,11 +57,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en-AU" className={`${display.variable} ${sans.variable} dark h-full`}>
       <body className="flex min-h-full flex-col">
-        {/* Runs before paint: marks that JS is on (so reveals may start hidden), skips the intro
-            curtain on repeat visits in this tab, and keeps the page-wipe curtain down when a wipe
-            started this page load. */}
-        <Script id="flags" strategy="beforeInteractive">{`try{var d=document.documentElement;d.dataset.js="1";if(sessionStorage.getItem("imperium-intro"))d.dataset.intro="done";if(sessionStorage.getItem("imperium-wipe")){d.dataset.wipe="1";sessionStorage.removeItem("imperium-wipe");}}catch(e){}`}</Script>
-        <Intro />
+        {/* Runs before paint: marks that JS is on, so below-the-fold reveals may start hidden. */}
+        <Script id="flags" strategy="beforeInteractive">{`document.documentElement.dataset.js="1";`}</Script>
         <SmoothScroll />
         <ScrollFx />
         <Header />
@@ -72,7 +67,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <Footer />
         <MobileBar />
-        <PageWipe />
         <JsonLd />
         <Analytics />
       </body>

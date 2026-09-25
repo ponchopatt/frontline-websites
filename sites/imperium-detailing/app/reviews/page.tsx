@@ -22,7 +22,7 @@ export default function ReviewsPage() {
           title="What Canberra owners say."
           intro={`${site.stats.rating} stars across ${site.stats.reviewCount} reviews. Every review here is from a real customer.`}
         />
-        <div className="-mt-4 mb-10 md:-mt-6 md:mb-14" data-reveal="up">
+        <div className="-mt-4 mb-10 md:-mt-6 md:mb-14">
           <div className="flex flex-col gap-3 sm:flex-row">
             <LinkButton href={site.googleWriteReviewUrl} newTab>
               Write a review on Google

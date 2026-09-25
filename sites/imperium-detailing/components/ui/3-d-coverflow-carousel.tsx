@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
+import { posterFor } from "@/lib/media";
 
 // 3D cover-flow carousel. Adapted for Imperium Detailing: brand colours, signed
 // offsets so small sets stay balanced, a compact layout for phones, keyboard
@@ -61,6 +62,9 @@ export function CoverFlowCarousel({
   const rootRef = useRef<HTMLElement>(null);
   // Nothing here plays, and so nothing downloads, until the carousel is on screen.
   const [onScreen, setOnScreen] = useState(false);
+  // Posters wait until the carousel is within 400px of the screen, then stay.
+  // Five of them used to download with the page, far below the fold.
+  const [postersDue, setPostersDue] = useState(false);
   const videoRefs = useRef<Record<number, HTMLVideoElement | null>>({});
   const total = items.length;
 
@@ -81,7 +85,19 @@ export function CoverFlowCarousel({
     if (!root) return;
     const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting), { rootMargin: "200px" });
     io.observe(root);
-    return () => io.disconnect();
+    const soon = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        setPostersDue(true);
+        soon.disconnect();
+      },
+      { rootMargin: "400px 0px" },
+    );
+    soon.observe(root);
+    return () => {
+      io.disconnect();
+      soon.disconnect();
+    };
   }, []);
 
   const nextSlide = useCallback(() => setCurrentIndex((prev) => (prev + 1) % total), [total]);
@@ -270,13 +286,24 @@ export function CoverFlowCarousel({
                     loop
                     playsInline
                     preload="none"
-                    poster={item.video.poster}
+                    poster={postersDue ? posterFor(item.video.poster, card.w) : undefined}
                     aria-label={item.imgAlt ?? item.titleLine1}
                     style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                   >
                     {item.video.webm && <source src={item.video.webm} type="video/webm" />}
                     <source src={item.video.mp4} type="video/mp4" />
                   </video>
+                ) : null}
+                {item.video ? (
+                  // Without JS the poster never gets set, so the still sits over the empty video.
+                  <noscript>
+                    <img
+                      src={item.video.poster}
+                      alt=""
+                      decoding="async"
+                      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                  </noscript>
                 ) : (
                   <img
                     src={item.img}

@@ -16,14 +16,24 @@ import Link from "next/link";
 const base =
   "lift min-h-[52px] whitespace-nowrap items-center justify-center rounded-lg px-6 text-base font-semibold no-underline bg-accent text-accent-foreground hover:bg-[#5aa6f0]";
 
-export function QuoteCta({ sms, formHref = "#book" }: { sms: string; formHref?: string }) {
+type Props = {
+  sms: string;
+  /** Where the laptop button goes: the form on this page, or /book/ (optionally with ?service=). */
+  formHref?: string;
+  /** Replaces the look (not the display rules), for a band that styles its buttons differently. */
+  className?: string;
+  /** The phone button's words. */
+  smsLabel?: string;
+};
+
+export function QuoteCta({ sms, formHref = "#book", className = base, smsLabel = "Text us your car" }: Props) {
   return (
     <>
-      <Link href={formHref} className={`${base} hidden md:inline-flex`}>
+      <Link href={formHref} className={`${className} hidden md:inline-flex`}>
         Get a quote
       </Link>
-      <a href={sms} className={`${base} inline-flex md:hidden`}>
-        Text us your car
+      <a href={sms} className={`${className} inline-flex md:hidden`}>
+        {smsLabel}
       </a>
     </>
   );

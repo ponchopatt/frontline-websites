@@ -3,6 +3,7 @@ import { CoverFlowCarousel, type CarouselItem } from "@/components/ui/3-d-coverf
 import { services, formatPrice } from "@/lib/services";
 import { imageSrc, imageSrcSet } from "@/components/site/picture";
 import { SectionHeading } from "@/components/site/section-heading";
+import { hasWebm } from "@/lib/media";
 
 const lines: Record<string, string> = {
   "ceramic-coating-canberra": "Written 3, 5 or 7-year warranty",
@@ -20,7 +21,9 @@ const items: CarouselItem[] = services.map((s) => ({
   img: imageSrc(s.image, 480),
   imgSrcSet: imageSrcSet(s.image),
   imgAlt: s.imageAlt,
-  video: s.video ? { mp4: `${s.video.base}.mp4`, webm: `${s.video.base}.webm`, poster: s.video.poster } : undefined,
+  video: s.video
+    ? { mp4: `${s.video.base}.mp4`, webm: hasWebm(s.video.base) ? `${s.video.base}.webm` : undefined, poster: s.video.poster }
+    : undefined,
   ctaText: "See what's included",
   ctaUrl: `/services/${s.slug}/`,
 }));

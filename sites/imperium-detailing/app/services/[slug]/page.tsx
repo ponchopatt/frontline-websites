@@ -84,7 +84,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
         </div>
         <div className="md:col-span-5">
           {s.video ? (
-            <LoopVideo base={s.video.base} poster={s.video.poster} label={s.imageAlt} className="panel-glow aspect-[4/5] w-full rounded-xl bg-card object-cover" />
+            <LoopVideo base={s.video.base} poster={s.video.poster} label={s.imageAlt} className="panel-glow aspect-[4/5] w-full rounded-xl bg-card object-cover" lazyPoster={false} />
           ) : (
             <Picture name={s.image} alt={s.imageAlt} sizes="(min-width: 768px) 40vw, 100vw" priority className="panel-glow aspect-[4/5] w-full rounded-xl object-cover" />
           )}
@@ -98,7 +98,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
           </div>
           <div className="container-x mx-auto max-w-5xl">
             <div className="overflow-hidden rounded-2xl border border-border bg-[#0a0e14]">
-              <LoopVideo base={s.showcase.base} poster={s.showcase.poster} label={s.showcase.label} className="block w-full" webm={false} spin />
+              <LoopVideo base={s.showcase.base} poster={s.showcase.poster} label={s.showcase.label} className="block aspect-[1200/456] w-full" webm={false} spin />
             </div>
           </div>
         </section>

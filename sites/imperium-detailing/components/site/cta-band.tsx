@@ -1,4 +1,5 @@
 import { LinkButton } from "@/components/site/link-button";
+import { QuoteCta } from "@/components/site/quote-cta";
 import { site, smsHref, telHref } from "@/lib/site";
 
 export function CtaBand({ title = "Ready when you are." }: { title?: string }) {
@@ -10,7 +11,8 @@ export function CtaBand({ title = "Ready when you are." }: { title?: string }) {
           <p className="mt-4 max-w-[52ch] text-muted-foreground">{site.quotePromise}</p>
         </div>
         <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
-          <LinkButton href={smsHref()}>Text us your car</LinkButton>
+          {/* A text on a phone; on a laptop, where sms: does nothing, the quote form. */}
+          <QuoteCta sms={smsHref()} formHref="/book/" />
           <LinkButton href={telHref} variant="ghost">
             Call {site.phoneDisplay}
           </LinkButton>
