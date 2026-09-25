@@ -46,7 +46,11 @@ export default async function AreaPage({ params }: { params: Promise<Params> }) 
       {/* Hero. Laptops: the words on the left; the suburbs and the most-booked
           service in two cards on the right. Phones: the headline and the blurb,
           then the two cards, then the local intro under a hairline. The phone
-          bar is the call to action there, so the buttons are laptop-only. */}
+          bar is the call to action there, so the buttons are laptop-only.
+          Below 1400px wide the right column reaches the chat bubble's corner,
+          and under a long suburb list the most-booked card landed right there
+          (or under the fold), so at those widths it leads the column, as it
+          does on a phone. */}
       <section className="relative overflow-hidden">
         <div
           aria-hidden="true"
@@ -63,7 +67,7 @@ export default async function AreaPage({ params }: { params: Promise<Params> }) 
             {best && (
               <Link
                 href={`/services/${best.slug}/`}
-                className="order-first flex items-center justify-between gap-4 rounded-xl border border-accent px-5 py-[18px] text-foreground no-underline shadow-[0_0_60px_rgba(31,111,196,0.18)] hover:bg-card md:order-last md:rounded-[14px] md:px-8 md:py-7 md:shadow-[0_0_80px_rgba(31,111,196,0.18)]"
+                className="order-first flex items-center justify-between gap-4 rounded-xl border border-accent px-5 py-[18px] text-foreground no-underline shadow-[0_0_60px_rgba(31,111,196,0.18)] hover:bg-card md:order-last md:rounded-[14px] lg:max-[1400px]:order-first md:px-8 md:py-7 md:shadow-[0_0_80px_rgba(31,111,196,0.18)]"
               >
                 <span>
                   <span className="block text-xs text-muted-foreground md:text-sm">Most booked in {a.name}</span>

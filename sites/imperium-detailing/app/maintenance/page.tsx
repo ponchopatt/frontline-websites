@@ -126,7 +126,11 @@ export default function MaintenancePage() {
 
       {/* Hero. Laptops: the words on the left, the photo in a glow panel on the
           right. Phones: the headline, one line, the two monthly prices, then the
-          photo; the phone bar is the call to action, so no buttons here. */}
+          photo; the phone bar is the call to action, so no buttons here.
+          Below 1400px wide the photo reaches the chat bubble's corner, so on a
+          laptop there it sits at the top of the row and is no taller than the
+          screen allows: it ends 100px above the bottom of the first screen
+          (72px header + 48px top padding + 100px, plus 8px to spare = 228px). */}
       <section className="relative overflow-hidden">
         <div
           aria-hidden="true"
@@ -171,7 +175,7 @@ export default function MaintenancePage() {
             alt="A wash mitt on the bonnet of a BMW M4 during a maintenance wash"
             sizes="(min-width: 768px) 40vw, 100vw"
             priority
-            className="panel-glow h-[250px] w-full rounded-xl object-cover object-[50%_60%] md:h-[600px] md:rounded-[14px] md:object-center"
+            className="panel-glow h-[250px] w-full rounded-xl object-cover object-[50%_60%] md:h-[600px] md:rounded-[14px] md:object-center lg:max-[1400px]:h-[min(600px,max(360px,calc(100svh-228px)))] lg:max-[1400px]:self-start"
           />
         </div>
       </section>

@@ -132,14 +132,18 @@ export function Hero() {
   // all above the phone bar, which is the call to action (no buttons here).
   // Tablets: the same, with the buttons back (there is no phone bar).
   // Laptops: two columns, the words on the left and one tall 9:16 panel on the
-  // right. The bottom-right corner stays empty for the chat bubble.
+  // right. The bottom-right corner stays empty for the chat bubble (60px, 20px
+  // in from the corner): below 1400px wide the panel reaches into the last
+  // 100px on the right, so there it is also capped by the screen's height, to
+  // end 100px above the bottom of the first screen (72px header + 72px top
+  // padding + 8px + 100px, plus 8px to spare = 260px). From 1400px up it clears the corner anyway.
   return (
     <section aria-label="Imperium Detailing" className="relative overflow-hidden">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-[120px] top-10 -z-10 hidden size-[900px] bg-[radial-gradient(closest-side,rgba(31,111,196,0.30),rgba(15,61,110,0.12),rgba(5,6,8,0)_70%)] lg:block"
       />
-      <div className="mx-auto max-w-6xl lg:container-x lg:grid lg:grid-cols-[minmax(0,1fr)_clamp(300px,29.2vw,420px)] lg:gap-x-20 lg:pb-[120px] lg:pt-[72px]">
+      <div className="mx-auto max-w-6xl lg:container-x lg:grid lg:grid-cols-[minmax(0,1fr)_clamp(300px,29.2vw,420px)] lg:gap-x-20 lg:max-[1400px]:grid-cols-[minmax(0,1fr)_min(clamp(300px,29.2vw,420px),max(240px,calc((100svh-260px)*9/16)))] lg:pb-[120px] lg:pt-[72px]">
         <div className="hero-panel relative lg:col-start-2 lg:row-start-1 lg:pt-2">
           <div className="relative h-[clamp(170px,calc(100svh-564px),280px)] overflow-hidden bg-card md:h-[440px] lg:aspect-[9/16] lg:h-auto lg:rounded-[14px] lg:shadow-[0_30px_80px_rgba(0,0,0,0.7),0_0_120px_rgba(31,111,196,0.25)]">
             {/* The poster is a real <picture> under the video rather than the

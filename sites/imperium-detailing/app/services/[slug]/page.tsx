@@ -77,13 +77,17 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
           price strip, then the clip, then who it's for. A phone gets no buttons
           here: the phone bar is the call to action from the first screen.
           The entrance reuses the home hero's CSS (globals.css, "The hero is the
-          intro"), so it starts on first paint and leaves nothing hidden. */}
+          intro"), so it starts on first paint and leaves nothing hidden.
+          Below 1400px wide the panel reaches the chat bubble's corner, so there
+          its width is also capped by the screen's height: the 9:16 panel ends
+          100px above the bottom of the first screen (72px header + 48px top
+          padding + 100px, plus 8px to spare = 228px). */}
       <section className="relative overflow-hidden">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -right-40 top-0 -z-10 hidden size-[860px] bg-[radial-gradient(closest-side,rgba(31,111,196,0.28),rgba(15,61,110,0.1),rgba(5,6,8,0)_70%)] lg:block"
         />
-        <div className="container-x mx-auto flex max-w-6xl flex-col pb-14 pt-5 md:pb-24 md:pt-12 lg:grid lg:grid-cols-[minmax(0,1fr)_clamp(300px,27.8vw,400px)] lg:grid-rows-[repeat(5,auto)_1fr] lg:gap-x-24 lg:pb-28">
+        <div className="container-x mx-auto flex max-w-6xl flex-col pb-14 pt-5 md:pb-24 md:pt-12 lg:grid lg:grid-cols-[minmax(0,1fr)_clamp(300px,27.8vw,400px)] lg:grid-rows-[repeat(5,auto)_1fr] lg:max-[1400px]:grid-cols-[minmax(0,1fr)_min(clamp(300px,27.8vw,400px),max(240px,calc((100svh-228px)*9/16)))] lg:gap-x-24 lg:pb-28">
           <div className="lg:col-start-1 lg:row-start-1">
             <Breadcrumbs items={[{ href: "/services/", label: "Services" }, { href: `/services/${s.slug}/`, label: s.name }]} />
             <h1 className="display-caps mt-5 max-w-[760px] text-[min(13.85vw,3.375rem)] md:mt-10 md:text-[clamp(3.375rem,7.2vw,6.5rem)]">{s.h1}</h1>
