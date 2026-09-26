@@ -67,17 +67,17 @@ test("the journal saves on a phone tap beside it, and shows on Today straight aw
   await page.goto("/faith");
   await waitForApp(page).catch(() => undefined);
   await page.waitForLoadState("networkidle");
-  const field = page.getByLabel("What stood out, and what will I do about it?");
+  const field = page.getByRole("textbox", { name: "What stood out, and what will I do about it?" });
   await press(field, browserName);
   await field.pressSequentially("Round one", { delay: 20 });
   await press(page.getByRole("heading", { name: "Faith", exact: true }), browserName);
   await expect.poll(() => journal(userId), { timeout: 5000 }).toBe("Round one");
   await page.reload();
-  await expect(page.getByLabel("What stood out, and what will I do about it?")).toHaveValue("Round one");
+  await expect(page.getByRole("textbox", { name: "What stood out, and what will I do about it?" })).toHaveValue("Round one");
 
   // Type, then go straight to Today: the Faith sheet shows the new words.
   for (const words of ["Round two", "Round three"]) {
-    const f = page.getByLabel("What stood out, and what will I do about it?");
+    const f = page.getByRole("textbox", { name: "What stood out, and what will I do about it?" });
     await press(f, browserName);
     await f.fill(words);
     await press(page.getByRole("link", { name: "Today" }).last(), browserName);
