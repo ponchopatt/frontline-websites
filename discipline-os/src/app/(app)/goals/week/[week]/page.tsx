@@ -2,6 +2,7 @@ import { CalendarCheck, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { WeekFocus } from "@/components/focus/week-focus";
 import { AddWeeklyGoal } from "@/components/goals/add-goal";
 import { GoalBreadcrumb } from "@/components/goals/breadcrumb";
 import { Note } from "@/components/goals/form-bits";
@@ -11,8 +12,10 @@ import { WeeklyReview, type ReviewGoal } from "@/components/goals/weekly-review"
 import { Group, PageHeader, Row } from "@/components/os";
 import { WeekScoreboard } from "@/components/week/scoreboard";
 import { bossOf, loadScoreboard, scoreboardGroups } from "@/components/week/scoreboard-data";
-import { firstDayOf, getViewer, loadSummaries } from "@/lib/data";
+import { AREA_SHORT } from "@/lib/areas";
+import { firstDayOf, getViewer, loadFocusWeek, loadSummaries, requestTime } from "@/lib/data";
 import { addDays, formatHours, isLocalDate } from "@/lib/day";
+import { FOCUS_AREAS, isFocusArea, weekLine, type FocusArea } from "@/lib/focus";
 import { monthToWeeks } from "@/lib/goals/breakdown";
 import { loadGoalYear, loadLifeAreas, yearOfWeek } from "@/lib/goals/data";
 import { formatTarget, formatValue } from "@/lib/goals/format";
@@ -38,15 +41,16 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
   const { supabase, today, profile } = viewer;
   const end = weekEndOf(week);
   const monthStart = monthOfWeek(week);
-  const [data, areas, reviewRes, goalReviewsRes, sessionsRes, summaries, board] = await Promise.all([
+  const [data, areas, reviewRes, goalReviewsRes, sessionsRes, summaries, board, focusDays] = await Promise.all([
     loadGoalYear(viewer, yearOfWeek(week)),
     loadLifeAreas(viewer),
     supabase.from("weekly_reviews").select("*").eq("week_start_date", week).maybeSingle(),
     supabase.from("goal_reviews").select("*").eq("period", "week").eq("period_start", week),
-    supabase.from("work_sessions").select("started_at,ended_at,work_block_id").gte("local_date", week).lte("local_date", end),
+    supabase.from("work_sessions").select("started_at,ended_at,work_block_id,area").gte("local_date", week).lte("local_date", end),
     // Only days since the account started count as days on (or off) the line.
     week <= today ? loadSummaries(supabase, week > firstDayOf(viewer) ? week : firstDayOf(viewer), end < today ? end : today) : Promise.resolve([]),
     loadScoreboard(viewer, week),
+    loadFocusWeek(supabase, week),
   ]);
 
   const goals = data.tree.weekly.filter((w) => w.weekStart === week && w.state !== "cancelled");
@@ -148,6 +152,28 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
 
   const meta = (text: string) => <span className="text-[15px] text-muted-foreground">{text}</span>;
 
+  // The focus: which business had the week (or its days), and where the time actually went.
+  const businessMin: Partial<Record<FocusArea, number>> = {};
+  for (const s of sessionsRes.data ?? []) {
+    if (!isFocusArea(s.area)) continue;
+    const endAt = s.ended_at ? new Date(s.ended_at).getTime() : requestTime();
+    businessMin[s.area] = (businessMin[s.area] ?? 0) + Math.max(0, (endAt - new Date(s.started_at).getTime()) / 60000);
+  }
+  const businessTotal = Object.values(businessMin).reduce((sum, v) => sum + (v ?? 0), 0);
+  const focusHours =
+    businessTotal >= 1
+      ? FOCUS_AREAS.filter((a) => (businessMin[a] ?? 0) >= 1)
+          .map((a) => `${AREA_SHORT[a]} ${formatHours(businessMin[a] ?? 0)}`)
+          .join(" · ")
+      : null;
+  const focusCounts = new Map<FocusArea, number>();
+  for (const f of focusDays) if (f.area) focusCounts.set(f.area, (focusCounts.get(f.area) ?? 0) + 1);
+  const mainFocus = [...focusCounts.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+  const focusFooter =
+    mainFocus && businessTotal >= 60
+      ? `${AREA_SHORT[mainFocus]} got ${Math.round(((businessMin[mainFocus] ?? 0) / businessTotal) * 100)}% of your business time${weekOver ? "" : " so far"}.`
+      : null;
+
   return (
     <div className="grid grid-cols-[minmax(0,1fr)] gap-7">
       <PageHeader
@@ -170,6 +196,8 @@ export default async function WeekPage({ params, searchParams }: PageProps<"/goa
         title={`Week ${weekNumberInMonth(week)}`}
         subtitle={weekRangeLabel(week)}
       />
+
+      <WeekFocus weekStart={week} line={weekLine(focusDays)} hours={focusHours} footer={focusFooter} editable={!weekOver} />
 
       <WeekScoreboard groups={groups} boss={week <= today ? bossOf(groups, weekOver) : null} meta={weekOver ? "Week closed" : week <= today ? "So far" : "Not started"} />
 

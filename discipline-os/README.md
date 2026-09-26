@@ -134,6 +134,23 @@ next week starts from those numbers.
 **Not built:** an XP or level system (the brief made it optional; Keep My Word and the records
 already reward only real execution).
 
+### Focus weeks
+
+Three businesses can't all get deep work at once. At the start of a week, pick one to focus on
+(**Pick a focus** on Today, or the **Focus** row at the top of the week's page): the whole week,
+or day by day (Imperium Monday to Wednesday, Websites after). The sheet suggests the business
+that has had the least of your time in the last two weeks, leaving out last week's focus.
+
+- **The focus gets the deep work.** Its hours for the day are the work target less the others'
+  keep-alive (at least an hour). Up next says *Start a deep Websites block*; Plan my day puts its
+  work in the Big 3 and lays out a two-hour deep block first.
+- **The others stay alive.** Each gets a short keep-alive a day (Imperium 20 minutes, Websites
+  20, the AI bot 15; change them in the sheet, 0 leaves one alone). Up next offers *Keep Imperium
+  alive: 20 minutes* after the first deep block. Their counter targets wait: on Today they count
+  only their keep-alive time, and Plan my day leaves the AI bot's milestone step for its own week.
+- **The week's page shows where the time went**: hours per business, and how much of it the focus
+  got. Keep My Word is unchanged: it counts total work against the day's work target.
+
 ### Keep My Word
 
 Every day you make commitments; the % is how many you kept.
@@ -217,9 +234,9 @@ Sign up with any email: local Supabase does not send confirmation emails.
 
 | Command | What it checks |
 |---|---|
-| `npm test` | Day boundaries (timezones, 04:00 start, daylight saving), Keep My Word, streaks (with minimum days), counter targets, quick add, the scoreboard, Plan my day, reading plans, goal suggestions, What should I do next, "one more" prompts, personal records and when they fire, momentum, the year view, history sentences, now-and-then cards, the Close Day summary and the replay; goal health, roll-ups, breakdowns (from the progress already made), Keep My Word goals and the goal check; habit rates over due days only; safe paging of long histories; setup's goal matching; the Supabase settings check — 146 unit tests |
-| `npm run db:test` | The database's own rules with pgTAP: seeding, RLS isolation, no future days, locked days, one running timer, no duplicate ticks, one number per counter per day, one current bot milestone, Minimum Day counts and proof topics, the passcode lock (unreadable hash, wrong tries and a block that tops out at 15 minutes, forged tokens, change and turn off, reset only after asking and signing in again), no cross-user references or local dates, goal ownership down the hierarchy — 91 tests |
-| `npm run test:e2e` | The V1 definition of done, the execution day (quick add → counter finishes the task → work by business → bot milestone → proof photo → weekly scoreboard → Suggest my goals) the full goal loop (year → months → weeks → Plan my day → done → progress → weekly review), a whole day with the browser clock set to morning then evening (morning routine → Big 3 → What should I do next → Start → counters and "one more" → a personal record → cardio → night review → Close day → Day complete and replay → Progress), a Minimum Day that keeps the streak, first-run setup (name, 1906 passcode, goals, why, day, week; skipping, redoing and retrying without doubling goals), the lock (wrong passcode, right passcode, lock now, change, turn off, a forgotten passcode), streaks that end when a day closes under the line, counter goals carried into next week, timers across Close day and other devices, and taps that must hold on a phone (a tick tapped before the page is ready, the journal left without a blur, Back after a change elsewhere, a quick Save, a sheet inside a sheet, the timer bar following a timer). Runs on a phone-sized screen against a production build and local Supabase; run `npm run build` first. Test 9 checks every page, every Today sheet and the + sheet at 390×844 for sideways scrolling, tap targets under 44px and cut-off names — 37 tests |
+| `npm test` | Day boundaries (timezones, 04:00 start, daylight saving), Keep My Word, streaks (with minimum days), counter targets, quick add, the scoreboard, Plan my day, reading plans, goal suggestions, What should I do next, "one more" prompts, personal records and when they fire, momentum, the year view, history sentences, now-and-then cards, the Close Day summary and the replay; goal health, roll-ups, breakdowns (from the progress already made), Keep My Word goals and the goal check; habit rates over due days only; safe paging of long histories; setup's goal matching; the Supabase settings check; focus weeks (deep and keep-alive hours, the week in a line, the suggestion, Up next, Plan my day and the scoreboard on a focus day) — 159 unit tests |
+| `npm run db:test` | The database's own rules with pgTAP: seeding, RLS isolation, no future days, locked days, one running timer, no duplicate ticks, one number per counter per day, one current bot milestone, Minimum Day counts and proof topics, the passcode lock (unreadable hash, wrong tries and a block that tops out at 15 minutes, forged tokens, change and turn off, reset only after asking and signing in again), no cross-user references or local dates, goal ownership down the hierarchy, focus days (one business a day, keep-alive limits, other users' rows) — 98 tests |
+| `npm run test:e2e` | The V1 definition of done, the execution day (quick add → counter finishes the task → work by business → bot milestone → proof photo → weekly scoreboard → Suggest my goals) the full goal loop (year → months → weeks → Plan my day → done → progress → weekly review), a whole day with the browser clock set to morning then evening (morning routine → Big 3 → What should I do next → Start → counters and "one more" → a personal record → cardio → night review → Close day → Day complete and replay → Progress), a Minimum Day that keeps the streak, first-run setup (name, 1906 passcode, goals, why, day, week; skipping, redoing and retrying without doubling goals), the lock (wrong passcode, right passcode, lock now, change, turn off, a forgotten passcode), streaks that end when a day closes under the line, counter goals carried into next week, timers across Close day and other devices, and taps that must hold on a phone (a tick tapped before the page is ready, the journal left without a blur, Back after a change elsewhere, a quick Save, a sheet inside a sheet, the timer bar following a timer), and a focus week (picked from Today, followed by Up next and the day's list, split from the week's page). Runs on a phone-sized screen against a production build and local Supabase; run `npm run build` first. Test 9 checks every page, every Today sheet and the + sheet at 390×844 for sideways scrolling, tap targets under 44px and cut-off names — 38 tests |
 | `npm run typecheck` · `npm run lint` | Types and lint |
 
 ## Deploy
@@ -338,6 +355,9 @@ empty, for "later"), `kind` and `days` on `habits`, `area` on work sessions and 
 a private `proof` storage bucket, `journal` on `bible_entries`, `failure` and `bottleneck` on
 `weekly_reviews`, and `metric_id` on the goal tables. `daily_priorities` was merged into
 `daily_goals` and dropped.
+
+Focus weeks add `focus_days` (one business a day: `imperium`, `websites` or `trading`) and
+`profiles.keep_alive_minutes` (minutes a day per business, 0 to 240).
 
 The daily loop adds `habits.minimum`, `profiles.minimum_work_minutes` and `minimum_fitness`,
 `daily_plans.minimum_at`, and `proof_uploads.topic`. `day_summaries()` also returns

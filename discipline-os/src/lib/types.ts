@@ -3,6 +3,7 @@ import type { PlanKey } from "./bible";
 import type { CloseSummary } from "./close-day";
 import type { LocalDate } from "./day";
 import type { MemoryCard, Momentum, RecordBaseline } from "./history";
+import type { DayFocus, FocusDay, KeepAlive } from "./focus";
 import type { DayScore } from "./streak";
 
 export type HabitCategory = "morning" | "body" | "discipline" | "god";
@@ -30,6 +31,8 @@ export interface ProfileSettings {
   /** Minimum Day: minutes of focused work (0: not part of it), and whether gym or cardio is. */
   minimumWorkMinutes: number;
   minimumFitness: boolean;
+  /** Minutes a day each business keeps getting while another has the focus. */
+  keepAlive: KeepAlive;
 }
 
 export interface HabitItem {
@@ -201,6 +204,10 @@ export interface DayView {
   momentum: Momentum | null;
   baseline: RecordBaseline | null;
   memory: MemoryCard | null;
+  /** This day's focus business, its deep minutes and the others' keep-alive; null without one. */
+  focus: DayFocus | null;
+  /** Monday to Sunday of this week, each with its focus business or none. */
+  focusWeek: FocusDay[];
 }
 
 /** The Weekly Boss in one line: targets hit this week, and how far through them. */

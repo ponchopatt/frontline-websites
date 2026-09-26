@@ -36,8 +36,10 @@ export interface PlanInput {
   worked: Partial<Record<WorkArea, number>>;
   /** Minutes already planned in work blocks today, by business. */
   planned: Partial<Record<WorkArea, number>>;
-  /** Hours a day to give a business (e.g. trading: 2). */
+  /** Hours a day to give a business (e.g. trading: 2). On a focus day: deep and keep-alive hours. */
   hourTargets: Partial<Record<WorkArea, number>>;
+  /** Today's focus business, if the week has one. */
+  focus?: "imperium" | "websites" | "trading" | null;
 }
 
 export interface PlanItem {
@@ -179,7 +181,7 @@ export function planDay(input: PlanInput): DayPlan {
     });
   }
 
-  if (input.milestone?.nextStep) {
+  if (input.milestone?.nextStep && (!input.focus || input.focus === "trading")) {
     add({
       key: "bot-step",
       title: `${input.milestone.nextStep}: ${input.milestone.title}`,
@@ -196,7 +198,21 @@ export function planDay(input: PlanInput): DayPlan {
     });
   }
 
-  // Big 3: best first, spread across areas so one business doesn't take all three.
+  // A focus day: the focus business's work comes first, the others' waits (their keep-alive is
+  // time on the clock, not a task).
+  const focus = input.focus ?? null;
+  const isBusiness = (a: Area | null) => a === "imperium" || a === "websites" || a === "trading";
+  if (focus) {
+    for (const c of candidates) {
+      if (c.area === focus) {
+        c.score += 12;
+        c.reasons = [...c.reasons, "This week's focus"];
+      } else if (isBusiness(c.area)) c.score -= 12;
+    }
+  }
+
+  // Big 3: best first, spread across areas so one business doesn't take all three (except the
+  // focus, which is meant to).
   const pool = [...candidates].sort((a, b) => b.score - a.score);
   const big3: PlanItem[] = [];
   const areasIn = ranked.map((t) => t.area as Area | null);
@@ -204,7 +220,7 @@ export function planDay(input: PlanInput): DayPlan {
     let best = 0;
     let bestScore = -Infinity;
     pool.forEach((item, i) => {
-      const same = item.area ? areasIn.filter((a) => a === item.area).length : 0;
+      const same = item.area && item.area !== focus ? areasIn.filter((a) => a === item.area).length : 0;
       const effective = item.score - same * SAME_AREA_PENALTY;
       if (effective > bestScore) {
         bestScore = effective;
@@ -244,6 +260,7 @@ function allocate(input: PlanInput, bigAreas: Array<Area | null>, supporting: Pl
   const sum = (r: Partial<Record<WorkArea, number>>) => Object.values(r).reduce((s, v) => s + (v ?? 0), 0);
   let open = Math.max(0, input.workTargetMinutes - sum(input.worked) - sum(input.planned));
   if (open < 30) return [];
+  if (input.focus) return allocateFocus(input, input.focus, open);
 
   const want: Array<[WorkArea, number]> = [];
   for (const area of ["trading", "imperium", "websites"] as const) {
@@ -273,6 +290,35 @@ function allocate(input: PlanInput, bigAreas: Array<Area | null>, supporting: Pl
   };
   want.sort((a, b) => order(a[0]) - order(b[0]));
 
+  return lay(input, want);
+}
+
+/**
+ * A focus day: each other business's keep-alive (to the nearest 10 minutes still owed), and the
+ * rest of the open time to the focus, in blocks of up to two hours. The keep-alives sit after
+ * the first deep block, as a break between the long ones.
+ */
+function allocateFocus(input: PlanInput, focus: "imperium" | "websites" | "trading", open: number): PlanBlock[] {
+  const keep: Array<[WorkArea, number]> = [];
+  for (const area of ["imperium", "websites", "trading"] as const) {
+    if (area === focus) continue;
+    const need = (input.hourTargets[area] ?? 0) * 60 - (input.worked[area] ?? 0) - (input.planned[area] ?? 0);
+    const minutes = Math.min(open, Math.ceil(need / 10) * 10);
+    if (minutes >= 10) {
+      keep.push([area, minutes]);
+      open -= minutes;
+    }
+  }
+  const deep = Math.floor(open / 30) * 30;
+  if (deep <= 0) return lay(input, keep);
+  const first = Math.min(120, deep);
+  const want: Array<[WorkArea, number]> = [[focus, first], ...keep];
+  if (deep > first) want.push([focus, deep - first]);
+  return lay(input, want);
+}
+
+/** Lays the wanted minutes out on the clock from now (not before 8am), stopping by 11pm. */
+function lay(input: PlanInput, want: Array<[WorkArea, number]>): PlanBlock[] {
   const blocks: PlanBlock[] = [];
   let at = Math.max(8 * 60, Math.ceil(input.nowMinutes / 30) * 30);
   for (const [area, minutes] of want) {

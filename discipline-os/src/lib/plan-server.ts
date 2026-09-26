@@ -2,7 +2,8 @@ import "server-only";
 import { formatInTimeZone } from "date-fns-tz";
 import { isWorkArea, type Area, type WorkArea } from "./areas";
 import { addDays, startOfWeek, type LocalDate } from "./day";
-import { countersFor, loadCounterData, loadMilestone, type Viewer } from "./data";
+import { countersFor, focusOn, loadCounterData, loadFocusWeek, loadMilestone, type Viewer } from "./data";
+import { hourTargetsFor } from "./focus";
 import { lineageOf, loadGoalYear, loadLifeAreas, mapDaily, yearOfWeek } from "./goals/data";
 import { rankSuggestions, type WeeklyContext } from "./goals/suggest";
 import { minutesIntoDay, planDay, type DayPlan } from "./plan";
@@ -19,7 +20,7 @@ export async function buildPlan(viewer: Viewer, date: LocalDate): Promise<DayPla
   const { supabase, profile } = viewer;
   const weekStart = startOfWeek(date);
 
-  const [goals, areas, todayRes, unfinishedRes, laterRes, depsRes, sessionsRes, blocksRes, counterData, milestone] = await Promise.all([
+  const [goals, areas, todayRes, unfinishedRes, laterRes, depsRes, sessionsRes, blocksRes, counterData, milestone, focusWeek] = await Promise.all([
     loadGoalYear(viewer, yearOfWeek(weekStart)),
     loadLifeAreas(viewer),
     supabase.from("daily_goals").select("*").eq("local_date", date),
@@ -30,7 +31,9 @@ export async function buildPlan(viewer: Viewer, date: LocalDate): Promise<DayPla
     supabase.from("work_blocks").select("area,planned_start,planned_end").eq("local_date", date),
     loadCounterData(supabase, addDays(weekStart, -60), date),
     loadMilestone(supabase),
+    loadFocusWeek(supabase, weekStart),
   ]);
+  const focus = focusOn(focusWeek, date, profile);
 
   const unfinishedRows = unfinishedRes.data ?? [];
   let carriedAway = new Set<string>();
@@ -91,6 +94,7 @@ export async function buildPlan(viewer: Viewer, date: LocalDate): Promise<DayPla
     workTargetMinutes: profile.workTargetHours * 60,
     worked,
     planned,
-    hourTargets: profile.hourTargets,
+    hourTargets: hourTargetsFor(focus, profile.hourTargets),
+    focus: focus?.area ?? null,
   });
 }

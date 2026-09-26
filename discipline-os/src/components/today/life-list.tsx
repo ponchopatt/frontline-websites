@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { Group, Ring, Row } from "@/components/os";
 
 /** The parts of the day that open in a sheet from Today. */
@@ -20,9 +21,9 @@ export interface LifeRow {
  * The day's scoreboard as a list: each part of life on one row with its number and a ring.
  * Tap a row for everything in it.
  */
-export function LifeList({ rows, onOpen }: { rows: LifeRow[]; onOpen: (key: AreaKey) => void }) {
+export function LifeList({ rows, onOpen, action }: { rows: LifeRow[]; onOpen: (key: AreaKey) => void; action?: ReactNode }) {
   return (
-    <Group id="scoreboard" title="Your day">
+    <Group id="scoreboard" title="Your day" action={action}>
       {rows.map((r) => (
         <Row
           key={r.key}

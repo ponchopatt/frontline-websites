@@ -409,6 +409,30 @@ export type Database = {
         }
         Relationships: []
       }
+      focus_days: {
+        Row: {
+          area: string
+          created_at: string
+          local_date: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          area: string
+          created_at?: string
+          local_date: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          area?: string
+          created_at?: string
+          local_date?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       goal_dependencies: {
         Row: {
           blocked_id: string
@@ -977,6 +1001,7 @@ export type Database = {
           created_at: string
           day_start_hour: number
           display_name: string | null
+          keep_alive_minutes: Json
           minimum_fitness: boolean
           minimum_work_minutes: number
           onboarded_at: string | null
@@ -995,6 +1020,7 @@ export type Database = {
           created_at?: string
           day_start_hour?: number
           display_name?: string | null
+          keep_alive_minutes?: Json
           minimum_fitness?: boolean
           minimum_work_minutes?: number
           onboarded_at?: string | null
@@ -1013,6 +1039,7 @@ export type Database = {
           created_at?: string
           day_start_hour?: number
           display_name?: string | null
+          keep_alive_minutes?: Json
           minimum_fitness?: boolean
           minimum_work_minutes?: number
           onboarded_at?: string | null
@@ -1661,6 +1688,7 @@ export type Database = {
       }
       user_local_date: { Args: { p_user: string; ts: string }; Returns: string }
       user_local_today: { Args: { p_user: string }; Returns: string }
+      valid_keep_alive: { Args: { v: Json }; Returns: boolean }
     }
     Enums: {
       commitment_outcome: "kept" | "broken" | "cancelled" | "pending"

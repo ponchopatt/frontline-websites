@@ -1,5 +1,6 @@
 import { AREA_LABEL, isWorkArea, type Area, type WorkArea } from "./areas";
 import { formatDuration, shortDate, type LocalDate } from "./day";
+import type { DayFocus } from "./focus";
 import { formatValue } from "./goals/format";
 
 /**
@@ -73,6 +74,8 @@ export interface NextInput {
   reviewDone: boolean;
   minimum: MinimumItem[] | null;
   milestone: { title: string; nextStep: string | null } | null;
+  /** Today's focus business, with its deep minutes and the others' keep-alive. */
+  focus?: DayFocus | null;
 }
 
 export type NextDo =
@@ -124,6 +127,9 @@ function workAreaOf(area: Area | null): WorkArea | null {
 
 export function nextActions(input: NextInput): NextAction[] {
   const { hour, locked } = input;
+  const focus = input.focus ?? null;
+  // On a focus day the other businesses only get their keep-alive: their numbers wait.
+  const waits = (area: WorkArea | null) => Boolean(focus && area && area !== "other" && area !== focus.area);
   const out: NextAction[] = [];
   const add = (a: NextAction) => out.push(a);
 
@@ -211,9 +217,10 @@ export function nextActions(input: NextInput): NextAction[] {
     add({ key: "close", title: "Close the day.", why: "The review's done. Lock the day in and see the replay.", do: { type: "close" }, score: late ? 860 : evening ? 530 : 140 });
   }
 
-  /* ---- work nearly in */
+  /* ---- work nearly in (on a focus day, a keep-alive still owed says it better) */
   const workLeft = input.workTargetMinutes - input.workMinutes;
-  if (input.workTargetMinutes > 0 && workLeft > 0 && workLeft <= 45 && !input.running) {
+  const keepOwed = focus ? Object.entries(focus.keepAlive).some(([a, m]) => (m ?? 0) > (input.byArea[a as WorkArea] ?? 0)) : false;
+  if (input.workTargetMinutes > 0 && workLeft > 0 && workLeft <= 45 && !input.running && !keepOwed) {
     const n = Math.ceil(workLeft);
     add({
       key: "work-finish",
@@ -258,7 +265,7 @@ export function nextActions(input: NextInput): NextAction[] {
   for (const c of input.counters) {
     if (!c.pinned || c.unit === "$" || c.aggregation === "latest" || linkedCounters.has(c.id)) continue;
     const area = workAreaOf(c.area);
-    if (!area || c.target === null || c.target <= 0 || c.value >= c.target) continue;
+    if (!area || waits(area) || c.target === null || c.target <= 0 || c.value >= c.target) continue;
     const left = c.target - c.value;
     const major = (c.area === "imperium" && c.key === "leads_called") || (c.area === "websites" && c.key === "cold_calls");
     add({
@@ -271,7 +278,18 @@ export function nextActions(input: NextInput): NextAction[] {
   }
 
   /* ---- the rest of the day's work */
-  if (input.workTargetMinutes > 0 && workLeft > 45 && hour < 20 && !input.running) {
+  const deepLeft = focus ? focus.deepMinutes - (input.byArea[focus.area] ?? 0) : 0;
+  if (focus && deepLeft > 0 && hour < 20 && !input.running) {
+    // A focus day: the deep work on this week's business comes before everything else it could be.
+    const label = AREA_LABEL[focus.area];
+    add({
+      key: "work",
+      title: `Start a deep ${label} block.`,
+      why: `${label} is this week's focus: ${formatDuration(input.byArea[focus.area] ?? 0)} of ${formatDuration(focus.deepMinutes)} so far.`,
+      do: { type: "work", area: focus.area },
+      score: 560,
+    });
+  } else if (!focus && input.workTargetMinutes > 0 && workLeft > 45 && hour < 20 && !input.running) {
     const area = bestArea();
     const target = input.hourTargets[area];
     add({
@@ -284,6 +302,23 @@ export function nextActions(input: NextInput): NextAction[] {
       do: { type: "work", area },
       score: 550,
     });
+  }
+
+  /* ---- a focus day: the others' keep-alive, short and daily */
+  if (focus && !input.running && hour < 21) {
+    for (const [a, minutes] of Object.entries(focus.keepAlive) as Array<[WorkArea, number]>) {
+      const left = minutes - (input.byArea[a] ?? 0);
+      if (!(minutes > 0) || left <= 0) continue;
+      const label = AREA_LABEL[a];
+      add({
+        key: `keep-${a}`,
+        title: `Keep ${label} alive: ${Math.ceil(left)} ${plural(Math.ceil(left), "minute", "minutes")}.`,
+        why: `Not the focus this week. ${minutes} minutes a day stops it going cold.`,
+        do: { type: "work", area: a },
+        // Behind the deep work while it's owed, then next.
+        score: deepLeft > 0 ? 530 : 570,
+      });
+    }
   }
 
   pendingToday
@@ -304,7 +339,7 @@ export function nextActions(input: NextInput): NextAction[] {
 
   /* ---- the AI bot's next step */
   const botHours = input.hourTargets.trading ?? 0;
-  if (input.milestone?.nextStep && (botHours === 0 || (input.byArea.trading ?? 0) < botHours * 60)) {
+  if (input.milestone?.nextStep && !waits("trading") && (botHours === 0 || (input.byArea.trading ?? 0) < botHours * 60)) {
     add({
       key: "bot",
       title: `AI bot: ${input.milestone.nextStep}.`,
@@ -317,7 +352,7 @@ export function nextActions(input: NextInput): NextAction[] {
   /* ---- nothing urgent: get ahead on the week */
   for (const c of input.counters) {
     const area = workAreaOf(c.area);
-    if (!area || !c.pinned || c.unit === "$" || c.aggregation === "latest" || c.weekTarget === null || c.weekTarget <= 0 || c.weekTotal >= c.weekTarget) continue;
+    if (!area || waits(area) || !c.pinned || c.unit === "$" || c.aggregation === "latest" || c.weekTarget === null || c.weekTarget <= 0 || c.weekTotal >= c.weekTarget) continue;
     const left = c.weekTarget - c.weekTotal;
     add({
       key: `week-${c.id}`,

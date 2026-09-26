@@ -5,6 +5,7 @@ import { isWorkArea, type Area, type WorkArea } from "./areas";
 import { isPlanKey, nextInPlan } from "./bible";
 import { asCloseSummary } from "./close-day";
 import { addDays, dateRange, daysBetween, isoWeekday, localDateAt, startOfWeek, type LocalDate } from "./day";
+import { dayFocus, isFocusArea, keepAliveOf, type FocusDay } from "./focus";
 import { formatValue } from "./goals/format";
 import { habitNumbers, indexHistory, memoryCard, momentum, recordBaseline, type HistoryFacts } from "./history";
 import { readUnlockToken } from "./lock";
@@ -91,6 +92,7 @@ export const getSession = cache(async (): Promise<Viewer> => {
     biblePlan: isPlanKey(row.bible_plan) ? row.bible_plan : "bible",
     minimumWorkMinutes: row.minimum_work_minutes,
     minimumFitness: row.minimum_fitness,
+    keepAlive: keepAliveOf(row.keep_alive_minutes),
   };
   return {
     supabase,
@@ -428,6 +430,7 @@ export async function loadDay(viewer: Viewer, date: LocalDate, facts: Promise<Hi
     milestone,
     goals,
     areas,
+    focusWeek,
   ] = await Promise.all([
     supabase.from("habits").select("id,name,category,kind,days,minimum,sort_order,created_at,archived_at").order("sort_order"),
     supabase.from("habit_completions").select("habit_id,completed_at,edited_at").eq("local_date", date),
@@ -452,6 +455,7 @@ export async function loadDay(viewer: Viewer, date: LocalDate, facts: Promise<Hi
     loadMilestone(supabase),
     loadGoalYear(viewer, yearOfWeek(weekStart)),
     loadLifeAreas(viewer),
+    loadFocusWeek(supabase, weekStart),
   ]);
 
   for (const res of [habitsRes, completionsRes, tasksRes, unfinishedRes, laterRes, blocksRes, sessionsRes, readingRes, reviewRes, planRes]) {
@@ -574,7 +578,29 @@ export async function loadDay(viewer: Viewer, date: LocalDate, facts: Promise<Hi
     momentum: isToday ? momentum(ix) : null,
     baseline: isToday ? recordBaseline(ix) : null,
     memory: isToday ? memoryCard(ix) : null,
+    focus: focusOn(focusWeek, date, profile),
+    focusWeek,
   };
+}
+
+/**
+ * The week's focus, Monday to Sunday, one business or none a day. A database without focus
+ * weeks yet (a release that went out before its database change) reads as no focus.
+ */
+export async function loadFocusWeek(supabase: Supabase, weekStart: LocalDate): Promise<FocusDay[]> {
+  const days = dateRange(weekStart, addDays(weekStart, 6));
+  const { data, error } = await supabase.from("focus_days").select("local_date,area").gte("local_date", weekStart).lte("local_date", addDays(weekStart, 6));
+  const byDate = new Map((error ? [] : data ?? []).map((r) => [r.local_date, r.area]));
+  return days.map((date) => {
+    const area = byDate.get(date);
+    return { date, area: isFocusArea(area) ? area : null };
+  });
+}
+
+/** A day's focus from its week, with the deep minutes and keep-alive it asks for. */
+export function focusOn(week: FocusDay[], date: LocalDate, profile: ProfileSettings) {
+  const area = week.find((d) => d.date === date)?.area ?? null;
+  return area ? dayFocus(area, profile.keepAlive, profile.workTargetHours) : null;
 }
 
 type Page<T> = { data: T[] | null; error: { message: string } | null; count?: number | null };

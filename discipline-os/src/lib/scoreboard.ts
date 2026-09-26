@@ -36,6 +36,11 @@ export interface BoardInput {
   workedByArea: Partial<Record<WorkArea, number>>;
   hourTargets: Partial<Record<WorkArea, number>>;
   reviewDone: boolean;
+  /**
+   * Today's focus business. Its numbers and deep hours count; the others count only their
+   * keep-alive time (hourTargets carries both).
+   */
+  focus?: "imperium" | "websites" | "trading" | null;
 }
 
 const FAITH_KINDS = new Set(["bible", "journal", "prayer"]);
@@ -56,12 +61,17 @@ export function scoreboard(input: BoardInput): Record<BoardKey, Tally> {
   }
   count("faith", input.reviewDone);
 
+  const focus = input.focus ?? null;
   for (const c of input.counters) {
+    if (focus && c.area !== focus) continue;
     if ((c.area === "imperium" || c.area === "websites") && c.target !== null && c.target > 0) count(c.area, c.value >= c.target);
   }
 
-  const botTarget = (input.hourTargets.trading ?? 0) * 60;
-  if (botTarget > 0) count("trading", (input.workedByArea.trading ?? 0) >= botTarget);
+  // Time: the bot's daily hours; on a focus day, every business's hours (deep or keep-alive).
+  for (const area of focus ? (["imperium", "websites", "trading"] as const) : (["trading"] as const)) {
+    const target = (input.hourTargets[area] ?? 0) * 60;
+    if (target > 0) count(area, (input.workedByArea[area] ?? 0) >= target);
+  }
 
   for (const t of input.tasks) {
     const key = t.area && (BOARD as string[]).includes(t.area) ? (t.area as BoardKey) : null;

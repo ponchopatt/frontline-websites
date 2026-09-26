@@ -13,11 +13,13 @@ import { Check, Film, Square } from "lucide-react";
 import { DayComplete, type DayCompleteData } from "@/components/day-complete";
 import { TextAction } from "@/components/os";
 import { BareCards } from "@/components/section-card";
+import { FocusSheet } from "@/components/focus/focus-sheet";
 import { Sheet } from "@/components/sheet";
 import { TimerDisplay } from "@/components/timer-display";
 import { useNow } from "@/hooks/use-now";
 import { reloadIfStale } from "@/lib/stale";
-import { AREA_LABEL, isWorkArea, type WorkArea } from "@/lib/areas";
+import { AREA_LABEL, AREA_SHORT, isWorkArea, type WorkArea } from "@/lib/areas";
+import { hourTargetsFor } from "@/lib/focus";
 import { formatReading } from "@/lib/bible";
 import { addDays, clockTime, formatDuration, localHourAt, shortDate, type LocalDate } from "@/lib/day";
 import { itemsNudge } from "@/lib/gradient";
@@ -137,6 +139,7 @@ export function Today({ view, partOfDay, name, hour: serverHour }: { view: DayVi
   const [closing, setClosing] = useState<{ data: DayCompleteData; heading: string } | null>(null);
   // The part of the day open in a sheet: its ticks, counters, timer or review.
   const [sheet, setSheet] = useState<AreaKey | null>(null);
+  const [focusOpen, setFocusOpen] = useState(false);
   // Tasks being moved right now. A second tap while the first is saving does nothing.
   const moving = useRef(new Set<string>());
   // Habits whose tick is on its way to the server.
@@ -201,6 +204,9 @@ export function Today({ view, partOfDay, name, hour: serverHour }: { view: DayVi
 
   /* ------------------------------------------------------------- the day's numbers */
   const byArea = minutesBy(date, sessions, running, now);
+  // A focus day: the focus business gets the deep hours, the others their keep-alive.
+  const focus = view.focus;
+  const targets = hourTargetsFor(focus, profile.hourTargets);
   const workMinutes = Object.values(byArea).reduce((s, m) => s + (m ?? 0), 0);
   const reviewDone = REVIEW_FIELDS.every((f) => review[f].trim());
   const due = habits.filter((h) => h.due);
@@ -220,8 +226,9 @@ export function Today({ view, partOfDay, name, hour: serverHour }: { view: DayVi
     tasks,
     counters,
     workedByArea: byArea,
-    hourTargets: profile.hourTargets,
+    hourTargets: targets,
     reviewDone,
+    focus: focus?.area ?? null,
   });
   const morning = morningTally(boardHabits);
   const areaTasks = (area: string) => {
@@ -567,7 +574,8 @@ export function Today({ view, partOfDay, name, hour: serverHour }: { view: DayVi
     workMinutes,
     workTargetMinutes: profile.workTargetHours * 60,
     byArea,
-    hourTargets: profile.hourTargets,
+    hourTargets: targets,
+    focus,
     running: running ? { area: running.area, minutes: runningMinutes, task: running.task } : null,
     reviewDone,
     minimum: minimumOn && !minState.secured ? minState.items : null,
@@ -596,6 +604,15 @@ export function Today({ view, partOfDay, name, hour: serverHour }: { view: DayVi
     const c = counters.find((x) => x.area === area && x.pinned && x.target !== null && x.target > 0);
     return c ? `${c.label} ${c.value} of ${c.target}` : null;
   };
+  // On a focus day each business says where it stands: deep work, or its keep-alive.
+  const businessLine = (area: "imperium" | "websites" | "trading", otherwise: string | null) => {
+    if (!focus) return otherwise;
+    const done = byArea[area] ?? 0;
+    if (area === focus.area) return `Focus · ${formatDuration(done)} of ${formatDuration(focus.deepMinutes)} deep`;
+    const keep = focus.keepAlive[area];
+    if (!keep) return "Resting this week";
+    return done >= keep ? "Kept alive today" : `Keep alive · ${Math.floor(done)} of ${keep} min`;
+  };
   const answered = REVIEW_FIELDS.filter((f) => review[f].trim()).length;
   const workTarget = profile.workTargetHours * 60;
   const rows: LifeRow[] = [
@@ -609,9 +626,9 @@ export function Today({ view, partOfDay, name, hour: serverHour }: { view: DayVi
       value: formatDuration(workMinutes),
       ratio: workTarget > 0 ? workMinutes / workTarget : null,
     },
-    { key: "imperium", title: "Imperium", subtitle: firstTarget("imperium"), value: tally(board.imperium.done, board.imperium.total), ratio: ratio(board.imperium.done, board.imperium.total) },
-    { key: "websites", title: "Websites", subtitle: firstTarget("websites"), value: tally(board.websites.done, board.websites.total), ratio: ratio(board.websites.done, board.websites.total) },
-    { key: "trading", title: "AI Bot", subtitle: milestone ? milestone.title : "No milestone set", value: tally(board.trading.done, board.trading.total), ratio: ratio(board.trading.done, board.trading.total) },
+    { key: "imperium", title: "Imperium", subtitle: businessLine("imperium", firstTarget("imperium")), value: tally(board.imperium.done, board.imperium.total), ratio: ratio(board.imperium.done, board.imperium.total) },
+    { key: "websites", title: "Websites", subtitle: businessLine("websites", firstTarget("websites")), value: tally(board.websites.done, board.websites.total), ratio: ratio(board.websites.done, board.websites.total) },
+    { key: "trading", title: "AI Bot", subtitle: businessLine("trading", milestone ? milestone.title : "No milestone set"), value: tally(board.trading.done, board.trading.total), ratio: ratio(board.trading.done, board.trading.total) },
     { key: "discipline", title: "Discipline", subtitle: null, value: tally(board.discipline.done, board.discipline.total), ratio: ratio(board.discipline.done, board.discipline.total) },
     {
       key: "review",
@@ -788,7 +805,19 @@ export function Today({ view, partOfDay, name, hour: serverHour }: { view: DayVi
             onUseLastNight={(t) => void takeLastNight(t)}
           />
 
-          <LifeList rows={rows} onOpen={setSheet} />
+          <LifeList
+            rows={rows}
+            onOpen={setSheet}
+            action={
+              isToday && !locked ? (
+                <TextAction onClick={() => setFocusOpen(true)} className="-my-3 text-foreground">
+                  {focus ? `Focus: ${AREA_SHORT[focus.area]}` : "Pick a focus"}
+                </TextAction>
+              ) : focus ? (
+                <span className="text-[15px] text-muted-foreground">Focus: {AREA_SHORT[focus.area]}</span>
+              ) : undefined
+            }
+          />
 
           {view.memory && !locked && records.length === 0 && <MemoryNote date={date} card={view.memory} />}
         </>
@@ -799,6 +828,8 @@ export function Today({ view, partOfDay, name, hour: serverHour }: { view: DayVi
           I&apos;m having a shit day
         </button>
       )}
+
+      <FocusSheet open={focusOpen} onClose={() => setFocusOpen(false)} weekStart={view.weekStart} />
 
       <Sheet open={sheet !== null} onClose={() => setSheet(null)} title={sheet ? SHEET_TITLE[sheet] : ""} subtitle={sheet ? rows.find((r) => r.key === sheet)?.value || undefined : undefined}>
         {readOnly && sheet !== "review" && (
@@ -851,7 +882,7 @@ export function Today({ view, partOfDay, name, hour: serverHour }: { view: DayVi
             <BotCard
               milestone={milestone}
               minutes={byArea.trading ?? 0}
-              targetHours={profile.hourTargets.trading ?? 0}
+              targetHours={targets.trading ?? 0}
               tasks={areaTasks("trading")}
               readOnly={readOnly}
               isToday={isToday}
