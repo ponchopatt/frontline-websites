@@ -1,15 +1,23 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSpin, hintPillClass } from "@/lib/use-spin";
+import { hasWebm, posterFor } from "@/lib/media";
 
 type Props = {
   base: string;
   poster: string;
   label: string;
   className?: string;
-  /** Set when there is no WebM next to the MP4, so the browser skips a dead request. */
+  /** Offer a WebM next to the MP4. Defaults to off for the clips whose WebM is the bigger file (lib/media.ts). */
   webm?: boolean;
+  /**
+   * Hold the poster back until the video is within 400px of the screen. On by
+   * default: the home page has eleven of these below the fold, and every one
+   * of their posters used to download before the page had finished loading.
+   * Turn it off only for a video that sits in the first screen.
+   */
+  lazyPoster?: boolean;
   /** One lap around the car: people can drag it to turn the car themselves. */
   spin?: boolean;
 };
@@ -41,10 +49,30 @@ function arbitrate() {
 // A silent loop that plays only while on screen, and never for people who asked for
 // reduced motion (they get the poster). `base` is the path without extension; WebM
 // is offered first with MP4 as the fallback.
-export function LoopVideo({ base, poster, label, className = "", webm = true, spin = false }: Props) {
+export function LoopVideo({ base, poster, label, className = "", webm = hasWebm(base), spin = false, lazyPoster = true }: Props) {
   const ref = useRef<HTMLVideoElement>(null);
   const turn = useSpin(ref, spin);
   const { clear } = turn;
+  // Server HTML carries no poster for a lazy video; the one near the screen gets
+  // the size that suits how wide it is drawn. Without JS the <noscript> image
+  // below stands in (globals.css hides the empty video in that case).
+  const [shownPoster, setShownPoster] = useState<string | undefined>(lazyPoster ? undefined : poster);
+
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || !lazyPoster) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setShownPoster(posterFor(poster, v.clientWidth));
+        io.disconnect();
+      },
+      // All four sides: the home gallery scrolls sideways on laptops.
+      { rootMargin: "400px" },
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, [poster, lazyPoster]);
 
   useEffect(() => {
     const v = ref.current;
@@ -75,7 +103,8 @@ export function LoopVideo({ base, poster, label, className = "", webm = true, sp
       loop
       playsInline
       preload="none"
-      poster={poster}
+      poster={shownPoster}
+      data-lazy-poster={lazyPoster ? "" : undefined}
       aria-label={label}
       {...turn.handlers}
       className={`${className} ${turn.className}`}
@@ -85,11 +114,24 @@ export function LoopVideo({ base, poster, label, className = "", webm = true, sp
     </video>
   );
 
-  if (!spin) return video;
+  const noJs = lazyPoster ? (
+    <noscript>
+      <img src={poster} alt={label} decoding="async" className={className} />
+    </noscript>
+  ) : null;
+
+  if (!spin)
+    return (
+      <>
+        {video}
+        {noJs}
+      </>
+    );
 
   return (
     <div className="relative">
       {video}
+      {noJs}
       {!turn.dragged && <span className={hintPillClass}>Drag to turn the car</span>}
     </div>
   );

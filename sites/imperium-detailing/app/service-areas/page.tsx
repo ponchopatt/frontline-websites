@@ -33,7 +33,7 @@ export default function AreasPage() {
           ))}
         </ul>
         <p className="mt-8 max-w-[64ch] text-[15px] text-muted-foreground">
-          Not on the list? If you're anywhere between Gungahlin and Tuggeranong, out to Weston Creek or across the border to Queanbeyan and Googong, we'll come to you. Text us your suburb and we'll confirm.
+          Not on the list? If you&apos;re anywhere between Gungahlin and Tuggeranong, out to Weston Creek or across the border to Queanbeyan and Googong, we&apos;ll come to you. Text us your suburb and we&apos;ll confirm.
         </p>
       </section>
       <CtaBand />

@@ -1,0 +1,283 @@
+<!-- Imperium redesign reference: 01-home-desktop-part1. Static design mockup (a design-tool file). Visual source of truth only; do not copy this markup into the app. Text in {{braces}} is filled by the script at the bottom (price guide logic). -->
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<title>Home, desktop, part 1</title>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#050608}
+a{color:#F3F5F8}a:hover{color:#FFFFFF}
+.cap{font-family:'Big Shoulders','Arial Narrow',sans-serif;font-weight:800;text-transform:uppercase;line-height:.88;letter-spacing:.006em;margin:0;text-wrap:balance}
+.wm{font-family:'Big Shoulders','Arial Narrow',sans-serif;font-weight:800;letter-spacing:.025em;font-size:20px;line-height:1}
+.bp{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;background:#3A8FE0;color:#050608;font-weight:600;font-size:16px;text-decoration:none;white-space:nowrap;box-shadow:0 0 0 1px rgba(58,143,224,.35),0 10px 36px rgba(58,143,224,.32)}
+.bp:hover{background:#5AA6F0;color:#050608}
+.bg{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;border:1px solid rgba(194,200,208,.28);color:#F3F5F8;font-weight:600;font-size:16px;text-decoration:none;white-space:nowrap}
+.mu{color:#8A909A}.se{color:#C2C8D0}
+.lnk{color:#C2C8D0;text-decoration:none;font-size:15px}
+.ph{object-fit:cover;display:block}
+.chip{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border:1px solid rgba(194,200,208,.12);border-radius:10px;color:#C2C8D0;cursor:pointer}
+.chip.on{border-color:#3A8FE0;background:rgba(58,143,224,.1);color:#F3F5F8}
+.chip b{font-size:15px;font-weight:600}.chip small{font-size:12px;color:#8A909A}
+.fl{display:flex;flex-direction:column;gap:8px}
+.fl label{font-size:14px;font-weight:500}
+.in{height:48px;box-sizing:border-box;border:1px solid rgba(194,200,208,.46);border-radius:8px;background:rgba(194,200,208,.06);color:#F3F5F8;font:400 16px 'Instrument Sans',sans-serif;padding:0 14px}
+.in::placeholder{color:#8A909A}
+button.chip{font:inherit;text-align:left;background:transparent;width:100%;box-sizing:border-box}
+button.chip:focus-visible{outline:2px solid #3A8FE0;outline-offset:2px}
+
+</style>
+</helmet>
+<div style="width: 1440px; height: 4800px; overflow: hidden; background: #050608; color: #F3F5F8; font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; position: relative">
+
+<!-- Header -->
+<header style="height: 80px; padding: 0 120px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(194,200,208,.12)">
+<a href="#" style="display: flex; align-items: center; gap: 12px; text-decoration: none"><img src="../../public/brand/logo-mark.png" alt="" style="height: 30px; width: auto"><span class="wm">Imperium Detailing</span></a>
+<nav aria-label="Primary" style="display: flex; gap: 32px">
+<a class="lnk" href="#">Services</a><a class="lnk" href="#">Our work</a><a class="lnk" href="#">Areas</a><a class="lnk" href="#">Reviews</a><a class="lnk" href="#">Guides</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 24px"><a class="lnk" href="#">0426 661 820</a><a class="bp" href="#" style="min-height: 44px; padding: 0 22px; font-size: 15px">Get a quote</a></div>
+</header>
+
+<!-- Hero -->
+<section style="position: relative; padding: 72px 120px 120px; display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 80px; overflow: hidden">
+<div style="position: absolute; right: -120px; top: 40px; width: 900px; height: 900px; background: radial-gradient(closest-side, rgba(31,111,196,.30), rgba(15,61,110,.12), rgba(5,6,8,0) 70%)"></div>
+<div style="position: relative; display: flex; flex-direction: column; justify-content: center">
+<h1 class="cap" style="font-size: 104px; max-width: 800px">Not the cheapest detailer in Canberra. The most careful one.</h1>
+<p class="se" style="margin: 32px 0 0; font-size: 19px; max-width: 54ch">Mobile detailing at your driveway or office car park, anywhere in Canberra and Queanbeyan. No call-out fee. The number you're quoted is the number you pay.</p>
+<div style="margin-top: 36px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 660px; border-top: 1px solid rgba(194,200,208,.12); border-bottom: 1px solid rgba(194,200,208,.12)">
+<a href="#" style="padding: 18px 0; text-decoration: none; display: flex; flex-direction: column; gap: 2px"><span class="mu" style="font-size: 14px">Ceramic coating</span><span style="font-size: 15px">from <span class="cap" style="font-size: 36px; line-height: 1">$997</span></span></a>
+<a href="#" style="padding: 18px 0 18px 24px; text-decoration: none; display: flex; flex-direction: column; gap: 2px; border-left: 1px solid rgba(194,200,208,.12)"><span class="mu" style="font-size: 14px">Paint correction</span><span style="font-size: 15px">from <span class="cap" style="font-size: 36px; line-height: 1">$397</span></span></a>
+<a href="#" style="padding: 18px 0 18px 24px; text-decoration: none; display: flex; flex-direction: column; gap: 2px; border-left: 1px solid rgba(194,200,208,.12)"><span class="mu" style="font-size: 14px">Full detail</span><span style="font-size: 15px">from <span class="cap" style="font-size: 36px; line-height: 1">$225</span></span></a>
+</div>
+<div style="margin-top: 36px; display: flex; gap: 12px"><a class="bp" href="#">Get a quote</a><a class="bg" href="#">Call 0426 661 820</a></div>
+<p class="mu" style="margin: 16px 0 0; font-size: 15px">You'll have a quote back within a few hours, 7 days a week.</p>
+</div>
+<div style="position: relative; padding-top: 8px">
+<img class="ph" src="../../public/media/m3-gtr-poster.webp" alt="A black BMW M3 on a clean driveway after a detail" style="width: 420px; height: 746px; object-position: 50% 45%; border-radius: 14px; box-shadow: 0 30px 80px rgba(0,0,0,.7), 0 0 120px rgba(31,111,196,.25)">
+</div>
+<!-- chat bubble: bottom-right stays clear for it -->
+<div aria-hidden="true" style="position: absolute; right: 32px; bottom: 32px; width: 60px; height: 60px; border-radius: 999px; background: #1F6FC4; box-shadow: 0 8px 24px rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F3F5F8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg></div>
+</section>
+
+<!-- Proof -->
+<section aria-label="Proof" style="border-top: 1px solid rgba(194,200,208,.12); border-bottom: 1px solid rgba(194,200,208,.12); background: rgba(12,15,20,.4); padding: 64px 120px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px">
+<div><span class="cap" style="display: block; font-size: 88px; line-height: 1">400+</span><p class="mu" style="margin: 12px 0 0; font-size: 15px; max-width: 18ch">cars detailed in the last year</p></div>
+<div><span class="cap" style="display: block; font-size: 88px; line-height: 1">4.9</span><p class="mu" style="margin: 12px 0 0; font-size: 15px; max-width: 18ch">stars across Google reviews</p></div>
+<div><span class="cap" style="display: block; font-size: 88px; line-height: 1">45</span><p class="mu" style="margin: 12px 0 0; font-size: 15px; max-width: 18ch">reviews, every one from a real customer</p></div>
+<div><span class="cap" style="display: block; font-size: 88px; line-height: 1">7 yr</span><p class="mu" style="margin: 12px 0 0; font-size: 15px; max-width: 18ch">top-tier written warranty on ceramic coatings</p></div>
+</section>
+
+<!-- Services list -->
+<section style="padding: 128px 120px 112px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 48px">
+<h2 class="cap" style="font-size: 92px; max-width: 820px">What we do, and what it costs.</h2>
+<p class="mu" style="margin: 0 0 8px; font-size: 18px; max-width: 34ch">Prices are for a hatch or sedan. Bigger cars are listed on each page.</p>
+</div>
+<div style="margin-top: 56px; border-top: 1px solid rgba(194,200,208,.12)">
+<a href="#" style="display: grid; grid-template-columns: 96px minmax(0, 1fr) 260px 180px 40px; gap: 32px; align-items: center; padding: 24px 0; border-bottom: 1px solid rgba(194,200,208,.12); text-decoration: none">
+<img class="ph" src="../../public/images/beading-poster-1280.webp" alt="" style="width: 96px; height: 128px; border-radius: 8px">
+<div><h3 class="cap" style="font-size: 48px">Ceramic coating</h3><p class="se" style="margin: 8px 0 0; font-size: 15px">Multi-layer SiO2, 3, 5 or 7-year written warranty.</p></div>
+<span class="mu" style="font-size: 15px">About 5 hours, then 24 hours undercover</span>
+<span style="font-size: 15px; text-align: right">from <span class="cap" style="font-size: 44px; line-height: 1">$997</span></span>
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3A8FE0" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+</a>
+<a href="#" style="display: grid; grid-template-columns: 96px minmax(0, 1fr) 260px 180px 40px; gap: 32px; align-items: center; padding: 24px 0; border-bottom: 1px solid rgba(194,200,208,.12); text-decoration: none">
+<img class="ph" src="../../public/images/paint-correction-1080.webp" alt="" style="width: 96px; height: 128px; border-radius: 8px">
+<div><h3 class="cap" style="font-size: 48px">Paint correction</h3><p class="se" style="margin: 8px 0 0; font-size: 15px">Measured and photographed. Swirls, haze and wash marks polished out.</p></div>
+<span class="mu" style="font-size: 15px">Half a day to a full day</span>
+<span style="font-size: 15px; text-align: right">from <span class="cap" style="font-size: 44px; line-height: 1">$397</span></span>
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3A8FE0" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+</a>
+<a href="#" style="display: grid; grid-template-columns: 96px minmax(0, 1fr) 260px 180px 40px; gap: 32px; align-items: center; padding: 24px 0; border-bottom: 1px solid rgba(194,200,208,.12); text-decoration: none">
+<img class="ph" src="../../public/images/full-detail-1080.webp" alt="" style="width: 96px; height: 128px; border-radius: 8px">
+<div><h3 class="cap" style="font-size: 48px">Full detail</h3><p class="se" style="margin: 8px 0 0; font-size: 15px">Inside and out, plus clay bar and a sealant that lasts 3 to 6 months.</p></div>
+<span class="mu" style="font-size: 15px">About 3 hours for a sedan</span>
+<span style="font-size: 15px; text-align: right">from <span class="cap" style="font-size: 44px; line-height: 1">$225</span></span>
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3A8FE0" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+</a>
+<a href="#" style="display: grid; grid-template-columns: 96px minmax(0, 1fr) 260px 180px 40px; gap: 32px; align-items: center; padding: 24px 0; border-bottom: 1px solid rgba(194,200,208,.12); text-decoration: none">
+<img class="ph" src="../../public/images/interior-mclaren-1080.webp" alt="" style="width: 96px; height: 128px; border-radius: 8px">
+<div><h3 class="cap" style="font-size: 48px">Interior detail</h3><p class="se" style="margin: 8px 0 0; font-size: 15px">Steam and hot-water extraction. Stains and pet hair out.</p></div>
+<span class="mu" style="font-size: 15px">About 1.5 hours</span>
+<span style="font-size: 15px; text-align: right">from <span class="cap" style="font-size: 44px; line-height: 1">$140</span></span>
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3A8FE0" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+</a>
+<a href="#" style="display: grid; grid-template-columns: 96px minmax(0, 1fr) 260px 180px 40px; gap: 32px; align-items: center; padding: 24px 0; border-bottom: 1px solid rgba(194,200,208,.12); text-decoration: none">
+<img class="ph" src="../../public/images/m4-rear-spray-1080.webp" alt="" style="width: 96px; height: 128px; border-radius: 8px">
+<div><h3 class="cap" style="font-size: 48px">Exterior detail</h3><p class="se" style="margin: 8px 0 0; font-size: 15px">Two-bucket hand wash, decontaminated and sealed.</p></div>
+<span class="mu" style="font-size: 15px">About 1 hour</span>
+<span style="font-size: 15px; text-align: right">from <span class="cap" style="font-size: 44px; line-height: 1">$110</span></span>
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3A8FE0" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+</a>
+</div>
+<p class="se" style="margin: 28px 0 0; font-size: 16px">Keep it that way: <a href="#" style="text-underline-offset: 4px">maintenance plans from $90 a month</a>. Same number every month.</p>
+</section>
+
+<!-- Price guide (works: pick a vehicle, job and warranty) -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 112px 120px; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 64px">
+<div>
+<h2 class="cap" style="font-size: 92px">Your price in ten seconds.</h2>
+<p class="mu" style="margin: 24px 0 0; font-size: 18px; max-width: 52ch">Pick the vehicle and the job. That's the number, not a hook to get you on the phone.</p>
+<fieldset style="margin: 48px 0 0; padding: 0; border: 0">
+<legend style="margin-bottom: 12px; font-size: 14px; font-weight: 600">Your vehicle</legend>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{sizes}}" as="s" hint-placeholder-count="4">
+<button type="button" class="{{s.cls}}" aria-pressed="{{s.pressed}}" onClick="{{s.pick}}"><b>{{s.label}}</b><small>{{s.eg}}</small></button>
+</sc-for>
+</div>
+<p class="mu" style="margin: 10px 0 0; font-size: 14px">Trucks are quoted by phone.</p>
+</fieldset>
+<fieldset style="margin: 32px 0 0; padding: 0; border: 0">
+<legend style="margin-bottom: 12px; font-size: 14px; font-weight: 600">The job</legend>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{jobs}}" as="j" hint-placeholder-count="6">
+<button type="button" class="{{j.cls}}" aria-pressed="{{j.pressed}}" onClick="{{j.pick}}"><b>{{j.label}}</b></button>
+</sc-for>
+</div>
+</fieldset>
+<sc-if value="{{isCeramic}}" hint-placeholder-val="{{true}}">
+<fieldset style="margin: 32px 0 0; padding: 0; border: 0">
+<legend style="margin-bottom: 12px; font-size: 14px; font-weight: 600">Warranty</legend>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{tiers}}" as="t" hint-placeholder-count="3">
+<button type="button" class="{{t.cls}}" aria-pressed="{{t.pressed}}" onClick="{{t.pick}}"><b>{{t.label}}</b><small>{{t.price}}</small></button>
+</sc-for>
+</div>
+</fieldset>
+</sc-if>
+</div>
+<div style="padding-top: 24px">
+<div style="border: 1px solid rgba(194,200,208,.12); border-radius: 14px; background: #0C0F14; padding: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.7), 0 0 120px rgba(31,111,196,.22)">
+<p class="mu" style="margin: 0; font-size: 14px">{{summary}}</p>
+<sc-if value="{{hasPrice}}" hint-placeholder-val="{{true}}">
+<p style="margin: 10px 0 0; display: flex; align-items: baseline; gap: 10px" aria-live="polite"><span class="mu" style="font-size: 15px">from</span><span class="cap" style="font-size: 96px; font-variant-numeric: tabular-nums">{{priceText}}</span><span class="mu" style="font-size: 18px">{{suffix}}</span></p>
+</sc-if>
+<sc-if value="{{noPrice}}" hint-placeholder-val="{{false}}">
+<p class="cap" style="margin: 14px 0 0; font-size: 64px" aria-live="polite">Quoted for you</p>
+</sc-if>
+<p class="se" style="margin: 20px 0 0; font-size: 15px">{{why}}</p>
+<p class="mu" style="margin: 8px 0 0; font-size: 15px">{{note}}</p>
+<div style="margin-top: 28px; display: flex; flex-direction: column; gap: 12px"><a class="bp" href="#">{{cta}}</a><a class="bg" href="#">Send it through the form</a></div>
+<p class="mu" style="margin: 16px 0 0; font-size: 14px">You'll have a quote back within a few hours, 7 days a week.</p>
+</div>
+</div>
+</section>
+
+<!-- Before / after (works: drag the slider) -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 112px 120px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 80px; align-items: center">
+<div>
+<h2 class="cap" style="font-size: 92px">Paint correction. Swirls, scratches, gone.</h2>
+<p class="se" style="margin: 28px 0 0; font-size: 18px; max-width: 44ch">A Ford Raptor tailgate under the inspection light. Swirl marks and wash scratches on one side. On the other, the finish after a two-step paint correction and a ceramic coating.</p>
+<p class="mu" style="margin: 16px 0 0; font-size: 15px; max-width: 46ch">Can you remove every scratch? No, and any detailer promising that isn't being straight with you. Scratches through the clear coat can't be polished out.</p>
+<a class="bg" href="#" style="margin-top: 32px">Paint correction from $397</a>
+</div>
+<div style="position: relative; width: 640px; height: 800px; border-radius: 14px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.7)">
+<img class="ph" src="../../public/images/correction-after-2-1080.webp" alt="After: the same tailgate corrected and coated" style="position: absolute; inset: 0; width: 640px; height: 800px">
+<div style="position: absolute; left: 0; top: 0; width: {{beforeW}}px; height: 800px; overflow: hidden"><img class="ph" src="../../public/images/correction-before-1080.webp" alt="Before: swirl marks on a Ford Raptor tailgate" style="width: 640px; height: 800px; max-width: none"></div>
+<div style="position: absolute; left: {{lineX}}px; top: 0; width: 2px; height: 800px; background: #F3F5F8; pointer-events: none"></div>
+<div aria-hidden="true" style="position: absolute; left: {{knobX}}px; top: 372px; width: 56px; height: 56px; border-radius: 999px; background: #F3F5F8; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(0,0,0,.5); pointer-events: none"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#050608" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></div>
+<input type="range" min="0" max="100" value="{{pos}}" onInput="{{slide}}" onChange="{{slide}}" aria-label="Compare before and after" style="position: absolute; inset: 0; width: 640px; height: 800px; margin: 0; opacity: 0; cursor: ew-resize">
+<span style="position: absolute; left: 20px; bottom: 20px; padding: 6px 12px; border-radius: 999px; background: rgba(5,6,8,.75); font-size: 13px; font-weight: 600; pointer-events: none">Before</span>
+<span style="position: absolute; right: 20px; bottom: 20px; padding: 6px 12px; border-radius: 999px; background: rgba(5,6,8,.75); font-size: 13px; font-weight: 600; pointer-events: none">After</span>
+</div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":4800}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { size: 'sedan', job: 'ceramic', tier: 3, pos: 50 };
+  }
+  renderVals() {
+    const W = 640;
+    const SIZES = [
+      { id: 'sedan', lc: 'hatch or sedan', label: 'Hatch or sedan', eg: 'Corolla, Model 3, 3 Series' },
+      { id: 'suv', lc: 'SUV or ute', label: 'SUV or ute', eg: 'RAV4, Model Y, Ranger' },
+      { id: 'large', lc: '4WD, van or 8-seater', label: '4WD, van or 8-seater', eg: 'LandCruiser, Patrol, Carnival' },
+      { id: 'bike', lc: 'motorbike', label: 'Motorbike', eg: 'Any make, any size' }
+    ];
+    const JOBS = [
+      { id: 'ceramic', label: 'Ceramic coating', note: 'Decontamination, a single-stage polish, then the coating. Around 5 hours on site; leave the car undercover for 24 hours after.' },
+      { id: 'correction', label: 'Paint correction', note: 'Single-stage machine correction for swirl marks and haze. Deep scratches need a multi-stage job, quoted from photos.' },
+      { id: 'full', label: 'Full detail', note: 'Inside and out in one visit: decontamination wash, sealant, steam, extraction, leather and trim. About 3 hours for a sedan.' },
+      { id: 'interior', label: 'Interior detail', note: 'Vacuum, steam, hot-water extraction, leather and trim conditioned. About 1.5 hours for a tidy interior.' },
+      { id: 'exterior', label: 'Exterior detail', note: 'Two-bucket hand wash, chemical decontamination, spray sealant, wheels, tyres and glass. About an hour.' },
+      { id: 'maintenance', label: 'Maintenance plan', note: 'A visit on a schedule, at your place. Exterior only from $90 a month; inside and out from $150. Fortnightly visits are quoted on request.' }
+    ];
+    const TABLE = {
+      full: { sedan: 225, suv: 250, large: 270, bike: 135 },
+      exterior: { sedan: 110, suv: 120, large: 140, bike: null },
+      interior: { sedan: 140, suv: 165, large: 170, bike: null },
+      correction: { sedan: 397, suv: 497, large: 547, bike: null },
+      maintenance: { sedan: 90, suv: null, large: null, bike: null }
+    };
+    const CERAMIC = {
+      sedan: { 3: 997, 5: 1197, 7: 1347 },
+      suv: { 3: 1097, 5: 1297, 7: 1447 },
+      large: { 3: 1147, 5: 1347, 7: 1597 },
+      bike: { 3: 245, 5: 325, 7: 400 }
+    };
+    const money = (n) => '$' + n.toLocaleString('en-AU');
+    const { size, job, tier, pos } = this.state;
+    const lock = 'Lock it in by text';
+    const quoted = (why) => ({ price: null, suffix: '', why: why, cta: 'Get it quoted by text' });
+    let g;
+    if (job === 'ceramic') {
+      const p = CERAMIC[size][tier];
+      g = size === 'bike'
+        ? { price: p, suffix: '', why: tier + '-year written warranty on the tank and panels. No correction stage on a bike.', cta: lock }
+        : { price: p, suffix: '', why: tier + '-year written warranty. Prep, polish and coating by the same two people.', cta: lock };
+    } else if (size === 'bike' && job !== 'full') {
+      g = quoted('On a bike, this is part of the full detail from $135. Text us the bike and we’ll sort the rest.');
+    } else {
+      const p = TABLE[job][size];
+      if (job === 'maintenance') {
+        g = p === null
+          ? quoted('Monthly plans for larger vehicles are quoted for the vehicle. Text us the model and how it’s used.')
+          : { price: p, suffix: 'a month', why: 'Exterior only: wash, wheels, glass, protection topped up. Inside and out is $150 a month. Same number every month.', cta: lock };
+      } else if (p === null) {
+        g = quoted('Text us the vehicle and we’ll quote it the same day.');
+      } else if (job === 'correction') {
+        g = { price: p, suffix: '', why: 'Single-stage correction, then a sealant. Coating it afterwards is the most common package we do.', cta: lock };
+      } else if (job === 'full' || job === 'interior') {
+        g = { price: p, suffix: '', why: 'Mobile anywhere in Canberra and Queanbeyan, no call-out fee. Condition can add up to $75, and we tell you before we start, never after.', cta: lock };
+      } else {
+        g = { price: p, suffix: '', why: 'Mobile anywhere in Canberra and Queanbeyan, no call-out fee. The number you’re quoted is the number you pay.', cta: lock };
+      }
+    }
+    const sizeMeta = SIZES.find((s) => s.id === size);
+    const jobMeta = JOBS.find((j) => j.id === job);
+    const cls = (on) => on ? 'chip on' : 'chip';
+    const beforeW = Math.round(W * pos / 100);
+    return {
+      sizes: SIZES.map((s) => ({ label: s.label, eg: s.eg, cls: cls(s.id === size), pressed: s.id === size ? 'true' : 'false', pick: () => this.setState({ size: s.id }) })),
+      jobs: JOBS.map((j) => ({ label: j.label, cls: cls(j.id === job), pressed: j.id === job ? 'true' : 'false', pick: () => this.setState({ job: j.id }) })),
+      tiers: [3, 5, 7].map((t) => ({ label: t + ' years', price: money(CERAMIC[size][t]), cls: cls(t === tier), pressed: t === tier ? 'true' : 'false', pick: () => this.setState({ tier: t }) })),
+      isCeramic: job === 'ceramic',
+      summary: jobMeta.label + ', ' + sizeMeta.lc + (job === 'ceramic' ? ', ' + tier + ' years' : ''),
+      hasPrice: g.price !== null,
+      noPrice: g.price === null,
+      priceText: g.price === null ? '' : money(g.price),
+      suffix: g.suffix,
+      why: g.why,
+      note: jobMeta.note,
+      cta: g.cta,
+      pos: pos,
+      beforeW: beforeW,
+      lineX: beforeW - 1,
+      knobX: beforeW - 28,
+      slide: (e) => this.setState({ pos: Number(e.target.value) })
+    };
+  }
+}
+</script>
+</body>
+</html>

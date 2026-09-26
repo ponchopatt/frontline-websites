@@ -1,0 +1,188 @@
+<!-- Imperium redesign reference: 05-ceramic-desktop. Static design mockup (a design-tool file). Visual source of truth only; do not copy this markup into the app. Text in {{braces}} is filled by the script at the bottom (price guide logic). -->
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<title>Ceramic coating page, desktop</title>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#050608}
+a{color:#F3F5F8}a:hover{color:#FFFFFF}
+.cap{font-family:'Big Shoulders','Arial Narrow',sans-serif;font-weight:800;text-transform:uppercase;line-height:.88;letter-spacing:.006em;margin:0;text-wrap:balance}
+.wm{font-family:'Big Shoulders','Arial Narrow',sans-serif;font-weight:800;letter-spacing:.025em;font-size:20px;line-height:1}
+.bp{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;background:#3A8FE0;color:#050608;font-weight:600;font-size:16px;text-decoration:none;white-space:nowrap;box-shadow:0 0 0 1px rgba(58,143,224,.35),0 10px 36px rgba(58,143,224,.32)}
+.bp:hover{background:#5AA6F0;color:#050608}
+.bg{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;border:1px solid rgba(194,200,208,.28);color:#F3F5F8;font-weight:600;font-size:16px;text-decoration:none;white-space:nowrap}
+.mu{color:#8A909A}.se{color:#C2C8D0}
+.lnk{color:#C2C8D0;text-decoration:none;font-size:15px}
+.ph{object-fit:cover;display:block}
+.chip{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border:1px solid rgba(194,200,208,.12);border-radius:10px;color:#C2C8D0;cursor:pointer}
+.chip.on{border-color:#3A8FE0;background:rgba(58,143,224,.1);color:#F3F5F8}
+.chip b{font-size:15px;font-weight:600}.chip small{font-size:12px;color:#8A909A}
+.fl{display:flex;flex-direction:column;gap:8px}
+.fl label{font-size:14px;font-weight:500}
+.in{height:48px;box-sizing:border-box;border:1px solid rgba(194,200,208,.46);border-radius:8px;background:rgba(194,200,208,.06);color:#F3F5F8;font:400 16px 'Instrument Sans',sans-serif;padding:0 14px}
+.in::placeholder{color:#8A909A}
+</style>
+</helmet>
+<div style="width: 1440px; height: 6090px; overflow: hidden; background: #050608; color: #F3F5F8; font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.55; position: relative">
+<!-- Header -->
+<header style="height: 80px; padding: 0 120px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(194,200,208,.12)">
+<a href="#" style="display: flex; align-items: center; gap: 12px; text-decoration: none"><img src="../../public/brand/logo-mark.png" alt="" style="height: 30px; width: auto"><span class="wm">Imperium Detailing</span></a>
+<nav aria-label="Primary" style="display: flex; gap: 32px">
+<a class="lnk" href="#">Services</a><a class="lnk" href="#">Our work</a><a class="lnk" href="#">Areas</a><a class="lnk" href="#">Reviews</a><a class="lnk" href="#">Guides</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 24px"><a class="lnk" href="#">0426 661 820</a><a class="bp" href="#" style="min-height: 44px; padding: 0 22px; font-size: 15px">Get a quote</a></div>
+</header>
+
+
+<!-- Hero -->
+<section style="position: relative; padding: 48px 120px 112px; display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 96px; overflow: hidden">
+<div style="position: absolute; right: -160px; top: 0; width: 860px; height: 860px; background: radial-gradient(closest-side, rgba(31,111,196,.28), rgba(15,61,110,.1), rgba(5,6,8,0) 70%)"></div>
+<div style="position: relative">
+<nav aria-label="Breadcrumb" class="mu" style="font-size: 14px"><a class="lnk" href="#" style="font-size: 14px">Services</a> <span aria-hidden="true">/</span> <span>Ceramic coating</span></nav>
+<h1 class="cap" style="margin-top: 40px; font-size: 104px; max-width: 760px">Ceramic coating for Canberra conditions</h1>
+<p class="se" style="margin: 32px 0 0; font-size: 19px; max-width: 58ch">A ceramic coating is a semi-permanent glass-like layer that bonds to your car's clear coat and protects it from UV, frost, tree sap, bird droppings, industrial fallout and wash marring. It's the highest level of paint protection we offer, and once it's on, it stays on.</p>
+<p class="mu" style="margin: 16px 0 0; font-size: 16px; max-width: 60ch">For owners of new cars, weekend cars, black or dark-coloured cars that scratch easily, and anyone tired of waxing every three months to keep the paint looking sharp.</p>
+<div style="margin-top: 36px; display: flex; align-items: center; gap: 40px; padding: 20px 0; border-top: 1px solid rgba(194,200,208,.12); border-bottom: 1px solid rgba(194,200,208,.12); max-width: 700px">
+<span style="font-size: 15px">from <span class="cap" style="font-size: 56px; line-height: 1">$997</span></span>
+<span class="mu" style="font-size: 15px">Around 5 hours on site. Leave the car undercover for 24 hours after.</span>
+</div>
+<div style="margin-top: 32px; display: flex; gap: 12px"><a class="bp" href="#">Get a quote</a><a class="bg" href="#">Call 0426 661 820</a></div>
+<p class="mu" style="margin: 16px 0 0; font-size: 15px">You'll have a quote back within a few hours, 7 days a week.</p>
+</div>
+<img class="ph" src="../../public/images/beading-poster-1280.webp" alt="Water beading tightly on a freshly ceramic-coated white car" style="position: relative; width: 400px; height: 711px; border-radius: 14px; box-shadow: 0 30px 80px rgba(0,0,0,.7), 0 0 120px rgba(31,111,196,.25)">
+</section>
+
+<!-- Prices -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 112px 120px; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 80px">
+<div>
+<h2 class="cap" style="font-size: 80px">Three tiers. One method.</h2>
+<p class="mu" style="margin: 24px 0 0; font-size: 17px">Every tier gets the same prep, polish and coating by the same two people. The warranty length is what changes.</p>
+</div>
+<table style="width: 100%; border-collapse: collapse; font-size: 16px">
+<thead><tr class="mu" style="font-size: 14px; text-align: left">
+<th style="padding: 0 0 16px; font-weight: 500">Written warranty</th><th style="padding: 0 0 16px; font-weight: 500; text-align: right">Hatch or sedan</th><th style="padding: 0 0 16px; font-weight: 500; text-align: right">SUV or ute</th><th style="padding: 0 0 16px; font-weight: 500; text-align: right">4WD, van or 8-seater</th><th style="padding: 0 0 16px; font-weight: 500; text-align: right">Motorbike</th>
+</tr></thead>
+<tbody>
+<tr style="border-top: 1px solid rgba(194,200,208,.12)"><th class="cap" style="padding: 24px 0; text-align: left; font-size: 40px">3 years</th><td class="cap" style="text-align: right; font-size: 36px">$997</td><td class="cap" style="text-align: right; font-size: 36px">$1,097</td><td class="cap" style="text-align: right; font-size: 36px">$1,147</td><td class="cap" style="text-align: right; font-size: 36px">$245</td></tr>
+<tr style="border-top: 1px solid rgba(194,200,208,.12)"><th class="cap" style="padding: 24px 0; text-align: left; font-size: 40px">5 years</th><td class="cap" style="text-align: right; font-size: 36px">$1,197</td><td class="cap" style="text-align: right; font-size: 36px">$1,297</td><td class="cap" style="text-align: right; font-size: 36px">$1,347</td><td class="cap" style="text-align: right; font-size: 36px">$325</td></tr>
+<tr style="border-top: 1px solid rgba(194,200,208,.12); border-bottom: 1px solid rgba(194,200,208,.12)"><th class="cap" style="padding: 24px 0; text-align: left; font-size: 40px">7 years</th><td class="cap" style="text-align: right; font-size: 36px">$1,347</td><td class="cap" style="text-align: right; font-size: 36px">$1,447</td><td class="cap" style="text-align: right; font-size: 36px">$1,597</td><td class="cap" style="text-align: right; font-size: 36px">$400</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- Showcase -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 112px 120px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 48px">
+<h2 class="cap" style="font-size: 92px">One lap. Nothing touched up.</h2>
+<p class="mu" style="margin: 0 0 8px; font-size: 17px; max-width: 42ch">A coated car under even light, all the way around. No angle picked to hide a panel, because there isn't one to hide.</p>
+</div>
+<img class="ph" src="../../public/media/m4-360-poster.webp" alt="A slow lap around a green BMW M4 after a ceramic coating" style="margin-top: 48px; width: 1200px; height: 456px; border-radius: 14px">
+</section>
+
+<!-- How we do it -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 112px 120px; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 80px">
+<div>
+<h2 class="cap" style="font-size: 80px">How we do it</h2>
+<div class="se" style="margin-top: 32px; display: grid; gap: 20px; font-size: 17px; max-width: 64ch">
+<p style="margin: 0">Canberra is one of the harder Australian environments for paint. Sub-zero winter mornings freeze whatever is sitting on the clear coat and burn it in. Summer sun oxidises pigment and fades colour. Autumn drops sap and pollen onto anything parked under a gum tree.</p>
+<p style="margin: 0">The coating itself is a liquid-applied SiO2 (silica) resin. Once cured it forms a hard, hydrophobic layer chemically bonded to the paint. Water beads tightly and rolls off, dust doesn't cling, and contaminants like bird droppings, sap and bug remains sit on top of the coating instead of etching into the paint.</p>
+<p style="margin: 0">Prep is where a coating is made or broken. We start with a full decontamination wash, then chemically strip iron, tar and any residual sealants. On new or lightly used cars we do a single-stage machine polish to remove wash marring and level the surface before anything is applied.</p>
+<p style="margin: 0">The coating is applied panel by panel, wiped off in the correct window and left to cure. We recommend leaving the car undercover for 24 hours and out of rain for 48. That's the only real inconvenience.</p>
+<p style="margin: 0">You get a written warranty against loss of gloss and hydrophobics, optional annual inspections, and a coating-safe wash guide so you don't accidentally kill it with the wrong products. Applied by us, not a factory subcontractor.</p>
+</div>
+</div>
+<aside style="display: grid; gap: 16px; align-content: start">
+<div style="padding: 32px; border: 1px solid rgba(194,200,208,.12); border-radius: 12px; background: #0C0F14">
+<h3 style="margin: 0; font-size: 18px; font-weight: 600">Every job, every time</h3>
+<ul style="margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; font-size: 15px" class="se">
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A8FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 3px"><path d="M5 12l5 5L19 7"/></svg>Full decontamination wash and chemical strip</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A8FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 3px"><path d="M5 12l5 5L19 7"/></svg>Iron, tar and sealant removal</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A8FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 3px"><path d="M5 12l5 5L19 7"/></svg>Single-stage polish and paint prep on new or near-new paint</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A8FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 3px"><path d="M5 12l5 5L19 7"/></svg>IPA wipe-down before coating</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A8FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 3px"><path d="M5 12l5 5L19 7"/></svg>Multi-layer SiO2 ceramic coating</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A8FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 3px"><path d="M5 12l5 5L19 7"/></svg>Wheel-face coating (optional)</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A8FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 3px"><path d="M5 12l5 5L19 7"/></svg>Glass hydrophobic coating (optional)</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A8FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 3px"><path d="M5 12l5 5L19 7"/></svg>Written 3, 5 or 7-year warranty</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A8FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 3px"><path d="M5 12l5 5L19 7"/></svg>Coating-safe wash guide and product recommendations</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A8FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 3px"><path d="M5 12l5 5L19 7"/></svg>Annual inspection (optional, no extra cost)</li>
+</ul>
+</div>
+<div style="padding: 32px; border: 1px solid rgba(194,200,208,.12); border-radius: 12px">
+<h3 style="margin: 0; font-size: 18px; font-weight: 600">On the day, we need</h3>
+<ul class="mu" style="margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; font-size: 15px">
+<li>Access to water: an outdoor tap we can hook a hose to.</li>
+<li>Access to power: a standard 240V power point within reach.</li>
+<li>An enclosed garage or covered workspace. Correction and coating work has to be done out of direct sun, wind and dust.</li>
+</ul>
+</div>
+</aside>
+</section>
+
+<!-- Warranty -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); background: rgba(12,15,20,.4); padding: 96px 120px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 80px; align-items: start">
+<div>
+<h2 class="cap" style="font-size: 80px">Local competitors don't publish theirs. We do.</h2>
+<a class="bg" href="#" style="margin-top: 32px">Read the full warranty</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px">
+<div style="border-top: 1px solid #1F6FC4; padding-top: 20px"><h3 class="cap" style="font-size: 30px">What it covers</h3><p class="mu" style="margin: 12px 0 0; font-size: 15px">Written, 3, 5 or 7 years. Covers loss of gloss and water beading.</p></div>
+<div style="border-top: 1px solid #1F6FC4; padding-top: 20px"><h3 class="cap" style="font-size: 30px">Keeping it valid</h3><p class="mu" style="margin: 12px 0 0; font-size: 15px">Undercover for 24 hours and out of rain for 48 after. No automatic brush car washes. Wash as the guide says.</p></div>
+<div style="border-top: 1px solid #1F6FC4; padding-top: 20px"><h3 class="cap" style="font-size: 30px">Making a claim</h3><p class="mu" style="margin: 12px 0 0; font-size: 15px">Text, call or email with photos. We inspect at your place, then re-apply the affected panels. Your Australian Consumer Law rights sit alongside it.</p></div>
+</div>
+</section>
+
+<!-- FAQ -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 112px 120px; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 80px">
+<h2 class="cap" style="font-size: 80px">Common questions</h2>
+<div style="border-top: 1px solid rgba(194,200,208,.12)">
+<details open="" style="border-bottom: 1px solid rgba(194,200,208,.12)"><summary style="display: flex; justify-content: space-between; gap: 16px; padding: 22px 0; font-size: 19px; font-weight: 500; list-style: none; cursor: pointer">How long does a ceramic coating last?<span class="mu" aria-hidden="true" style="font-size: 26px; transform: rotate(45deg)">+</span></summary><p class="mu" style="margin: 0; padding-bottom: 24px; font-size: 16px; max-width: 68ch">Our coatings carry a 3, 5 or 7-year warranty depending on the tier you choose. Real-world durability in Canberra depends on how you wash the car: coatings degrade fastest at automatic car washes with spinning brushes, and last longest with a proper two-bucket hand wash.</p></details>
+<details style="border-bottom: 1px solid rgba(194,200,208,.12)"><summary style="display: flex; justify-content: space-between; gap: 16px; padding: 22px 0; font-size: 19px; font-weight: 500; list-style: none; cursor: pointer">Do I still need to wash a coated car?<span class="mu" aria-hidden="true" style="font-size: 26px">+</span></summary></details>
+<details style="border-bottom: 1px solid rgba(194,200,208,.12)"><summary style="display: flex; justify-content: space-between; gap: 16px; padding: 22px 0; font-size: 19px; font-weight: 500; list-style: none; cursor: pointer">Do I need paint correction before coating?<span class="mu" aria-hidden="true" style="font-size: 26px">+</span></summary></details>
+<details style="border-bottom: 1px solid rgba(194,200,208,.12)"><summary style="display: flex; justify-content: space-between; gap: 16px; padding: 22px 0; font-size: 19px; font-weight: 500; list-style: none; cursor: pointer">My car already has PPF. Can you coat over it?<span class="mu" aria-hidden="true" style="font-size: 26px">+</span></summary></details>
+</div>
+</section>
+
+<!-- Booking -->
+<section style="border-top: 1px solid rgba(194,200,208,.12); padding: 112px 120px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 80px">
+<div>
+<h2 class="cap" style="font-size: 92px">Book a ceramic coating.</h2>
+<p class="mu" style="margin: 24px 0 0; font-size: 18px">You'll have a quote back within a few hours, 7 days a week.</p>
+<p class="se" style="margin: 32px 0 0; font-size: 16px">Paint not perfect? A coating locks in whatever is underneath. <a href="#" style="text-underline-offset: 4px">Paint correction from $397</a></p>
+</div>
+<form style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-content: start; padding: 40px; border: 1px solid rgba(194,200,208,.12); border-radius: 14px; background: #0C0F14">
+<div class="fl"><label for="c1">Which service?</label><select id="c1" class="in"><option>Ceramic coating</option></select></div>
+<div class="fl"><label for="c2">When do you want it done?</label><select id="c2" class="in"><option>This week</option></select></div>
+<div class="fl"><label for="c3">Your car (make, model, year)</label><input id="c3" class="in" placeholder="BMW M4 Competition, 2023"></div>
+<div class="fl"><label for="c4">Your suburb</label><input id="c4" class="in" placeholder="Gungahlin"></div>
+<div class="fl"><label for="c5">Your name</label><input id="c5" class="in" placeholder="Alex Smith"></div>
+<div class="fl"><label for="c6">Mobile number</label><input id="c6" class="in" placeholder="0400 000 000"></div>
+<div style="grid-column: span 2; display: flex; align-items: center; gap: 20px"><button class="bp" type="submit" style="border: 0; font-family: inherit; cursor: pointer">Send for a quote</button><span class="mu" style="font-size: 15px">Rather talk? <a href="#" style="text-underline-offset: 4px">Call 0426 661 820</a></span></div>
+</form>
+</section>
+<!-- Footer -->
+<footer style="border-top: 1px solid rgba(194,200,208,.12); padding: 80px 120px 0; overflow: hidden">
+<div style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 2fr) minmax(0, 2fr) minmax(0, 3fr); gap: 40px">
+<div><img src="../../public/brand/logo-full-dark.png" alt="Imperium Detailing" style="height: 96px; width: auto"><p class="se" style="margin: 20px 0 0; font-size: 15px">Showroom finish. Every time.</p><p class="mu" style="margin: 8px 0 0; font-size: 14px">Every day, 8:30am to 5:30pm</p></div>
+<div style="display: flex; flex-direction: column; gap: 10px; font-size: 15px"><span class="mu" style="font-size: 13px">Services</span><a class="lnk" href="#">Ceramic coating</a><a class="lnk" href="#">Paint correction</a><a class="lnk" href="#">Full detail</a><a class="lnk" href="#">Interior detail</a><a class="lnk" href="#">Exterior detail</a><a class="lnk" href="#">Maintenance plans</a><a class="lnk" href="#">Fleet detailing</a><a class="lnk" href="#">Tesla and EV detailing</a></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><span class="mu" style="font-size: 13px">Company</span><a class="lnk" href="#">Reviews</a><a class="lnk" href="#">Warranty</a><a class="lnk" href="#">Guides</a><a class="lnk" href="#">Areas</a><a class="lnk" href="#">Privacy</a><a class="lnk" href="#">Terms</a></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><span class="mu" style="font-size: 13px">Contact</span><a class="lnk" href="#">0426 661 820</a><a class="lnk" href="#">imperiumdetailingmanagement@gmail.com</a><a class="lnk" href="#">@imperiumdetailing_</a></div>
+</div>
+<p class="mu" style="margin: 56px 0 0; font-size: 13px">© 2026 Imperium Detailing. ABN 81 254 863 265</p>
+<div aria-hidden="true" class="cap" style="margin-top: 24px; font-size: 330px; line-height: .8; letter-spacing: -.01em; background: linear-gradient(180deg, rgba(243,245,248,.9) 0%, rgba(243,245,248,.06) 90%); -webkit-background-clip: text; background-clip: text; color: transparent; white-space: nowrap">Imperium</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":6090}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
