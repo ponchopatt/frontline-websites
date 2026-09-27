@@ -1,0 +1,15 @@
+{
+  "name": "imperium-leads",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

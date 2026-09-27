@@ -1,0 +1,685 @@
+<title>Imperium Leads</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#F3F5F8;--surface:#FFFFFF;--surface2:#E9EDF2;--line:#D6DCE4;
+  --text:#121721;--muted:#5C6675;--accent:#1F5FD6;--accent-ink:#FFFFFF;
+  --good:#1E9E5A;--warn:#D98A0B;--bad:#D6453D;--good-bg:#E4F5EB;--warn-bg:#FBF0DA;--bad-bg:#FBE4E2;--accent-bg:#E4ECFB;
+  --shadow:0 1px 2px rgba(18,23,33,.06),0 8px 24px rgba(18,23,33,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0B0E12;--surface:#141920;--surface2:#1C232C;--line:#2A3340;
+    --text:#E8ECF1;--muted:#8B95A5;--accent:#3E7BF0;--accent-ink:#FFFFFF;
+    --good:#34C776;--warn:#F0A429;--bad:#EF5F58;--good-bg:#12291C;--warn-bg:#2B2210;--bad-bg:#2E1614;--accent-bg:#152546;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0B0E12;--surface:#141920;--surface2:#1C232C;--line:#2A3340;
+  --text:#E8ECF1;--muted:#8B95A5;--accent:#3E7BF0;--accent-ink:#FFFFFF;
+  --good:#34C776;--warn:#F0A429;--bad:#EF5F58;--good-bg:#12291C;--warn-bg:#2B2210;--bad-bg:#2E1614;--accent-bg:#152546;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Montserrat",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:600px;margin:0 auto;padding:12px 16px 0;display:flex;flex-direction:column;gap:8px}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand b{font-weight:700;letter-spacing:.32em;font-size:13px}
+.brand b span{color:var(--accent)}
+.who{font:inherit;font-size:12px;font-weight:700;background:var(--accent-bg);color:var(--accent);border:0;border-radius:999px;padding:6px 12px;cursor:pointer}
+.who:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tabs{display:flex}
+.tab{flex:1;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);font:inherit;font-weight:600;font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:10px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px}
+.tab[aria-selected="true"]{color:var(--text);border-bottom-color:var(--accent)}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:4px}
+.tab .dot{min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--bad);color:#fff;font-size:10px;font-weight:700;line-height:16px;text-align:center;letter-spacing:0}
+main{max-width:600px;margin:0 auto;padding-block:16px 48px;padding-inline:16px;display:flex;flex-direction:column;gap:16px}
+section[role="tabpanel"]{display:flex;flex-direction:column;gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px}
+h1,h2,h3{margin:0;text-wrap:balance}
+h1{font-size:20px;font-weight:700}
+h2{font-size:15px;font-weight:600;letter-spacing:.04em}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.eyebrow .n{background:var(--surface2);border-radius:999px;padding:1px 8px;font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid .full{grid-column:1/-1}
+label{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+input,select,textarea{font:inherit;font-size:16px;color:var(--text);background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:11px 12px;width:100%;min-width:0}
+textarea{min-height:64px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1 1 calc(25% - 5px);min-width:0;font:inherit;font-size:13px;font-weight:600;padding:10px 4px;border-radius:10px;border:1px solid var(--line);background:var(--surface2);color:var(--text);cursor:pointer;line-height:1.2}
+.seg.three button{flex-basis:calc(33.3% - 4px)}
+.seg.two button{flex-basis:calc(50% - 3px)}
+.seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{font:inherit;font-weight:700;font-size:15px;letter-spacing:.04em;padding:14px 18px;border-radius:12px;border:0;background:var(--accent);color:var(--accent-ink);cursor:pointer;width:100%}
+.btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--line);font-weight:600}
+.btn.danger{background:var(--bad-bg);color:var(--bad);border:1px solid var(--line)}
+.btn.small{padding:9px 12px;font-size:13px;width:auto}
+.btn:disabled{opacity:.5;cursor:default}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row > .btn{flex:1}
+.help{font-size:12px;color:var(--muted);margin:0}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:600;font-size:14px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .2s;z-index:20;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+.list{display:flex;flex-direction:column;gap:8px}
+.lead{display:grid;grid-template-columns:1fr auto;gap:2px 12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-align:left;font:inherit;color:var(--text);width:100%}
+button.lead{cursor:pointer}
+button.lead:focus-visible{outline:2px solid var(--accent)}
+.lead .name{font-weight:700}
+.lead .sub{color:var(--muted);font-size:13px;grid-column:1}
+.lead .note{font-size:13px;grid-column:1/-1;margin-top:4px;padding-top:6px;border-top:1px dashed var(--line)}
+.lead .money{font-variant-numeric:tabular-nums;font-weight:600;text-align:right}
+.lead .acts{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.lead .acts .btn{flex:1}
+.lead .phone{grid-column:1/-1;display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px}
+.mini{font:inherit;font-size:12px;font-weight:700;letter-spacing:.04em;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface2);color:var(--accent);text-decoration:none;cursor:pointer}
+.mini:focus-visible{outline:2px solid var(--accent)}
+.lead.overdue{border-color:var(--bad)}
+.lead.new{border-color:var(--accent)}
+.pill{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;justify-self:end;white-space:nowrap}
+.pill.booked{background:var(--good-bg);color:var(--good)}
+.pill.lost{background:var(--bad-bg);color:var(--bad)}
+.pill.new{background:var(--accent-bg);color:var(--accent)}
+.pill.contacted,.pill.quoted{background:var(--warn-bg);color:var(--warn)}
+.pill.done{background:var(--good-bg);color:var(--good)}
+.pill.due{background:var(--warn-bg);color:var(--warn)}
+.pill.overdue{background:var(--bad-bg);color:var(--bad)}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filters select,.filters input{flex:1;min-width:120px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 10px;display:flex;flex-direction:column;gap:2px}
+.tile b{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.tile span{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.tile.good b{color:var(--good)} .tile.warn b{color:var(--warn)} .tile.bad b{color:var(--bad)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:6px 0;border-bottom:1px solid var(--line)}
+td{padding:8px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+td.n,th.n{text-align:right}
+tr:last-child td{border-bottom:0}
+.bar{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--accent)}
+.empty{color:var(--muted);text-align:center;padding:16px 8px;font-size:14px}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10;display:flex;align-items:flex-end;justify-content:center}
+.sheet-in{background:var(--bg);width:100%;max-width:600px;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px}
+.sheet-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.x{background:none;border:0;font:inherit;font-weight:700;color:var(--muted);cursor:pointer;padding:6px 10px;font-size:14px}
+.divider{border:0;border-top:1px solid var(--line);margin:2px 0}
+.banner{background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:600}
+.counter{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.counter b{font-size:28px;font-variant-numeric:tabular-nums}
+.counter .btn{width:auto;padding:10px 18px}
+.log{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.log div{display:flex;gap:8px}
+.log span{color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.gate{position:fixed;inset:0;background:var(--bg);z-index:30;display:flex;align-items:center;justify-content:center;padding:24px}
+.gate .card{width:100%;max-width:360px;text-align:center;gap:16px}
+.gate .seg button{padding:18px 8px;font-size:16px}
+.toggle{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:600;color:var(--text);background:var(--surface2);border-radius:10px;padding:10px 12px}
+.toggle input{width:22px;height:22px;padding:0;margin:0;accent-color:var(--accent)}
+@media (max-width:420px){.tiles{grid-template-columns:repeat(2,1fr)}}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+
+<div class="gate" id="gate" hidden>
+  <div class="card">
+    <h1>Who's this?</h1>
+    <p class="help">Picks which morning and evening list you see. Numbers are always both of you together.</p>
+    <div class="seg two" id="whoPick"><button type="button" data-v="Angus">Angus</button><button type="button" data-v="Ananth">Ananth</button></div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><b>IMPERIUM <span>LEADS</span></b><button class="who" id="whoBtn" title="Switch person">…</button></div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-morning" aria-selected="true" data-tab="morning">Morning<span class="dot" id="dotMorning" hidden></span></button>
+      <button class="tab" role="tab" id="tab-evening" aria-selected="false" data-tab="evening">Evening<span class="dot" id="dotEvening" hidden></span></button>
+      <button class="tab" role="tab" id="tab-add" aria-selected="false" data-tab="add">Add</button>
+      <button class="tab" role="tab" id="tab-leads" aria-selected="false" data-tab="leads">Leads</button>
+      <button class="tab" role="tab" id="tab-numbers" aria-selected="false" data-tab="numbers">Numbers</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div id="offline" class="banner" hidden>Can't reach the shared list. Make sure you're signed into claude.ai in this browser, allow any popup, then <button type="button" class="mini" id="retryBtn" style="color:var(--warn)">try again</button>.</div>
+
+  <!-- MORNING -->
+  <section id="view-morning" role="tabpanel">
+    <div><h1 id="mHead">Morning</h1><p class="help" id="mSub"></p></div>
+    <div class="card">
+      <div class="eyebrow"><span>Follow up today</span><span class="n" id="fuCount">0</span></div>
+      <p class="help">New leads first, then anyone due a chase. Tap a button to log what you did.</p>
+      <div class="list" id="fuList"></div>
+    </div>
+    <div class="card">
+      <div class="eyebrow"><span>Jobs today</span><span class="n" id="jobsCount">0</span></div>
+      <div class="list" id="jobsList"></div>
+      <div class="eyebrow" style="margin-top:4px"><span>Tomorrow</span><span class="n" id="jobsTmCount">0</span></div>
+      <div class="list" id="jobsTmList"></div>
+    </div>
+    <div class="card" id="reelsCard">
+      <div class="eyebrow"><span>Reels posted today</span><span class="n" id="reelsWho"></span></div>
+      <div class="counter"><b><span id="reelsN">0</span><span style="color:var(--muted);font-size:16px;font-weight:600"> / 2</span></b><div class="row" style="flex-wrap:nowrap"><button class="btn secondary small" id="reelsMinus">−</button><button class="btn small" id="reelsPlus">Posted one</button></div></div>
+      <p class="help">2 a day is the target. Morning post around 7am, evening around 4pm.</p>
+    </div>
+  </section>
+
+  <!-- EVENING -->
+  <section id="view-evening" role="tabpanel">
+    <div><h1>Evening</h1><p class="help">Log every lead you touched today, then close the day.</p></div>
+    <div class="card">
+      <div class="eyebrow"><span>Leads to log</span><span class="n" id="evCount">0</span></div>
+      <p class="help">Anyone new today, due today, or that you talked to. A tick means it's logged.</p>
+      <div class="list" id="evList"></div>
+    </div>
+    <div class="card">
+      <div class="eyebrow"><span>Jobs done today</span><span class="n" id="evJobsCount">0</span></div>
+      <div class="list" id="evJobsList"></div>
+    </div>
+    <div class="card">
+      <div class="eyebrow"><span>Today so far</span></div>
+      <div class="tiles" id="evTiles"></div>
+      <button class="btn" id="closeDay">Close the day</button>
+      <p class="help" id="closedNote" hidden></p>
+    </div>
+  </section>
+
+  <!-- ADD -->
+  <section id="view-add" role="tabpanel">
+    <form id="addForm" class="card" autocomplete="off">
+      <div>
+        <div class="eyebrow">New enquiry</div>
+        <p class="help">30 seconds. Add it the moment it lands, then text them.</p>
+      </div>
+      <div class="grid">
+        <label>Name<input id="f-name" required placeholder="Jo"></label>
+        <label>Phone<input id="f-phone" inputmode="tel" placeholder="0400 000 000"></label>
+        <label class="full">Where from?
+          <div class="seg" id="f-source" data-value="">
+            <button type="button" data-v="Meta ad">Meta ad</button><button type="button" data-v="Google">Google</button><button type="button" data-v="Instagram">Instagram</button><button type="button" data-v="TikTok">TikTok</button>
+            <button type="button" data-v="Website">Website</button><button type="button" data-v="Referral">Referral</button><button type="button" data-v="Repeat">Repeat</button><button type="button" data-v="Other">Other</button>
+          </div>
+        </label>
+        <label class="full" id="adWrap" hidden>Which ad? (same name as Ads Manager)<input id="f-ad" placeholder="Monthly maintenance / Kluger / Brand film"></label>
+        <label class="full" id="refWrap" hidden>Who referred them?<input id="f-ref" placeholder="Dhana (Kambah)"></label>
+        <label class="full">What are they after?
+          <div class="seg" id="f-service" data-value="">
+            <button type="button" data-v="Full detail">Full detail</button><button type="button" data-v="Interior">Interior</button><button type="button" data-v="Exterior">Exterior</button><button type="button" data-v="Correction">Correction</button>
+            <button type="button" data-v="Ceramic">Ceramic</button><button type="button" data-v="Maintenance plan">Maint. plan</button><button type="button" data-v="Pre-sale">Pre-sale</button><button type="button" data-v="Not sure">Not sure</button>
+          </div>
+        </label>
+        <label>Car<input id="f-car" placeholder="Kluger"></label>
+        <label>Suburb<input id="f-suburb" placeholder="Gungahlin"></label>
+        <label class="full">Have you replied yet?
+          <div class="seg two" id="f-replied" data-value="No"><button type="button" data-v="No">Not yet</button><button type="button" data-v="Yes">Yes</button></div>
+        </label>
+        <label id="replyWrap" hidden>Mins until we replied<input id="f-reply" type="number" inputmode="numeric" min="0" placeholder="5"></label>
+        <label>Quoted $ (if given)<input id="f-quoted" type="number" inputmode="numeric" min="0" placeholder="250"></label>
+        <label class="full">Notes<textarea id="f-notes" placeholder="Filthy interior, dog hair. Wants a weekend."></textarea></label>
+      </div>
+      <button class="btn" id="saveBtn" type="submit">Save lead</button>
+    </form>
+  </section>
+
+  <!-- LEADS -->
+  <section id="view-leads" role="tabpanel">
+    <div class="filters">
+      <input id="q" placeholder="Search name, car, suburb, phone">
+      <select id="fStatus">
+        <option value="">All</option><option value="open">Open (new, contacted, quoted)</option><option value="New">New</option><option value="Contacted">Contacted</option><option value="Quoted">Quoted</option><option value="Booked">Booked</option><option value="Lost">Lost</option>
+      </select>
+      <select id="fWho"><option value="">Both of us</option><option value="Angus">Angus's</option><option value="Ananth">Ananth's</option></select>
+    </div>
+    <div class="list" id="list"></div>
+    <button class="btn secondary" id="exportBtn" hidden>Download CSV for the spreadsheet</button>
+  </section>
+
+  <!-- NUMBERS -->
+  <section id="view-numbers" role="tabpanel">
+    <div class="seg three" id="period" data-value="30"><button type="button" data-v="month">This month</button><button type="button" data-v="30">Last 30 days</button><button type="button" data-v="all">All time</button></div>
+    <div class="seg three" id="nWho" data-value=""><button type="button" data-v="">Both</button><button type="button" data-v="Angus">Angus</button><button type="button" data-v="Ananth">Ananth</button></div>
+    <div class="tiles" id="tiles"></div>
+    <div class="card"><div class="eyebrow">By source</div><div style="overflow-x:auto"><table id="bySource"></table></div></div>
+    <div class="card"><div class="eyebrow">By service</div><div style="overflow-x:auto"><table id="byService"></table></div></div>
+    <div class="card"><div class="eyebrow">Why we lose them</div><div style="overflow-x:auto"><table id="byLost"></table></div></div>
+    <div class="card">
+      <div class="eyebrow">Meta ads</div>
+      <div class="grid">
+        <label>Ad spend for this period $<input id="spend" type="number" inputmode="numeric" min="0" placeholder="0"></label>
+        <div id="adStats" style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);justify-content:flex-end"></div>
+      </div>
+      <p class="help">Type the spend from Ads Manager. It's remembered on this phone only.</p>
+    </div>
+    <div class="card" id="dueCard" hidden><div class="eyebrow">Due for their next service</div><div class="list" id="dueList"></div></div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const SOURCES=["Meta ad","Google","Instagram","TikTok","Website","Referral","Repeat","Other"];
+  const SERVICES=["Full detail","Interior","Exterior","Correction","Ceramic","Maintenance plan","Pre-sale","Not sure"];
+  const OBJ=["Price","Timing","Checking with partner","Wants more info","Thinking about it","Other"];
+  const LOST=["Too expensive","No reply","Went elsewhere","Timing","Other"];
+  let db=null, dl=null, leads=[], day=null, canWrite=true, who=null, unsubDay=null;
+
+  const use = n => (window.claude && typeof window.claude.use==="function") ? window.claude.use(n) : Promise.resolve(null);
+  const pad = n => String(n).padStart(2,"0");
+  const iso = d => d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  const today = () => iso(new Date());
+  const localDate = v => { if(!v) return ""; const d=new Date(v); return isNaN(d)?String(v).slice(0,10):iso(d); };
+  const addDays = (n,from) => { const d=from?new Date(from+"T12:00:00"):new Date(); d.setDate(d.getDate()+n); return iso(d); };
+  const money = n => "$"+Math.round(n||0).toLocaleString("en-AU");
+  const pct = (a,b) => b? Math.round(100*a/b)+"%" : "–";
+  const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const num = v => { v=String(v??"").trim(); if(v==="") return null; const n=Number(v); return isNaN(n)?null:n; };
+  const isOpen = l => !["Booked","Lost"].includes(l.status);
+  const dayName = d => new Date(d+"T12:00:00").toLocaleDateString("en-AU",{weekday:"short",day:"numeric",month:"short"});
+
+  function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),2400); }
+  function seg(el,onchange){
+    el.querySelectorAll("button").forEach(b=>{
+      b.setAttribute("aria-pressed", String(b.dataset.v===(el.dataset.value||"")));
+      b.addEventListener("click",()=>{ el.dataset.value=b.dataset.v; el.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); if(onchange) onchange(b.dataset.v); });
+    });
+  }
+  function setSeg(el,v){ el.dataset.value=v||""; el.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.v===(v||"")))); }
+
+  // ---------- WHO ----------
+  function setWho(v){ who=v; try{ localStorage.setItem("il-who",v); }catch(e){} $("#whoBtn").textContent=v+" ▾"; $("#gate").hidden=true; renderAll(); }
+  try{ who=localStorage.getItem("il-who"); }catch(e){}
+  if(who) $("#whoBtn").textContent=who+" ▾"; else $("#gate").hidden=false;
+  seg($("#whoPick"), v=>setWho(v));
+  $("#whoBtn").addEventListener("click",()=>{ setSeg($("#whoPick"),who||""); $("#gate").hidden=false; });
+
+  // ---------- TABS ----------
+  document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>showTab(t.dataset.tab)));
+  function showTab(name){
+    document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",String(t.dataset.tab===name)));
+    ["morning","evening","add","leads","numbers"].forEach(n=>{ $("#view-"+n).hidden = n!==name; });
+    try{ localStorage.setItem("il-tab",name); }catch(e){}
+    renderAll();
+  }
+
+  // ---------- ADD ----------
+  seg($("#f-source"), v=>{ $("#adWrap").hidden = v!=="Meta ad"; $("#refWrap").hidden = v!=="Referral"; });
+  seg($("#f-service"));
+  seg($("#f-replied"), v=>{ $("#replyWrap").hidden = v!=="Yes"; });
+  $("#addForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    if(!db){ toast("Not connected. Try again in a sec."); return; }
+    const src=$("#f-source").dataset.value, svc=$("#f-service").dataset.value;
+    if(!src){ toast("Pick where they came from"); return; }
+    if(!svc){ toast("Pick what they're after"); return; }
+    const replied=$("#f-replied").dataset.value==="Yes";
+    const now=new Date().toISOString();
+    const doc={
+      date: today(), createdAt: now, owner: who||"",
+      name: $("#f-name").value.trim(), phone: $("#f-phone").value.trim(),
+      source: src, ad: src==="Meta ad" ? $("#f-ad").value.trim() : "", referredBy: src==="Referral" ? $("#f-ref").value.trim() : "",
+      address:"", jobTime:"", access:"",
+      service: svc, car: $("#f-car").value.trim(), suburb: $("#f-suburb").value.trim(),
+      replyMins: replied ? num($("#f-reply").value) : null, quoted: num($("#f-quoted").value),
+      status: replied ? (num($("#f-quoted").value)!=null ? "Quoted" : "Contacted") : "New",
+      nextFollowUp: replied ? addDays(1) : today(), lastContact: replied ? now : "",
+      log: replied ? [{at:now, by:who||"", type:"text", outcome:"First reply", note:""}] : [],
+      objection:"", lostWhy:"", jobDate:"", revenue:null, paid:"", plan:"", upsellOffered:"", upsellTaken:"",
+      reviewAsked:"", reviewLeft:"", nextDue:"", notes: $("#f-notes").value.trim()
+    };
+    const btn=$("#saveBtn"); btn.disabled=true;
+    try{
+      await db.collection("leads").add(doc);
+      $("#addForm").reset(); setSeg($("#f-source"),""); setSeg($("#f-service"),""); setSeg($("#f-replied"),"No"); $("#adWrap").hidden=true; $("#refWrap").hidden=true; $("#replyWrap").hidden=true;
+      toast(replied ? "Saved. They're on tomorrow's follow-up list." : "Saved. Now text them, then log it.");
+    }catch(err){ writeFail(err); }
+    btn.disabled=false;
+  });
+  function writeFail(err){
+    if(err && err.code==="invalid_argument"){ canWrite=false; toast("View only. Ask for edit access."); }
+    else if(err && err.code==="quota_exceeded"){ toast("The list is full. Export and clear old leads."); }
+    else toast("Didn't save. Try again.");
+  }
+
+  // ---------- SHARED CARD ----------
+  function leadCard(l, opts={}){
+    const st=(l.status||"New"), stCls=st.toLowerCase();
+    const due=l.nextFollowUp && isOpen(l) ? (l.nextFollowUp<today()?"overdue":l.nextFollowUp===today()?"due":"") : "";
+    const last=(l.log||[]).slice(-1)[0];
+    const tag = opts.tag!==undefined ? opts.tag : '<span class="pill '+stCls+'">'+esc(st)+'</span>';
+    const money_ = l.revenue!=null?money(l.revenue):(l.quoted!=null?'<span style="color:var(--muted)">q '+money(l.quoted)+'</span>':"");
+    return '<div class="lead '+(due==="overdue"?"overdue":st==="New"?"new":"")+'" data-id="'+esc(l.id)+'">'+
+      '<div class="name">'+esc(l.name||"No name")+' <span style="color:var(--muted);font-weight:500">· '+esc(l.car||"car?")+'</span></div>'+tag+
+      '<div class="sub">'+esc(l.service||"")+(l.suburb?" · "+esc(l.suburb):"")+' · '+esc(l.source||"")+(l.ad?" ("+esc(l.ad)+")":"")+(l.owner?" · "+esc(l.owner):"")+'</div>'+
+      '<div class="money">'+money_+'</div>'+
+      (l.phone?'<div class="sub phone"><span style="user-select:all">'+esc(l.phone)+'</span><a class="mini" href="tel:'+esc(l.phone.replace(/\s+/g,""))+'">Call</a><a class="mini" href="sms:'+esc(l.phone.replace(/\s+/g,""))+'">Text</a><button type="button" class="mini" data-act="copy">Copy</button></div>':"")+
+      (opts.extra||"")+
+      (due?'<div class="sub"><span class="pill '+due+'">'+(due==="overdue"?"Overdue since "+esc(dayName(l.nextFollowUp)):"Due today")+'</span></div>':"")+
+      (l.source==="Referral"&&l.referredBy?'<div class="sub">Referred by '+esc(l.referredBy)+'</div>':"")+
+      ((last&&last.note)||l.objection||l.notes ? '<div class="note">'+esc(last&&last.note ? last.note : (l.objection ? "Objection: "+l.objection : l.notes))+'</div>' : "")+
+      (opts.actions||"")+
+    '</div>';
+  }
+  const ACTS = '<div class="acts"><button class="btn secondary small" data-act="texted">Texted</button><button class="btn secondary small" data-act="noanswer">No answer</button><button class="btn small" data-act="touch">Answered…</button><button class="btn secondary small" data-act="open" style="flex:0 0 auto">Open</button></div>';
+  function wire(el){
+    el.querySelectorAll("[data-act]").forEach(b=>b.addEventListener("click",e=>{
+      e.stopPropagation();
+      const card=b.closest(".lead"), id=card.dataset.id, a=b.dataset.act;
+      if(a==="touch") openTouch(id); else if(a==="open") openEdit(id);
+      else if(a==="copy"){ const l=leads.find(x=>x.id===id); copyText(l&&l.phone||""); }
+      else quickTouch(id,a,b);
+    }));
+    el.querySelectorAll(".lead").forEach(c=>{ c.style.cursor="pointer"; c.addEventListener("click",e=>{ if(e.target.closest("button,a,input,label")) return; openEdit(c.dataset.id); }); });
+  }
+  function copyText(t){
+    if(!t) return;
+    const done=()=>toast("Copied "+t);
+    try{ navigator.clipboard.writeText(t).then(done).catch(()=>fallbackCopy(t,done)); }catch(e){ fallbackCopy(t,done); }
+  }
+  function fallbackCopy(t,done){ const ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); try{ document.execCommand("copy"); done(); }catch(e){ toast("Long-press the number to copy it"); } ta.remove(); }
+
+  // ---------- MORNING ----------
+  function renderMorning(){
+    const t=today();
+    $("#mHead").textContent="Morning"+(who?", "+who:"");
+    const overdueN=leads.filter(l=>isOpen(l)&&l.nextFollowUp&&l.nextFollowUp<t).length, jobsN=leads.filter(l=>l.status==="Booked"&&l.jobDate===t).length, chaseN=leads.filter(l=>isOpen(l)&&(!l.nextFollowUp||l.nextFollowUp<=t)).length;
+    $("#mSub").textContent=new Date().toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"long"})+" · "+chaseN+" to chase"+(overdueN?" ("+overdueN+" overdue)":"")+" · "+jobsN+" job"+(jobsN===1?"":"s")+" today";
+    const fu=leads.filter(l=>isOpen(l) && (!l.nextFollowUp || l.nextFollowUp<=t))
+      .sort((a,b)=>(a.status==="New"?0:1)-(b.status==="New"?0:1) || (a.nextFollowUp||"").localeCompare(b.nextFollowUp||""));
+    $("#fuCount").textContent=fu.length;
+    $("#dotMorning").hidden=!fu.length; $("#dotMorning").textContent=fu.length;
+    $("#fuList").innerHTML = fu.length ? fu.map(l=>leadCard(l,{actions:ACTS})).join("") : '<div class="empty">Nobody to chase. Go get more leads.</div>';
+    wire($("#fuList"));
+    const jobs=leads.filter(l=>l.status==="Booked" && l.jobDate===t), tm=leads.filter(l=>l.status==="Booked" && l.jobDate===addDays(1));
+    $("#jobsCount").textContent=jobs.length; $("#jobsTmCount").textContent=tm.length;
+    $("#jobsList").innerHTML = jobs.length ? jobs.map(l=>leadCard(l,{tag:'<span class="pill booked">'+(l.jobTime?esc(l.jobTime)+" · ":"")+(l.revenue!=null?money(l.revenue):l.quoted!=null?money(l.quoted):"Booked")+'</span>', extra:(l.address?'<div class="sub">'+esc(l.address)+'</div>':"")+(l.access?'<div class="sub">Access: '+esc(l.access)+'</div>':""),
+      actions:'<div class="acts"><label class="toggle" style="flex:1"><span>Review asked</span><input type="checkbox" data-field="reviewAsked" '+(l.reviewAsked==="Yes"?"checked":"")+'></label><label class="toggle" style="flex:1"><span>Paid</span><input type="checkbox" data-field="paid" '+(l.paid==="Yes"?"checked":"")+'></label><button class="btn secondary small" data-act="open">Open</button></div>'})).join("") : '<div class="empty">No jobs booked for today.</div>';
+    wire($("#jobsList")); wireToggles($("#jobsList"));
+    $("#jobsTmList").innerHTML = tm.length ? tm.map(l=>leadCard(l,{tag:'<span class="pill booked">'+(l.jobTime?esc(l.jobTime):"Tomorrow")+'</span>', extra:(l.address?'<div class="sub">'+esc(l.address)+'</div>':"")})).join("") : '<div class="empty">Nothing tomorrow yet.</div>';
+    wire($("#jobsTmList"));
+    $("#reelsCard").hidden = who!=="Ananth";
+    const r=(day&&day.reels&&day.reels[who])||0;
+    $("#reelsN").textContent=r; $("#reelsWho").textContent=who||"";
+  }
+  function wireToggles(el){
+    el.querySelectorAll("input[type=checkbox][data-field]").forEach(cb=>cb.addEventListener("change",async()=>{
+      const id=cb.closest(".lead").dataset.id, l=leads.find(x=>x.id===id); if(!l||!db) return;
+      const upd=clean({...l,[cb.dataset.field]: cb.checked?"Yes":"No", updatedAt:new Date().toISOString()});
+      try{ await db.doc("leads/"+id).set(upd); }catch(err){ cb.checked=!cb.checked; writeFail(err); }
+    }));
+  }
+  $("#reelsPlus").addEventListener("click",()=>bumpReels(1)); $("#reelsMinus").addEventListener("click",()=>bumpReels(-1));
+  async function bumpReels(d){
+    if(!db||!who) return;
+    const cur=(day&&day.reels)||{}; const n=Math.max(0,(cur[who]||0)+d);
+    const next={...(day||{}), reels:{...cur,[who]:n}}; delete next.id;
+    try{ await db.doc("days/"+today()).set(next); if(n>=2&&d>0) toast("Both reels done. Nice."); }catch(err){ writeFail(err); }
+  }
+
+  // ---------- EVENING ----------
+  function loggedToday(l){ const t=today(); return (l.log||[]).some(e=>localDate(e.at)===t); }
+  function renderEvening(){
+    const t=today();
+    const ev=leads.filter(l=> l.date===t || loggedToday(l) || (isOpen(l) && l.nextFollowUp && l.nextFollowUp<=t))
+      .sort((a,b)=>(loggedToday(a)?1:0)-(loggedToday(b)?1:0));
+    const todo=ev.filter(l=>!loggedToday(l));
+    $("#evCount").textContent=todo.length+" to go"; $("#dotEvening").hidden=!todo.length; $("#dotEvening").textContent=todo.length;
+    $("#evList").innerHTML = ev.length ? ev.map(l=>leadCard(l,{tag: loggedToday(l)?'<span class="pill done">✓ logged</span>':'<span class="pill '+(l.status||"new").toLowerCase()+'">'+esc(l.status||"New")+'</span>', actions: loggedToday(l)?'<div class="acts"><button class="btn secondary small" data-act="touch">Log another</button><button class="btn secondary small" data-act="open">Open</button></div>':ACTS})).join("") : '<div class="empty">Nothing to log today.</div>';
+    wire($("#evList"));
+    const jobs=leads.filter(l=>l.status==="Booked" && l.jobDate===t);
+    $("#evJobsCount").textContent=jobs.length;
+    $("#evJobsList").innerHTML = jobs.length ? jobs.map(l=>leadCard(l,{tag:'<span class="pill booked">'+(l.revenue!=null?money(l.revenue):"$?")+'</span>',
+      actions:'<div class="acts"><label class="toggle" style="flex:1"><span>Paid</span><input type="checkbox" data-field="paid" '+(l.paid==="Yes"?"checked":"")+'></label><label class="toggle" style="flex:1"><span>Review asked</span><input type="checkbox" data-field="reviewAsked" '+(l.reviewAsked==="Yes"?"checked":"")+'></label><label class="toggle" style="flex:1"><span>Upsell offered</span><input type="checkbox" data-field="upsellOffered" '+(l.upsellOffered==="Yes"?"checked":"")+'></label><button class="btn secondary small" data-act="open">Revenue &amp; more</button></div>'})).join("") : '<div class="empty">No jobs today.</div>';
+    wire($("#evJobsList")); wireToggles($("#evJobsList"));
+    const newToday=leads.filter(l=>l.date===t).length, touches=leads.reduce((a,l)=>a+(l.log||[]).filter(e=>localDate(e.at)===t).length,0);
+    const bookedToday=leads.filter(l=>(l.log||[]).some(e=>localDate(e.at)===t && e.outcome==="Booked")).length;
+    const rev=jobs.reduce((a,l)=>a+(l.revenue||0),0);
+    const tile=(v,label)=>'<div class="tile"><b>'+v+'</b><span>'+label+'</span></div>';
+    $("#evTiles").innerHTML=tile(newToday,"New leads")+tile(touches,"Calls & texts")+tile(bookedToday,"Booked today")+tile(money(rev),"Revenue today")+tile(jobs.length,"Jobs done")+(who==="Ananth"?tile((day&&day.reels&&day.reels[who])||0,"Reels posted"):"");
+    const closed=day&&day.closed&&day.closed[who];
+    $("#closeDay").hidden=!!closed; $("#closedNote").hidden=!closed; if(closed) $("#closedNote").textContent="Day closed by "+who+". You can still log things.";
+  }
+  $("#closeDay").addEventListener("click",async()=>{
+    if(!db||!who) return;
+    const todo=leads.filter(l=>(l.date===today()||(isOpen(l)&&l.nextFollowUp&&l.nextFollowUp<=today()))&&!loggedToday(l)).length;
+    if(todo){ toast(todo+" lead"+(todo===1?"":"s")+" still not logged. Do those first."); return; }
+    const next={...(day||{}), closed:{...((day&&day.closed)||{}),[who]:true}}; delete next.id;
+    try{ await db.doc("days/"+today()).set(next); toast("Day closed. Good work."); }catch(err){ writeFail(err); }
+  });
+
+  // ---------- TOUCH (call / text log) ----------
+  function openTouch(id){
+    const l=leads.find(x=>x.id===id); if(!l) return;
+    const s=document.createElement("div"); s.className="sheet"; s.id="sheet";
+    s.innerHTML='<div class="sheet-in">'+
+      '<div class="sheet-h"><div><h2>'+esc(l.name||"Lead")+'</h2><p class="help">'+esc(l.car||"")+' · '+esc(l.service||"")+(l.phone?' · <span style="user-select:all">'+esc(l.phone)+'</span>':"")+'</p></div><button class="x" id="closeSheet">Close</button></div>'+
+      '<label>What did you do?<div class="seg three" id="t-type" data-value=""><button type="button" data-v="text">Texted</button><button type="button" data-v="answered">Called, answered</button><button type="button" data-v="noanswer">Called, no answer</button></div></label>'+
+      '<label id="t-outWrap" hidden>How did it go?<div class="seg" id="t-out" data-value=""><button type="button" data-v="Booked">Booked</button><button type="button" data-v="Quote given">Quote given</button><button type="button" data-v="Needs follow-up">Needs follow-up</button><button type="button" data-v="Lost">Lost</button></div></label>'+
+      '<div id="t-bookWrap" hidden class="grid"><label>Job date<input id="t-jobDate" type="date" value="'+esc(l.jobDate||"")+'"></label><label>Time<input id="t-jobTime" placeholder="9am" value="'+esc(l.jobTime||"")+'"></label><label>Price agreed $<input id="t-rev" type="number" inputmode="numeric" value="'+(l.revenue??l.quoted??"")+'"></label><label>Address<input id="t-addr" placeholder="11 Hobler Pl, Kambah" value="'+esc(l.address||"")+'"></label></div>'+
+      '<label id="t-quoteWrap" hidden>Quoted $<input id="t-quoted" type="number" inputmode="numeric" value="'+(l.quoted??"")+'"></label>'+
+      '<label id="t-objWrap" hidden>What\'s holding them back?<div class="seg three" id="t-obj" data-value="'+esc(l.objection||"")+'">'+OBJ.map(o=>'<button type="button" data-v="'+esc(o)+'">'+esc(o)+'</button>').join("")+'</div></label>'+
+      '<label id="t-lostWrap" hidden>Why lost?<div class="seg three" id="t-lost" data-value="">'+LOST.map(o=>'<button type="button" data-v="'+esc(o)+'">'+esc(o)+'</button>').join("")+'</div></label>'+
+      '<label id="t-fuWrap" hidden>Chase them again<div class="seg" id="t-fu" data-value="1"><button type="button" data-v="1">Tomorrow</button><button type="button" data-v="2">In 2 days</button><button type="button" data-v="7">In a week</button><button type="button" data-v="pick">Pick a date</button></div><input id="t-fuDate" type="date" hidden style="margin-top:6px"></label>'+
+      '<label>What happened? (one line)<textarea id="t-note" placeholder="Wants to check with his wife, call back Thursday arvo."></textarea></label>'+
+      '<button class="btn" id="t-save" disabled>Save</button>'+
+    '</div>';
+    document.body.appendChild(s);
+    const g=sel=>s.querySelector(sel);
+    const show=(sel,v)=>{ g(sel).hidden=!v; };
+    const sync=()=>{
+      const type=g("#t-type").dataset.value, out=g("#t-out").dataset.value;
+      show("#t-outWrap", type==="answered");
+      const answered=type==="answered";
+      show("#t-bookWrap", answered && out==="Booked");
+      show("#t-quoteWrap", answered && out==="Quote given");
+      show("#t-objWrap", answered && (out==="Quote given"||out==="Needs follow-up"));
+      show("#t-lostWrap", answered && out==="Lost");
+      show("#t-fuWrap", (type&&!answered) || (answered && (out==="Quote given"||out==="Needs follow-up")));
+      g("#t-save").disabled = !type || (answered && !out);
+    };
+    seg(g("#t-type"),sync); seg(g("#t-out"),sync); seg(g("#t-obj")); seg(g("#t-lost"));
+    seg(g("#t-fu"), v=>{ g("#t-fuDate").hidden = v!=="pick"; });
+    g("#closeSheet").addEventListener("click",closeSheet); s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
+    g("#t-save").addEventListener("click",async()=>{
+      const type=g("#t-type").dataset.value, out=g("#t-out").dataset.value, now=new Date().toISOString();
+      const entry={at:now, by:who||"", type:type==="text"?"text":"call", pickedUp: type==="answered"?"Yes":type==="noanswer"?"No":"", outcome: type==="answered"?out:(type==="text"?"Texted":"No answer"), note:g("#t-note").value.trim()};
+      const upd={...l, lastContact:now, log:[...(l.log||[]),entry].slice(-30), updatedAt:now};
+      const fuv=g("#t-fu").dataset.value; const fuDate= fuv==="pick" ? (g("#t-fuDate").value||addDays(1)) : addDays(Number(fuv)||1);
+      if(type!=="answered"){ if(upd.status==="New") upd.status="Contacted"; upd.nextFollowUp=fuDate; if(upd.replyMins==null && l.status==="New") upd.replyMins=Math.max(0,Math.round((Date.now()-new Date(l.createdAt||now))/60000)); }
+      else if(out==="Booked"){ upd.status="Booked"; upd.jobDate=g("#t-jobDate").value||""; upd.jobTime=g("#t-jobTime").value.trim(); upd.address=g("#t-addr").value.trim(); upd.revenue=num(g("#t-rev").value); upd.nextFollowUp=""; upd.objection=""; }
+      else if(out==="Quote given"){ upd.status="Quoted"; upd.quoted=num(g("#t-quoted").value)??upd.quoted; upd.objection=g("#t-obj").dataset.value||""; upd.nextFollowUp=fuDate; }
+      else if(out==="Needs follow-up"){ if(upd.status==="New") upd.status="Contacted"; upd.objection=g("#t-obj").dataset.value||""; upd.nextFollowUp=fuDate; }
+      else if(out==="Lost"){ upd.status="Lost"; upd.lostWhy=g("#t-lost").dataset.value||"Other"; upd.nextFollowUp=""; }
+      if(upd.replyMins==null && l.status==="New" && type==="answered") upd.replyMins=Math.max(0,Math.round((Date.now()-new Date(l.createdAt||now))/60000));
+      const b=g("#t-save"); b.disabled=true;
+      try{ await db.doc("leads/"+id).set(clean(upd)); toast(out==="Booked"?"Booked. Legend.":"Logged."); closeSheet(); }catch(err){ b.disabled=false; writeFail(err); }
+    });
+  }
+  function clean(o){ const c={...o}; delete c.id; c.booked = c.status==="Booked"?"Yes":c.status==="Lost"?"No":"Pending"; return c; }
+  function closeSheet(){ const s=$("#sheet"); if(s) s.remove(); }
+  async function quickTouch(id,type,btn){
+    const l=leads.find(x=>x.id===id); if(!l||!db) return;
+    const now=new Date().toISOString();
+    const entry={at:now, by:who||"", type:type==="texted"?"text":"call", pickedUp:type==="noanswer"?"No":"", outcome:type==="texted"?"Texted":"No answer", note:""};
+    const upd={...l, lastContact:now, log:[...(l.log||[]),entry].slice(-30), updatedAt:now, nextFollowUp:addDays(1)};
+    if(upd.status==="New") upd.status="Contacted";
+    if(upd.replyMins==null && l.status==="New") upd.replyMins=Math.max(0,Math.round((Date.now()-new Date(l.createdAt||now))/60000));
+    if(btn) btn.disabled=true;
+    try{ await db.doc("leads/"+id).set(clean(upd)); toast(type==="texted"?"Logged. Chase again tomorrow.":"Logged. Try again tomorrow."); }
+    catch(err){ if(btn) btn.disabled=false; writeFail(err); }
+  }
+
+  // ---------- LEADS LIST ----------
+  $("#q").addEventListener("input",renderList); $("#fStatus").addEventListener("change",renderList); $("#fWho").addEventListener("change",renderList);
+  function renderList(){
+    const q=$("#q").value.trim().toLowerCase(), fs=$("#fStatus").value, fw=$("#fWho").value;
+    const rows=leads.filter(l=>(!fs || (fs==="open"?isOpen(l):l.status===fs)) && (!fw||l.owner===fw) && (!q||[l.name,l.car,l.suburb,l.phone,l.service,l.notes].join(" ").toLowerCase().includes(q)));
+    const el=$("#list");
+    el.innerHTML = rows.length ? rows.map(l=>leadCard(l)).join("") : '<div class="empty">'+(leads.length?"Nothing matches.":"No leads yet. Add the first one.")+'</div>';
+    wire(el);
+  }
+
+  // ---------- EDIT SHEET ----------
+  function openEdit(id){
+    const l=leads.find(x=>x.id===id); if(!l) return;
+    const yn=(name,v)=>'<div class="seg two" data-name="'+name+'" data-value="'+esc(v||"")+'"><button type="button" data-v="Yes">Yes</button><button type="button" data-v="No">No</button></div>';
+    const opt=(arr,v)=>arr.map(o=>'<option'+(o===v?" selected":"")+'>'+esc(o)+'</option>').join("");
+    const s=document.createElement("div"); s.className="sheet"; s.id="sheet";
+    s.innerHTML='<div class="sheet-in">'+
+      '<div class="sheet-h"><h2>'+esc(l.name||"Lead")+'</h2><div class="row" style="flex-wrap:nowrap"><button class="btn small" id="e-touch">Log a call or text</button><button class="x" id="closeSheet">Close</button></div></div>'+
+      (canWrite?"":'<div class="banner">View only. Ask for edit access.</div>')+
+      '<div class="grid">'+
+        '<label>Status<select id="e-status">'+opt(["New","Contacted","Quoted","Booked","Lost"],l.status||"New")+'</select></label>'+
+        '<label>Whose lead<select id="e-owner"><option value="">–</option>'+opt(["Angus","Ananth"],l.owner)+'</select></label>'+
+        '<label>Name<input id="e-name" value="'+esc(l.name)+'"></label>'+
+        '<label>Phone<input id="e-phone" value="'+esc(l.phone)+'"></label>'+
+        '<label>Came in<input id="e-date" type="date" value="'+esc(l.date)+'"></label>'+
+        '<label>Chase again on<input id="e-fu" type="date" value="'+esc(l.nextFollowUp||"")+'"></label>'+
+        '<label>Source<select id="e-source">'+opt(SOURCES,l.source)+'</select></label>'+
+        '<label>Which ad?<input id="e-ad" value="'+esc(l.ad)+'"></label>'+
+        '<label>Referred by<input id="e-ref" value="'+esc(l.referredBy||"")+'"></label>'+
+        '<label>Service<select id="e-service">'+opt(SERVICES,l.service)+'</select></label>'+
+        '<label>Car<input id="e-car" value="'+esc(l.car)+'"></label>'+
+        '<label>Suburb<input id="e-suburb" value="'+esc(l.suburb)+'"></label>'+
+        '<label>Mins to first reply<input id="e-reply" type="number" inputmode="numeric" value="'+(l.replyMins??"")+'"></label>'+
+        '<label>Quoted $<input id="e-quoted" type="number" inputmode="numeric" value="'+(l.quoted??"")+'"></label>'+
+        '<label>Objection<select id="e-obj"><option value="">–</option>'+opt(OBJ,l.objection)+'</select></label>'+
+        '<label>Why lost?<select id="e-lostWhy"><option value="">–</option>'+opt(LOST,l.lostWhy)+'</select></label>'+
+      '</div>'+
+      '<hr class="divider"><div class="eyebrow">The job</div>'+
+      '<div class="grid">'+
+        '<label>Job date<input id="e-jobDate" type="date" value="'+esc(l.jobDate)+'"></label>'+
+        '<label>Time<input id="e-jobTime" placeholder="9am" value="'+esc(l.jobTime||"")+'"></label>'+
+        '<label class="full">Address<input id="e-address" placeholder="11 Hobler Pl, Kambah" value="'+esc(l.address||"")+'"></label>'+
+        '<label class="full">Access notes (tap, power, parking, gate code)<input id="e-access" value="'+esc(l.access||"")+'"></label>'+
+        '<label>Revenue $<input id="e-revenue" type="number" inputmode="numeric" value="'+(l.revenue??"")+'"></label>'+
+        '<label>Paid?'+yn("paid",l.paid)+'</label>'+
+        '<label>On maintenance plan?'+yn("plan",l.plan)+'</label>'+
+        '<label>Upsell offered?'+yn("upsellOffered",l.upsellOffered)+'</label>'+
+        '<label>Upsell taken?'+yn("upsellTaken",l.upsellTaken)+'</label>'+
+        '<label>Review asked?'+yn("reviewAsked",l.reviewAsked)+'</label>'+
+        '<label>Review left?'+yn("reviewLeft",l.reviewLeft)+'</label>'+
+        '<label class="full">Next service due<input id="e-nextDue" type="date" value="'+esc(l.nextDue)+'"></label>'+
+        '<label class="full">Notes<textarea id="e-notes">'+esc(l.notes)+'</textarea></label>'+
+      '</div>'+
+      ((l.log||[]).length?'<hr class="divider"><div class="eyebrow">History</div><div class="log">'+(l.log||[]).slice().reverse().map(e=>'<div><span>'+esc((e.at||"").slice(5,10).replace("-","/"))+' '+esc(e.by||"")+'</span><div>'+esc(e.type==="call"?(e.pickedUp==="Yes"?"Call · ":"Call, no answer · "):"Text · ")+esc(e.outcome||"")+(e.note?' — '+esc(e.note):"")+'</div></div>').join("")+'</div>':"")+
+      '<button class="btn" id="saveEdit"'+(canWrite?"":" disabled")+'>Save changes</button>'+
+      '<button class="btn danger" id="delLead"'+(canWrite?"":" disabled")+'>Delete this lead</button>'+
+      '<div id="delConfirm" hidden class="row"><button class="btn secondary" id="delNo">Keep it</button><button class="btn danger" id="delYes">Yes, delete</button></div>'+
+    '</div>';
+    document.body.appendChild(s);
+    s.querySelectorAll(".seg").forEach(x=>seg(x));
+    s.querySelector("#closeSheet").addEventListener("click",closeSheet); s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
+    s.querySelector("#e-touch").addEventListener("click",()=>{ closeSheet(); openTouch(id); });
+    s.querySelector("#delLead").addEventListener("click",()=>{ s.querySelector("#delConfirm").hidden=false; });
+    s.querySelector("#delNo").addEventListener("click",()=>{ s.querySelector("#delConfirm").hidden=true; });
+    s.querySelector("#delYes").addEventListener("click",async()=>{ try{ await db.doc("leads/"+id).delete(); toast("Deleted"); closeSheet(); }catch(e){ toast("Couldn't delete"); } });
+    s.querySelector("#saveEdit").addEventListener("click",async()=>{
+      const g=sel=>s.querySelector(sel); const sv=name=>s.querySelector('[data-name="'+name+'"]').dataset.value||"";
+      const upd={ ...l,
+        status:g("#e-status").value, owner:g("#e-owner").value, name:g("#e-name").value.trim(), phone:g("#e-phone").value.trim(), date:g("#e-date").value, nextFollowUp:g("#e-fu").value,
+        source:g("#e-source").value, ad:g("#e-ad").value.trim(), referredBy:g("#e-ref").value.trim(), service:g("#e-service").value, car:g("#e-car").value.trim(), suburb:g("#e-suburb").value.trim(),
+        replyMins:num(g("#e-reply").value), quoted:num(g("#e-quoted").value), objection:g("#e-obj").value, lostWhy:g("#e-lostWhy").value,
+        jobDate:g("#e-jobDate").value, jobTime:g("#e-jobTime").value.trim(), address:g("#e-address").value.trim(), access:g("#e-access").value.trim(), revenue:num(g("#e-revenue").value), paid:sv("paid"), plan:sv("plan"), upsellOffered:sv("upsellOffered"), upsellTaken:sv("upsellTaken"),
+        reviewAsked:sv("reviewAsked"), reviewLeft:sv("reviewLeft"), nextDue:g("#e-nextDue").value, notes:g("#e-notes").value.trim(), updatedAt:new Date().toISOString() };
+      if(!isOpen(upd)) upd.nextFollowUp="";
+      const b=g("#saveEdit"); b.disabled=true;
+      try{ await db.doc("leads/"+id).set(clean(upd)); toast("Saved"); closeSheet(); }catch(err){ b.disabled=false; writeFail(err); }
+    });
+  }
+
+  // ---------- NUMBERS ----------
+  seg($("#period"),renderNumbers); seg($("#nWho"),renderNumbers);
+  try{ $("#spend").value = localStorage.getItem("il-spend")||""; }catch(e){}
+  $("#spend").addEventListener("input",()=>{ try{ localStorage.setItem("il-spend",$("#spend").value); }catch(e){} renderNumbers(); });
+  function inPeriod(l){
+    const p=$("#period").dataset.value, d=l.date||(l.createdAt||"").slice(0,10);
+    if(p==="all"||!d) return true;
+    if(p==="month") return d.slice(0,7)===today().slice(0,7);
+    return d>=addDays(-30);
+  }
+  function renderNumbers(){
+    const w=$("#nWho").dataset.value;
+    const rows=leads.filter(l=>inPeriod(l) && (!w||l.owner===w));
+    const booked=rows.filter(l=>l.status==="Booked"), rev=booked.reduce((a,l)=>a+(l.revenue||0),0);
+    const replied=rows.filter(l=>l.replyMins!=null), fast=replied.filter(l=>l.replyMins<=5).length;
+    const asked=rows.filter(l=>l.reviewAsked==="Yes").length, left=rows.filter(l=>l.reviewLeft==="Yes").length;
+    const plan=rows.filter(l=>l.plan==="Yes").length, upsO=rows.filter(l=>l.upsellOffered==="Yes").length, upsT=rows.filter(l=>l.upsellTaken==="Yes").length;
+    const open=rows.filter(isOpen).length, overdue=rows.filter(l=>isOpen(l)&&l.nextFollowUp&&l.nextFollowUp<today()).length;
+    const touches=rows.reduce((a,l)=>a+(l.log||[]).length,0);
+    const closeRate=rows.length?booked.length/rows.length:0, fastRate=replied.length?fast/replied.length:null;
+    const tile=(v,label,cls="")=>'<div class="tile '+cls+'"><b>'+v+'</b><span>'+label+'</span></div>';
+    $("#tiles").innerHTML=
+      tile(rows.length,"Leads")+tile(booked.length,"Booked")+tile(pct(booked.length,rows.length),"Close rate",closeRate>=.4?"good":closeRate>=.25?"warn":rows.length?"bad":"")+
+      tile(money(rev),"Revenue")+tile(booked.length?money(rev/booked.length):"–","Avg job")+tile(rows.length?money(rev/rows.length):"–","Per lead")+
+      tile(fastRate==null?"–":Math.round(fastRate*100)+"%","Replied ≤5 min",fastRate==null?"":fastRate>=.8?"good":fastRate>=.5?"warn":"bad")+
+      tile(open,"Still open",open>5?"warn":"")+tile(overdue,"Overdue chases",overdue?"bad":"good")+
+      tile(rows.length?(touches/rows.length).toFixed(1):"–","Touches per lead")+tile(plan,"On plan")+tile(asked?pct(left,asked):"–","Reviews left ÷ asked")+tile(upsO?pct(upsT,upsO):"–","Upsells taken");
+    const table=(el,key,opts,label)=>{
+      const groups=opts.map(o=>{ const g=rows.filter(l=>l[key]===o); const b=g.filter(l=>l.status==="Booked"); const r=b.reduce((a,l)=>a+(l.revenue||0),0); return {o,n:g.length,b:b.length,r}; }).filter(g=>g.n);
+      if(!groups.length){ el.innerHTML='<tr><td class="empty">Nothing in this period yet.</td></tr>'; return; }
+      const max=Math.max(...groups.map(g=>g.n));
+      el.innerHTML='<tr><th>'+label+'</th><th class="n">Leads</th><th class="n">Booked</th><th class="n">Close</th><th class="n">Revenue</th></tr>'+
+        groups.map(g=>'<tr><td>'+esc(g.o)+'<div class="bar"><i style="width:'+Math.round(100*g.n/max)+'%"></i></div></td><td class="n">'+g.n+'</td><td class="n">'+g.b+'</td><td class="n">'+pct(g.b,g.n)+'</td><td class="n">'+money(g.r)+'</td></tr>').join("");
+    };
+    table($("#bySource"),"source",SOURCES,"Source"); table($("#byService"),"service",SERVICES,"Service");
+    const lost=rows.filter(l=>l.status==="Lost"); const lg=LOST.map(o=>({o,n:lost.filter(l=>l.lostWhy===o).length})).filter(g=>g.n);
+    $("#byLost").innerHTML = lg.length ? '<tr><th>Reason</th><th class="n">Leads</th><th class="n">Share</th></tr>'+lg.map(g=>'<tr><td>'+esc(g.o)+'</td><td class="n">'+g.n+'</td><td class="n">'+pct(g.n,lost.length)+'</td></tr>').join("") : '<tr><td class="empty">No lost leads in this period.</td></tr>';
+    const spend=Number($("#spend").value)||0, meta=rows.filter(l=>l.source==="Meta ad"), metaB=meta.filter(l=>l.status==="Booked"), metaR=metaB.reduce((a,l)=>a+(l.revenue||0),0);
+    $("#adStats").innerHTML = spend ? ('<div>Cost per lead: <b style="color:var(--text)">'+(meta.length?money(spend/meta.length):"–")+'</b></div><div>Cost per booking: <b style="color:var(--text)">'+(metaB.length?money(spend/metaB.length):"–")+'</b></div><div>Revenue ÷ spend: <b style="color:var(--text)">'+(metaR?(metaR/spend).toFixed(1)+"x":"–")+'</b></div>') : '<div>'+meta.length+' Meta leads, '+metaB.length+' booked.</div>';
+    const due=leads.filter(l=>l.nextDue && l.nextDue<=addDays(14)).sort((a,b)=>a.nextDue.localeCompare(b.nextDue));
+    $("#dueCard").hidden=!due.length;
+    $("#dueList").innerHTML=due.map(l=>leadCard(l,{tag:'<span class="pill due">'+esc(l.nextDue)+'</span>'})).join(""); wire($("#dueList"));
+  }
+
+  // ---------- EXPORT ----------
+  $("#exportBtn").addEventListener("click", async()=>{
+    if(!dl) return;
+    const cols=["date","owner","name","phone","source","ad","referredBy","service","car","suburb","status","replyMins","quoted","objection","lostWhy","nextFollowUp","lastContact","jobDate","jobTime","address","access","revenue","paid","plan","upsellOffered","upsellTaken","reviewAsked","reviewLeft","nextDue","notes","touches"];
+    const q=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
+    const csv=[cols.join(",")].concat(leads.slice().sort((a,b)=>(a.date||"").localeCompare(b.date||"")).map(l=>cols.map(c=>q(c==="touches"?(l.log||[]).length:l[c])).join(","))).join("\n");
+    try{ await dl.save({filename:"imperium-leads-"+today()+".csv", data:csv}); }catch(e){ if(e&&e.code!=="cancelled") toast("Couldn't download"); }
+  });
+
+  // ---------- BOOT ----------
+  function renderAll(){
+    const cur=document.querySelector('.tab[aria-selected="true"]').dataset.tab;
+    if(cur==="morning") renderMorning(); else if(cur==="evening") renderEvening(); else if(cur==="leads") renderList(); else if(cur==="numbers") renderNumbers();
+    const fu=leads.filter(l=>isOpen(l) && (!l.nextFollowUp || l.nextFollowUp<=today())).length; $("#dotMorning").hidden=!fu; $("#dotMorning").textContent=fu;
+    const todo=leads.filter(l=>(l.date===today()||(isOpen(l)&&l.nextFollowUp&&l.nextFollowUp<=today()))&&!loggedToday(l)).length; $("#dotEvening").hidden=!todo; $("#dotEvening").textContent=todo;
+  }
+  function migrate(d){ if(!d.status){ d.status = d.booked==="Yes"?"Booked":d.booked==="No"?"Lost":(d.quoted!=null?"Quoted":d.replyMins!=null?"Contacted":"New"); } if(!d.log) d.log=[]; return d; }
+  renderAll();
+  try{ const t=localStorage.getItem("il-tab"); if(t && $("#view-"+t)) showTab(t); }catch(e){}
+
+  let dbTries=0;
+  function connect(){
+    use("db").then(d=>{
+      db=d;
+      if(!db){
+        dbTries++;
+        if(dbTries<4){ setTimeout(connect, 2500*dbTries); return; }
+        $("#offline").hidden=false; return;
+      }
+      $("#offline").hidden=true;
+      db.collection("leads").orderBy("createdAt","desc").limit(1000).onSnapshot(snap=>{ leads=snap.docs.map(x=>migrate(Object.assign({id:x.id},x.data()))); renderAll(); }, err=>{ $("#offline").hidden=false; });
+      let dayKey=null;
+      const subDay=()=>{ const k=today(); if(k===dayKey) return; dayKey=k; if(unsubDay) unsubDay(); unsubDay=db.doc("days/"+k).onSnapshot(sn=>{ day = sn.exists ? sn.data() : null; renderAll(); }, ()=>{}); };
+      subDay(); setInterval(subDay, 60000);
+    });
+  }
+  connect();
+  $("#retryBtn").addEventListener("click",()=>{ location.reload(); });
+  use("downloads").then(d=>{ dl=d; $("#exportBtn").hidden=!dl; });
+})();
+</script>

@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { site, smsHref, telHref } from "@/lib/site";
+import { sendToLeads } from "@/lib/leads-hook";
 import { track } from "@/lib/track";
 import { buttonClass } from "@/components/site/link-button";
 
@@ -82,6 +83,12 @@ export function BookingForm({ compact = false, defaultService = "" }: { compact?
     if (data.get("company")) return; // honeypot
     const text = compose(data);
     setMessage(text);
+
+    // A copy for the team's lead tracker. Never awaited: the send below goes ahead regardless.
+    if (!data.get("botcheck")) {
+      const field = (k: string) => String(data.get(k) ?? "");
+      sendToLeads({ name: field("name"), phone: field("phone"), email: field("email"), service: field("service"), vehicle: field("vehicle"), suburb: field("suburb"), when: field("when"), notes: field("notes"), form: "booking" });
+    }
 
     if (site.formEndpoint && site.formAccessKey) {
       setStatus("sending");

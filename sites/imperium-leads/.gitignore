@@ -1,0 +1,6 @@
+node_modules/
+.vercel/
+.env*
+public/index.html
+public/config.js
+public/vendor/

@@ -37,7 +37,12 @@ NEXT_PUBLIC_FORM_ENDPOINT=      # where the quote form POSTs JSON (LeadConnector
 NEXT_PUBLIC_META_PIXEL_ID=      # Meta Pixel ID; empty = not loaded
 NEXT_PUBLIC_GOOGLE_ADS_ID=      # defaults to the existing AW-17065776345
 NEXT_PUBLIC_CHAT_WIDGET_ID=     # defaults to the existing LeadConnector chat widget
+NEXT_PUBLIC_LEADS_API=          # Imperium Leads intake, e.g. https://<leads app>/api/lead; empty = forms don't copy leads there
 ```
+
+Each booking and fleet enquiry is also copied into Imperium Leads (`lib/leads-hook.ts`), with
+the ad it came from (`utm_source` and `utm_content`). It's fire and forget: it never delays or
+blocks the Web3Forms send.
 
 Until `NEXT_PUBLIC_FORM_ENDPOINT` is set, the quote form composes the answers into a text message and opens the visitor's messaging app (on desktop it shows the message with a copy button and your email). Set the endpoint and it posts there instead and shows a thank-you.
 

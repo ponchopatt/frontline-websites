@@ -12,6 +12,7 @@ Kept separate from the trading project so the two never mix.
 | `sites/crossroads-church` | Crossroads Christian Church | Canberra church. About 50 pages built by a Python generator. | not live yet |
 | `sites/frontline-systems` | Frontline Systems | Our own site. Static. | frontlinesystems.com.au |
 | `sites/clock` | Imperium Detailing | Staff clock-in and timesheet web app. One page, three tabs, Google Sheets backend. | not live yet |
+| `sites/imperium-leads` | Imperium Detailing | Lead tracker phone app: morning chase list, evening log, numbers. One page, Supabase backend, PIN, email reminders, lead intake from the website and Make.com. See its README. | not live yet |
 
 ## How each one is built
 

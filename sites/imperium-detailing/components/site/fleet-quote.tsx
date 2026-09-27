@@ -9,6 +9,7 @@ import { site, smsHref, telHref } from "@/lib/site";
 import { formatPrice } from "@/lib/services";
 import { jobs, tiers, ceramicTiers, guidePrice, conditionRange, type JobId, type SizeId, type Tier } from "@/lib/pricing";
 import { fleetSizes, type FleetSizeId } from "@/lib/fleet";
+import { sendToLeads } from "@/lib/leads-hook";
 import { track } from "@/lib/track";
 
 type Counts = Record<FleetSizeId, number>;
@@ -159,6 +160,29 @@ export function FleetQuote() {
     setError("");
     const text = compose(data);
     setMessage(text);
+
+    // A copy for the team's lead tracker. Never awaited: the send below goes ahead regardless.
+    if (!data.get("botcheck")) {
+      const field = (k: string) => String(data.get(k) ?? "");
+      sendToLeads({
+        name: field("business") ? `${field("name")} (${field("business")})` : field("name"),
+        phone: field("phone"),
+        email: field("email"),
+        service: "Fleet",
+        vehicle: `${totalVehicles} vehicle${totalVehicles === 1 ? "" : "s"}`,
+        suburb: field("suburb"),
+        when: field("when"),
+        notes: [
+          `Fleet: ${fleetLines.replace(/\n/g, "; ")}`,
+          estimateLine ? `Estimate: ${estimateLine}` : "",
+          field("access") ? `Tap and power: ${field("access")}` : "",
+          field("notes"),
+        ]
+          .filter(Boolean)
+          .join(" · "),
+        form: "fleet",
+      });
+    }
 
     if (site.formEndpoint && site.formAccessKey) {
       setStatus("sending");

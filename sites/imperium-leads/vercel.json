@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "node build.mjs",
+  "outputDirectory": "public",
+  "crons": [
+    { "path": "/api/remind?slot=morning&when=summer", "schedule": "25 20 * * *" },
+    { "path": "/api/remind?slot=morning&when=winter", "schedule": "25 21 * * *" },
+    { "path": "/api/remind?slot=evening&when=summer", "schedule": "20 6 * * *" },
+    { "path": "/api/remind?slot=evening&when=winter", "schedule": "20 7 * * *" }
+  ],
+  "headers": [
+    { "source": "/sw.js", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
+    { "source": "/(index.html|config.js|claude-shim.js)?", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
+    { "source": "/(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }, { "key": "Referrer-Policy", "value": "same-origin" }] }
+  ]
+}
