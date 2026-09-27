@@ -32,9 +32,9 @@ export function jobsOn(leads, date) {
 
 const loggedOn = (l, today) => (l.log || []).some((e) => localDate(e.at) === today);
 
-/** Leads to log: new today, due, or talked to, and not logged yet. */
+/** Leads to log: new today or due, and not logged yet. A job added with "Add a job" isn't a lead to log. */
 export function toLogList(leads, today) {
-  return leads.filter((l) => (l.date === today || (isOpen(l) && l.nextFollowUp && l.nextFollowUp <= today)) && !loggedOn(l, today));
+  return leads.filter((l) => l.kind !== "job" && (l.date === today || (isOpen(l) && l.nextFollowUp && l.nextFollowUp <= today)) && !loggedOn(l, today));
 }
 
 function leadLine(l, today) {

@@ -173,6 +173,10 @@
   // What's known of each collection someone is listening to: collection -> Map(id -> data).
   var known = {};
   var listeners = [];
+  // Live changes applied to each collection so far. A fetch that a change lands during may hold
+  // data from before it, so that fetch is followed by another.
+  var changed = {};
+  function markChanged(collection) { changed[collection] = (changed[collection] || 0) + 1; }
 
   function docSnap(collection, id, data) {
     var exists = data !== undefined && data !== null;
@@ -286,14 +290,19 @@
   }
 
   // Brings every listened-to collection up to date (on start, after a reconnect, on return).
-  var refreshing = null;
+  var refreshing = null, rerun = false;
   function refreshAll() {
-    if (refreshing) return refreshing;
+    // Asked again mid-fetch (the server just became ready, the phone came back): that fetch may
+    // have started too early, so another follows it.
+    if (refreshing) { rerun = true; return refreshing; }
+    rerun = false;
     var collections = {};
     listeners.forEach(function (l) { collections[l.collection] = collections[l.collection] || []; collections[l.collection].push(l); });
+    var again = false;
     refreshing = Promise.all(
       Object.keys(collections).map(function (c) {
         var group = collections[c];
+        var before = changed[c] || 0;
         var wholeCollection = group.some(function (l) { return l.kind === "query"; });
         var load = wholeCollection
           ? fetchCollection(c).then(function (rows) {
@@ -303,13 +312,17 @@
               return fetchDoc(c, l.id).then(function (data) { put(c, l.id, data); });
             }));
         return load
-          .then(function () { emitCollection(c); })
+          .then(function () {
+            if ((changed[c] || 0) !== before) again = true;
+            emitCollection(c);
+          })
           .catch(function (err) {
             group.forEach(function (l) { if (l.err) l.err(asError(err)); });
           });
       }),
     ).then(function () {
       refreshing = null;
+      if (again || rerun) refreshAll();
     });
     return refreshing;
   }
@@ -321,9 +334,16 @@
       .channel("docs")
       .on("postgres_changes", { event: "*", schema: "public", table: "docs" }, function (p) {
         var row = p.eventType === "DELETE" ? p.old : p.new;
-        if (!row || !row.collection || !known[row.collection]) return;
+        if (!row || !row.collection) return;
+        markChanged(row.collection);
+        if (!known[row.collection]) return;
         put(row.collection, row.id, p.eventType === "DELETE" ? null : row.data);
         emitCollection(row.collection);
+      })
+      .on("system", {}, function (msg) {
+        // Live changes only flow from here. After a quiet spell the server can take a few seconds
+        // to get here after "SUBSCRIBED", and changes in that gap aren't sent: fetch them now.
+        if (msg && msg.extension === "postgres_changes" && msg.status === "ok") refreshAll();
       })
       .subscribe(function (status) {
         // (Re)connected: anything missed while away is picked up.
@@ -339,12 +359,16 @@
     listeners.push(l);
     openChannel();
     var c = l.collection;
+    var before = changed[c] || 0;
     var load =
       l.kind === "query"
         ? fetchCollection(c).then(function (rows) { known[c] = new Map(rows.map(function (r) { return [r.id, r.data]; })); })
         : fetchDoc(c, l.id).then(function (data) { put(c, l.id, data); });
     load
-      .then(function () { if (listeners.indexOf(l) !== -1) emit(l); })
+      .then(function () {
+        if (listeners.indexOf(l) !== -1) emit(l);
+        if ((changed[c] || 0) !== before) refreshAll();
+      })
       .catch(function (err) { if (l.err) l.err(asError(err)); });
     return function unsubscribe() {
       var i = listeners.indexOf(l);
@@ -354,6 +378,7 @@
 
   // A write is shown straight away on this phone; Realtime brings it to the other one.
   function saved(collection, id, data) {
+    markChanged(collection);
     put(collection, id, data);
     emitCollection(collection);
   }

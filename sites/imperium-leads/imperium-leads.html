@@ -184,6 +184,7 @@ tr:last-child td{border-bottom:0}
     <div class="card">
       <div class="eyebrow"><span>Jobs done today</span><span class="n" id="evJobsCount">0</span></div>
       <div class="list" id="evJobsList"></div>
+      <button class="btn secondary" id="addJobBtn" type="button">+ Add a job done today</button>
     </div>
     <div class="card">
       <div class="eyebrow"><span>Today so far</span></div>
@@ -428,9 +429,11 @@ tr:last-child td{border-bottom:0}
 
   // ---------- EVENING ----------
   function loggedToday(l){ const t=today(); return (l.log||[]).some(e=>localDate(e.at)===t); }
+  // New today or due a chase, and not logged yet. A job added straight from "Add a job" isn't a lead to chase.
+  function needsLog(l){ const t=today(); return l.kind!=="job" && (l.date===t || (isOpen(l) && l.nextFollowUp && l.nextFollowUp<=t)) && !loggedToday(l); }
   function renderEvening(){
     const t=today();
-    const ev=leads.filter(l=> l.date===t || loggedToday(l) || (isOpen(l) && l.nextFollowUp && l.nextFollowUp<=t))
+    const ev=leads.filter(l=> loggedToday(l) || needsLog(l))
       .sort((a,b)=>(loggedToday(a)?1:0)-(loggedToday(b)?1:0));
     const todo=ev.filter(l=>!loggedToday(l));
     $("#evCount").textContent=todo.length+" to go"; $("#dotEvening").hidden=!todo.length; $("#dotEvening").textContent=todo.length;
@@ -451,11 +454,51 @@ tr:last-child td{border-bottom:0}
   }
   $("#closeDay").addEventListener("click",async()=>{
     if(!db||!who) return;
-    const todo=leads.filter(l=>(l.date===today()||(isOpen(l)&&l.nextFollowUp&&l.nextFollowUp<=today()))&&!loggedToday(l)).length;
+    const todo=leads.filter(needsLog).length;
     if(todo){ toast(todo+" lead"+(todo===1?"":"s")+" still not logged. Do those first."); return; }
     const next={...(day||{}), closed:{...((day&&day.closed)||{}),[who]:true}}; delete next.id;
     try{ await db.doc("days/"+today()).set(next); toast("Day closed. Good work."); }catch(err){ writeFail(err); }
   });
+
+  // ---------- ADD A JOB (work that didn't come in as a lead here) ----------
+  $("#addJobBtn").addEventListener("click",openJob);
+  function openJob(){
+    const tg=(field,label)=>'<label class="toggle"><span>'+label+'</span><input type="checkbox" data-field="'+field+'"></label>';
+    const s=document.createElement("div"); s.className="sheet"; s.id="sheet";
+    s.innerHTML='<div class="sheet-in">'+
+      '<div class="sheet-h"><div><h2>Job done today</h2><p class="help">Repeat customers, referrals, anyone who isn\'t a lead here yet.</p></div><button class="x" id="closeSheet">Close</button></div>'+
+      '<label>What did you do?<div class="seg" id="j-service" data-value="">'+SERVICES.filter(v=>v!=="Not sure").map(v=>'<button type="button" data-v="'+esc(v)+'">'+esc(v==="Maintenance plan"?"Maint. plan":v)+'</button>').join("")+'</div></label>'+
+      '<div class="grid">'+
+        '<label>How much? $<input id="j-rev" type="number" inputmode="numeric" min="0" placeholder="250"></label>'+
+        '<label>Car<input id="j-car" placeholder="Kluger"></label>'+
+        '<label>Name<input id="j-name" placeholder="Jo"></label>'+
+        '<label>Phone<input id="j-phone" inputmode="tel" placeholder="0400 000 000"></label>'+
+      '</div>'+
+      '<label>Where from?<div class="seg" id="j-source" data-value="">'+SOURCES.map(v=>'<button type="button" data-v="'+esc(v)+'">'+esc(v)+'</button>').join("")+'</div></label>'+
+      '<div class="grid">'+tg("paid","Paid")+tg("reviewAsked","Review asked")+tg("upsellOffered","Upsell offered")+tg("plan","On a plan")+'</div>'+
+      '<button class="btn" id="j-save" disabled>Save job</button>'+
+    '</div>';
+    document.body.appendChild(s);
+    const g=sel=>s.querySelector(sel);
+    seg(g("#j-service"),()=>{ g("#j-save").disabled=false; }); seg(g("#j-source"));
+    g("#closeSheet").addEventListener("click",closeSheet); s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
+    g("#j-save").addEventListener("click",async()=>{
+      if(!db){ toast("Not connected. Try again in a sec."); return; }
+      const t=today(), now=new Date().toISOString(), on=f=>g('[data-field="'+f+'"]').checked?"Yes":"No";
+      const doc={
+        kind:"job", date:t, createdAt:now, owner:who||"",
+        name:g("#j-name").value.trim(), phone:g("#j-phone").value.trim(),
+        source:g("#j-source").dataset.value||"Other", ad:"", referredBy:"",
+        address:"", jobTime:"", access:"",
+        service:g("#j-service").dataset.value, car:g("#j-car").value.trim(), suburb:"",
+        replyMins:null, quoted:null, status:"Booked", nextFollowUp:"", lastContact:"", log:[],
+        objection:"", lostWhy:"", jobDate:t, revenue:num(g("#j-rev").value), paid:on("paid"), plan:on("plan"), upsellOffered:on("upsellOffered"), upsellTaken:"",
+        reviewAsked:on("reviewAsked"), reviewLeft:"", nextDue:"", notes:"", booked:"Yes"
+      };
+      const b=g("#j-save"); b.disabled=true;
+      try{ await db.collection("leads").add(doc); toast("Job saved."); closeSheet(); }catch(err){ b.disabled=false; writeFail(err); }
+    });
+  }
 
   // ---------- TOUCH (call / text log) ----------
   function openTouch(id){
@@ -656,7 +699,7 @@ tr:last-child td{border-bottom:0}
     const cur=document.querySelector('.tab[aria-selected="true"]').dataset.tab;
     if(cur==="morning") renderMorning(); else if(cur==="evening") renderEvening(); else if(cur==="leads") renderList(); else if(cur==="numbers") renderNumbers();
     const fu=leads.filter(l=>isOpen(l) && (!l.nextFollowUp || l.nextFollowUp<=today())).length; $("#dotMorning").hidden=!fu; $("#dotMorning").textContent=fu;
-    const todo=leads.filter(l=>(l.date===today()||(isOpen(l)&&l.nextFollowUp&&l.nextFollowUp<=today()))&&!loggedToday(l)).length; $("#dotEvening").hidden=!todo; $("#dotEvening").textContent=todo;
+    const todo=leads.filter(needsLog).length; $("#dotEvening").hidden=!todo; $("#dotEvening").textContent=todo;
   }
   function migrate(d){ if(!d.status){ d.status = d.booked==="Yes"?"Booked":d.booked==="No"?"Lost":(d.quoted!=null?"Quoted":d.replyMins!=null?"Contacted":"New"); } if(!d.log) d.log=[]; return d; }
   renderAll();
