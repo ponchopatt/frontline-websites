@@ -3,9 +3,12 @@
 The lead tracker for Imperium Detailing: Morning chase list, Evening log, Add, Leads and
 Numbers. A phone app (add it to the home screen) shared by Angus and Ananth.
 
-- **The page** is `imperium-leads.html`: the original design, plus "Add a job done today" on the
-  Evening tab for work that never came in as a lead (repeat customers, referrals). How it stores
-  things all lives in `public/claude-shim.js`, so the page only changes when what it shows does.
+- **The page** is `imperium-leads.html`. Adding a lead or booking asks for the essentials only
+  (service, car, suburb, and for a booking the date and price). Morning shows **Payments due**:
+  jobs done and not paid, oldest first, with a Paid button and "Add someone who owes you". Evening
+  has "Add a job done today" for work that never came in as a lead (repeat customers,
+  referrals). How it stores things all lives in `public/claude-shim.js`, so the page only changes
+  when what it shows does.
 - **Storage** is one Supabase table of JSON documents (`supabase/schema.sql`). The shim gives the
   page the `claude.use("db")` API it was written for (doc/collection, get/set/update/delete,
   onSnapshot) on top of it, with live updates between the two phones.

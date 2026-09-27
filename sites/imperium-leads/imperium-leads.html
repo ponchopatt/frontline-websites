@@ -166,6 +166,12 @@ tr:last-child td{border-bottom:0}
       <div class="eyebrow" style="margin-top:4px"><span>Tomorrow</span><span class="n" id="jobsTmCount">0</span></div>
       <div class="list" id="jobsTmList"></div>
     </div>
+    <div class="card">
+      <div class="eyebrow"><span>Payments due</span><span class="n" id="owedTotal">$0</span></div>
+      <p class="help">Jobs done but not paid yet, oldest first. Tap Paid once the money's in.</p>
+      <div class="list" id="owedList"></div>
+      <button class="btn secondary" id="addOwedBtn" type="button">+ Add someone who owes you</button>
+    </div>
     <div class="card" id="reelsCard">
       <div class="eyebrow"><span>Reels posted today</span><span class="n" id="reelsWho"></span></div>
       <div class="counter"><b><span id="reelsN">0</span><span style="color:var(--muted);font-size:16px;font-weight:600"> / 2</span></b><div class="row" style="flex-wrap:nowrap"><button class="btn secondary small" id="reelsMinus">−</button><button class="btn small" id="reelsPlus">Posted one</button></div></div>
@@ -198,8 +204,8 @@ tr:last-child td{border-bottom:0}
   <section id="view-add" role="tabpanel">
     <form id="addForm" class="card" autocomplete="off">
       <div>
-        <div class="eyebrow">New enquiry</div>
-        <p class="help">30 seconds. Add it the moment it lands, then text them.</p>
+        <div class="eyebrow">New lead or booking</div>
+        <p class="help">Just the essentials. Add it the moment it lands.</p>
       </div>
       <div class="grid">
         <label>Name<input id="f-name" required placeholder="Jo"></label>
@@ -210,9 +216,7 @@ tr:last-child td{border-bottom:0}
             <button type="button" data-v="Website">Website</button><button type="button" data-v="Referral">Referral</button><button type="button" data-v="Repeat">Repeat</button><button type="button" data-v="Other">Other</button>
           </div>
         </label>
-        <label class="full" id="adWrap" hidden>Which ad? (same name as Ads Manager)<input id="f-ad" placeholder="Monthly maintenance / Kluger / Brand film"></label>
-        <label class="full" id="refWrap" hidden>Who referred them?<input id="f-ref" placeholder="Dhana (Kambah)"></label>
-        <label class="full">What are they after?
+        <label class="full">What service?
           <div class="seg" id="f-service" data-value="">
             <button type="button" data-v="Full detail">Full detail</button><button type="button" data-v="Interior">Interior</button><button type="button" data-v="Exterior">Exterior</button><button type="button" data-v="Correction">Correction</button>
             <button type="button" data-v="Ceramic">Ceramic</button><button type="button" data-v="Maintenance plan">Maint. plan</button><button type="button" data-v="Pre-sale">Pre-sale</button><button type="button" data-v="Not sure">Not sure</button>
@@ -220,11 +224,11 @@ tr:last-child td{border-bottom:0}
         </label>
         <label>Car<input id="f-car" placeholder="Kluger"></label>
         <label>Suburb<input id="f-suburb" placeholder="Gungahlin"></label>
-        <label class="full">Have you replied yet?
-          <div class="seg two" id="f-replied" data-value="No"><button type="button" data-v="No">Not yet</button><button type="button" data-v="Yes">Yes</button></div>
+        <label class="full">Where are they at?
+          <div class="seg three" id="f-stage" data-value="New"><button type="button" data-v="New">New lead</button><button type="button" data-v="Quoted">Quoted</button><button type="button" data-v="Booked">Booked</button></div>
         </label>
-        <label id="replyWrap" hidden>Mins until we replied<input id="f-reply" type="number" inputmode="numeric" min="0" placeholder="5"></label>
-        <label>Quoted $ (if given)<input id="f-quoted" type="number" inputmode="numeric" min="0" placeholder="250"></label>
+        <label id="dateWrap" hidden>Date booked for<input id="f-jobDate" type="date"></label>
+        <label id="priceWrap" hidden>Price $<input id="f-price" type="number" inputmode="numeric" min="0" placeholder="250"></label>
         <label class="full">Notes<textarea id="f-notes" placeholder="Filthy interior, dog hair. Wants a weekend."></textarea></label>
       </div>
       <button class="btn" id="saveBtn" type="submit">Save lead</button>
@@ -236,7 +240,7 @@ tr:last-child td{border-bottom:0}
     <div class="filters">
       <input id="q" placeholder="Search name, car, suburb, phone">
       <select id="fStatus">
-        <option value="">All</option><option value="open">Open (new, contacted, quoted)</option><option value="New">New</option><option value="Contacted">Contacted</option><option value="Quoted">Quoted</option><option value="Booked">Booked</option><option value="Lost">Lost</option>
+        <option value="">All</option><option value="open">Open (new, contacted, quoted)</option><option value="New">New</option><option value="Contacted">Contacted</option><option value="Quoted">Quoted</option><option value="Booked">Booked</option><option value="Lost">Lost</option><option value="owed">Owes money</option>
       </select>
       <select id="fWho"><option value="">Both of us</option><option value="Angus">Angus's</option><option value="Ananth">Ananth's</option></select>
     </div>
@@ -286,6 +290,9 @@ tr:last-child td{border-bottom:0}
   const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const num = v => { v=String(v??"").trim(); if(v==="") return null; const n=Number(v); return isNaN(n)?null:n; };
   const isOpen = l => !["Booked","Lost"].includes(l.status);
+  // Owes money: a job that's been done and isn't paid. Marked unpaid counts straight away; a job
+  // nobody ticked either way counts from the day after.
+  const owes = l => l.status==="Booked" && !!l.jobDate && l.jobDate<=today() && l.paid!=="Yes" && (l.paid==="No" || l.jobDate<today());
   const dayName = d => new Date(d+"T12:00:00").toLocaleDateString("en-AU",{weekday:"short",day:"numeric",month:"short"});
 
   function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),2400); }
@@ -314,35 +321,37 @@ tr:last-child td{border-bottom:0}
   }
 
   // ---------- ADD ----------
-  seg($("#f-source"), v=>{ $("#adWrap").hidden = v!=="Meta ad"; $("#refWrap").hidden = v!=="Referral"; });
+  seg($("#f-source"));
   seg($("#f-service"));
-  seg($("#f-replied"), v=>{ $("#replyWrap").hidden = v!=="Yes"; });
+  const stageChanged=v=>{ $("#dateWrap").hidden = v!=="Booked"; $("#priceWrap").hidden = v==="New"; $("#saveBtn").textContent = v==="Booked" ? "Save booking" : "Save lead"; };
+  seg($("#f-stage"), stageChanged);
   $("#addForm").addEventListener("submit", async e=>{
     e.preventDefault();
     if(!db){ toast("Not connected. Try again in a sec."); return; }
     const src=$("#f-source").dataset.value, svc=$("#f-service").dataset.value;
     if(!src){ toast("Pick where they came from"); return; }
-    if(!svc){ toast("Pick what they're after"); return; }
-    const replied=$("#f-replied").dataset.value==="Yes";
-    const now=new Date().toISOString();
+    if(!svc){ toast("Pick the service"); return; }
+    const stage=$("#f-stage").dataset.value||"New", price=num($("#f-price").value), jobDate=$("#f-jobDate").value;
+    if(stage==="Booked" && !jobDate){ toast("Pick the date they're booked for"); return; }
+    const now=new Date().toISOString(), talked=stage!=="New";
     const doc={
       date: today(), createdAt: now, owner: who||"",
       name: $("#f-name").value.trim(), phone: $("#f-phone").value.trim(),
-      source: src, ad: src==="Meta ad" ? $("#f-ad").value.trim() : "", referredBy: src==="Referral" ? $("#f-ref").value.trim() : "",
+      source: src, ad: "", referredBy: "",
       address:"", jobTime:"", access:"",
       service: svc, car: $("#f-car").value.trim(), suburb: $("#f-suburb").value.trim(),
-      replyMins: replied ? num($("#f-reply").value) : null, quoted: num($("#f-quoted").value),
-      status: replied ? (num($("#f-quoted").value)!=null ? "Quoted" : "Contacted") : "New",
-      nextFollowUp: replied ? addDays(1) : today(), lastContact: replied ? now : "",
-      log: replied ? [{at:now, by:who||"", type:"text", outcome:"First reply", note:""}] : [],
-      objection:"", lostWhy:"", jobDate:"", revenue:null, paid:"", plan:"", upsellOffered:"", upsellTaken:"",
+      replyMins: null, quoted: stage==="Quoted" ? price : null,
+      status: stage,
+      nextFollowUp: stage==="New" ? today() : stage==="Quoted" ? addDays(1) : "", lastContact: talked ? now : "",
+      log: talked ? [{at:now, by:who||"", type:"text", outcome: stage==="Booked" ? "Booked" : "Quote given", note:""}] : [],
+      objection:"", lostWhy:"", jobDate: stage==="Booked" ? jobDate : "", revenue: stage==="Booked" ? price : null, paid:"", plan:"", upsellOffered:"", upsellTaken:"",
       reviewAsked:"", reviewLeft:"", nextDue:"", notes: $("#f-notes").value.trim()
     };
     const btn=$("#saveBtn"); btn.disabled=true;
     try{
       await db.collection("leads").add(doc);
-      $("#addForm").reset(); setSeg($("#f-source"),""); setSeg($("#f-service"),""); setSeg($("#f-replied"),"No"); $("#adWrap").hidden=true; $("#refWrap").hidden=true; $("#replyWrap").hidden=true;
-      toast(replied ? "Saved. They're on tomorrow's follow-up list." : "Saved. Now text them, then log it.");
+      $("#addForm").reset(); setSeg($("#f-source"),""); setSeg($("#f-service"),""); setSeg($("#f-stage"),"New"); stageChanged("New");
+      toast(stage==="Booked" ? "Booked. Legend." : stage==="Quoted" ? "Saved. They're on tomorrow's follow-up list." : "Saved. Now text them, then log it.");
     }catch(err){ writeFail(err); }
     btn.disabled=false;
   });
@@ -376,7 +385,7 @@ tr:last-child td{border-bottom:0}
     el.querySelectorAll("[data-act]").forEach(b=>b.addEventListener("click",e=>{
       e.stopPropagation();
       const card=b.closest(".lead"), id=card.dataset.id, a=b.dataset.act;
-      if(a==="touch") openTouch(id); else if(a==="open") openEdit(id);
+      if(a==="touch") openTouch(id); else if(a==="open") openEdit(id); else if(a==="paid") markPaid(id,b);
       else if(a==="copy"){ const l=leads.find(x=>x.id===id); copyText(l&&l.phone||""); }
       else quickTouch(id,a,b);
     }));
@@ -403,11 +412,19 @@ tr:last-child td{border-bottom:0}
     wire($("#fuList"));
     const jobs=leads.filter(l=>l.status==="Booked" && l.jobDate===t), tm=leads.filter(l=>l.status==="Booked" && l.jobDate===addDays(1));
     $("#jobsCount").textContent=jobs.length; $("#jobsTmCount").textContent=tm.length;
-    $("#jobsList").innerHTML = jobs.length ? jobs.map(l=>leadCard(l,{tag:'<span class="pill booked">'+(l.jobTime?esc(l.jobTime)+" · ":"")+(l.revenue!=null?money(l.revenue):l.quoted!=null?money(l.quoted):"Booked")+'</span>', extra:(l.address?'<div class="sub">'+esc(l.address)+'</div>':"")+(l.access?'<div class="sub">Access: '+esc(l.access)+'</div>':""),
+    $("#jobsList").innerHTML = jobs.length ? jobs.map(l=>leadCard(l,{tag:'<span class="pill booked">'+(l.revenue!=null?money(l.revenue):l.quoted!=null?money(l.quoted):"Booked")+'</span>',
       actions:'<div class="acts"><label class="toggle" style="flex:1"><span>Review asked</span><input type="checkbox" data-field="reviewAsked" '+(l.reviewAsked==="Yes"?"checked":"")+'></label><label class="toggle" style="flex:1"><span>Paid</span><input type="checkbox" data-field="paid" '+(l.paid==="Yes"?"checked":"")+'></label><button class="btn secondary small" data-act="open">Open</button></div>'})).join("") : '<div class="empty">No jobs booked for today.</div>';
     wire($("#jobsList")); wireToggles($("#jobsList"));
-    $("#jobsTmList").innerHTML = tm.length ? tm.map(l=>leadCard(l,{tag:'<span class="pill booked">'+(l.jobTime?esc(l.jobTime):"Tomorrow")+'</span>', extra:(l.address?'<div class="sub">'+esc(l.address)+'</div>':"")})).join("") : '<div class="empty">Nothing tomorrow yet.</div>';
+    $("#jobsTmList").innerHTML = tm.length ? tm.map(l=>leadCard(l,{tag:'<span class="pill booked">Tomorrow</span>'})).join("") : '<div class="empty">Nothing tomorrow yet.</div>';
     wire($("#jobsTmList"));
+    const owed=leads.filter(owes).sort((a,b)=>a.jobDate.localeCompare(b.jobDate));
+    $("#owedTotal").textContent=money(owed.reduce((a,l)=>a+(l.revenue??l.quoted??0),0));
+    $("#owedList").innerHTML = owed.length ? owed.map(l=>{
+      const days=Math.round((new Date(t+"T12:00:00")-new Date(l.jobDate+"T12:00:00"))/864e5);
+      return leadCard(l,{tag:'<span class="pill overdue">Owes</span>', extra:'<div class="sub">Job on '+esc(dayName(l.jobDate))+(days===0?" (today)":days===1?" (yesterday)":" ("+days+" days ago)")+'</div>',
+        actions:'<div class="acts"><button class="btn small" data-act="paid">Paid</button><button class="btn secondary small" data-act="open" style="flex:0 0 auto">Open</button></div>'});
+    }).join("") : '<div class="empty">Nobody owes you anything.</div>';
+    wire($("#owedList"));
     $("#reelsCard").hidden = who!=="Ananth";
     const r=(day&&day.reels&&day.reels[who])||0;
     $("#reelsN").textContent=r; $("#reelsWho").textContent=who||"";
@@ -418,6 +435,12 @@ tr:last-child td{border-bottom:0}
       const upd=clean({...l,[cb.dataset.field]: cb.checked?"Yes":"No", updatedAt:new Date().toISOString()});
       try{ await db.doc("leads/"+id).set(upd); }catch(err){ cb.checked=!cb.checked; writeFail(err); }
     }));
+  }
+  async function markPaid(id,btn){
+    const l=leads.find(x=>x.id===id); if(!l||!db) return;
+    if(btn) btn.disabled=true;
+    try{ await db.doc("leads/"+id).set(clean({...l, paid:"Yes", updatedAt:new Date().toISOString()})); toast("Marked paid."); }
+    catch(err){ if(btn) btn.disabled=false; writeFail(err); }
   }
   $("#reelsPlus").addEventListener("click",()=>bumpReels(1)); $("#reelsMinus").addEventListener("click",()=>bumpReels(-1));
   async function bumpReels(d){
@@ -461,22 +484,26 @@ tr:last-child td{border-bottom:0}
   });
 
   // ---------- ADD A JOB (work that didn't come in as a lead here) ----------
-  $("#addJobBtn").addEventListener("click",openJob);
-  function openJob(){
+  $("#addJobBtn").addEventListener("click",()=>openJob(false));
+  $("#addOwedBtn").addEventListener("click",()=>openJob(true));
+  // owed: someone who owes for a job already done, on any day up to today.
+  function openJob(owed){
     const tg=(field,label)=>'<label class="toggle"><span>'+label+'</span><input type="checkbox" data-field="'+field+'"></label>';
     const s=document.createElement("div"); s.className="sheet"; s.id="sheet";
     s.innerHTML='<div class="sheet-in">'+
-      '<div class="sheet-h"><div><h2>Job done today</h2><p class="help">Repeat customers, referrals, anyone who isn\'t a lead here yet.</p></div><button class="x" id="closeSheet">Close</button></div>'+
+      '<div class="sheet-h"><div><h2>'+(owed?"Someone who owes you":"Job done today")+'</h2><p class="help">'+(owed?"A job that\'s done but not paid yet.":"Repeat customers, referrals, anyone who isn\'t a lead here yet.")+'</p></div><button class="x" id="closeSheet">Close</button></div>'+
       '<label>What did you do?<div class="seg" id="j-service" data-value="">'+SERVICES.filter(v=>v!=="Not sure").map(v=>'<button type="button" data-v="'+esc(v)+'">'+esc(v==="Maintenance plan"?"Maint. plan":v)+'</button>').join("")+'</div></label>'+
       '<div class="grid">'+
         '<label>How much? $<input id="j-rev" type="number" inputmode="numeric" min="0" placeholder="250"></label>'+
         '<label>Car<input id="j-car" placeholder="Kluger"></label>'+
         '<label>Name<input id="j-name" placeholder="Jo"></label>'+
         '<label>Phone<input id="j-phone" inputmode="tel" placeholder="0400 000 000"></label>'+
+        '<label>Suburb<input id="j-suburb" placeholder="Gungahlin"></label>'+
+        (owed?'<label>Job date<input id="j-date" type="date" value="'+today()+'" max="'+today()+'"></label>':"")+
       '</div>'+
       '<label>Where from?<div class="seg" id="j-source" data-value="">'+SOURCES.map(v=>'<button type="button" data-v="'+esc(v)+'">'+esc(v)+'</button>').join("")+'</div></label>'+
-      '<div class="grid">'+tg("paid","Paid")+tg("reviewAsked","Review asked")+tg("upsellOffered","Upsell offered")+tg("plan","On a plan")+'</div>'+
-      '<button class="btn" id="j-save" disabled>Save job</button>'+
+      '<div class="grid">'+(owed?"":tg("paid","Paid"))+tg("reviewAsked","Review asked")+tg("upsellOffered","Upsell offered")+tg("plan","On a plan")+'</div>'+
+      '<button class="btn" id="j-save"'+(owed?"":" disabled")+'>'+(owed?"Add to payments due":"Save job")+'</button>'+
     '</div>';
     document.body.appendChild(s);
     const g=sel=>s.querySelector(sel);
@@ -484,19 +511,21 @@ tr:last-child td{border-bottom:0}
     g("#closeSheet").addEventListener("click",closeSheet); s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
     g("#j-save").addEventListener("click",async()=>{
       if(!db){ toast("Not connected. Try again in a sec."); return; }
-      const t=today(), now=new Date().toISOString(), on=f=>g('[data-field="'+f+'"]').checked?"Yes":"No";
+      if(owed && !g("#j-name").value.trim()){ toast("Add their name"); return; }
+      const now=new Date().toISOString(), on=f=>g('[data-field="'+f+'"]').checked?"Yes":"No";
+      const picked=owed ? (g("#j-date").value||today()) : today(), t=picked>today()?today():picked;
       const doc={
         kind:"job", date:t, createdAt:now, owner:who||"",
         name:g("#j-name").value.trim(), phone:g("#j-phone").value.trim(),
         source:g("#j-source").dataset.value||"Other", ad:"", referredBy:"",
         address:"", jobTime:"", access:"",
-        service:g("#j-service").dataset.value, car:g("#j-car").value.trim(), suburb:"",
+        service:g("#j-service").dataset.value, car:g("#j-car").value.trim(), suburb:g("#j-suburb").value.trim(),
         replyMins:null, quoted:null, status:"Booked", nextFollowUp:"", lastContact:"", log:[],
-        objection:"", lostWhy:"", jobDate:t, revenue:num(g("#j-rev").value), paid:on("paid"), plan:on("plan"), upsellOffered:on("upsellOffered"), upsellTaken:"",
+        objection:"", lostWhy:"", jobDate:t, revenue:num(g("#j-rev").value), paid:owed?"No":on("paid"), plan:on("plan"), upsellOffered:on("upsellOffered"), upsellTaken:"",
         reviewAsked:on("reviewAsked"), reviewLeft:"", nextDue:"", notes:"", booked:"Yes"
       };
       const b=g("#j-save"); b.disabled=true;
-      try{ await db.collection("leads").add(doc); toast("Job saved."); closeSheet(); }catch(err){ b.disabled=false; writeFail(err); }
+      try{ await db.collection("leads").add(doc); toast(owed?"Added to payments due.":"Job saved."); closeSheet(); }catch(err){ b.disabled=false; writeFail(err); }
     });
   }
 
@@ -508,7 +537,8 @@ tr:last-child td{border-bottom:0}
       '<div class="sheet-h"><div><h2>'+esc(l.name||"Lead")+'</h2><p class="help">'+esc(l.car||"")+' · '+esc(l.service||"")+(l.phone?' · <span style="user-select:all">'+esc(l.phone)+'</span>':"")+'</p></div><button class="x" id="closeSheet">Close</button></div>'+
       '<label>What did you do?<div class="seg three" id="t-type" data-value=""><button type="button" data-v="text">Texted</button><button type="button" data-v="answered">Called, answered</button><button type="button" data-v="noanswer">Called, no answer</button></div></label>'+
       '<label id="t-outWrap" hidden>How did it go?<div class="seg" id="t-out" data-value=""><button type="button" data-v="Booked">Booked</button><button type="button" data-v="Quote given">Quote given</button><button type="button" data-v="Needs follow-up">Needs follow-up</button><button type="button" data-v="Lost">Lost</button></div></label>'+
-      '<div id="t-bookWrap" hidden class="grid"><label>Job date<input id="t-jobDate" type="date" value="'+esc(l.jobDate||"")+'"></label><label>Time<input id="t-jobTime" placeholder="9am" value="'+esc(l.jobTime||"")+'"></label><label>Price agreed $<input id="t-rev" type="number" inputmode="numeric" value="'+(l.revenue??l.quoted??"")+'"></label><label>Address<input id="t-addr" placeholder="11 Hobler Pl, Kambah" value="'+esc(l.address||"")+'"></label></div>'+
+      '<div id="t-bookWrap" hidden class="grid"><label>Date booked for<input id="t-jobDate" type="date" value="'+esc(l.jobDate||"")+'"></label><label>Price $<input id="t-rev" type="number" inputmode="numeric" value="'+(l.revenue??l.quoted??"")+'"></label><label>Car<input id="t-car" value="'+esc(l.car||"")+'"></label><label>Suburb<input id="t-suburb" value="'+esc(l.suburb||"")+'"></label>'+
+        '<label class="full">Service<div class="seg" id="t-service" data-value="'+esc(l.service||"")+'">'+SERVICES.map(v=>'<button type="button" data-v="'+esc(v)+'">'+esc(v==="Maintenance plan"?"Maint. plan":v)+'</button>').join("")+'</div></label></div>'+
       '<label id="t-quoteWrap" hidden>Quoted $<input id="t-quoted" type="number" inputmode="numeric" value="'+(l.quoted??"")+'"></label>'+
       '<label id="t-objWrap" hidden>What\'s holding them back?<div class="seg three" id="t-obj" data-value="'+esc(l.objection||"")+'">'+OBJ.map(o=>'<button type="button" data-v="'+esc(o)+'">'+esc(o)+'</button>').join("")+'</div></label>'+
       '<label id="t-lostWrap" hidden>Why lost?<div class="seg three" id="t-lost" data-value="">'+LOST.map(o=>'<button type="button" data-v="'+esc(o)+'">'+esc(o)+'</button>').join("")+'</div></label>'+
@@ -528,9 +558,10 @@ tr:last-child td{border-bottom:0}
       show("#t-objWrap", answered && (out==="Quote given"||out==="Needs follow-up"));
       show("#t-lostWrap", answered && out==="Lost");
       show("#t-fuWrap", (type&&!answered) || (answered && (out==="Quote given"||out==="Needs follow-up")));
-      g("#t-save").disabled = !type || (answered && !out);
+      g("#t-save").disabled = !type || (answered && !out) || (answered && out==="Booked" && !g("#t-jobDate").value);
     };
-    seg(g("#t-type"),sync); seg(g("#t-out"),sync); seg(g("#t-obj")); seg(g("#t-lost"));
+    seg(g("#t-type"),sync); seg(g("#t-out"),sync); seg(g("#t-obj")); seg(g("#t-lost")); seg(g("#t-service"));
+    g("#t-jobDate").addEventListener("input",sync); g("#t-jobDate").addEventListener("change",sync);
     seg(g("#t-fu"), v=>{ g("#t-fuDate").hidden = v!=="pick"; });
     g("#closeSheet").addEventListener("click",closeSheet); s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
     g("#t-save").addEventListener("click",async()=>{
@@ -539,7 +570,7 @@ tr:last-child td{border-bottom:0}
       const upd={...l, lastContact:now, log:[...(l.log||[]),entry].slice(-30), updatedAt:now};
       const fuv=g("#t-fu").dataset.value; const fuDate= fuv==="pick" ? (g("#t-fuDate").value||addDays(1)) : addDays(Number(fuv)||1);
       if(type!=="answered"){ if(upd.status==="New") upd.status="Contacted"; upd.nextFollowUp=fuDate; if(upd.replyMins==null && l.status==="New") upd.replyMins=Math.max(0,Math.round((Date.now()-new Date(l.createdAt||now))/60000)); }
-      else if(out==="Booked"){ upd.status="Booked"; upd.jobDate=g("#t-jobDate").value||""; upd.jobTime=g("#t-jobTime").value.trim(); upd.address=g("#t-addr").value.trim(); upd.revenue=num(g("#t-rev").value); upd.nextFollowUp=""; upd.objection=""; }
+      else if(out==="Booked"){ upd.status="Booked"; upd.jobDate=g("#t-jobDate").value||""; upd.revenue=num(g("#t-rev").value); upd.car=g("#t-car").value.trim(); upd.suburb=g("#t-suburb").value.trim(); upd.service=g("#t-service").dataset.value||upd.service; upd.nextFollowUp=""; upd.objection=""; }
       else if(out==="Quote given"){ upd.status="Quoted"; upd.quoted=num(g("#t-quoted").value)??upd.quoted; upd.objection=g("#t-obj").dataset.value||""; upd.nextFollowUp=fuDate; }
       else if(out==="Needs follow-up"){ if(upd.status==="New") upd.status="Contacted"; upd.objection=g("#t-obj").dataset.value||""; upd.nextFollowUp=fuDate; }
       else if(out==="Lost"){ upd.status="Lost"; upd.lostWhy=g("#t-lost").dataset.value||"Other"; upd.nextFollowUp=""; }
@@ -566,7 +597,7 @@ tr:last-child td{border-bottom:0}
   $("#q").addEventListener("input",renderList); $("#fStatus").addEventListener("change",renderList); $("#fWho").addEventListener("change",renderList);
   function renderList(){
     const q=$("#q").value.trim().toLowerCase(), fs=$("#fStatus").value, fw=$("#fWho").value;
-    const rows=leads.filter(l=>(!fs || (fs==="open"?isOpen(l):l.status===fs)) && (!fw||l.owner===fw) && (!q||[l.name,l.car,l.suburb,l.phone,l.service,l.notes].join(" ").toLowerCase().includes(q)));
+    const rows=leads.filter(l=>(!fs || (fs==="open"?isOpen(l):fs==="owed"?owes(l):l.status===fs)) && (!fw||l.owner===fw) && (!q||[l.name,l.car,l.suburb,l.phone,l.service,l.notes].join(" ").toLowerCase().includes(q)));
     const el=$("#list");
     el.innerHTML = rows.length ? rows.map(l=>leadCard(l)).join("") : '<div class="empty">'+(leads.length?"Nothing matches.":"No leads yet. Add the first one.")+'</div>';
     wire(el);
@@ -594,18 +625,14 @@ tr:last-child td{border-bottom:0}
         '<label>Service<select id="e-service">'+opt(SERVICES,l.service)+'</select></label>'+
         '<label>Car<input id="e-car" value="'+esc(l.car)+'"></label>'+
         '<label>Suburb<input id="e-suburb" value="'+esc(l.suburb)+'"></label>'+
-        '<label>Mins to first reply<input id="e-reply" type="number" inputmode="numeric" value="'+(l.replyMins??"")+'"></label>'+
         '<label>Quoted $<input id="e-quoted" type="number" inputmode="numeric" value="'+(l.quoted??"")+'"></label>'+
         '<label>Objection<select id="e-obj"><option value="">–</option>'+opt(OBJ,l.objection)+'</select></label>'+
         '<label>Why lost?<select id="e-lostWhy"><option value="">–</option>'+opt(LOST,l.lostWhy)+'</select></label>'+
       '</div>'+
       '<hr class="divider"><div class="eyebrow">The job</div>'+
       '<div class="grid">'+
-        '<label>Job date<input id="e-jobDate" type="date" value="'+esc(l.jobDate)+'"></label>'+
-        '<label>Time<input id="e-jobTime" placeholder="9am" value="'+esc(l.jobTime||"")+'"></label>'+
-        '<label class="full">Address<input id="e-address" placeholder="11 Hobler Pl, Kambah" value="'+esc(l.address||"")+'"></label>'+
-        '<label class="full">Access notes (tap, power, parking, gate code)<input id="e-access" value="'+esc(l.access||"")+'"></label>'+
-        '<label>Revenue $<input id="e-revenue" type="number" inputmode="numeric" value="'+(l.revenue??"")+'"></label>'+
+        '<label>Date booked for<input id="e-jobDate" type="date" value="'+esc(l.jobDate)+'"></label>'+
+        '<label>Price $<input id="e-revenue" type="number" inputmode="numeric" value="'+(l.revenue??"")+'"></label>'+
         '<label>Paid?'+yn("paid",l.paid)+'</label>'+
         '<label>On maintenance plan?'+yn("plan",l.plan)+'</label>'+
         '<label>Upsell offered?'+yn("upsellOffered",l.upsellOffered)+'</label>'+
@@ -632,8 +659,8 @@ tr:last-child td{border-bottom:0}
       const upd={ ...l,
         status:g("#e-status").value, owner:g("#e-owner").value, name:g("#e-name").value.trim(), phone:g("#e-phone").value.trim(), date:g("#e-date").value, nextFollowUp:g("#e-fu").value,
         source:g("#e-source").value, ad:g("#e-ad").value.trim(), referredBy:g("#e-ref").value.trim(), service:g("#e-service").value, car:g("#e-car").value.trim(), suburb:g("#e-suburb").value.trim(),
-        replyMins:num(g("#e-reply").value), quoted:num(g("#e-quoted").value), objection:g("#e-obj").value, lostWhy:g("#e-lostWhy").value,
-        jobDate:g("#e-jobDate").value, jobTime:g("#e-jobTime").value.trim(), address:g("#e-address").value.trim(), access:g("#e-access").value.trim(), revenue:num(g("#e-revenue").value), paid:sv("paid"), plan:sv("plan"), upsellOffered:sv("upsellOffered"), upsellTaken:sv("upsellTaken"),
+        quoted:num(g("#e-quoted").value), objection:g("#e-obj").value, lostWhy:g("#e-lostWhy").value,
+        jobDate:g("#e-jobDate").value, revenue:num(g("#e-revenue").value), paid:sv("paid"), plan:sv("plan"), upsellOffered:sv("upsellOffered"), upsellTaken:sv("upsellTaken"),
         reviewAsked:sv("reviewAsked"), reviewLeft:sv("reviewLeft"), nextDue:g("#e-nextDue").value, notes:g("#e-notes").value.trim(), updatedAt:new Date().toISOString() };
       if(!isOpen(upd)) upd.nextFollowUp="";
       const b=g("#saveEdit"); b.disabled=true;

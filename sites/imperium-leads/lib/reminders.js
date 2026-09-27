@@ -27,7 +27,7 @@ export function chaseList(leads, today) {
 }
 
 export function jobsOn(leads, date) {
-  return leads.filter((l) => l.status === "Booked" && l.jobDate === date).sort((a, b) => (a.jobTime || "").localeCompare(b.jobTime || ""));
+  return leads.filter((l) => l.status === "Booked" && l.jobDate === date).sort((a, b) => (a.name || "").localeCompare(b.name || ""));
 }
 
 const loggedOn = (l, today) => (l.log || []).some((e) => localDate(e.at) === today);
@@ -53,8 +53,8 @@ function leadLine(l, today) {
 
 function jobLine(l) {
   return {
-    who: `${l.jobTime ? l.jobTime + " · " : ""}${l.name || "No name"} · ${l.car || "car?"}`,
-    about: [l.address, l.access ? `Access: ${l.access}` : "", l.revenue != null ? money(l.revenue) : l.quoted != null ? money(l.quoted) : ""].filter(Boolean).join(" · "),
+    who: `${l.name || "No name"} · ${l.car || "car?"}`,
+    about: [l.service, l.suburb, l.revenue != null ? money(l.revenue) : l.quoted != null ? money(l.quoted) : ""].filter(Boolean).join(" · "),
     phone: l.phone || "",
     when: "",
   };

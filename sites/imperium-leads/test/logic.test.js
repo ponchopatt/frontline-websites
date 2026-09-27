@@ -96,7 +96,7 @@ const leads = [
   lead({ name: "Fresh", date: TODAY }),
   lead({ name: "Later", status: "Quoted", nextFollowUp: "2026-09-30" }),
   lead({ name: "Done", status: "Contacted", log: [{ at: "2026-09-26T22:00:00Z" }] }), // 08:00 today in Canberra
-  lead({ name: "Job", status: "Booked", jobDate: TODAY, jobTime: "9am", address: "11 Hobler Pl, Kambah", access: "Tap at side", revenue: 350 }),
+  lead({ name: "Job", status: "Booked", jobDate: TODAY, service: "Full detail", suburb: "Kambah", revenue: 350 }),
   lead({ name: "Lost", status: "Lost", nextFollowUp: "" }),
   lead({ name: "Walk-up", kind: "job", date: TODAY, status: "Booked", nextFollowUp: "", jobDate: TODAY, revenue: 200 }), // from "Add a job"
 ];
@@ -107,7 +107,7 @@ test("the morning list is the app's: New first, then the longest overdue", () =>
   assert.equal(m.subject, "Morning: 3 to chase, 1 overdue · 2 jobs today");
   assert.match(m.text, /^Morning, Angus\nSunday 27 September · 3 to chase \(1 overdue\) · 2 jobs today/);
   assert.match(m.text, /Follow up today \(3\)\nNew leads first, then anyone due a chase\. Log each one in the app\.\n- Fresh · car\? · New today\n- Old · car\? · 0411 · Overdue since /);
-  assert.match(m.text, /- 9am · Job · car\? — 11 Hobler Pl, Kambah · Access: Tap at side · \$350/);
+  assert.match(m.text, /- Job · car\? — Full detail · Kambah · \$350/);
   assert.match(m.text, /Open Imperium Leads: https:\/\/leads.example$/);
   assert.match(m.html, /Morning, Angus/);
 });
