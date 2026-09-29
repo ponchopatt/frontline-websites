@@ -17,6 +17,8 @@ Numbers. A phone app (add it to the home screen) shared by Angus and Ananth.
   lock it for 15 minutes, then longer.
 - **New enquiries** arrive at `POST /api/lead` from the website's booking and fleet forms and
   from Make.com (Facebook instant forms). One lead per phone number per day.
+- **Reviews**: tap **Job done** on a job and the app walks you through asking for a Google review
+  (see below). Morning shows the review texts and nudges due today, and the last 30 days.
 - **Reminders** go by email at about 07:25 (chase list and today's jobs) and 17:20 (leads not
   logged yet), Canberra time.
 
@@ -26,6 +28,7 @@ Numbers. A phone app (add it to the home screen) shared by Angus and Ananth.
 |---|---|
 | `imperium-leads.html` | The page. |
 | `public/claude-shim.js` | The storage layer and the PIN screen. |
+| `public/reviews.js` | The review steps, the texts, what's due and the 30-day counts (plain script, shared with the tests). |
 | `public/sw.js`, `public/manifest.json`, icons | Home-screen app; opens with no signal (the list needs one). |
 | `api/unlock.js` | PIN check and sign-in. |
 | `api/lead.js` | New enquiries in. |
@@ -116,6 +119,30 @@ Scenario: **Facebook Lead Ads → Watch New Leads**, then **HTTP → Make a requ
 
 The `{{1.…}}` names depend on the questions in the instant form; pick them from Make's list.
 
+## Reviews
+
+Tap **Job done** on a job card (Morning or Evening), or **Job done: ask for a review** when you
+open a booked job. That sets `completedAt` and `reviewStatus: "not_asked"`, and the Review card
+walks through it:
+
+| Status | The card says | Buttons |
+|---|---|---|
+| `not_asked` | At handover, walk them round the car, then say this (the in-person script) | Asked in person, Skip |
+| `asked_in_person` | Send this text tonight (with their first name, the car and the settings) | Copy text, Text sent |
+| `text_sent` | Before 3 days: when to nudge. From 3 days: the one nudge text | Copy text, Nudged, They reviewed, Declined |
+| `nudged` | Leave it now. Never a second nudge | They reviewed, Declined |
+| `reviewed` | Reply within 24 hours (reply template) | Copy text |
+| `declined`, `skip` | Nothing more to do | |
+
+Each step stamps its time on the lead: `reviewAskedAt`, `reviewTextSentAt`, `reviewNudgedAt`,
+`reviewLeftAt`. `reviewNotes` is a short note. The older `reviewAsked` / `reviewLeft` Yes/No fields
+are kept in step for the Numbers tab. A wrong tap can be fixed with **Review status** in the lead's
+edit sheet. Leads are JSON documents, so no database change was needed.
+
+**Review settings** (Morning, under the review counts) holds the review link, who the texts are
+signed by and the business name. Both phones share them (`settings/reviews`); empty ones fall
+back to `https://g.page/r/CSwRG2iKFelCEAE/review`, Angus and Imperium Detailing.
+
 ## Reminders
 
 Vercel's clock is UTC and Canberra moves an hour for daylight saving, so the cron calls
@@ -136,6 +163,6 @@ curl "https://<this app>/api/remind?slot=morning&force=1" -H "Authorization: Bea
 
 ```
 npm install
-npm test          # lead mapping, the reminder lists, Canberra dates
+npm test          # lead mapping, the reminder lists, Canberra dates, the review steps
 node build.mjs    # needs SUPABASE_URL and SUPABASE_ANON_KEY to point at a project
 ```

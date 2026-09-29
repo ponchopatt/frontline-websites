@@ -90,5 +90,12 @@ export function buildLead(input, now = new Date()) {
     address: "",
     jobTime: "",
     access: "",
+    completedAt: null,
+    reviewStatus: null,
+    reviewAskedAt: null,
+    reviewTextSentAt: null,
+    reviewNudgedAt: null,
+    reviewLeftAt: null,
+    reviewNotes: "",
   };
 }

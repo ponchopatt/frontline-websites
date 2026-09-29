@@ -124,6 +124,14 @@ tr:last-child td{border-bottom:0}
 .gate .seg button{padding:18px 8px;font-size:16px}
 .toggle{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:600;color:var(--text);background:var(--surface2);border-radius:10px;padding:10px 12px}
 .toggle input{width:22px;height:22px;padding:0;margin:0;accent-color:var(--accent)}
+.pill.muted{background:var(--surface2);color:var(--muted)}
+.rev-title{margin:0;font-weight:600}
+.say{margin:0;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;white-space:pre-line;overflow-wrap:anywhere}
+.link-row{display:flex;align-items:center;gap:8px;font-size:13px}
+.link-row span{flex:1;min-width:0;color:var(--muted);overflow-wrap:anywhere}
+.rv-acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rv-acts .btn{width:100%}
+.rules{margin:0;padding-left:18px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:2px}
 @media (max-width:420px){.tiles{grid-template-columns:repeat(2,1fr)}}
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}
 </style>
@@ -165,6 +173,14 @@ tr:last-child td{border-bottom:0}
       <div class="list" id="jobsList"></div>
       <div class="eyebrow" style="margin-top:4px"><span>Tomorrow</span><span class="n" id="jobsTmCount">0</span></div>
       <div class="list" id="jobsTmList"></div>
+    </div>
+    <div class="card">
+      <div class="eyebrow"><span>Reviews due today</span><span class="n" id="revDueCount">0</span></div>
+      <p class="help">Review texts to send and one-off nudges. Copy, send, then tap the button.</p>
+      <div class="list" id="revDueList"></div>
+      <div class="eyebrow" style="margin-top:4px"><span>Reviews, last 30 days</span></div>
+      <div class="tiles" id="revTiles"></div>
+      <button class="btn secondary small" id="revSettingsBtn" type="button">Review settings</button>
     </div>
     <div class="card">
       <div class="eyebrow"><span>Payments due</span><span class="n" id="owedTotal">$0</span></div>
@@ -277,7 +293,7 @@ tr:last-child td{border-bottom:0}
   const SERVICES=["Full detail","Interior","Exterior","Correction","Ceramic","Maintenance plan","Pre-sale","Not sure"];
   const OBJ=["Price","Timing","Checking with partner","Wants more info","Thinking about it","Other"];
   const LOST=["Too expensive","No reply","Went elsewhere","Timing","Other"];
-  let db=null, dl=null, leads=[], day=null, canWrite=true, who=null, unsubDay=null;
+  let db=null, dl=null, leads=[], day=null, canWrite=true, who=null, unsubDay=null, reviewSettings={};
 
   const use = n => (window.claude && typeof window.claude.use==="function") ? window.claude.use(n) : Promise.resolve(null);
   const pad = n => String(n).padStart(2,"0");
@@ -345,7 +361,8 @@ tr:last-child td{border-bottom:0}
       nextFollowUp: stage==="New" ? today() : stage==="Quoted" ? addDays(1) : "", lastContact: talked ? now : "",
       log: talked ? [{at:now, by:who||"", type:"text", outcome: stage==="Booked" ? "Booked" : "Quote given", note:""}] : [],
       objection:"", lostWhy:"", jobDate: stage==="Booked" ? jobDate : "", revenue: stage==="Booked" ? price : null, paid:"", plan:"", upsellOffered:"", upsellTaken:"",
-      reviewAsked:"", reviewLeft:"", nextDue:"", notes: $("#f-notes").value.trim()
+      reviewAsked:"", reviewLeft:"", nextDue:"", notes: $("#f-notes").value.trim(),
+      completedAt:null, reviewStatus:null, reviewAskedAt:null, reviewTextSentAt:null, reviewNudgedAt:null, reviewLeftAt:null, reviewNotes:""
     };
     const btn=$("#saveBtn"); btn.disabled=true;
     try{
@@ -386,14 +403,17 @@ tr:last-child td{border-bottom:0}
       e.stopPropagation();
       const card=b.closest(".lead"), id=card.dataset.id, a=b.dataset.act;
       if(a==="touch") openTouch(id); else if(a==="open") openEdit(id); else if(a==="paid") markPaid(id,b);
+      else if(a==="done") markDone(id); else if(a==="review") openReview(id);
+      else if(a==="copyReview"){ const l=leads.find(x=>x.id===id), d=l&&R.due([l],reviewSettings,new Date())[0]; if(d) copyText(d.text,"Copied"); }
+      else if(a==="reviewDone"){ b.disabled=true; setReview(id,b.dataset.status).then(ok=>{ if(!ok) b.disabled=false; }); }
       else if(a==="copy"){ const l=leads.find(x=>x.id===id); copyText(l&&l.phone||""); }
       else quickTouch(id,a,b);
     }));
     el.querySelectorAll(".lead").forEach(c=>{ c.style.cursor="pointer"; c.addEventListener("click",e=>{ if(e.target.closest("button,a,input,label")) return; openEdit(c.dataset.id); }); });
   }
-  function copyText(t){
+  function copyText(t,msg){
     if(!t) return;
-    const done=()=>toast("Copied "+t);
+    const done=()=>toast(msg||("Copied "+t));
     try{ navigator.clipboard.writeText(t).then(done).catch(()=>fallbackCopy(t,done)); }catch(e){ fallbackCopy(t,done); }
   }
   function fallbackCopy(t,done){ const ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); try{ document.execCommand("copy"); done(); }catch(e){ toast("Long-press the number to copy it"); } ta.remove(); }
@@ -413,10 +433,17 @@ tr:last-child td{border-bottom:0}
     const jobs=leads.filter(l=>l.status==="Booked" && l.jobDate===t), tm=leads.filter(l=>l.status==="Booked" && l.jobDate===addDays(1));
     $("#jobsCount").textContent=jobs.length; $("#jobsTmCount").textContent=tm.length;
     $("#jobsList").innerHTML = jobs.length ? jobs.map(l=>leadCard(l,{tag:'<span class="pill booked">'+(l.revenue!=null?money(l.revenue):l.quoted!=null?money(l.quoted):"Booked")+'</span>',
-      actions:'<div class="acts"><label class="toggle" style="flex:1"><span>Review asked</span><input type="checkbox" data-field="reviewAsked" '+(l.reviewAsked==="Yes"?"checked":"")+'></label><label class="toggle" style="flex:1"><span>Paid</span><input type="checkbox" data-field="paid" '+(l.paid==="Yes"?"checked":"")+'></label><button class="btn secondary small" data-act="open">Open</button></div>'})).join("") : '<div class="empty">No jobs booked for today.</div>';
+      actions:'<div class="acts">'+jobDoneBtn(l)+'<label class="toggle" style="flex:1"><span>Paid</span><input type="checkbox" data-field="paid" '+(l.paid==="Yes"?"checked":"")+'></label><button class="btn secondary small" data-act="open">Open</button></div>'})).join("") : '<div class="empty">No jobs booked for today.</div>';
     wire($("#jobsList")); wireToggles($("#jobsList"));
     $("#jobsTmList").innerHTML = tm.length ? tm.map(l=>leadCard(l,{tag:'<span class="pill booked">Tomorrow</span>'})).join("") : '<div class="empty">Nothing tomorrow yet.</div>';
     wire($("#jobsTmList"));
+    const rset=R.settings(reviewSettings), revDue=R.due(leads,rset,new Date());
+    $("#revDueCount").textContent=revDue.length;
+    $("#revDueList").innerHTML = revDue.length ? revDue.map(d=>leadCard(d.lead,{tag:'<span class="pill due">'+(d.kind==="text"?"Text":"Nudge")+'</span>', extra:'<div class="sub" style="color:var(--text);font-weight:600">'+esc(d.what)+'</div>',
+      actions:'<div class="acts"><button class="btn small" data-act="copyReview">Copy text</button><button class="btn secondary small" data-act="reviewDone" data-status="'+d.done+'">'+esc(d.doneLabel)+'</button></div>'})).join("") : '<div class="empty">Nothing due today.</div>';
+    wire($("#revDueList"));
+    const rs=R.stats(leads,new Date(),30), tl=(v,label)=>'<div class="tile"><b>'+v+'</b><span>'+label+'</span></div>';
+    $("#revTiles").innerHTML=tl(rs.done,"Jobs done")+tl(rs.asked,"Asked")+tl(rs.texts,"Texts sent")+tl(rs.reviewed,"Reviews")+tl(pct(rs.asked,rs.done),"Ask rate")+tl(pct(rs.reviewed,rs.done),"Review rate");
     const owed=leads.filter(owes).sort((a,b)=>a.jobDate.localeCompare(b.jobDate));
     $("#owedTotal").textContent=money(owed.reduce((a,l)=>a+(l.revenue??l.quoted??0),0));
     $("#owedList").innerHTML = owed.length ? owed.map(l=>{
@@ -465,7 +492,7 @@ tr:last-child td{border-bottom:0}
     const jobs=leads.filter(l=>l.status==="Booked" && l.jobDate===t);
     $("#evJobsCount").textContent=jobs.length;
     $("#evJobsList").innerHTML = jobs.length ? jobs.map(l=>leadCard(l,{tag:'<span class="pill booked">'+(l.revenue!=null?money(l.revenue):"$?")+'</span>',
-      actions:'<div class="acts"><label class="toggle" style="flex:1"><span>Paid</span><input type="checkbox" data-field="paid" '+(l.paid==="Yes"?"checked":"")+'></label><label class="toggle" style="flex:1"><span>Review asked</span><input type="checkbox" data-field="reviewAsked" '+(l.reviewAsked==="Yes"?"checked":"")+'></label><label class="toggle" style="flex:1"><span>Upsell offered</span><input type="checkbox" data-field="upsellOffered" '+(l.upsellOffered==="Yes"?"checked":"")+'></label><button class="btn secondary small" data-act="open">Revenue &amp; more</button></div>'})).join("") : '<div class="empty">No jobs today.</div>';
+      actions:'<div class="acts">'+jobDoneBtn(l)+'<label class="toggle" style="flex:1"><span>Paid</span><input type="checkbox" data-field="paid" '+(l.paid==="Yes"?"checked":"")+'></label><label class="toggle" style="flex:1"><span>Upsell offered</span><input type="checkbox" data-field="upsellOffered" '+(l.upsellOffered==="Yes"?"checked":"")+'></label><button class="btn secondary small" data-act="open">Revenue &amp; more</button></div>'})).join("") : '<div class="empty">No jobs today.</div>';
     wire($("#evJobsList")); wireToggles($("#evJobsList"));
     const newToday=leads.filter(l=>l.date===t).length, touches=leads.reduce((a,l)=>a+(l.log||[]).filter(e=>localDate(e.at)===t).length,0);
     const bookedToday=leads.filter(l=>(l.log||[]).some(e=>localDate(e.at)===t && e.outcome==="Booked")).length;
@@ -502,7 +529,7 @@ tr:last-child td{border-bottom:0}
         (owed?'<label>Job date<input id="j-date" type="date" value="'+today()+'" max="'+today()+'"></label>':"")+
       '</div>'+
       '<label>Where from?<div class="seg" id="j-source" data-value="">'+SOURCES.map(v=>'<button type="button" data-v="'+esc(v)+'">'+esc(v)+'</button>').join("")+'</div></label>'+
-      '<div class="grid">'+(owed?"":tg("paid","Paid"))+tg("reviewAsked","Review asked")+tg("upsellOffered","Upsell offered")+tg("plan","On a plan")+'</div>'+
+      '<div class="grid">'+(owed?"":tg("paid","Paid"))+tg("upsellOffered","Upsell offered")+tg("plan","On a plan")+'</div>'+
       '<button class="btn" id="j-save"'+(owed?"":" disabled")+'>'+(owed?"Add to payments due":"Save job")+'</button>'+
     '</div>';
     document.body.appendChild(s);
@@ -522,12 +549,98 @@ tr:last-child td{border-bottom:0}
         service:g("#j-service").dataset.value, car:g("#j-car").value.trim(), suburb:g("#j-suburb").value.trim(),
         replyMins:null, quoted:null, status:"Booked", nextFollowUp:"", lastContact:"", log:[],
         objection:"", lostWhy:"", jobDate:t, revenue:num(g("#j-rev").value), paid:owed?"No":on("paid"), plan:on("plan"), upsellOffered:on("upsellOffered"), upsellTaken:"",
-        reviewAsked:on("reviewAsked"), reviewLeft:"", nextDue:"", notes:"", booked:"Yes"
+        reviewAsked:"", reviewLeft:"", nextDue:"", notes:"", booked:"Yes",
+        ...R.completePatch(null, owed ? new Date(t+"T12:00:00").toISOString() : now)
       };
       const b=g("#j-save"); b.disabled=true;
-      try{ await db.collection("leads").add(doc); toast(owed?"Added to payments due.":"Job saved."); closeSheet(); }catch(err){ b.disabled=false; writeFail(err); }
+      try{ const ref=await db.collection("leads").add(doc); toast(owed?"Added to payments due.":"Job saved. Now ask for a review."); closeSheet(); if(!owed) openReview(ref.id); }catch(err){ b.disabled=false; writeFail(err); }
     });
   }
+
+  // ---------- REVIEWS (the steps and words live in /reviews.js) ----------
+  const R=window.ILReviews;
+  const REVIEW_PILL={not_asked:"due",asked_in_person:"due",text_sent:"contacted",nudged:"contacted",reviewed:"done",declined:"muted",skip:"muted"};
+  const REVIEW_TOAST={asked_in_person:"Nice. Text them the link tonight.",text_sent:"Text logged. Nudge in 3 days if no review.",nudged:"Nudge logged. That's the last one.",reviewed:"Legend. Reply to it within 24 hours.",declined:"No worries. Leave it there.",skip:"Skipped.",not_asked:"Back to the start."};
+  const revPill=l=>{ const st=R.statusOf(l); return st?'<span class="pill '+(REVIEW_PILL[st]||"muted")+'">'+esc(R.LABELS[st])+'</span>':""; };
+  // On a job card: "Job done" until it's marked, then where the review is up to.
+  function jobDoneBtn(l){
+    return R.isDone(l) ? '<button class="btn secondary small" data-act="review">Review: '+esc(R.LABELS[R.statusOf(l)])+'</button>' : '<button class="btn small" data-act="done">Job done</button>';
+  }
+  async function markDone(id){
+    const l=leads.find(x=>x.id===id); if(!l||!db) return;
+    if(!R.isDone(l)){
+      const now=new Date().toISOString();
+      try{ await db.doc("leads/"+id).set(clean({...l, ...R.completePatch(l,now), updatedAt:now})); }catch(err){ writeFail(err); return; }
+    }
+    openReview(id);
+  }
+  async function setReview(id,status){
+    const l=leads.find(x=>x.id===id); if(!l||!db) return false;
+    const now=new Date().toISOString();
+    try{ await db.doc("leads/"+id).set(clean({...l, ...R.completePatch(l,now), ...R.patch(l,status,now), updatedAt:now})); toast(REVIEW_TOAST[status]||"Saved."); return true; }
+    catch(err){ writeFail(err); return false; }
+  }
+  // The Review card: what to do next, the words, the buttons, notes, the link and the rules.
+  function showReview(box,id){
+    const l=leads.find(x=>x.id===id); if(!l) return;
+    const set=R.settings(reviewSettings), st=R.step(l,set,new Date());
+    const acts=(st.copy?'<button type="button" class="btn small" data-rv="copy">Copy text</button>':"")+st.buttons.map(b=>'<button type="button" class="btn small'+(b.primary&&!st.copy?"":" secondary")+'" data-rv="'+b.status+'">'+esc(b.label)+'</button>').join("");
+    box.innerHTML='<div class="card">'+
+      '<div class="eyebrow"><span>Review</span>'+revPill(l)+'</div>'+
+      '<p class="rev-title">'+esc(st.title)+'</p>'+
+      (st.say?'<p class="say">'+esc(st.say)+'</p>':"")+
+      (acts?'<div class="rv-acts">'+acts+'</div>':"")+
+      '<label>Notes<input data-rv-notes maxlength="200" placeholder="Happy with the interior" value="'+esc(l.reviewNotes||"")+'"></label>'+
+      '<div class="link-row"><span>'+esc(set.reviewLink)+'</span><button type="button" class="mini" data-rv="link">Copy link</button></div>'+
+      '<ul class="rules">'+R.RULES.map(r=>'<li>'+esc(r)+'</li>').join("")+'</ul>'+
+    '</div>';
+    box.querySelectorAll("[data-rv]").forEach(b=>b.addEventListener("click",async()=>{
+      const v=b.dataset.rv;
+      if(v==="copy") copyText(st.say,"Copied");
+      else if(v==="link") copyText(set.reviewLink,"Copied");
+      else{ b.disabled=true; if(await setReview(id,v)) showReview(box,id); else b.disabled=false; }
+    }));
+    const notes=box.querySelector("[data-rv-notes]");
+    notes.addEventListener("change",async()=>{
+      const cur=leads.find(x=>x.id===id); if(!cur||!db) return;
+      try{ await db.doc("leads/"+id).set(clean({...cur, reviewNotes:notes.value.trim(), updatedAt:new Date().toISOString()})); toast("Note saved."); }catch(err){ writeFail(err); }
+    });
+  }
+  function openReview(id){
+    const l=leads.find(x=>x.id===id); if(!l) return;
+    closeSheet();
+    const ph=(l.phone||"").replace(/\s+/g,"");
+    const s=document.createElement("div"); s.className="sheet"; s.id="sheet";
+    s.innerHTML='<div class="sheet-in">'+
+      '<div class="sheet-h"><div><h2>'+esc(l.name||"Lead")+'</h2><p class="help">'+esc(l.car||"")+(l.service?' · '+esc(l.service):"")+'</p></div><button class="x" id="closeSheet">Close</button></div>'+
+      (ph?'<div class="row"><span style="user-select:all;font-size:14px">'+esc(l.phone)+'</span><a class="mini" href="sms:'+esc(ph)+'">Text</a><a class="mini" href="tel:'+esc(ph)+'">Call</a></div>':"")+
+      '<div id="reviewBox"></div>'+
+    '</div>';
+    document.body.appendChild(s);
+    s.querySelector("#closeSheet").addEventListener("click",closeSheet); s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
+    showReview(s.querySelector("#reviewBox"),id);
+  }
+  // Settings for the texts, shared by both phones.
+  $("#revSettingsBtn").addEventListener("click",()=>{
+    const set=R.settings(reviewSettings);
+    const s=document.createElement("div"); s.className="sheet"; s.id="sheet";
+    s.innerHTML='<div class="sheet-in">'+
+      '<div class="sheet-h"><div><h2>Review settings</h2><p class="help">Used in the review texts. Same on both phones.</p></div><button class="x" id="closeSheet">Close</button></div>'+
+      '<label>Google review link<input id="rs-link" inputmode="url" value="'+esc(set.reviewLink)+'"></label>'+
+      '<label>Texts signed by<input id="rs-sender" value="'+esc(set.senderName)+'"></label>'+
+      '<label>Business name<input id="rs-biz" value="'+esc(set.businessName)+'"></label>'+
+      '<button class="btn" id="rs-save">Save</button>'+
+    '</div>';
+    document.body.appendChild(s);
+    const g=sel=>s.querySelector(sel);
+    g("#closeSheet").addEventListener("click",closeSheet); s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
+    g("#rs-save").addEventListener("click",async()=>{
+      if(!db){ toast("Not connected. Try again in a sec."); return; }
+      const b=g("#rs-save"); b.disabled=true;
+      try{ await db.doc("settings/reviews").set({reviewLink:g("#rs-link").value.trim(), senderName:g("#rs-sender").value.trim(), businessName:g("#rs-biz").value.trim(), updatedAt:new Date().toISOString()}); toast("Saved."); closeSheet(); }
+      catch(err){ b.disabled=false; writeFail(err); }
+    });
+  });
 
   // ---------- TOUCH (call / text log) ----------
   function openTouch(id){
@@ -612,6 +725,7 @@ tr:last-child td{border-bottom:0}
     s.innerHTML='<div class="sheet-in">'+
       '<div class="sheet-h"><h2>'+esc(l.name||"Lead")+'</h2><div class="row" style="flex-wrap:nowrap"><button class="btn small" id="e-touch">Log a call or text</button><button class="x" id="closeSheet">Close</button></div></div>'+
       (canWrite?"":'<div class="banner">View only. Ask for edit access.</div>')+
+      (R.isDone(l)?'<div id="reviewBox"></div>':l.status==="Booked"?'<button class="btn" id="e-done">Job done: ask for a review</button>':"")+
       '<div class="grid">'+
         '<label>Status<select id="e-status">'+opt(["New","Contacted","Quoted","Booked","Lost"],l.status||"New")+'</select></label>'+
         '<label>Whose lead<select id="e-owner"><option value="">–</option>'+opt(["Angus","Ananth"],l.owner)+'</select></label>'+
@@ -637,8 +751,7 @@ tr:last-child td{border-bottom:0}
         '<label>On maintenance plan?'+yn("plan",l.plan)+'</label>'+
         '<label>Upsell offered?'+yn("upsellOffered",l.upsellOffered)+'</label>'+
         '<label>Upsell taken?'+yn("upsellTaken",l.upsellTaken)+'</label>'+
-        '<label>Review asked?'+yn("reviewAsked",l.reviewAsked)+'</label>'+
-        '<label>Review left?'+yn("reviewLeft",l.reviewLeft)+'</label>'+
+        (R.isDone(l)?'<label>Review status (to fix a mistake)<select id="e-rstatus">'+R.STATUSES.map(v=>'<option value="'+v+'"'+(v===R.statusOf(l)?" selected":"")+'>'+esc(R.LABELS[v])+'</option>').join("")+'</select></label>':"")+
         '<label class="full">Next service due<input id="e-nextDue" type="date" value="'+esc(l.nextDue)+'"></label>'+
         '<label class="full">Notes<textarea id="e-notes">'+esc(l.notes)+'</textarea></label>'+
       '</div>'+
@@ -651,17 +764,21 @@ tr:last-child td{border-bottom:0}
     s.querySelectorAll(".seg").forEach(x=>seg(x));
     s.querySelector("#closeSheet").addEventListener("click",closeSheet); s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
     s.querySelector("#e-touch").addEventListener("click",()=>{ closeSheet(); openTouch(id); });
+    const rbox=s.querySelector("#reviewBox"); if(rbox) showReview(rbox,id);
+    const doneBtn=s.querySelector("#e-done"); if(doneBtn) doneBtn.addEventListener("click",()=>markDone(id));
+    const rsel=s.querySelector("#e-rstatus");
+    if(rsel) rsel.addEventListener("change",async()=>{ if(await setReview(id,rsel.value)&&rbox) showReview(rbox,id); });
     s.querySelector("#delLead").addEventListener("click",()=>{ s.querySelector("#delConfirm").hidden=false; });
     s.querySelector("#delNo").addEventListener("click",()=>{ s.querySelector("#delConfirm").hidden=true; });
     s.querySelector("#delYes").addEventListener("click",async()=>{ try{ await db.doc("leads/"+id).delete(); toast("Deleted"); closeSheet(); }catch(e){ toast("Couldn't delete"); } });
     s.querySelector("#saveEdit").addEventListener("click",async()=>{
       const g=sel=>s.querySelector(sel); const sv=name=>s.querySelector('[data-name="'+name+'"]').dataset.value||"";
-      const upd={ ...l,
+      const upd={ ...(leads.find(x=>x.id===id)||l),
         status:g("#e-status").value, owner:g("#e-owner").value, name:g("#e-name").value.trim(), phone:g("#e-phone").value.trim(), date:g("#e-date").value, nextFollowUp:g("#e-fu").value,
         source:g("#e-source").value, ad:g("#e-ad").value.trim(), referredBy:g("#e-ref").value.trim(), service:g("#e-service").value, car:g("#e-car").value.trim(), suburb:g("#e-suburb").value.trim(),
         quoted:num(g("#e-quoted").value), objection:g("#e-obj").value, lostWhy:g("#e-lostWhy").value,
         jobDate:g("#e-jobDate").value, revenue:num(g("#e-revenue").value), paid:sv("paid"), plan:sv("plan"), upsellOffered:sv("upsellOffered"), upsellTaken:sv("upsellTaken"),
-        reviewAsked:sv("reviewAsked"), reviewLeft:sv("reviewLeft"), nextDue:g("#e-nextDue").value, notes:g("#e-notes").value.trim(), updatedAt:new Date().toISOString() };
+        nextDue:g("#e-nextDue").value, notes:g("#e-notes").value.trim(), updatedAt:new Date().toISOString() };
       if(!isOpen(upd)) upd.nextFollowUp="";
       const b=g("#saveEdit"); b.disabled=true;
       try{ await db.doc("leads/"+id).set(clean(upd)); toast("Saved"); closeSheet(); }catch(err){ b.disabled=false; writeFail(err); }
@@ -715,7 +832,7 @@ tr:last-child td{border-bottom:0}
   // ---------- EXPORT ----------
   $("#exportBtn").addEventListener("click", async()=>{
     if(!dl) return;
-    const cols=["date","owner","name","phone","source","ad","referredBy","service","car","suburb","status","replyMins","quoted","objection","lostWhy","nextFollowUp","lastContact","jobDate","jobTime","address","access","revenue","paid","plan","upsellOffered","upsellTaken","reviewAsked","reviewLeft","nextDue","notes","touches"];
+    const cols=["date","owner","name","phone","source","ad","referredBy","service","car","suburb","status","replyMins","quoted","objection","lostWhy","nextFollowUp","lastContact","jobDate","jobTime","address","access","revenue","paid","plan","upsellOffered","upsellTaken","reviewAsked","reviewLeft","nextDue","notes","touches","completedAt","reviewStatus","reviewAskedAt","reviewTextSentAt","reviewNudgedAt","reviewLeftAt","reviewNotes"];
     const q=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
     const csv=[cols.join(",")].concat(leads.slice().sort((a,b)=>(a.date||"").localeCompare(b.date||"")).map(l=>cols.map(c=>q(c==="touches"?(l.log||[]).length:l[c])).join(","))).join("\n");
     try{ await dl.save({filename:"imperium-leads-"+today()+".csv", data:csv}); }catch(e){ if(e&&e.code!=="cancelled") toast("Couldn't download"); }
@@ -742,6 +859,7 @@ tr:last-child td{border-bottom:0}
         $("#offline").hidden=false; return;
       }
       $("#offline").hidden=true;
+      db.doc("settings/reviews").onSnapshot(sn=>{ reviewSettings = sn.exists ? sn.data() : {}; renderAll(); }, ()=>{});
       db.collection("leads").orderBy("createdAt","desc").limit(1000).onSnapshot(snap=>{ leads=snap.docs.map(x=>migrate(Object.assign({id:x.id},x.data()))); renderAll(); }, err=>{ $("#offline").hidden=false; });
       let dayKey=null;
       const subDay=()=>{ const k=today(); if(k===dayKey) return; dayKey=k; if(unsubDay) unsubDay(); unsubDay=db.doc("days/"+k).onSnapshot(sn=>{ day = sn.exists ? sn.data() : null; renderAll(); }, ()=>{}); };

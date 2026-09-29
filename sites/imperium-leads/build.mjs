@@ -20,6 +20,7 @@ const HEAD = `<!doctype html>
 <script src="/vendor/supabase.js"></script>
 <script src="/config.js"></script>
 <script src="/claude-shim.js"></script>
+<script src="/reviews.js"></script>
 `;
 
 writeFileSync(join(pub, "index.html"), HEAD + readFileSync(join(here, "imperium-leads.html"), "utf8"));

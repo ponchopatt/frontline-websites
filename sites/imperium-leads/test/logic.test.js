@@ -78,6 +78,13 @@ test("a lead is saved exactly as the app's Add tab saves one", () => {
     address: "",
     jobTime: "",
     access: "",
+    completedAt: null,
+    reviewStatus: null,
+    reviewAskedAt: null,
+    reviewTextSentAt: null,
+    reviewNudgedAt: null,
+    reviewLeftAt: null,
+    reviewNotes: "",
   });
 });
 
