@@ -139,6 +139,10 @@ Each step stamps its time on the lead: `reviewAskedAt`, `reviewTextSentAt`, `rev
 are kept in step for the Numbers tab. A wrong tap can be fixed with **Review status** in the lead's
 edit sheet. Leads are JSON documents, so no database change was needed.
 
+**Make a review text** (top of the Reviews card on Morning) is for anyone, lead or not: type their
+name, the car if you like, and your name, and it writes the review text with the link, ready to
+copy and paste into a text.
+
 **Review settings** (Morning, under the review counts) holds the review link, who the texts are
 signed by and the business name. Both phones share them (`settings/reviews`); empty ones fall
 back to `https://g.page/r/CSwRG2iKFelCEAE/review`, Angus and Imperium Detailing.

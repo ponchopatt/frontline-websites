@@ -175,6 +175,7 @@ tr:last-child td{border-bottom:0}
       <div class="list" id="jobsTmList"></div>
     </div>
     <div class="card">
+      <button class="btn" id="quickTextBtn" type="button">Make a review text</button>
       <div class="eyebrow"><span>Reviews due today</span><span class="n" id="revDueCount">0</span></div>
       <p class="help">Review texts to send and one-off nudges. Copy, send, then tap the button.</p>
       <div class="list" id="revDueList"></div>
@@ -620,6 +621,31 @@ tr:last-child td{border-bottom:0}
     s.querySelector("#closeSheet").addEventListener("click",closeSheet); s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
     showReview(s.querySelector("#reviewBox"),id);
   }
+  // A review text for anyone: type their name (and yours), copy, paste into a text.
+  $("#quickTextBtn").addEventListener("click",()=>{
+    const set=R.settings(reviewSettings);
+    const s=document.createElement("div"); s.className="sheet"; s.id="sheet";
+    s.innerHTML='<div class="sheet-in">'+
+      '<div class="sheet-h"><div><h2>Review text</h2><p class="help">Type their name, copy it, paste it into a text.</p></div><button class="x" id="closeSheet">Close</button></div>'+
+      '<div class="grid">'+
+        '<label>Their name<input id="qt-name" placeholder="Jo" autocomplete="off"></label>'+
+        '<label>Car (optional)<input id="qt-car" placeholder="Kluger" autocomplete="off"></label>'+
+        '<label class="full">Your name<input id="qt-me" value="'+esc(who||set.senderName)+'" autocomplete="off"></label>'+
+      '</div>'+
+      '<p class="say" id="qt-text"></p>'+
+      '<button class="btn" id="qt-copy">Copy text</button>'+
+    '</div>';
+    document.body.appendChild(s);
+    const g=sel=>s.querySelector(sel);
+    const make=()=>R.text({name:g("#qt-name").value, car:g("#qt-car").value}, {...reviewSettings, senderName:g("#qt-me").value});
+    const show=()=>{ g("#qt-text").textContent=make(); };
+    ["#qt-name","#qt-car","#qt-me"].forEach(sel=>g(sel).addEventListener("input",show));
+    show();
+    g("#qt-copy").addEventListener("click",()=>{ if(!g("#qt-name").value.trim()){ toast("Type their name first"); g("#qt-name").focus(); return; } copyText(make(),"Copied. Paste it into a text."); });
+    g("#closeSheet").addEventListener("click",closeSheet); s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
+    g("#qt-name").focus();
+  });
+
   // Settings for the texts, shared by both phones.
   $("#revSettingsBtn").addEventListener("click",()=>{
     const set=R.settings(reviewSettings);
