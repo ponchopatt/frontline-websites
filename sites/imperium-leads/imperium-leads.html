@@ -56,6 +56,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .seg button{flex:1 1 calc(25% - 5px);min-width:0;font:inherit;font-size:13px;font-weight:600;padding:10px 4px;border-radius:10px;border:1px solid var(--line);background:var(--surface2);color:var(--text);cursor:pointer;line-height:1.2}
 .seg.three button{flex-basis:calc(33.3% - 4px)}
 .seg.two button{flex-basis:calc(50% - 3px)}
+.seg.one button{flex-basis:100%;text-align:left;padding:12px}
 .seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .btn{font:inherit;font-weight:700;font-size:15px;letter-spacing:.04em;padding:14px 18px;border-radius:12px;border:0;background:var(--accent);color:var(--accent-ink);cursor:pointer;width:100%}
@@ -132,6 +133,56 @@ tr:last-child td{border-bottom:0}
 .rv-acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .rv-acts .btn{width:100%}
 .rules{margin:0;padding-left:18px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:2px}
+/* Job checklist: used at the car, often with wet hands. Big rows, the whole row is the tap target. */
+.sheet-in.full{max-height:100%;height:100%;border-radius:0;padding-top:calc(12px + env(safe-area-inset-top,0px))}
+.ck-top{position:sticky;top:0;margin:0 -16px;padding:8px 16px 10px;background:var(--bg);z-index:2;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--line)}
+#ck .who{white-space:nowrap}
+.ck-bar{height:10px;background:var(--surface2);border-radius:5px;overflow:hidden}
+.ck-bar i{display:block;height:100%;background:var(--good);transition:width .2s}
+.ck-count{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700;font-size:15px}
+.ck-save{font-size:12px;font-weight:600;color:var(--muted)}
+.ck-save.waiting{color:var(--bad)}
+.ck-tabs{display:flex;flex-wrap:wrap;gap:6px}
+.ck-tabs button{flex:1 1 auto;font:inherit;font-size:14px;font-weight:700;min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--text);cursor:pointer}
+.ck-tabs button[aria-selected="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.ck-pane{display:flex;flex-direction:column;gap:12px}
+details.ck-block{background:var(--surface);border:1px solid var(--line);border-radius:14px}
+details.ck-block>summary{list-style:none;cursor:pointer;min-height:56px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:700;font-size:17px}
+details.ck-block>summary::-webkit-details-marker{display:none}
+details.ck-block>summary::after{content:"▾";color:var(--muted);font-size:14px}
+details.ck-block[open]>summary::after{content:"▴"}
+details.ck-block>summary .n{font-size:13px;font-weight:700;color:var(--muted);margin-left:auto}
+.ck-body{padding:0 12px 14px;display:flex;flex-direction:column;gap:8px}
+.ck-body h3{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:10px 4px 0}
+.ck-intro{margin:0 4px;font-size:14px;color:var(--muted)}
+.ck-row{display:flex;align-items:stretch;gap:4px;background:var(--surface2);border:2px solid transparent;border-radius:12px}
+.ck-row.done{background:var(--good-bg);border-color:var(--good)}
+.ck-row.skipped{background:var(--warn-bg);border-color:var(--warn)}
+.ck-item{flex:1;display:flex;flex-direction:row;align-items:flex-start;gap:12px;min-height:56px;padding:12px;cursor:pointer;color:var(--text);font-size:15px;font-weight:400;letter-spacing:0}
+.ck-item input[type=checkbox]{width:30px;height:30px;flex:0 0 auto;margin:0;accent-color:var(--good)}
+.ck-text{display:flex;flex-direction:column;gap:2px;min-width:0;overflow-wrap:anywhere}
+.ck-text .t{font-weight:700;font-size:16px}
+.ck-text .d{font-size:15px;line-height:1.4}
+.ck-text ul{margin:4px 0 0;padding-left:20px;font-size:14px}
+.ck-meta{font-size:13px;font-weight:700;color:var(--muted)}
+.ck-row.skipped .ck-meta{color:var(--warn)}
+.ck-more{flex:0 0 48px;min-height:48px;border:0;background:none;color:var(--muted);font:inherit;font-size:15px;font-weight:700;letter-spacing:1px;cursor:pointer;border-radius:12px}
+.ck-menu{display:flex;flex-direction:column;gap:8px;padding:0 12px 12px}
+.ck-row:has(.ck-menu:not([hidden])){flex-wrap:wrap}
+.ck-row .ck-menu{flex:1 1 100%}
+.ck-rules{margin:0;padding:10px 12px 10px 30px;background:var(--surface2);border-radius:12px;font-size:14px;display:flex;flex-direction:column;gap:6px}
+.ck-helper{background:var(--accent-bg);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.pt-row{background:var(--surface2);border:2px solid transparent;border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:6px}
+.pt-row.flag{border-color:var(--bad)}
+.pt-name{display:flex;justify-content:space-between;gap:8px;font-weight:700;font-size:15px}
+.pt-flag{color:var(--bad);font-size:13px}
+.pt-in{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.pt-in input{padding:10px 4px;text-align:center;font-weight:700}
+.pt-in input.low{border-color:var(--bad);color:var(--bad);background:var(--bad-bg)}
+.sop-box{border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
+.sop-box .sop-box{background:var(--surface2)}
+.sop-tools{display:flex;gap:6px;flex-wrap:wrap}
+.sop-tools .btn{flex:0 0 auto}
 @media (max-width:420px){.tiles{grid-template-columns:repeat(2,1fr)}}
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}
 </style>
@@ -173,6 +224,13 @@ tr:last-child td{border-bottom:0}
       <div class="list" id="jobsList"></div>
       <div class="eyebrow" style="margin-top:4px"><span>Tomorrow</span><span class="n" id="jobsTmCount">0</span></div>
       <div class="list" id="jobsTmList"></div>
+    </div>
+    <div class="card">
+      <div class="eyebrow"><span>Not signed off this week</span><span class="n" id="ckUnsignedCount">0</span></div>
+      <p class="help">Jobs earlier this week that still aren't signed off.</p>
+      <div class="list" id="ckUnsigned"></div>
+      <div class="eyebrow" style="margin-top:4px"><span>Checklists, last 30 days</span></div>
+      <div class="tiles" id="ckTiles"></div>
     </div>
     <div class="card">
       <button class="btn" id="quickTextBtn" type="button">Make a review text</button>
@@ -281,6 +339,11 @@ tr:last-child td{border-bottom:0}
       </div>
       <p class="help">Type the spend from Ads Manager. It's remembered on this phone only.</p>
     </div>
+    <div class="card">
+      <div class="eyebrow">Job SOPs</div>
+      <p class="help">The steps every job checklist is built from. Changes only reach jobs booked after them.</p>
+      <div class="row"><button class="btn secondary" id="sopEditBtn" type="button">Edit SOPs</button><button class="btn secondary" id="sopExportBtn" type="button">Export as markdown</button></div>
+    </div>
     <div class="card" id="dueCard" hidden><div class="eyebrow">Due for their next service</div><div class="list" id="dueList"></div></div>
   </section>
 </main>
@@ -322,7 +385,7 @@ tr:last-child td{border-bottom:0}
   function setSeg(el,v){ el.dataset.value=v||""; el.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.v===(v||"")))); }
 
   // ---------- WHO ----------
-  function setWho(v){ who=v; try{ localStorage.setItem("il-who",v); }catch(e){} $("#whoBtn").textContent=v+" ▾"; $("#gate").hidden=true; renderAll(); }
+  function setWho(v){ who=v; try{ localStorage.setItem("il-who",v); }catch(e){} $("#whoBtn").textContent=v+" ▾"; $("#gate").hidden=true; renderAll(); if(openCk) openCk.refresh(); }
   try{ who=localStorage.getItem("il-who"); }catch(e){}
   if(who) $("#whoBtn").textContent=who+" ▾"; else $("#gate").hidden=false;
   seg($("#whoPick"), v=>setWho(v));
@@ -367,7 +430,8 @@ tr:last-child td{border-bottom:0}
     };
     const btn=$("#saveBtn"); btn.disabled=true;
     try{
-      await db.collection("leads").add(doc);
+      const ref=await db.collection("leads").add(doc);
+      if(stage==="Booked") ensureJob({...doc,id:ref.id});
       $("#addForm").reset(); setSeg($("#f-source"),""); setSeg($("#f-service"),""); setSeg($("#f-stage"),"New"); stageChanged("New");
       toast(stage==="Booked" ? "Booked. Legend." : stage==="Quoted" ? "Saved. They're on tomorrow's follow-up list." : "Saved. Now text them, then log it.");
     }catch(err){ writeFail(err); }
@@ -404,7 +468,7 @@ tr:last-child td{border-bottom:0}
       e.stopPropagation();
       const card=b.closest(".lead"), id=card.dataset.id, a=b.dataset.act;
       if(a==="touch") openTouch(id); else if(a==="open") openEdit(id); else if(a==="paid") markPaid(id,b);
-      else if(a==="done") markDone(id); else if(a==="review") openReview(id);
+      else if(a==="done") markDone(id); else if(a==="review") openReview(id); else if(a==="checklist") openChecklist(id);
       else if(a==="copyReview"){ const l=leads.find(x=>x.id===id), d=l&&R.due([l],reviewSettings,new Date())[0]; if(d) copyText(d.text,"Copied"); }
       else if(a==="reviewDone"){ b.disabled=true; setReview(id,b.dataset.status).then(ok=>{ if(!ok) b.disabled=false; }); }
       else if(a==="copy"){ const l=leads.find(x=>x.id===id); copyText(l&&l.phone||""); }
@@ -433,7 +497,7 @@ tr:last-child td{border-bottom:0}
     wire($("#fuList"));
     const jobs=leads.filter(l=>l.status==="Booked" && l.jobDate===t), tm=leads.filter(l=>l.status==="Booked" && l.jobDate===addDays(1));
     $("#jobsCount").textContent=jobs.length; $("#jobsTmCount").textContent=tm.length;
-    $("#jobsList").innerHTML = jobs.length ? jobs.map(l=>leadCard(l,{tag:'<span class="pill booked">'+(l.revenue!=null?money(l.revenue):l.quoted!=null?money(l.quoted):"Booked")+'</span>',
+    $("#jobsList").innerHTML = jobs.length ? jobs.map(l=>leadCard(l,{tag:'<span class="pill booked">'+(l.revenue!=null?money(l.revenue):l.quoted!=null?money(l.quoted):"Booked")+'</span>', extra:ckLine(l),
       actions:'<div class="acts">'+jobDoneBtn(l)+'<label class="toggle" style="flex:1"><span>Paid</span><input type="checkbox" data-field="paid" '+(l.paid==="Yes"?"checked":"")+'></label><button class="btn secondary small" data-act="open">Open</button></div>'})).join("") : '<div class="empty">No jobs booked for today.</div>';
     wire($("#jobsList")); wireToggles($("#jobsList"));
     $("#jobsTmList").innerHTML = tm.length ? tm.map(l=>leadCard(l,{tag:'<span class="pill booked">Tomorrow</span>'})).join("") : '<div class="empty">Nothing tomorrow yet.</div>';
@@ -445,6 +509,12 @@ tr:last-child td{border-bottom:0}
     wire($("#revDueList"));
     const rs=R.stats(leads,new Date(),30), tl=(v,label)=>'<div class="tile"><b>'+v+'</b><span>'+label+'</span></div>';
     $("#revTiles").innerHTML=tl(rs.done,"Jobs done")+tl(rs.asked,"Asked")+tl(rs.texts,"Texts sent")+tl(rs.reviewed,"Reviews")+tl(pct(rs.asked,rs.done),"Ask rate")+tl(pct(rs.reviewed,rs.done),"Review rate");
+    const uns=J.unsigned(jobRecords(),leads,new Date());
+    $("#ckUnsignedCount").textContent=uns.length;
+    $("#ckUnsigned").innerHTML = uns.length ? uns.map(l=>leadCard(l,{tag:'<span class="pill due">'+esc(dayName(l.jobDate))+'</span>', extra:ckLine(l), actions:'<div class="acts"><button class="btn small" data-act="checklist">Open checklist</button></div>'})).join("") : '<div class="empty">Nothing waiting for sign-off.</div>';
+    wire($("#ckUnsigned"));
+    const cs=J.stats(jobRecords(),leads,new Date(),30), rate=v=>v==null?"–":Math.round(v*100)+"%";
+    $("#ckTiles").innerHTML=tl(cs.skippedPerJob==null?"–":cs.skippedPerJob.toFixed(1),"Steps skipped per job")+tl(cs.clipsExpected?cs.clipsFilmed+" of "+cs.clipsExpected:"–","Clips filmed")+tl(rate(cs.ceramicPitchedRate),"Ceramic pitched")+tl(rate(cs.planPitchedRate),"Plan pitched");
     const owed=leads.filter(owes).sort((a,b)=>a.jobDate.localeCompare(b.jobDate));
     $("#owedTotal").textContent=money(owed.reduce((a,l)=>a+(l.revenue??l.quoted??0),0));
     $("#owedList").innerHTML = owed.length ? owed.map(l=>{
@@ -543,7 +613,7 @@ tr:last-child td{border-bottom:0}
       const now=new Date().toISOString(), on=f=>g('[data-field="'+f+'"]').checked?"Yes":"No";
       const picked=owed ? (g("#j-date").value||today()) : today(), t=picked>today()?today():picked;
       const doc={
-        kind:"job", date:t, createdAt:now, owner:who||"",
+        kind:"job", noChecklist:true, date:t, createdAt:now, owner:who||"",
         name:g("#j-name").value.trim(), phone:g("#j-phone").value.trim(),
         source:g("#j-source").dataset.value||"Other", ad:"", referredBy:"",
         address:"", jobTime:"", access:"",
@@ -563,15 +633,24 @@ tr:last-child td{border-bottom:0}
   const REVIEW_PILL={not_asked:"due",asked_in_person:"due",text_sent:"contacted",nudged:"contacted",reviewed:"done",declined:"muted",skip:"muted"};
   const REVIEW_TOAST={asked_in_person:"Nice. Text them the link tonight.",text_sent:"Text logged. Nudge in 3 days if no review.",nudged:"Nudge logged. That's the last one.",reviewed:"Legend. Reply to it within 24 hours.",declined:"No worries. Leave it there.",skip:"Skipped.",not_asked:"Back to the start."};
   const revPill=l=>{ const st=R.statusOf(l); return st?'<span class="pill '+(REVIEW_PILL[st]||"muted")+'">'+esc(R.LABELS[st])+'</span>':""; };
-  // On a job card: "Job done" until it's marked, then where the review is up to.
+  // On a job card: the checklist until it's signed off, then "Job done", then where the review is up to.
   function jobDoneBtn(l){
-    return R.isDone(l) ? '<button class="btn secondary small" data-act="review">Review: '+esc(R.LABELS[R.statusOf(l)])+'</button>' : '<button class="btn small" data-act="done">Job done</button>';
+    if(R.isDone(l)) return '<button class="btn secondary small" data-act="review">Review: '+esc(R.LABELS[R.statusOf(l)])+'</button>';
+    const j=jobs[l.id];
+    if(J.isSignedOff(j)) return '<button class="btn small" data-act="done">Job done</button>';
+    if(!j) return '<button class="btn small" data-act="checklist">Start job</button>';
+    const p=J.progress(j); return '<button class="btn small" data-act="checklist">Checklist '+p.done+'/'+p.total+'</button>';
   }
+  // A job can only be marked done once its checklist is signed off (or Angus overrides it).
+  // Done starts the review flow at "not asked". Jobs added after the fact have no checklist.
   async function markDone(id){
     const l=leads.find(x=>x.id===id); if(!l||!db) return;
     if(!R.isDone(l)){
-      const now=new Date().toISOString();
-      try{ await db.doc("leads/"+id).set(clean({...l, ...R.completePatch(l,now), updatedAt:now})); }catch(err){ writeFail(err); return; }
+      const j=jobs[id], now=new Date().toISOString();
+      const patch = l.kind==="job" ? R.completePatch(l,now) : J.donePatch(l,j,now,R);
+      if(!patch){ toast("Sign off the checklist first."); openChecklist(id,"sign"); return; }
+      try{ await db.doc("leads/"+id).set(clean({...l, ...patch, updatedAt:now})); }catch(err){ writeFail(err); return; }
+      if(j) queueSave("jobs/"+id,{doneAt:now});
     }
     openReview(id);
   }
@@ -668,6 +747,487 @@ tr:last-child td{border-bottom:0}
     });
   });
 
+  // ---------- JOB CHECKLISTS (the rules live in /jobs.js, the SOP words in seed/sops.json) ----------
+  const J=window.ILJobs;
+  let jobs={}, sops=[], sopSettings=null, openCk=null, seeding=false;
+  // Resolves once the SOPs and their settings have loaded, so "Start job" right after opening waits for them.
+  let sopsLoaded; const sopsReady=new Promise(r=>{ sopsLoaded=r; });
+  const checkSopsReady=()=>{ if(sops.length&&sopSettings) sopsLoaded(); };
+  const OTHER={Angus:"Ananth",Ananth:"Angus"};
+  const jobRecords=()=>jobs; // renderMorning has its own list called jobs (today's jobs)
+  const hhmm=iso=>{ const d=new Date(iso); return isNaN(d)?"":d.toLocaleTimeString("en-AU",{hour:"numeric",minute:"2-digit"}); };
+  const capital=s=>s?s.charAt(0).toUpperCase()+s.slice(1):"";
+
+  // Saves that wait for signal. Each tick is its own small save. If one fails it stays on the
+  // phone (even through a reload) and goes again when the signal's back.
+  let queue={}; try{ queue=JSON.parse(localStorage.getItem("il-queue")||"{}")||{}; }catch(e){ queue={}; }
+  let flushing=false, retryT=null, saveFailed=false;
+  const keepQueue=()=>{ try{ localStorage.setItem("il-queue",JSON.stringify(queue)); }catch(e){} };
+  function queueSave(path,patch){
+    queue[path]=Object.assign(queue[path]||{},patch); keepQueue();
+    if(path.startsWith("jobs/")){ const id=path.slice(5); jobs[id]=Object.assign({id},jobs[id]||{},patch); }
+    showSave(); flushQueue();
+  }
+  async function flushQueue(){
+    if(flushing||!db) return;
+    const paths=Object.keys(queue);
+    if(!paths.length){ saveFailed=false; showSave(); return; }
+    flushing=true; showSave();
+    for(const path of paths){
+      const patch=queue[path]; delete queue[path]; keepQueue();
+      try{ await db.doc(path).update(patch); }
+      catch(err){
+        queue[path]=Object.assign(patch,queue[path]||{}); keepQueue();
+        flushing=false; saveFailed=true; showSave();
+        clearTimeout(retryT); retryT=setTimeout(flushQueue,4000); return;
+      }
+    }
+    flushing=false; saveFailed=false;
+    if(Object.keys(queue).length) flushQueue(); else showSave();
+  }
+  window.addEventListener("online",flushQueue);
+  function showSave(){
+    const el=document.getElementById("ck-save"); if(!el) return;
+    const waiting=Object.keys(queue).length>0;
+    el.classList.toggle("waiting",saveFailed&&waiting);
+    el.textContent = saveFailed&&waiting ? "Not saved yet. Trying again…" : waiting||flushing ? "Saving…" : "All saved";
+  }
+  // The live list, with anything still waiting to save laid on top.
+  function setJobs(docs){
+    jobs={};
+    docs.forEach(d=>{ jobs[d.id]=Object.assign({id:d.id},d.data(),queue["jobs/"+d.id]||{}); });
+    Object.keys(queue).forEach(p=>{ if(p.startsWith("jobs/")&&!jobs[p.slice(5)]) jobs[p.slice(5)]=Object.assign({id:p.slice(5)},queue[p]); });
+  }
+
+  // The first time the app runs, the SOPs are written in from seed/sops.json.
+  async function seedSops(){
+    if(seeding||!db) return; seeding=true;
+    try{
+      const seed=await (await fetch("/sops-seed.json",{cache:"no-store"})).json();
+      for(const t of seed.templates) await db.doc("sops/"+t.key).set(t);
+      await db.doc("settings/sop").set({...seed.settings, services:seed.services});
+    }catch(e){ seeding=false; }
+  }
+
+  // A booked job gets its checklist: a frozen copy of its SOPs, so later edits don't change it.
+  async function ensureJob(lead,rebuild){
+    if(!db||!lead||lead.kind==="job") return false;
+    if(jobs[lead.id]&&!rebuild) return true;
+    if(!sops.length||!sopSettings) await Promise.race([sopsReady,new Promise(r=>setTimeout(r,8000))]);
+    if(!sops.length||!sopSettings){ toast("The SOPs are still loading. Try again in a sec."); return false; }
+    const built=J.buildChecklist(lead,sops,sopSettings,new Date().toISOString());
+    if(rebuild&&jobs[lead.id]&&jobs[lead.id].createdAt) built.job.createdAt=jobs[lead.id].createdAt;
+    try{
+      await db.doc("checklists/"+lead.id).set(built.snapshot);
+      try{ localStorage.setItem("il-ck-"+lead.id,JSON.stringify(built.snapshot)); }catch(e){}
+      queueSave("jobs/"+lead.id,built.job);
+      return true;
+    }catch(err){ writeFail(err); return false; }
+  }
+
+  // On a job card: how far the checklist is.
+  function ckLine(l){
+    if(l.kind==="job"||R.isDone(l)) return "";
+    const j=jobs[l.id];
+    if(!j) return '<div class="sub">Checklist not started</div>';
+    if(J.isSignedOff(j)) return '<div class="sub" style="color:var(--good);font-weight:700">Checklist signed off</div>';
+    const p=J.progress(j);
+    return '<div class="sub" style="color:var(--text);font-weight:700">Checklist '+p.done+' of '+p.total+'</div><div class="bar" style="grid-column:1/-1"><i style="width:'+(p.total?Math.round(100*p.done/p.total):0)+'%"></i></div>';
+  }
+
+  async function openChecklist(id,tab){
+    const l=leads.find(x=>x.id===id); if(!l||!db) return;
+    if(l.kind==="job"){ toast("This job was added after it was done, so it has no checklist."); return; }
+    if(!jobs[id]&&!(await ensureJob(l))) return;
+    let snap=null;
+    try{ const sn=await db.doc("checklists/"+id).get(); if(sn.exists) snap=sn.data(); }catch(e){}
+    if(snap){ try{ localStorage.setItem("il-ck-"+id,JSON.stringify(snap)); }catch(e){} }
+    else{ try{ snap=JSON.parse(localStorage.getItem("il-ck-"+id)||"null"); }catch(e){} }
+    if(!snap){
+      if(!(await ensureJob(l,true))){ toast("Couldn't load the checklist. Check your signal."); return; }
+      try{ snap=JSON.parse(localStorage.getItem("il-ck-"+id)||"null"); }catch(e){}
+      if(!snap) return;
+    }
+    renderChecklist(id,snap,tab||"steps");
+  }
+
+  function itemRow(it,kind){
+    const id=esc(it.id);
+    const words = kind==="clip"
+      ? '<span class="t">'+esc(it.title)+'</span><span class="d">'+esc([it.length,it.purpose].filter(Boolean).join(" · "))+'</span>'
+      : it.title ? '<span class="t">'+esc(it.title)+'</span>'+(it.detail?'<span class="d">'+esc(it.detail)+'</span>':"")
+      : '<span class="d" style="font-weight:600">'+esc(it.detail)+'</span>';
+    const subs=(it.subs||[]).length?'<ul>'+it.subs.map(x=>'<li>'+esc(x)+'</li>').join("")+'</ul>':"";
+    return '<div class="ck-row" data-row="'+id+'"><label class="ck-item"><input type="checkbox" data-tick="'+id+'" data-kind="'+kind+'"><span class="ck-text">'+words+subs+'<span class="ck-meta" data-meta="'+id+'"></span></span></label>'+
+      (kind==="step"?'<button type="button" class="ck-more" data-more="'+id+'" aria-label="Add a note or skip">•••</button>'+
+        '<div class="ck-menu" data-menu="'+id+'" hidden><label>Note<input data-note="'+id+'" maxlength="200" placeholder="Anything to remember"></label><button type="button" class="btn secondary small" data-savenote="'+id+'">Save note</button>'+
+        '<label data-skipwrap="'+id+'">Why skip it?<input data-reason="'+id+'" maxlength="120" placeholder="No tap on site"></label><button type="button" class="btn secondary small" data-skip="'+id+'">Skip this step</button></div>':"")+
+    '</div>';
+  }
+
+  function renderChecklist(id,snap,tab){
+    closeSheet();
+    const l=leads.find(x=>x.id===id)||{id};
+    const keys=snap.templates.map(t=>t.key);
+    const hasPaint=keys.includes("correction"), hasWarranty=keys.includes("ceramic");
+    const tabs=[["steps","Steps"],["clips","Clips"]].concat(hasPaint?[["paint","Paint"]]:[],hasWarranty?[["warranty","Warranty"]]:[],[["sign","Sign-off"]]);
+    const price=l.revenue!=null?money(l.revenue):l.quoted!=null?money(l.quoted):"No price yet";
+    const scripts=J.handoverScripts(snap,jobs[id],l);
+    const combos=[]; snap.templates.forEach(t=>t.sections.forEach(s=>s.items.forEach(i=>{ if(i.combos) combos.push(...(i.subs||[])); })));
+    const stepIds={}, clipIds={};
+    snap.templates.forEach(t=>{ stepIds[t.key]=[]; clipIds[t.key]=[]; t.sections.forEach(s=>s.items.forEach(i=>{ if(i.type==="step"&&i.required!==false) stepIds[t.key].push(i.id); if(i.type==="clip") clipIds[t.key].push(i.id); })); });
+    const yn=(f,label)=>'<label>'+label+'<div class="seg two" data-yn="'+f+'" data-value=""><button type="button" data-v="Yes">Yes</button><button type="button" data-v="No">No</button></div></label>';
+    const helper='<div class="ck-helper"><div class="eyebrow">Handover helper</div>'+
+      scripts.map(x=>'<p class="rev-title">'+esc(x.label)+'</p><p class="say">'+esc(x.text)+'</p><button type="button" class="btn small" data-copyscript="'+x.key+'">Copy</button>').join("")+
+      '<div class="grid">'+yn("ceramicPitched","Ceramic pitched")+yn("planPitched","Plan pitched")+'</div></div>';
+
+    const steps=snap.templates.filter(t=>t.key!=="signoff").map(t=>{
+      const secs=t.sections.filter(s=>s.style!=="clips"&&s.style!=="scripts"&&s.items.some(i=>i.type==="step"||i.type==="rule"));
+      if(!secs.length&&t.key!=="handover") return "";
+      return '<details class="ck-block" data-block="'+t.key+'"><summary>'+esc(t.name)+'<span class="n" data-blockcount="'+t.key+'"></span></summary><div class="ck-body">'+
+        (t.intro?'<p class="ck-intro">'+esc(t.intro)+'</p>':"")+(t.key==="handover"?helper:"")+
+        secs.map(s=>(s.heading!==false?'<h3>'+esc(s.name)+'</h3>':"")+(s.intro?'<p class="ck-intro">'+esc(s.intro)+'</p>':"")+
+          (s.style==="bullets"?'<ul class="ck-rules">'+s.items.map(i=>'<li>'+esc(i.title?i.title+" "+i.detail:i.detail)+'</li>').join("")+'</ul>'
+            :s.items.filter(i=>i.type==="step").map(i=>itemRow(i,"step")).join(""))).join("")+
+      '</div></details>';
+    }).join("");
+    const clipBlocks=snap.templates.map(t=>{
+      const secs=t.sections.filter(s=>s.style==="clips"); if(!secs.length) return "";
+      return '<details class="ck-block" open><summary>'+esc(t.name)+'<span class="n" data-clipcount="'+t.key+'"></span></summary><div class="ck-body">'+
+        secs.map(s=>(s.intro?'<p class="ck-intro">'+esc(s.intro)+'</p>':"")+["before","during","after"].map(w=>{ const its=s.items.filter(i=>i.type==="clip"&&i.when===w); return its.length?'<h3>'+capital(w)+'</h3>'+its.map(i=>itemRow(i,"clip")).join(""):""; }).join("")).join("")+
+      '</div></details>';
+    }).join("");
+    const set=J.settings(sopSettings);
+    const others=Object.keys(jobs[id]||{}).filter(k=>k.startsWith("p:other-")).sort().map(k=>({key:k.slice(2),label:(jobs[id][k]&&jobs[id][k].label)||""}));
+    const panelRow=p=>'<div class="pt-row" data-panel="'+esc(p.key)+'"><div class="pt-name">'+(p.key.startsWith("other-")?'<input data-ptlabel placeholder="Which panel?" value="'+esc(p.label)+'">':'<span>'+esc(p.label)+'</span>')+'<span class="pt-flag"></span></div>'+
+      '<div class="pt-in">'+[0,1,2,3,4].map(i=>'<input type="number" inputmode="decimal" min="0" data-r="'+i+'" aria-label="'+esc(p.label||"Panel")+' reading '+(i+1)+'">').join("")+'</div><input data-ptnote placeholder="Note" maxlength="120" aria-label="'+esc(p.label||"Panel")+' note"></div>';
+    const paint='<p class="help">5 readings per panel, in microns. Red: under '+set.paintMin+', or a gap of more than '+set.paintSpread+' between highest and lowest.</p>'+
+      '<div class="list" id="pt-list">'+J.PANELS.concat(others).map(panelRow).join("")+'</div>'+
+      '<button type="button" class="btn secondary" id="pt-add">+ Add another panel</button>'+
+      '<div class="card"><div class="eyebrow">Correction record</div>'+
+        '<label>Pad and polish used<div class="seg one" id="cr-combo" data-value="">'+combos.concat(["Other"]).map(c=>'<button type="button" data-v="'+esc(c)+'">'+esc(c)+'</button>').join("")+'</div></label>'+
+        '<label id="cr-otherWrap" hidden>Which pad and polish?<input id="cr-other" maxlength="80"></label>'+
+        '<label>Stages<div class="seg three" id="cr-stages" data-value=""><button type="button" data-v="1">1 stage</button><button type="button" data-v="2">2 stages</button><button type="button" data-v="3">3 stages</button></div></label>'+
+        '<label>Note<textarea id="cr-note" maxlength="300"></textarea></label></div>';
+    const wf=(k,label,attrs)=>'<label>'+label+'<input data-w="'+k+'" '+(attrs||"")+'></label>';
+    const warranty='<p class="help">Filled in from the job. Check it and add the rest. Saves as you go.</p><div class="grid">'+
+      wf("customer","Customer")+wf("car","Car")+wf("rego","Rego",'autocapitalize="characters"')+wf("date","Job date",'type="date"')+
+      '<label class="full">Package<div class="seg three" data-wseg="package" data-value=""><button type="button" data-v="3 year">3 year</button><button type="button" data-v="5 year">5 year</button><button type="button" data-v="7 year">7 year</button></div></label>'+
+      wf("product","Coating product")+wf("batch","Bottle batch number")+
+      '<label class="full">Layers<div class="seg three" data-wseg="layers" data-value=""><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button></div></label>'+
+      '<label class="full">Photos link<input data-w="photos" inputmode="url" placeholder="Shared folder link"></label>'+
+      wf("annualCheck","Annual check",'type="date"')+
+      '<p class="full help" id="w-readings"></p></div>';
+
+    const s=document.createElement("div"); s.className="sheet"; s.id="sheet";
+    s.innerHTML='<div class="sheet-in full" id="ck">'+
+      '<div class="sheet-h"><div><h2>'+esc(l.name||"Job")+'</h2><p class="help">'+[l.car,l.suburb,l.service,price].filter(Boolean).map(esc).join(" · ")+'</p></div><div class="row" style="flex-wrap:nowrap"><button type="button" class="who" id="ck-who" title="Who\'s ticking"></button><button class="x" id="closeSheet">Close</button></div></div>'+
+      '<div class="ck-top">'+
+        '<div class="ck-bar"><i id="ck-bar"></i></div>'+
+        '<div class="ck-count"><span id="ck-count"></span><span id="ck-save" class="ck-save"></span></div>'+
+        '<div class="ck-tabs" role="tablist">'+tabs.map(([k,label])=>'<button type="button" role="tab" data-cktab="'+k+'">'+label+' <span data-badge="'+k+'"></span></button>').join("")+'</div>'+
+      '</div>'+
+      '<div id="ck-rebuild"></div>'+
+      '<div class="ck-pane" data-pane="steps">'+steps+'</div>'+
+      '<div class="ck-pane" data-pane="clips" hidden>'+(clipBlocks?'<p class="help">Tick each clip once it\'s filmed.</p>'+clipBlocks:'<div class="empty">No clips for this job.</div>')+'</div>'+
+      (hasPaint?'<div class="ck-pane" data-pane="paint" hidden>'+paint+'</div>':"")+
+      (hasWarranty?'<div class="ck-pane" data-pane="warranty" hidden>'+warranty+'</div>':"")+
+      '<div class="ck-pane" data-pane="sign" hidden></div>'+
+    '</div>';
+    document.body.appendChild(s);
+    const root=s.querySelector("#ck"), q=sel=>root.querySelector(sel), qa=sel=>root.querySelectorAll(sel);
+    const job=()=>jobs[id]||{id};
+    const lead=()=>leads.find(x=>x.id===id)||l;
+    const save=patch=>queueSave("jobs/"+id,patch);
+    const now=()=>new Date().toISOString();
+    let current=tab;
+
+    function showPane(k){
+      current=k;
+      qa("[data-cktab]").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.cktab===k)));
+      qa("[data-pane]").forEach(p=>{ p.hidden=p.dataset.pane!==k; });
+      if(k==="sign") renderSign();
+      root.scrollTop=0;
+    }
+
+    // ---- Sign-off pane ----
+    function renderSign(){
+      const pane=q('[data-pane="sign"]');
+      if(pane.contains(document.activeElement)&&document.activeElement.tagName==="TEXTAREA") return;
+      const j=job(), p=J.progress(j), L=lead(), admin=J.isAdmin(who,sopSettings);
+      let html="";
+      if(R.isDone(L)){
+        html='<div class="card"><p class="rev-title">Job done.</p>'+(j.signoff?'<p class="help">Signed off by '+esc(j.signoff.by)+'.</p>':j.override?'<p class="help">Sign-off overridden by '+esc(j.override.by)+': '+esc(j.override.reason)+'</p>':"")+'<button type="button" class="btn" data-ckreview>Ask for the review</button></div>';
+      } else if(J.isSignedOff(j)){
+        html='<div class="card"><p class="rev-title">'+(j.signoff?'Signed off by '+esc(j.signoff.by)+(j.signoff.at?' at '+esc(hhmm(j.signoff.at)):""):'Sign-off overridden by '+esc(j.override.by))+'</p>'+(j.override&&!j.signoff?'<p class="help">Why: '+esc(j.override.reason)+'</p>':"")+
+          '<button type="button" class="btn" data-ckdone>Mark job done</button><p class="help">Then ask for the review.</p></div>';
+      } else if(p.done<p.total){
+        const left=[]; snap.templates.forEach(t=>t.sections.forEach(sec=>sec.items.forEach(i=>{ if(i.type==="step"&&i.required!==false&&!J.settled(J.state(j,i.id))) left.push(i.title||i.detail); })));
+        html='<div class="card"><p class="rev-title">Finish the steps first: '+(p.total-p.done)+' to go.</p><ul class="ck-rules">'+left.slice(0,8).map(x=>'<li>'+esc(x)+'</li>').join("")+(left.length>8?'<li>and '+(left.length-8)+' more</li>':"")+'</ul></div>';
+      } else {
+        const chk=J.canSignOff(j,who);
+        const signT=snap.templates.find(t=>t.key==="signoff");
+        const ready=chk.ok&&p.signDone>=p.signTotal;
+        html=(chk.reason==="same"?'<div class="banner">You did most of this job, so '+esc(OTHER[who]||"someone else")+' checks it. '+(OTHER[who]?'<button type="button" class="mini" data-switch="'+esc(OTHER[who])+'">Switch to '+esc(OTHER[who])+'</button>':"")+'</div>'
+            :'<p class="help">'+(chk.main?esc(chk.main)+' did most of this job. ':"")+'Check each one, then sign off.</p>')+
+          (signT?(signT.intro?'<p class="ck-intro">'+esc(signT.intro)+'</p>':"")+signT.sections.map(sec=>'<h3 class="eyebrow" style="margin:6px 0 0">'+esc(sec.name)+'</h3>'+sec.items.filter(i=>i.type==="signoff").map(i=>itemRow(i,"sign")).join("")).join(""):"")+
+          '<button type="button" class="btn" data-signoff'+(ready?"":" disabled")+'>Sign off as '+esc(who||"…")+'</button>';
+      }
+      if(!R.isDone(L)&&!J.isSignedOff(j)&&admin){
+        html+='<details class="ck-block" id="ov-box"><summary>Override sign-off</summary><div class="ck-body"><p class="ck-intro">Only when there\'s no one to check it. This gets logged.</p><label>Why?<textarea id="ov-reason" maxlength="300"></textarea></label><button type="button" class="btn danger" data-override>Override sign-off</button></div></details>';
+      }
+      const wasOpen=!!(pane.querySelector("#ov-box")||{}).open, reason=(pane.querySelector("#ov-reason")||{}).value||"";
+      pane.innerHTML=html;
+      const box=pane.querySelector("#ov-box"); if(box){ box.open=wasOpen; pane.querySelector("#ov-reason").value=reason; }
+      fillTicks(pane);
+    }
+
+    function meta(kind,st){
+      if(st&&st.skipped) return "Skipped: "+(st.reason||"")+(st.note?" · Note: "+st.note:"");
+      if(st&&st.done) return (kind==="clip"?"Filmed":"Done")+" · "+(st.by||"")+(st.at?" "+hhmm(st.at):"")+(st.note?" · Note: "+st.note:"");
+      return (kind==="clip"?"Tick when filmed":"")+(st&&st.note?(kind==="clip"?" · ":"")+"Note: "+st.note:"");
+    }
+    function fillTicks(scope){
+      const j=job();
+      scope.querySelectorAll("[data-tick]").forEach(cb=>{
+        const st=J.state(j,cb.dataset.tick), row=cb.closest(".ck-row");
+        cb.checked=!!(st&&st.done);
+        row.classList.toggle("done",!!(st&&st.done)); row.classList.toggle("skipped",!!(st&&st.skipped));
+        const m=row.querySelector("[data-meta]"); if(m) m.textContent=meta(cb.dataset.kind,st);
+        const skipBtn=row.querySelector("[data-skip]"); if(skipBtn) skipBtn.textContent=st&&st.skipped?"Undo skip":"Skip this step";
+        const wrap=row.querySelector("[data-skipwrap]"); if(wrap) wrap.hidden=!!(st&&st.skipped);
+        const note=row.querySelector("[data-note]"); if(note&&document.activeElement!==note) note.value=(st&&st.note)||"";
+      });
+    }
+    const setVal=(el,v)=>{ if(el&&document.activeElement!==el&&el.value!==String(v??"")) el.value=v??""; };
+
+    function refresh(){
+      if(!root.isConnected) return;
+      const j=job(), p=J.progress(j), L=lead();
+      q("#ck-bar").style.width=(p.total?Math.round(100*p.done/p.total):0)+"%";
+      q("#ck-who").textContent=(who||"Who?")+" ▾";
+      q("#ck-count").textContent=p.done+" of "+p.total+" done"+(p.skipped?" ("+p.skipped+" skipped)":"");
+      fillTicks(q('[data-pane="steps"]')); fillTicks(q('[data-pane="clips"]'));
+      Object.keys(stepIds).forEach(k=>{ const el=q('[data-blockcount="'+k+'"]'); if(el){ const n=stepIds[k].filter(x=>J.settled(J.state(j,x))).length; el.textContent=stepIds[k].length?n+" of "+stepIds[k].length:""; } });
+      Object.keys(clipIds).forEach(k=>{ const el=q('[data-clipcount="'+k+'"]'); if(el){ const n=clipIds[k].filter(x=>{ const st=J.state(j,x); return !!(st&&st.done); }).length; el.textContent=n+" of "+clipIds[k].length+" filmed"; } });
+      const badge=(k,t)=>{ const el=q('[data-badge="'+k+'"]'); if(el) el.textContent=t; };
+      badge("steps",p.done+"/"+p.total); badge("clips",p.clipsDone+"/"+p.clipsTotal); badge("sign",J.isSignedOff(j)?"✓":"");
+      qa("[data-yn]").forEach(el=>setSeg(el,j[el.dataset.yn]||""));
+      if(hasPaint){
+        qa(".pt-row").forEach(row=>{
+          const r=j["p:"+row.dataset.panel]||{};
+          row.querySelectorAll("[data-r]").forEach(inp=>setVal(inp,(r.r||[])[Number(inp.dataset.r)]));
+          setVal(row.querySelector("[data-ptnote]"),r.note||""); setVal(row.querySelector("[data-ptlabel]"),r.label||"");
+          flagRow(row);
+        });
+        const c=j.correction||{};
+        setSeg(q("#cr-combo"),c.combo||""); q("#cr-otherWrap").hidden=c.combo!=="Other"; setVal(q("#cr-other"),c.other||"");
+        setSeg(q("#cr-stages"),c.stages||""); setVal(q("#cr-note"),c.note||"");
+      }
+      if(hasWarranty){
+        const w=Object.assign(J.warrantyDefaults(L,today()),j.warranty||{});
+        qa("[data-w]").forEach(inp=>setVal(inp,w[inp.dataset.w]));
+        qa("[data-wseg]").forEach(el=>setSeg(el,w[el.dataset.wseg]||""));
+        const n=Object.keys(j).filter(k=>k.startsWith("p:")&&(j[k].r||[]).some(v=>v!=null&&v!=="")).length;
+        q("#w-readings").innerHTML='Paint readings: '+n+' panel'+(n===1?"":"s")+' recorded. '+(hasPaint?'<button type="button" class="mini" data-cktab="paint">See them</button>':"");
+      }
+      q("#ck-rebuild").innerHTML = J.needsRebuild(j,L) ? '<div class="banner">The service is now '+esc(L.service||"")+'. <button type="button" class="mini" data-rebuild>Update the checklist</button></div>' : "";
+      if(current==="sign") renderSign();
+      showSave();
+    }
+
+    // ---- Paint readings ----
+    function readRow(row){
+      const r=[...row.querySelectorAll("[data-r]")].map(i=>i.value===""?null:Number(i.value));
+      const lab=row.querySelector("[data-ptlabel]");
+      return { label: lab?lab.value.trim():(J.PANELS.find(p=>p.key===row.dataset.panel)||{}).label||"", r, note: row.querySelector("[data-ptnote]").value.trim() };
+    }
+    function flagRow(row){
+      const f=J.paintFlags(readRow(row),sopSettings), set=J.settings(sopSettings);
+      row.querySelectorAll("[data-r]").forEach((inp,i)=>inp.classList.toggle("low",f.low.includes(i)));
+      row.classList.toggle("flag",f.low.length>0||f.bigJump);
+      row.querySelector(".pt-flag").textContent=[f.low.length?"Under "+set.paintMin:"",f.bigJump?"Gap of "+f.spread:""].filter(Boolean).join(" · ");
+    }
+    const timers={};
+    const later=(key,fn)=>{ clearTimeout(timers[key]); timers[key]=setTimeout(fn,500); };
+    const saveRow=row=>save({["p:"+row.dataset.panel]:readRow(row)});
+    const saveCorrection=()=>save({correction:{combo:q("#cr-combo").dataset.value||"",other:q("#cr-other").value.trim(),stages:q("#cr-stages").dataset.value||"",note:q("#cr-note").value.trim()}});
+    const saveWarranty=()=>{ const w={}; qa("[data-w]").forEach(inp=>{ w[inp.dataset.w]=inp.value.trim(); }); qa("[data-wseg]").forEach(el=>{ w[el.dataset.wseg]=el.dataset.value||""; }); save({warranty:w}); };
+    if(hasPaint){
+      seg(q("#cr-combo"),v=>{ q("#cr-otherWrap").hidden=v!=="Other"; saveCorrection(); });
+      seg(q("#cr-stages"),saveCorrection);
+    }
+    if(hasWarranty) qa("[data-wseg]").forEach(el=>seg(el,saveWarranty));
+    qa("[data-yn]").forEach(el=>seg(el,v=>save({[el.dataset.yn]:v})));
+
+    root.addEventListener("input",e=>{
+      const t=e.target, row=t.closest(".pt-row");
+      if(row){ flagRow(row); later("p"+row.dataset.panel,()=>saveRow(row)); }
+      else if(t.id==="cr-other"||t.id==="cr-note") later("cr",saveCorrection);
+      else if(t.dataset.w!==undefined) later("w",saveWarranty);
+    });
+    root.addEventListener("change",e=>{
+      const t=e.target;
+      if(t.dataset.tick){ tick(t); return; }
+      const row=t.closest(".pt-row"); if(row){ clearTimeout(timers["p"+row.dataset.panel]); saveRow(row); }
+      else if(t.id==="cr-other"||t.id==="cr-note"){ clearTimeout(timers.cr); saveCorrection(); }
+      else if(t.dataset.w!==undefined){ clearTimeout(timers.w); saveWarranty(); }
+    });
+
+    function tick(cb){
+      const itemId=cb.dataset.tick, kind=cb.dataset.kind, j=job(), st=J.state(j,itemId)||{};
+      if(!who){ cb.checked=!cb.checked; toast("Pick who you are first."); return; }
+      if(kind==="sign"){
+        const chk=J.canSignOff(j,who);
+        if(!chk.ok){ cb.checked=!cb.checked; toast(chk.reason==="same"?"You did most of this job, so "+(OTHER[who]||"someone else")+" checks it.":"Finish the steps first."); return; }
+      }
+      const val=cb.checked?{...st,done:true,skipped:false,reason:"",by:who,at:now()}:{...st,done:false,by:who,at:now()};
+      save({["s:"+itemId]:val}); refresh();
+    }
+
+    root.addEventListener("click",async e=>{
+      const b=e.target.closest("button"); if(!b) return;
+      const d=b.dataset;
+      if(b.id==="closeSheet"){ closeSheet(); return; }
+      if(b.id==="ck-who"){ setSeg($("#whoPick"),who||""); $("#gate").hidden=false; return; }
+      if(d.cktab){ showPane(d.cktab); return; }
+      if(d.more){ const m=q('[data-menu="'+d.more+'"]'); m.hidden=!m.hidden; return; }
+      if(d.savenote){ const st=J.state(job(),d.savenote)||{}; save({["s:"+d.savenote]:{...st,note:q('[data-note="'+d.savenote+'"]').value.trim()}}); toast("Note saved."); q('[data-menu="'+d.savenote+'"]').hidden=true; refresh(); return; }
+      if(d.skip){
+        const st=J.state(job(),d.skip)||{};
+        if(st.skipped){ save({["s:"+d.skip]:{...st,skipped:false,reason:""}}); refresh(); return; }
+        const reason=q('[data-reason="'+d.skip+'"]').value.trim();
+        if(!reason){ toast("Say why you're skipping it."); q('[data-reason="'+d.skip+'"]').focus(); return; }
+        save({["s:"+d.skip]:{...st,skipped:true,done:false,reason,by:who||"",at:now()}}); q('[data-menu="'+d.skip+'"]').hidden=true; toast("Skipped."); refresh(); return;
+      }
+      if(d.copyscript){ const x=scripts.find(y=>y.key===d.copyscript); if(x) copyText(x.text,"Copied"); return; }
+      if(b.id==="pt-add"){ const key="other-"+Date.now().toString(36); q("#pt-list").insertAdjacentHTML("beforeend",panelRow({key,label:""})); q('[data-panel="'+key+'"] [data-ptlabel]').focus(); return; }
+      if(d.switch!==undefined){ setWho(d.switch); toast("Now "+d.switch+"."); return; }
+      if(d.signoff!==undefined){ const patch=J.signOffPatch(job(),who,now()); if(!patch){ toast("Tick every check first."); return; } save(patch); toast("Signed off. Now mark the job done."); refresh(); return; }
+      if(d.override!==undefined){
+        try{ const patch=J.overridePatch(who,(q("#ov-reason")||{}).value,sopSettings,now()); save(patch);
+          db.collection("audit").add({at:patch.override.at,by:who,what:"Sign-off overridden",leadId:id,reason:patch.override.reason}).catch(()=>{});
+          toast("Sign-off overridden. It's logged."); refresh(); }
+        catch(err){ toast(err.message); }
+        return;
+      }
+      if(d.ckdone!==undefined){ markDone(id); return; }
+      if(d.ckreview!==undefined){ openReview(id); return; }
+      if(d.rebuild!==undefined){ if(await ensureJob(lead(),true)) openChecklist(id,current); return; }
+    });
+    s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
+
+    // Open the first block that isn't finished.
+    const firstOpen=[...qa("details[data-block]")].find(dt=>{ const ids=stepIds[dt.dataset.block]||[]; return ids.some(x=>!J.settled(J.state(job(),x))); });
+    if(firstOpen) firstOpen.open=true;
+    openCk={id,refresh};
+    refresh(); showPane(tab);
+  }
+
+  // ---------- SOP EDITOR (admin) AND EXPORT ----------
+  $("#sopExportBtn").addEventListener("click",async()=>{
+    if(!sops.length){ toast("The SOPs are still loading."); return; }
+    const md="# Imperium Job SOPs\n\n"+J.markdown(sops);
+    try{ if(!dl) throw new Error("no downloads"); await dl.save({filename:"imperium-sops.md",data:new Blob([md],{type:"text/markdown"})}); toast("Downloaded imperium-sops.md"); }
+    catch(e){ if(!e||e.code!=="cancelled") copyText(md,"Copied the SOPs as markdown"); }
+  });
+  $("#sopEditBtn").addEventListener("click",()=>{
+    if(!J.isAdmin(who,sopSettings)){ toast("Only "+J.settings(sopSettings).admins.join(" or ")+" can edit the SOPs."); return; }
+    if(!sops.length){ toast("The SOPs are still loading."); return; }
+    openSopEditor();
+  });
+  function openSopEditor(){
+    const draft=JSON.parse(JSON.stringify(sops)).sort((a,b)=>(a.sort||0)-(b.sort||0));
+    const set0=J.settings(sopSettings);
+    const draftSet={paintMin:set0.paintMin,paintSpread:set0.paintSpread,admins:set0.admins.slice(),services:JSON.parse(JSON.stringify(set0.services))};
+    const startKeys=draft.map(t=>t.key), openT=new Set();
+    const s=document.createElement("div"); s.className="sheet"; s.id="sheet";
+    s.innerHTML='<div class="sheet-in full"><div class="sheet-h"><div><h2>Job SOPs</h2><p class="help">Changes reach new jobs only. Jobs already booked keep their checklist.</p></div><button class="x" id="closeSheet">Close</button></div><div id="sop-ed" class="ck-pane"></div></div>';
+    document.body.appendChild(s);
+    const ed=s.querySelector("#sop-ed");
+    const TYPES=[["step","Step (tick box)"],["rule","Rule (no tick)"],["clip","Clip to film"],["signoff","Sign-off check"],["script","Script"]];
+    const STYLES=[["numbered","Numbered steps"],["bullets","Bullet list"],["checks","Sign-off ticks"],["clips","Clip table"],["scripts","Scripts"]];
+    const NEEDS=[["","Every job"],["exterior","Jobs with exterior"],["interior","Jobs with interior"],["correction","Jobs with correction"],["ceramic","Jobs with ceramic"]];
+    const opt=(list,v)=>list.map(([k,lab])=>'<option value="'+esc(k)+'"'+(k===(v||"")?" selected":"")+'>'+esc(lab)+'</option>').join("");
+    const tools=(path,what)=>'<div class="sop-tools"><button type="button" class="btn secondary small" data-ed="up" data-path="'+path+'">Move up</button><button type="button" class="btn secondary small" data-ed="down" data-path="'+path+'">Move down</button><button type="button" class="btn danger small" data-ed="del" data-path="'+path+'">Delete '+what+'</button></div>';
+    const fld=(path,f,label,v,ta)=>'<label>'+label+(ta?'<textarea data-path="'+path+'" data-f="'+f+'">'+esc(v||"")+'</textarea>':'<input data-path="'+path+'" data-f="'+f+'" value="'+esc(v||"")+'">')+'</label>';
+    const chk=(path,f,label,on)=>'<label class="toggle"><span>'+label+'</span><input type="checkbox" data-path="'+path+'" data-f="'+f+'"'+(on?" checked":"")+'></label>';
+    const sel=(path,f,label,list,v)=>'<label>'+label+'<select data-path="'+path+'" data-f="'+f+'">'+opt(list,v)+'</select></label>';
+    function itemHtml(it,p){
+      return '<div class="sop-box">'+sel(p,"type","Type",TYPES,it.type)+fld(p,"title","Bold words",it.title)+fld(p,"detail","The rest",it.detail,true)+
+        (it.type==="clip"?sel(p,"when","When",[["before","Before"],["during","During"],["after","After"]],it.when)+fld(p,"length","Length",it.length)+fld(p,"purpose","What it's for",it.purpose):fld(p,"subs","Sub-points, one per line",(it.subs||[]).join("\n"),true))+
+        chk(p,"required","Must be done",it.required!==false)+sel(p,"needs","Only for",NEEDS,it.needs)+tools(p,"item")+'</div>';
+    }
+    function render(){
+      ed.innerHTML='<div class="row"><button type="button" class="btn" data-ed="save">Save SOPs</button></div>'+
+        draft.map((t,ti)=>'<details class="ck-block" data-ti="'+ti+'"'+(openT.has(t.key)?" open":"")+'><summary>'+esc(t.name||t.key)+'<span class="n">'+esc(t.key)+'</span></summary><div class="ck-body">'+
+          fld("t:"+ti,"name","Name",t.name)+fld("t:"+ti,"intro","Intro",t.intro,true)+fld("t:"+ti,"outro","Note at the end",t.outro,true)+tools("t:"+ti,"template")+
+          (t.sections||[]).map((sc,si)=>{ const p="s:"+ti+":"+si; return '<div class="sop-box"><b>Section</b>'+fld(p,"name","Name",sc.name)+chk(p,"heading","Show the name",sc.heading!==false)+fld(p,"headingNote","Note after the name",sc.headingNote)+fld(p,"intro","Intro",sc.intro,true)+
+            sel(p,"style","Shown as",STYLES,sc.style)+sel(p,"needs","Only for",NEEDS,sc.needs)+tools(p,"section")+
+            (sc.items||[]).map((it,ii)=>itemHtml(it,"i:"+ti+":"+si+":"+ii)).join("")+
+            '<button type="button" class="btn secondary small" data-ed="additem" data-path="'+p+'">+ Add item</button></div>'; }).join("")+
+          '<button type="button" class="btn secondary small" data-ed="addsection" data-path="t:'+ti+'">+ Add section</button>'+
+        '</div></details>').join("")+
+        '<div class="card"><div class="eyebrow">Add a template</div><div class="grid"><label>Short key<input id="ed-newkey" placeholder="wheels_only"></label><label>Name<input id="ed-newname" placeholder="Wheels only"></label></div><button type="button" class="btn secondary" data-ed="addtemplate">+ Add template</button></div>'+
+        '<div class="card"><div class="eyebrow">Which templates each service gets</div><p class="help">Template keys in order, with commas.</p>'+
+          Object.keys(draftSet.services).map(sv=>{ const m=draftSet.services[sv]; const stop=Object.keys(m.stopAfter||{}).map(k=>{ const it=draft.flatMap(t=>t.sections.flatMap(x=>x.items)).find(i=>i.id===m.stopAfter[k]); return k+" stops after “"+((it&&(it.title||it.detail))||m.stopAfter[k])+"”"; }).join("; ");
+            return '<label>'+esc(sv)+'<input data-svc="'+esc(sv)+'" value="'+esc((m.templates||[]).join(", "))+'"></label>'+(stop?'<p class="help">'+esc(stop)+'</p>':"")+
+              '<label>Pitch at handover<select data-pitch="'+esc(sv)+'">'+opt([["ceramic","Ceramic pitch"],["plan","Maintenance plan pitch"]],m.pitch)+'</select></label>'; }).join("")+'</div>'+
+        '<div class="card"><div class="eyebrow">Paint readings and admins</div><div class="grid">'+
+          '<label>Flag readings under (microns)<input type="number" inputmode="numeric" id="ed-min" value="'+draftSet.paintMin+'"></label>'+
+          '<label>Flag a gap over (microns)<input type="number" inputmode="numeric" id="ed-spread" value="'+draftSet.paintSpread+'"></label>'+
+          '<label class="full">Who can edit SOPs and override sign-off<input id="ed-admins" value="'+esc(draftSet.admins.join(", "))+'"></label></div></div>'+
+        '<div class="row"><button type="button" class="btn" data-ed="save">Save SOPs</button><button type="button" class="btn secondary" data-ed="export">Export as markdown</button></div>';
+    }
+    const at=path=>{ const [k,...n]=path.split(":").map((x,i)=>i?Number(x):x); const t=draft[n[0]]; if(k==="t") return {list:draft,i:n[0],obj:t}; const sc=t.sections[n[1]]; if(k==="s") return {list:t.sections,i:n[1],obj:sc}; return {list:sc.items,i:n[2],obj:sc.items[n[2]]}; };
+    ed.addEventListener("toggle",e=>{ const d=e.target.closest("details[data-ti]"); if(d){ const key=draft[Number(d.dataset.ti)].key; d.open?openT.add(key):openT.delete(key); } },true);
+    const onEdit=e=>{
+      const t=e.target;
+      if(t.dataset.svc){ draftSet.services[t.dataset.svc].templates=t.value.split(",").map(x=>x.trim()).filter(Boolean); return; }
+      if(t.dataset.pitch){ draftSet.services[t.dataset.pitch].pitch=t.value; return; }
+      if(t.id==="ed-min") draftSet.paintMin=Number(t.value)||0;
+      if(t.id==="ed-spread") draftSet.paintSpread=Number(t.value)||0;
+      if(t.id==="ed-admins") draftSet.admins=t.value.split(",").map(x=>x.trim()).filter(Boolean);
+      if(!t.dataset.path) return;
+      const o=at(t.dataset.path).obj, f=t.dataset.f;
+      if(t.type==="checkbox") o[f]=t.checked;
+      else if(f==="subs") o.subs=t.value.split("\n").map(x=>x.trim()).filter(Boolean);
+      else o[f]=t.value;
+      if(f==="type"&&e.type==="change"){ o.required=o.type==="step"||o.type==="signoff"; if(o.type==="clip"&&!o.when) o.when="before"; render(); }
+    };
+    ed.addEventListener("input",onEdit); ed.addEventListener("change",onEdit);
+    ed.addEventListener("click",async e=>{
+      const b=e.target.closest("[data-ed]"); if(!b) return;
+      const a=b.dataset.ed;
+      if(a==="up"||a==="down"){ const {list,i}=at(b.dataset.path), j=a==="up"?i-1:i+1; if(j<0||j>=list.length) return; [list[i],list[j]]=[list[j],list[i]]; render(); return; }
+      if(a==="del"){ const {list,i,obj}=at(b.dataset.path); if(!confirm("Delete "+(obj.name||obj.title||obj.detail||"this")+"?")) return; list.splice(i,1); render(); return; }
+      if(a==="additem"){ const {obj}=at(b.dataset.path), ti=Number(b.dataset.path.split(":")[1]); obj.items=obj.items||[]; obj.items.push({id:draft[ti].key+"-"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),type:obj.style==="bullets"?"rule":obj.style==="checks"?"signoff":obj.style==="clips"?"clip":"step",title:"",detail:"",subs:[],required:!["bullets","clips"].includes(obj.style),...(obj.style==="clips"?{when:"before",length:"",purpose:""}:{})}); render(); return; }
+      if(a==="addsection"){ const {obj}=at(b.dataset.path); obj.sections=obj.sections||[]; obj.sections.push({id:obj.key+"-"+Date.now().toString(36),name:"New section",heading:true,headingNote:"",intro:"",style:"numbered",needs:"",items:[]}); render(); return; }
+      if(a==="addtemplate"){
+        const key=s.querySelector("#ed-newkey").value.trim(), name=s.querySelector("#ed-newname").value.trim();
+        if(!/^[a-z_]+$/.test(key)){ toast("Short key: small letters and _ only."); return; }
+        if(draft.some(t=>t.key===key)){ toast("That key is taken."); return; }
+        draft.push({key,name:name||key,sort:draft.length+1,intro:"",outro:"",sections:[]}); openT.add(key); render(); return;
+      }
+      if(a==="export"){ const md="# Imperium Job SOPs\n\n"+J.markdown(draft); try{ if(!dl) throw 0; await dl.save({filename:"imperium-sops.md",data:new Blob([md],{type:"text/markdown"})}); }catch(err){ copyText(md,"Copied the SOPs as markdown"); } return; }
+      if(a==="save"){
+        const keys=draft.map(t=>t.key);
+        for(const sv of Object.keys(draftSet.services)){ const bad=(draftSet.services[sv].templates||[]).find(k=>!keys.includes(k)); if(bad){ toast(sv+": there's no template called "+bad+"."); return; } }
+        if(!draftSet.admins.length){ toast("Name at least one person who can edit."); return; }
+        draft.forEach((t,i)=>{ t.sort=i+1; });
+        s.querySelectorAll('[data-ed="save"]').forEach(x=>x.disabled=true);
+        try{
+          for(const t of draft) await db.doc("sops/"+t.key).set(t);
+          for(const k of startKeys) if(!keys.includes(k)) await db.doc("sops/"+k).delete();
+          await db.doc("settings/sop").set({...draftSet,updatedAt:new Date().toISOString()});
+          toast("SOPs saved. New jobs get these."); closeSheet();
+        }catch(err){ s.querySelectorAll('[data-ed="save"]').forEach(x=>x.disabled=false); writeFail(err); }
+      }
+    });
+    s.querySelector("#closeSheet").addEventListener("click",closeSheet);
+    render();
+  }
+
   // ---------- TOUCH (call / text log) ----------
   function openTouch(id){
     const l=leads.find(x=>x.id===id); if(!l) return;
@@ -715,11 +1275,11 @@ tr:last-child td{border-bottom:0}
       else if(out==="Lost"){ upd.status="Lost"; upd.lostWhy=g("#t-lost").dataset.value||"Other"; upd.nextFollowUp=""; }
       if(upd.replyMins==null && l.status==="New" && type==="answered") upd.replyMins=Math.max(0,Math.round((Date.now()-new Date(l.createdAt||now))/60000));
       const b=g("#t-save"); b.disabled=true;
-      try{ await db.doc("leads/"+id).set(clean(upd)); toast(out==="Booked"?"Booked. Legend.":"Logged."); closeSheet(); }catch(err){ b.disabled=false; writeFail(err); }
+      try{ await db.doc("leads/"+id).set(clean(upd)); toast(out==="Booked"?"Booked. Legend.":"Logged."); closeSheet(); if(out==="Booked") ensureJob({...upd,id}); }catch(err){ b.disabled=false; writeFail(err); }
     });
   }
   function clean(o){ const c={...o}; delete c.id; c.booked = c.status==="Booked"?"Yes":c.status==="Lost"?"No":"Pending"; return c; }
-  function closeSheet(){ const s=$("#sheet"); if(s) s.remove(); }
+  function closeSheet(){ const s=$("#sheet"); if(s) s.remove(); openCk=null; }
   async function quickTouch(id,type,btn){
     const l=leads.find(x=>x.id===id); if(!l||!db) return;
     const now=new Date().toISOString();
@@ -751,7 +1311,7 @@ tr:last-child td{border-bottom:0}
     s.innerHTML='<div class="sheet-in">'+
       '<div class="sheet-h"><h2>'+esc(l.name||"Lead")+'</h2><div class="row" style="flex-wrap:nowrap"><button class="btn small" id="e-touch">Log a call or text</button><button class="x" id="closeSheet">Close</button></div></div>'+
       (canWrite?"":'<div class="banner">View only. Ask for edit access.</div>')+
-      (R.isDone(l)?'<div id="reviewBox"></div>':l.status==="Booked"?'<button class="btn" id="e-done">Job done: ask for a review</button>':"")+
+      (R.isDone(l)?'<div id="reviewBox"></div>':l.status==="Booked"&&l.kind!=="job"?(J.isSignedOff(jobs[id])?'<button class="btn" id="e-done">Job done: ask for a review</button>':'<button class="btn" id="e-ck">'+(jobs[id]?"Open checklist ("+J.progress(jobs[id]).done+" of "+J.progress(jobs[id]).total+")":"Start job")+'</button>'):"")+
       '<div class="grid">'+
         '<label>Status<select id="e-status">'+opt(["New","Contacted","Quoted","Booked","Lost"],l.status||"New")+'</select></label>'+
         '<label>Whose lead<select id="e-owner"><option value="">–</option>'+opt(["Angus","Ananth"],l.owner)+'</select></label>'+
@@ -792,6 +1352,7 @@ tr:last-child td{border-bottom:0}
     s.querySelector("#e-touch").addEventListener("click",()=>{ closeSheet(); openTouch(id); });
     const rbox=s.querySelector("#reviewBox"); if(rbox) showReview(rbox,id);
     const doneBtn=s.querySelector("#e-done"); if(doneBtn) doneBtn.addEventListener("click",()=>markDone(id));
+    const ckBtn=s.querySelector("#e-ck"); if(ckBtn) ckBtn.addEventListener("click",()=>openChecklist(id));
     const rsel=s.querySelector("#e-rstatus");
     if(rsel) rsel.addEventListener("change",async()=>{ if(await setReview(id,rsel.value)&&rbox) showReview(rbox,id); });
     s.querySelector("#delLead").addEventListener("click",()=>{ s.querySelector("#delConfirm").hidden=false; });
@@ -807,7 +1368,7 @@ tr:last-child td{border-bottom:0}
         nextDue:g("#e-nextDue").value, notes:g("#e-notes").value.trim(), updatedAt:new Date().toISOString() };
       if(!isOpen(upd)) upd.nextFollowUp="";
       const b=g("#saveEdit"); b.disabled=true;
-      try{ await db.doc("leads/"+id).set(clean(upd)); toast("Saved"); closeSheet(); }catch(err){ b.disabled=false; writeFail(err); }
+      try{ await db.doc("leads/"+id).set(clean(upd)); toast("Saved"); closeSheet(); if(upd.status==="Booked"&&!R.isDone(upd)) ensureJob({...upd,id}); }catch(err){ b.disabled=false; writeFail(err); }
     });
   }
 
@@ -885,6 +1446,10 @@ tr:last-child td{border-bottom:0}
         $("#offline").hidden=false; return;
       }
       $("#offline").hidden=true;
+      db.collection("jobs").onSnapshot(sn=>{ setJobs(sn.docs); renderAll(); if(openCk) openCk.refresh(); }, ()=>{});
+      db.collection("sops").onSnapshot(sn=>{ sops=sn.docs.map(d=>d.data()); checkSopsReady(); }, ()=>{});
+      db.doc("settings/sop").onSnapshot(sn=>{ sopSettings = sn.exists ? sn.data() : null; if(!sn.exists) seedSops(); checkSopsReady(); renderAll(); }, ()=>{});
+      flushQueue();
       db.doc("settings/reviews").onSnapshot(sn=>{ reviewSettings = sn.exists ? sn.data() : {}; renderAll(); }, ()=>{});
       db.collection("leads").orderBy("createdAt","desc").limit(1000).onSnapshot(snap=>{ leads=snap.docs.map(x=>migrate(Object.assign({id:x.id},x.data()))); renderAll(); }, err=>{ $("#offline").hidden=false; });
       let dayKey=null;

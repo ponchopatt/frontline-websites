@@ -21,6 +21,7 @@ const HEAD = `<!doctype html>
 <script src="/config.js"></script>
 <script src="/claude-shim.js"></script>
 <script src="/reviews.js"></script>
+<script src="/jobs.js"></script>
 `;
 
 writeFileSync(join(pub, "index.html"), HEAD + readFileSync(join(here, "imperium-leads.html"), "utf8"));
@@ -28,10 +29,13 @@ writeFileSync(join(pub, "index.html"), HEAD + readFileSync(join(here, "imperium-
 mkdirSync(join(pub, "vendor"), { recursive: true });
 copyFileSync(join(here, "node_modules/@supabase/supabase-js/dist/umd/supabase.js"), join(pub, "vendor/supabase.js"));
 
+// The SOPs, word for word from the Appendix. The app writes them into the database the first time it runs.
+copyFileSync(join(here, "seed/sops.json"), join(pub, "sops-seed.json"));
+
 // The URL and the publishable (anon) key are meant to be public; the service key never leaves the server.
 const url = process.env.SUPABASE_URL ?? "";
 const anonKey = process.env.SUPABASE_ANON_KEY ?? "";
 if (!url || !anonKey) console.warn("SUPABASE_URL or SUPABASE_ANON_KEY is not set: the page will say it can't reach the list.");
 writeFileSync(join(pub, "config.js"), `window.LEADS_CONFIG = ${JSON.stringify({ url, anonKey })};\n`);
 
-console.log("Built public/: index.html, vendor/supabase.js, config.js");
+console.log("Built public/: index.html, vendor/supabase.js, config.js, sops-seed.json");

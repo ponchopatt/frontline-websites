@@ -17,6 +17,8 @@ Numbers. A phone app (add it to the home screen) shared by Angus and Ananth.
   lock it for 15 minutes, then longer.
 - **New enquiries** arrive at `POST /api/lead` from the website's booking and fleet forms and
   from Make.com (Facebook instant forms). One lead per phone number per day.
+- **Job checklists**: every booked job gets a checklist built from the SOPs. The crew works down
+  it on site, a second person signs it off, and only then can the job be marked done (see below).
 - **Reviews**: tap **Job done** on a job and the app walks you through asking for a Google review
   (see below). Morning shows the review texts and nudges due today, and the last 30 days.
 - **Reminders** go by email at about 07:25 (chase list and today's jobs) and 17:20 (leads not
@@ -28,6 +30,8 @@ Numbers. A phone app (add it to the home screen) shared by Angus and Ananth.
 |---|---|
 | `imperium-leads.html` | The page. |
 | `public/claude-shim.js` | The storage layer and the PIN screen. |
+| `seed/sops.json` | The job SOPs, word for word from the Appendix, plus which ones each service gets. |
+| `public/jobs.js` | The checklist rules: which SOPs a job gets, progress, sign-off, paint flags, the dashboard numbers, the markdown export (plain script, shared with the tests). |
 | `public/reviews.js` | The review steps, the texts, what's due and the 30-day counts (plain script, shared with the tests). |
 | `public/sw.js`, `public/manifest.json`, icons | Home-screen app; opens with no signal (the list needs one). |
 | `api/unlock.js` | PIN check and sign-in. |
@@ -119,6 +123,46 @@ Scenario: **Facebook Lead Ads → Watch New Leads**, then **HTTP → Make a requ
 
 The `{{1.…}}` names depend on the questions in the instant form; pick them from Make's list.
 
+## Job checklists
+
+**Records** (all in the one `docs` table, so no database change):
+
+| Record | What's in it |
+|---|---|
+| `sops/<key>` | One SOP template (`every_job`, `exterior`, `interior`, `correction`, `ceramic`, `handover`, `signoff`): sections, and items with a fixed id, type (`step`, `rule`, `clip`, `signoff`, `script`), title (the bold words), detail, sub-points, required, and when / length / what it's for on clips. |
+| `settings/sop` | Which templates each service gets, `stopAfter` (correction and ceramic stop the exterior steps after the rinse), which pitch to show, the paint thresholds (80 and 30 microns) and who the admins are (Angus). |
+| `checklists/<leadId>` | The job's frozen copy of its SOPs, made when it's booked. Editing an SOP later doesn't change it. |
+| `jobs/<leadId>` | Progress: one key per tick (`s:<itemId>`: done, skipped and why, note, by, at), paint readings per panel (`p:<panel>`), `correction`, `warranty`, `ceramicPitched`, `planPitched`, `signoff`, `override`. Each tick saves on its own, so two phones never undo each other. |
+| `audit` | Sign-off overrides: who, when, why. |
+
+The first time the app runs it writes `seed/sops.json` into the database. After that, edit the SOPs
+in the app: **Numbers › Job SOPs › Edit SOPs** (admins only), which also exports them as markdown in
+the Appendix's layout. A test rebuilds the Appendix from the seed and checks it matches exactly.
+
+**On site.** **Start job** on a booked job (Morning or the lead) opens the checklist: Steps (one
+block per SOP, tap anywhere on a row to tick it, ••• for a note or to skip with a reason), Clips
+(Before / During / After, tick when filmed), Paint (correction and ceramic: 5 readings per panel,
+red under 80 or a gap over 30, and the pad and polish record), Warranty (ceramic: filled in from the
+job, annual check a year on) and Sign-off. The handover block has the right pitch for the service,
+the referral line and the review ask, each with Copy, and Ceramic pitched / Plan pitched.
+
+**Sign-off** opens when every step is done or skipped. Whoever ticked the most steps can't sign; the
+other person switches to their name (the name button at the top of the checklist) and checks it.
+Then **Mark job done** sets `completedAt` and `reviewStatus: "not_asked"` and the review steps start.
+An admin can override the sign-off with a written reason, which is logged. "Add a job done today"
+and "Add someone who owes you" are records of work already finished, so they have no checklist.
+
+**Saves.** Ticks show straight away. If the signal drops they wait on the phone (even through a
+reload) and save when it's back; the top of the checklist says "Not saved yet" until they have.
+
+**Dashboard (Morning).** Today's jobs show checklist progress. "Not signed off this week" lists jobs
+from earlier in the week that still aren't signed off. The 30-day tiles show steps skipped per job,
+clips filmed of those expected, and how often the ceramic and plan pitches were made.
+
+**Services.** Exterior, Interior, Full detail, Correction and Ceramic get the lists in the brief.
+Pre-sale and Not sure get the Full detail lists; Maintenance plan gets the Exterior lists. Change
+these in the editor.
+
 ## Reviews
 
 Tap **Job done** on a job card (Morning or Evening), or **Job done: ask for a review** when you
@@ -167,6 +211,6 @@ curl "https://<this app>/api/remind?slot=morning&force=1" -H "Authorization: Bea
 
 ```
 npm install
-npm test          # lead mapping, the reminder lists, Canberra dates, the review steps
+npm test          # lead mapping, the reminder lists, Canberra dates, the review steps, the job checklists
 node build.mjs    # needs SUPABASE_URL and SUPABASE_ANON_KEY to point at a project
 ```

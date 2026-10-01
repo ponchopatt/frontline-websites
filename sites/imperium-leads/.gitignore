@@ -4,3 +4,4 @@ node_modules/
 public/index.html
 public/config.js
 public/vendor/
+public/sops-seed.json
