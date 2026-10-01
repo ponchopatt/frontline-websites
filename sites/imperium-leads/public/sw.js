@@ -4,8 +4,8 @@
   touched, so no lead data is ever stored here. When online the network always wins, so a new
   release shows up on the next open.
 */
-const CACHE = "imperium-leads-shell-v3";
-const SHELL = ["/", "/claude-shim.js", "/reviews.js", "/jobs.js", "/vendor/supabase.js", "/config.js", "/manifest.json", "/icon-192.png", "/icon-512.png", "/apple-touch-icon.png"];
+const CACHE = "imperium-leads-shell-v2";
+const SHELL = ["/", "/claude-shim.js", "/reviews.js", "/vendor/supabase.js", "/config.js", "/manifest.json", "/icon-192.png", "/icon-512.png", "/apple-touch-icon.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
