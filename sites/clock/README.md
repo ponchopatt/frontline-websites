@@ -2,14 +2,19 @@
 
 The rebuild of the timesheet. One page, three tabs, no build step, no framework.
 
-    index.html            the whole app — clock, timesheet, admin
-    app.js                everything it does
+    index.html            the whole app — clock, jobs, timesheet, admin
+    app.js                the clock, the timesheet and admin
+    jobs.js               the Jobs tab: job checklists from the SOPs
+    sop.js                the checklist rules (what a job gets, progress, sign-off)
+    sops.json             the SOPs, word for word, with a How to do it for each step
     config.js             the endpoint, the codes, the rates, the pay week, date maths
     tokens.css            the palette and type scale
+    jobs.css              the look of the Jobs tab and the checklist
     fonts.css, fonts/     the two typefaces, served from here rather than Google
     sw.js                 caches the app itself, so it opens with no signal
-    apps-script.gs        the Google Sheets backend
+    apps-script.gs        the Google Sheets backend (version 2: shifts and job checklists)
     manifest.webmanifest  what makes "Add to Home Screen" open it like an app
+    test/                 node --test test/*.test.js (not deployed)
 
 **It writes to the same Google Sheet as `../hours`** — same endpoint, same rows.
 Both can run at once while you decide which to keep. Nothing has to be moved.
@@ -55,6 +60,63 @@ is what a tabular digit actually measures in Big Shoulders at weight 700.
 - **Admin.** Hours and pay per person per pay week, previous/next week, the CSV,
   crew and rates, add a past shift, edit or delete anything.
 
+### Jobs: the SOPs as a checklist
+
+**Start a job** at the car, pick the service (or two), and the checklist for
+that service is built from the SOPs: the rules for every job, the service's
+steps in order, the clips to film, the handover, and the sign-off. Paint
+correction and ceramic coating stop the exterior steps at the rinse after clay,
+as the SOPs say.
+
+- **Tick** each step with the big round button. Every tick has a name and a
+  time on it. Tap the words to open **How to do it**: a plain explanation of
+  the step, plus *Add a note* and *Skip this step* (a skip needs a reason).
+- **The gauge** at the top is the clock's dial counting steps instead of hours.
+  **Up next** at the bottom always takes you to the next step not done.
+- **Tools on the steps that need them:** paint readings per panel (flags
+  anything under 80 microns or with a jump over 30), which pad and polish combo
+  worked, stages done, the warranty record (works out the annual check date),
+  and the handover helper with the right pitch for the job and Copy buttons.
+- **The second check.** The sign-off list opens once every step is done or
+  skipped, and it can't be ticked by whoever did most of the job: hand the
+  phone over and pick their name. Then **Sign off**, then **Mark job done**.
+  Signed off means closed: steps can't be changed unless admin reopens it.
+- **Admin (1906)** can let a job through without the check, with a written
+  reason that stays on the job; reopen a job; delete one; see the last 30 days
+  (skipped steps, clips filmed, pitches, sign-offs) and the jobs not signed off
+  this pay week; **edit the SOPs** (steps, How to do it, which lists each
+  service gets, paint limits); and **download the SOPs** as markdown, in the
+  same layout as the original Appendix.
+
+A job keeps its own copy of the lists it started with. Editing an SOP changes
+new jobs only. Two phones can work the same job: each tick is saved on its own,
+and the later tick wins.
+
+**The How to do it notes were written for the app.** The SOP lines themselves
+are word for word from the Appendix; the explanations under them are extra.
+Angus should read them over, and can change any of them under Admin > Edit the
+SOPs.
+
+### One step for Pat: update the Google script
+
+Checklists are stored in the same Google Sheet as the hours, in three new tabs
+(Jobs, Job lists, SOPs). The old script doesn't know about them, so:
+
+1. Open the Imperium Hours spreadsheet → **Extensions → Apps Script**.
+2. Select everything in the editor and delete it. Paste in all of
+   `apps-script.gs` from this folder. **Save**.
+3. **Deploy → Manage deployments** → the pencil on the current deployment →
+   **Version: New version** → **Deploy**. The URL stays the same, so nothing
+   else changes.
+
+Until that's done the Jobs tab still works, but each phone keeps its own
+checklists and the strip says *On this phone only*. The app never sends a
+checklist to the old script, because the old script would file it under
+Shifts. The moment the new one is live, the next open (or a tap on the strip)
+sends each phone's checklists up to the sheet.
+
+Everything the timesheet did before is unchanged.
+
 ### Works with no signal — all the way from a cold start
 
 Three things make that true, and all three are needed:
@@ -96,8 +158,8 @@ when. The lock in the header is there for everyone, not just admin.
 
 | Code | Who | What they get |
 | --- | --- | --- |
-| **0000** | The crew | Clock, Timesheet. Their name, their hours, the shift list. |
-| **1906** | Admin | All of that, plus the Admin tab: pay, crew, rates, edit, delete, CSV. |
+| **0000** | The crew | Clock, Jobs, Timesheet. Their name, their hours, the shift list, the checklists. |
+| **1906** | Admin | All of that, plus the Admin tab: pay, crew, rates, edit, delete, CSV, job numbers, the SOP editor. |
 
 On 0000 the Admin tab is not in the page at all — not before the sheet loads,
 not after — and the checks are on the actions as well as the buttons. **It is
@@ -122,20 +184,23 @@ Change them in `config.js`.
 - If the same shift is edited from two phones while one of them is offline, the
   last one to reach the sheet wins. Rare, and it is visible on the timesheet.
 
-### After redeploying the Apps Script
+### Checking it
 
-`apps-script.gs` now writes every text cell as text. It works fine without
-redeploying — this only matters for notes beginning with `=` or that look like
-numbers. Extensions → Apps Script → paste the file over → Save → **Deploy →
-Manage deployments → edit → New version → Deploy**. The URL stays the same.
+    node --test test/*.test.js
+
+runs the checklist rules and the real `apps-script.gs` against a pretend
+spreadsheet: the SOPs match the Appendix word for word, the services get the
+right lists, the second check can't be done by the main worker, ticks from two
+phones merge, a job that won't fit in a cell is refused, and the old script
+files nothing for a job.
 
 ---
 
 ## Putting it up
 
 Plain static files, so any host works. On Vercel: **Add New → Project** → import
-the repo → set **Root Directory** to `clock` → Deploy. `vercel.json` already
-sets `noindex`.
+the repo → set **Root Directory** to `sites/clock` → Deploy. `vercel.json` already
+sets `noindex`, and `.vercelignore` keeps the tests off the site.
 
 Then send the crew the link and one line:
 

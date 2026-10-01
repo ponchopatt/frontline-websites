@@ -767,7 +767,7 @@
 
   /* ================================================================= views == */
   function syncTabs() {
-    const order = isAdmin() ? ['clock', 'sheet', 'admin'] : ['clock', 'sheet'];
+    const order = isAdmin() ? ['clock', 'jobs', 'sheet', 'admin'] : ['clock', 'jobs', 'sheet'];
     $('tabs').style.setProperty('--tabs', String(order.length));
     $('tabs').style.setProperty('--tab', String(Math.max(0, order.indexOf(tab))));
     for (const b of $('tabs').children) {
@@ -891,6 +891,7 @@
 
     renderShifts(now);
     if (isAdmin()) { renderWeek(now); renderStaff(); }
+    for (const fn of renderHooks) { try { fn(); } catch (err) { console.error(err); } }
   }
 
   function renderShifts(now) {
@@ -1041,6 +1042,33 @@
     askedWho = true;
     openWho();
   }
+
+  /* ================================================================== jobs ==
+     The job checklists live in jobs.js and keep their own data and queue.
+     They borrow from here who is holding the phone, the toasts and the
+     confirm box, and are told after every render so a new name or a lock
+     reaches them too. */
+  const renderHooks = [];
+  window.ImpClock = {
+    meName: () => { const p = staff.find(s => s.id === me); return p ? p.name : ''; },
+    role: () => role,
+    isAdmin,
+    tab: () => tab,
+    showTab,
+    openWho,
+    toast,
+    ask,
+    buzz,
+    running: () => !!myOpen(),
+    onRender: fn => { renderHooks.push(fn); },
+    // Starting a job can clock the person on too, with the job as the note.
+    clockOn: text => {
+      if (!me || myOpen() || busy) return false;
+      $('jobIn').value = text;
+      startShift();
+      return true;
+    },
+  };
 
   /* ================================================================ wiring == */
   $('mainBtn').addEventListener('click', () => (myOpen() ? finishShift() : startShift()));

@@ -23,6 +23,7 @@
 <link rel="preload" href="fonts/instrumentsans-f587e7.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts.css">
 <link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="jobs.css">
 
 <style>
 /* Imperium Clock.
@@ -861,6 +862,62 @@ dialog .ask-body { margin: 0; color: var(--slate); font-size: var(--t-small); }
       <div class="onnow" id="onNow" hidden></div>
     </section>
 
+    <!-- ============================================================ jobs == -->
+    <section class="view" id="v-jobs" data-view="jobs" hidden>
+      <div class="sec-head">
+        <h2>Jobs</h2>
+        <span class="aside" id="jobsScope"></span>
+      </div>
+      <button class="go jobs-go" id="newJobBtn" type="button">Start a job</button>
+      <button class="strip" id="jobsLink" type="button" hidden></button>
+      <div class="jobs-list" id="jobList"><div class="empty">Loading&hellip;</div></div>
+    </section>
+
+    <!-- A job's checklist. Not a tab: it opens from the Jobs list, and the
+         phone's back gesture closes it. -->
+    <section class="view jobv" id="v-job" hidden>
+      <div class="jv-nav">
+        <button class="jv-back" id="jvBack" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Jobs</button>
+        <button class="btn" id="jvEdit" type="button">Job details</button>
+      </div>
+      <button class="strip" id="jvLink" type="button" hidden></button>
+      <div class="jv-hero">
+        <div class="gauge-wrap">
+          <span class="g-sheen" aria-hidden="true"></span>
+          <span class="g-face" aria-hidden="true"></span>
+          <svg class="gauge" viewBox="0 0 240 240" aria-hidden="true">
+            <g id="gTicks"></g>
+            <circle class="g-track" cx="120" cy="120" r="88"></circle>
+            <circle class="g-arc" id="gArc" cx="120" cy="120" r="88"
+                    transform="rotate(-90 120 120)" stroke-dasharray="552.9" stroke-dashoffset="552.9"></circle>
+          </svg>
+          <div class="g-read">
+            <span class="g-state" id="gState" aria-live="polite">In progress</span>
+            <div class="g-num" id="gNum" role="img"></div>
+            <span class="g-of" id="gOf"></span>
+          </div>
+        </div>
+        <h1 class="jv-title" id="jvTitle"></h1>
+        <p class="jv-sub" id="jvSub"></p>
+        <div class="jv-tags" id="jvTags"></div>
+      </div>
+      <nav class="rail" id="jvRail" aria-label="Stages of this job"></nav>
+      <div id="jvBody"></div>
+      <div class="jv-bar" id="jvBar"></div>
+    </section>
+
+    <!-- ===================================================== SOP editor == -->
+    <section class="view" id="v-sop" hidden>
+      <div class="jv-nav">
+        <button class="jv-back" id="sopBack" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Admin</button>
+      </div>
+      <div class="sec-head"><h2>Job SOPs</h2></div>
+      <p style="font-size:14px;color:var(--slate)">Edits reach jobs started after you save. A job that has already started keeps the lists it started with.</p>
+      <div class="ed-pills" id="edPills"></div>
+      <div id="edBody"></div>
+      <div class="jv-bar"><div><button class="go" id="edSave" type="button" disabled>No changes yet</button></div></div>
+    </section>
+
     <!-- ======================================================= timesheet == -->
     <section class="view" id="v-sheet" data-view="sheet" hidden>
       <div class="sec-head">
@@ -905,6 +962,8 @@ dialog .ask-body { margin: 0; color: var(--slate); font-size: var(--t-small); }
         <button class="btn" id="manualBtn" type="button">Add a past shift</button>
       </div>
 
+      <div id="jobsAdmin"></div>
+
       <h3 class="sub">Where the hours go</h3>
       <p style="font-size:14px;color:var(--slate)" id="storeNote"></p>
     </section>
@@ -913,10 +972,14 @@ dialog .ask-body { margin: 0; color: var(--slate); font-size: var(--t-small); }
 
   <div id="status"></div>
 
-  <nav class="tabs" id="tabs" aria-label="Sections" style="--tabs: 2">
+  <nav class="tabs" id="tabs" aria-label="Sections" style="--tabs: 3">
     <button type="button" data-tab="clock" aria-selected="true">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
       Clock
+    </button>
+    <button type="button" data-tab="jobs" aria-selected="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg>
+      Jobs
     </button>
     <button type="button" data-tab="sheet" aria-selected="false">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
@@ -1006,6 +1069,71 @@ dialog .ask-body { margin: 0; color: var(--slate); font-size: var(--t-small); }
   </div>
 </dialog>
 
+<dialog id="jobDlg" class="tall">
+  <h3 id="jdTitle">Start a job</h3>
+  <div class="grid">
+    <div>
+      <span class="lab">Service <em>(one or more)</em></span>
+      <div class="svc" id="jdSvc"></div>
+    </div>
+    <div><label class="lab" for="jdCar">Car</label><input id="jdCar" type="text" autocomplete="off" placeholder="e.g. Tesla Model 3"></div>
+    <div class="two">
+      <div><label class="lab" for="jdName">Customer <em>(optional)</em></label><input id="jdName" type="text" autocomplete="off"></div>
+      <div><label class="lab" for="jdSuburb">Suburb</label><input id="jdSuburb" type="text" autocomplete="off"></div>
+    </div>
+    <div>
+      <span class="lab">Day</span>
+      <div class="chips left" id="jdDays"></div>
+      <input id="jdDate" type="date" hidden style="margin-top:10px">
+    </div>
+    <label class="check-row" id="jdClockWrap" hidden><input id="jdClock" type="checkbox"> Start my shift as well</label>
+    <p class="preview" id="jdPreview"></p>
+    <p class="err" id="jdErr" hidden></p>
+  </div>
+  <div class="acts">
+    <button class="btn" id="jdCancel" type="button">Cancel</button>
+    <button class="btn key" id="jdSave" type="button">Start the job</button>
+  </div>
+  <div class="dlg-foot" id="jdFoot" hidden><button class="ghost danger" id="jdDelete" type="button">Delete this job</button></div>
+</dialog>
+
+<dialog id="paintDlg" class="tall">
+  <h3>Paint readings</h3>
+  <p class="ask-body" id="paintRule"></p>
+  <div id="paintList"></div>
+  <div class="acts"><button class="btn key" id="paintDone" type="button">Done</button></div>
+</dialog>
+
+<dialog id="warDlg" class="tall">
+  <h3>Warranty record</h3>
+  <p class="ask-body">If there&rsquo;s ever a claim, this is the proof of what was done.</p>
+  <div class="grid" style="margin-top:14px">
+    <div class="two">
+      <div><label class="lab" for="w-customer">Name</label><input id="w-customer" type="text" autocomplete="off"></div>
+      <div><label class="lab" for="w-car">Car</label><input id="w-car" type="text" autocomplete="off"></div>
+    </div>
+    <div class="two">
+      <div><label class="lab" for="w-rego">Rego</label><input id="w-rego" type="text" autocomplete="off" autocapitalize="characters"></div>
+      <div><label class="lab" for="w-date">Date</label><input id="w-date" type="date"></div>
+    </div>
+    <div><label class="lab" for="w-package">Package</label><input id="w-package" type="text" autocomplete="off"></div>
+    <div class="two">
+      <div><label class="lab" for="w-product">Coating</label><input id="w-product" type="text" autocomplete="off"></div>
+      <div><label class="lab" for="w-batch">Bottle batch</label><input id="w-batch" type="text" autocomplete="off"></div>
+    </div>
+    <div class="two">
+      <div><label class="lab" for="w-layers">Layers</label><input id="w-layers" type="text" inputmode="numeric" autocomplete="off"></div>
+      <div><label class="lab" for="w-annualCheck">Annual check</label><input id="w-annualCheck" type="date"></div>
+    </div>
+    <div><label class="lab" for="w-photos">Photos <em>(where they are)</em></label><input id="w-photos" type="text" autocomplete="off" placeholder="e.g. Shared folder, 1 Oct, Tesla"></div>
+    <p style="margin:0;font-size:14px;color:var(--slate)">The paint readings are kept with the job, under Paint readings.</p>
+  </div>
+  <div class="acts">
+    <button class="btn" id="warCancel" type="button">Cancel</button>
+    <button class="btn key" id="warSave" type="button">Save the record</button>
+  </div>
+</dialog>
+
 <!-- The browser's own confirm() box is blocked inside an embedded viewer, which
      made Delete look broken. This asks in the page, so it works anywhere. -->
 <dialog id="askDlg">
@@ -1019,5 +1147,7 @@ dialog .ask-body { margin: 0; color: var(--slate); font-size: var(--t-small); }
 
 <script src="config.js"></script>
 <script src="app.js"></script>
+<script src="sop.js"></script>
+<script src="jobs.js"></script>
 </body>
 </html>
