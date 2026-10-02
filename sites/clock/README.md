@@ -65,8 +65,10 @@ is what a tabular digit actually measures in Big Shoulders at weight 700.
 **Start a job** at the car, pick the service (or two), and the checklist for
 that service is built from the SOPs: the rules for every job, the service's
 steps in order, the clips to film, the handover, and the sign-off. Paint
-correction and ceramic coating stop the exterior steps at the rinse after clay,
-as the SOPs say.
+correction and ceramic coating skip the exterior sealant and stop the exterior
+steps once the car is dried and blown out, ready to tape and polish. A ceramic
+job tells the customer the coating care rules at the handover, after they've
+seen the car.
 
 - **Tick** each step with the big round button. Every tick has a name and a
   time on it. Tap the words to open **How to do it**: a plain explanation of
@@ -83,7 +85,8 @@ as the SOPs say.
   where that job really finishes, once the tape is off and the tyres are
   dressed. The 50/50 has its own step, so its clip and photo come before the
   rest of the car is polished. The two ceramic water clips can't be filmed on
-  coating day, so they sit at the end of the list marked *Later*.
+  coating day, so they sit at the end of the list marked *Later*, with
+  nothing to tick and not counted in the job's clips.
 - **Tools on the steps that need them:** paint readings per panel (flags
   anything under 80 microns or with a jump over 30), which pad and polish combo
   worked, stages done, the warranty record (works out the annual check date),

@@ -636,3 +636,6 @@ dialog.tall { max-height: min(88dvh, 760px); overflow: auto; overscroll-behavior
 .photo-cue svg { flex: none; width: 22px; height: 22px; fill: none; stroke: var(--ivory); stroke-width: 1.7; stroke-linejoin: round; }
 .photo-cue b { color: var(--ivory); font-weight: 600; }
 
+
+/* A clip for another day (the first wash): a reminder, nothing to tick on this job. */
+.tick-later { width: 50px; }

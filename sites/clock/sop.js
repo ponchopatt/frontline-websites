@@ -114,7 +114,7 @@
       t.sections.forEach(function (s) {
         s.items.forEach(function (it) {
           if (it.type === 'step' && it.required !== false) steps.push(it.id);
-          if (it.type === 'clip') clips.push(it.id);
+          if (it.type === 'clip' && it.when !== 'later') clips.push(it.id);
           if (it.type === 'signoff') signoffs.push(it.id);
         });
       });
@@ -281,7 +281,7 @@
     };
     eachItem(lists, function (it) {
       (it.photos || []).forEach(function (p) { if (fits(p.needs, keys)) put({ photo: p }, p.pos, p.at); });
-      if (it.type === 'clip' && it.at && put({ clip: it.id, pos: it.pos || 'after', when: it.when }, it.pos, it.at)) placed[it.id] = true;
+      if (it.type === 'clip' && it.at && it.when !== 'later' && put({ clip: it.id, pos: it.pos || 'after', when: it.when }, it.pos, it.at)) placed[it.id] = true;
     });
     // In each spot: what you film while doing the step, then the photos, then the rest.
     var rank = function (c) { return c.when === 'during' ? 0 : c.photo ? 1 : 2; };
@@ -317,7 +317,7 @@
     eachItem([tpl], function (it) {
       var x = item(state, it.id);
       if (it.type === 'step' && it.required !== false) { c.total++; if (settled(x)) c.done++; }
-      if (it.type === 'clip') { c.clipsTotal++; if (x && x.done) c.clipsDone++; }
+      if (it.type === 'clip' && it.when !== 'later') { c.clipsTotal++; if (x && x.done) c.clipsDone++; }
       if (it.type === 'signoff') { c.signTotal++; if (x && x.done) c.signDone++; }
     });
     return c;
@@ -499,7 +499,7 @@
     (seed.sops || []).forEach(function (t) {
       var cur = have[t.key];
       if (!cur) { sops.push(clone(t)); changed.push(t.key); return; }
-      if (cur.seed === v) { sops.push(cur); return; }
+      if (cur.seed && cur.seed >= v) { sops.push(cur); return; }   // the same, or newer than this phone knows
       if (pristine(cur, prev[t.key])) { sops.push(clone(t)); changed.push(t.key); }
       else { sops.push(cur); kept.push(t.key); }
     });
@@ -507,7 +507,9 @@
     sops.sort(function (a, b) { return (a.sort || 0) - (b.sort || 0); });
 
     var cur = storedSettings, out = cur, settingsChanged = false;
-    if (!cur || (cur.seed !== v && pristine(cur, prev._settings, true))) {
+    if (cur && cur.seed && cur.seed > v) {
+      // Newer than this phone knows: leave it.
+    } else if (!cur || (cur.seed !== v && pristine(cur, prev._settings, true))) {
       out = clone(seed.settings);
       settingsChanged = true;
     } else if (cur.seed !== v) {

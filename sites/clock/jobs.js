@@ -427,14 +427,7 @@
       model.sops = r.sops;
       model.settings = r.settings || model.settings;
       // A newer version of the SOPs replaces the ones nobody has edited, once, from whichever phone gets there first.
-      if (seed) {
-        const u = S.upgrade(model.sops, model.settings, seed);
-        upgradeKept = u.kept;
-        model.sops = u.sops;
-        model.settings = u.settings;
-        for (const key of u.changed) enqueue({ t: 'sop', sop: stamp(model.sops.find(t => t.key === key)) });
-        if (u.settingsChanged) { model.settings = stamp(model.settings); enqueue({ t: 'settings', settings: model.settings }); }
-      }
+      upgradeSheet(seed);
     } else if (seed) {
       // The first phone to meet the new script fills its SOPs tab, with this phone's own edits if it has any.
       const u = local && local.sops && local.sops.length ? S.upgrade(local.sops, local.settings, seed) : { sops: seed.sops, settings: seed.settings, kept: [] };
@@ -471,6 +464,16 @@
     try { const r = await get({ action: 'sops' }); if (r.v === 2) await goSheet(r); else if (why === 'offline') { why = 'old'; paintStrip(); } } catch {}
   }
 
+  function upgradeSheet(seed) {
+    if (!seed) return;
+    const u = S.upgrade(model.sops, model.settings, seed);
+    upgradeKept = u.kept;
+    model.sops = u.sops;
+    model.settings = u.settings;
+    for (const key of u.changed) enqueue({ t: 'sop', sop: stamp(model.sops.find(t => t.key === key)) });
+    if (u.settingsChanged) { model.settings = stamp(model.settings); enqueue({ t: 'settings', settings: model.settings }); }
+  }
+
   async function refreshSops() {
     if (mode !== 'sheet') return;
     try {
@@ -479,6 +482,8 @@
       model.sops = r.sops;
       if (r.settings) model.settings = r.settings;
       for (const q of queue) if (q.t === 'sop' || q.t === 'sopdel' || q.t === 'settings') applyOp(q);
+      // Another phone on older code may have put older SOPs back: bring them up again.
+      upgradeSheet(await seedFile().catch(() => null));
       persist();
     } catch {}
   }
@@ -725,9 +730,11 @@
     const attrs = ` data-state="${state}"${justNow ? ' data-just' : ''}`;
     if (it.type === 'clip') {
       // At its step it says what to do now; in a leftover list it says when.
+      // A Later clip is for another day, so it has nothing to tick here.
       const atStep = !!place.placed[id];
+      const mark = it.when === 'later' ? '<span class="tick-later" aria-hidden="true"></span>' : tick;
       const cueText = !atStep ? cap(it.when) : it.pos === 'before' ? 'Film this first' : it.when === 'during' ? 'Film during the step above' : 'Film this now';
-      return `<div class="item clip${atStep ? ' inline' : ''}"${attrs}>${tick}<div class="item-main"><span class="when" data-w="${esc(atStep ? 'now' : it.when)}">${esc(cueText)}</span>` +
+      return `<div class="item clip${atStep ? ' inline' : ''}"${attrs}>${mark}<div class="item-main"><span class="when" data-w="${esc(atStep ? 'now' : it.when)}">${esc(cueText)}</span>` +
         `<span class="txt"><b>${esc(it.title)}</b></span><span class="why">${esc(String(it.length || '').replace(/^(\d+)s$/, '$1 sec clip'))}. ${esc(it.purpose)}</span>${metaLine(x, it)}</div></div>`;
     }
     const text = it.title ? `<b>${esc(it.title)}</b> ${esc(it.detail)}` : esc(it.detail);

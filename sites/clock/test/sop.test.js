@@ -28,7 +28,7 @@ test('every step, rule and sign-off check has a How to do it', () => {
     assert.ok(typeof it.more === 'string' && it.more.length > 40, it.id);
     assert.ok(it.more.length < 520, `${it.id} is too long to read on a phone`);
   });
-  assert.equal(n, 138);
+  assert.equal(n, 137);
 });
 
 test('each service gets its lists in order, without repeats', () => {
@@ -48,18 +48,26 @@ test('each service gets its lists in order, without repeats', () => {
   assert.deepEqual(keys('Something new'), seed().templates.map(t => t.key));
 });
 
-test('correction and ceramic stop the exterior steps at the rinse after clay', () => {
-  for (const s of ['Paint correction', 'Ceramic coating']) {
+test('correction and ceramic: the exterior has no sealant and stops once the car is dry and blown out', () => {
+  for (const s of ['Paint correction', 'Ceramic coating', ['Full detail', 'Paint correction']]) {
     const ext = stepTitles(build(s).lists, 'exterior');
-    assert.equal(ext.length, 7, s);
-    assert.deepEqual(ext.slice(-2), ['Clay.', 'Rinse'], s);
+    assert.equal(ext.length, 9, s);
+    assert.deepEqual(ext.slice(-4), ['Clay.', 'Rinse', 'Dry', 'Blower'], s);
     assert.ok(!ext.includes('Ceramic sealant.'), s);
   }
+  // A ceramic job gets neither the correction's sealant nor its finish: the coating comes next.
+  const cor = s => stepTitles(build(s).lists, 'correction');
+  assert.ok(cor('Paint correction').includes('Then protect') && cor('Paint correction').includes('Finish'));
+  assert.ok(!cor('Ceramic coating').includes('Then protect') && !cor('Ceramic coating').includes('Finish'));
   assert.equal(stepTitles(build('Exterior detail').lists, 'exterior').length, 14);
-  // A ceramic job gets no sealant, so it has no sealant beading clip.
-  assert.equal(itemsOf(build('Ceramic coating').lists, 'exterior').filter(i => i.type === 'clip').length, 15);
-  assert.equal(itemsOf(build('Paint correction').lists, 'exterior').filter(i => i.type === 'clip').length, 16);
-  assert.equal(seed().services['Ceramic coating'].stopAfter.exterior, 'ext-steps-7');
+  // No sealant beading on a ceramic job, and the correction and ceramic lists have their own
+  // gloss shot and after walk around, so the exterior ones don't show twice.
+  const extClips = s => itemsOf(build(s).lists, 'exterior').filter(i => i.type === 'clip').map(i => i.id);
+  assert.equal(extClips('Ceramic coating').length, 13);
+  assert.equal(extClips('Paint correction').length, 15);
+  assert.ok(!extClips('Paint correction').includes('ext-exterior-clips-to-film-11'));
+  assert.equal(extClips('Exterior detail').length, 16);
+  assert.equal(seed().services['Ceramic coating'].stopAfter.exterior, 'ext-steps-10');
 });
 
 test('sign-off shows only what applies to the service', () => {
@@ -539,3 +547,44 @@ test('phones and sheets on the last version move to this one; edits made since s
   assert.deepEqual(J.upgrade([mine], null, newSeed).kept, ['exterior']);
 });
 
+
+test('the ceramic water clips are for later: not counted, not placed, nothing to tick on the day', () => {
+  const { lists, meta } = build('Ceramic coating');
+  const later = itemsOf(lists, 'ceramic').filter(i => i.when === 'later').map(i => i.id);
+  assert.deepEqual(later, ['cer-ceramic-clips-to-film-6', 'cer-ceramic-clips-to-film-7']);
+  assert.ok(!later.some(id => meta.clips.includes(id)));
+  // Every clip that can be filmed on the day, filmed: the job shows them all done.
+  let st = {};
+  for (const id of meta.clips) st = J.merge(st, J.tickPatch(st, id, 'AJ', NOW));
+  const c = lists.map(t => J.counts(t, st)).reduce((a, b) => ({ clipsDone: a.clipsDone + b.clipsDone, clipsTotal: a.clipsTotal + b.clipsTotal }));
+  assert.equal(c.clipsDone, c.clipsTotal);
+  assert.equal(J.summary(meta, st).clipsDone, J.summary(meta, st).clipsTotal);
+  // Set to Later in the editor, a placed clip leaves its step for the list at the end.
+  const s = seed();
+  J.eachItem(s.templates, it => { if (it.id === 'cer-ceramic-clips-to-film-9') it.when = 'later'; });
+  assert.ok(!J.placements(build('Ceramic coating', s).lists).placed['cer-ceramic-clips-to-film-9']);
+});
+
+test('handover: coating care only on a ceramic job, after they have seen the car; cards only for new customers', () => {
+  const hand = sv => itemsOf(build(sv).lists, 'handover').filter(i => i.type === 'step').map(i => i.title || i.detail);
+  assert.deepEqual(hand('Ceramic coating').slice(2, 5), ['Show the before photos next to the car.', 'Coating care.', 'Pitch, 20 seconds.']);
+  assert.ok(!hand('Full detail').includes('Coating care.'));
+  assert.ok(!stepTitles(build('Ceramic coating').lists, 'ceramic').some(t => /^Tell the customer|^Hand over/.test(t)));
+  assert.match(find(build('Exterior detail').lists, 'handover', /^Review ask/).detail, /New customer\? Check the review card/);
+  // Tar comes off before the clay, on the clay step every job sees.
+  assert.ok(find(build('Paint correction').lists, 'exterior', /^Clay/).subs.includes('Tar spots? Tar remover on them first, then clay.'));
+});
+
+test('a phone on older code never takes the SOPs back to an older version', () => {
+  const s = seed();
+  const now = { version: s.version, previous: s.previous, sops: s.templates, settings: { ...s.settings, services: s.services } };
+  const stored = s.templates.map(t => ({ ...t, seed: s.version }));
+  const older = { ...now, version: s.version - 1, sops: s.templates.map(t => ({ ...t, intro: 'Old.' })) };
+  const u = J.upgrade(stored, { ...now.settings, seed: s.version }, older);
+  assert.deepEqual(u.changed, []);
+  assert.equal(u.settingsChanged, false);
+  assert.ok(u.sops.every(t => t.seed === s.version && t.intro !== 'Old.'));
+  // And the newer phone brings older SOPs back up.
+  const back = J.upgrade(s.templates.map(t => ({ ...t, seed: s.version - 1 })), { ...now.settings, seed: s.version - 1 }, now);
+  assert.equal(back.changed.length, s.templates.length);
+});

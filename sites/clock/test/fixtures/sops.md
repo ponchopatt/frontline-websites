@@ -56,6 +56,7 @@ Wheels first, then foam, wash top to bottom, iron remover and clay, sealant, dry
 4. **Rinse.** Check the foam hasn't dried on the windows. If it has, wipe them again with the mitt straight away. Rinse the whole car until no foam is left. Every corner should be clean now.
 5. **Iron remover.** Spray it on all the paint, and only the paint. Rinse after 1 to 2 minutes, or sooner if it starts to dry. Rinse it all off.
 6. **Clay.** Do the paint, glass and trim. Move the clay side to side. Every few panels, dunk it in the touch wash bucket, squeeze it, soak up fresh water and carry on. Keep going until all the bugs are gone.
+    - Tar spots? Tar remover on them first, then clay.
 7. **Rinse** the whole car fully.
 8. **Ceramic sealant.** Wet a clean towel with clean water and give it a few sprays. Spray 2 to 3 times on the panel, wipe side to side over the whole panel, then rinse straight away. Never wait to rinse. Panel by panel, whole car.
 9. **Dry** every area. No water left anywhere, rims too.
@@ -135,11 +136,9 @@ Your goal the whole way through is to find something dirty and make it clean.
 
 ## Paint correction
 
-Measure the paint before you polish. Start with the gentlest pad and polish combo that works. Never polish over grit. Under cover only. Goal: 2 to 3 hours, exterior included.
+Measure the paint before you polish. Start with the gentlest pad and polish combo that works. Never polish over grit. On a ceramic job, the sealant and finish steps are left out: the coating comes next. Under cover only. Goal: 2 to 3 hours, exterior included.
 
-1. **Exterior first.** Do the exterior detail up to the rinse after clay. Skip the ceramic sealant. Nothing goes on the paint before you polish.
-    - Tar spots? Take them off with tar remover before the clay.
-    - Then dry the car and blow out every gap, so the tape sticks and no water runs onto the pad.
+1. **Exterior done.** Washed, iron remover, clay, rinsed, dried and blown out. No sealant: nothing goes on the paint before you polish.
 2. **Tape off** rubbers, plastics, badges, panel edges and sharp body lines.
 3. **Inspect under the LED.** Mark the worst areas and photo each one. Show the customer what will come out and what won't. If your fingernail catches on a scratch, it's through the clear coat. It won't come out. Say so before you start.
 4. **Measure paint** with the gauge. Take at least 5 readings per panel, and more on the bonnet, roof and boot. Write them down. A panel is light touch if it's under about 80 microns, or has a big jump between readings (repaint or filler). Light touch means finishing polish only, or skip it. Not sure? Ask Angus.
@@ -157,8 +156,9 @@ Measure the paint before you polish. Start with the gentlest pad and polish comb
 9. **Inspect again under the LED** from three angles. Rework any hazing, holograms or missed spots.
 10. **Remove tape, clean dust** out of gaps and badges with a soft brush and blower.
 11. **Photos:** the worst areas after, from the same angle as their before photos.
-12. **Then protect.** Ceramic job: go straight on to the ceramic coating steps. Not a ceramic job: put on the ceramic sealant, the same as the exterior detail.
-13. **Finish.** Not a ceramic job: dry, blower, glass, tyre shine, walk around and door jambs, the same as the exterior detail.
+12. **Then protect** with the ceramic sealant.
+    - Wet a clean towel with clean water and give it a few sprays. Spray 2 to 3 times on the panel, wipe side to side over the whole panel, then rinse straight away. Never wait to rinse. Panel by panel, whole car.
+13. **Finish** like the exterior detail: dry, blower, glass, tyre shine, walk around and door jambs.
 14. **Record** the readings and stages done in the job notes. They go to the customer with the invoice.
 
 **Paint correction clips to film**
@@ -198,19 +198,17 @@ The coating is only as good as the paint under it, so prep is most of the job. U
 8. **Second layer** if the package has one, after the wait time on the bottle.
 9. **Extras by package:** lights and exterior plastics, glass, wheel faces, door and boot jambs, interior. Right product on the right surface.
 10. **Final walk** of every panel under the LED. Any doubt, buff it.
-11. **Finish.** Peel off all the tape. Then glass, tyre shine and door jambs, the same as the exterior detail.
+11. **Finish.** Peel off all the tape. Then the glass and door jambs you didn't coat, tyre shine, and a walk around for any dirt left, the same as the exterior detail.
 
 **After**
 
 1. **Car stays under cover 24 hours** and out of rain 48 hours. No wash for 7 days.
-2. **Tell the customer three rules:** no automatic car washes, hand wash with pH-neutral shampoo, get bird poo and sap off within a few days.
-3. **Hand over** the wash guide and the written warranty.
-4. **Record for the warranty:** name, car, rego, date, package, coating and bottle batch, layers, paint readings, photos.
-5. **Book the annual check** in the calendar before you leave.
+2. **Record for the warranty:** name, car, rego, date, package, coating and bottle batch, layers, paint readings, photos.
+3. **Book the annual check** in the calendar before you leave.
 
 **Ceramic clips to film**
 
-Film the correction clips too. Then add these.
+Film the correction clips too. Then add these. The two marked Later are for our first maintenance wash, not today.
 
 | When | Clip | Length | What it's for |
 | --- | --- | --- | --- |
@@ -219,7 +217,7 @@ Film the correction clips too. Then add these.
 | During | Crosshatch application, close up | 3s | Process clip |
 | During | The rainbow flash on the panel | 3s | Shows it's real ceramic, not a spray |
 | During | Towel buffing it off, gloss coming through | 3s | The reveal |
-| Later | Hose or rain on the coated bonnet, water beading and sheeting off, slow-mo | 5s | The ceramic ad. Film it 3 times, at their first wash 7 or more days on. Never on coating day |
+| Later | Hose or rain on the coated bonnet, water beading and sheeting off, slow-mo | 5s | The ceramic ad. Film it 3 times at our first maintenance wash, a week or more later. Never on coating day |
 | Later | Water drops rolling off the mirror | 3s | Close-up proof. Film it with the one above, never on coating day |
 | After | Walk around under cover, same spot as the before | 10s | The after |
 | During | Customer walking out to the car, only if they say yes | 5s | Best clip of any job |
@@ -321,10 +319,13 @@ Never skip the handover. It's where the review, the next job and the referral co
 1. Pack the van first, clean up the driveway, then call the customer out.
 2. Walk around the car with them. Let them look before you talk.
 3. Show the before photos next to the car.
-4. **Pitch, 20 seconds.** Full detail customers get the ceramic pitch. Ceramic customers get the maintenance plan pitch.
-5. **Referral line:** "If a mate books, you get $50 off your next one."
-6. **Review ask:** "If you've got 30 seconds later, a Google review helps us heaps. I'll text you the link tonight." New customer? Check the review card and business card are on the steering wheel cover or the middle console. Not there yet? Leave them now.
-7. **Take payment** before you leave. Payment link or tap.
+4. **Coating care.** Tell them the rules, then hand over the wash guide and the written warranty.
+    - Under cover 24 hours, out of rain 48 hours, no wash for 7 days.
+    - No automatic car washes. Hand wash with pH-neutral shampoo. Get bird poo and sap off within a few days.
+5. **Pitch, 20 seconds.** Full detail customers get the ceramic pitch. Ceramic customers get the maintenance plan pitch.
+6. **Referral line:** "If a mate books, you get $50 off your next one."
+7. **Review ask:** "If you've got 30 seconds later, a Google review helps us heaps. I'll text you the link tonight." New customer? Check the review card and business card are on the steering wheel cover or the middle console. Not there yet? Leave them now.
+8. **Take payment** before you leave. Payment link or tap.
 
 **Same night**
 
@@ -364,7 +365,7 @@ One person checks the other's work. Don't hand the car over until every box is t
 
 **Job**
 
-- [ ] Every job photo the app showed is taken
+- [ ] Every job photo that applied is taken
 - [ ] Paint readings and stages written down (correction and coating)
 - [ ] Warranty record done (coating)
 - [ ] Van packed, driveway clean, tap off

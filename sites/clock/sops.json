@@ -1,6 +1,6 @@
 {
  "about": "Imperium job SOPs, with a plain-words How to do it for every step. The app copies these into the Google Sheet the first time it runs, and brings in a newer version by itself as long as nobody has edited that SOP in the app. Edit them in the app: Admin > Edit the SOPs.",
- "version": 5,
+ "version": 6,
  "previous": {
   "every_job": [
    "7fbacad5",
@@ -265,7 +265,7 @@
         },
         {
          "n": 6,
-         "label": "The extraction water",
+         "label": "The extraction water, if you used the extractor",
          "pos": "after",
          "at": [
           "int-steps-3"
@@ -295,7 +295,9 @@
           "ext-steps-12",
           "mnt-outside-9",
           "cer-applying-11",
-          "cor-steps-13"
+          "cor-steps-13",
+          "cer-applying-10",
+          "cor-steps-11"
          ]
         },
         {
@@ -327,7 +329,9 @@
           "mnt-outside-9",
           "cer-applying-11",
           "cor-steps-13",
-          "int-steps-12"
+          "int-steps-12",
+          "cer-applying-10",
+          "cor-steps-11"
          ]
         }
        ],
@@ -369,7 +373,7 @@
        "subs": [],
        "required": false,
        "id": "job-filming-2",
-       "more": "Hold the phone still for a moment at the start and the end. That gives clean bits to cut in the edit. If the clip is a pan or a walk around, move slowly and smoothly, never shaky. If not, keep it still the whole time. Stay quiet so music can go over it, unless the clip is meant to have talking."
+       "more": "Hold the phone still for a moment at the start and the end. That gives clean bits to cut in the edit. In between, a slight, slow pan, smooth and never shaky, unless the clip says to hold it still. Stay quiet so music can go over it, unless the clip is meant to have talking."
       },
       {
        "type": "rule",
@@ -419,7 +423,7 @@
      ]
     }
    ],
-   "seed": 5
+   "seed": 6
   },
   {
    "key": "exterior",
@@ -494,10 +498,12 @@
        "type": "step",
        "title": "Clay.",
        "detail": "Do the paint, glass and trim. Move the clay side to side. Every few panels, dunk it in the touch wash bucket, squeeze it, soak up fresh water and carry on. Keep going until all the bugs are gone.",
-       "subs": [],
+       "subs": [
+        "Tar spots? Tar remover on them first, then clay."
+       ],
        "required": true,
        "id": "ext-steps-6",
-       "more": "Clay pulls out dirt that washing leaves behind, like sap, tar spots and bug bits. Keep the surface wet and soapy and glide the clay side to side with light pressure. When the panel feels smooth instead of rough, it's done. Drop the clay on the ground? It doesn't go back on paint."
+       "more": "Clay pulls out dirt that washing leaves behind, like sap and bug bits. Tar spots get tar remover first. Keep the surface wet and soapy and glide the clay side to side with light pressure. When the panel feels smooth instead of rough, it's done. Drop the clay on the ground? It doesn't go back on paint."
       },
       {
        "type": "step",
@@ -515,6 +521,7 @@
        "subs": [],
        "required": true,
        "id": "ext-steps-8",
+       "needs": "!correction",
        "more": "This puts a layer of protection on the paint. Wet a clean towel with clean water and give it a few sprays. Spray the panel 2 to 3 times, wipe side to side over the whole panel, then rinse it straight away. If it sits or dries, it streaks. Panel by panel, all the way round."
       },
       {
@@ -626,7 +633,9 @@
        "at": [
         "ext-steps-14",
         "cer-applying-11",
-        "cor-steps-13"
+        "cor-steps-13",
+        "cer-applying-10",
+        "cor-steps-11"
        ]
       },
       {
@@ -658,7 +667,9 @@
        "at": [
         "ext-steps-14",
         "cer-applying-11",
-        "cor-steps-13"
+        "cor-steps-13",
+        "cer-applying-10",
+        "cor-steps-11"
        ]
       }
      ]
@@ -808,8 +819,11 @@
        "at": [
         "ext-steps-14",
         "cer-applying-11",
-        "cor-steps-13"
-       ]
+        "cor-steps-13",
+        "cer-applying-10",
+        "cor-steps-11"
+       ],
+       "needs": "!ceramic"
       },
       {
        "type": "clip",
@@ -825,7 +839,9 @@
        "at": [
         "ext-steps-12",
         "cer-applying-11",
-        "cor-steps-13"
+        "cor-steps-13",
+        "cer-applying-10",
+        "cor-steps-11"
        ]
       },
       {
@@ -842,13 +858,16 @@
        "at": [
         "ext-steps-14",
         "cer-applying-11",
-        "cor-steps-13"
-       ]
+        "cor-steps-13",
+        "cer-applying-10",
+        "cor-steps-11"
+       ],
+       "needs": "!correction"
       }
      ]
     }
    ],
-   "seed": 5
+   "seed": 6
   },
   {
    "key": "interior",
@@ -1224,13 +1243,13 @@
      ]
     }
    ],
-   "seed": 5
+   "seed": 6
   },
   {
    "key": "correction",
    "name": "Paint correction",
    "sort": 4,
-   "intro": "Measure the paint before you polish. Start with the gentlest pad and polish combo that works. Never polish over grit. Under cover only. Goal: 2 to 3 hours, exterior included.",
+   "intro": "Measure the paint before you polish. Start with the gentlest pad and polish combo that works. Never polish over grit. On a ceramic job, the sealant and finish steps are left out: the coating comes next. Under cover only. Goal: 2 to 3 hours, exterior included.",
    "outro": "",
    "sections": [
     {
@@ -1244,15 +1263,12 @@
      "items": [
       {
        "type": "step",
-       "title": "Exterior first.",
-       "detail": "Do the exterior detail up to the rinse after clay. Skip the ceramic sealant. Nothing goes on the paint before you polish.",
-       "subs": [
-        "Tar spots? Take them off with tar remover before the clay.",
-        "Then dry the car and blow out every gap, so the tape sticks and no water runs onto the pad."
-       ],
+       "title": "Exterior done.",
+       "detail": "Washed, iron remover, clay, rinsed, dried and blown out. No sealant: nothing goes on the paint before you polish.",
+       "subs": [],
        "required": true,
        "id": "cor-steps-1",
-       "more": "Do the exterior steps 1 to 7: wheels, pre-wash, touch wash, rinse, iron remover, clay, rinse. Any tar spots come off with tar remover before the clay. Stop there. No ceramic sealant: the paint has to be bare when you polish. Then dry it and blow out every gap, or the tape won't stick and water runs out onto the pad."
+       "more": "On this job the exterior steps above stop after the blower: wheels, pre-wash, touch wash, rinse, iron remover, clay, rinse, dry, blower. Just check they're all done. No ceramic sealant: the paint has to be bare when you polish. A dry car also means the tape sticks and no water runs onto the pad."
       },
       {
        "type": "step",
@@ -1357,17 +1373,20 @@
       },
       {
        "type": "step",
-       "title": "Then protect.",
-       "detail": "Ceramic job: go straight on to the ceramic coating steps. Not a ceramic job: put on the ceramic sealant, the same as the exterior detail.",
-       "subs": [],
+       "title": "Then protect",
+       "detail": "with the ceramic sealant.",
+       "subs": [
+        "Wet a clean towel with clean water and give it a few sprays. Spray 2 to 3 times on the panel, wipe side to side over the whole panel, then rinse straight away. Never wait to rinse. Panel by panel, whole car."
+       ],
        "required": true,
        "id": "cor-steps-12",
-       "more": "Freshly polished paint has no protection at all. Ceramic job: go straight into the ceramic coating steps. Not a ceramic job: put on the ceramic sealant the same way as step 8 of the exterior detail."
+       "needs": "!ceramic",
+       "more": "Freshly polished paint has no protection at all, so the sealant goes on now, the same way as step 8 of the exterior detail. Spray, wipe, rinse straight away, one panel at a time. A ceramic job skips this step: the coating is the protection."
       },
       {
        "type": "step",
-       "title": "Finish.",
-       "detail": "Not a ceramic job: dry, blower, glass, tyre shine, walk around and door jambs, the same as the exterior detail.",
+       "title": "Finish",
+       "detail": "like the exterior detail: dry, blower, glass, tyre shine, walk around and door jambs.",
        "subs": [],
        "required": true,
        "id": "cor-steps-13",
@@ -1513,13 +1532,15 @@
        "pos": "after",
        "at": [
         "cer-applying-11",
-        "cor-steps-13"
+        "cor-steps-13",
+        "cer-applying-10",
+        "cor-steps-11"
        ]
       }
      ]
     }
    ],
-   "seed": 5
+   "seed": 6
   },
   {
    "key": "ceramic",
@@ -1544,7 +1565,7 @@
        "subs": [],
        "required": true,
        "id": "cer-before-you-open-the-bottle-1",
-       "more": "Nothing to do again here, just check. The wash, iron remover and clay were done at the start of the job, and any tar came off before the clay. Any old wax or sealant has to be gone, because the coating can't stick on top of it."
+       "more": "You did this already. Just check it. The wash, iron remover and clay were done at the start of the job, and any tar came off before the clay. Any old wax or sealant has to be gone, because the coating can't stick on top of it."
       },
       {
        "type": "step",
@@ -1686,11 +1707,11 @@
       {
        "type": "step",
        "title": "Finish.",
-       "detail": "Peel off all the tape. Then glass, tyre shine and door jambs, the same as the exterior detail.",
+       "detail": "Peel off all the tape. Then the glass and door jambs you didn't coat, tyre shine, and a walk around for any dirt left, the same as the exterior detail.",
        "subs": [],
        "required": true,
        "id": "cer-applying-11",
-       "more": "The tape from before the coating is still on, and the exterior stopped before the polish. Peel the tape off slowly. Clean the glass you didn't coat, put tyre shine on the tyres, and wipe the door jambs. The after photos and clips come next, so the car has to look finished."
+       "more": "The tape from before the coating is still on, and the exterior stopped before the polish. Peel the tape off slowly. Clean the glass and wipe the door jambs you didn't coat, put tyre shine on the tyres, and walk around for any dirt left. The after photos and clips come next, so the car has to look finished."
       }
      ]
     },
@@ -1710,25 +1731,7 @@
        "subs": [],
        "required": true,
        "id": "cer-after-1",
-       "more": "The coating needs time to harden. The car stays under cover for 24 hours, out of rain for 48 hours, and doesn't get washed for 7 days. Tell the customer clearly."
-      },
-      {
-       "type": "step",
-       "title": "Tell the customer three rules:",
-       "detail": "no automatic car washes, hand wash with pH-neutral shampoo, get bird poo and sap off within a few days.",
-       "subs": [],
-       "required": true,
-       "id": "cer-after-2",
-       "more": "Keep it simple. One: no automatic car washes, the brushes scratch. Two: hand wash only, with a pH-neutral shampoo. Three: get bird poo and tree sap off within a few days, because they can eat into the surface."
-      },
-      {
-       "type": "step",
-       "title": "Hand over",
-       "detail": "the wash guide and the written warranty.",
-       "subs": [],
-       "required": true,
-       "id": "cer-after-3",
-       "more": "Give them the wash guide and the written warranty. Point to the three rules on the guide as you hand it over."
+       "more": "The coating needs time to harden. The car stays under cover for 24 hours, out of rain for 48 hours, and doesn't get washed for 7 days. You tell the customer at the handover."
       },
       {
        "type": "step",
@@ -1736,7 +1739,7 @@
        "detail": "name, car, rego, date, package, coating and bottle batch, layers, paint readings, photos.",
        "subs": [],
        "required": true,
-       "id": "cer-after-4",
+       "id": "cer-after-2",
        "tool": "warranty",
        "more": "Fill in the warranty record below: name, car, rego, date, package, coating and bottle batch, layers, paint readings and photos. If there's ever a claim, this is the proof of what was done."
       },
@@ -1746,7 +1749,7 @@
        "detail": "in the calendar before you leave.",
        "subs": [],
        "required": true,
-       "id": "cer-after-5",
+       "id": "cer-after-3",
        "more": "Put the annual check in the calendar before you leave, a year from today. The warranty record works the date out for you."
       }
      ]
@@ -1756,7 +1759,7 @@
      "name": "Ceramic clips to film",
      "heading": true,
      "headingNote": "",
-     "intro": "Film the correction clips too. Then add these.",
+     "intro": "Film the correction clips too. Then add these. The two marked Later are for our first maintenance wash, not today.",
      "style": "clips",
      "needs": "",
      "items": [
@@ -1843,7 +1846,7 @@
        "required": false,
        "when": "later",
        "length": "5s",
-       "purpose": "The ceramic ad. Film it 3 times, at their first wash 7 or more days on. Never on coating day",
+       "purpose": "The ceramic ad. Film it 3 times at our first maintenance wash, a week or more later. Never on coating day",
        "id": "cer-ceramic-clips-to-film-6"
       },
       {
@@ -1890,7 +1893,7 @@
      ]
     }
    ],
-   "seed": 5
+   "seed": 6
   },
   {
    "key": "maintenance",
@@ -2148,7 +2151,7 @@
      ]
     }
    ],
-   "seed": 5
+   "seed": 6
   },
   {
    "key": "door_knock",
@@ -2386,7 +2389,7 @@
     }
    ],
    "optional": true,
-   "seed": 5
+   "seed": 6
   },
   {
    "key": "handover",
@@ -2433,11 +2436,24 @@
       },
       {
        "type": "step",
+       "title": "Coating care.",
+       "detail": "Tell them the rules, then hand over the wash guide and the written warranty.",
+       "subs": [
+        "Under cover 24 hours, out of rain 48 hours, no wash for 7 days.",
+        "No automatic car washes. Hand wash with pH-neutral shampoo. Get bird poo and sap off within a few days."
+       ],
+       "required": true,
+       "id": "hand-at-the-car-4",
+       "needs": "ceramic",
+       "more": "Ceramic jobs only, once they've seen the car. Tell them clearly: under cover for 24 hours, out of rain for 48, no wash for 7 days. Then the three rules: no automatic car washes, the brushes scratch. Hand wash only, with a pH-neutral shampoo. Get bird poo and tree sap off within a few days, because they eat into the surface. Hand over the wash guide and the written warranty, and point to the rules on the guide."
+      },
+      {
+       "type": "step",
        "title": "Pitch, 20 seconds.",
        "detail": "Full detail customers get the ceramic pitch. Ceramic customers get the maintenance plan pitch.",
        "subs": [],
        "required": true,
-       "id": "hand-at-the-car-4",
+       "id": "hand-at-the-car-5",
        "script": "pitch",
        "needs": "!maintenance",
        "more": "Keep it short and natural, about 20 seconds. The right pitch for this job is below, with a Copy button. Then tap whether you pitched it."
@@ -2448,9 +2464,9 @@
        "detail": "\"If a mate books, you get $50 off your next one.\"",
        "subs": [],
        "required": true,
-       "id": "hand-at-the-car-5",
+       "id": "hand-at-the-car-6",
        "script": "referral",
-       "more": "Say it just like this, then hand them a business card to pass on to their mate."
+       "more": "Say it just like this. New customer? Hand them a business card to pass on to their mate. Regulars already have one."
       },
       {
        "type": "step",
@@ -2458,7 +2474,7 @@
        "detail": "\"If you've got 30 seconds later, a Google review helps us heaps. I'll text you the link tonight.\" New customer? Check the review card and business card are on the steering wheel cover or the middle console. Not there yet? Leave them now.",
        "subs": [],
        "required": true,
-       "id": "hand-at-the-car-6",
+       "id": "hand-at-the-car-7",
        "script": "review",
        "needs": "!maintenance",
        "more": "Ask in a relaxed way, word for word. New customer: on a full or interior detail the cards went in at the end of the interior, so just check they're there. Not there, or no interior on this job? Leave the review card and a business card on the steering wheel cover or the middle console, so they see them later. Returning customer: no cards. You'll text the link tonight."
@@ -2469,7 +2485,7 @@
        "detail": "before you leave. Payment link or tap.",
        "subs": [],
        "required": true,
-       "id": "hand-at-the-car-7",
+       "id": "hand-at-the-car-8",
        "more": "Take payment before you drive off: payment link or tap. Never leave it for later. Thank them by name."
       }
      ]
@@ -2553,7 +2569,7 @@
      ]
     }
    ],
-   "seed": 5
+   "seed": 6
   },
   {
    "key": "signoff",
@@ -2696,7 +2712,7 @@
       {
        "type": "signoff",
        "title": "",
-       "detail": "Every job photo the app showed is taken",
+       "detail": "Every job photo that applied is taken",
        "subs": [],
        "required": true,
        "id": "sign-job-1",
@@ -2734,7 +2750,7 @@
      ]
     }
    ],
-   "seed": 5
+   "seed": 6
   }
  ],
  "services": {
@@ -2796,7 +2812,7 @@
     180
    ],
    "stopAfter": {
-    "exterior": "ext-steps-7"
+    "exterior": "ext-steps-10"
    }
   },
   "Ceramic coating": {
@@ -2815,7 +2831,7 @@
     300
    ],
    "stopAfter": {
-    "exterior": "ext-steps-7"
+    "exterior": "ext-steps-10"
    }
   },
   "Maintenance wash": {
@@ -2903,6 +2919,6 @@
    ],
    "notOffered": "We don't do PPF (paint protection film), window tinting or rim repairs."
   },
-  "seed": 5
+  "seed": 6
  }
 }
