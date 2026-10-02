@@ -269,7 +269,7 @@
      wins, so a clip still lands right when the exterior is cut short for a
      correction or ceramic job. A clip with no place stays in its own list. */
   function placements(lists) {
-    var present = {}, before = {}, after = {}, placed = {}, photos = [];
+    var present = {}, before = {}, after = {}, placed = {};
     var keys = (lists || []).map(function (t) { return t.key; });
     eachItem(lists, function (it) { if (it.type === 'step') present[it.id] = true; });
     var put = function (cue, pos, at) {
@@ -280,10 +280,7 @@
       return true;
     };
     eachItem(lists, function (it) {
-      (it.photos || []).forEach(function (p) {
-        var cue = { photo: p };
-        if (fits(p.needs, keys) && put(cue, p.pos, p.at)) photos.push(cue);
-      });
+      (it.photos || []).forEach(function (p) { if (fits(p.needs, keys)) put({ photo: p }, p.pos, p.at); });
       if (it.type === 'clip' && it.at && put({ clip: it.id, pos: it.pos || 'after', when: it.when }, it.pos, it.at)) placed[it.id] = true;
     });
     // In each spot: what you film while doing the step, then the photos, then the rest.
@@ -295,8 +292,13 @@
           .map(function (x) { return x[2]; });
       });
     });
-    // Photos are counted for this job: an exterior job has fewer than 12.
-    photos.sort(function (a, b) { return a.photo.n - b.photo.n; });
+    // Photos are numbered for this job, in the order the crew meets them
+    // going down the list: an exterior job has 7 of the 12.
+    var photos = [];
+    eachItem(lists, function (it) {
+      if (it.type !== 'step') return;
+      (before[it.id] || []).concat(after[it.id] || []).forEach(function (c) { if (c.photo) photos.push(c); });
+    });
     photos.forEach(function (c, i) { c.i = i + 1; c.of = photos.length; });
     return { before: before, after: after, placed: placed, photos: photos.length };
   }

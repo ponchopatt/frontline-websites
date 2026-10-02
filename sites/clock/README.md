@@ -77,11 +77,13 @@ as the SOPs say.
   photos, shows right under the step it belongs to (or just before the first
   step, for the befores): *Film this first*, *Film during the step above*,
   *Film this now*, *Take photo 4 of 7: Foam on*. Photos are counted for
-  the job, because an exterior detail has 7 of the 12 and a full detail 10.
-  Tick a clip once it's filmed. When the exterior is
-  cut short for a correction or ceramic job, the "after" clips move to where
-  that job really finishes. A clip with no sensible place stays in a short
-  list at the end of its stage.
+  the job (an exterior detail has 7 of the 12, a full detail 10) and numbered
+  in the order you reach them. Tick a clip once it's filmed. When the exterior
+  is cut short for a correction or ceramic job, the "after" clips move to
+  where that job really finishes, once the tape is off and the tyres are
+  dressed. The 50/50 has its own step, so its clip and photo come before the
+  rest of the car is polished. The two ceramic water clips can't be filmed on
+  coating day, so they sit at the end of the list marked *Later*.
 - **Tools on the steps that need them:** paint readings per panel (flags
   anything under 80 microns or with a jump over 30), which pad and polish combo
   worked, stages done, the warranty record (works out the annual check date),

@@ -26,7 +26,7 @@ Every job runs the same way, so the customer gets the same car back no matter wh
 - Not sure? Text Angus. Don't guess.
 - Wheel towels never touch paint. A dropped towel is a dirty towel.
 - Test any chemical on a hidden spot first if you don't know the surface.
-- Take the job photos the app shows for this job (up to 12): front 3/4 before, dirtiest panel, wheel before, interior before, foam on, extraction water, polisher on panel, 50/50 if correcting, wheel after, interior after, beading, front 3/4 after from the same spot as photo 1.
+- Take the job photos the app shows for this job (up to 12): front 3/4 before, dirtiest panel, wheel before, interior before, foam on, extraction water, polisher on panel, 50/50 if correcting, wheel after, interior after, beading, front 3/4 after from the same spot as the before.
 - Leads come first in breaks. Reply within 5 minutes.
 
 **Filming** (type: rule)
@@ -34,7 +34,7 @@ Every job runs the same way, so the customer gets the same car back no matter wh
 Every job gets filmed. These clips become the reels, the ads and the before and afters. Each service below has its own clip list.
 
 - Phone vertical, 4K, 60fps. Slow-mo for foam and water.
-- Start and end every clip still. Film for the length in the clip list. No talking unless it's a talking clip.
+- Hold the phone still at the start and end of every clip. Film for the length in the clip list. No talking unless it's a talking clip.
 - Film the before and the after from the same spot, same angle, same direction. That's what makes the change easy to see.
 - Wipe the lens before every clip.
 - Cover or blur number plates before anything is posted.
@@ -131,13 +131,14 @@ Your goal the whole way through is to find something dirty and make it clean.
 | After | Same walk through, same path as the before | 10s | The after. Cut it next to the before |
 | After | The stain spot, same angle as the before | 3s | Before and after of the stain |
 | After | Mats back in with clean straight lines | 3s | Finish shot |
-| After | Review card and business card going in the steering wheel cover (new customers) | 2s | Ends the reel, shows the brand |
+| During | Review card and business card going in the steering wheel cover (new customers) | 2s | Ends the reel, shows the brand |
 
 ## Paint correction
 
 Measure the paint before you polish. Start with the gentlest pad and polish combo that works. Never polish over grit. Under cover only. Goal: 2 to 3 hours, exterior included.
 
 1. **Exterior first.** Do the exterior detail up to the rinse after clay. Skip the ceramic sealant. Nothing goes on the paint before you polish.
+    - Tar spots? Take them off with tar remover before the clay.
     - Then dry the car and blow out every gap, so the tape sticks and no water runs onto the pad.
 2. **Tape off** rubbers, plastics, badges, panel edges and sharp body lines.
 3. **Inspect under the LED.** Mark the worst areas and photo each one. Show the customer what will come out and what won't. If your fingernail catches on a scratch, it's through the clear coat. It won't come out. Say so before you start.
@@ -147,18 +148,18 @@ Measure the paint before you polish. Start with the gentlest pad and polish comb
     - Less cooked: microfibre pad, fine cut
     - Moderate swirls: foam pad, heavy cut
     - Basically perfect: foam pad, fine cut
-6. **Do the whole car** with that combo. Use the small polisher in tight and fine areas. Blow the pad clean with air often. Keep the pad off edges and body lines.
-    - Worst panel first: polish one side of the 50/50 tape line. Film the 50/50 and take its photo, then peel the tape. Then do the other half and the rest of the car.
+6. **50/50 on the worst panel.** Run one strip of tape down the middle. Polish one side with that combo. Film the 50/50 under the LED and take its photo. Then peel off just that strip.
     - Polish on the pad: 4 to 5 pea-sized drops, north, south, east and west of the centre, or in a star shape.
     - Stamp the pad on the panel or area you're doing first. Spread it on the lowest speed, then go up to normal speed.
     - Normal speed: microfibre pad speed 4, foam pad speed 5.
-7. **Alcohol prep** over the whole car to remove all the polish oils.
-8. **Inspect again under the LED** from three angles. Rework any hazing, holograms or missed spots.
-9. **Remove tape, clean dust** out of gaps and badges with a soft brush and blower.
-10. **Photos:** the worst areas after, from the same angle as their before photos.
-11. **Then protect.** Ceramic job: go straight on to the ceramic coating steps. Not a ceramic job: put on the ceramic sealant, the same as the exterior detail.
-    - Not a ceramic job: then dry, blower, glass, tyre shine, walk around and door jambs, the same as exterior steps 9 to 14.
-12. **Record** the readings and stages done in the job notes. They go to the customer with the invoice.
+7. **Do the whole car** with that combo, the same way, starting with the other half of the worst panel. Use the small polisher in tight and fine areas. Blow the pad clean with air often. Keep the pad off edges and body lines.
+8. **Alcohol prep** over the whole car to remove all the polish oils.
+9. **Inspect again under the LED** from three angles. Rework any hazing, holograms or missed spots.
+10. **Remove tape, clean dust** out of gaps and badges with a soft brush and blower.
+11. **Photos:** the worst areas after, from the same angle as their before photos.
+12. **Then protect.** Ceramic job: go straight on to the ceramic coating steps. Not a ceramic job: put on the ceramic sealant, the same as the exterior detail.
+13. **Finish.** Not a ceramic job: dry, blower, glass, tyre shine, walk around and door jambs, the same as the exterior detail.
+14. **Record** the readings and stages done in the job notes. They go to the customer with the invoice.
 
 **Paint correction clips to film**
 
@@ -179,8 +180,8 @@ The coating is only as good as the paint under it, so prep is most of the job. U
 
 **Before you open the bottle**
 
-1. **Exterior prep.** Full exterior wash, iron remover, tar remover and clay, as in the exterior detail above. Strip any old wax or sealant.
-2. **Paint correction** as in the correction steps above. Do at least a single stage, even on a brand new car. It takes out marks from transport and dealer washes.
+1. **Exterior prep done.** The wash, iron remover, tar and clay were done at the start, in the exterior steps. Any old wax or sealant must be off too.
+2. **Paint correction done.** At least a single stage, even on a brand new car. It takes out marks from transport and dealer washes.
 3. **Tape off** rubbers, unpainted plastics you aren't coating, and badges.
 4. **Panel prep wipe** on every surface you're coating. Use IPA or panel prep spray. Wipe with one towel, then buff dry with a second. After this, never touch the paint with bare hands.
 5. **Check the conditions:** under cover, out of sun and wind, panels cool, good light. Temperature and humidity must be inside the range on the bottle.
@@ -197,6 +198,7 @@ The coating is only as good as the paint under it, so prep is most of the job. U
 8. **Second layer** if the package has one, after the wait time on the bottle.
 9. **Extras by package:** lights and exterior plastics, glass, wheel faces, door and boot jambs, interior. Right product on the right surface.
 10. **Final walk** of every panel under the LED. Any doubt, buff it.
+11. **Finish.** Peel off all the tape. Then glass, tyre shine and door jambs, the same as the exterior detail.
 
 **After**
 
@@ -217,10 +219,10 @@ Film the correction clips too. Then add these.
 | During | Crosshatch application, close up | 3s | Process clip |
 | During | The rainbow flash on the panel | 3s | Shows it's real ceramic, not a spray |
 | During | Towel buffing it off, gloss coming through | 3s | The reveal |
-| After | Hose or rain on the coated bonnet, water beading and sheeting off, slow-mo | 5s | The ceramic ad. Film it 3 times |
-| After | Water drops rolling off the mirror | 3s | Close-up proof |
+| Later | Hose or rain on the coated bonnet, water beading and sheeting off, slow-mo | 5s | The ceramic ad. Film it 3 times, at their first wash 7 or more days on. Never on coating day |
+| Later | Water drops rolling off the mirror | 3s | Close-up proof. Film it with the one above, never on coating day |
 | After | Walk around under cover, same spot as the before | 10s | The after |
-| After | Customer walking out to the car, only if they say yes | 5s | Best clip of any job |
+| During | Customer walking out to the car, only if they say yes | 5s | Best clip of any job |
 
 ## Maintenance wash
 
@@ -231,7 +233,7 @@ For our regular customers. Same standard, less work. Do what the car needs. Look
 1. **Wheels and tyres,** the same as the exterior detail. Dirty rims with no chrome: use the acid wheel cleaner. Never use acid on chrome.
     - Wheels bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.
 2. **Spray down** the whole car fully. Too dirty for that? Do the full pre-wash from the exterior detail instead.
-3. **Foam it up.** Film the foam shot first, then go straight into the touch wash. Same mix and method as the exterior detail.
+3. **Foam it up.** Film the foam shot first, then go straight into the touch wash. Same method as the exterior touch wash.
     - Foam cannon: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water.
     - Touch wash bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.
 4. **Rinse** the whole car.
@@ -272,7 +274,7 @@ Optional, and it pays. While you're on a job, knock on the houses around it. Eve
 
 **Steps**
 
-1. **Pick your moment:** a quiet patch in the job, like once the car looks its best.
+1. **Pick your moment:** when you can step away for a few minutes, like once the car looks its best.
 2. **Knock** on the houses either side and across the road.
 3. **Ice breaker.** Use one from the script below. Then say you're detailing their neighbour's car.
 4. **Ask** if they've been looking to get their car done.
@@ -296,7 +298,7 @@ Ice breaker, their car:
 "G'day! I'm [your name] from Imperium Detailing. We're working on your street today and I couldn't help noticing your [their car]."
 
 Ice breaker, the before and after:
-"Hi! Quick one: I'm [your name] from Imperium Detailing, we're working on your street today. Want to see a before and after from one of our jobs?"
+"Hi! Quick one: I'm [your name] from Imperium Detailing. We're working on your street today. Want to see a before and after from one of our jobs?"
 
 The ask:
 "Since we're already set up on the street, have you been thinking about getting yours done? We come to you, so you don't have to go anywhere."
@@ -321,7 +323,7 @@ Never skip the handover. It's where the review, the next job and the referral co
 3. Show the before photos next to the car.
 4. **Pitch, 20 seconds.** Full detail customers get the ceramic pitch. Ceramic customers get the maintenance plan pitch.
 5. **Referral line:** "If a mate books, you get $50 off your next one."
-6. **Review ask:** "If you've got 30 seconds later, a Google review helps us heaps. I'll text you the link tonight." Check the review card and business card are on the steering wheel cover or the middle console. Not there yet? Leave them now.
+6. **Review ask:** "If you've got 30 seconds later, a Google review helps us heaps. I'll text you the link tonight." New customer? Check the review card and business card are on the steering wheel cover or the middle console. Not there yet? Leave them now.
 7. **Take payment** before you leave. Payment link or tap.
 
 **Same night**

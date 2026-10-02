@@ -1,6 +1,6 @@
 {
  "about": "Imperium job SOPs, with a plain-words How to do it for every step. The app copies these into the Google Sheet the first time it runs, and brings in a newer version by itself as long as nobody has edited that SOP in the app. Edit them in the app: Admin > Edit the SOPs.",
- "version": 4,
+ "version": 5,
  "previous": {
   "every_job": [
    "7fbacad5",
@@ -211,7 +211,7 @@
       {
        "type": "rule",
        "title": "",
-       "detail": "Take the job photos the app shows for this job (up to 12): front 3/4 before, dirtiest panel, wheel before, interior before, foam on, extraction water, polisher on panel, 50/50 if correcting, wheel after, interior after, beading, front 3/4 after from the same spot as photo 1.",
+       "detail": "Take the job photos the app shows for this job (up to 12): front 3/4 before, dirtiest panel, wheel before, interior before, foam on, extraction water, polisher on panel, 50/50 if correcting, wheel after, interior after, beading, front 3/4 after from the same spot as the before.",
        "subs": [],
        "required": false,
        "id": "job-always-5",
@@ -268,8 +268,7 @@
          "label": "The extraction water",
          "pos": "after",
          "at": [
-          "int-steps-3",
-          "mnt-inside-1"
+          "int-steps-3"
          ]
         },
         {
@@ -277,7 +276,7 @@
          "label": "The polisher on a panel",
          "pos": "after",
          "at": [
-          "cor-steps-6"
+          "cor-steps-7"
          ]
         },
         {
@@ -295,8 +294,8 @@
          "at": [
           "ext-steps-12",
           "mnt-outside-9",
-          "cer-applying-10",
-          "cor-steps-11"
+          "cer-applying-11",
+          "cor-steps-13"
          ]
         },
         {
@@ -315,24 +314,24 @@
          "at": [
           "ext-steps-8",
           "mnt-outside-8",
-          "cor-steps-11"
+          "cor-steps-12"
          ],
          "needs": "!ceramic"
         },
         {
          "n": 12,
-         "label": "Front 3/4 after, from the same spot as photo 1",
+         "label": "Front 3/4 after, from the same spot as the before",
          "pos": "after",
          "at": [
           "ext-steps-14",
           "mnt-outside-9",
-          "cer-applying-10",
-          "cor-steps-11",
+          "cer-applying-11",
+          "cor-steps-13",
           "int-steps-12"
          ]
         }
        ],
-       "more": "These photos prove the work and feed the website and the ads. The app shows each one right at the step where you take it, and only the ones that fit this job. The full list: 1 front 3/4 before, 2 dirtiest panel, 3 wheel before, 4 interior before, 5 foam on, 6 extraction water, 7 polisher on a panel, 8 the 50/50 if correcting, 9 wheel after, 10 interior after, 11 water beading, 12 front 3/4 after from the same spot as photo 1."
+       "more": "These photos prove the work and feed the website and the ads. The app shows each one right at the step where you take it, and only the ones that fit this job. The full list: front 3/4 before, dirtiest panel, wheel before, interior before, foam on, extraction water, polisher on a panel, the 50/50 if correcting, wheel after, interior after, water beading, front 3/4 after from the same spot as the before."
       },
       {
        "type": "rule",
@@ -366,11 +365,11 @@
       {
        "type": "rule",
        "title": "",
-       "detail": "Start and end every clip still. Film for the length in the clip list. No talking unless it's a talking clip.",
+       "detail": "Hold the phone still at the start and end of every clip. Film for the length in the clip list. No talking unless it's a talking clip.",
        "subs": [],
        "required": false,
        "id": "job-filming-2",
-       "more": "Hold the phone still for a moment at the start and the end. That gives clean bits to cut in the edit. In between, move slowly, never shaky. Stay quiet so music can go over it, unless the clip is meant to have talking."
+       "more": "Hold the phone still for a moment at the start and the end. That gives clean bits to cut in the edit. If the clip is a pan or a walk around, move slowly and smoothly, never shaky. If not, keep it still the whole time. Stay quiet so music can go over it, unless the clip is meant to have talking."
       },
       {
        "type": "rule",
@@ -420,7 +419,7 @@
      ]
     }
    ],
-   "seed": 4
+   "seed": 5
   },
   {
    "key": "exterior",
@@ -626,8 +625,8 @@
        "pos": "after",
        "at": [
         "ext-steps-14",
-        "cer-applying-10",
-        "cor-steps-11"
+        "cer-applying-11",
+        "cor-steps-13"
        ]
       },
       {
@@ -658,8 +657,8 @@
        "pos": "after",
        "at": [
         "ext-steps-14",
-        "cer-applying-10",
-        "cor-steps-11"
+        "cer-applying-11",
+        "cor-steps-13"
        ]
       }
      ]
@@ -791,7 +790,7 @@
        "pos": "after",
        "at": [
         "ext-steps-8",
-        "cor-steps-11"
+        "cor-steps-12"
        ],
        "needs": "!ceramic"
       },
@@ -808,8 +807,8 @@
        "pos": "after",
        "at": [
         "ext-steps-14",
-        "cer-applying-10",
-        "cor-steps-11"
+        "cer-applying-11",
+        "cor-steps-13"
        ]
       },
       {
@@ -825,8 +824,8 @@
        "pos": "after",
        "at": [
         "ext-steps-12",
-        "cer-applying-10",
-        "cor-steps-11"
+        "cer-applying-11",
+        "cor-steps-13"
        ]
       },
       {
@@ -842,14 +841,14 @@
        "pos": "after",
        "at": [
         "ext-steps-14",
-        "cer-applying-10",
-        "cor-steps-11"
+        "cer-applying-11",
+        "cor-steps-13"
        ]
       }
      ]
     }
    ],
-   "seed": 4
+   "seed": 5
   },
   {
    "key": "interior",
@@ -1213,7 +1212,7 @@
        "detail": "",
        "subs": [],
        "required": false,
-       "when": "after",
+       "when": "during",
        "length": "2s",
        "purpose": "Ends the reel, shows the brand",
        "id": "int-interior-clips-to-film-11",
@@ -1225,7 +1224,7 @@
      ]
     }
    ],
-   "seed": 4
+   "seed": 5
   },
   {
    "key": "correction",
@@ -1248,11 +1247,12 @@
        "title": "Exterior first.",
        "detail": "Do the exterior detail up to the rinse after clay. Skip the ceramic sealant. Nothing goes on the paint before you polish.",
        "subs": [
+        "Tar spots? Take them off with tar remover before the clay.",
         "Then dry the car and blow out every gap, so the tape sticks and no water runs onto the pad."
        ],
        "required": true,
        "id": "cor-steps-1",
-       "more": "Do the exterior steps 1 to 7: wheels, pre-wash, touch wash, rinse, iron remover, clay, rinse. Stop there. No ceramic sealant: the paint has to be bare when you polish. Then dry it and blow out every gap, or the tape won't stick and water runs out onto the pad."
+       "more": "Do the exterior steps 1 to 7: wheels, pre-wash, touch wash, rinse, iron remover, clay, rinse. Any tar spots come off with tar remover before the clay. Stop there. No ceramic sealant: the paint has to be bare when you polish. Then dry it and blow out every gap, or the tape won't stick and water runs out onto the pad."
       },
       {
        "type": "step",
@@ -1270,7 +1270,7 @@
        "subs": [],
        "required": true,
        "id": "cor-steps-3",
-       "more": "Shine the LED across each panel to find swirls and scratches, and mark the worst spots. Photo each one: you'll take the after from the same angle in step 10. Show the customer what will come out and what won't. Fingernail test: run a nail across the scratch. If it catches, it's through the clear coat and won't polish out. Say so now, not after."
+       "more": "Shine the LED across each panel to find swirls and scratches, and mark the worst spots. Photo each one: you'll take the after from the same angle in step 11. Show the customer what will come out and what won't. Fingernail test: run a nail across the scratch. If it catches, it's through the clear coat and won't polish out. Say so now, not after."
       },
       {
        "type": "step",
@@ -1295,21 +1295,29 @@
        "required": true,
        "id": "cor-steps-5",
        "combos": true,
-       "more": "Do a small test patch on the worst panel, putting the polish on the same way as step 6. Start with the gentlest combo you think will work, wipe it off and check under the LED. Swirls still there? Try the next stronger combo. Whatever works is the plan for the whole car. Tap the combo you used below."
+       "more": "Do a small test patch on one side of the worst panel, the side you'll polish first, so the other side stays untouched for the 50/50. Put the polish on the same way as step 6. Start with the gentlest combo you think will work, wipe it off and check under the LED. Swirls still there? Try the next stronger combo. Whatever works is the plan for the whole car. Tap the combo you used below."
       },
       {
        "type": "step",
-       "title": "Do the whole car",
-       "detail": "with that combo. Use the small polisher in tight and fine areas. Blow the pad clean with air often. Keep the pad off edges and body lines.",
+       "title": "50/50 on the worst panel.",
+       "detail": "Run one strip of tape down the middle. Polish one side with that combo. Film the 50/50 under the LED and take its photo. Then peel off just that strip.",
        "subs": [
-        "Worst panel first: polish one side of the 50/50 tape line. Film the 50/50 and take its photo, then peel the tape. Then do the other half and the rest of the car.",
         "Polish on the pad: 4 to 5 pea-sized drops, north, south, east and west of the centre, or in a star shape.",
         "Stamp the pad on the panel or area you're doing first. Spread it on the lowest speed, then go up to normal speed.",
         "Normal speed: microfibre pad speed 4, foam pad speed 5."
        ],
        "required": true,
        "id": "cor-steps-6",
-       "more": "Put 4 or 5 pea-sized drops on the pad around the centre, like a star. Press the pad flat onto the panel before you switch on, so the polish doesn't fling. Spread it on the lowest speed, then go to speed 4 (microfibre) or 5 (foam). Small sections, slow overlapping passes. Blow the pad clean often, and keep off edges and body lines. Do the worst panel first: polish one side of the 50/50 tape line, film the 50/50 and take its photo, peel the tape, then polish the other side."
+       "more": "A 50/50 is a panel half polished and half not: our most valuable clip. Tape one line down the middle of the worst panel. Put 4 or 5 pea-sized drops on the pad, like a star. Press the pad flat on the panel before you switch on, so it doesn't fling. Spread on the lowest speed, then speed 4 (microfibre) or 5 (foam). Polish one side only, slow overlapping passes. Wipe it, then film it and take the photo under the LED. Peel off just that strip. The other tape stays on until step 10."
+      },
+      {
+       "type": "step",
+       "title": "Do the whole car",
+       "detail": "with that combo, the same way, starting with the other half of the worst panel. Use the small polisher in tight and fine areas. Blow the pad clean with air often. Keep the pad off edges and body lines.",
+       "subs": [],
+       "required": true,
+       "id": "cor-steps-7",
+       "more": "Same combo, same way as the 50/50: the other half of the worst panel first, then the rest of the car. Small sections, slow overlapping passes. Blow the pad clean often, and keep off edges and body lines."
       },
       {
        "type": "step",
@@ -1317,7 +1325,7 @@
        "detail": "over the whole car to remove all the polish oils.",
        "subs": [],
        "required": true,
-       "id": "cor-steps-7",
+       "id": "cor-steps-8",
        "more": "Polish leaves oils behind that hide swirls and stop protection sticking. Wipe every polished panel with the alcohol prep on one clean towel, then buff dry with a second."
       },
       {
@@ -1326,7 +1334,7 @@
        "detail": "from three angles. Rework any hazing, holograms or missed spots.",
        "subs": [],
        "required": true,
-       "id": "cor-steps-8",
+       "id": "cor-steps-9",
        "more": "Check every panel with the LED from three different angles. Look for hazing (cloudy patches), holograms (wavy trails that show in light) and any spot you missed. Go over them again until they're gone."
       },
       {
@@ -1335,7 +1343,7 @@
        "detail": "out of gaps and badges with a soft brush and blower.",
        "subs": [],
        "required": true,
-       "id": "cor-steps-9",
+       "id": "cor-steps-10",
        "more": "Peel the tape off slowly. Then use a soft brush and the blower to clear polish dust out of gaps, badges, grilles and trim. Dust left behind looks messy and gets under the protection."
       },
       {
@@ -1344,19 +1352,27 @@
        "detail": "the worst areas after, from the same angle as their before photos.",
        "subs": [],
        "required": true,
-       "id": "cor-steps-10",
-       "more": "The 50/50 was done at the start of step 6. Now photo each worst area again, from the same angle as the before you took in step 3, so the change is easy to see."
+       "id": "cor-steps-11",
+       "more": "Photo each worst area again, from the same angle as the before you took in step 3, so the change is easy to see."
       },
       {
        "type": "step",
        "title": "Then protect.",
        "detail": "Ceramic job: go straight on to the ceramic coating steps. Not a ceramic job: put on the ceramic sealant, the same as the exterior detail.",
-       "subs": [
-        "Not a ceramic job: then dry, blower, glass, tyre shine, walk around and door jambs, the same as exterior steps 9 to 14."
-       ],
+       "subs": [],
        "required": true,
-       "id": "cor-steps-11",
-       "more": "Freshly polished paint has no protection at all. Ceramic job: go straight into the ceramic coating steps. Not a ceramic job: put on the ceramic sealant the same way as step 8 of the exterior detail, then finish like exterior steps 9 to 14: dry, blower, glass, tyre shine, walk around and door jambs."
+       "id": "cor-steps-12",
+       "more": "Freshly polished paint has no protection at all. Ceramic job: go straight into the ceramic coating steps. Not a ceramic job: put on the ceramic sealant the same way as step 8 of the exterior detail."
+      },
+      {
+       "type": "step",
+       "title": "Finish.",
+       "detail": "Not a ceramic job: dry, blower, glass, tyre shine, walk around and door jambs, the same as the exterior detail.",
+       "subs": [],
+       "required": true,
+       "id": "cor-steps-13",
+       "needs": "!ceramic",
+       "more": "The exterior stopped at the rinse before the polish, so finish it now, like exterior steps 9 to 14: dry everything, blow out the gaps, clean the glass, tyre shine on, walk around for anything missed, and dry the door jambs. The after photos and clips come next, so the car has to look finished."
       },
       {
        "type": "step",
@@ -1364,7 +1380,7 @@
        "detail": "the readings and stages done in the job notes. They go to the customer with the invoice.",
        "subs": [],
        "required": true,
-       "id": "cor-steps-12",
+       "id": "cor-steps-14",
        "tool": "correction",
        "more": "Pick how many stages you did and add any notes below. The paint readings come from the Paint readings box. All of it goes to the customer with the invoice."
       }
@@ -1421,7 +1437,7 @@
        "id": "cor-paint-correction-clips-to-film-3",
        "pos": "before",
        "at": [
-        "cor-steps-5"
+        "cor-steps-6"
        ]
       },
       {
@@ -1436,7 +1452,7 @@
        "id": "cor-paint-correction-clips-to-film-4",
        "pos": "after",
        "at": [
-        "cor-steps-6"
+        "cor-steps-7"
        ]
       },
       {
@@ -1496,14 +1512,14 @@
        "id": "cor-paint-correction-clips-to-film-8",
        "pos": "after",
        "at": [
-        "cer-applying-10",
-        "cor-steps-11"
+        "cer-applying-11",
+        "cor-steps-13"
        ]
       }
      ]
     }
    ],
-   "seed": 4
+   "seed": 5
   },
   {
    "key": "ceramic",
@@ -1523,21 +1539,21 @@
      "items": [
       {
        "type": "step",
-       "title": "Exterior prep.",
-       "detail": "Full exterior wash, iron remover, tar remover and clay, as in the exterior detail above. Strip any old wax or sealant.",
+       "title": "Exterior prep done.",
+       "detail": "The wash, iron remover, tar and clay were done at the start, in the exterior steps. Any old wax or sealant must be off too.",
        "subs": [],
        "required": true,
        "id": "cer-before-you-open-the-bottle-1",
-       "more": "This was done at the start of the job, in the exterior steps: the wash, iron remover and clay. Use tar remover on any tar spots. Any old wax or sealant has to come off, because the coating can't stick on top of it."
+       "more": "Nothing to do again here, just check. The wash, iron remover and clay were done at the start of the job, and any tar came off before the clay. Any old wax or sealant has to be gone, because the coating can't stick on top of it."
       },
       {
        "type": "step",
-       "title": "Paint correction",
-       "detail": "as in the correction steps above. Do at least a single stage, even on a brand new car. It takes out marks from transport and dealer washes.",
+       "title": "Paint correction done.",
+       "detail": "At least a single stage, even on a brand new car. It takes out marks from transport and dealer washes.",
        "subs": [],
        "required": true,
        "id": "cer-before-you-open-the-bottle-2",
-       "more": "A coating locks in whatever is under it, swirls included. So every coating gets at least a single-stage polish, even on a brand new car. That's the paint correction steps above. New cars often have marks from transport and dealer washes."
+       "more": "A coating locks in whatever is under it, swirls included. So every coating gets at least a single-stage polish, even on a brand new car. That was the paint correction steps above: just check it's done. New cars often have marks from transport and dealer washes."
       },
       {
        "type": "step",
@@ -1666,6 +1682,15 @@
        "required": true,
        "id": "cer-applying-10",
        "more": "Walk round with the LED and check every panel for high spots or smears. Not sure about a spot? Buff it. Easy now, hard later."
+      },
+      {
+       "type": "step",
+       "title": "Finish.",
+       "detail": "Peel off all the tape. Then glass, tyre shine and door jambs, the same as the exterior detail.",
+       "subs": [],
+       "required": true,
+       "id": "cer-applying-11",
+       "more": "The tape from before the coating is still on, and the exterior stopped before the polish. Peel the tape off slowly. Clean the glass you didn't coat, put tyre shine on the tyres, and wipe the door jambs. The after photos and clips come next, so the car has to look finished."
       }
      ]
     },
@@ -1816,9 +1841,9 @@
        "detail": "",
        "subs": [],
        "required": false,
-       "when": "after",
+       "when": "later",
        "length": "5s",
-       "purpose": "The ceramic ad. Film it 3 times",
+       "purpose": "The ceramic ad. Film it 3 times, at their first wash 7 or more days on. Never on coating day",
        "id": "cer-ceramic-clips-to-film-6"
       },
       {
@@ -1827,9 +1852,9 @@
        "detail": "",
        "subs": [],
        "required": false,
-       "when": "after",
+       "when": "later",
        "length": "3s",
-       "purpose": "Close-up proof",
+       "purpose": "Close-up proof. Film it with the one above, never on coating day",
        "id": "cer-ceramic-clips-to-film-7"
       },
       {
@@ -1844,7 +1869,7 @@
        "id": "cer-ceramic-clips-to-film-8",
        "pos": "after",
        "at": [
-        "cer-applying-10"
+        "cer-applying-11"
        ]
       },
       {
@@ -1853,7 +1878,7 @@
        "detail": "",
        "subs": [],
        "required": false,
-       "when": "after",
+       "when": "during",
        "length": "5s",
        "purpose": "Best clip of any job",
        "id": "cer-ceramic-clips-to-film-9",
@@ -1865,7 +1890,7 @@
      ]
     }
    ],
-   "seed": 4
+   "seed": 5
   },
   {
    "key": "maintenance",
@@ -1906,7 +1931,7 @@
       {
        "type": "step",
        "title": "Foam it up.",
-       "detail": "Film the foam shot first, then go straight into the touch wash. Same mix and method as the exterior detail.",
+       "detail": "Film the foam shot first, then go straight into the touch wash. Same method as the exterior touch wash.",
        "subs": [
         "Foam cannon: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water.",
         "Touch wash bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid."
@@ -2123,7 +2148,7 @@
      ]
     }
    ],
-   "seed": 4
+   "seed": 5
   },
   {
    "key": "door_knock",
@@ -2182,7 +2207,7 @@
       {
        "type": "step",
        "title": "Pick your moment:",
-       "detail": "a quiet patch in the job, like once the car looks its best.",
+       "detail": "when you can step away for a few minutes, like once the car looks its best.",
        "subs": [],
        "required": false,
        "id": "door-steps-1",
@@ -2320,7 +2345,7 @@
       {
        "type": "script",
        "title": "Ice breaker, the before and after:",
-       "detail": "\"Hi! Quick one: I'm [your name] from Imperium Detailing, we're working on your street today. Want to see a before and after from one of our jobs?\"",
+       "detail": "\"Hi! Quick one: I'm [your name] from Imperium Detailing. We're working on your street today. Want to see a before and after from one of our jobs?\"",
        "subs": [],
        "required": false,
        "id": "door-door-knocking-script-3"
@@ -2361,7 +2386,7 @@
     }
    ],
    "optional": true,
-   "seed": 4
+   "seed": 5
   },
   {
    "key": "handover",
@@ -2430,13 +2455,13 @@
       {
        "type": "step",
        "title": "Review ask:",
-       "detail": "\"If you've got 30 seconds later, a Google review helps us heaps. I'll text you the link tonight.\" Check the review card and business card are on the steering wheel cover or the middle console. Not there yet? Leave them now.",
+       "detail": "\"If you've got 30 seconds later, a Google review helps us heaps. I'll text you the link tonight.\" New customer? Check the review card and business card are on the steering wheel cover or the middle console. Not there yet? Leave them now.",
        "subs": [],
        "required": true,
        "id": "hand-at-the-car-6",
        "script": "review",
        "needs": "!maintenance",
-       "more": "Ask in a relaxed way, word for word. On a full or interior detail the cards went in at the end of the interior, so just check they're there. Not there yet? Leave the review card and a business card on the steering wheel cover or the middle console, so they see them later. You'll text the link tonight."
+       "more": "Ask in a relaxed way, word for word. New customer: on a full or interior detail the cards went in at the end of the interior, so just check they're there. Not there, or no interior on this job? Leave the review card and a business card on the steering wheel cover or the middle console, so they see them later. Returning customer: no cards. You'll text the link tonight."
       },
       {
        "type": "step",
@@ -2528,7 +2553,7 @@
      ]
     }
    ],
-   "seed": 4
+   "seed": 5
   },
   {
    "key": "signoff",
@@ -2709,7 +2734,7 @@
      ]
     }
    ],
-   "seed": 4
+   "seed": 5
   }
  ],
  "services": {
@@ -2878,6 +2903,6 @@
    ],
    "notOffered": "We don't do PPF (paint protection film), window tinting or rim repairs."
   },
-  "seed": 4
+  "seed": 5
  }
 }

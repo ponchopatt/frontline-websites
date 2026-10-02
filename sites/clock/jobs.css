@@ -342,6 +342,7 @@ textarea:focus { outline: none; border-color: var(--imperium); box-shadow: 0 0 0
 }
 .when[data-w="after"] { color: var(--amber); }
 .when[data-w="during"] { color: var(--imperium); }
+.when[data-w="later"] { color: var(--warn); }
 .clip .why { display: block; margin-top: 3px; font-size: var(--t-small); color: var(--ash); }
 
 /* Rules: read, not ticked. */

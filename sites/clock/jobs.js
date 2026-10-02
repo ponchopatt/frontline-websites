@@ -921,7 +921,7 @@
     if (c.sum.stage === 'working') {
       const n = S.nextStep(c.j.lists, c.st);
       if (n) {
-        const words = n.item.title ? n.item.title.replace(/[.:,]$/, '') : String(n.item.detail || '').split(/[.:?](?:\s|$)/)[0];
+        const words = n.item.title ? n.item.title.replace(/[.:,]$/, '') : String(n.item.detail || '').split(/[.:](?:\s|$)/)[0];
         html = next('', `Up next: ${esc(shortName(n.template))}`, esc(words), `data-next="${esc(n.item.id)}"`);
       }
     } else if (c.sum.stage === 'ready') {
@@ -1797,7 +1797,7 @@
     let fields;
     if (it.type === 'clip') {
       fields = `<div><label class="lab" for="ed-${si}-${ii}-when">When</label><select id="ed-${si}-${ii}-when" data-ed="${si}:${ii}:when">` +
-        ['before', 'during', 'after'].map(w => `<option value="${w}"${it.when === w ? ' selected' : ''}>${cap(w)}</option>`).join('') + '</select></div>' +
+        ['before', 'during', 'after', 'later'].map(w => `<option value="${w}"${it.when === w ? ' selected' : ''}>${cap(w)}</option>`).join('') + '</select></div>' +
         f('title', 'Clip', it.title) + `<div class="two">${f('length', 'Length', it.length)}${f('purpose', 'What it’s for', it.purpose)}</div>`;
     } else if (it.type === 'script') {
       fields = f('title', 'Title', it.title) + f('detail', 'Words', it.detail, true);
