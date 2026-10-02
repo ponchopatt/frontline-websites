@@ -869,6 +869,7 @@ dialog .ask-body { margin: 0; color: var(--slate); font-size: var(--t-small); }
         <span class="aside" id="jobsScope"></span>
       </div>
       <button class="go jobs-go" id="newJobBtn" type="button">Start a job</button>
+      <button class="btn jobs-quote" id="quoteBtn" type="button">Price calculator</button>
       <button class="strip" id="jobsLink" type="button" hidden></button>
       <div class="jobs-list" id="jobList"><div class="empty">Loading&hellip;</div></div>
     </section>
@@ -903,6 +904,7 @@ dialog .ask-body { margin: 0; color: var(--slate); font-size: var(--t-small); }
         <h1 class="jv-title" id="jvTitle"></h1>
         <p class="jv-sub" id="jvSub"></p>
         <div class="jv-tags" id="jvTags"></div>
+        <p class="jv-goal" id="jvGoal" hidden></p>
       </div>
       <nav class="rail" id="jvRail" aria-label="Stages of this job"></nav>
       <div id="jvBody"></div>
@@ -1115,6 +1117,14 @@ dialog .ask-body { margin: 0; color: var(--slate); font-size: var(--t-small); }
     <p class="sum-wait" id="sumWait">Making the picture&hellip;</p>
   </div>
   <div class="acts"><button class="btn" id="sumClose" type="button">Done</button></div>
+</dialog>
+
+<!-- The website's instant quote, for door knocking or a question at the car. -->
+<dialog id="quoteDlg" class="tall">
+  <h3>Price calculator</h3>
+  <p class="ask-body">The same prices as the website's instant quote.</p>
+  <div id="quoteBody"></div>
+  <div class="acts"><button class="btn" id="quoteClose" type="button">Done</button></div>
 </dialog>
 
 <dialog id="paintDlg" class="tall">

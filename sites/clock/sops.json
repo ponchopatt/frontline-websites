@@ -1,5 +1,32 @@
 {
- "about": "Imperium job SOPs, copied word for word from the Appendix, plus a plain-words How to do it for every step. The app copies these into the Google Sheet the first time it runs. After that, edit them in the app: Admin > Job SOPs.",
+ "about": "Imperium job SOPs, with a plain-words How to do it for every step. The app copies these into the Google Sheet the first time it runs, and brings in a newer version by itself as long as nobody has edited that SOP in the app. Edit them in the app: Admin > Edit the SOPs.",
+ "version": 2,
+ "previous": {
+  "every_job": [
+   "7fbacad5"
+  ],
+  "exterior": [
+   "fa8f5198"
+  ],
+  "interior": [
+   "79f8383f"
+  ],
+  "correction": [
+   "66a8bc21"
+  ],
+  "ceramic": [
+   "7d6c8ad8"
+  ],
+  "handover": [
+   "c2ca9b6c"
+  ],
+  "signoff": [
+   "c3a6307c"
+  ],
+  "_settings": [
+   "fc011cd3"
+  ]
+ },
  "templates": [
   {
    "key": "every_job",
@@ -249,10 +276,20 @@
        "required": false,
        "id": "job-filming-6",
        "more": "Ask first: \"Mind if you're in a quick clip?\" Only film them if they clearly say yes. If they say no, film the car only."
+      },
+      {
+       "type": "rule",
+       "title": "",
+       "detail": "Story videos: a slight, slow pan. Keep it smooth, never shaky.",
+       "subs": [],
+       "required": false,
+       "id": "job-filming-7",
+       "more": "Move the phone slowly to one side while you film, like a slow turn of your body, not your wrist. Hold it with both hands, elbows tucked in. Start and stop still. A smooth slow pan looks pro; a shaky one gets skipped."
       }
      ]
     }
-   ]
+   ],
+   "seed": 2
   },
   {
    "key": "exterior",
@@ -274,10 +311,12 @@
        "type": "step",
        "title": "Wheels and tyres.",
        "detail": "Spray wheel cleaner, then foam. Clean in this order: barrel brush, wheel face, tyre brush, arch brush, then the small brush for corners and calipers. Rinse.",
-       "subs": [],
+       "subs": [
+        "Dirty rims with no chrome: use the acid wheel cleaner. Never acid on chrome."
+       ],
        "required": true,
        "id": "ext-steps-1",
-       "more": "Wheels go first so their dirty spray never lands on a clean car. Spray wheel cleaner, then foam. Use the brushes in this order: barrel (inside the wheel), wheel face, tyre, arch, then the small brush for corners and calipers. Rinse well, inside the barrel too. Wheel brushes and towels only."
+       "more": "Wheels go first so their dirty spray never lands on a clean car. Really dirty rims get the acid cleaner, but only if there's no chrome anywhere on the wheel: acid ruins chrome. Not sure? Use the normal wheel cleaner. Then foam, and brush in order: barrel, face, tyre, arch, small brush for corners and calipers. Rinse well."
       },
       {
        "type": "step",
@@ -293,11 +332,12 @@
        "title": "Touch wash.",
        "detail": "Foam again, more diluted. Grab a clean mitt. Top to bottom: roof, windscreen, bonnet, then down the car. Flip the mitt every few panels. Rinse it in the grit-guard bucket, back into the soap bucket, carry on.",
        "subs": [
+        "The mix: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water. It neutralises any acid from the wheels.",
         "Never go from a low panel back up high unless you're on the clean side of the mitt."
        ],
        "required": true,
        "id": "ext-steps-3",
-       "more": "Use two buckets: one soapy, one plain water with the grit guard in the bottom. Wash from the top down, because the low panels are the dirtiest. Wipe in straight lines, not circles. Turn the mitt over every few panels, and scrub it on the grit guard before it goes back in the soap."
+       "more": "Soap bucket: 1 part Green Star to 3 parts touch wash chemical, 100 ml all up, then fill with water. It cancels out any acid left from the wheels. Second bucket: plain water with the grit guard. Wash top down in straight lines, turn the mitt every few panels, and scrub it on the grit guard before it goes back in the soap."
       },
       {
        "type": "step",
@@ -397,6 +437,72 @@
        "required": true,
        "id": "ext-steps-14",
        "more": "Open every door and the boot. Wipe the jambs dry so water doesn't run out onto the clean paint later. The customer sees them every time they get in."
+      }
+     ]
+    },
+    {
+     "id": "ext-exterior-story-videos",
+     "name": "Exterior story videos",
+     "heading": true,
+     "headingNote": "",
+     "intro": "",
+     "style": "clips",
+     "needs": "",
+     "items": [
+      {
+       "type": "clip",
+       "title": "Front 3/4 of the whole car, slow pan",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "before",
+       "length": "5s",
+       "purpose": "Shows what car it is",
+       "id": "ext-exterior-story-videos-1"
+      },
+      {
+       "type": "clip",
+       "title": "Same angle, foamed up",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "during",
+       "length": "5s",
+       "purpose": "The foam shot",
+       "id": "ext-exterior-story-videos-2"
+      },
+      {
+       "type": "clip",
+       "title": "Same angle, exterior done",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "after",
+       "length": "5s",
+       "purpose": "The finished car",
+       "id": "ext-exterior-story-videos-3"
+      },
+      {
+       "type": "clip",
+       "title": "Close-up of anything really dirty, if there is",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "before",
+       "length": "3s",
+       "purpose": "Before of the worst spot",
+       "id": "ext-exterior-story-videos-4"
+      },
+      {
+       "type": "clip",
+       "title": "Same close-up, now clean",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "after",
+       "length": "3s",
+       "purpose": "After of the worst spot",
+       "id": "ext-exterior-story-videos-5"
       }
      ]
     },
@@ -532,7 +638,8 @@
       }
      ]
     }
-   ]
+   ],
+   "seed": 2
   },
   {
    "key": "interior",
@@ -652,11 +759,66 @@
       {
        "type": "step",
        "title": "Finish.",
-       "detail": "Mats back in, steering wheel cover on, review card left inside the cover.",
+       "detail": "Mats back in, steering wheel cover on. New customers: review card and business card inside the cover or on the middle console.",
        "subs": [],
        "required": true,
        "id": "int-steps-12",
-       "more": "Mats back in and straight. Steering wheel cover on, with a review card tucked inside it. It's the first thing the customer touches, and the card reminds them to leave a review."
+       "more": "Mats back in and straight, steering wheel cover on. For a new customer, tuck a review card and a business card inside the cover, or leave them on the middle console. It's the first thing they see, and the cards remind them to review us and pass our number on."
+      }
+     ]
+    },
+    {
+     "id": "int-interior-story-videos",
+     "name": "Interior story videos",
+     "heading": true,
+     "headingNote": "",
+     "intro": "",
+     "style": "clips",
+     "needs": "",
+     "items": [
+      {
+       "type": "clip",
+       "title": "Driver's seat with the door open, a few steps back, slow pan",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "before",
+       "length": "5s",
+       "purpose": "Shows the inside before",
+       "id": "int-interior-story-videos-1"
+      },
+      {
+       "type": "clip",
+       "title": "Same shot, done, steering wheel cover on",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "after",
+       "length": "5s",
+       "purpose": "The finished inside",
+       "id": "int-interior-story-videos-2"
+      },
+      {
+       "type": "clip",
+       "title": "Close-up of anything really dirty, if there is",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "before",
+       "length": "3s",
+       "purpose": "Before of the worst spot",
+       "id": "int-interior-story-videos-3"
+      },
+      {
+       "type": "clip",
+       "title": "Same close-up, now clean",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "after",
+       "length": "3s",
+       "purpose": "After of the worst spot",
+       "id": "int-interior-story-videos-4"
       }
      ]
     },
@@ -792,13 +954,14 @@
       }
      ]
     }
-   ]
+   ],
+   "seed": 2
   },
   {
    "key": "correction",
    "name": "Paint correction",
    "sort": 4,
-   "intro": "Measure before you cut, start with the least aggressive combo that works, and never polish over grit. Under cover only. Single stage about 4 to 6 hours, two stage a full day.",
+   "intro": "Measure before you cut, start with the least aggressive combo that works, and never polish over grit. Under cover only. Goal: 2 to 3 hours, exterior included.",
    "outro": "",
    "sections": [
     {
@@ -860,16 +1023,20 @@
        "required": true,
        "id": "cor-steps-5",
        "combos": true,
-       "more": "Do a small test patch on the worst panel. Start with the gentlest combo you think will work, wipe it off and check under the LED. Swirls still there? Step up to the next combo. Whatever works on the test patch is the plan for the whole car. Tap the combo you used below."
+       "more": "Do a small test patch on the worst panel, putting the polish on the same way as step 6. Start with the gentlest combo you think will work, wipe it off and check under the LED. Swirls still there? Step up to the next combo. Whatever works is the plan for the whole car. Tap the combo you used below."
       },
       {
        "type": "step",
        "title": "Do the whole car",
        "detail": "with that combo. Small polisher for the tight and fine areas. Clean the pad with air often and keep it off edges and body lines.",
-       "subs": [],
+       "subs": [
+        "Polish on the pad: 4 to 5 pea-sized drops, north, south, east and west of the centre, or in a star shape.",
+        "Stamp the pad on the panel or area you're doing first. Spread it on the lowest speed, then go up to normal speed.",
+        "Normal speed: microfibre pad speed 4, foam pad speed 5."
+       ],
        "required": true,
        "id": "cor-steps-6",
-       "more": "Work one small section at a time with slow, overlapping passes. Use the small polisher for tight and fine areas. Blow the pad clean with air often, because a clogged pad stops cutting and gets hot. Keep it off edges and body lines, where the paint is thinnest."
+       "more": "Put 4 or 5 pea-sized drops on the pad around the centre, like a star. Press the pad flat onto the panel before you switch on, so the polish doesn't fling. Spread it on the lowest speed, then go to speed 4 (microfibre) or 5 (foam). Small sections, slow overlapping passes. Blow the pad clean often, and keep off edges and body lines."
       },
       {
        "type": "step",
@@ -1027,13 +1194,14 @@
       }
      ]
     }
-   ]
+   ],
+   "seed": 2
   },
   {
    "key": "ceramic",
    "name": "Ceramic coating",
    "sort": 5,
-   "intro": "The coating is only as good as the paint under it, so prep is most of the job. Under cover only. About 5 hours on site, longer with two-stage correction.",
+   "intro": "The coating is only as good as the paint under it, so prep is most of the job. Under cover only. Goal: 4 to 5 hours on site.",
    "outro": "",
    "sections": [
     {
@@ -1360,12 +1528,484 @@
       }
      ]
     }
-   ]
+   ],
+   "seed": 2
+  },
+  {
+   "key": "maintenance",
+   "name": "Maintenance wash",
+   "sort": 6,
+   "intro": "For our regular customers. Same standard, less work: do what the car needs, and look hard for anything that needs extra.",
+   "outro": "",
+   "sections": [
+    {
+     "id": "mnt-outside",
+     "name": "Outside",
+     "heading": true,
+     "headingNote": "",
+     "intro": "",
+     "style": "numbered",
+     "needs": "",
+     "items": [
+      {
+       "type": "step",
+       "title": "Wheels and tyres,",
+       "detail": "the same as the exterior detail. Acid on dirty rims with no chrome, never on chrome.",
+       "subs": [],
+       "required": true,
+       "id": "mnt-outside-1",
+       "more": "Same order and brushes as the exterior detail: wheel cleaner, foam, barrel, face, tyre, arch, corners, rinse. Dirty rims with no chrome can have the acid cleaner. Any chrome at all? No acid."
+      },
+      {
+       "type": "step",
+       "title": "Spray down",
+       "detail": "the whole car fully. Too dirty for that? Do the full pre-wash from the exterior detail instead.",
+       "subs": [],
+       "required": true,
+       "id": "mnt-outside-2",
+       "more": "Hose the whole car down, top to bottom, to knock the loose dirt off. If it's caked in mud or really grimy, this isn't enough: do the full pre-wash with foam and a rinse instead."
+      },
+      {
+       "type": "step",
+       "title": "Foam it up,",
+       "detail": "then go straight into the touch wash. Same mix and method as the exterior detail.",
+       "subs": [],
+       "required": true,
+       "id": "mnt-outside-3",
+       "more": "Foam the car, and while it's on, go straight in with the mitt. No waiting and no rinse in between. Use the Green Star and touch wash mix, two buckets, top down, straight lines."
+      },
+      {
+       "type": "step",
+       "title": "Rinse",
+       "detail": "the whole car.",
+       "subs": [],
+       "required": true,
+       "id": "mnt-outside-4",
+       "more": "Rinse top to bottom until no foam is left anywhere, mirrors and door edges too."
+      },
+      {
+       "type": "step",
+       "title": "Clay",
+       "detail": "the front only, where the bugs are, plus the windscreen and mirrors.",
+       "subs": [],
+       "required": true,
+       "id": "mnt-outside-5",
+       "more": "Regulars don't need a full clay. Do the bonnet, front bumper and grille where the bugs land, the windscreen and the mirrors. Soapy and wet, light pressure, side to side."
+      },
+      {
+       "type": "step",
+       "title": "Rinse.",
+       "detail": "",
+       "subs": [],
+       "required": true,
+       "id": "mnt-outside-6",
+       "more": "Rinse off the clay soap from the front, the windscreen and the mirrors."
+      },
+      {
+       "type": "step",
+       "title": "Look around",
+       "detail": "for any other bugs or spots that need clay. Clay them, then rinse them.",
+       "subs": [],
+       "required": true,
+       "id": "mnt-outside-7",
+       "more": "Walk around the whole car and run your hand over the panels. Anything rough, any bug spots or tar? Clay just those spots, then rinse them."
+      },
+      {
+       "type": "step",
+       "title": "Ceramic sealant",
+       "detail": "on the spots that need it, or the whole car if it all does. Same method as the exterior detail.",
+       "subs": [],
+       "required": true,
+       "id": "mnt-outside-8",
+       "more": "Most regulars only need it topped up where it's worn, like the bonnet, roof and lower doors. If the water isn't beading anywhere, do the whole car. Same as the exterior: wet towel, spray, wipe, rinse straight away."
+      },
+      {
+       "type": "step",
+       "title": "Dry, blower, glass and tyre shine,",
+       "detail": "the same as the exterior detail.",
+       "subs": [],
+       "required": true,
+       "id": "mnt-outside-9",
+       "more": "Dry with clean towels, blow out the gaps, clean the glass streak-free and dress the tyres with no sling. Exactly like steps 9 to 12 of the exterior detail."
+      }
+     ]
+    },
+    {
+     "id": "mnt-inside",
+     "name": "Inside",
+     "heading": true,
+     "headingNote": "",
+     "intro": "",
+     "style": "numbered",
+     "needs": "",
+     "items": [
+      {
+       "type": "step",
+       "title": "Mats,",
+       "detail": "the same as usual, with the interior cleaner chemical.",
+       "subs": [],
+       "required": true,
+       "id": "mnt-inside-1",
+       "more": "Take the mats out, drill brush and vacuum them, and use the interior cleaner on any marks. Same as usual."
+      },
+      {
+       "type": "step",
+       "title": "Front seats:",
+       "detail": "the full clean.",
+       "subs": [],
+       "required": true,
+       "id": "mnt-inside-2",
+       "more": "The front seats get the full clean every time: vacuum them, into the creases and under them, and get every mark out. It's where the customer sits, so it has to be perfect."
+      },
+      {
+       "type": "step",
+       "title": "Back seats",
+       "detail": "only where they need it. Look for dirty spots and clean them.",
+       "subs": [],
+       "required": true,
+       "id": "mnt-inside-3",
+       "more": "Look over the back seats and floor. Clean the dirty spots and vacuum where it's needed. If it's already clean, leave it."
+      },
+      {
+       "type": "step",
+       "title": "Dust.",
+       "detail": "Make sure everything is dusted off.",
+       "subs": [],
+       "required": true,
+       "id": "mnt-inside-4",
+       "more": "Wipe the dust off the dash, vents, console, door cards and screens. A dusty dash is the first thing a regular notices."
+      },
+      {
+       "type": "step",
+       "title": "Door jambs.",
+       "detail": "Fairly clean? A wipe down with no chemical is enough. Dirty ones get the rinseless wash.",
+       "subs": [],
+       "required": true,
+       "id": "mnt-inside-5",
+       "more": "Open each door. If the jambs are only a bit dusty, a damp towel with no chemical is enough. If they're dirty, use the rinseless wash like a normal interior."
+      },
+      {
+       "type": "step",
+       "title": "Finish.",
+       "detail": "Mats back in, steering wheel cover on. No review card or business card: they're regulars.",
+       "subs": [],
+       "required": true,
+       "id": "mnt-inside-6",
+       "more": "Mats back in and straight, steering wheel cover on. No cards: regulars already have them, and we don't ask them for reviews."
+      }
+     ]
+    },
+    {
+     "id": "mnt-maintenance-story-videos",
+     "name": "Maintenance story videos",
+     "heading": true,
+     "headingNote": "",
+     "intro": "",
+     "style": "clips",
+     "needs": "",
+     "items": [
+      {
+       "type": "clip",
+       "title": "Front 3/4 of the whole car, slow pan",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "before",
+       "length": "5s",
+       "purpose": "Shows what car it is",
+       "id": "mnt-maintenance-story-videos-1"
+      },
+      {
+       "type": "clip",
+       "title": "Same angle, foamed up",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "during",
+       "length": "5s",
+       "purpose": "The foam shot",
+       "id": "mnt-maintenance-story-videos-2"
+      },
+      {
+       "type": "clip",
+       "title": "Same angle, exterior done",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "after",
+       "length": "5s",
+       "purpose": "The finished car",
+       "id": "mnt-maintenance-story-videos-3"
+      },
+      {
+       "type": "clip",
+       "title": "Driver's seat with the door open, a few steps back, slow pan",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "before",
+       "length": "5s",
+       "purpose": "Shows the inside before",
+       "id": "mnt-maintenance-story-videos-4"
+      },
+      {
+       "type": "clip",
+       "title": "Same shot, done, steering wheel cover on",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "after",
+       "length": "5s",
+       "purpose": "The finished inside",
+       "id": "mnt-maintenance-story-videos-5"
+      }
+     ]
+    }
+   ],
+   "seed": 2
+  },
+  {
+   "key": "door_knock",
+   "name": "Door knocking",
+   "sort": 7,
+   "intro": "Optional, and it pays. While you're on a job, knock on the houses around it. Every job a neighbour books and pays for earns you a bonus.",
+   "outro": "",
+   "sections": [
+    {
+     "id": "door-your-bonus",
+     "name": "Your bonus",
+     "heading": true,
+     "headingNote": "(type: rule)",
+     "intro": "",
+     "style": "bullets",
+     "needs": "",
+     "items": [
+      {
+       "type": "rule",
+       "title": "",
+       "detail": "Detail booked and paid: $25.",
+       "subs": [],
+       "required": false,
+       "id": "door-your-bonus-1",
+       "more": "Full, exterior or interior detail. You get it once the job is booked and paid, not when they say maybe."
+      },
+      {
+       "type": "rule",
+       "title": "",
+       "detail": "Paint correction booked and paid: $40.",
+       "subs": [],
+       "required": false,
+       "id": "door-your-bonus-2",
+       "more": "Paid once the paint correction is booked and paid."
+      },
+      {
+       "type": "rule",
+       "title": "",
+       "detail": "Ceramic coating booked and paid: $75.",
+       "subs": [],
+       "required": false,
+       "id": "door-your-bonus-3",
+       "more": "The biggest one. Paid once the ceramic coating is booked and paid."
+      }
+     ]
+    },
+    {
+     "id": "door-steps",
+     "name": "Steps",
+     "heading": true,
+     "headingNote": "",
+     "intro": "",
+     "style": "numbered",
+     "needs": "",
+     "items": [
+      {
+       "type": "step",
+       "title": "Pick your moment:",
+       "detail": "a quiet patch in the job, like while the foam sits, or once the car looks its best.",
+       "subs": [],
+       "required": false,
+       "id": "door-steps-1",
+       "more": "Knock when you can step away for a few minutes without slowing the job, like while the foam sits. Or once the car looks amazing, so you have something to point at."
+      },
+      {
+       "type": "step",
+       "title": "Knock",
+       "detail": "on the houses either side and across the road.",
+       "subs": [],
+       "required": false,
+       "id": "door-steps-2",
+       "more": "The closest houses work best: they can see the car you're working on. Two or three doors is plenty."
+      },
+      {
+       "type": "step",
+       "title": "Ice breaker,",
+       "detail": "then say you're detailing their neighbour's car. The script is below.",
+       "subs": [],
+       "required": false,
+       "id": "door-steps-3",
+       "more": "Smile, step back from the door, and use one of the ice breakers below. Keep it short and friendly."
+      },
+      {
+       "type": "step",
+       "title": "Ask",
+       "detail": "if they've been looking to get their car done.",
+       "subs": [],
+       "required": false,
+       "id": "door-steps-4",
+       "more": "Just ask. If they say they've been meaning to, that's your chance. If not, no pressure."
+      },
+      {
+       "type": "step",
+       "title": "Price it",
+       "detail": "on the spot with the instant quote: pick their car and the service. Same prices as the website.",
+       "subs": [],
+       "required": false,
+       "id": "door-steps-5",
+       "tool": "quote",
+       "more": "Pick their car size and the service, and the price shows straight away. Full and interior details can go up to $75 for condition, so say \"from\"."
+      },
+      {
+       "type": "step",
+       "title": "Interested?",
+       "detail": "Get their name, number and car, and leave a business card. Text Angus the details with your name, so the bonus is yours.",
+       "subs": [],
+       "required": false,
+       "id": "door-steps-6",
+       "more": "Write down their name, number and car, and the service they want. Text it to Angus with your name straight away, so he can book it and you get the bonus."
+      },
+      {
+       "type": "step",
+       "title": "Not interested?",
+       "detail": "Thank them, leave a business card and move on.",
+       "subs": [],
+       "required": false,
+       "id": "door-steps-7",
+       "more": "Say thanks, hand over a card and leave it there. Never push, never knock twice."
+      }
+     ]
+    },
+    {
+     "id": "door-good-to-know",
+     "name": "Good to know",
+     "heading": true,
+     "headingNote": "(type: rule)",
+     "intro": "",
+     "style": "bullets",
+     "needs": "",
+     "items": [
+      {
+       "type": "rule",
+       "title": "",
+       "detail": "Never say anything about the customer you're working for: no names, no prices.",
+       "subs": [],
+       "required": false,
+       "id": "door-good-to-know-1",
+       "more": "Say \"the car next door\", nothing more. Their name, address details and what they paid are private."
+      },
+      {
+       "type": "rule",
+       "title": "",
+       "detail": "Never quote below the price list.",
+       "subs": [],
+       "required": false,
+       "id": "door-good-to-know-2",
+       "more": "Use the instant quote prices. If they push for less, say you'll ask Angus. Never make up a deal."
+      },
+      {
+       "type": "rule",
+       "title": "",
+       "detail": "We don't do PPF (paint protection film), window tinting or rim repairs.",
+       "subs": [],
+       "required": false,
+       "id": "door-good-to-know-3",
+       "more": "If they ask for these, say we don't do them, and offer what we do: a detail, paint correction or a ceramic coating."
+      },
+      {
+       "type": "rule",
+       "title": "",
+       "detail": "Trucks need a chat: get their name and number for Angus.",
+       "subs": [],
+       "required": false,
+       "id": "door-good-to-know-4",
+       "more": "Trucks are priced one by one. Take their name and number and send them to Angus."
+      }
+     ]
+    },
+    {
+     "id": "door-door-knocking-script",
+     "name": "Door knocking script",
+     "heading": true,
+     "headingNote": "",
+     "intro": "",
+     "style": "scripts",
+     "needs": "",
+     "items": [
+      {
+       "type": "script",
+       "title": "Ice breaker, the car next door:",
+       "detail": "\"Hey, sorry to bother you! I'm [your name] from Imperium Detailing. We're just doing the car next door.\"",
+       "subs": [],
+       "required": false,
+       "id": "door-door-knocking-script-1"
+      },
+      {
+       "type": "script",
+       "title": "Ice breaker, their car:",
+       "detail": "\"G'day! I'm [your name] from Imperium Detailing. We're working on your street today and I couldn't help noticing your [their car].\"",
+       "subs": [],
+       "required": false,
+       "id": "door-door-knocking-script-2"
+      },
+      {
+       "type": "script",
+       "title": "Ice breaker, the before and after:",
+       "detail": "\"Hi! Quick one: I'm detailing your neighbour's car and it's coming up mint. Want to see the before and after?\"",
+       "subs": [],
+       "required": false,
+       "id": "door-door-knocking-script-3"
+      },
+      {
+       "type": "script",
+       "title": "The ask:",
+       "detail": "\"Since we're already set up on the street, have you been thinking about getting yours done? We come to you, so you don't have to go anywhere.\"",
+       "subs": [],
+       "required": false,
+       "id": "door-door-knocking-script-4"
+      },
+      {
+       "type": "script",
+       "title": "The price:",
+       "detail": "\"For your [their car], a [service] is [price from the quote].\"",
+       "subs": [],
+       "required": false,
+       "id": "door-door-knocking-script-5"
+      },
+      {
+       "type": "script",
+       "title": "The close:",
+       "detail": "\"Want me to lock in a time? I'll grab your name and number, and here's my card.\"",
+       "subs": [],
+       "required": false,
+       "id": "door-door-knocking-script-6"
+      },
+      {
+       "type": "script",
+       "title": "Not today:",
+       "detail": "\"No worries at all. Here's my card in case you change your mind. Have a good one!\"",
+       "subs": [],
+       "required": false,
+       "id": "door-door-knocking-script-7"
+      }
+     ]
+    }
+   ],
+   "optional": true,
+   "seed": 2
   },
   {
    "key": "handover",
    "name": "Handover and after",
-   "sort": 6,
+   "sort": 8,
    "intro": "The handover is where the review, the next job and the referral come from, so it never gets skipped.",
    "outro": "",
    "sections": [
@@ -1413,6 +2053,7 @@
        "required": true,
        "id": "hand-at-the-car-4",
        "script": "pitch",
+       "needs": "!maintenance",
        "more": "Keep it short and natural, about 20 seconds. Full detail customers get the ceramic pitch; ceramic customers get the maintenance plan pitch. The right one for this job is below, with a Copy button. Tap whether you pitched it."
       },
       {
@@ -1428,12 +2069,13 @@
       {
        "type": "step",
        "title": "Review ask:",
-       "detail": "\"If you've got 30 seconds later, a Google review helps us heaps. I'll text you the link tonight.\" Leave the review card on the dash.",
+       "detail": "\"If you've got 30 seconds later, a Google review helps us heaps. I'll text you the link tonight.\" Leave the review card and business card on the steering wheel cover or the middle console.",
        "subs": [],
        "required": true,
        "id": "hand-at-the-car-6",
        "script": "review",
-       "more": "Ask in a relaxed way, word for word. Leave the review card on the dash so they see it later. You'll text the link tonight."
+       "needs": "!maintenance",
+       "more": "Ask in a relaxed way, word for word. Leave the review card and a business card on the steering wheel cover or the middle console, so they see them later. You'll text the link tonight."
       },
       {
        "type": "step",
@@ -1462,6 +2104,7 @@
        "subs": [],
        "required": true,
        "id": "hand-same-night-1",
+       "needs": "!maintenance",
        "more": "Send it the same night, while they still remember how good the car looks. Keep it short and put the Google review link in it."
       },
       {
@@ -1489,6 +2132,7 @@
        "subs": [],
        "required": true,
        "id": "hand-same-night-4",
+       "needs": "!maintenance",
        "more": "No review after 3 days? Send one friendly nudge. Still nothing? Stop there. More than one reminder annoys people."
       }
      ]
@@ -1500,7 +2144,7 @@
      "headingNote": "(show with Copy buttons in the handover helper)",
      "intro": "",
      "style": "scripts",
-     "needs": "",
+     "needs": "!maintenance",
      "items": [
       {
        "type": "script",
@@ -1522,12 +2166,13 @@
       }
      ]
     }
-   ]
+   ],
+   "seed": 2
   },
   {
    "key": "signoff",
    "name": "Sign-off before the customer sees it",
-   "sort": 7,
+   "sort": 9,
    "intro": "One person checks the other's work. Nothing gets handed over with a box unticked.",
    "outro": "Show only the sign-off items that apply to the job's service: skip \"Inside\" for exterior, correction and ceramic-only jobs, skip \"Outside\" for interior-only jobs, and skip the items marked \"(correction and coating)\" or \"(coating)\" when they don't apply.",
    "sections": [
@@ -1538,7 +2183,7 @@
      "headingNote": "",
      "intro": "",
      "style": "checks",
-     "needs": "exterior",
+     "needs": "exterior|maintenance",
      "items": [
       {
        "type": "signoff",
@@ -1604,7 +2249,7 @@
      "headingNote": "",
      "intro": "",
      "style": "checks",
-     "needs": "interior",
+     "needs": "interior|maintenance",
      "items": [
       {
        "type": "signoff",
@@ -1702,7 +2347,8 @@
       }
      ]
     }
-   ]
+   ],
+   "seed": 2
   }
  ],
  "services": {
@@ -1710,42 +2356,62 @@
    "templates": [
     "every_job",
     "exterior",
+    "door_knock",
     "handover",
     "signoff"
    ],
-   "pitch": "ceramic"
+   "pitch": "ceramic",
+   "goal": [
+    45,
+    60
+   ]
   },
   "Interior detail": {
    "templates": [
     "every_job",
     "interior",
+    "door_knock",
     "handover",
     "signoff"
    ],
-   "pitch": "ceramic"
+   "pitch": "ceramic",
+   "goal": [
+    60,
+    90
+   ]
   },
   "Full detail": {
    "templates": [
     "every_job",
     "exterior",
     "interior",
+    "door_knock",
     "handover",
     "signoff"
    ],
-   "pitch": "ceramic"
+   "pitch": "ceramic",
+   "goal": [
+    120,
+    180
+   ]
   },
   "Paint correction": {
    "templates": [
     "every_job",
     "exterior",
     "correction",
+    "door_knock",
     "handover",
     "signoff"
    ],
+   "pitch": "ceramic",
+   "goal": [
+    120,
+    180
+   ],
    "stopAfter": {
     "exterior": "ext-steps-7"
-   },
-   "pitch": "ceramic"
+   }
   },
   "Ceramic coating": {
    "templates": [
@@ -1753,36 +2419,104 @@
     "exterior",
     "correction",
     "ceramic",
+    "door_knock",
     "handover",
     "signoff"
    ],
+   "pitch": "plan",
+   "goal": [
+    240,
+    300
+   ],
    "stopAfter": {
     "exterior": "ext-steps-7"
-   },
-   "pitch": "plan"
+   }
   },
   "Maintenance wash": {
    "templates": [
     "every_job",
-    "exterior",
+    "maintenance",
+    "door_knock",
     "handover",
     "signoff"
    ],
-   "pitch": "ceramic"
-  },
-  "Pre-sale": {
-   "templates": [
-    "every_job",
-    "exterior",
-    "interior",
-    "handover",
-    "signoff"
-   ],
-   "pitch": "ceramic"
+   "pitch": "none",
+   "goal": [
+    60,
+    90
+   ]
   }
  },
  "settings": {
   "paintMin": 80,
-  "paintSpread": 30
+  "paintSpread": 30,
+  "prices": {
+   "condition": {
+    "range": 75,
+    "services": [
+     "Full detail",
+     "Interior detail"
+    ]
+   },
+   "vehicles": [
+    {
+     "key": "sedan",
+     "name": "Hatch or sedan",
+     "prices": {
+      "Full detail": 225,
+      "Exterior detail": 110,
+      "Interior detail": 140,
+      "Paint correction": 397,
+      "Ceramic coating, 3 year": 997,
+      "Ceramic coating, 5 year": 1197,
+      "Ceramic coating, 7 year": 1347
+     }
+    },
+    {
+     "key": "suv",
+     "name": "SUV or ute",
+     "prices": {
+      "Full detail": 250,
+      "Exterior detail": 120,
+      "Interior detail": 165,
+      "Paint correction": 497,
+      "Ceramic coating, 3 year": 1097,
+      "Ceramic coating, 5 year": 1297,
+      "Ceramic coating, 7 year": 1447
+     }
+    },
+    {
+     "key": "large",
+     "name": "4x4 or 8 seater",
+     "prices": {
+      "Full detail": 270,
+      "Exterior detail": 140,
+      "Interior detail": 170,
+      "Paint correction": 547,
+      "Ceramic coating, 3 year": 1147,
+      "Ceramic coating, 5 year": 1347,
+      "Ceramic coating, 7 year": 1597
+     }
+    },
+    {
+     "key": "bike",
+     "name": "Motorbike",
+     "prices": {
+      "Full detail": 135,
+      "Coating, 3 year (no paint correction)": 245,
+      "Coating, 5 year (no paint correction)": 325,
+      "Coating, 7 year (no paint correction)": 400
+     }
+    },
+    {
+     "key": "truck",
+     "name": "Truck",
+     "prices": {},
+     "note": "Trucks are priced one by one. Get their name and number for Angus."
+    }
+   ],
+   "notOffered": "We don't do PPF (paint protection film), window tinting or rim repairs."
+  },
+  "seed": 2
  }
 }

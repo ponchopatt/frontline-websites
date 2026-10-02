@@ -39,14 +39,17 @@ Every job gets filmed. These clips become the reels, the ads and the before and 
 - Wipe the lens before every clip.
 - Cover or blur number plates before anything is posted.
 - Customer in a clip only if they say yes.
+- Story videos: a slight, slow pan. Keep it smooth, never shaky.
 
 ## Exterior detail
 
 Wheels first, then foam, wash top to bottom, decon, sealant, dry. Dirt never travels back up the car.
 
 1. **Wheels and tyres.** Spray wheel cleaner, then foam. Clean in this order: barrel brush, wheel face, tyre brush, arch brush, then the small brush for corners and calipers. Rinse.
+    - Dirty rims with no chrome: use the acid wheel cleaner. Never acid on chrome.
 2. **Pre-wash.** Foam the whole car. Leave it 1 to 2 minutes. Rinse off in the same order you sprayed it on.
 3. **Touch wash.** Foam again, more diluted. Grab a clean mitt. Top to bottom: roof, windscreen, bonnet, then down the car. Flip the mitt every few panels. Rinse it in the grit-guard bucket, back into the soap bucket, carry on.
+    - The mix: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water. It neutralises any acid from the wheels.
     - Never go from a low panel back up high unless you're on the clean side of the mitt.
 4. **Rinse.** Check the foam hasn't dried on the windows. If it has, wipe them again with the mitt straight away. Rinse the whole car until no foam is left. Every corner should be clean now.
 5. **Iron remover.** Spray the whole car, paint only. Rinse after 1 to 2 minutes, or sooner if it starts drying. Rinse it off fully.
@@ -59,6 +62,16 @@ Wheels first, then foam, wash top to bottom, decon, sealant, dry. Dirt never tra
 12. **Tyre shine** on.
 13. **Walk around** and look for any dirt left.
 14. **Dry all the door jambs.**
+
+**Exterior story videos**
+
+| When | Clip | Length | What it's for |
+| --- | --- | --- | --- |
+| Before | Front 3/4 of the whole car, slow pan | 5s | Shows what car it is |
+| During | Same angle, foamed up | 5s | The foam shot |
+| After | Same angle, exterior done | 5s | The finished car |
+| Before | Close-up of anything really dirty, if there is | 3s | Before of the worst spot |
+| After | Same close-up, now clean | 3s | After of the worst spot |
 
 **Exterior clips to film**
 
@@ -91,7 +104,16 @@ Your goal the whole way through is to find something dirty and make it clean.
 9. **Glass.** Red towel and green towel, 4 crosshatch passes with each. Into the corners.
 10. **Seats.** Check every seat is clean.
 11. **Final vacuum.**
-12. **Finish.** Mats back in, steering wheel cover on, review card left inside the cover.
+12. **Finish.** Mats back in, steering wheel cover on. New customers: review card and business card inside the cover or on the middle console.
+
+**Interior story videos**
+
+| When | Clip | Length | What it's for |
+| --- | --- | --- | --- |
+| Before | Driver's seat with the door open, a few steps back, slow pan | 5s | Shows the inside before |
+| After | Same shot, done, steering wheel cover on | 5s | The finished inside |
+| Before | Close-up of anything really dirty, if there is | 3s | Before of the worst spot |
+| After | Same close-up, now clean | 3s | After of the worst spot |
 
 **Interior clips to film**
 
@@ -111,7 +133,7 @@ Your goal the whole way through is to find something dirty and make it clean.
 
 ## Paint correction
 
-Measure before you cut, start with the least aggressive combo that works, and never polish over grit. Under cover only. Single stage about 4 to 6 hours, two stage a full day.
+Measure before you cut, start with the least aggressive combo that works, and never polish over grit. Under cover only. Goal: 2 to 3 hours, exterior included.
 
 1. **Exterior detail up to the rinse after clay.** Skip the ceramic sealant. Nothing goes on the paint before you polish.
 2. **Tape off** rubbers, plastics, badges, panel edges and sharp body lines.
@@ -123,6 +145,9 @@ Measure before you cut, start with the least aggressive combo that works, and ne
     - Moderate swirls: foam pad, heavy cut
     - Basically perfect: foam pad, fine cut
 6. **Do the whole car** with that combo. Small polisher for the tight and fine areas. Clean the pad with air often and keep it off edges and body lines.
+    - Polish on the pad: 4 to 5 pea-sized drops, north, south, east and west of the centre, or in a star shape.
+    - Stamp the pad on the panel or area you're doing first. Spread it on the lowest speed, then go up to normal speed.
+    - Normal speed: microfibre pad speed 4, foam pad speed 5.
 7. **Alcohol prep** over the whole car to remove all the polish oils.
 8. **Inspect again under the LED** from three angles. Rework any hazing, holograms or missed spots.
 9. **Remove tape, clean dust** out of gaps and badges with a soft brush and blower.
@@ -145,7 +170,7 @@ Measure before you cut, start with the least aggressive combo that works, and ne
 
 ## Ceramic coating
 
-The coating is only as good as the paint under it, so prep is most of the job. Under cover only. About 5 hours on site, longer with two-stage correction.
+The coating is only as good as the paint under it, so prep is most of the job. Under cover only. Goal: 4 to 5 hours on site.
 
 **Before you open the bottle**
 
@@ -192,6 +217,91 @@ Film the correction clips too. Then add these.
 | After | Walk around in the sun, same spot as the before | 10s | The after |
 | After | Customer walking out to the car, only with a yes | 5s | Best clip of any job |
 
+## Maintenance wash
+
+For our regular customers. Same standard, less work: do what the car needs, and look hard for anything that needs extra.
+
+**Outside**
+
+1. **Wheels and tyres,** the same as the exterior detail. Acid on dirty rims with no chrome, never on chrome.
+2. **Spray down** the whole car fully. Too dirty for that? Do the full pre-wash from the exterior detail instead.
+3. **Foam it up,** then go straight into the touch wash. Same mix and method as the exterior detail.
+4. **Rinse** the whole car.
+5. **Clay** the front only, where the bugs are, plus the windscreen and mirrors.
+6. **Rinse.**
+7. **Look around** for any other bugs or spots that need clay. Clay them, then rinse them.
+8. **Ceramic sealant** on the spots that need it, or the whole car if it all does. Same method as the exterior detail.
+9. **Dry, blower, glass and tyre shine,** the same as the exterior detail.
+
+**Inside**
+
+1. **Mats,** the same as usual, with the interior cleaner chemical.
+2. **Front seats:** the full clean.
+3. **Back seats** only where they need it. Look for dirty spots and clean them.
+4. **Dust.** Make sure everything is dusted off.
+5. **Door jambs.** Fairly clean? A wipe down with no chemical is enough. Dirty ones get the rinseless wash.
+6. **Finish.** Mats back in, steering wheel cover on. No review card or business card: they're regulars.
+
+**Maintenance story videos**
+
+| When | Clip | Length | What it's for |
+| --- | --- | --- | --- |
+| Before | Front 3/4 of the whole car, slow pan | 5s | Shows what car it is |
+| During | Same angle, foamed up | 5s | The foam shot |
+| After | Same angle, exterior done | 5s | The finished car |
+| Before | Driver's seat with the door open, a few steps back, slow pan | 5s | Shows the inside before |
+| After | Same shot, done, steering wheel cover on | 5s | The finished inside |
+
+## Door knocking
+
+Optional, and it pays. While you're on a job, knock on the houses around it. Every job a neighbour books and pays for earns you a bonus.
+
+**Your bonus** (type: rule)
+
+- Detail booked and paid: $25.
+- Paint correction booked and paid: $40.
+- Ceramic coating booked and paid: $75.
+
+**Steps**
+
+1. **Pick your moment:** a quiet patch in the job, like while the foam sits, or once the car looks its best.
+2. **Knock** on the houses either side and across the road.
+3. **Ice breaker,** then say you're detailing their neighbour's car. The script is below.
+4. **Ask** if they've been looking to get their car done.
+5. **Price it** on the spot with the instant quote: pick their car and the service. Same prices as the website.
+6. **Interested?** Get their name, number and car, and leave a business card. Text Angus the details with your name, so the bonus is yours.
+7. **Not interested?** Thank them, leave a business card and move on.
+
+**Good to know** (type: rule)
+
+- Never say anything about the customer you're working for: no names, no prices.
+- Never quote below the price list.
+- We don't do PPF (paint protection film), window tinting or rim repairs.
+- Trucks need a chat: get their name and number for Angus.
+
+**Door knocking script**
+
+Ice breaker, the car next door:
+"Hey, sorry to bother you! I'm [your name] from Imperium Detailing. We're just doing the car next door."
+
+Ice breaker, their car:
+"G'day! I'm [your name] from Imperium Detailing. We're working on your street today and I couldn't help noticing your [their car]."
+
+Ice breaker, the before and after:
+"Hi! Quick one: I'm detailing your neighbour's car and it's coming up mint. Want to see the before and after?"
+
+The ask:
+"Since we're already set up on the street, have you been thinking about getting yours done? We come to you, so you don't have to go anywhere."
+
+The price:
+"For your [their car], a [service] is [price from the quote]."
+
+The close:
+"Want me to lock in a time? I'll grab your name and number, and here's my card."
+
+Not today:
+"No worries at all. Here's my card in case you change your mind. Have a good one!"
+
 ## Handover and after
 
 The handover is where the review, the next job and the referral come from, so it never gets skipped.
@@ -203,7 +313,7 @@ The handover is where the review, the next job and the referral come from, so it
 3. Show the before photos next to the car.
 4. **Pitch, 20 seconds.** Full detail customer: the ceramic pitch. Ceramic customer: the maintenance plan pitch.
 5. **Referral line:** "If a mate books, you get $50 off your next one."
-6. **Review ask:** "If you've got 30 seconds later, a Google review helps us heaps. I'll text you the link tonight." Leave the review card on the dash.
+6. **Review ask:** "If you've got 30 seconds later, a Google review helps us heaps. I'll text you the link tonight." Leave the review card and business card on the steering wheel cover or the middle console.
 7. **Take payment** before you leave. Payment link or tap.
 
 **Same night**

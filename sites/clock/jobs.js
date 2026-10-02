@@ -89,7 +89,7 @@
   };
   const SHORT = {
     every_job: 'Every job', exterior: 'Exterior', interior: 'Interior', correction: 'Correction',
-    ceramic: 'Ceramic', handover: 'Handover', signoff: 'Sign-off',
+    ceramic: 'Ceramic', maintenance: 'Maintenance', door_knock: 'Door knock', handover: 'Handover', signoff: 'Sign-off',
   };
   const shortName = t => SHORT[t.key] || t.name;
   const STAGE_WORD = { working: 'In progress', ready: 'Ready for sign-off', signed: 'Signed off', done: 'Job done' };
@@ -122,6 +122,9 @@
   }
   let prevStage = '';
   let listScroll = 0;
+  let upgradeKept = [];     // SOPs edited in the app, so a newer version didn't replace them
+  let quoteSel = { vehicle: 'sedan', service: 'Full detail' };
+  try { quoteSel = { ...quoteSel, ...JSON.parse(localStorage.getItem('imp.jobs.quote') || '{}') }; } catch {}
 
   /* =========================================================== persistence == */
   const readJSON = key => { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } };
@@ -146,7 +149,7 @@
     if (seedCache) return clone(seedCache);
     const res = await fetch('sops.json');
     const s = await res.json();
-    seedCache = { sops: s.templates, settings: { ...s.settings, services: s.services } };
+    seedCache = { version: s.version || 1, previous: s.previous || {}, sops: s.templates, settings: { ...s.settings, services: s.services } };
     return clone(seedCache);
   }
   const stamp = x => ({ ...x, updatedAt: nowIso(), by: who() || 'Admin', rev: rev() });
@@ -396,9 +399,16 @@
     why = reason;
     const saved = readJSON(LOCAL_KEY);
     model = saved && saved.v === 1 ? { sops: saved.sops || [], settings: saved.settings, jobs: saved.jobs || {} } : { sops: [], settings: null, jobs: {} };
-    if (!model.sops.length || !model.settings) {
-      try { const s = await seedFile(); model.sops = model.sops.length ? model.sops : s.sops; model.settings = model.settings || s.settings; persist(); } catch {}
-    }
+    try {
+      const seed = await seedFile();
+      const u = S.upgrade(model.sops, model.settings, seed);
+      upgradeKept = u.kept;
+      if (u.changed.length || u.settingsChanged) {
+        model.sops = u.sops;
+        model.settings = u.settings;
+        persist();
+      }
+    } catch {}
     paintAll();
   }
 
@@ -410,21 +420,29 @@
     const cache = readJSON(CACHE_KEY);
     model = cache && cache.v === 1 ? { sops: cache.sops || [], settings: cache.settings, jobs: cache.jobs || {} } : { sops: [], settings: null, jobs: {} };
     const local = readJSON(LOCAL_KEY);
+    let seed = null;
+    try { seed = await seedFile(); } catch {}
     if (r.sops.length) {
       model.sops = r.sops;
       model.settings = r.settings || model.settings;
-    } else {
-      // The first phone to meet the new script fills its SOPs tab, with this phone's own edits if it has any.
-      let src = null;
-      try { src = local && local.sops && local.sops.length && local.settings ? { sops: local.sops, settings: local.settings } : await seedFile(); } catch {}
-      if (src) {
-        model.sops = src.sops.map(stamp);
-        model.settings = stamp(src.settings);
-        model.sops.forEach(sop => enqueue({ t: 'sop', sop }));
-        enqueue({ t: 'settings', settings: model.settings });
+      // A newer version of the SOPs replaces the ones nobody has edited, once, from whichever phone gets there first.
+      if (seed) {
+        const u = S.upgrade(model.sops, model.settings, seed);
+        upgradeKept = u.kept;
+        model.sops = u.sops;
+        model.settings = u.settings;
+        for (const key of u.changed) enqueue({ t: 'sop', sop: stamp(model.sops.find(t => t.key === key)) });
+        if (u.settingsChanged) { model.settings = stamp(model.settings); enqueue({ t: 'settings', settings: model.settings }); }
       }
+    } else if (seed) {
+      // The first phone to meet the new script fills its SOPs tab, with this phone's own edits if it has any.
+      const u = local && local.sops && local.sops.length ? S.upgrade(local.sops, local.settings, seed) : { sops: seed.sops, settings: seed.settings, kept: [] };
+      upgradeKept = u.kept;
+      model.sops = u.sops.map(stamp);
+      model.settings = stamp(u.settings);
+      model.sops.forEach(sop => enqueue({ t: 'sop', sop }));
+      enqueue({ t: 'settings', settings: model.settings });
     }
-    if (!model.settings) { try { model.settings = (await seedFile()).settings; } catch {} }
 
     // Checklists started on this phone before the sheet was ready go up now.
     const mine = local && local.jobs ? Object.values(local.jobs) : [];
@@ -563,10 +581,13 @@
       if (t.key === 'signoff') hasSign = true;
       html += `<section class="stage" id="stage-${esc(t.key)}" data-stage-key="${esc(t.key)}">`;
       html += `<header class="stage-head"><h2>${esc(t.name)}</h2><span class="stage-n tnum" data-n="${esc(t.key)}"></span>` +
-        `<div class="stage-bar"><i data-bar="${esc(t.key)}"></i></div>${t.intro ? `<p class="stage-intro">${esc(t.intro)}</p>` : ''}</header>`;
+        (t.optional ? '' : `<div class="stage-bar"><i data-bar="${esc(t.key)}"></i></div>`) + `${t.intro ? `<p class="stage-intro">${esc(t.intro)}</p>` : ''}</header>`;
       if (t.key === 'signoff') html += slot('sign', 'div');
       for (const s of t.sections) {
-        if (s.style === 'scripts') { html += slot('say', 'div'); continue; }
+        if (s.style === 'scripts') {
+          html += slot(s.items.some(it => it.pitch) ? 'say' : 'lines:' + s.id, 'div');
+          continue;
+        }
         if (s.style === 'clips') html += slot('sec:' + s.id, 'div');
         else if (s.heading !== false) html += `<h3 class="sub">${esc(s.name)}</h3>`;
         if (s.intro) html += `<p class="sec-intro">${esc(s.intro)}</p>`;
@@ -645,6 +666,7 @@
         ['Yes', 'No'].map(v => `<button type="button" data-val="${key}" data-v="${v}" aria-pressed="${cur === v}">${v}</button>`).join('') +
         '</div></div>';
     }
+    if (it.tool === 'quote') return `<div class="tool">${quoteHtml()}</div>`;
     if (it.script === 'referral' || it.script === 'review') {
       return `<div class="tool"><div class="say-acts"><button class="btn" type="button" data-copy="${it.script}">Copy the words</button></div></div>`;
     }
@@ -715,6 +737,47 @@
         '</div></div>').join('') + '</div>';
   }
 
+  // Words to say, like the door knocking script: read them, no ticking.
+  function linesHtml(secId, c) {
+    let s = null;
+    for (const t of c.j.lists) for (const x of t.sections) if (x.id === secId) s = x;
+    if (!s) return '';
+    const quoted = d => { const m = /"([^"]+)"/.exec(d || ''); return m ? m[1] : d || ''; };
+    return `<div class="say-card"><h3>${esc(s.name)}</h3><p>Pick an ice breaker, then use your own words.</p>` +
+      s.items.map(it => `<div class="say-block"><span class="lab">${esc(String(it.title || '').replace(/:$/, ''))}</span><p class="say">${esc(quoted(it.detail))}</p></div>`).join('') +
+      '</div>';
+  }
+
+  /* The instant quote: the same prices as the website, picked by car size and service. */
+  function quoteHtml() {
+    const prices = S.settings(model.settings).prices;
+    if (!prices || !prices.vehicles) return '<p class="sec-intro">The price list hasn’t loaded yet.</p>';
+    const v = prices.vehicles.find(x => x.key === quoteSel.vehicle) || prices.vehicles[0];
+    const names = Object.keys(v.prices || {});
+    const service = names.includes(quoteSel.service) ? quoteSel.service : names[0];
+    const q = service ? S.quote(prices, v.key, service) : S.quote(prices, v.key, '');
+    let result;
+    if (q && q.note) result = `<p class="q-note">${esc(q.note)}</p>`;
+    else if (q) {
+      result = `<p class="q-price tnum">$${q.from.toLocaleString('en-AU')}${q.to > q.from ? `<small> to $${q.to.toLocaleString('en-AU')}</small>` : ''}</p>` +
+        `<p class="q-note">${q.to > q.from ? `Up to $${q.to - q.from} more depending on condition, agreed before you start.` : 'The price you quote is the price they pay.'}</p>`;
+    } else result = '<p class="q-note">Pick a service.</p>';
+    // The price first, so it's in view as soon as anything is picked.
+    const what = q && !q.note ? `<p class="q-what">${esc(v.name)}, ${esc(service)}</p>` : '';
+    return `<div class="quote"><div class="q-result" aria-live="polite">${what}${result}</div>` +
+      `<span class="lab">Their car</span><div class="seg">` +
+      prices.vehicles.map(x => `<button type="button" data-qv="${esc(x.key)}" aria-pressed="${x.key === v.key}">${esc(x.name)}</button>`).join('') + '</div>' +
+      (names.length ? `<span class="lab">Service</span><div class="seg">` +
+        names.map(n => `<button type="button" data-qs="${esc(n)}" aria-pressed="${n === service}">${esc(n)}</button>`).join('') + '</div>' : '') +
+      (prices.notOffered ? `<p class="q-note">${esc(prices.notOffered)}</p>` : '') + '</div>';
+  }
+  function pickQuote(kind, value) {
+    quoteSel = { ...quoteSel, [kind]: value };
+    try { localStorage.setItem('imp.jobs.quote', JSON.stringify(quoteSel)); } catch {}
+    if (openId) paintJob();
+    if ($('quoteDlg').open) put($('quoteBody'), quoteHtml());
+  }
+
   function sealHtml(title, line) {
     return `<div class="seal"><span class="stamp">${ICON.check}</span><div><h3>${title}</h3><p>${line}</p></div></div>`;
   }
@@ -772,6 +835,7 @@
     if (key.startsWith('row:')) return idx[key.slice(4)] ? rowHtml(key.slice(4), c) : '';
     if (key.startsWith('sec:')) return clipsHeadHtml(key.slice(4), c);
     if (key === 'say') return sayHtml(c);
+    if (key.startsWith('lines:')) return linesHtml(key.slice(6), c);
     if (key === 'sign') return signHtml(c);
     if (key === 'finish') return finishHtml(c);
     return '';
@@ -813,7 +877,7 @@
       const done = sign ? k.signDone : k.done, total = sign ? k.signTotal : k.total;
       const full = total > 0 && done >= total;
       const n = document.querySelector(`[data-n="${CSS.escape(t.key)}"]`);
-      if (n) put(n, `${done}<small>/${total}</small>`);
+      if (n) put(n, t.optional ? '<small>Optional</small>' : `${done}<small>/${total}</small>`);
       const bar = document.querySelector(`[data-bar="${CSS.escape(t.key)}"]`);
       if (bar) bar.style.setProperty('--p', total ? (done / total).toFixed(3) : (k.clipsTotal ? (k.clipsDone / k.clipsTotal).toFixed(3) : '0'));
       const b = rail.querySelector(`[data-goto="${CSS.escape(t.key)}"] b`);
@@ -920,6 +984,26 @@
     $('jvSub').textContent = sub ? `${sub}. ${dayName(j.date)}` : dayName(j.date);
     const tags = (j.services || []).map(x => `<span class="tag">${esc(x)}</span>`).join('');
     put($('jvTags'), tags);
+    paintGoal(c);
+  }
+
+  function jobGoal(j) { return (j.meta && j.meta.goal) || S.goal(j.services, model.settings); }
+  // How long against the goal: so far while it's on, how long it took once it's done.
+  function goalLine(j, st) {
+    const g = jobGoal(j), tm = S.timing(st, j, nowIso());
+    const gt = g ? `Goal: ${S.goalText(g)}.` : '';
+    if (!tm) return { text: g ? `${gt} The clock starts at the first tick on the day.` : '', tone: '' };
+    const over = g && tm.minutes > g[1];
+    if (tm.finished) return { text: `Took ${S.duration(tm.minutes)}. ${gt}`.trim(), tone: over ? 'over' : 'good' };
+    return { text: `${S.duration(tm.minutes)} so far. ${gt}`.trim(), tone: over ? 'over' : '' };
+  }
+  function paintGoal(c) {
+    const el = $('jvGoal');
+    if (!el || !c || !c.j) return;
+    const g = goalLine(c.j, c.st);
+    el.hidden = !g.text;
+    if (el.textContent !== g.text) el.textContent = g.text;
+    if (el.dataset.tone !== g.tone) el.dataset.tone = g.tone;
   }
 
   /* ========================================================= stage tracking == */
@@ -1176,6 +1260,7 @@
     if (jd.services.length) {
       const b = S.build(jd.services, model.sops, model.settings);
       $('jdPreview').innerHTML = `This job gets <b>${plural(b.meta.steps.length, 'step')}</b>, <b>${plural(b.meta.clips.length, 'clip')}</b> to film and <b>${plural(b.meta.signoffs.length, 'check')}</b> at the end.` +
+        (b.meta.goal ? ` Goal: <b>${S.goalText(b.meta.goal)}</b>.` : '') +
         (changed ? ' The checklist is rebuilt from today’s SOPs. Ticks already made are kept.' : '');
     } else {
       $('jdPreview').textContent = 'Pick a service to see what the checklist holds.';
@@ -1429,24 +1514,26 @@
     y += panelH + 56;
 
     // Each stage, then the clips and the second check.
-    const row = (name, done, total, color) => {
+    const bar = (name, value, frac, color, valueColor) => {
       if (height) {
         text(name, PAD, y + 40, `600 36px ${FONT.sans}`, C.ivory);
-        text(`${done}/${total}`, CARD_W - PAD, y + 42, `700 46px ${FONT.display}`, done >= total ? C.amber : C.ivory, 'right');
+        text(value, CARD_W - PAD, y + 42, `700 46px ${FONT.display}`, valueColor, 'right');
         rounded(ctx, PAD, y + 62, INNER, 8, 4);
         ctx.fillStyle = 'rgba(244, 241, 236, 0.08)';
         ctx.fill();
-        if (total && done) {
-          rounded(ctx, PAD, y + 62, Math.max(8, INNER * Math.min(1, done / total)), 8, 4);
+        if (frac > 0) {
+          rounded(ctx, PAD, y + 62, Math.max(8, INNER * Math.min(1, frac)), 8, 4);
           ctx.fillStyle = color;
           ctx.fill();
         }
       }
       y += 100;
     };
+    const row = (name, done, total, color) => bar(name, `${done}/${total}`, total ? done / total : 0, color, done >= total ? C.amber : C.ivory);
     for (const s of d.stages) row(s.name, s.done, s.total, C.amber);
     if (d.clipsTotal) row('Clips filmed', d.clipsDone, d.clipsTotal, C.amberLit);
     if (d.checksTotal) row('Second check', d.checksDone, d.checksTotal, C.good);
+    if (d.time) bar(d.time.label, d.time.value, d.time.frac, d.time.over ? C.warn : C.good, d.time.over ? C.warn : C.ivory);
     y += 12;
 
     const heading = (str, color) => {
@@ -1511,6 +1598,16 @@
       skipped: r.skipped,
       notes: r.notes.map(x => ({ ...x, by: [x.by, SHORT[x.stage] || x.stage].filter(Boolean).join(', ') })),
       who,
+      time: (() => {
+        const g = jobGoal(j), tm = S.timing(c.st, j, nowIso());
+        if (!tm) return null;
+        return {
+          label: g ? `Time (goal ${S.goalText(g)})` : 'Time',
+          value: S.duration(tm.minutes),
+          frac: g ? tm.minutes / g[1] : 0,
+          over: !!g && tm.minutes > g[1],
+        };
+      })(),
     };
   }
 
@@ -1606,6 +1703,9 @@
     const where = mode === 'sheet' ? 'Checklists sync to the Google Sheet, in the Jobs, Job lists and SOPs tabs.'
       : why === 'old' ? 'Checklists are on each phone only. Paste the new apps-script.gs into the Google Sheet and redeploy (see the README) to share them.'
       : 'Checklists are on this phone only.';
+    const keptNames = upgradeKept.map(k => (k === '_settings' ? 'Services' : SHORT[k] || k));
+    const keptNote = keptNames.length
+      ? `<p style="font-size:14px;color:var(--slate)">New SOP wording came in, but these were edited here so they were kept: <b>${esc(keptNames.join(', '))}</b>. New services, goals and prices were added. <b>Back to the original SOPs</b> in the editor brings in the new wording.</p>` : '';
     const html = `<h3 class="sub">Jobs, last 30 days</h3>
       <div class="stats">${stat('Jobs', st.jobs)}${stat('Steps skipped a job', st.skippedPerJob == null ? '&mdash;' : st.skippedPerJob.toFixed(1))}${stat('Clips filmed', st.clipsExpected ? pct(st.clipsFilmed / st.clipsExpected) : '&mdash;')}</div>
       <div class="stats">${stat('Ceramic pitched', pct(st.ceramicPitchedRate))}${stat('Plan pitched', pct(st.planPitchedRate))}${stat('Signed off', pct(st.signedRate))}</div>
@@ -1614,7 +1714,7 @@
         : '<div class="empty">Every job before today is signed off.</div>'}
       <h3 class="sub">Job SOPs</h3>
       <p style="font-size:14px;color:var(--slate)">Change the steps, the How to do it notes, and which lists each service gets. A job that has started keeps the lists it started with.</p>
-      <div class="btn-wrap"><button class="btn key" type="button" data-sop-edit>Edit the SOPs</button><button class="btn" type="button" data-sop-export>Download the SOPs</button></div>
+      ${keptNote}<div class="btn-wrap"><button class="btn key" type="button" data-sop-edit>Edit the SOPs</button><button class="btn" type="button" data-sop-export>Download the SOPs</button></div>
       <p style="font-size:14px;color:var(--slate);margin-top:14px">${where}</p>`;
     put(host, html);
   }
@@ -1642,6 +1742,7 @@
 
   function openSop() {
     if (!admin()) return;
+    seedFile().catch(() => {});
     ed = { sops: clone(model.sops), settings: clone(S.settings(model.settings)), tab: (model.sops[0] || {}).key || '_services', dirty: new Set() };
     $('v-admin').hidden = true;
     $('v-sop').hidden = false;
@@ -1701,14 +1802,16 @@
         Object.entries(set.services).map(([name, m]) => `<div class="ed-svc"><b>${esc(name)}</b><div class="seg">` +
           ed.sops.map(t => `<button type="button" data-ed-svc="${esc(name)}" data-ed-tpl="${esc(t.key)}" aria-pressed="${(m.templates || []).includes(t.key)}">${esc(shortName(t))}</button>`).join('') +
           `</div><div class="two"><div><label class="lab" for="pitch-${esc(name)}">Pitch at the car</label><select id="pitch-${esc(name)}" data-ed-pitch="${esc(name)}">
-            <option value="ceramic"${m.pitch !== 'plan' ? ' selected' : ''}>Ceramic coating</option><option value="plan"${m.pitch === 'plan' ? ' selected' : ''}>Maintenance plan</option></select></div>
-            <div style="align-self:end"><button class="btn danger" type="button" data-ed-rmsvc="${esc(name)}">Remove</button></div></div></div>`).join('') +
+            <option value="ceramic"${m.pitch === 'ceramic' || !m.pitch ? ' selected' : ''}>Ceramic coating</option><option value="plan"${m.pitch === 'plan' ? ' selected' : ''}>Maintenance plan</option><option value="none"${m.pitch === 'none' ? ' selected' : ''}>No pitch</option></select></div>
+            <div style="align-self:end"><button class="btn danger" type="button" data-ed-rmsvc="${esc(name)}">Remove</button></div></div>
+            <div class="two"><div><label class="lab" for="gmin-${esc(name)}">Goal, from (min)</label><input id="gmin-${esc(name)}" type="number" inputmode="numeric" min="0" data-ed-goal="${esc(name)}" data-i="0" value="${m.goal ? m.goal[0] : ''}"></div>
+            <div><label class="lab" for="gmax-${esc(name)}">Goal, up to (min)</label><input id="gmax-${esc(name)}" type="number" inputmode="numeric" min="0" data-ed-goal="${esc(name)}" data-i="1" value="${m.goal ? m.goal[1] : ''}"></div></div></div>`).join('') +
         `<div class="add-staff" style="grid-template-columns:1fr auto"><div><label class="lab" for="edNewSvc">Add a service</label><input id="edNewSvc" type="text" placeholder="e.g. Engine bay"></div><button class="btn" type="button" data-ed-addsvc>Add</button></div>
         <h3 class="sub">Paint gauge</h3>
         <div class="two"><div><label class="lab" for="edMin">Thinnest paint (microns)</label><input id="edMin" type="number" inputmode="numeric" data-ed-num="paintMin" value="${set.paintMin}"></div>
         <div><label class="lab" for="edSpread">Biggest jump (microns)</label><input id="edSpread" type="number" inputmode="numeric" data-ed-num="paintSpread" value="${set.paintSpread}"></div></div>
         <h3 class="sub">Start again</h3>
-        <p style="font-size:14px;color:var(--slate)">Put every SOP and service back to the original Appendix wording, then Save.</p>
+        <p style="font-size:14px;color:var(--slate)">Put every SOP and service back to the latest wording that came with the app, then Save.</p>
         <div class="btn-wrap"><button class="btn danger" type="button" data-ed-reset>Back to the original SOPs</button></div>`;
       return;
     }
@@ -1750,6 +1853,13 @@
       if (Number.isFinite(v) && v >= 0) { ed.settings[el.dataset.edNum] = v; edDirty('_settings'); }
     } else if (el.dataset.edPitch) {
       ed.settings.services[el.dataset.edPitch].pitch = el.value;
+      edDirty('_settings');
+    } else if (el.dataset.edGoal) {
+      const m = ed.settings.services[el.dataset.edGoal];
+      const v = Number(el.value);
+      if (!Number.isFinite(v) || v < 0) return;
+      m.goal = (m.goal || [0, 0]).slice();
+      m.goal[Number(el.dataset.i)] = Math.round(v);
       edDirty('_settings');
     }
   }
@@ -1802,7 +1912,7 @@
       edDirty('_settings'); renderEd(); return;
     }
     if (t.dataset.edReset !== undefined) {
-      if (!await H.ask('Back to the original SOPs?', 'Every SOP and service goes back to the Appendix wording. Nothing changes until you press Save.', 'Put them back')) return;
+      if (!await H.ask('Back to the original SOPs?', 'Every SOP and service goes back to the wording that came with the app. Nothing changes until you press Save.', 'Put them back')) return;
       try {
         const s = await seedFile();
         ed.sops = s.sops;
@@ -1814,12 +1924,23 @@
     }
   }
 
+  /* Saving marks an SOP as edited here, so a newer version of the SOPs will
+     never write over it. Saving the original wording unmarks it again. */
+  function marked(x, isSettings) {
+    const { edited, seed, ...rest } = x;
+    const v = seedCache && seedCache.version;
+    const orig = seedCache && (isSettings ? seedCache.settings : seedCache.sops.find(t => t.key === x.key));
+    const same = orig && S.fingerprint(rest, isSettings) === S.fingerprint(orig, isSettings);
+    // Remember which version it was edited from, so only a later one asks before replacing it.
+    return same ? { ...rest, seed: v } : { ...rest, seed: v, edited: true };
+  }
   function saveEd() {
     if (!ed || !ed.dirty.size) return;
     for (const key of ed.dirty) {
-      if (key === '_settings') commit({ t: 'settings', settings: stamp({ ...(model.settings || {}), ...ed.settings }) });
-      else { const sop = ed.sops.find(x => x.key === key); if (sop) commit({ t: 'sop', sop: stamp(sop) }); }
+      if (key === '_settings') commit({ t: 'settings', settings: stamp(marked({ ...(model.settings || {}), ...ed.settings }, true)) });
+      else { const sop = ed.sops.find(x => x.key === key); if (sop) commit({ t: 'sop', sop: stamp(marked(sop)) }); }
     }
+    upgradeKept = upgradeKept.filter(k => !ed.dirty.has(k));
     ed.dirty.clear();
     ed.sops = clone(model.sops);
     renderEd();
@@ -1838,7 +1959,7 @@
   document.addEventListener('click', e => {
     const t = e.target.closest('[data-open-job],[data-tick],[data-how],[data-goto],[data-next],[data-next-step],[data-val],[data-copy],[data-paint],[data-warranty],' +
       '[data-note],[data-skip],[data-unskip],[data-form-save],[data-form-cancel],[data-signoff],[data-override],[data-finish],[data-reopen],[data-pickwho],' +
-      '[data-jback],[data-summary],[data-svc],[data-jday],[data-sop-edit],[data-sop-export],[data-ed-tab],[data-ed-move],[data-ed-del],[data-ed-add],[data-ed-svc],[data-ed-rmsvc],[data-ed-addsvc],[data-ed-reset]');
+      '[data-jback],[data-summary],[data-qv],[data-qs],[data-svc],[data-jday],[data-sop-edit],[data-sop-export],[data-ed-tab],[data-ed-move],[data-ed-del],[data-ed-add],[data-ed-svc],[data-ed-rmsvc],[data-ed-addsvc],[data-ed-reset]');
     if (!t) return;
     const d = t.dataset;
     if (d.openJob) openJob(d.openJob);
@@ -1863,6 +1984,8 @@
     else if (d.pickwho !== undefined) H.openWho();
     else if (d.jback !== undefined) leaveJob();
     else if (d.summary !== undefined) openSummary();
+    else if (d.qv) pickQuote('vehicle', d.qv);
+    else if (d.qs) pickQuote('service', d.qs);
     else if (d.svc) {
       jd.services = jd.services.includes(d.svc) ? jd.services.filter(x => x !== d.svc) : jd.services.concat([d.svc]);
       $('jdErr').hidden = true;
@@ -1898,6 +2021,8 @@
   $('newJobBtn').addEventListener('click', () => openJobDlg(null));
   $('jvEdit').addEventListener('click', () => openJobDlg(openId));
   $('jvShare').addEventListener('click', openSummary);
+  $('quoteBtn').addEventListener('click', () => { put($('quoteBody'), quoteHtml()); $('quoteDlg').showModal(); });
+  $('quoteClose').addEventListener('click', () => $('quoteDlg').close());
   $('sumCopy').addEventListener('click', copySummary);
   $('sumShare').addEventListener('click', shareSummary);
   $('sumSave').addEventListener('click', saveSummary);
@@ -1951,6 +2076,7 @@
   }, LIST_POLL_MS);
   setInterval(() => { if (!document.hidden) probe(); }, PROBE_MS);
   setInterval(() => { if (mode === 'sheet' && queue.length) paintStrip(); }, 4000);
+  setInterval(() => { if (openId && !document.hidden) paintGoal(ctxNow()); }, 30000);
 
   /* What app.js says after it draws: a lock closes the checklist, and a new
      name or a new tab is redrawn. */

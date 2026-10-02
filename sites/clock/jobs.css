@@ -587,3 +587,17 @@ dialog.tall { max-height: min(88dvh, 760px); overflow: auto; overscroll-behavior
 .sum-acts .btn[hidden] { display: none; }
 .sum-msg { margin: 8px 0 0; min-height: 1.5em; color: var(--ash); font-size: var(--t-small); }
 
+/* ========================================================= time and price == */
+.jobs-quote { width: 100%; margin-top: 10px; min-height: 52px; }
+.jv-goal { margin: 12px 0 0; font-size: var(--t-small); color: var(--ash); }
+.jv-goal[data-tone="good"] { color: var(--good); }
+.jv-goal[data-tone="over"] { color: var(--warn); }
+.quote { display: grid; gap: 10px; }
+.quote .lab { margin: 4px 0 0; }
+.q-result { padding: 14px 16px; border: 1px solid var(--line-2); border-radius: 14px; background: var(--panel-2); }
+.q-price { margin: 0; font: 700 46px/1 var(--display); color: var(--amber); font-variant-numeric: tabular-nums lining-nums; }
+.q-price small { font-size: 26px; color: var(--ash); }
+.q-note { margin: 6px 0 0; font-size: var(--t-small); color: var(--slate); }
+.q-result .q-note:first-child { margin-top: 0; color: var(--ash); }
+.q-what { margin: 0 0 6px; font-size: var(--t-small); color: var(--ash); }
+

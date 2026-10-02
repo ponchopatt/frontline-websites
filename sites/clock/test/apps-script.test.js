@@ -179,14 +179,14 @@ test('editing a job keeps its ticks; removing it takes its lists too', () => {
   assert.equal(got.createdBy, 'AJ');
   assert.equal(got.meta.rev, 'r2');
   assert.equal(got.state['s:job-day-before-1'].done, true);
-  assert.deepEqual(got.lists.map(l => l.key), ['every_job', 'exterior', 'interior', 'handover', 'signoff']);
-  assert.equal(s.table('Job lists').length, 6);
+  assert.deepEqual(got.lists.map(l => l.key), ['every_job', 'exterior', 'interior', 'door_knock', 'handover', 'signoff']);
+  assert.equal(s.table('Job lists').length, 7);
   assert.equal(s.table('Jobs')[1][5], 'Exterior detail, Interior detail');
 
   s.post({ action: 'jobs', op: 'put', ...newJob(['Exterior detail'], { id: 'j2' }) });
   s.post({ action: 'jobs', op: 'remove', id: 'j1' });
   assert.equal(s.get({ action: 'job', id: 'j1' }).job, null);
-  assert.deepEqual(s.table('Job lists').slice(1).map(r => r[1]), ['j2', 'j2', 'j2', 'j2']);
+  assert.deepEqual(s.table('Job lists').slice(1).map(r => r[1]), ['j2', 'j2', 'j2', 'j2', 'j2']);
 });
 
 test('sign-off and done show in the status column', () => {
@@ -221,7 +221,7 @@ test('SOPs and their settings are kept in their own tab', () => {
   s.post({ action: 'sops', op: 'settings', settings: { ...settings, rev: 's1' } });
   let r = s.get({ action: 'sops' });
   assert.deepEqual(r.sops.map(t => t.key), seed.templates.map(t => t.key));
-  assert.equal(J.markdown(r.sops), readFileSync(here('fixtures/sop-appendix.md'), 'utf8'));
+  assert.equal(J.markdown(r.sops), readFileSync(here('fixtures/sops.md'), 'utf8'));
   assert.equal(r.settings.paintMin, 80);
   assert.equal(r.settings.rev, 's1');
   s.post({ action: 'sops', op: 'remove', key: 'ceramic' });

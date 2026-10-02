@@ -16,8 +16,8 @@ const itemsOf = (lists, key) => lists.find(t => t.key === key).sections.flatMap(
 const stepTitles = (lists, key) => itemsOf(lists, key).filter(i => i.type === 'step').map(i => i.title || i.detail);
 const NOW = '2026-10-01T09:00:00.000Z';
 
-test('the SOPs are the Appendix word for word', () => {
-  assert.equal(J.markdown(seed().templates), readFileSync(here('fixtures/sop-appendix.md'), 'utf8'));
+test('the SOPs export word for word as their source', () => {
+  assert.equal(J.markdown(seed().templates), readFileSync(here('fixtures/sops.md'), 'utf8'));
 });
 
 test('every step, rule and sign-off check has a How to do it', () => {
@@ -28,19 +28,22 @@ test('every step, rule and sign-off check has a How to do it', () => {
     assert.ok(typeof it.more === 'string' && it.more.length > 40, it.id);
     assert.ok(it.more.length < 520, `${it.id} is too long to read on a phone`);
   });
-  assert.equal(n, 105);
+  assert.equal(n, 135);
 });
 
 test('each service gets its lists in order, without repeats', () => {
   const keys = s => build(s).meta.templateKeys;
-  assert.deepEqual(keys('Exterior detail'), ['every_job', 'exterior', 'handover', 'signoff']);
-  assert.deepEqual(keys('Interior detail'), ['every_job', 'interior', 'handover', 'signoff']);
-  assert.deepEqual(keys('Full detail'), ['every_job', 'exterior', 'interior', 'handover', 'signoff']);
-  assert.deepEqual(keys('Paint correction'), ['every_job', 'exterior', 'correction', 'handover', 'signoff']);
-  assert.deepEqual(keys('Ceramic coating'), ['every_job', 'exterior', 'correction', 'ceramic', 'handover', 'signoff']);
+  assert.deepEqual(keys('Exterior detail'), ['every_job', 'exterior', 'door_knock', 'handover', 'signoff']);
+  assert.deepEqual(keys('Interior detail'), ['every_job', 'interior', 'door_knock', 'handover', 'signoff']);
+  assert.deepEqual(keys('Full detail'), ['every_job', 'exterior', 'interior', 'door_knock', 'handover', 'signoff']);
+  assert.deepEqual(keys('Paint correction'), ['every_job', 'exterior', 'correction', 'door_knock', 'handover', 'signoff']);
+  assert.deepEqual(keys('Ceramic coating'), ['every_job', 'exterior', 'correction', 'ceramic', 'door_knock', 'handover', 'signoff']);
+  assert.deepEqual(keys('Maintenance wash'), ['every_job', 'maintenance', 'door_knock', 'handover', 'signoff']);
+  assert.deepEqual(Object.keys(seed().services),
+    ['Exterior detail', 'Interior detail', 'Full detail', 'Paint correction', 'Ceramic coating', 'Maintenance wash']);
   // Two services: combined, no repeats, in the templates' own order.
   assert.deepEqual(keys(['Interior detail', 'Paint correction']),
-    ['every_job', 'exterior', 'interior', 'correction', 'handover', 'signoff']);
+    ['every_job', 'exterior', 'interior', 'correction', 'door_knock', 'handover', 'signoff']);
   // A service nobody has mapped gets everything rather than nothing.
   assert.deepEqual(keys('Something new'), seed().templates.map(t => t.key));
 });
@@ -53,7 +56,7 @@ test('correction and ceramic stop the exterior steps at the rinse after clay', (
     assert.ok(!ext.includes('Ceramic sealant.'), s);
   }
   assert.equal(stepTitles(build('Exterior detail').lists, 'exterior').length, 14);
-  assert.equal(itemsOf(build('Ceramic coating').lists, 'exterior').filter(i => i.type === 'clip').length, 11);
+  assert.equal(itemsOf(build('Ceramic coating').lists, 'exterior').filter(i => i.type === 'clip').length, 16);
   assert.equal(seed().services['Ceramic coating'].stopAfter.exterior, 'ext-steps-7');
 });
 
@@ -74,12 +77,15 @@ test('sign-off shows only what applies to the service', () => {
   assert.equal(sign('Paint correction').length, 9);
   assert.equal(sign('Ceramic coating').length, 10);
   assert.equal(build('Ceramic coating').meta.signoffs.length, 10);
+  // Maintenance is inside and out: both lists, no LED or coating checks.
+  assert.equal(sign('Maintenance wash').length, 12);
+  assert.ok(sign('Maintenance wash').includes('Tape all removed') && sign('Maintenance wash').includes('No strong smell'));
 });
 
 test('the extra boxes are hung off the right steps', () => {
   const tools = {};
   J.eachItem(seed().templates, it => { if (it.tool) tools[it.tool] = it.title; if (it.combos) tools.combos = it.title; });
-  assert.deepEqual(tools, { paint: 'Measure paint', combos: 'Test spot.', correction: 'Record', warranty: 'Record for the warranty:' });
+  assert.deepEqual(tools, { paint: 'Measure paint', combos: 'Test spot.', correction: 'Record', warranty: 'Record for the warranty:', quote: 'Price it' });
 });
 
 test('editing an SOP never changes a job that has started', () => {
@@ -108,7 +114,7 @@ test('progress counts steps done or skipped; clips and sign-off are counted apar
   assert.equal(s.done, 2);
   assert.equal(s.skipped, 1);
   assert.equal(s.clipsDone, 1);
-  assert.equal(s.clipsTotal, 11);
+  assert.equal(s.clipsTotal, 16);          // 5 story videos and 11 reel clips
   assert.equal(s.stage, 'working');
   assert.throws(() => J.skipPatch(st, meta.steps[2], 'AJ', '  ', '4'), /why/);
   // A second tap takes the tick back.
@@ -280,7 +286,152 @@ test('the summary picture: steps by stage, notes and skips in order, who did it'
   ]);
   assert.deepEqual(r.skipped, [{ step: 'Tyre shine', stage: 'exterior', reason: 'Customer asked for no tyre shine', by: 'Lucas' }]);
   assert.deepEqual(r.crew, ['AJ', 'Lucas']);
-  assert.deepEqual([r.clipsDone, r.clipsTotal, r.checksDone, r.checksTotal], [0, 22, 0, 12]);
+  assert.deepEqual([r.clipsDone, r.clipsTotal, r.checksDone, r.checksTotal], [0, 31, 0, 12]);
   assert.equal(J.label({ detail: 'Send the on-our-way text with a real arrival time.' }), 'Send the on-our-way text with a real arrival\u2026');
+});
+
+const stepsOf = (lists, key) => itemsOf(lists, key).filter(i => i.type === 'step');
+const find = (lists, key, re) => itemsOf(lists, key).find(i => re.test((i.title || '') + ' ' + i.detail));
+
+test('the new wording: acid only without chrome, the Green Star mix, polish technique, cards', () => {
+  const full = build(['Full detail', 'Paint correction']).lists;
+  const wheels = find(full, 'exterior', /^Wheels and tyres/);
+  assert.deepEqual(wheels.subs, ['Dirty rims with no chrome: use the acid wheel cleaner. Never acid on chrome.']);
+  const wash = find(full, 'exterior', /^Touch wash/);
+  assert.equal(wash.subs[0], 'The mix: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water. It neutralises any acid from the wheels.');
+  const polish = find(full, 'correction', /^Do the whole car/);
+  assert.deepEqual(polish.subs, [
+    'Polish on the pad: 4 to 5 pea-sized drops, north, south, east and west of the centre, or in a star shape.',
+    "Stamp the pad on the panel or area you're doing first. Spread it on the lowest speed, then go up to normal speed.",
+    'Normal speed: microfibre pad speed 4, foam pad speed 5.',
+  ]);
+  assert.match(find(full, 'interior', /^Finish/).detail, /review card and business card inside the cover or on the middle console/);
+  assert.match(find(full, 'handover', /^Review ask/).detail, /review card and business card on the steering wheel cover or the middle console/);
+  assert.match(full.find(t => t.key === 'correction').intro, /Goal: 2 to 3 hours, exterior included\.$/);
+  assert.match(build('Ceramic coating').lists.find(t => t.key === 'ceramic').intro, /Goal: 4 to 5 hours on site\.$/);
+  // Story videos, before the reel clips.
+  const ext = full.find(t => t.key === 'exterior').sections.map(s => s.name);
+  assert.deepEqual(ext.slice(1), ['Exterior story videos', 'Exterior clips to film']);
+  assert.deepEqual(itemsOf(full, 'exterior').filter(i => i.type === 'clip').slice(0, 3).map(i => i.title),
+    ['Front 3/4 of the whole car, slow pan', 'Same angle, foamed up', 'Same angle, exterior done']);
+  assert.match(itemsOf(full, 'interior').find(i => i.type === 'clip' && i.when === 'after').title, /steering wheel cover on/);
+});
+
+test('maintenance: its own steps, both sign-off lists, and no pitch or review asks', () => {
+  const { lists, meta } = build('Maintenance wash');
+  const m = lists.find(t => t.key === 'maintenance');
+  assert.deepEqual(m.sections.map(s => s.name), ['Outside', 'Inside', 'Maintenance story videos']);
+  assert.deepEqual(m.sections[0].items.map(i => i.title), ['Wheels and tyres,', 'Spray down', 'Foam it up,', 'Rinse', 'Clay', 'Rinse.', 'Look around', 'Ceramic sealant', 'Dry, blower, glass and tyre shine,']);
+  assert.match(m.sections[0].items[4].detail, /front only, where the bugs are, plus the windscreen and mirrors/);
+  assert.match(m.sections[1].items[4].detail, /wipe down with no chemical/);
+  assert.match(m.sections[1].items[5].detail, /No review card or business card/);
+  const hand = itemsOf(lists, 'handover').map(i => i.title || i.detail);
+  assert.ok(!hand.some(t => /Review ask|Pitch, 20 seconds|Send the review text|Day 3, no review/.test(t)), hand.join('; '));
+  assert.ok(hand.includes('Referral line:') && hand.includes('Take payment'));
+  assert.ok(!lists.find(t => t.key === 'handover').sections.some(s => s.name === 'Pitch scripts'));
+  assert.equal(meta.pitch, 'none');
+  assert.equal(J.scripts(lists, meta, {}).filter(x => x.key === 'pitch').length, 0);
+  assert.equal(meta.steps.length, 9 + 15 + 5 + 2);       // every job, maintenance, handover without the pitch and review bits
+  // A full detail still has them all.
+  const full = itemsOf(build('Full detail').lists, 'handover').map(i => i.title || i.detail);
+  assert.ok(full.includes('Review ask:') && full.includes('Pitch, 20 seconds.'));
+});
+
+test('door knocking is optional: it never counts, and Up next skips it', () => {
+  const { lists, meta } = build('Exterior detail');
+  const door = lists.find(t => t.key === 'door_knock');
+  assert.equal(door.optional, true);
+  assert.deepEqual(J.counts(door, {}), { done: 0, total: 0, clipsDone: 0, clipsTotal: 0, signDone: 0, signTotal: 0 });
+  assert.ok(!meta.steps.some(id => id.startsWith('door-')));
+  let st = {};
+  meta.steps.filter(id => !id.startsWith('hand-')).forEach(id => { st = J.merge(st, J.tickPatch(st, id, 'AJ', '1')); });
+  assert.equal(J.nextStep(lists, st).template.key, 'handover');
+  assert.deepEqual(itemsOf(lists, 'door_knock').filter(i => i.type === 'rule').slice(0, 3).map(i => i.detail),
+    ['Detail booked and paid: $25.', 'Paint correction booked and paid: $40.', 'Ceramic coating booked and paid: $75.']);
+  const lines = itemsOf(lists, 'door_knock').filter(i => i.type === 'script');
+  assert.equal(lines.filter(i => /^Ice breaker/.test(i.title)).length, 3);
+  assert.ok(lines.every(i => /^".+"$/.test(i.detail)));
+  // The handover helper still only picks the handover words.
+  assert.deepEqual(J.scripts(lists, meta, {}).map(x => x.key), ['pitch', 'referral', 'review']);
+});
+
+test('the instant quote matches the price menu', () => {
+  const p = seed().settings.prices;
+  assert.deepEqual(J.quote(p, 'sedan', 'Full detail'), { from: 225, to: 300 });
+  assert.deepEqual(J.quote(p, 'sedan', 'Exterior detail'), { from: 110, to: 110 });
+  assert.deepEqual(J.quote(p, 'suv', 'Interior detail'), { from: 165, to: 240 });
+  assert.deepEqual(J.quote(p, 'suv', 'Paint correction'), { from: 497, to: 497 });
+  assert.deepEqual(J.quote(p, 'large', 'Ceramic coating, 7 year'), { from: 1597, to: 1597 });
+  assert.deepEqual(J.quote(p, 'large', 'Full detail'), { from: 270, to: 345 });
+  assert.deepEqual(J.quote(p, 'bike', 'Coating, 3 year (no paint correction)'), { from: 245, to: 245 });
+  assert.deepEqual(J.quote(p, 'bike', 'Full detail'), { from: 135, to: 210 });
+  assert.equal(J.quote(p, 'bike', 'Paint correction'), null);
+  assert.match(J.quote(p, 'truck', 'Full detail').note, /Angus/);
+  const table = Object.fromEntries(p.vehicles.map(v => [v.key, v.prices]));
+  assert.deepEqual(table.sedan, { 'Full detail': 225, 'Exterior detail': 110, 'Interior detail': 140, 'Paint correction': 397, 'Ceramic coating, 3 year': 997, 'Ceramic coating, 5 year': 1197, 'Ceramic coating, 7 year': 1347 });
+  assert.deepEqual(Object.values(table.suv), [250, 120, 165, 497, 1097, 1297, 1447]);
+  assert.deepEqual(Object.values(table.large), [270, 140, 170, 547, 1147, 1347, 1597]);
+  assert.deepEqual(Object.values(table.bike), [135, 245, 325, 400]);
+});
+
+test('time goals for each service, and how long a job took', () => {
+  const set = { ...seed().settings, services: seed().services };
+  const g = s => J.goalText(J.goal([].concat(s), set));
+  assert.equal(g('Exterior detail'), '45 min to 1 hour');
+  assert.equal(g('Interior detail'), '1 to 1.5 hours');
+  assert.equal(g('Full detail'), '2 to 3 hours');
+  assert.equal(g('Maintenance wash'), '1 to 1.5 hours');
+  assert.equal(g('Paint correction'), '2 to 3 hours');
+  assert.equal(g('Ceramic coating'), '4 to 5 hours');
+  assert.equal(g(['Interior detail', 'Paint correction']), '3 to 4.5 hours');
+  assert.equal(J.goal(['Something else'], set), null);
+  assert.deepEqual([J.duration(45), J.duration(60), J.duration(155)], ['45 min', '1 h', '2 h 35 min']);
+
+  const job = { date: '2026-10-01' };
+  let st = J.merge({}, J.tickPatch({}, 'job-day-before-1', 'AJ', '2026-09-30T08:00:00.000Z'));   // the day before
+  assert.equal(J.timing(st, job, '2026-09-30T23:30:00.000Z'), null);
+  st = J.merge(st, J.tickPatch(st, 'job-on-arrival-1', 'AJ', '2026-09-30T23:00:00.000Z'));       // 9am in Canberra
+  assert.deepEqual(J.timing(st, job, '2026-10-01T00:30:00.000Z'), { start: '2026-09-30T23:00:00.000Z', end: '2026-10-01T00:30:00.000Z', finished: false, minutes: 90 });
+  st = J.merge(st, { done: { by: 'AJ', at: '2026-10-01T01:35:00.000Z' } });
+  assert.equal(J.timing(st, job, '2026-10-01T05:00:00.000Z').minutes, 155);
+  assert.equal(J.timing(st, job, '2026-10-01T05:00:00.000Z').finished, true);
+});
+
+test('phones holding the first SOPs get the new ones, unless they were edited', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const v1 = JSON.parse(execFileSync('git', ['show', '8ed4471:sites/clock/sops.json'], { cwd: here('..') }).toString());
+  const v1Settings = { ...v1.settings, services: v1.services };
+  const s2 = seed();
+  const newSeed = { version: s2.version, previous: s2.previous, sops: s2.templates, settings: { ...s2.settings, services: s2.services } };
+
+  // Untouched, as a phone kept them, and as the sheet kept them (stamped).
+  for (const stamp of [x => x, x => ({ ...x, updatedAt: '2026-10-01T00:00:00.000Z', by: 'Admin', rev: 'r' })]) {
+    const u = J.upgrade(v1.templates.map(stamp), stamp(v1Settings), newSeed);
+    assert.deepEqual(u.kept, []);
+    assert.deepEqual(u.changed.sort(), s2.templates.map(t => t.key).sort());
+    assert.equal(J.markdown(u.sops), readFileSync(here('fixtures/sops.md'), 'utf8'));
+    assert.equal(u.settings.services['Maintenance wash'].templates.includes('maintenance'), true);
+    assert.equal(u.settings.prices.vehicles.length, 5);
+    // Once upgraded, nothing more happens.
+    const again = J.upgrade(u.sops, u.settings, newSeed);
+    assert.deepEqual([again.changed, again.kept, again.settingsChanged], [[], [], false]);
+  }
+
+  // An SOP edited in the app is kept; the others still upgrade.
+  const edited = v1.templates.map(t => (t.key === 'interior' ? { ...t, intro: 'Our own words.' } : t));
+  const settings = { ...v1Settings, paintMin: 85 };
+  const u = J.upgrade(edited, settings, newSeed);
+  assert.deepEqual(u.kept, ['interior', '_settings']);
+  assert.equal(u.sops.find(t => t.key === 'interior').intro, 'Our own words.');
+  assert.ok(u.sops.find(t => t.key === 'exterior').sections[0].items[0].subs.length === 1);
+  assert.ok(u.sops.some(t => t.key === 'maintenance') && u.sops.some(t => t.key === 'door_knock'));
+  assert.equal(u.settings.paintMin, 85);                                   // their edit stays
+  assert.deepEqual(u.settings.services['Maintenance wash'].goal, [60, 90]); // the new bits arrive
+  assert.equal(u.settings.prices.vehicles[0].prices['Full detail'], 225);
+  // Something saved in the app on this version is never replaced by a later one.
+  const mine = { ...s2.templates[1], intro: 'Changed after the upgrade.', edited: true };
+  assert.deepEqual(J.upgrade([mine], null, newSeed).kept, []);
+  assert.deepEqual(J.upgrade([mine], null, { ...newSeed, version: 3 }).kept, ['exterior']);
+  assert.equal(J.upgrade([mine], null, { ...newSeed, version: 3 }).sops.find(t => t.key === 'exterior').intro, 'Changed after the upgrade.');
 });
 

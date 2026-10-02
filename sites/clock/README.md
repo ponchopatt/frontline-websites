@@ -6,7 +6,7 @@ The rebuild of the timesheet. One page, three tabs, no build step, no framework.
     app.js                the clock, the timesheet and admin
     jobs.js               the Jobs tab: job checklists from the SOPs
     sop.js                the checklist rules (what a job gets, progress, sign-off)
-    sops.json             the SOPs, word for word, with a How to do it for each step
+    sops.json             the SOPs, with a How to do it for each step, service goals and prices
     config.js             the endpoint, the codes, the rates, the pay week, date maths
     tokens.css            the palette and type scale
     jobs.css              the look of the Jobs tab and the checklist
@@ -85,8 +85,8 @@ as the SOPs say.
   reason that stays on the job; reopen a job; delete one; see the last 30 days
   (skipped steps, clips filmed, pitches, sign-offs) and the jobs not signed off
   this pay week; **edit the SOPs** (steps, How to do it, which lists each
-  service gets, paint limits); and **download the SOPs** as markdown, in the
-  same layout as the original Appendix.
+  service gets, time goals, paint limits); and **download the SOPs** as
+  markdown, in the same layout as the original Appendix.
 
 - **Job summary for the group chat.** *Summary* at the top of a job (and
   *Send the summary to the group* once it's done) makes a picture: the car,
@@ -96,12 +96,37 @@ as the SOPs say.
   that won't copy pictures from a web page, *Share* sends it straight to an
   app, or hold your finger on the picture to copy or save it.
 
+- **Time goals.** Each service has one: exterior 45 min to 1 hour, interior
+  1 to 1.5 hours, full detail 2 to 3 hours, maintenance 1 to 1.5 hours, paint
+  correction 2 to 3 hours, ceramic coating 4 to 5 hours (two services add up).
+  The job shows the time so far against the goal, from the first tick on the
+  day, then how long it took. It's on the summary picture too. Admin can
+  change the goals under Edit the SOPs > Services.
+- **Maintenance wash** has its own list for regulars (front-only clay, sealant
+  where it's needed, front seats in full, back seats where needed, door jambs a
+  dry wipe if they're clean), both sign-off lists, and no pitch, review ask,
+  review texts or cards.
+- **Door knocking**, optional on every job: the bonus ($25 a detail, $40 paint
+  correction, $75 ceramic, once booked and paid), the steps, a script with ice
+  breakers, and the **instant quote**. Nothing in it counts towards the job.
+- **Price calculator** on the Jobs tab: the same prices as the website's
+  instant quote, by car size and service, with the $75 condition range on full
+  and interior details.
+
 A job keeps its own copy of the lists it started with. Editing an SOP changes
 new jobs only. Two phones can work the same job: each tick is saved on its own,
 and the later tick wins.
 
+**New SOP wording reaches phones and the sheet by itself.** `sops.json`
+carries a version. When the app opens with older SOPs, every SOP nobody has
+edited in the app is replaced with the new wording, once, and saved to the
+sheet. One that was edited in the app is kept as it is, and Admin says which;
+new services, goals and prices are still added. Jobs already started keep the
+lists they started with.
+
 **The How to do it notes were written for the app.** The SOP lines themselves
-are word for word from the Appendix; the explanations under them are extra.
+are the Appendix plus Pat's changes (October 2026); the explanations under them
+are extra.
 Angus should read them over, and can change any of them under Admin > Edit the
 SOPs.
 
@@ -197,8 +222,9 @@ Change them in `config.js`.
     node --test test/*.test.js
 
 runs the checklist rules and the real `apps-script.gs` against a pretend
-spreadsheet: the SOPs match the Appendix word for word, the services get the
-right lists, the second check can't be done by the main worker, ticks from two
+spreadsheet: the SOPs export word for word as `test/fixtures/sops.md`, the
+services get the right lists, the prices match the menu, older SOPs upgrade
+without losing edits, the second check can't be done by the main worker, ticks from two
 phones merge, a job that won't fit in a cell is refused, and the old script
 files nothing for a job.
 

@@ -51,7 +51,20 @@
       services: s.services || {},
       paintMin: typeof s.paintMin === 'number' ? s.paintMin : DEFAULTS.paintMin,
       paintSpread: typeof s.paintSpread === 'number' ? s.paintSpread : DEFAULTS.paintSpread,
+      prices: s.prices || null,
     };
+  }
+
+  /* Whether a section or item belongs on a job with these lists. "a|b" means
+     the job has a or b; "!a" means it doesn't have a. No needs: always. */
+  function fits(needs, keys) {
+    if (!needs) return true;
+    var pos = [], neg = [];
+    String(needs).split('|').forEach(function (p) {
+      if (p.charAt(0) === '!') neg.push(p.slice(1)); else pos.push(p);
+    });
+    if (neg.some(function (k) { return keys.indexOf(k) !== -1; })) return false;
+    return !pos.length || pos.some(function (k) { return keys.indexOf(k) !== -1; });
   }
   function serviceNames(set) { return Object.keys(settings(set).services); }
 
@@ -78,7 +91,7 @@
   function build(services, sops, set) {
     var p = plan(services, sops, set);
     var tpls = byKey(sops);
-    var keep = function (x) { return !x.needs || p.keys.indexOf(x.needs) !== -1; };
+    var keep = function (x) { return fits(x.needs, p.keys); };
     var lists = p.keys.map(function (k) {
       var t = tpls[k], stop = p.stopAfter[k], stopped = false;
       var sections = (t.sections || []).filter(keep).map(function (s) {
@@ -92,7 +105,9 @@
         c.items = items;
         return c;
       }).filter(function (s) { return s.items.length || s.intro; });
-      return { key: t.key, name: t.name, intro: t.intro || '', outro: t.outro || '', sections: sections };
+      var list = { key: t.key, name: t.name, intro: t.intro || '', outro: t.outro || '', sections: sections };
+      if (t.optional) list.optional = true;
+      return list;
     });
     var steps = [], clips = [], signoffs = [];
     lists.forEach(function (t) {
@@ -104,7 +119,10 @@
         });
       });
     });
-    return { lists: lists, meta: { templateKeys: p.keys, pitch: p.pitch, steps: steps, clips: clips, signoffs: signoffs } };
+    var meta = { templateKeys: p.keys, pitch: p.pitch, steps: steps, clips: clips, signoffs: signoffs };
+    var g = goal(services, set);
+    if (g) meta.goal = g;
+    return { lists: lists, meta: meta };
   }
 
   /* ---------------------------------------------------------------- state */
@@ -355,6 +373,120 @@
     return out;
   }
 
+  /* --------------------------------------------------------------- timing */
+
+  // The time a job should take, in minutes: each service's goal, added up.
+  function goal(services, set) {
+    var m = settings(set).services, lo = 0, hi = 0, any = false;
+    (services || []).forEach(function (sv) {
+      var g = m[sv] && m[sv].goal;
+      if (g && g.length === 2) { lo += g[0]; hi += g[1]; any = true; }
+    });
+    return any ? [lo, hi] : null;
+  }
+  function hours(min) {
+    var h = Math.round(min / 15) / 4;
+    return String(h);
+  }
+  function goalText(g) {
+    if (!g) return '';
+    if (g[0] < 60) return g[0] + ' min to ' + hours(g[1]) + (g[1] === 60 ? ' hour' : ' hours');
+    return hours(g[0]) + ' to ' + hours(g[1]) + ' hours';
+  }
+  function duration(min) {
+    min = Math.max(0, Math.round(min));
+    if (min < 60) return min + ' min';
+    return Math.floor(min / 60) + ' h' + (min % 60 ? ' ' + (min % 60) + ' min' : '');
+  }
+  /* How long the job has taken: from the first tick on the day of the job
+     (the day-before texts don't count) to Mark job done, or to now. */
+  function timing(state, job, nowIso) {
+    var start = null;
+    for (var k in state || {}) {
+      if (k.indexOf('s:') !== 0) continue;
+      var x = state[k];
+      if (!x || !(x.done || x.skipped) || !x.at) continue;
+      var d = new Date(x.at);
+      if (isNaN(d) || ymd(d) !== (job && job.date)) continue;
+      if (!start || x.at < start) start = x.at;
+    }
+    if (!start) return null;
+    var fin = state.done && !state.done.off ? state.done.at : null;
+    var end = fin || nowIso;
+    return { start: start, end: end, finished: !!fin, minutes: Math.max(0, Math.round((Date.parse(end) - Date.parse(start)) / 60000)) };
+  }
+
+  /* ---------------------------------------------------------------- quote */
+
+  // The instant quote: the price for a car size and a service, with the condition range.
+  function quote(prices, vehicle, service) {
+    var v = ((prices && prices.vehicles) || []).filter(function (x) { return x.key === vehicle; })[0];
+    if (!v) return null;
+    if (v.note && !Object.keys(v.prices || {}).length) return { note: v.note };
+    var p = (v.prices || {})[service];
+    if (typeof p !== 'number') return null;
+    var c = (prices && prices.condition) || {};
+    var ranged = (c.services || []).indexOf(service) !== -1 && c.range;
+    return { from: p, to: ranged ? p + c.range : p };
+  }
+
+  /* -------------------------------------------------------------- upgrade */
+
+  // A short, stable fingerprint of what an SOP says, ignoring when and who saved it.
+  function fingerprint(x, settingsShape) {
+    var body = settingsShape
+      ? JSON.stringify({ services: x.services, paintMin: x.paintMin, paintSpread: x.paintSpread })
+      : JSON.stringify({ key: x.key, name: x.name, sort: x.sort, intro: x.intro, outro: x.outro, sections: x.sections });
+    var h = 0x811c9dc5;
+    for (var i = 0; i < body.length; i++) {
+      h ^= body.charCodeAt(i);
+      h = Math.imul(h, 0x01000193) >>> 0;
+    }
+    return ('0000000' + h.toString(16)).slice(-8);
+  }
+  /* Brings stored SOPs up to a newer seed. An SOP nobody has edited is
+     replaced with the new wording; one edited in the app is kept as it is and
+     named in `kept`, so admin can decide. New SOPs are added. Saved jobs are
+     never touched: they keep their own copy. */
+  function upgrade(stored, storedSettings, seed) {
+    var v = seed.version || 1, prev = seed.previous || {};
+    var have = byKey(stored || []), sops = [], changed = [], kept = [];
+    var pristine = function (cur, prints, isSettings) {
+      if (cur.edited) return false;
+      if (cur.seed) return true;
+      return (prints || []).indexOf(fingerprint(cur, isSettings)) !== -1;
+    };
+    (seed.sops || []).forEach(function (t) {
+      var cur = have[t.key];
+      if (!cur) { sops.push(clone(t)); changed.push(t.key); return; }
+      if (cur.seed === v) { sops.push(cur); return; }
+      if (pristine(cur, prev[t.key])) { sops.push(clone(t)); changed.push(t.key); }
+      else { sops.push(cur); kept.push(t.key); }
+    });
+    (stored || []).forEach(function (t) { if (!(seed.sops || []).some(function (x) { return x.key === t.key; })) sops.push(t); });
+    sops.sort(function (a, b) { return (a.sort || 0) - (b.sort || 0); });
+
+    var cur = storedSettings, out = cur, settingsChanged = false;
+    if (!cur || (cur.seed !== v && pristine(cur, prev._settings, true))) {
+      out = clone(seed.settings);
+      settingsChanged = true;
+    } else if (cur.seed !== v) {
+      // Edited services stay; anything new in the seed is added beside them.
+      out = clone(cur);
+      out.services = out.services || {};
+      Object.keys(seed.settings.services || {}).forEach(function (name) {
+        var mine = out.services[name], theirs = seed.settings.services[name];
+        if (!mine) out.services[name] = clone(theirs);
+        else if (!mine.goal && theirs.goal) mine.goal = theirs.goal.slice();
+      });
+      if (!out.prices) out.prices = clone(seed.settings.prices);
+      out.seed = v;
+      settingsChanged = true;
+      kept.push('_settings');
+    }
+    return { sops: sops, settings: out, changed: changed, kept: kept, settingsChanged: settingsChanged };
+  }
+
   /* ------------------------------------------------------------ dashboard */
 
   function ymd(d) {
@@ -382,7 +514,7 @@
       filmed += s.clipsDone;
       clips += s.clipsTotal;
       if (s.pitch === 'plan') { planAsked++; if (s.planPitched === 'Yes') planYes++; }
-      else { cerAsked++; if (s.ceramicPitched === 'Yes') cerYes++; }
+      else if (s.pitch !== 'none') { cerAsked++; if (s.ceramicPitched === 'Yes') cerYes++; }
       if (j.date < today) { past++; if (s.stage === 'signed' || s.stage === 'done') closed++; }
     });
     return {
@@ -440,6 +572,7 @@
     DEFAULTS: DEFAULTS,
     STAGES: STAGES,
     settings: settings,
+    fits: fits,
     serviceNames: serviceNames,
     plan: plan,
     build: build,
@@ -463,6 +596,13 @@
     counts: counts,
     label: label,
     report: report,
+    goal: goal,
+    goalText: goalText,
+    duration: duration,
+    timing: timing,
+    quote: quote,
+    fingerprint: fingerprint,
+    upgrade: upgrade,
     paintFlags: paintFlags,
     addYear: addYear,
     warrantyDefaults: warrantyDefaults,
