@@ -411,6 +411,7 @@ textarea:focus { outline: none; border-color: var(--imperium); box-shadow: 0 0 0
 .say-card > p { color: var(--slate); font-size: var(--t-small); }
 .say-block { margin-top: 16px; }
 .say-block .lab { margin-bottom: 8px; }
+.say-block .say-acts + .lab { margin: 14px 0 6px; }
 .say {
   margin: 0;
   padding: 14px 16px;

@@ -28,7 +28,7 @@ test('every step, rule and sign-off check has a How to do it', () => {
     assert.ok(typeof it.more === 'string' && it.more.length > 40, it.id);
     assert.ok(it.more.length < 520, `${it.id} is too long to read on a phone`);
   });
-  assert.equal(n, 137);
+  assert.equal(n, 138);
 });
 
 test('each service gets its lists in order, without repeats', () => {
@@ -222,12 +222,17 @@ test('handover: the right pitch for the service, with the car filled in', () => 
   const job = { car: 'Raptor' };
   const full = build('Full detail');
   const s = J.scripts(full.lists, full.meta, job);
-  assert.deepEqual(s.map(x => x.key), ['pitch', 'referral', 'review']);
-  assert.equal(s[0].label, 'Ceramic pitch (full detail customers)');
-  assert.match(s[0].text, /^So it looks like this now\..*Want me to send you a price for the Raptor\?$/);
-  assert.equal(s[1].text, 'If a mate books, you get $50 off your next one.');
+  // Start with a detail; ceramic for a new car or a customer who really cares.
+  assert.deepEqual(s.map(x => x.key), ['detail', 'pitch', 'referral', 'review']);
+  assert.equal(s[0].label, 'Detail pitch (start here)');
+  assert.equal(s[1].label, 'Ceramic pitch (new car, or they really care about it)');
+  assert.match(s[1].text, /^So it looks like this now\..*Want me to send you a price for the Raptor\?$/);
+  assert.equal(s[2].text, 'If a mate books, you get $50 off your next one.');
+  for (const sv of ['Exterior detail', 'Interior detail', 'Paint correction'])
+    assert.deepEqual(J.scripts(build(sv).lists, build(sv).meta, job).slice(0, 2).map(x => x.key), ['detail', 'pitch'], sv);
   const cer = build('Ceramic coating');
-  assert.equal(J.scripts(cer.lists, cer.meta, job)[0].label, 'Maintenance plan pitch (ceramic customers)');
+  assert.deepEqual(J.scripts(cer.lists, cer.meta, job).map(x => x.label).slice(0, 1), ['Maintenance plan pitch (ceramic customers)']);
+  assert.ok(!J.scripts(cer.lists, cer.meta, job).some(x => x.key === 'detail'));
   assert.equal(build(['Full detail', 'Ceramic coating']).meta.pitch, 'plan');
 });
 
@@ -265,8 +270,14 @@ test('dashboard: jobs not signed off, and the 30-day numbers', () => {
   assert.equal(st.clipsFilmed, 2);
   assert.equal(st.clipsExpected, a.meta.clips.length + b.meta.clips.length);
   assert.equal(st.ceramicPitchedRate, 1);
+  assert.equal(st.detailPitchedRate, 0);
   assert.equal(st.planPitchedRate, 0);
   assert.equal(st.signedRate, 0);
+  // A detail pitched instead of ceramic counts as a detail, not as ceramic.
+  const sd = J.merge({}, J.valuePatch('ceramicPitched', 'Detail', 'AJ', '4'));
+  const st2 = J.stats([{ date: '2026-09-20', sum: J.summary(a.meta, sa) }, { date: '2026-09-21', sum: J.summary(a.meta, sd) }], '2026-10-01', 30);
+  assert.equal(st2.ceramicPitchedRate, 0.5);
+  assert.equal(st2.detailPitchedRate, 0.5);
 });
 
 test('a job list fits in a Google Sheet cell, one list per cell', () => {
@@ -307,12 +318,16 @@ test('the new wording: acid only without chrome, the Green Star mix, polish tech
   const full = build(['Full detail', 'Paint correction']).lists;
   const wheels = find(full, 'exterior', /^Wheels and tyres/);
   assert.deepEqual(wheels.subs, [
-    'Dirty rims with no chrome: use the acid wheel cleaner. Never acid on chrome.',
+    'Dirty rims: use the acid wheel cleaner. Never acid on chrome, polished, bare metal or coated wheels.',
     "Wheels bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.",
   ]);
   // Green Star: 1:3 with the touch wash chemical in the foam cannon, a capful or two in each bucket.
   assert.equal(find(full, 'exterior', /^Pre-wash/).subs[0], 'Foam cannon: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water. It neutralises any acid from the wheels.');
-  assert.equal(find(full, 'exterior', /^Touch wash/).subs[0], "Touch wash bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.");
+  // The second foam is light, and the touch wash bucket has no Green Star.
+  assert.match(find(full, 'exterior', /^Touch wash/).detail, /^Foam the car again with just a little touch wash chemical\. No Green Star\./);
+  assert.equal(find(full, 'exterior', /^Touch wash/).subs[0], 'Touch wash bucket: the touch wash chemical and water. No Green Star.');
+  // Sealant: a towel wet from the pressure washer, folded in quarters, 3 sprays on it.
+  assert.match(find(build('Exterior detail').lists, 'exterior', /^Ceramic sealant\. Wet/).detail, /^Wet a clean towel with the pressure washer and fold it into quarters\. Spray the sealant 3 times over the towel\./);
   // The polish technique sits on the first polishing step: the 50/50 on the worst panel.
   const polish = find(full, 'correction', /^50\/50 on the worst panel/);
   assert.match(polish.detail, /Run one strip of tape down the middle\. Polish one side/);
@@ -337,18 +352,24 @@ test('the new wording: acid only without chrome, the Green Star mix, polish tech
 test('maintenance: its own steps, both sign-off lists, and no pitch or review asks', () => {
   const { lists, meta } = build('Maintenance wash');
   const m = lists.find(t => t.key === 'maintenance');
-  assert.deepEqual(m.sections.map(s => s.name), ['Outside', 'Inside', 'Maintenance story videos']);
-  assert.deepEqual(m.sections[0].items.map(i => i.title), ['Wheels and tyres,', 'Spray down', 'Foam it up.', 'Rinse', 'Clay', 'Rinse.', 'Look around', 'Ceramic sealant', 'Dry, blower, glass and tyre shine,']);
+  assert.deepEqual(m.sections.map(s => s.name), ['Outside', 'Inside', 'Maintenance story videos', 'Coated car clips to film']);
+  // Coated car clips are filmed while you rinse, and never count against a car that isn't coated.
+  const coated = m.sections[3].items.map(i => i.id);
+  assert.ok(coated.every(id => !meta.clips.includes(id)));
+  assert.deepEqual((J.placements(lists).after['mnt-outside-4'] || []).map(c => c.clip), coated);
+  // Wheels: pressure wash, look again, acid only for hard work.
+  assert.match(m.sections[0].items[0].detail, /Pressure wash up close to get the loose brake dust off, then look again/);
+  assert.deepEqual(m.sections[0].items.map(i => i.title), ['Wheels and tyres.', 'Spray down', 'Foam it up.', 'Rinse', 'Clay', 'Rinse.', 'Look around', 'Ceramic sealant', 'Dry, blower, glass and tyre shine,']);
   assert.match(m.sections[0].items[4].detail, /front only, where the bugs are, plus the windscreen and mirrors/);
   assert.match(m.sections[1].items[4].detail, /wipe down with no chemical/);
   assert.match(m.sections[1].items[5].detail, /No review card or business card/);
   const hand = itemsOf(lists, 'handover').map(i => i.title || i.detail);
   assert.ok(!hand.some(t => /Review ask|Pitch, 20 seconds|Send the review text|Day 3, no review/.test(t)), hand.join('; '));
-  assert.ok(hand.includes('Referral line:') && hand.includes('Take payment'));
+  assert.ok(!hand.includes('Referral line:') && hand.includes('Take payment'));   // no referral line for regulars
   assert.ok(!lists.find(t => t.key === 'handover').sections.some(s => s.name === 'Pitch scripts'));
   assert.equal(meta.pitch, 'none');
   assert.equal(J.scripts(lists, meta, {}).filter(x => x.key === 'pitch').length, 0);
-  assert.equal(meta.steps.length, 9 + 15 + 5 + 2);       // every job, maintenance, handover without the pitch and review bits
+  assert.equal(meta.steps.length, 9 + 15 + 4 + 2);       // every job, maintenance, handover without the pitch, referral and review bits
   // A full detail still has them all.
   const full = itemsOf(build('Full detail').lists, 'handover').map(i => i.title || i.detail);
   assert.ok(full.includes('Review ask:') && full.includes('Pitch, 20 seconds.'));
@@ -365,11 +386,12 @@ test('door knocking is optional: it never counts, and Up next skips it', () => {
   assert.equal(J.nextStep(lists, st).template.key, 'handover');
   assert.deepEqual(itemsOf(lists, 'door_knock').filter(i => i.type === 'rule').slice(0, 3).map(i => i.detail),
     ['Detail booked and paid: $25.', 'Paint correction booked and paid: $40.', 'Ceramic coating booked and paid: $75.']);
+  assert.ok(itemsOf(lists, 'door_knock').some(i => i.detail === 'Motorbike coating booked and paid: $25.'));
   const lines = itemsOf(lists, 'door_knock').filter(i => i.type === 'script');
   assert.equal(lines.filter(i => /^Ice breaker/.test(i.title)).length, 3);
   assert.ok(lines.every(i => /^".+"$/.test(i.detail)));
   // The handover helper still only picks the handover words.
-  assert.deepEqual(J.scripts(lists, meta, {}).map(x => x.key), ['pitch', 'referral', 'review']);
+  assert.deepEqual(J.scripts(lists, meta, {}).map(x => x.key), ['detail', 'pitch', 'referral', 'review']);
 });
 
 test('the instant quote matches the price menu', () => {
@@ -571,8 +593,8 @@ test('handover: coating care only on a ceramic job, after they have seen the car
   assert.ok(!hand('Full detail').includes('Coating care.'));
   assert.ok(!stepTitles(build('Ceramic coating').lists, 'ceramic').some(t => /^Tell the customer|^Hand over/.test(t)));
   assert.match(find(build('Exterior detail').lists, 'handover', /^Review ask/).detail, /New customer\? Check the review card/);
-  // Tar comes off before the clay, on the clay step every job sees.
-  assert.ok(find(build('Paint correction').lists, 'exterior', /^Clay/).subs.includes('Tar spots? Tar remover on them first, then clay.'));
+  // Bug and tar remover for the really stubborn stuff, before the clay, on the step every job sees.
+  assert.ok(find(build('Paint correction').lists, 'exterior', /^Clay/).subs.includes('Really stubborn bugs or tar? Bug and tar remover on them first, then clay.'));
 });
 
 test('a phone on older code never takes the SOPs back to an older version', () => {

@@ -1,6 +1,6 @@
 {
  "about": "Imperium job SOPs, with a plain-words How to do it for every step. The app copies these into the Google Sheet the first time it runs, and brings in a newer version by itself as long as nobody has edited that SOP in the app. Edit them in the app: Admin > Edit the SOPs.",
- "version": 6,
+ "version": 7,
  "previous": {
   "every_job": [
    "7fbacad5",
@@ -423,7 +423,7 @@
      ]
     }
    ],
-   "seed": 6
+   "seed": 7
   },
   {
    "key": "exterior",
@@ -446,12 +446,12 @@
        "title": "Wheels and tyres.",
        "detail": "Spray wheel cleaner, then foam. Clean in this order: barrel brush, wheel face, tyre brush, arch brush, then the small brush for corners and calipers. Rinse.",
        "subs": [
-        "Dirty rims with no chrome: use the acid wheel cleaner. Never acid on chrome.",
+        "Dirty rims: use the acid wheel cleaner. Never acid on chrome, polished, bare metal or coated wheels.",
         "Wheels bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid."
        ],
        "required": true,
        "id": "ext-steps-1",
-       "more": "Wheels go first so their dirty spray never lands on a clean car. Really dirty rims get the acid cleaner, but only if there's no chrome anywhere on the wheel: acid ruins chrome. Not sure? Use the normal wheel cleaner. Put 1 or 2 lids of Green Star in the wheels bucket. Brush in order: barrel, face, tyre, arch, then corners and calipers. Rinse well."
+       "more": "Wheels go first so their dirty spray never lands on a clean car. Really dirty rims get the acid cleaner, but never on chrome, polished, bare metal or coated wheels: acid ruins them. Not sure? Use the normal wheel cleaner. Put 1 or 2 lids of Green Star in the wheels bucket. Brush in order: barrel, face, tyre, arch, then corners and calipers. Rinse well."
       },
       {
        "type": "step",
@@ -467,14 +467,14 @@
       {
        "type": "step",
        "title": "Touch wash.",
-       "detail": "Foam the car again, with more water in the mix. Grab a clean mitt. Wash top to bottom: roof, windscreen, bonnet, then down the car. Flip the mitt every few panels. Rinse the mitt in the grit-guard bucket, dip it back in the touch wash bucket, and carry on.",
+       "detail": "Foam the car again with just a little touch wash chemical. No Green Star. The foam doesn't need to be thick. Grab a clean mitt. Wash top to bottom: roof, windscreen, bonnet, then down the car. Flip the mitt every few panels. Rinse the mitt in the grit-guard bucket, dip it back in the touch wash bucket, and carry on.",
        "subs": [
-        "Touch wash bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.",
+        "Touch wash bucket: the touch wash chemical and water. No Green Star.",
         "Never go from a low panel back up high unless you're on the clean side of the mitt."
        ],
        "required": true,
        "id": "ext-steps-3",
-       "more": "The touch wash bucket is the soap bucket: 1 or 2 lids of Green Star in the soapy water. The second bucket is the grit-guard bucket: plain water with the grit guard. Wash top down in straight lines, flip the mitt every few panels, and scrub it on the grit guard before it goes back in the soap bucket."
+       "more": "This second foam is light: just a little touch wash chemical, no Green Star. It doesn't need to be thick. The touch wash bucket is the soap bucket: touch wash chemical and water. The second bucket is the grit-guard bucket: plain water with the grit guard. Wash top down in straight lines, flip the mitt every few panels, and scrub it on the grit guard before it goes back in the soap bucket."
       },
       {
        "type": "step",
@@ -497,13 +497,13 @@
       {
        "type": "step",
        "title": "Clay.",
-       "detail": "Do the paint, glass and trim. Move the clay side to side. Every few panels, dunk it in the touch wash bucket, squeeze it, soak up fresh water and carry on. Keep going until all the bugs are gone.",
+       "detail": "Use the clay sponge on the paint, glass and trim. Move it side to side. Every few panels, dunk it in the touch wash bucket, squeeze it, soak up fresh water and carry on. Keep going until all the bugs are gone.",
        "subs": [
-        "Tar spots? Tar remover on them first, then clay."
+        "Really stubborn bugs or tar? Bug and tar remover on them first, then clay."
        ],
        "required": true,
        "id": "ext-steps-6",
-       "more": "Clay pulls out dirt that washing leaves behind, like sap and bug bits. Tar spots get tar remover first. Keep the surface wet and soapy and glide the clay side to side with light pressure. When the panel feels smooth instead of rough, it's done. Drop the clay on the ground? It doesn't go back on paint."
+       "more": "The clay sponge pulls out dirt that washing leaves behind, like sap and bug bits. Really stubborn bugs or tar get bug and tar remover first. Keep the surface wet and soapy and glide it side to side with light pressure. When the panel feels smooth instead of rough, it's done. Drop it on the ground? It doesn't go back on paint."
       },
       {
        "type": "step",
@@ -517,12 +517,12 @@
       {
        "type": "step",
        "title": "Ceramic sealant.",
-       "detail": "Wet a clean towel with clean water and give it a few sprays. Spray 2 to 3 times on the panel, wipe side to side over the whole panel, then rinse straight away. Never wait to rinse. Panel by panel, whole car.",
+       "detail": "Wet a clean towel with the pressure washer and fold it into quarters. Spray the sealant 3 times over the towel. Spray 2 to 3 times on the panel, wipe side to side over the whole panel, then rinse straight away. Never wait to rinse. Panel by panel, whole car.",
        "subs": [],
        "required": true,
        "id": "ext-steps-8",
        "needs": "!correction",
-       "more": "This puts a layer of protection on the paint. Wet a clean towel with clean water and give it a few sprays. Spray the panel 2 to 3 times, wipe side to side over the whole panel, then rinse it straight away. If it sits or dries, it streaks. Panel by panel, all the way round."
+       "more": "This puts a layer of protection on the paint. Wet a clean towel with the pressure washer, fold it into quarters, and spray the sealant 3 times over it. Spray the panel 2 to 3 times, wipe side to side over the whole panel, then rinse it straight away. If it sits or dries, it streaks. Panel by panel, all the way round."
       },
       {
        "type": "step",
@@ -867,7 +867,7 @@
      ]
     }
    ],
-   "seed": 6
+   "seed": 7
   },
   {
    "key": "interior",
@@ -1243,7 +1243,7 @@
      ]
     }
    ],
-   "seed": 6
+   "seed": 7
   },
   {
    "key": "correction",
@@ -1376,12 +1376,12 @@
        "title": "Then protect",
        "detail": "with the ceramic sealant.",
        "subs": [
-        "Wet a clean towel with clean water and give it a few sprays. Spray 2 to 3 times on the panel, wipe side to side over the whole panel, then rinse straight away. Never wait to rinse. Panel by panel, whole car."
+        "Wet a clean towel with the pressure washer and fold it into quarters. Spray the sealant 3 times over the towel. Spray 2 to 3 times on the panel, wipe side to side over the whole panel, then rinse straight away. Never wait to rinse. Panel by panel, whole car."
        ],
        "required": true,
        "id": "cor-steps-12",
        "needs": "!ceramic",
-       "more": "Freshly polished paint has no protection at all, so the sealant goes on now, the same way as step 8 of the exterior detail. Spray, wipe, rinse straight away, one panel at a time. A ceramic job skips this step: the coating is the protection."
+       "more": "Freshly polished paint has no protection at all, so the sealant goes on now, the same way as the exterior detail: towel wet from the pressure washer and folded in quarters, 3 sprays on the towel, 2 to 3 on the panel, wipe, rinse straight away. A ceramic job skips this step: the coating is the protection."
       },
       {
        "type": "step",
@@ -1540,7 +1540,7 @@
      ]
     }
    ],
-   "seed": 6
+   "seed": 7
   },
   {
    "key": "ceramic",
@@ -1561,11 +1561,11 @@
       {
        "type": "step",
        "title": "Exterior prep done.",
-       "detail": "The wash, iron remover, tar and clay were done at the start, in the exterior steps. Any old wax or sealant must be off too.",
+       "detail": "The wash, iron remover and clay were done at the start, in the exterior steps, with bug and tar remover where it was needed. Any old wax or sealant must be off too.",
        "subs": [],
        "required": true,
        "id": "cer-before-you-open-the-bottle-1",
-       "more": "You did this already. Just check it. The wash, iron remover and clay were done at the start of the job, and any tar came off before the clay. Any old wax or sealant has to be gone, because the coating can't stick on top of it."
+       "more": "You did this already. Just check it. The wash, iron remover and clay were done at the start of the job, with bug and tar remover on anything really stubborn. Any old wax or sealant has to be gone, because the coating can't stick on top of it."
       },
       {
        "type": "step",
@@ -1759,7 +1759,7 @@
      "name": "Ceramic clips to film",
      "heading": true,
      "headingNote": "",
-     "intro": "Film the correction clips too. Then add these. The two marked Later are for our first maintenance wash, not today.",
+     "intro": "Film the correction clips too. Then add these. The two marked Later are on the maintenance wash list, for when the car comes back for a wash.",
      "style": "clips",
      "needs": "",
      "items": [
@@ -1846,7 +1846,7 @@
        "required": false,
        "when": "later",
        "length": "5s",
-       "purpose": "The ceramic ad. Film it 3 times at our first maintenance wash, a week or more later. Never on coating day",
+       "purpose": "The ceramic ad. Film it at a maintenance wash, a week or more later. Never on coating day",
        "id": "cer-ceramic-clips-to-film-6"
       },
       {
@@ -1893,7 +1893,7 @@
      ]
     }
    ],
-   "seed": 6
+   "seed": 7
   },
   {
    "key": "maintenance",
@@ -1913,14 +1913,16 @@
      "items": [
       {
        "type": "step",
-       "title": "Wheels and tyres,",
-       "detail": "the same as the exterior detail. Dirty rims with no chrome: use the acid wheel cleaner. Never use acid on chrome.",
+       "title": "Wheels and tyres.",
+       "detail": "They usually aren't that dirty. Dirty? Pressure wash up close to get the loose brake dust off, then look again.",
        "subs": [
+        "Still needs hard work? Use the acid wheel cleaner. Never acid on chrome, polished, bare metal or coated wheels.",
+        "If not, the foam does it: the Green Star in it breaks the brake dust down.",
         "Wheels bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid."
        ],
        "required": true,
        "id": "mnt-outside-1",
-       "more": "Same order and brushes as the exterior detail: wheel cleaner, foam, barrel, face, tyre, arch, corners, rinse. Wheels bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid. Dirty rims with no chrome can have the acid cleaner. Any chrome at all? No acid."
+       "more": "Regulars' wheels usually aren't that dirty. If they are, pressure wash up close first to get the loose brake dust off, then look again. Still needs hard work? Acid cleaner, but never on chrome, polished, bare metal or coated wheels. If not, the foam is enough: the Green Star in it breaks the brake dust down. Wheels bucket: 1 or 2 capfuls of Green Star. Same brushes as the exterior detail: barrel, face, tyre, arch, corners, then rinse."
       },
       {
        "type": "step",
@@ -1937,11 +1939,11 @@
        "detail": "Film the foam shot first, then go straight into the touch wash. Same method as the exterior touch wash.",
        "subs": [
         "Foam cannon: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water.",
-        "Touch wash bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid."
+        "Touch wash bucket: the touch wash chemical and water. No Green Star."
        ],
        "required": true,
        "id": "mnt-outside-3",
-       "more": "Foam the car with the same foam cannon mix: 25 ml Green Star and 75 ml touch wash chemical (1:3), then top up with water. Film the foam shot and take the foam photo straight away. Then go straight in with the mitt while the foam is on. No waiting and no rinse in between. Use two buckets. Put 1 or 2 capfuls of Green Star in the touch wash bucket. Wash top down, in straight lines."
+       "more": "Foam the car with the same foam cannon mix: 25 ml Green Star and 75 ml touch wash chemical (1:3), then top up with water. Film the foam shot and take the foam photo straight away. Then go straight in with the mitt while the foam is on. No waiting and no rinse in between. Use two buckets: touch wash chemical and water in the touch wash bucket, no Green Star. Wash top down, in straight lines."
       },
       {
        "type": "step",
@@ -1983,10 +1985,12 @@
        "type": "step",
        "title": "Ceramic sealant",
        "detail": "on the spots that need it, or the whole car if it all does. Same method as the exterior detail.",
-       "subs": [],
+       "subs": [
+        "Wet a clean towel with the pressure washer and fold it into quarters. Spray the sealant 3 times over the towel. Spray 2 to 3 times on the panel, wipe side to side over the whole panel, then rinse straight away. Never wait to rinse. Panel by panel, whole car."
+       ],
        "required": true,
        "id": "mnt-outside-8",
-       "more": "Most regulars only need it topped up where it's worn, like the bonnet, roof and lower doors. If the water isn't beading anywhere, do the whole car. Same as the exterior: wet towel, spray, wipe, rinse straight away."
+       "more": "Most regulars only need it topped up where it's worn, like the bonnet, roof and lower doors. If the water isn't beading anywhere, do the whole car. Towel wet from the pressure washer and folded in quarters, 3 sprays of sealant on it, 2 to 3 on the panel, wipe, rinse straight away."
       },
       {
        "type": "step",
@@ -2149,9 +2153,52 @@
        ]
       }
      ]
+    },
+    {
+     "id": "mnt-coated-car-clips-to-film",
+     "name": "Coated car clips to film",
+     "heading": true,
+     "headingNote": "",
+     "intro": "Only on a car we've coated. Film them while you rinse.",
+     "style": "clips",
+     "needs": "",
+     "items": [
+      {
+       "type": "clip",
+       "title": "Coated car only: hose on the bonnet, water beading and sheeting off, slow-mo",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "during",
+       "length": "5s",
+       "purpose": "The ceramic ad. Film it 3 times",
+       "id": "mnt-coated-car-clips-to-film-1",
+       "pos": "after",
+       "at": [
+        "mnt-outside-4"
+       ],
+       "optional": true
+      },
+      {
+       "type": "clip",
+       "title": "Coated car only: water drops rolling off the mirror",
+       "detail": "",
+       "subs": [],
+       "required": false,
+       "when": "during",
+       "length": "3s",
+       "purpose": "Close-up proof",
+       "id": "mnt-coated-car-clips-to-film-2",
+       "pos": "after",
+       "at": [
+        "mnt-outside-4"
+       ],
+       "optional": true
+      }
+     ]
     }
    ],
-   "seed": 6
+   "seed": 7
   },
   {
    "key": "door_knock",
@@ -2195,6 +2242,15 @@
        "required": false,
        "id": "door-your-bonus-3",
        "more": "The biggest one. Paid once the ceramic coating is booked and paid."
+      },
+      {
+       "type": "rule",
+       "title": "",
+       "detail": "Motorbike coating booked and paid: $25.",
+       "subs": [],
+       "required": false,
+       "id": "door-your-bonus-4",
+       "more": "A coating on a motorbike. You get it once the job is booked and paid, not when they say maybe."
       }
      ]
     },
@@ -2210,11 +2266,11 @@
       {
        "type": "step",
        "title": "Pick your moment:",
-       "detail": "when you can step away for a few minutes, like once the car looks its best.",
+       "detail": "in the gap between the exterior and the interior. Or, with two of you, one keeps working while the other knocks. Don't take too long.",
        "subs": [],
        "required": false,
        "id": "door-steps-1",
-       "more": "Knock when you can step away for a few minutes without slowing the job. Never while foam or a chemical is on the car: it can't be left to dry. Once the car looks amazing is best, so you have something to point at."
+       "more": "Best in the gap between the exterior and the interior. With two of you, one can keep working while the other knocks. Either way, don't take too long. Never knock while foam or a chemical is on the car: it can't be left to dry."
       },
       {
        "type": "step",
@@ -2232,7 +2288,7 @@
        "subs": [],
        "required": false,
        "id": "door-steps-3",
-       "more": "Smile, step back from the door, and use one of the ice breakers below. Keep it short and friendly."
+       "more": "Smile, step back from the door, and use one of the ice breakers below. Keep it short and friendly. Show before and after photos from our jobs on your phone while you explain what we do."
       },
       {
        "type": "step",
@@ -2251,7 +2307,7 @@
        "required": false,
        "id": "door-steps-5",
        "tool": "quote",
-       "more": "Pick their car size and the service, and the price shows straight away. Full and interior details can go up to $75 for condition, so say \"from\"."
+       "more": "Pick their car size and the service, and the price shows straight away. Say \"starts from\", and explain the price depends on the condition on the day: stubborn dirt takes longer to bring up. Full and interior details can go up to $75 for it."
       },
       {
        "type": "step",
@@ -2348,7 +2404,7 @@
       {
        "type": "script",
        "title": "Ice breaker, the before and after:",
-       "detail": "\"Hi! Quick one: I'm [your name] from Imperium Detailing. We're working on your street today. Want to see a before and after from one of our jobs?\"",
+       "detail": "\"Hi! Quick one: I'm [your name] from Imperium Detailing. We're working on your street today. Can I show you a few before and afters of what we do?\"",
        "subs": [],
        "required": false,
        "id": "door-door-knocking-script-3"
@@ -2364,7 +2420,7 @@
       {
        "type": "script",
        "title": "The price:",
-       "detail": "\"For your [their car], a [service] starts from [price from the quote].\"",
+       "detail": "\"For your [their car], a [service] starts from [price from the quote]. It depends on the condition on the day, because stubborn dirt takes longer to bring up.\"",
        "subs": [],
        "required": false,
        "id": "door-door-knocking-script-5"
@@ -2389,7 +2445,7 @@
     }
    ],
    "optional": true,
-   "seed": 6
+   "seed": 7
   },
   {
    "key": "handover",
@@ -2450,13 +2506,13 @@
       {
        "type": "step",
        "title": "Pitch, 20 seconds.",
-       "detail": "Full detail customers get the ceramic pitch. Ceramic customers get the maintenance plan pitch.",
+       "detail": "Start with a detail pitch. New car, or they say they really care about it? Pitch ceramic instead. Ceramic customers get the maintenance plan pitch.",
        "subs": [],
        "required": true,
        "id": "hand-at-the-car-5",
        "script": "pitch",
        "needs": "!maintenance",
-       "more": "Keep it short and natural, about 20 seconds. The right pitch for this job is below, with a Copy button. Then tap whether you pitched it."
+       "more": "Keep it short and natural, about 20 seconds. Start with the detail pitch. If it's a new car, or they say they really care about it, give them the ceramic pitch instead. Ceramic customers get the maintenance plan pitch. The words are below, with Copy buttons. Then tap what you pitched."
       },
       {
        "type": "step",
@@ -2466,6 +2522,7 @@
        "required": true,
        "id": "hand-at-the-car-6",
        "script": "referral",
+       "needs": "!maintenance",
        "more": "Say it just like this. New customer? Hand them a business card to pass on to their mate. Regulars already have one."
       },
       {
@@ -2512,11 +2569,11 @@
       {
        "type": "step",
        "title": "",
-       "detail": "Mark the job done in the tracker. Fill in the job price, ceramic pitched Y/N, plan pitched Y/N and review asked. Maintenance: just the job price.",
+       "detail": "Mark the job done in the tracker. Fill in the job price, what you pitched (detail, ceramic or plan) and review asked. Maintenance: just the job price.",
        "subs": [],
        "required": true,
        "id": "hand-same-night-2",
-       "more": "Record the price, whether you pitched ceramic (Y/N), whether you pitched the plan (Y/N), and that you asked for a review. On a maintenance wash, just the price. This is how Angus sees what's working."
+       "more": "Record the price, what you pitched (a detail, ceramic, the plan, or nothing), and that you asked for a review. On a maintenance wash, just the price. This is how Angus sees what's working."
       },
       {
        "type": "step",
@@ -2550,11 +2607,20 @@
      "items": [
       {
        "type": "script",
-       "title": "Ceramic pitch (full detail customers):",
-       "detail": "\"So it looks like this now. In about 3 weeks the swirls and the dullness start coming back, because there's nothing on the paint to stop it. A ceramic coating locks in what you're looking at right now. Pollen, bird poo, road grime, it all slides off with a hose. Lasts years, from $997, and I can do it here. Want me to send you a price for the [car]?\"",
+       "title": "Detail pitch (start here):",
+       "detail": "\"Glad you like it! Most people get it done every few months so it stays like this, inside and out. We come to you. Want me to book your next one in?\"",
        "subs": [],
        "required": false,
        "id": "hand-pitch-scripts-1",
+       "pitch": "detail"
+      },
+      {
+       "type": "script",
+       "title": "Ceramic pitch (new car, or they really care about it):",
+       "detail": "\"So it looks like this now. In about 3 weeks the swirls and the dullness start coming back, because there's nothing on the paint to stop it. A ceramic coating locks in what you're looking at right now. Pollen, bird poo, road grime, it all slides off with a hose. Lasts years, from $997, and I can do it here. Want me to send you a price for the [car]?\"",
+       "subs": [],
+       "required": false,
+       "id": "hand-pitch-scripts-2",
        "pitch": "ceramic"
       },
       {
@@ -2563,13 +2629,13 @@
        "detail": "\"This coating will do its job for years, but it still needs a proper wash now and then. No car washes, they'll scratch it. We do a monthly maintenance wash, we come to you, and it keeps the warranty solid. Want me to put you on it?\"",
        "subs": [],
        "required": false,
-       "id": "hand-pitch-scripts-2",
+       "id": "hand-pitch-scripts-3",
        "pitch": "plan"
       }
      ]
     }
    ],
-   "seed": 6
+   "seed": 7
   },
   {
    "key": "signoff",
@@ -2750,7 +2816,7 @@
      ]
     }
    ],
-   "seed": 6
+   "seed": 7
   }
  ],
  "services": {
@@ -2919,6 +2985,6 @@
    ],
    "notOffered": "We don't do PPF (paint protection film), window tinting or rim repairs."
   },
-  "seed": 6
+  "seed": 7
  }
 }

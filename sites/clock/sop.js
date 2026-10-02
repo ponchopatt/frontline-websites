@@ -114,7 +114,7 @@
       t.sections.forEach(function (s) {
         s.items.forEach(function (it) {
           if (it.type === 'step' && it.required !== false) steps.push(it.id);
-          if (it.type === 'clip' && it.when !== 'later') clips.push(it.id);
+          if (it.type === 'clip' && it.when !== 'later' && !it.optional) clips.push(it.id);
           if (it.type === 'signoff') signoffs.push(it.id);
         });
       });
@@ -317,7 +317,7 @@
     eachItem([tpl], function (it) {
       var x = item(state, it.id);
       if (it.type === 'step' && it.required !== false) { c.total++; if (settled(x)) c.done++; }
-      if (it.type === 'clip' && it.when !== 'later') { c.clipsTotal++; if (x && x.done) c.clipsDone++; }
+      if (it.type === 'clip' && it.when !== 'later' && !it.optional) { c.clipsTotal++; if (x && x.done) c.clipsDone++; }
       if (it.type === 'signoff') { c.signTotal++; if (x && x.done) c.signDone++; }
     });
     return c;
@@ -394,20 +394,25 @@
     var m = /"([^"]+)"/.exec(text || '');
     return m ? m[1] : text || '';
   }
-  // What to say at the car: the right pitch for this job, the referral line, the review ask.
+  /* What to say at the car: the right pitch for this job, the referral line,
+     the review ask. A job that isn't a coating starts with the detail pitch,
+     with the ceramic pitch for a new car or a customer who really cares. */
   function scripts(lists, meta, job) {
-    var want = (meta && meta.pitch) || 'ceramic', pitch = null, referral = null, review = null;
+    var want = (meta && meta.pitch) || 'ceramic', pitch = null, detail = null, referral = null, review = null;
     eachItem(lists, function (it) {
       if (it.type === 'script' && it.pitch === want) pitch = it;
+      if (it.type === 'script' && it.pitch === 'detail' && want === 'ceramic') detail = it;
       if (it.script === 'referral') referral = it;
       if (it.script === 'review') review = it;
     });
     var out = [];
-    if (pitch) {
-      var text = quoted(pitch.detail);
+    var say = function (key, it) {
+      var text = quoted(it.detail);
       if (job && job.car) text = text.split('[car]').join(job.car);
-      out.push({ key: 'pitch', label: pitch.title.replace(/:$/, ''), text: text });
-    }
+      out.push({ key: key, label: it.title.replace(/:$/, ''), text: text });
+    };
+    if (detail) say('detail', detail);
+    if (pitch) say('pitch', pitch);
     if (referral) out.push({ key: 'referral', label: 'Referral line', text: quoted(referral.detail) });
     if (review) out.push({ key: 'review', label: 'Review ask', text: quoted(review.detail) });
     return out;
@@ -549,14 +554,15 @@
     days = days || 30;
     var from = addDays(today, -(days - 1));
     var list = (jobs || []).filter(function (j) { return j.sum && j.date >= from && j.date <= today; });
-    var skipped = 0, filmed = 0, clips = 0, cerAsked = 0, cerYes = 0, planAsked = 0, planYes = 0, past = 0, closed = 0;
+    var skipped = 0, filmed = 0, clips = 0, cerAsked = 0, cerYes = 0, detailYes = 0, planAsked = 0, planYes = 0, past = 0, closed = 0;
     list.forEach(function (j) {
       var s = j.sum;
       skipped += s.skipped;
       filmed += s.clipsDone;
       clips += s.clipsTotal;
       if (s.pitch === 'plan') { planAsked++; if (s.planPitched === 'Yes') planYes++; }
-      else if (s.pitch !== 'none') { cerAsked++; if (s.ceramicPitched === 'Yes') cerYes++; }
+      // Not a coating job: ceramicPitched is Yes (ceramic), Detail, or No.
+      else if (s.pitch !== 'none') { cerAsked++; if (s.ceramicPitched === 'Yes') cerYes++; if (s.ceramicPitched === 'Detail') detailYes++; }
       if (j.date < today) { past++; if (s.stage === 'signed' || s.stage === 'done') closed++; }
     });
     return {
@@ -565,6 +571,7 @@
       clipsFilmed: filmed,
       clipsExpected: clips,
       ceramicPitchedRate: cerAsked ? cerYes / cerAsked : null,
+      detailPitchedRate: cerAsked ? detailYes / cerAsked : null,
       planPitchedRate: planAsked ? planYes / planAsked : null,
       signedRate: past ? closed / past : null,
     };

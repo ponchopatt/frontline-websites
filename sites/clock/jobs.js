@@ -678,10 +678,10 @@
       return `<div class="tool"><button class="tool-btn" type="button" data-warranty><span>Warranty record<small>${sub}</small></span>${ICON.right}</button></div>`;
     }
     if (it.script === 'pitch') {
-      const key = c.meta.pitch === 'plan' ? 'planPitched' : 'ceramicPitched';
-      const cur = S.val(st[key]);
-      return `<div class="tool"><span class="lab">${c.meta.pitch === 'plan' ? 'Did you pitch the maintenance plan?' : 'Did you pitch a ceramic coating?'}</span><div class="seg">` +
-        ['Yes', 'No'].map(v => `<button type="button" data-val="${key}" data-v="${v}" aria-pressed="${cur === v}">${v}</button>`).join('') +
+      const p = pitchAsk(c);
+      const cur = S.val(st[p.key]);
+      return `<div class="tool"><span class="lab">${p.q}</span><div class="seg">` +
+        p.opts.map(([v, l]) => `<button type="button" data-val="${p.key}" data-v="${v}" aria-pressed="${cur === v}">${l}</button>`).join('') +
         '</div></div>';
     }
     if (it.tool === 'quote') return `<div class="tool">${quoteHtml()}</div>`;
@@ -747,17 +747,26 @@
   }
 
   /* ======================================================= job: the cards == */
+  /* What the pitch question asks. A coating job: did you pitch the plan. Any
+     other job: which one you pitched, kept in ceramicPitched as Yes (ceramic),
+     Detail or No, so older jobs and the sheet read it the same way. */
+  function pitchAsk(c) {
+    return c.meta.pitch === 'plan'
+      ? { key: 'planPitched', q: 'Did you pitch the maintenance plan?', opts: [['Yes', 'Yes'], ['No', 'No']] }
+      : { key: 'ceramicPitched', q: 'What did you pitch?', opts: [['Detail', 'A detail'], ['Yes', 'Ceramic'], ['No', 'Nothing']] };
+  }
+
   function sayHtml(c) {
     const lines = S.scripts(c.j.lists, c.meta, c.j);
     if (!lines.length) return '';
-    const key = c.meta.pitch === 'plan' ? 'planPitched' : 'ceramicPitched';
-    const cur = S.val(c.st[key]);
+    const p = pitchAsk(c);
+    const cur = S.val(c.st[p.key]);
     return `<div class="say-card"><h3>Handover helper</h3><p>The words for the car. Say them in your own voice, or copy one into a text.</p>` +
       lines.map(x => `<div class="say-block"><span class="lab">${esc(x.label)}</span><p class="say">${esc(x.text)}</p>
-        <div class="say-acts"><button class="btn" type="button" data-copy="${x.key}">Copy</button>` +
-        (x.key === 'pitch' ? `<span class="seg" role="group" aria-label="Pitched?">` +
-          ['Yes', 'No'].map(v => `<button type="button" data-val="${key}" data-v="${v}" aria-pressed="${cur === v}">Pitched: ${v}</button>`).join('') + '</span>' : '') +
-        '</div></div>').join('') + '</div>';
+        <div class="say-acts"><button class="btn" type="button" data-copy="${x.key}">Copy</button></div>` +
+        (x.key === 'pitch' ? `<span class="lab">${p.q}</span><div class="seg" role="group" aria-label="${p.q}">` +
+          p.opts.map(([v, l]) => `<button type="button" data-val="${p.key}" data-v="${v}" aria-pressed="${cur === v}">${l}</button>`).join('') + '</div>' : '') +
+        '</div>').join('') + '</div>';
   }
 
   // Words to say, like the door knocking script: read them, no ticking.
@@ -1614,7 +1623,8 @@
     const names = list => (list.length > 1 ? list.slice(0, -1).join(', ') + ' and ' + list[list.length - 1] : list[0] || '');
     const who = [r.crew.length ? `Worked by ${names(r.crew)}.` : '', s.signedBy ? `Checked by ${s.signedBy}.` : '',
       s.overrideBy ? `Let through by ${s.overrideBy}: ${s.overrideReason}` : '',
-      s.ceramicPitched ? `Ceramic pitched: ${s.ceramicPitched}.` : '', s.planPitched ? `Plan pitched: ${s.planPitched}.` : ''].filter(Boolean).join(' ');
+      s.ceramicPitched ? `Pitched: ${{ Yes: 'ceramic', Detail: 'a detail', No: 'nothing' }[s.ceramicPitched] || s.ceramicPitched}.` : '',
+      s.planPitched ? `Plan pitched: ${s.planPitched}.` : ''].filter(Boolean).join(' ');
     const [y, m, dd] = j.date.split('-').map(Number);
     return {
       title: j.car || j.customer || 'Job',
@@ -1740,7 +1750,8 @@
       ? `<p style="font-size:14px;color:var(--slate)">New SOP wording came in, but these were edited here so they were kept: <b>${esc(keptNames.join(', '))}</b>. New services, goals and prices were added. <b>Back to the original SOPs</b> in the editor brings in the new wording.</p>` : '';
     const html = `<h3 class="sub">Jobs, last 30 days</h3>
       <div class="stats">${stat('Jobs', st.jobs)}${stat('Steps skipped a job', st.skippedPerJob == null ? '&mdash;' : st.skippedPerJob.toFixed(1))}${stat('Clips filmed', st.clipsExpected ? pct(st.clipsFilmed / st.clipsExpected) : '&mdash;')}</div>
-      <div class="stats">${stat('Ceramic pitched', pct(st.ceramicPitchedRate))}${stat('Plan pitched', pct(st.planPitchedRate))}${stat('Signed off', pct(st.signedRate))}</div>
+      <div class="stats">${stat('Detail pitched', pct(st.detailPitchedRate))}${stat('Ceramic pitched', pct(st.ceramicPitchedRate))}${stat('Plan pitched', pct(st.planPitchedRate))}</div>
+      <div class="stats">${stat('Signed off', pct(st.signedRate))}</div>
       <h3 class="sub">Not signed off this pay week</h3>
       ${un.length ? un.map(j => `<button class="admin-row" type="button" data-open-job="${esc(j.id)}"><b>${esc(j.customer || j.car)}</b><span>${esc(dayName(j.date))}</span><span>${j.sum.stage === 'ready' ? 'Needs the check' : `${j.sum.done} of ${j.sum.total}`}</span></button>`).join('')
         : '<div class="empty">Every job before today is signed off.</div>'}
@@ -1834,7 +1845,7 @@
         Object.entries(set.services).map(([name, m]) => `<div class="ed-svc"><b>${esc(name)}</b><div class="seg">` +
           ed.sops.map(t => `<button type="button" data-ed-svc="${esc(name)}" data-ed-tpl="${esc(t.key)}" aria-pressed="${(m.templates || []).includes(t.key)}">${esc(shortName(t))}</button>`).join('') +
           `</div><div class="two"><div><label class="lab" for="pitch-${esc(name)}">Pitch at the car</label><select id="pitch-${esc(name)}" data-ed-pitch="${esc(name)}">
-            <option value="ceramic"${m.pitch === 'ceramic' || !m.pitch ? ' selected' : ''}>Ceramic coating</option><option value="plan"${m.pitch === 'plan' ? ' selected' : ''}>Maintenance plan</option><option value="none"${m.pitch === 'none' ? ' selected' : ''}>No pitch</option></select></div>
+            <option value="ceramic"${m.pitch === 'ceramic' || !m.pitch ? ' selected' : ''}>A detail, or ceramic</option><option value="plan"${m.pitch === 'plan' ? ' selected' : ''}>Maintenance plan</option><option value="none"${m.pitch === 'none' ? ' selected' : ''}>No pitch</option></select></div>
             <div style="align-self:end"><button class="btn danger" type="button" data-ed-rmsvc="${esc(name)}">Remove</button></div></div>
             <div class="two"><div><label class="lab" for="gmin-${esc(name)}">Goal, from (min)</label><input id="gmin-${esc(name)}" type="number" inputmode="numeric" min="0" data-ed-goal="${esc(name)}" data-i="0" value="${m.goal ? m.goal[0] : ''}"></div>
             <div><label class="lab" for="gmax-${esc(name)}">Goal, up to (min)</label><input id="gmax-${esc(name)}" type="number" inputmode="numeric" min="0" data-ed-goal="${esc(name)}" data-i="1" value="${m.goal ? m.goal[1] : ''}"></div></div></div>`).join('') +

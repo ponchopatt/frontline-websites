@@ -46,19 +46,19 @@ Every job gets filmed. These clips become the reels, the ads and the before and 
 Wheels first, then foam, wash top to bottom, iron remover and clay, sealant, dry. Dirt never travels back up the car.
 
 1. **Wheels and tyres.** Spray wheel cleaner, then foam. Clean in this order: barrel brush, wheel face, tyre brush, arch brush, then the small brush for corners and calipers. Rinse.
-    - Dirty rims with no chrome: use the acid wheel cleaner. Never acid on chrome.
+    - Dirty rims: use the acid wheel cleaner. Never acid on chrome, polished, bare metal or coated wheels.
     - Wheels bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.
 2. **Pre-wash.** Foam the whole car. Leave it 1 to 2 minutes. Rinse off in the same order you sprayed it on.
     - Foam cannon: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water. It neutralises any acid from the wheels.
-3. **Touch wash.** Foam the car again, with more water in the mix. Grab a clean mitt. Wash top to bottom: roof, windscreen, bonnet, then down the car. Flip the mitt every few panels. Rinse the mitt in the grit-guard bucket, dip it back in the touch wash bucket, and carry on.
-    - Touch wash bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.
+3. **Touch wash.** Foam the car again with just a little touch wash chemical. No Green Star. The foam doesn't need to be thick. Grab a clean mitt. Wash top to bottom: roof, windscreen, bonnet, then down the car. Flip the mitt every few panels. Rinse the mitt in the grit-guard bucket, dip it back in the touch wash bucket, and carry on.
+    - Touch wash bucket: the touch wash chemical and water. No Green Star.
     - Never go from a low panel back up high unless you're on the clean side of the mitt.
 4. **Rinse.** Check the foam hasn't dried on the windows. If it has, wipe them again with the mitt straight away. Rinse the whole car until no foam is left. Every corner should be clean now.
 5. **Iron remover.** Spray it on all the paint, and only the paint. Rinse after 1 to 2 minutes, or sooner if it starts to dry. Rinse it all off.
-6. **Clay.** Do the paint, glass and trim. Move the clay side to side. Every few panels, dunk it in the touch wash bucket, squeeze it, soak up fresh water and carry on. Keep going until all the bugs are gone.
-    - Tar spots? Tar remover on them first, then clay.
+6. **Clay.** Use the clay sponge on the paint, glass and trim. Move it side to side. Every few panels, dunk it in the touch wash bucket, squeeze it, soak up fresh water and carry on. Keep going until all the bugs are gone.
+    - Really stubborn bugs or tar? Bug and tar remover on them first, then clay.
 7. **Rinse** the whole car fully.
-8. **Ceramic sealant.** Wet a clean towel with clean water and give it a few sprays. Spray 2 to 3 times on the panel, wipe side to side over the whole panel, then rinse straight away. Never wait to rinse. Panel by panel, whole car.
+8. **Ceramic sealant.** Wet a clean towel with the pressure washer and fold it into quarters. Spray the sealant 3 times over the towel. Spray 2 to 3 times on the panel, wipe side to side over the whole panel, then rinse straight away. Never wait to rinse. Panel by panel, whole car.
 9. **Dry** every area. No water left anywhere, rims too.
 10. **Blower** on every corner, gap and crevice.
 11. **Glass** cleaned, no streaks.
@@ -157,7 +157,7 @@ Measure the paint before you polish. Start with the gentlest pad and polish comb
 10. **Remove tape, clean dust** out of gaps and badges with a soft brush and blower.
 11. **Photos:** the worst areas after, from the same angle as their before photos.
 12. **Then protect** with the ceramic sealant.
-    - Wet a clean towel with clean water and give it a few sprays. Spray 2 to 3 times on the panel, wipe side to side over the whole panel, then rinse straight away. Never wait to rinse. Panel by panel, whole car.
+    - Wet a clean towel with the pressure washer and fold it into quarters. Spray the sealant 3 times over the towel. Spray 2 to 3 times on the panel, wipe side to side over the whole panel, then rinse straight away. Never wait to rinse. Panel by panel, whole car.
 13. **Finish** like the exterior detail: dry, blower, glass, tyre shine, walk around and door jambs.
 14. **Record** the readings and stages done in the job notes. They go to the customer with the invoice.
 
@@ -180,7 +180,7 @@ The coating is only as good as the paint under it, so prep is most of the job. U
 
 **Before you open the bottle**
 
-1. **Exterior prep done.** The wash, iron remover, tar and clay were done at the start, in the exterior steps. Any old wax or sealant must be off too.
+1. **Exterior prep done.** The wash, iron remover and clay were done at the start, in the exterior steps, with bug and tar remover where it was needed. Any old wax or sealant must be off too.
 2. **Paint correction done.** At least a single stage, even on a brand new car. It takes out marks from transport and dealer washes.
 3. **Tape off** rubbers, unpainted plastics you aren't coating, and badges.
 4. **Panel prep wipe** on every surface you're coating. Use IPA or panel prep spray. Wipe with one towel, then buff dry with a second. After this, never touch the paint with bare hands.
@@ -208,7 +208,7 @@ The coating is only as good as the paint under it, so prep is most of the job. U
 
 **Ceramic clips to film**
 
-Film the correction clips too. Then add these. The two marked Later are for our first maintenance wash, not today.
+Film the correction clips too. Then add these. The two marked Later are on the maintenance wash list, for when the car comes back for a wash.
 
 | When | Clip | Length | What it's for |
 | --- | --- | --- | --- |
@@ -217,7 +217,7 @@ Film the correction clips too. Then add these. The two marked Later are for our 
 | During | Crosshatch application, close up | 3s | Process clip |
 | During | The rainbow flash on the panel | 3s | Shows it's real ceramic, not a spray |
 | During | Towel buffing it off, gloss coming through | 3s | The reveal |
-| Later | Hose or rain on the coated bonnet, water beading and sheeting off, slow-mo | 5s | The ceramic ad. Film it 3 times at our first maintenance wash, a week or more later. Never on coating day |
+| Later | Hose or rain on the coated bonnet, water beading and sheeting off, slow-mo | 5s | The ceramic ad. Film it at a maintenance wash, a week or more later. Never on coating day |
 | Later | Water drops rolling off the mirror | 3s | Close-up proof. Film it with the one above, never on coating day |
 | After | Walk around under cover, same spot as the before | 10s | The after |
 | During | Customer walking out to the car, only if they say yes | 5s | Best clip of any job |
@@ -228,17 +228,20 @@ For our regular customers. Same standard, less work. Do what the car needs. Look
 
 **Outside**
 
-1. **Wheels and tyres,** the same as the exterior detail. Dirty rims with no chrome: use the acid wheel cleaner. Never use acid on chrome.
+1. **Wheels and tyres.** They usually aren't that dirty. Dirty? Pressure wash up close to get the loose brake dust off, then look again.
+    - Still needs hard work? Use the acid wheel cleaner. Never acid on chrome, polished, bare metal or coated wheels.
+    - If not, the foam does it: the Green Star in it breaks the brake dust down.
     - Wheels bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.
 2. **Spray down** the whole car fully. Too dirty for that? Do the full pre-wash from the exterior detail instead.
 3. **Foam it up.** Film the foam shot first, then go straight into the touch wash. Same method as the exterior touch wash.
     - Foam cannon: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water.
-    - Touch wash bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.
+    - Touch wash bucket: the touch wash chemical and water. No Green Star.
 4. **Rinse** the whole car.
 5. **Clay** the front only, where the bugs are, plus the windscreen and mirrors.
 6. **Rinse.**
 7. **Look around** for any other bugs or spots that need clay. Clay them, then rinse them.
 8. **Ceramic sealant** on the spots that need it, or the whole car if it all does. Same method as the exterior detail.
+    - Wet a clean towel with the pressure washer and fold it into quarters. Spray the sealant 3 times over the towel. Spray 2 to 3 times on the panel, wipe side to side over the whole panel, then rinse straight away. Never wait to rinse. Panel by panel, whole car.
 9. **Dry, blower, glass and tyre shine,** the same as the exterior detail.
 
 **Inside**
@@ -260,6 +263,15 @@ For our regular customers. Same standard, less work. Do what the car needs. Look
 | Before | Driver's seat with the door open, a few steps back, slow pan | 5s | Shows the inside before |
 | After | Same shot, done, steering wheel cover on | 5s | The finished inside |
 
+**Coated car clips to film**
+
+Only on a car we've coated. Film them while you rinse.
+
+| When | Clip | Length | What it's for |
+| --- | --- | --- | --- |
+| During | Coated car only: hose on the bonnet, water beading and sheeting off, slow-mo | 5s | The ceramic ad. Film it 3 times |
+| During | Coated car only: water drops rolling off the mirror | 3s | Close-up proof |
+
 ## Door knocking
 
 Optional, and it pays. While you're on a job, knock on the houses around it. Every job a neighbour books and pays for earns you a bonus.
@@ -269,10 +281,11 @@ Optional, and it pays. While you're on a job, knock on the houses around it. Eve
 - Detail booked and paid: $25.
 - Paint correction booked and paid: $40.
 - Ceramic coating booked and paid: $75.
+- Motorbike coating booked and paid: $25.
 
 **Steps**
 
-1. **Pick your moment:** when you can step away for a few minutes, like once the car looks its best.
+1. **Pick your moment:** in the gap between the exterior and the interior. Or, with two of you, one keeps working while the other knocks. Don't take too long.
 2. **Knock** on the houses either side and across the road.
 3. **Ice breaker.** Use one from the script below. Then say you're detailing their neighbour's car.
 4. **Ask** if they've been looking to get their car done.
@@ -296,13 +309,13 @@ Ice breaker, their car:
 "G'day! I'm [your name] from Imperium Detailing. We're working on your street today and I couldn't help noticing your [their car]."
 
 Ice breaker, the before and after:
-"Hi! Quick one: I'm [your name] from Imperium Detailing. We're working on your street today. Want to see a before and after from one of our jobs?"
+"Hi! Quick one: I'm [your name] from Imperium Detailing. We're working on your street today. Can I show you a few before and afters of what we do?"
 
 The ask:
 "Since we're already set up on the street, have you been thinking about getting yours done? We come to you, so you don't have to go anywhere."
 
 The price:
-"For your [their car], a [service] starts from [price from the quote]."
+"For your [their car], a [service] starts from [price from the quote]. It depends on the condition on the day, because stubborn dirt takes longer to bring up."
 
 The close:
 "Want me to lock in a time? I'll grab your name and number, and here's my card."
@@ -322,7 +335,7 @@ Never skip the handover. It's where the review, the next job and the referral co
 4. **Coating care.** Tell them the rules, then hand over the wash guide and the written warranty.
     - Under cover 24 hours, out of rain 48 hours, no wash for 7 days.
     - No automatic car washes. Hand wash with pH-neutral shampoo. Get bird poo and sap off within a few days.
-5. **Pitch, 20 seconds.** Full detail customers get the ceramic pitch. Ceramic customers get the maintenance plan pitch.
+5. **Pitch, 20 seconds.** Start with a detail pitch. New car, or they say they really care about it? Pitch ceramic instead. Ceramic customers get the maintenance plan pitch.
 6. **Referral line:** "If a mate books, you get $50 off your next one."
 7. **Review ask:** "If you've got 30 seconds later, a Google review helps us heaps. I'll text you the link tonight." New customer? Check the review card and business card are on the steering wheel cover or the middle console. Not there yet? Leave them now.
 8. **Take payment** before you leave. Payment link or tap.
@@ -330,13 +343,16 @@ Never skip the handover. It's where the review, the next job and the referral co
 **Same night**
 
 1. Send the review text with the Google link.
-2. Mark the job done in the tracker. Fill in the job price, ceramic pitched Y/N, plan pitched Y/N and review asked. Maintenance: just the job price.
+2. Mark the job done in the tracker. Fill in the job price, what you pitched (detail, ceramic or plan) and review asked. Maintenance: just the job price.
 3. Upload the job photos to the shared folder.
 4. Day 3, no review yet? Send one nudge, then stop.
 
 **Pitch scripts** (show with Copy buttons in the handover helper)
 
-Ceramic pitch (full detail customers):
+Detail pitch (start here):
+"Glad you like it! Most people get it done every few months so it stays like this, inside and out. We come to you. Want me to book your next one in?"
+
+Ceramic pitch (new car, or they really care about it):
 "So it looks like this now. In about 3 weeks the swirls and the dullness start coming back, because there's nothing on the paint to stop it. A ceramic coating locks in what you're looking at right now. Pollen, bird poo, road grime, it all slides off with a hose. Lasts years, from $997, and I can do it here. Want me to send you a price for the [car]?"
 
 Maintenance plan pitch (ceramic customers):

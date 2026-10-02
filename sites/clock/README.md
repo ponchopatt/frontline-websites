@@ -90,7 +90,9 @@ seen the car.
 - **Tools on the steps that need them:** paint readings per panel (flags
   anything under 80 microns or with a jump over 30), which pad and polish combo
   worked, stages done, the warranty record (works out the annual check date),
-  and the handover helper with the right pitch for the job and Copy buttons.
+  and the handover helper with Copy buttons: a detail pitch to start with, the
+  ceramic pitch for a new car or a customer who really cares (the maintenance
+  plan pitch on a coating job), and *What did you pitch?*
 - **The second check.** The sign-off list opens once every step is done or
   skipped, and it can't be ticked by whoever did most of the job: hand the
   phone over and pick their name. Then **Sign off**, then **Mark job done**.
@@ -118,11 +120,14 @@ seen the car.
   change the goals under Edit the SOPs > Services.
 - **Maintenance wash** has its own list for regulars (front-only clay, sealant
   where it's needed, front seats in full, back seats where needed, door jambs a
-  dry wipe if they're clean), both sign-off lists, and no pitch, review ask,
-  review texts or cards.
+  dry wipe if they're clean), both sign-off lists, and no pitch, referral line,
+  review ask, review texts or cards. Wheels get a close pressure wash first,
+  and acid only if they still need hard work. On a car we've coated, the two
+  beading clips show while you rinse (they don't count on other cars).
 - **Door knocking**, optional on every job: the bonus ($25 a detail, $40 paint
-  correction, $75 ceramic, once booked and paid), the steps, a script with ice
-  breakers, and the **instant quote**. Nothing in it counts towards the job.
+  correction, $75 ceramic, $25 a motorbike coating, once booked and paid), the
+  steps (best in the gap between the exterior and the interior), a script with
+  ice breakers, and the **instant quote**. Nothing in it counts towards the job.
 - **Price calculator** on the Jobs tab: the same prices as the website's
   instant quote, by car size and service, with the $75 condition range on full
   and interior details.
