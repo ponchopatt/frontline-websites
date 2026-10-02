@@ -1,30 +1,44 @@
 {
  "about": "Imperium job SOPs, with a plain-words How to do it for every step. The app copies these into the Google Sheet the first time it runs, and brings in a newer version by itself as long as nobody has edited that SOP in the app. Edit them in the app: Admin > Edit the SOPs.",
- "version": 2,
+ "version": 3,
  "previous": {
   "every_job": [
-   "7fbacad5"
+   "7fbacad5",
+   "32e80e2b"
   ],
   "exterior": [
-   "fa8f5198"
+   "fa8f5198",
+   "ef2d0409"
   ],
   "interior": [
-   "79f8383f"
+   "79f8383f",
+   "d4c4c67c"
   ],
   "correction": [
-   "66a8bc21"
+   "66a8bc21",
+   "242d8f33"
   ],
   "ceramic": [
-   "7d6c8ad8"
+   "7d6c8ad8",
+   "fc8bd281"
   ],
   "handover": [
-   "c2ca9b6c"
+   "c2ca9b6c",
+   "c8ce79f8"
   ],
   "signoff": [
-   "c3a6307c"
+   "c3a6307c",
+   "2daccccc"
   ],
   "_settings": [
-   "fc011cd3"
+   "fc011cd3",
+   "21158446"
+  ],
+  "maintenance": [
+   "02de8558"
+  ],
+  "door_knock": [
+   "34323d93"
   ]
  },
  "templates": [
@@ -201,6 +215,120 @@
        "subs": [],
        "required": false,
        "id": "job-always-5",
+       "photos": [
+        {
+         "n": 1,
+         "label": "Front 3/4 before",
+         "pos": "before",
+         "at": [
+          "ext-steps-1",
+          "mnt-outside-1",
+          "int-steps-1"
+         ]
+        },
+        {
+         "n": 2,
+         "label": "The dirtiest panel",
+         "pos": "before",
+         "at": [
+          "ext-steps-1",
+          "mnt-outside-1"
+         ]
+        },
+        {
+         "n": 3,
+         "label": "A wheel before",
+         "pos": "before",
+         "at": [
+          "ext-steps-1",
+          "mnt-outside-1"
+         ]
+        },
+        {
+         "n": 4,
+         "label": "The interior before",
+         "pos": "before",
+         "at": [
+          "int-steps-1",
+          "mnt-inside-1"
+         ]
+        },
+        {
+         "n": 5,
+         "label": "Foam on",
+         "pos": "after",
+         "at": [
+          "ext-steps-2",
+          "mnt-outside-3"
+         ]
+        },
+        {
+         "n": 6,
+         "label": "The extraction water",
+         "pos": "after",
+         "at": [
+          "int-steps-3",
+          "mnt-inside-1"
+         ]
+        },
+        {
+         "n": 7,
+         "label": "The polisher on a panel",
+         "pos": "after",
+         "at": [
+          "cor-steps-6"
+         ]
+        },
+        {
+         "n": 8,
+         "label": "The 50/50",
+         "pos": "after",
+         "at": [
+          "cor-steps-10"
+         ]
+        },
+        {
+         "n": 9,
+         "label": "The wheel after, same angle",
+         "pos": "after",
+         "at": [
+          "ext-steps-12",
+          "mnt-outside-9",
+          "cer-applying-10",
+          "cor-steps-11"
+         ]
+        },
+        {
+         "n": 10,
+         "label": "The interior after",
+         "pos": "after",
+         "at": [
+          "int-steps-12",
+          "mnt-inside-6"
+         ]
+        },
+        {
+         "n": 11,
+         "label": "Water beading",
+         "pos": "after",
+         "at": [
+          "ext-steps-8",
+          "mnt-outside-8"
+         ]
+        },
+        {
+         "n": 12,
+         "label": "Front 3/4 after, from the same spot as photo 1",
+         "pos": "after",
+         "at": [
+          "ext-steps-14",
+          "mnt-outside-9",
+          "cer-applying-10",
+          "cor-steps-11",
+          "int-steps-12"
+         ]
+        }
+       ],
        "more": "These photos prove the work and feed the website and the ads. In order: 1 front 3/4 before, 2 dirtiest panel, 3 wheel before, 4 interior before, 5 foam on, 6 extraction water, 7 polisher on a panel, 8 the 50/50 if correcting, 9 wheel after, 10 interior after, 11 water beading, 12 front 3/4 after from the same spot as photo 1."
       },
       {
@@ -289,7 +417,7 @@
      ]
     }
    ],
-   "seed": 2
+   "seed": 3
   },
   {
    "key": "exterior",
@@ -312,32 +440,35 @@
        "title": "Wheels and tyres.",
        "detail": "Spray wheel cleaner, then foam. Clean in this order: barrel brush, wheel face, tyre brush, arch brush, then the small brush for corners and calipers. Rinse.",
        "subs": [
-        "Dirty rims with no chrome: use the acid wheel cleaner. Never acid on chrome."
+        "Dirty rims with no chrome: use the acid wheel cleaner. Never acid on chrome.",
+        "Wheels bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid."
        ],
        "required": true,
        "id": "ext-steps-1",
-       "more": "Wheels go first so their dirty spray never lands on a clean car. Really dirty rims get the acid cleaner, but only if there's no chrome anywhere on the wheel: acid ruins chrome. Not sure? Use the normal wheel cleaner. Then foam, and brush in order: barrel, face, tyre, arch, small brush for corners and calipers. Rinse well."
+       "more": "Wheels go first so their dirty spray never lands on a clean car. Really dirty rims get the acid cleaner, but only if there's no chrome anywhere on the wheel: acid ruins chrome. Not sure? Use the normal wheel cleaner. Put 1 or 2 lids of Green Star in the wheels bucket. Brush in order: barrel, face, tyre, arch, then corners and calipers. Rinse well."
       },
       {
        "type": "step",
        "title": "Pre-wash.",
        "detail": "Foam the whole car. Leave it 1 to 2 minutes. Rinse off in the same order you sprayed it on.",
-       "subs": [],
+       "subs": [
+        "Foam cannon: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water. It neutralises any acid from the wheels."
+       ],
        "required": true,
        "id": "ext-steps-2",
-       "more": "The foam softens loose dirt and lifts it off, so the mitt doesn't drag it across the paint. Cover the whole car. Let it sit 1 to 2 minutes but don't let it dry; on a hot day, rinse sooner. Rinse it off in the same order you sprayed it on."
+       "more": "Fill the foam cannon with 25 ml Green Star and 75 ml touch wash chemical, then top it up with water. The Green Star cancels out any acid from the wheels. The foam lifts loose dirt so the mitt doesn't drag it across the paint. Let it sit 1 to 2 minutes, never let it dry, then rinse it off in the same order."
       },
       {
        "type": "step",
        "title": "Touch wash.",
        "detail": "Foam again, more diluted. Grab a clean mitt. Top to bottom: roof, windscreen, bonnet, then down the car. Flip the mitt every few panels. Rinse it in the grit-guard bucket, back into the soap bucket, carry on.",
        "subs": [
-        "The mix: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water. It neutralises any acid from the wheels.",
+        "Touch wash bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.",
         "Never go from a low panel back up high unless you're on the clean side of the mitt."
        ],
        "required": true,
        "id": "ext-steps-3",
-       "more": "Soap bucket: 1 part Green Star to 3 parts touch wash chemical, 100 ml all up, then fill with water. It cancels out any acid left from the wheels. Second bucket: plain water with the grit guard. Wash top down in straight lines, turn the mitt every few panels, and scrub it on the grit guard before it goes back in the soap."
+       "more": "Touch wash bucket: 1 or 2 lids of Green Star in the soapy water. Second bucket: plain water with the grit guard. Wash top down in straight lines, turn the mitt every few panels, and scrub it on the grit guard before it goes back in the soap."
       },
       {
        "type": "step",
@@ -458,7 +589,11 @@
        "when": "before",
        "length": "5s",
        "purpose": "Shows what car it is",
-       "id": "ext-exterior-story-videos-1"
+       "id": "ext-exterior-story-videos-1",
+       "pos": "before",
+       "at": [
+        "ext-steps-1"
+       ]
       },
       {
        "type": "clip",
@@ -469,7 +604,11 @@
        "when": "during",
        "length": "5s",
        "purpose": "The foam shot",
-       "id": "ext-exterior-story-videos-2"
+       "id": "ext-exterior-story-videos-2",
+       "pos": "after",
+       "at": [
+        "ext-steps-2"
+       ]
       },
       {
        "type": "clip",
@@ -480,7 +619,13 @@
        "when": "after",
        "length": "5s",
        "purpose": "The finished car",
-       "id": "ext-exterior-story-videos-3"
+       "id": "ext-exterior-story-videos-3",
+       "pos": "after",
+       "at": [
+        "ext-steps-14",
+        "cer-applying-10",
+        "cor-steps-11"
+       ]
       },
       {
        "type": "clip",
@@ -491,7 +636,11 @@
        "when": "before",
        "length": "3s",
        "purpose": "Before of the worst spot",
-       "id": "ext-exterior-story-videos-4"
+       "id": "ext-exterior-story-videos-4",
+       "pos": "before",
+       "at": [
+        "ext-steps-1"
+       ]
       },
       {
        "type": "clip",
@@ -502,7 +651,13 @@
        "when": "after",
        "length": "3s",
        "purpose": "After of the worst spot",
-       "id": "ext-exterior-story-videos-5"
+       "id": "ext-exterior-story-videos-5",
+       "pos": "after",
+       "at": [
+        "ext-steps-14",
+        "cer-applying-10",
+        "cor-steps-11"
+       ]
       }
      ]
     },
@@ -524,7 +679,11 @@
        "when": "before",
        "length": "10s",
        "purpose": "The before for every reel and ad",
-       "id": "ext-exterior-clips-to-film-1"
+       "id": "ext-exterior-clips-to-film-1",
+       "pos": "before",
+       "at": [
+        "ext-steps-1"
+       ]
       },
       {
        "type": "clip",
@@ -535,7 +694,11 @@
        "when": "before",
        "length": "3s",
        "purpose": "The hook. Stops the scroll",
-       "id": "ext-exterior-clips-to-film-2"
+       "id": "ext-exterior-clips-to-film-2",
+       "pos": "before",
+       "at": [
+        "ext-steps-1"
+       ]
       },
       {
        "type": "clip",
@@ -546,7 +709,11 @@
        "when": "before",
        "length": "2s",
        "purpose": "Shows how dirty it really is",
-       "id": "ext-exterior-clips-to-film-3"
+       "id": "ext-exterior-clips-to-film-3",
+       "pos": "before",
+       "at": [
+        "ext-steps-1"
+       ]
       },
       {
        "type": "clip",
@@ -557,7 +724,11 @@
        "when": "during",
        "length": "3s",
        "purpose": "Satisfying clip, wheel content",
-       "id": "ext-exterior-clips-to-film-4"
+       "id": "ext-exterior-clips-to-film-4",
+       "pos": "after",
+       "at": [
+        "ext-steps-1"
+       ]
       },
       {
        "type": "clip",
@@ -568,7 +739,11 @@
        "when": "during",
        "length": "5s",
        "purpose": "Best ASMR clip of the job",
-       "id": "ext-exterior-clips-to-film-5"
+       "id": "ext-exterior-clips-to-film-5",
+       "pos": "after",
+       "at": [
+        "ext-steps-2"
+       ]
       },
       {
        "type": "clip",
@@ -579,7 +754,11 @@
        "when": "during",
        "length": "3s",
        "purpose": "Transition between before and after",
-       "id": "ext-exterior-clips-to-film-6"
+       "id": "ext-exterior-clips-to-film-6",
+       "pos": "after",
+       "at": [
+        "ext-steps-4"
+       ]
       },
       {
        "type": "clip",
@@ -590,7 +769,11 @@
        "when": "during",
        "length": "3s",
        "purpose": "Gets comments. People ask what it is",
-       "id": "ext-exterior-clips-to-film-7"
+       "id": "ext-exterior-clips-to-film-7",
+       "pos": "after",
+       "at": [
+        "ext-steps-5"
+       ]
       },
       {
        "type": "clip",
@@ -601,7 +784,11 @@
        "when": "during",
        "length": "5s",
        "purpose": "Proof shot for ceramic ads",
-       "id": "ext-exterior-clips-to-film-8"
+       "id": "ext-exterior-clips-to-film-8",
+       "pos": "after",
+       "at": [
+        "ext-steps-8"
+       ]
       },
       {
        "type": "clip",
@@ -612,7 +799,13 @@
        "when": "after",
        "length": "10s",
        "purpose": "The after. Cut it next to the before",
-       "id": "ext-exterior-clips-to-film-9"
+       "id": "ext-exterior-clips-to-film-9",
+       "pos": "after",
+       "at": [
+        "ext-steps-14",
+        "cer-applying-10",
+        "cor-steps-11"
+       ]
       },
       {
        "type": "clip",
@@ -623,7 +816,13 @@
        "when": "after",
        "length": "3s",
        "purpose": "Before and after of the wheel",
-       "id": "ext-exterior-clips-to-film-10"
+       "id": "ext-exterior-clips-to-film-10",
+       "pos": "after",
+       "at": [
+        "ext-steps-12",
+        "cer-applying-10",
+        "cor-steps-11"
+       ]
       },
       {
        "type": "clip",
@@ -634,12 +833,18 @@
        "when": "after",
        "length": "5s",
        "purpose": "Gloss shot, ends the reel",
-       "id": "ext-exterior-clips-to-film-11"
+       "id": "ext-exterior-clips-to-film-11",
+       "pos": "after",
+       "at": [
+        "ext-steps-14",
+        "cer-applying-10",
+        "cor-steps-11"
+       ]
       }
      ]
     }
    ],
-   "seed": 2
+   "seed": 3
   },
   {
    "key": "interior",
@@ -785,7 +990,11 @@
        "when": "before",
        "length": "5s",
        "purpose": "Shows the inside before",
-       "id": "int-interior-story-videos-1"
+       "id": "int-interior-story-videos-1",
+       "pos": "before",
+       "at": [
+        "int-steps-1"
+       ]
       },
       {
        "type": "clip",
@@ -796,7 +1005,11 @@
        "when": "after",
        "length": "5s",
        "purpose": "The finished inside",
-       "id": "int-interior-story-videos-2"
+       "id": "int-interior-story-videos-2",
+       "pos": "after",
+       "at": [
+        "int-steps-12"
+       ]
       },
       {
        "type": "clip",
@@ -807,7 +1020,11 @@
        "when": "before",
        "length": "3s",
        "purpose": "Before of the worst spot",
-       "id": "int-interior-story-videos-3"
+       "id": "int-interior-story-videos-3",
+       "pos": "before",
+       "at": [
+        "int-steps-1"
+       ]
       },
       {
        "type": "clip",
@@ -818,7 +1035,11 @@
        "when": "after",
        "length": "3s",
        "purpose": "After of the worst spot",
-       "id": "int-interior-story-videos-4"
+       "id": "int-interior-story-videos-4",
+       "pos": "after",
+       "at": [
+        "int-steps-12"
+       ]
       }
      ]
     },
@@ -840,7 +1061,11 @@
        "when": "before",
        "length": "10s",
        "purpose": "The before",
-       "id": "int-interior-clips-to-film-1"
+       "id": "int-interior-clips-to-film-1",
+       "pos": "before",
+       "at": [
+        "int-steps-1"
+       ]
       },
       {
        "type": "clip",
@@ -851,7 +1076,11 @@
        "when": "before",
        "length": "3s",
        "purpose": "The hook",
-       "id": "int-interior-clips-to-film-2"
+       "id": "int-interior-clips-to-film-2",
+       "pos": "before",
+       "at": [
+        "int-steps-1"
+       ]
       },
       {
        "type": "clip",
@@ -862,7 +1091,11 @@
        "when": "before",
        "length": "3s",
        "purpose": "Relatable. Everyone's car has this",
-       "id": "int-interior-clips-to-film-3"
+       "id": "int-interior-clips-to-film-3",
+       "pos": "before",
+       "at": [
+        "int-steps-1"
+       ]
       },
       {
        "type": "clip",
@@ -873,7 +1106,11 @@
        "when": "during",
        "length": "3s",
        "purpose": "Satisfying clip",
-       "id": "int-interior-clips-to-film-4"
+       "id": "int-interior-clips-to-film-4",
+       "pos": "after",
+       "at": [
+        "int-steps-3"
+       ]
       },
       {
        "type": "clip",
@@ -884,7 +1121,11 @@
        "when": "during",
        "length": "3s",
        "purpose": "The money shot of any interior reel",
-       "id": "int-interior-clips-to-film-5"
+       "id": "int-interior-clips-to-film-5",
+       "pos": "after",
+       "at": [
+        "int-steps-3"
+       ]
       },
       {
        "type": "clip",
@@ -895,7 +1136,11 @@
        "when": "during",
        "length": "3s",
        "purpose": "Satisfying, gets shares",
-       "id": "int-interior-clips-to-film-6"
+       "id": "int-interior-clips-to-film-6",
+       "pos": "after",
+       "at": [
+        "int-steps-4"
+       ]
       },
       {
        "type": "clip",
@@ -906,7 +1151,11 @@
        "when": "during",
        "length": "3s",
        "purpose": "Shows the detail goes deep",
-       "id": "int-interior-clips-to-film-7"
+       "id": "int-interior-clips-to-film-7",
+       "pos": "after",
+       "at": [
+        "int-steps-8"
+       ]
       },
       {
        "type": "clip",
@@ -917,7 +1166,11 @@
        "when": "after",
        "length": "10s",
        "purpose": "The after. Cut it next to the before",
-       "id": "int-interior-clips-to-film-8"
+       "id": "int-interior-clips-to-film-8",
+       "pos": "after",
+       "at": [
+        "int-steps-12"
+       ]
       },
       {
        "type": "clip",
@@ -928,7 +1181,11 @@
        "when": "after",
        "length": "3s",
        "purpose": "Before and after of the stain",
-       "id": "int-interior-clips-to-film-9"
+       "id": "int-interior-clips-to-film-9",
+       "pos": "after",
+       "at": [
+        "int-steps-12"
+       ]
       },
       {
        "type": "clip",
@@ -939,7 +1196,11 @@
        "when": "after",
        "length": "3s",
        "purpose": "Finish shot",
-       "id": "int-interior-clips-to-film-10"
+       "id": "int-interior-clips-to-film-10",
+       "pos": "after",
+       "at": [
+        "int-steps-12"
+       ]
       },
       {
        "type": "clip",
@@ -950,12 +1211,16 @@
        "when": "after",
        "length": "2s",
        "purpose": "Ends the reel, shows the brand",
-       "id": "int-interior-clips-to-film-11"
+       "id": "int-interior-clips-to-film-11",
+       "pos": "after",
+       "at": [
+        "int-steps-12"
+       ]
       }
      ]
     }
    ],
-   "seed": 2
+   "seed": 3
   },
   {
    "key": "correction",
@@ -1113,7 +1378,11 @@
        "when": "before",
        "length": "5s",
        "purpose": "The hook. People see their own car",
-       "id": "cor-paint-correction-clips-to-film-1"
+       "id": "cor-paint-correction-clips-to-film-1",
+       "pos": "after",
+       "at": [
+        "cor-steps-3"
+       ]
       },
       {
        "type": "clip",
@@ -1124,7 +1393,11 @@
        "when": "before",
        "length": "3s",
        "purpose": "Proof we measure before we cut",
-       "id": "cor-paint-correction-clips-to-film-2"
+       "id": "cor-paint-correction-clips-to-film-2",
+       "pos": "after",
+       "at": [
+        "cor-steps-4"
+       ]
       },
       {
        "type": "clip",
@@ -1135,7 +1408,11 @@
        "when": "before",
        "length": "3s",
        "purpose": "Sets up the 50/50",
-       "id": "cor-paint-correction-clips-to-film-3"
+       "id": "cor-paint-correction-clips-to-film-3",
+       "pos": "before",
+       "at": [
+        "cor-steps-6"
+       ]
       },
       {
        "type": "clip",
@@ -1146,7 +1423,11 @@
        "when": "during",
        "length": "5s",
        "purpose": "Process clip",
-       "id": "cor-paint-correction-clips-to-film-4"
+       "id": "cor-paint-correction-clips-to-film-4",
+       "pos": "after",
+       "at": [
+        "cor-steps-6"
+       ]
       },
       {
        "type": "clip",
@@ -1157,7 +1438,11 @@
        "when": "during",
        "length": "3s",
        "purpose": "The reveal",
-       "id": "cor-paint-correction-clips-to-film-5"
+       "id": "cor-paint-correction-clips-to-film-5",
+       "pos": "after",
+       "at": [
+        "cor-steps-6"
+       ]
       },
       {
        "type": "clip",
@@ -1168,7 +1453,11 @@
        "when": "after",
        "length": "5s",
        "purpose": "The most valuable clip in the business. Every ceramic and correction ad",
-       "id": "cor-paint-correction-clips-to-film-6"
+       "id": "cor-paint-correction-clips-to-film-6",
+       "pos": "after",
+       "at": [
+        "cor-steps-10"
+       ]
       },
       {
        "type": "clip",
@@ -1179,7 +1468,11 @@
        "when": "after",
        "length": "3s",
        "purpose": "Satisfying, ends the reel",
-       "id": "cor-paint-correction-clips-to-film-7"
+       "id": "cor-paint-correction-clips-to-film-7",
+       "pos": "after",
+       "at": [
+        "cor-steps-9"
+       ]
       },
       {
        "type": "clip",
@@ -1190,12 +1483,16 @@
        "when": "after",
        "length": "5s",
        "purpose": "Gloss shot",
-       "id": "cor-paint-correction-clips-to-film-8"
+       "id": "cor-paint-correction-clips-to-film-8",
+       "pos": "after",
+       "at": [
+        "cor-steps-10"
+       ]
       }
      ]
     }
    ],
-   "seed": 2
+   "seed": 3
   },
   {
    "key": "ceramic",
@@ -1436,7 +1733,11 @@
        "when": "before",
        "length": "3s",
        "purpose": "The before for the beading shot",
-       "id": "cer-ceramic-clips-to-film-1"
+       "id": "cer-ceramic-clips-to-film-1",
+       "pos": "after",
+       "at": [
+        "ext-steps-7"
+       ]
       },
       {
        "type": "clip",
@@ -1447,7 +1748,11 @@
        "when": "during",
        "length": "2s",
        "purpose": "Shows the product, gets questions",
-       "id": "cer-ceramic-clips-to-film-2"
+       "id": "cer-ceramic-clips-to-film-2",
+       "pos": "after",
+       "at": [
+        "cer-applying-2"
+       ]
       },
       {
        "type": "clip",
@@ -1458,7 +1763,11 @@
        "when": "during",
        "length": "3s",
        "purpose": "Process clip",
-       "id": "cer-ceramic-clips-to-film-3"
+       "id": "cer-ceramic-clips-to-film-3",
+       "pos": "after",
+       "at": [
+        "cer-applying-3"
+       ]
       },
       {
        "type": "clip",
@@ -1469,7 +1778,11 @@
        "when": "during",
        "length": "3s",
        "purpose": "Shows it's real ceramic, not a spray",
-       "id": "cer-ceramic-clips-to-film-4"
+       "id": "cer-ceramic-clips-to-film-4",
+       "pos": "after",
+       "at": [
+        "cer-applying-4"
+       ]
       },
       {
        "type": "clip",
@@ -1480,7 +1793,11 @@
        "when": "during",
        "length": "3s",
        "purpose": "The reveal",
-       "id": "cer-ceramic-clips-to-film-5"
+       "id": "cer-ceramic-clips-to-film-5",
+       "pos": "after",
+       "at": [
+        "cer-applying-5"
+       ]
       },
       {
        "type": "clip",
@@ -1513,7 +1830,11 @@
        "when": "after",
        "length": "10s",
        "purpose": "The after",
-       "id": "cer-ceramic-clips-to-film-8"
+       "id": "cer-ceramic-clips-to-film-8",
+       "pos": "after",
+       "at": [
+        "cer-applying-10"
+       ]
       },
       {
        "type": "clip",
@@ -1524,12 +1845,16 @@
        "when": "after",
        "length": "5s",
        "purpose": "Best clip of any job",
-       "id": "cer-ceramic-clips-to-film-9"
+       "id": "cer-ceramic-clips-to-film-9",
+       "pos": "after",
+       "at": [
+        "hand-at-the-car-1"
+       ]
       }
      ]
     }
    ],
-   "seed": 2
+   "seed": 3
   },
   {
    "key": "maintenance",
@@ -1572,7 +1897,7 @@
        "subs": [],
        "required": true,
        "id": "mnt-outside-3",
-       "more": "Foam the car, and while it's on, go straight in with the mitt. No waiting and no rinse in between. Use the Green Star and touch wash mix, two buckets, top down, straight lines."
+       "more": "Foam the car with the same foam cannon mix (25 ml Green Star, 75 ml touch wash chemical, the rest water), and while it's on, go straight in with the mitt. No waiting and no rinse in between. Two buckets, top down, straight lines."
       },
       {
        "type": "step",
@@ -1713,7 +2038,11 @@
        "when": "before",
        "length": "5s",
        "purpose": "Shows what car it is",
-       "id": "mnt-maintenance-story-videos-1"
+       "id": "mnt-maintenance-story-videos-1",
+       "pos": "before",
+       "at": [
+        "mnt-outside-1"
+       ]
       },
       {
        "type": "clip",
@@ -1724,7 +2053,11 @@
        "when": "during",
        "length": "5s",
        "purpose": "The foam shot",
-       "id": "mnt-maintenance-story-videos-2"
+       "id": "mnt-maintenance-story-videos-2",
+       "pos": "after",
+       "at": [
+        "mnt-outside-3"
+       ]
       },
       {
        "type": "clip",
@@ -1735,7 +2068,11 @@
        "when": "after",
        "length": "5s",
        "purpose": "The finished car",
-       "id": "mnt-maintenance-story-videos-3"
+       "id": "mnt-maintenance-story-videos-3",
+       "pos": "after",
+       "at": [
+        "mnt-outside-9"
+       ]
       },
       {
        "type": "clip",
@@ -1746,7 +2083,11 @@
        "when": "before",
        "length": "5s",
        "purpose": "Shows the inside before",
-       "id": "mnt-maintenance-story-videos-4"
+       "id": "mnt-maintenance-story-videos-4",
+       "pos": "before",
+       "at": [
+        "mnt-inside-1"
+       ]
       },
       {
        "type": "clip",
@@ -1757,12 +2098,16 @@
        "when": "after",
        "length": "5s",
        "purpose": "The finished inside",
-       "id": "mnt-maintenance-story-videos-5"
+       "id": "mnt-maintenance-story-videos-5",
+       "pos": "after",
+       "at": [
+        "mnt-inside-6"
+       ]
       }
      ]
     }
    ],
-   "seed": 2
+   "seed": 3
   },
   {
    "key": "door_knock",
@@ -2000,7 +2345,7 @@
     }
    ],
    "optional": true,
-   "seed": 2
+   "seed": 3
   },
   {
    "key": "handover",
@@ -2167,7 +2512,7 @@
      ]
     }
    ],
-   "seed": 2
+   "seed": 3
   },
   {
    "key": "signoff",
@@ -2348,7 +2693,7 @@
      ]
     }
    ],
-   "seed": 2
+   "seed": 3
   }
  ],
  "services": {
@@ -2517,6 +2862,6 @@
    ],
    "notOffered": "We don't do PPF (paint protection film), window tinting or rim repairs."
   },
-  "seed": 2
+  "seed": 3
  }
 }

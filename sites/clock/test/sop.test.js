@@ -296,9 +296,13 @@ const find = (lists, key, re) => itemsOf(lists, key).find(i => re.test((i.title 
 test('the new wording: acid only without chrome, the Green Star mix, polish technique, cards', () => {
   const full = build(['Full detail', 'Paint correction']).lists;
   const wheels = find(full, 'exterior', /^Wheels and tyres/);
-  assert.deepEqual(wheels.subs, ['Dirty rims with no chrome: use the acid wheel cleaner. Never acid on chrome.']);
-  const wash = find(full, 'exterior', /^Touch wash/);
-  assert.equal(wash.subs[0], 'The mix: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water. It neutralises any acid from the wheels.');
+  assert.deepEqual(wheels.subs, [
+    'Dirty rims with no chrome: use the acid wheel cleaner. Never acid on chrome.',
+    "Wheels bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.",
+  ]);
+  // Green Star: 1:3 with the touch wash chemical in the foam cannon, a capful or two in each bucket.
+  assert.equal(find(full, 'exterior', /^Pre-wash/).subs[0], 'Foam cannon: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water. It neutralises any acid from the wheels.');
+  assert.equal(find(full, 'exterior', /^Touch wash/).subs[0], "Touch wash bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.");
   const polish = find(full, 'correction', /^Do the whole car/);
   assert.deepEqual(polish.subs, [
     'Polish on the pad: 4 to 5 pea-sized drops, north, south, east and west of the centre, or in a star shape.',
@@ -423,7 +427,7 @@ test('phones holding the first SOPs get the new ones, unless they were edited', 
   const u = J.upgrade(edited, settings, newSeed);
   assert.deepEqual(u.kept, ['interior', '_settings']);
   assert.equal(u.sops.find(t => t.key === 'interior').intro, 'Our own words.');
-  assert.ok(u.sops.find(t => t.key === 'exterior').sections[0].items[0].subs.length === 1);
+  assert.match(u.sops.find(t => t.key === 'exterior').sections[0].items[0].subs[0], /acid wheel cleaner/);
   assert.ok(u.sops.some(t => t.key === 'maintenance') && u.sops.some(t => t.key === 'door_knock'));
   assert.equal(u.settings.paintMin, 85);                                   // their edit stays
   assert.deepEqual(u.settings.services['Maintenance wash'].goal, [60, 90]); // the new bits arrive
@@ -431,7 +435,63 @@ test('phones holding the first SOPs get the new ones, unless they were edited', 
   // Something saved in the app on this version is never replaced by a later one.
   const mine = { ...s2.templates[1], intro: 'Changed after the upgrade.', edited: true };
   assert.deepEqual(J.upgrade([mine], null, newSeed).kept, []);
-  assert.deepEqual(J.upgrade([mine], null, { ...newSeed, version: 3 }).kept, ['exterior']);
-  assert.equal(J.upgrade([mine], null, { ...newSeed, version: 3 }).sops.find(t => t.key === 'exterior').intro, 'Changed after the upgrade.');
+  const later = { ...newSeed, version: s2.version + 1 };
+  assert.deepEqual(J.upgrade([mine], null, later).kept, ['exterior']);
+  assert.equal(J.upgrade([mine], null, later).sops.find(t => t.key === 'exterior').intro, 'Changed after the upgrade.');
+});
+
+
+test('clips and job photos show at the step they belong to, on every kind of job', () => {
+  const s = seed();
+  const services = Object.keys(s.services);
+  const everywhere = new Set();
+  for (const sv of services) {
+    const { lists } = build(sv);
+    const p = J.placements(lists);
+    const steps = new Set(), clips = [];
+    J.eachItem(lists, it => { if (it.type === 'step') steps.add(it.id); if (it.type === 'clip') clips.push(it.id); });
+    const cues = [...Object.entries(p.before), ...Object.entries(p.after)];
+    for (const [at, list] of cues) {
+      assert.ok(steps.has(at), `${sv}: ${at} is not on the job`);
+      for (const c of list) if (c.clip) everywhere.add(c.clip);
+    }
+    const shown = cues.flatMap(([, list]) => list.filter(c => c.clip).map(c => c.clip));
+    assert.equal(new Set(shown).size, shown.length, `${sv}: a clip shows twice`);
+    assert.deepEqual(Object.keys(p.placed).sort(), [...new Set(shown)].sort());
+    const photos = cues.flatMap(([, list]) => list.filter(c => c.photo).map(c => c.photo.n));
+    assert.equal(new Set(photos).size, photos.length, `${sv}: a photo shows twice`);
+  }
+  // Every clip has a place on at least one kind of job, except the ones left for Pat.
+  const all = [];
+  J.eachItem(s.templates, it => { if (it.type === 'clip') all.push(it.id); });
+  assert.deepEqual(all.filter(id => !everywhere.has(id)), ['cer-ceramic-clips-to-film-6', 'cer-ceramic-clips-to-film-7']);
+});
+
+test('where clips land: befores first, the foam with the foam, and the finish where the job really finishes', () => {
+  const at = (sv, pos, step) => (J.placements(build(sv).lists)[pos][step] || []).map(c => c.clip || 'photo ' + c.photo.n);
+  assert.deepEqual(at('Exterior detail', 'before', 'ext-steps-1').slice(0, 3), ['photo 1', 'photo 2', 'photo 3']);
+  assert.ok(at('Exterior detail', 'before', 'ext-steps-1').includes('ext-exterior-story-videos-1'));
+  assert.ok(at('Exterior detail', 'after', 'ext-steps-2').includes('ext-exterior-clips-to-film-5'));
+  assert.ok(at('Exterior detail', 'after', 'ext-steps-2').includes('photo 5'));
+  assert.ok(at('Exterior detail', 'after', 'ext-steps-14').includes('ext-exterior-story-videos-3'));
+  // Correction: the exterior stops at the rinse, so "done" moves to the end of the correction.
+  assert.ok(at('Paint correction', 'after', 'cor-steps-11').includes('ext-exterior-story-videos-3'));
+  // Ceramic: it moves to the final walk after coating.
+  assert.ok(at('Ceramic coating', 'after', 'cer-applying-10').includes('ext-exterior-story-videos-3'));
+  assert.ok(!at('Ceramic coating', 'after', 'cor-steps-11').includes('ext-exterior-story-videos-3'));
+  assert.ok(at('Maintenance wash', 'before', 'mnt-inside-1').includes('photo 4'));
+  assert.ok(at('Interior detail', 'before', 'int-steps-1').includes('photo 1'));
+  assert.ok(at('Interior detail', 'after', 'int-steps-3').includes('int-interior-clips-to-film-5'));
+});
+
+test('phones and sheets on the last version move to this one; edits made since stay', () => {
+  const s3 = seed();
+  const newSeed = { version: s3.version, previous: s3.previous, sops: s3.templates, settings: { ...s3.settings, services: s3.services } };
+  const older = s3.templates.map(t => ({ ...t, seed: s3.version - 1, sections: JSON.parse(JSON.stringify(t.sections)).map(x => ({ ...x, intro: x.intro })) }));
+  const u = J.upgrade(older, { ...newSeed.settings, seed: s3.version - 1 }, newSeed);
+  assert.deepEqual(u.kept, []);
+  assert.equal(u.changed.length, s3.templates.length);
+  const mine = { ...s3.templates[1], seed: s3.version - 1, edited: true, intro: 'Ours.' };
+  assert.deepEqual(J.upgrade([mine], null, newSeed).kept, ['exterior']);
 });
 

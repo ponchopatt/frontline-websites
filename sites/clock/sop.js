@@ -263,6 +263,28 @@
       });
     });
   }
+  /* Where each clip and job photo shows: just above or right under the step
+     it belongs to, so it's filmed then and there instead of from a list at
+     the end. `at` is a priority list of step ids and the first one on this job
+     wins, so a clip still lands right when the exterior is cut short for a
+     correction or ceramic job. A clip with no place stays in its own list. */
+  function placements(lists) {
+    var present = {}, before = {}, after = {}, placed = {};
+    eachItem(lists, function (it) { if (it.type === 'step') present[it.id] = true; });
+    var put = function (cue, pos, at) {
+      var target = (at || []).filter(function (id) { return present[id]; })[0];
+      if (!target) return false;
+      var m = pos === 'before' ? before : after;
+      (m[target] = m[target] || []).push(cue);
+      return true;
+    };
+    eachItem(lists, function (it) {
+      (it.photos || []).forEach(function (p) { put({ photo: p }, p.pos, p.at); });
+      if (it.type === 'clip' && it.at && put({ clip: it.id, pos: it.pos || 'after' }, it.pos, it.at)) placed[it.id] = true;
+    });
+    return { before: before, after: after, placed: placed };
+  }
+
   // The first required step not done or skipped, in checklist order.
   function nextStep(lists, state) {
     var hit = null;
@@ -592,6 +614,7 @@
     finishPatch: finishPatch,
     reopenPatch: reopenPatch,
     eachItem: eachItem,
+    placements: placements,
     nextStep: nextStep,
     counts: counts,
     label: label,

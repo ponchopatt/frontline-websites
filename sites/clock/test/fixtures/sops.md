@@ -47,9 +47,11 @@ Wheels first, then foam, wash top to bottom, decon, sealant, dry. Dirt never tra
 
 1. **Wheels and tyres.** Spray wheel cleaner, then foam. Clean in this order: barrel brush, wheel face, tyre brush, arch brush, then the small brush for corners and calipers. Rinse.
     - Dirty rims with no chrome: use the acid wheel cleaner. Never acid on chrome.
+    - Wheels bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.
 2. **Pre-wash.** Foam the whole car. Leave it 1 to 2 minutes. Rinse off in the same order you sprayed it on.
+    - Foam cannon: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water. It neutralises any acid from the wheels.
 3. **Touch wash.** Foam again, more diluted. Grab a clean mitt. Top to bottom: roof, windscreen, bonnet, then down the car. Flip the mitt every few panels. Rinse it in the grit-guard bucket, back into the soap bucket, carry on.
-    - The mix: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water. It neutralises any acid from the wheels.
+    - Touch wash bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.
     - Never go from a low panel back up high unless you're on the clean side of the mitt.
 4. **Rinse.** Check the foam hasn't dried on the windows. If it has, wipe them again with the mitt straight away. Rinse the whole car until no foam is left. Every corner should be clean now.
 5. **Iron remover.** Spray the whole car, paint only. Rinse after 1 to 2 minutes, or sooner if it starts drying. Rinse it off fully.

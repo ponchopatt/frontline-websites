@@ -105,6 +105,7 @@
 
   let openId = null;        // the job on screen
   let idx = {};             // item id -> { it, s, t, n } for the job on screen
+  let place = { before: {}, after: {}, placed: {} };   // clips and photos shown at their step
   let openSet = new Set();  // rows with How to do it open
   let form = null;          // { id, kind: 'note' | 'skip', text }
   let overrideText = '';
@@ -577,6 +578,11 @@
       return;
     }
     let html = '', hasSign = false;
+    place = S.placements(j.lists);
+    for (const t of j.lists) for (const s of t.sections) s.items.forEach((it, n) => { idx[it.id] = { it, s, t, n }; });
+    // A clip or photo cue sits in the list right around its step.
+    const cue = x => (x.clip ? slot('row:' + x.clip, 'li') : photoCue(x.photo));
+    const around = it => (place.before[it.id] || []).map(cue).join('') + slot('row:' + it.id, 'li') + (place.after[it.id] || []).map(cue).join('');
     for (const t of j.lists) {
       if (t.key === 'signoff') hasSign = true;
       html += `<section class="stage" id="stage-${esc(t.key)}" data-stage-key="${esc(t.key)}">`;
@@ -588,11 +594,18 @@
           html += slot(s.items.some(it => it.pitch) ? 'say' : 'lines:' + s.id, 'div');
           continue;
         }
-        if (s.style === 'clips') html += slot('sec:' + s.id, 'div');
-        else if (s.heading !== false) html += `<h3 class="sub">${esc(s.name)}</h3>`;
+        if (s.style === 'clips') {
+          // Clips already shown at their steps aren't listed again.
+          const left = s.items.filter(it => !place.placed[it.id]);
+          if (!left.length) continue;
+          html += slot('sec:' + s.id, 'div');
+          if (s.intro) html += `<p class="sec-intro">${esc(s.intro)}</p>`;
+          html += '<ul class="items">' + left.map(it => slot('row:' + it.id, 'li')).join('') + '</ul>';
+          continue;
+        }
+        if (s.heading !== false) html += `<h3 class="sub">${esc(s.name)}</h3>`;
         if (s.intro) html += `<p class="sec-intro">${esc(s.intro)}</p>`;
-        s.items.forEach((it, n) => { idx[it.id] = { it, s, t, n }; });
-        html += `<ul class="${s.style === 'bullets' ? 'rules' : 'items'}">` + s.items.map(it => slot('row:' + it.id, 'li')).join('') + '</ul>';
+        html += `<ul class="${s.style === 'bullets' ? 'rules' : 'items'}">` + s.items.map(around).join('') + '</ul>';
       }
       if (t.key === 'signoff') html += slot('finish', 'div');
       html += '</section>';
@@ -711,7 +724,10 @@
       aria-label="${esc((state === 'done' ? 'Done: ' : 'Tick: ') + plainText)}">${s.style === 'numbered' ? `<span>${n + 1}</span>` : ''}${ICON.check}</button>`;
     const attrs = ` data-state="${state}"${justNow ? ' data-just' : ''}`;
     if (it.type === 'clip') {
-      return `<div class="item clip"${attrs}>${tick}<div class="item-main"><span class="when" data-w="${esc(it.when)}">${esc(cap(it.when))}</span>` +
+      // At its step it says what to do now; in a leftover list it says when.
+      const atStep = !!place.placed[id];
+      const cueText = !atStep ? cap(it.when) : it.pos === 'before' ? 'Film first' : it.when === 'during' ? 'Film while you do it' : 'Film it now';
+      return `<div class="item clip${atStep ? ' inline' : ''}"${attrs}>${tick}<div class="item-main"><span class="when" data-w="${esc(atStep ? 'now' : it.when)}">${esc(cueText)}</span>` +
         `<span class="txt"><b>${esc(it.title)}</b></span><span class="why">${esc(it.length)}. ${esc(it.purpose)}</span>${metaLine(x, it)}</div></div>`;
     }
     const text = it.title ? `<b>${esc(it.title)}</b> ${esc(it.detail)}` : esc(it.detail);
@@ -827,8 +843,16 @@
     let s = null;
     for (const t of c.j.lists) for (const x of t.sections) if (x.id === secId) s = x;
     if (!s) return '';
-    const done = s.items.filter(it => { const x = S.item(c.st, it.id); return x && x.done; }).length;
-    return `<h3 class="sub">${esc(s.name)}<span>${done} of ${s.items.length} filmed</span></h3>`;
+    const left = s.items.filter(it => !place.placed[it.id]);
+    const done = left.filter(it => { const x = S.item(c.st, it.id); return x && x.done; }).length;
+    const name = left.length < s.items.length ? `${s.name}, the rest` : s.name;
+    return `<h3 class="sub">${esc(name)}<span>${done} of ${left.length} filmed</span></h3>`;
+  }
+
+  // A job photo reminder, right where it's taken. Nothing to tick: it's one of the 12.
+  function photoCue(p) {
+    return `<li class="photo-cue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>` +
+      `<span><b>Photo ${esc(p.n)} of 12:</b> ${esc(p.label)}</span></li>`;
   }
 
   function blockHtml(key, c) {
