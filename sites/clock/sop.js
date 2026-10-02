@@ -269,7 +269,8 @@
      wins, so a clip still lands right when the exterior is cut short for a
      correction or ceramic job. A clip with no place stays in its own list. */
   function placements(lists) {
-    var present = {}, before = {}, after = {}, placed = {};
+    var present = {}, before = {}, after = {}, placed = {}, photos = [];
+    var keys = (lists || []).map(function (t) { return t.key; });
     eachItem(lists, function (it) { if (it.type === 'step') present[it.id] = true; });
     var put = function (cue, pos, at) {
       var target = (at || []).filter(function (id) { return present[id]; })[0];
@@ -279,10 +280,25 @@
       return true;
     };
     eachItem(lists, function (it) {
-      (it.photos || []).forEach(function (p) { put({ photo: p }, p.pos, p.at); });
-      if (it.type === 'clip' && it.at && put({ clip: it.id, pos: it.pos || 'after' }, it.pos, it.at)) placed[it.id] = true;
+      (it.photos || []).forEach(function (p) {
+        var cue = { photo: p };
+        if (fits(p.needs, keys) && put(cue, p.pos, p.at)) photos.push(cue);
+      });
+      if (it.type === 'clip' && it.at && put({ clip: it.id, pos: it.pos || 'after', when: it.when }, it.pos, it.at)) placed[it.id] = true;
     });
-    return { before: before, after: after, placed: placed };
+    // In each spot: what you film while doing the step, then the photos, then the rest.
+    var rank = function (c) { return c.when === 'during' ? 0 : c.photo ? 1 : 2; };
+    [before, after].forEach(function (m) {
+      Object.keys(m).forEach(function (k) {
+        m[k] = m[k].map(function (c, i) { return [rank(c), i, c]; })
+          .sort(function (a, b) { return a[0] - b[0] || a[1] - b[1]; })
+          .map(function (x) { return x[2]; });
+      });
+    });
+    // Photos are counted for this job: an exterior job has fewer than 12.
+    photos.sort(function (a, b) { return a.photo.n - b.photo.n; });
+    photos.forEach(function (c, i) { c.i = i + 1; c.of = photos.length; });
+    return { before: before, after: after, placed: placed, photos: photos.length };
   }
 
   // The first required step not done or skipped, in checklist order.

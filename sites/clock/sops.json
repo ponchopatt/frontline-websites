@@ -1,6 +1,6 @@
 {
  "about": "Imperium job SOPs, with a plain-words How to do it for every step. The app copies these into the Google Sheet the first time it runs, and brings in a newer version by itself as long as nobody has edited that SOP in the app. Edit them in the app: Admin > Edit the SOPs.",
- "version": 3,
+ "version": 4,
  "previous": {
   "every_job": [
    "7fbacad5",
@@ -61,7 +61,7 @@
       {
        "type": "step",
        "title": "",
-       "detail": "Confirm text sent: day, time, price range, outdoor tap and power point, clear loose items out of the car.",
+       "detail": "Send the confirm text. Put in the day, time and price range. Ask for the outdoor tap and a power point. Ask them to clear loose things out of the car.",
        "subs": [],
        "required": true,
        "id": "job-day-before-1",
@@ -74,7 +74,7 @@
        "subs": [],
        "required": true,
        "id": "job-day-before-2",
-       "more": "Pack the van the night before, not on the morning. Touch each thing as you check it: water tank full, power lead, chemicals topped up, LED light and paint gauge charged, polisher and clean pads, coating kit, business cards and review cards. One missing thing on the day can cost an hour."
+       "more": "Pack the van the night before, not in the morning. Touch each thing as you check it: water tank full, power lead, chemicals topped up, LED light and paint gauge charged, polisher and clean pads, coating kit, business cards and review cards. One missing thing on the day can cost an hour."
       },
       {
        "type": "step",
@@ -146,7 +146,7 @@
       {
        "type": "step",
        "title": "",
-       "detail": "Check the site: tap works, power reaches, and for correction or coating, the car is under cover.",
+       "detail": "Check the site. Make sure the tap works and the power lead reaches the car. For correction or coating, make sure the car is under cover.",
        "subs": [],
        "required": true,
        "id": "job-on-arrival-4",
@@ -175,11 +175,11 @@
       {
        "type": "rule",
        "title": "",
-       "detail": "Never quote below the price list. A condition charge of up to $75 is told to the customer before you start, never after.",
+       "detail": "Never quote below the price list. Full and interior details can have a condition charge of up to $75. Tell the customer about it before you start, never after.",
        "subs": [],
        "required": false,
        "id": "job-always-1",
-       "more": "Quote from the price list, never less. If the car is extra dirty, like heavy pet hair, sand or mould, you can add up to $75. Tell the customer before you start and get a yes. Never add it at the end."
+       "more": "Quote from the price list, never less. Full and interior details only: if the car is extra dirty, like heavy pet hair, sand or mould, you can add up to $75. Tell the customer before you start and get a yes. Never add it at the end."
       },
       {
        "type": "rule",
@@ -211,7 +211,7 @@
       {
        "type": "rule",
        "title": "",
-       "detail": "Take the 12 job photos: front 3/4 before, dirtiest panel, wheel before, interior before, foam on, extraction water, polisher on panel, 50/50 if correcting, wheel after, interior after, beading, front 3/4 after from the same spot as photo 1.",
+       "detail": "Take the job photos the app shows for this job (up to 12): front 3/4 before, dirtiest panel, wheel before, interior before, foam on, extraction water, polisher on panel, 50/50 if correcting, wheel after, interior after, beading, front 3/4 after from the same spot as photo 1.",
        "subs": [],
        "required": false,
        "id": "job-always-5",
@@ -232,7 +232,8 @@
          "pos": "before",
          "at": [
           "ext-steps-1",
-          "mnt-outside-1"
+          "mnt-outside-1",
+          "int-steps-1"
          ]
         },
         {
@@ -284,7 +285,7 @@
          "label": "The 50/50",
          "pos": "after",
          "at": [
-          "cor-steps-10"
+          "cor-steps-6"
          ]
         },
         {
@@ -313,8 +314,10 @@
          "pos": "after",
          "at": [
           "ext-steps-8",
-          "mnt-outside-8"
-         ]
+          "mnt-outside-8",
+          "cor-steps-11"
+         ],
+         "needs": "!ceramic"
         },
         {
          "n": 12,
@@ -329,7 +332,7 @@
          ]
         }
        ],
-       "more": "These photos prove the work and feed the website and the ads. In order: 1 front 3/4 before, 2 dirtiest panel, 3 wheel before, 4 interior before, 5 foam on, 6 extraction water, 7 polisher on a panel, 8 the 50/50 if correcting, 9 wheel after, 10 interior after, 11 water beading, 12 front 3/4 after from the same spot as photo 1."
+       "more": "These photos prove the work and feed the website and the ads. The app shows each one right at the step where you take it, and only the ones that fit this job. The full list: 1 front 3/4 before, 2 dirtiest panel, 3 wheel before, 4 interior before, 5 foam on, 6 extraction water, 7 polisher on a panel, 8 the 50/50 if correcting, 9 wheel after, 10 interior after, 11 water beading, 12 front 3/4 after from the same spot as photo 1."
       },
       {
        "type": "rule",
@@ -363,16 +366,16 @@
       {
        "type": "rule",
        "title": "",
-       "detail": "Hold every clip still for 3 to 5 seconds. No talking unless it's a talking clip.",
+       "detail": "Start and end every clip still. Film for the length in the clip list. No talking unless it's a talking clip.",
        "subs": [],
        "required": false,
        "id": "job-filming-2",
-       "more": "Keep the phone dead still for 3 to 5 seconds. That gives clean bits to cut in the edit. Stay quiet so music can go over it, unless the clip is meant to have talking."
+       "more": "Hold the phone still for a moment at the start and the end. That gives clean bits to cut in the edit. In between, move slowly, never shaky. Stay quiet so music can go over it, unless the clip is meant to have talking."
       },
       {
        "type": "rule",
        "title": "",
-       "detail": "Film the before and the after from the same spot, same angle, same direction. That's what makes the comparison land.",
+       "detail": "Film the before and the after from the same spot, same angle, same direction. That's what makes the change easy to see.",
        "subs": [],
        "required": false,
        "id": "job-filming-3",
@@ -417,13 +420,13 @@
      ]
     }
    ],
-   "seed": 3
+   "seed": 4
   },
   {
    "key": "exterior",
    "name": "Exterior detail",
    "sort": 2,
-   "intro": "Wheels first, then foam, wash top to bottom, decon, sealant, dry. Dirt never travels back up the car.",
+   "intro": "Wheels first, then foam, wash top to bottom, iron remover and clay, sealant, dry. Dirt never travels back up the car.",
    "outro": "",
    "sections": [
     {
@@ -461,14 +464,14 @@
       {
        "type": "step",
        "title": "Touch wash.",
-       "detail": "Foam again, more diluted. Grab a clean mitt. Top to bottom: roof, windscreen, bonnet, then down the car. Flip the mitt every few panels. Rinse it in the grit-guard bucket, back into the soap bucket, carry on.",
+       "detail": "Foam the car again, with more water in the mix. Grab a clean mitt. Wash top to bottom: roof, windscreen, bonnet, then down the car. Flip the mitt every few panels. Rinse the mitt in the grit-guard bucket, dip it back in the touch wash bucket, and carry on.",
        "subs": [
         "Touch wash bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.",
         "Never go from a low panel back up high unless you're on the clean side of the mitt."
        ],
        "required": true,
        "id": "ext-steps-3",
-       "more": "Touch wash bucket: 1 or 2 lids of Green Star in the soapy water. Second bucket: plain water with the grit guard. Wash top down in straight lines, turn the mitt every few panels, and scrub it on the grit guard before it goes back in the soap."
+       "more": "The touch wash bucket is the soap bucket: 1 or 2 lids of Green Star in the soapy water. The second bucket is the grit-guard bucket: plain water with the grit guard. Wash top down in straight lines, flip the mitt every few panels, and scrub it on the grit guard before it goes back in the soap bucket."
       },
       {
        "type": "step",
@@ -482,7 +485,7 @@
       {
        "type": "step",
        "title": "Iron remover.",
-       "detail": "Spray the whole car, paint only. Rinse after 1 to 2 minutes, or sooner if it starts drying. Rinse it off fully.",
+       "detail": "Spray it on all the paint, and only the paint. Rinse after 1 to 2 minutes, or sooner if it starts to dry. Rinse it all off.",
        "subs": [],
        "required": true,
        "id": "ext-steps-5",
@@ -491,7 +494,7 @@
       {
        "type": "step",
        "title": "Clay.",
-       "detail": "Paint, glass and trim. Side to side. Every few panels, dunk it in the soap bucket, squeeze, soak up fresh water, carry on. All bugs gone.",
+       "detail": "Do the paint, glass and trim. Move the clay side to side. Every few panels, dunk it in the touch wash bucket, squeeze it, soak up fresh water and carry on. Keep going until all the bugs are gone.",
        "subs": [],
        "required": true,
        "id": "ext-steps-6",
@@ -629,7 +632,7 @@
       },
       {
        "type": "clip",
-       "title": "Close-up of anything really dirty, if there is",
+       "title": "Close-up of anything really dirty, if there is any",
        "detail": "",
        "subs": [],
        "required": false,
@@ -787,8 +790,10 @@
        "id": "ext-exterior-clips-to-film-8",
        "pos": "after",
        "at": [
-        "ext-steps-8"
-       ]
+        "ext-steps-8",
+        "cor-steps-11"
+       ],
+       "needs": "!ceramic"
       },
       {
        "type": "clip",
@@ -844,7 +849,7 @@
      ]
     }
    ],
-   "seed": 3
+   "seed": 4
   },
   {
    "key": "interior",
@@ -865,7 +870,7 @@
       {
        "type": "step",
        "title": "Clear out.",
-       "detail": "Keep personal belongings in a clean, dry spot. Bin all rubbish.",
+       "detail": "Put the customer's things in a clean, dry spot. Bin all rubbish.",
        "subs": [],
        "required": true,
        "id": "int-steps-1",
@@ -883,7 +888,7 @@
       {
        "type": "step",
        "title": "Mats.",
-       "detail": "Take them out. Drill brush and vacuum to lift all the dirt. Stained: spray with water and extract.",
+       "detail": "Take them out. Drill brush them, then vacuum, to lift all the dirt. Stained mat? Spray it with water and use the extractor.",
        "subs": [],
        "required": true,
        "id": "int-steps-3",
@@ -892,7 +897,7 @@
       {
        "type": "step",
        "title": "Carpets.",
-       "detail": "Spray interior cleaner, drill brush again, then the pet hair block in straight lines, up and down.",
+       "detail": "Spray interior cleaner. Use the drill brush again. Then go over the carpets with the pet hair block in straight lines, up and down.",
        "subs": [],
        "required": true,
        "id": "int-steps-4",
@@ -901,7 +906,7 @@
       {
        "type": "step",
        "title": "Hard surfaces.",
-       "detail": "Push the seats all the way forward and back, up and down, so you reach everything. Spray, agitate with a brush, wipe off. Every hard surface.",
+       "detail": "Move the seats all the way forward and back, up and down, so you can reach everything. Spray, scrub with a brush, then wipe off. Do every hard surface.",
        "subs": [],
        "required": true,
        "id": "int-steps-5",
@@ -928,7 +933,7 @@
       {
        "type": "step",
        "title": "Vacuum.",
-       "detail": "Seats all the way forward and back again. Up and under the seats, between them, and in the cracks of the seats.",
+       "detail": "Move the seats all the way forward and back again. Vacuum up and under the seats, between them and in the cracks of the seats.",
        "subs": [],
        "required": true,
        "id": "int-steps-8",
@@ -937,7 +942,7 @@
       {
        "type": "step",
        "title": "Glass.",
-       "detail": "Red towel and green towel, 4 crosshatch passes with each. Into the corners.",
+       "detail": "Use the red towel, then the green towel. Do 4 crosshatch passes with each. Get into the corners.",
        "subs": [],
        "required": true,
        "id": "int-steps-9",
@@ -964,7 +969,7 @@
       {
        "type": "step",
        "title": "Finish.",
-       "detail": "Mats back in, steering wheel cover on. New customers: review card and business card inside the cover or on the middle console.",
+       "detail": "Mats back in, steering wheel cover on. New customer? Put the review card and business card inside the cover or on the middle console.",
        "subs": [],
        "required": true,
        "id": "int-steps-12",
@@ -1013,7 +1018,7 @@
       },
       {
        "type": "clip",
-       "title": "Close-up of anything really dirty, if there is",
+       "title": "Close-up of anything really dirty, if there is any",
        "detail": "",
        "subs": [],
        "required": false,
@@ -1120,7 +1125,7 @@
        "required": false,
        "when": "during",
        "length": "3s",
-       "purpose": "The money shot of any interior reel",
+       "purpose": "The best shot in any interior reel",
        "id": "int-interior-clips-to-film-5",
        "pos": "after",
        "at": [
@@ -1204,7 +1209,7 @@
       },
       {
        "type": "clip",
-       "title": "Review card going into the steering wheel cover",
+       "title": "Review card and business card going in the steering wheel cover (new customers)",
        "detail": "",
        "subs": [],
        "required": false,
@@ -1220,13 +1225,13 @@
      ]
     }
    ],
-   "seed": 3
+   "seed": 4
   },
   {
    "key": "correction",
    "name": "Paint correction",
    "sort": 4,
-   "intro": "Measure before you cut, start with the least aggressive combo that works, and never polish over grit. Under cover only. Goal: 2 to 3 hours, exterior included.",
+   "intro": "Measure the paint before you polish. Start with the gentlest pad and polish combo that works. Never polish over grit. Under cover only. Goal: 2 to 3 hours, exterior included.",
    "outro": "",
    "sections": [
     {
@@ -1240,12 +1245,14 @@
      "items": [
       {
        "type": "step",
-       "title": "Exterior detail up to the rinse after clay.",
-       "detail": "Skip the ceramic sealant. Nothing goes on the paint before you polish.",
-       "subs": [],
+       "title": "Exterior first.",
+       "detail": "Do the exterior detail up to the rinse after clay. Skip the ceramic sealant. Nothing goes on the paint before you polish.",
+       "subs": [
+        "Then dry the car and blow out every gap, so the tape sticks and no water runs onto the pad."
+       ],
        "required": true,
        "id": "cor-steps-1",
-       "more": "Do the exterior steps 1 to 7: wheels, pre-wash, touch wash, rinse, iron remover, clay, rinse. Stop there. No ceramic sealant: the paint has to be bare when you polish."
+       "more": "Do the exterior steps 1 to 7: wheels, pre-wash, touch wash, rinse, iron remover, clay, rinse. Stop there. No ceramic sealant: the paint has to be bare when you polish. Then dry it and blow out every gap, or the tape won't stick and water runs out onto the pad."
       },
       {
        "type": "step",
@@ -1259,16 +1266,16 @@
       {
        "type": "step",
        "title": "Inspect under the LED.",
-       "detail": "Mark the worst areas. Show the customer what will come out and what won't. Fingernail catches a scratch = through the clear coat, it won't come out. Say so before you start.",
+       "detail": "Mark the worst areas and photo each one. Show the customer what will come out and what won't. If your fingernail catches on a scratch, it's through the clear coat. It won't come out. Say so before you start.",
        "subs": [],
        "required": true,
        "id": "cor-steps-3",
-       "more": "Shine the LED across each panel to find swirls and scratches, and mark the worst spots. Show the customer what will come out and what won't. Fingernail test: run a nail across the scratch. If it catches, it's through the clear coat and won't polish out. Say so now, not after."
+       "more": "Shine the LED across each panel to find swirls and scratches, and mark the worst spots. Photo each one: you'll take the after from the same angle in step 10. Show the customer what will come out and what won't. Fingernail test: run a nail across the scratch. If it catches, it's through the clear coat and won't polish out. Say so now, not after."
       },
       {
        "type": "step",
        "title": "Measure paint",
-       "detail": "with the gauge: at least 5 readings per panel, more on bonnet, roof and boot. Write them down. Any panel under about 80 microns, or a big jump between readings (repaint or filler), is a light-touch panel: finishing polish only or skip it. Ask Angus if unsure.",
+       "detail": "with the gauge. Take at least 5 readings per panel, and more on the bonnet, roof and boot. Write them down. A panel is light touch if it's under about 80 microns, or has a big jump between readings (repaint or filler). Light touch means finishing polish only, or skip it. Not sure? Ask Angus.",
        "subs": [],
        "required": true,
        "id": "cor-steps-4",
@@ -1278,7 +1285,7 @@
       {
        "type": "step",
        "title": "Test spot.",
-       "detail": "Pick the pad and polish from how bad the paint is. Check it under the LED. Whatever works on the test spot is the plan for the whole car.",
+       "detail": "Pick the pad and polish to match how bad the paint is. Check the spot under the LED. Whatever works on the test spot is the plan for the whole car.",
        "subs": [
         "Cooked paint: microfibre pad, heavy cut",
         "Less cooked: microfibre pad, fine cut",
@@ -1288,20 +1295,21 @@
        "required": true,
        "id": "cor-steps-5",
        "combos": true,
-       "more": "Do a small test patch on the worst panel, putting the polish on the same way as step 6. Start with the gentlest combo you think will work, wipe it off and check under the LED. Swirls still there? Step up to the next combo. Whatever works is the plan for the whole car. Tap the combo you used below."
+       "more": "Do a small test patch on the worst panel, putting the polish on the same way as step 6. Start with the gentlest combo you think will work, wipe it off and check under the LED. Swirls still there? Try the next stronger combo. Whatever works is the plan for the whole car. Tap the combo you used below."
       },
       {
        "type": "step",
        "title": "Do the whole car",
-       "detail": "with that combo. Small polisher for the tight and fine areas. Clean the pad with air often and keep it off edges and body lines.",
+       "detail": "with that combo. Use the small polisher in tight and fine areas. Blow the pad clean with air often. Keep the pad off edges and body lines.",
        "subs": [
+        "Worst panel first: polish one side of the 50/50 tape line. Film the 50/50 and take its photo, then peel the tape. Then do the other half and the rest of the car.",
         "Polish on the pad: 4 to 5 pea-sized drops, north, south, east and west of the centre, or in a star shape.",
         "Stamp the pad on the panel or area you're doing first. Spread it on the lowest speed, then go up to normal speed.",
         "Normal speed: microfibre pad speed 4, foam pad speed 5."
        ],
        "required": true,
        "id": "cor-steps-6",
-       "more": "Put 4 or 5 pea-sized drops on the pad around the centre, like a star. Press the pad flat onto the panel before you switch on, so the polish doesn't fling. Spread it on the lowest speed, then go to speed 4 (microfibre) or 5 (foam). Small sections, slow overlapping passes. Blow the pad clean often, and keep off edges and body lines."
+       "more": "Put 4 or 5 pea-sized drops on the pad around the centre, like a star. Press the pad flat onto the panel before you switch on, so the polish doesn't fling. Spread it on the lowest speed, then go to speed 4 (microfibre) or 5 (foam). Small sections, slow overlapping passes. Blow the pad clean often, and keep off edges and body lines. Do the worst panel first: polish one side of the 50/50 tape line, film the 50/50 and take its photo, peel the tape, then polish the other side."
       },
       {
        "type": "step",
@@ -1333,20 +1341,22 @@
       {
        "type": "step",
        "title": "Photos:",
-       "detail": "50/50 on the worst panel in direct light, plus the before and after of the worst area.",
+       "detail": "the worst areas after, from the same angle as their before photos.",
        "subs": [],
        "required": true,
        "id": "cor-steps-10",
-       "more": "A 50/50 is a panel that's half polished and half not. Set it up when you do the worst panel: tape a line, polish one side, take the photo in direct light, then finish the other side. Also photo the worst area before and after, from the same angle."
+       "more": "The 50/50 was done at the start of step 6. Now photo each worst area again, from the same angle as the before you took in step 3, so the change is easy to see."
       },
       {
        "type": "step",
        "title": "Then protect.",
-       "detail": "Ceramic job: go straight into the ceramic coating SOP. Not a ceramic job: ceramic sealant, same as the exterior detail.",
-       "subs": [],
+       "detail": "Ceramic job: go straight on to the ceramic coating steps. Not a ceramic job: put on the ceramic sealant, the same as the exterior detail.",
+       "subs": [
+        "Not a ceramic job: then dry, blower, glass, tyre shine, walk around and door jambs, the same as exterior steps 9 to 14."
+       ],
        "required": true,
        "id": "cor-steps-11",
-       "more": "Freshly polished paint has no protection at all. Ceramic job: go straight into the ceramic coating steps. Not a ceramic job: put on the ceramic sealant the same way as step 8 of the exterior detail."
+       "more": "Freshly polished paint has no protection at all. Ceramic job: go straight into the ceramic coating steps. Not a ceramic job: put on the ceramic sealant the same way as step 8 of the exterior detail, then finish like exterior steps 9 to 14: dry, blower, glass, tyre shine, walk around and door jambs."
       },
       {
        "type": "step",
@@ -1401,7 +1411,7 @@
       },
       {
        "type": "clip",
-       "title": "Tape line going down the middle of the bonnet",
+       "title": "Tape line going down the middle of the worst panel",
        "detail": "",
        "subs": [],
        "required": false,
@@ -1411,7 +1421,7 @@
        "id": "cor-paint-correction-clips-to-film-3",
        "pos": "before",
        "at": [
-        "cor-steps-6"
+        "cor-steps-5"
        ]
       },
       {
@@ -1431,7 +1441,7 @@
       },
       {
        "type": "clip",
-       "title": "One wipe taking the compound off, gloss showing",
+       "title": "One wipe taking the polish off, gloss showing",
        "detail": "",
        "subs": [],
        "required": false,
@@ -1446,17 +1456,17 @@
       },
       {
        "type": "clip",
-       "title": "50/50 under the torch, hold it still",
+       "title": "50/50 under the LED, hold it still",
        "detail": "",
        "subs": [],
        "required": false,
        "when": "after",
        "length": "5s",
-       "purpose": "The most valuable clip in the business. Every ceramic and correction ad",
+       "purpose": "The most valuable clip in the business. Used in every ceramic and correction ad",
        "id": "cor-paint-correction-clips-to-film-6",
        "pos": "after",
        "at": [
-        "cor-steps-10"
+        "cor-steps-6"
        ]
       },
       {
@@ -1471,12 +1481,12 @@
        "id": "cor-paint-correction-clips-to-film-7",
        "pos": "after",
        "at": [
-        "cor-steps-9"
+        "cor-steps-6"
        ]
       },
       {
        "type": "clip",
-       "title": "Trees or sky reflecting in the bonnet",
+       "title": "Reflection in the bonnet, slow pan",
        "detail": "",
        "subs": [],
        "required": false,
@@ -1486,13 +1496,14 @@
        "id": "cor-paint-correction-clips-to-film-8",
        "pos": "after",
        "at": [
-        "cor-steps-10"
+        "cer-applying-10",
+        "cor-steps-11"
        ]
       }
      ]
     }
    ],
-   "seed": 3
+   "seed": 4
   },
   {
    "key": "ceramic",
@@ -1512,21 +1523,21 @@
      "items": [
       {
        "type": "step",
-       "title": "Full exterior wash, iron, tar and clay",
-       "detail": "as in the exterior SOP. Strip any old wax or sealant.",
+       "title": "Exterior prep.",
+       "detail": "Full exterior wash, iron remover, tar remover and clay, as in the exterior detail above. Strip any old wax or sealant.",
        "subs": [],
        "required": true,
        "id": "cer-before-you-open-the-bottle-1",
-       "more": "Do the full exterior wash, iron remover, tar remover and clay, as in the exterior steps. Any old wax or sealant has to come off, because the coating can't stick on top of it."
+       "more": "This was done at the start of the job, in the exterior steps: the wash, iron remover and clay. Use tar remover on any tar spots. Any old wax or sealant has to come off, because the coating can't stick on top of it."
       },
       {
        "type": "step",
        "title": "Paint correction",
-       "detail": "as in the correction SOP. Single stage at minimum, even on a brand new car, to take out transport and dealer wash marks.",
+       "detail": "as in the correction steps above. Do at least a single stage, even on a brand new car. It takes out marks from transport and dealer washes.",
        "subs": [],
        "required": true,
        "id": "cer-before-you-open-the-bottle-2",
-       "more": "A coating locks in whatever is under it, swirls included. So every coating gets at least a single-stage polish, even on a brand new car. New cars often have marks from transport and dealer washes."
+       "more": "A coating locks in whatever is under it, swirls included. So every coating gets at least a single-stage polish, even on a brand new car. That's the paint correction steps above. New cars often have marks from transport and dealer washes."
       },
       {
        "type": "step",
@@ -1540,7 +1551,7 @@
       {
        "type": "step",
        "title": "Panel prep wipe",
-       "detail": "on every surface being coated: IPA or panel prep spray, one towel to wipe, a second to buff dry. Nothing touches the paint with bare hands after this.",
+       "detail": "on every surface you're coating. Use IPA or panel prep spray. Wipe with one towel, then buff dry with a second. After this, never touch the paint with bare hands.",
        "subs": [],
        "required": true,
        "id": "cer-before-you-open-the-bottle-4",
@@ -1549,7 +1560,7 @@
       {
        "type": "step",
        "title": "Check the conditions:",
-       "detail": "under cover, out of sun and wind, panels cool, good light, temperature and humidity inside what the bottle says.",
+       "detail": "under cover, out of sun and wind, panels cool, good light. Temperature and humidity must be inside the range on the bottle.",
        "subs": [],
        "required": true,
        "id": "cer-before-you-open-the-bottle-5",
@@ -1614,7 +1625,7 @@
       {
        "type": "step",
        "title": "No high spots.",
-       "detail": "Look at the paint from different light angles straight away. A high spot that cures has to be polished off.",
+       "detail": "Look at the paint from different light angles straight away. If a high spot hardens, it has to be polished off.",
        "subs": [],
        "required": true,
        "id": "cer-applying-6",
@@ -1823,7 +1834,7 @@
       },
       {
        "type": "clip",
-       "title": "Walk around in the sun, same spot as the before",
+       "title": "Walk around under cover, same spot as the before",
        "detail": "",
        "subs": [],
        "required": false,
@@ -1838,7 +1849,7 @@
       },
       {
        "type": "clip",
-       "title": "Customer walking out to the car, only with a yes",
+       "title": "Customer walking out to the car, only if they say yes",
        "detail": "",
        "subs": [],
        "required": false,
@@ -1854,13 +1865,13 @@
      ]
     }
    ],
-   "seed": 3
+   "seed": 4
   },
   {
    "key": "maintenance",
    "name": "Maintenance wash",
    "sort": 6,
-   "intro": "For our regular customers. Same standard, less work: do what the car needs, and look hard for anything that needs extra.",
+   "intro": "For our regular customers. Same standard, less work. Do what the car needs. Look hard for anything that needs extra.",
    "outro": "",
    "sections": [
     {
@@ -1875,11 +1886,13 @@
       {
        "type": "step",
        "title": "Wheels and tyres,",
-       "detail": "the same as the exterior detail. Acid on dirty rims with no chrome, never on chrome.",
-       "subs": [],
+       "detail": "the same as the exterior detail. Dirty rims with no chrome: use the acid wheel cleaner. Never use acid on chrome.",
+       "subs": [
+        "Wheels bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid."
+       ],
        "required": true,
        "id": "mnt-outside-1",
-       "more": "Same order and brushes as the exterior detail: wheel cleaner, foam, barrel, face, tyre, arch, corners, rinse. Dirty rims with no chrome can have the acid cleaner. Any chrome at all? No acid."
+       "more": "Same order and brushes as the exterior detail: wheel cleaner, foam, barrel, face, tyre, arch, corners, rinse. Wheels bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid. Dirty rims with no chrome can have the acid cleaner. Any chrome at all? No acid."
       },
       {
        "type": "step",
@@ -1892,12 +1905,15 @@
       },
       {
        "type": "step",
-       "title": "Foam it up,",
-       "detail": "then go straight into the touch wash. Same mix and method as the exterior detail.",
-       "subs": [],
+       "title": "Foam it up.",
+       "detail": "Film the foam shot first, then go straight into the touch wash. Same mix and method as the exterior detail.",
+       "subs": [
+        "Foam cannon: Green Star and the touch wash chemical, 1:3, 100 ml in total, the rest water.",
+        "Touch wash bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid."
+       ],
        "required": true,
        "id": "mnt-outside-3",
-       "more": "Foam the car with the same foam cannon mix (25 ml Green Star, 75 ml touch wash chemical, the rest water), and while it's on, go straight in with the mitt. No waiting and no rinse in between. Two buckets, top down, straight lines."
+       "more": "Foam the car with the same foam cannon mix: 25 ml Green Star and 75 ml touch wash chemical (1:3), then top up with water. Film the foam shot and take the foam photo straight away. Then go straight in with the mitt while the foam is on. No waiting and no rinse in between. Use two buckets. Put 1 or 2 capfuls of Green Star in the touch wash bucket. Wash top down, in straight lines."
       },
       {
        "type": "step",
@@ -2107,7 +2123,7 @@
      ]
     }
    ],
-   "seed": 3
+   "seed": 4
   },
   {
    "key": "door_knock",
@@ -2166,11 +2182,11 @@
       {
        "type": "step",
        "title": "Pick your moment:",
-       "detail": "a quiet patch in the job, like while the foam sits, or once the car looks its best.",
+       "detail": "a quiet patch in the job, like once the car looks its best.",
        "subs": [],
        "required": false,
        "id": "door-steps-1",
-       "more": "Knock when you can step away for a few minutes without slowing the job, like while the foam sits. Or once the car looks amazing, so you have something to point at."
+       "more": "Knock when you can step away for a few minutes without slowing the job. Never while foam or a chemical is on the car: it can't be left to dry. Once the car looks amazing is best, so you have something to point at."
       },
       {
        "type": "step",
@@ -2183,8 +2199,8 @@
       },
       {
        "type": "step",
-       "title": "Ice breaker,",
-       "detail": "then say you're detailing their neighbour's car. The script is below.",
+       "title": "Ice breaker.",
+       "detail": "Use one from the script below. Then say you're detailing their neighbour's car.",
        "subs": [],
        "required": false,
        "id": "door-steps-3",
@@ -2304,7 +2320,7 @@
       {
        "type": "script",
        "title": "Ice breaker, the before and after:",
-       "detail": "\"Hi! Quick one: I'm detailing your neighbour's car and it's coming up mint. Want to see the before and after?\"",
+       "detail": "\"Hi! Quick one: I'm [your name] from Imperium Detailing, we're working on your street today. Want to see a before and after from one of our jobs?\"",
        "subs": [],
        "required": false,
        "id": "door-door-knocking-script-3"
@@ -2320,7 +2336,7 @@
       {
        "type": "script",
        "title": "The price:",
-       "detail": "\"For your [their car], a [service] is [price from the quote].\"",
+       "detail": "\"For your [their car], a [service] starts from [price from the quote].\"",
        "subs": [],
        "required": false,
        "id": "door-door-knocking-script-5"
@@ -2345,13 +2361,13 @@
     }
    ],
    "optional": true,
-   "seed": 3
+   "seed": 4
   },
   {
    "key": "handover",
    "name": "Handover and after",
    "sort": 8,
-   "intro": "The handover is where the review, the next job and the referral come from, so it never gets skipped.",
+   "intro": "Never skip the handover. It's where the review, the next job and the referral come from.",
    "outro": "",
    "sections": [
     {
@@ -2393,13 +2409,13 @@
       {
        "type": "step",
        "title": "Pitch, 20 seconds.",
-       "detail": "Full detail customer: the ceramic pitch. Ceramic customer: the maintenance plan pitch.",
+       "detail": "Full detail customers get the ceramic pitch. Ceramic customers get the maintenance plan pitch.",
        "subs": [],
        "required": true,
        "id": "hand-at-the-car-4",
        "script": "pitch",
        "needs": "!maintenance",
-       "more": "Keep it short and natural, about 20 seconds. Full detail customers get the ceramic pitch; ceramic customers get the maintenance plan pitch. The right one for this job is below, with a Copy button. Tap whether you pitched it."
+       "more": "Keep it short and natural, about 20 seconds. The right pitch for this job is below, with a Copy button. Then tap whether you pitched it."
       },
       {
        "type": "step",
@@ -2414,13 +2430,13 @@
       {
        "type": "step",
        "title": "Review ask:",
-       "detail": "\"If you've got 30 seconds later, a Google review helps us heaps. I'll text you the link tonight.\" Leave the review card and business card on the steering wheel cover or the middle console.",
+       "detail": "\"If you've got 30 seconds later, a Google review helps us heaps. I'll text you the link tonight.\" Check the review card and business card are on the steering wheel cover or the middle console. Not there yet? Leave them now.",
        "subs": [],
        "required": true,
        "id": "hand-at-the-car-6",
        "script": "review",
        "needs": "!maintenance",
-       "more": "Ask in a relaxed way, word for word. Leave the review card and a business card on the steering wheel cover or the middle console, so they see them later. You'll text the link tonight."
+       "more": "Ask in a relaxed way, word for word. On a full or interior detail the cards went in at the end of the interior, so just check they're there. Not there yet? Leave the review card and a business card on the steering wheel cover or the middle console, so they see them later. You'll text the link tonight."
       },
       {
        "type": "step",
@@ -2455,25 +2471,25 @@
       {
        "type": "step",
        "title": "",
-       "detail": "Mark the job done in the tracker: job $, ceramic pitched Y/N, plan pitched Y/N, review asked.",
+       "detail": "Mark the job done in the tracker. Fill in the job price, ceramic pitched Y/N, plan pitched Y/N and review asked. Maintenance: just the job price.",
        "subs": [],
        "required": true,
        "id": "hand-same-night-2",
-       "more": "Record the price, whether you pitched ceramic (Y/N), whether you pitched the plan (Y/N), and that you asked for a review. This is how Angus sees what's working."
+       "more": "Record the price, whether you pitched ceramic (Y/N), whether you pitched the plan (Y/N), and that you asked for a review. On a maintenance wash, just the price. This is how Angus sees what's working."
       },
       {
        "type": "step",
        "title": "",
-       "detail": "Upload the 12 photos to the shared folder.",
+       "detail": "Upload the job photos to the shared folder.",
        "subs": [],
        "required": true,
        "id": "hand-same-night-3",
-       "more": "Upload all 12 photos to the shared folder the same night, before they get lost in your camera roll."
+       "more": "Upload all the job photos to the shared folder the same night, before they get lost in your camera roll."
       },
       {
        "type": "step",
        "title": "",
-       "detail": "Day 3, no review: one nudge, then stop.",
+       "detail": "Day 3, no review yet? Send one nudge, then stop.",
        "subs": [],
        "required": true,
        "id": "hand-same-night-4",
@@ -2512,13 +2528,13 @@
      ]
     }
    ],
-   "seed": 3
+   "seed": 4
   },
   {
    "key": "signoff",
    "name": "Sign-off before the customer sees it",
    "sort": 9,
-   "intro": "One person checks the other's work. Nothing gets handed over with a box unticked.",
+   "intro": "One person checks the other's work. Don't hand the car over until every box is ticked.",
    "outro": "Show only the sign-off items that apply to the job's service: skip \"Inside\" for exterior, correction and ceramic-only jobs, skip \"Outside\" for interior-only jobs, and skip the items marked \"(correction and coating)\" or \"(coating)\" when they don't apply.",
    "sections": [
     {
@@ -2542,7 +2558,7 @@
       {
        "type": "signoff",
        "title": "",
-       "detail": "No polish or coating residue in badges, gaps or on trim",
+       "detail": "No polish or coating left behind in badges, gaps or on trim",
        "subs": [],
        "required": true,
        "id": "sign-outside-2",
@@ -2655,11 +2671,11 @@
       {
        "type": "signoff",
        "title": "",
-       "detail": "12 photos taken",
+       "detail": "Every job photo the app showed is taken",
        "subs": [],
        "required": true,
        "id": "sign-job-1",
-       "more": "Check all 12 photos are on the phone, including the after shot from the same spot as the first one."
+       "more": "Check every job photo the app showed is on the phone, including the after shot from the same spot as the first one."
       },
       {
        "type": "signoff",
@@ -2693,7 +2709,7 @@
      ]
     }
    ],
-   "seed": 3
+   "seed": 4
   }
  ],
  "services": {
@@ -2862,6 +2878,6 @@
    ],
    "notOffered": "We don't do PPF (paint protection film), window tinting or rim repairs."
   },
-  "seed": 3
+  "seed": 4
  }
 }

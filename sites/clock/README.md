@@ -75,8 +75,10 @@ as the SOPs say.
   **Up next** at the bottom always takes you to the next step not done.
 - **Clips and photos at the step.** Each clip to film, and each of the 12 job
   photos, shows right under the step it belongs to (or just before the first
-  step, for the befores): *Film first*, *Film while you do it*, *Film it now*,
-  *Photo 5 of 12: foam on*. Tick a clip once it's filmed. When the exterior is
+  step, for the befores): *Film this first*, *Film during the step above*,
+  *Film this now*, *Take photo 4 of 7: Foam on*. Photos are counted for
+  the job, because an exterior detail has 7 of the 12 and a full detail 10.
+  Tick a clip once it's filmed. When the exterior is
   cut short for a correction or ceramic job, the "after" clips move to where
   that job really finishes. A clip with no sensible place stays in a short
   list at the end of its stage.

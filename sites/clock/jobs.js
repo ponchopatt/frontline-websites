@@ -581,7 +581,7 @@
     place = S.placements(j.lists);
     for (const t of j.lists) for (const s of t.sections) s.items.forEach((it, n) => { idx[it.id] = { it, s, t, n }; });
     // A clip or photo cue sits in the list right around its step.
-    const cue = x => (x.clip ? slot('row:' + x.clip, 'li') : photoCue(x.photo));
+    const cue = x => (x.clip ? slot('row:' + x.clip, 'li') : photoCue(x));
     const around = it => (place.before[it.id] || []).map(cue).join('') + slot('row:' + it.id, 'li') + (place.after[it.id] || []).map(cue).join('');
     for (const t of j.lists) {
       if (t.key === 'signoff') hasSign = true;
@@ -726,9 +726,9 @@
     if (it.type === 'clip') {
       // At its step it says what to do now; in a leftover list it says when.
       const atStep = !!place.placed[id];
-      const cueText = !atStep ? cap(it.when) : it.pos === 'before' ? 'Film first' : it.when === 'during' ? 'Film while you do it' : 'Film it now';
+      const cueText = !atStep ? cap(it.when) : it.pos === 'before' ? 'Film this first' : it.when === 'during' ? 'Film during the step above' : 'Film this now';
       return `<div class="item clip${atStep ? ' inline' : ''}"${attrs}>${tick}<div class="item-main"><span class="when" data-w="${esc(atStep ? 'now' : it.when)}">${esc(cueText)}</span>` +
-        `<span class="txt"><b>${esc(it.title)}</b></span><span class="why">${esc(it.length)}. ${esc(it.purpose)}</span>${metaLine(x, it)}</div></div>`;
+        `<span class="txt"><b>${esc(it.title)}</b></span><span class="why">${esc(String(it.length || '').replace(/^(\d+)s$/, '$1 sec clip'))}. ${esc(it.purpose)}</span>${metaLine(x, it)}</div></div>`;
     }
     const text = it.title ? `<b>${esc(it.title)}</b> ${esc(it.detail)}` : esc(it.detail);
     // Spans, not a list: they sit inside the button.
@@ -849,10 +849,11 @@
     return `<h3 class="sub">${esc(name)}<span>${done} of ${left.length} filmed</span></h3>`;
   }
 
-  // A job photo reminder, right where it's taken. Nothing to tick: it's one of the 12.
-  function photoCue(p) {
+  // A job photo reminder, right where it's taken. Nothing to tick.
+  function photoCue(c) {
+    const p = c.photo;
     return `<li class="photo-cue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>` +
-      `<span><b>Photo ${esc(p.n)} of 12:</b> ${esc(p.label)}</span></li>`;
+      `<span><b>Take photo ${esc(c.i)} of ${esc(c.of)}:</b> ${esc(p.label)}</span></li>`;
   }
 
   function blockHtml(key, c) {
@@ -920,7 +921,7 @@
     if (c.sum.stage === 'working') {
       const n = S.nextStep(c.j.lists, c.st);
       if (n) {
-        const words = n.item.title ? n.item.title.replace(/[.:,]$/, '') : n.item.detail.split(' ').slice(0, 7).join(' ').replace(/[.:,]$/, '');
+        const words = n.item.title ? n.item.title.replace(/[.:,]$/, '') : String(n.item.detail || '').split(/[.:?](?:\s|$)/)[0];
         html = next('', `Up next: ${esc(shortName(n.template))}`, esc(words), `data-next="${esc(n.item.id)}"`);
       }
     } else if (c.sum.stage === 'ready') {

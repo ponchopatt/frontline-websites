@@ -11,7 +11,7 @@
    A redirected response cannot be served for a navigation, so the page is
    cached under "./", which is also the manifest's start_url. */
 
-const CACHE = 'imperium-clock-v2';
+const CACHE = 'imperium-clock-v3';
 const SHELL = [
   './',
   'app.js',

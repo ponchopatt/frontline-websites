@@ -12,6 +12,7 @@
   --panel:   #1A181B;   /* raised */
   --panel-2: #221F23;   /* raised, pressed or hovered */
   --steel:   #35323A;   /* hard edges, unlit ticks */
+  --ring:    #6A666E;   /* 3.4:1, an empty tick you can still find in sun */
 
   /* Ink — warm white, never #fff. A pure white on warm graphite looks broken. */
   --ivory: #F4F1EC;     /* 16.8:1 on --graphite */

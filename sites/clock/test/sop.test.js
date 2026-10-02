@@ -56,7 +56,9 @@ test('correction and ceramic stop the exterior steps at the rinse after clay', (
     assert.ok(!ext.includes('Ceramic sealant.'), s);
   }
   assert.equal(stepTitles(build('Exterior detail').lists, 'exterior').length, 14);
-  assert.equal(itemsOf(build('Ceramic coating').lists, 'exterior').filter(i => i.type === 'clip').length, 16);
+  // A ceramic job gets no sealant, so it has no sealant beading clip.
+  assert.equal(itemsOf(build('Ceramic coating').lists, 'exterior').filter(i => i.type === 'clip').length, 15);
+  assert.equal(itemsOf(build('Paint correction').lists, 'exterior').filter(i => i.type === 'clip').length, 16);
   assert.equal(seed().services['Ceramic coating'].stopAfter.exterior, 'ext-steps-7');
 });
 
@@ -305,12 +307,13 @@ test('the new wording: acid only without chrome, the Green Star mix, polish tech
   assert.equal(find(full, 'exterior', /^Touch wash/).subs[0], "Touch wash bucket: 1 or 2 capfuls of Green Star, measured with the bottle's lid.");
   const polish = find(full, 'correction', /^Do the whole car/);
   assert.deepEqual(polish.subs, [
+    'Worst panel first: polish one side of the 50/50 tape line. Film the 50/50 and take its photo, then peel the tape. Then do the other half and the rest of the car.',
     'Polish on the pad: 4 to 5 pea-sized drops, north, south, east and west of the centre, or in a star shape.',
     "Stamp the pad on the panel or area you're doing first. Spread it on the lowest speed, then go up to normal speed.",
     'Normal speed: microfibre pad speed 4, foam pad speed 5.',
   ]);
   assert.match(find(full, 'interior', /^Finish/).detail, /review card and business card inside the cover or on the middle console/);
-  assert.match(find(full, 'handover', /^Review ask/).detail, /review card and business card on the steering wheel cover or the middle console/);
+  assert.match(find(full, 'handover', /^Review ask/).detail, /review card and business card are on the steering wheel cover or the middle console\. Not there yet\? Leave them now\./);
   assert.match(full.find(t => t.key === 'correction').intro, /Goal: 2 to 3 hours, exterior included\.$/);
   assert.match(build('Ceramic coating').lists.find(t => t.key === 'ceramic').intro, /Goal: 4 to 5 hours on site\.$/);
   // Story videos, before the reel clips.
@@ -325,7 +328,7 @@ test('maintenance: its own steps, both sign-off lists, and no pitch or review as
   const { lists, meta } = build('Maintenance wash');
   const m = lists.find(t => t.key === 'maintenance');
   assert.deepEqual(m.sections.map(s => s.name), ['Outside', 'Inside', 'Maintenance story videos']);
-  assert.deepEqual(m.sections[0].items.map(i => i.title), ['Wheels and tyres,', 'Spray down', 'Foam it up,', 'Rinse', 'Clay', 'Rinse.', 'Look around', 'Ceramic sealant', 'Dry, blower, glass and tyre shine,']);
+  assert.deepEqual(m.sections[0].items.map(i => i.title), ['Wheels and tyres,', 'Spray down', 'Foam it up.', 'Rinse', 'Clay', 'Rinse.', 'Look around', 'Ceramic sealant', 'Dry, blower, glass and tyre shine,']);
   assert.match(m.sections[0].items[4].detail, /front only, where the bugs are, plus the windscreen and mirrors/);
   assert.match(m.sections[1].items[4].detail, /wipe down with no chemical/);
   assert.match(m.sections[1].items[5].detail, /No review card or business card/);
@@ -482,6 +485,28 @@ test('where clips land: befores first, the foam with the foam, and the finish wh
   assert.ok(at('Maintenance wash', 'before', 'mnt-inside-1').includes('photo 4'));
   assert.ok(at('Interior detail', 'before', 'int-steps-1').includes('photo 1'));
   assert.ok(at('Interior detail', 'after', 'int-steps-3').includes('int-interior-clips-to-film-5'));
+  // The 50/50: the tape line goes on before the test spot, and the shot, its photo and the peel come
+  // straight after the worst panel is half done in step 6, not once the whole car is polished.
+  assert.ok(at('Paint correction', 'before', 'cor-steps-5').includes('cor-paint-correction-clips-to-film-3'));
+  for (const x of ['cor-paint-correction-clips-to-film-6', 'cor-paint-correction-clips-to-film-7', 'photo 8'])
+    assert.ok(at('Paint correction', 'after', 'cor-steps-6').includes(x), x);
+  assert.deepEqual(at('Paint correction', 'after', 'cor-steps-10'), []);
+  // Sealant beading: on a correction-only job at the protect step, never on a ceramic job (no sealant).
+  for (const x of ['ext-exterior-clips-to-film-8', 'photo 11']) {
+    assert.ok(at('Paint correction', 'after', 'cor-steps-11').includes(x), x);
+    assert.ok(!at('Ceramic coating', 'after', 'cor-steps-11').includes(x), x);
+    assert.ok(!at('Ceramic coating', 'after', 'cer-applying-10').includes(x), x);
+  }
+});
+
+test('job photos are counted for the job: an exterior detail shows 7, numbered in order', () => {
+  const p = J.placements(build('Exterior detail').lists);
+  const cues = [...Object.values(p.before), ...Object.values(p.after)].flat().filter(c => c.photo).sort((a, b) => a.i - b.i);
+  assert.equal(p.photos, 7);
+  assert.deepEqual(cues.map(c => c.photo.n), [1, 2, 3, 5, 9, 11, 12]);
+  assert.deepEqual(cues.map(c => `${c.i}/${c.of}`), ['1/7', '2/7', '3/7', '4/7', '5/7', '6/7', '7/7']);
+  assert.equal(J.placements(build(['Full detail', 'Paint correction']).lists).photos, 12);
+  assert.equal(J.placements(build('Ceramic coating').lists).photos, 8);   // no beading: no sealant
 });
 
 test('phones and sheets on the last version move to this one; edits made since stay', () => {
