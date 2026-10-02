@@ -753,7 +753,8 @@
   function finishHtml(c) {
     const reopen = c.admin ? '<button class="ghost" type="button" data-reopen>Reopen this job</button>' : '';
     if (c.sum.stage === 'done') {
-      return sealHtml('Job done', `Finished by <b>${esc(c.sum.finishedBy || 'the crew')}</b>, ${esc(whenText(c.sum.finishedAt))}.`) + `<div class="finish">${reopen}</div>`;
+      return sealHtml('Job done', `Finished by <b>${esc(c.sum.finishedBy || 'the crew')}</b>, ${esc(whenText(c.sum.finishedAt))}.`) +
+        `<div class="finish"><button class="go" type="button" data-summary>Send the summary to the group</button>${reopen}</div>`;
     }
     if (c.sum.stage === 'signed') return `<div class="finish"><button class="go" type="button" data-finish>Mark job done</button>${reopen}</div>`;
     return '';
@@ -841,7 +842,7 @@
     } else if (c.sum.stage === 'signed') {
       html = '<button class="go" type="button" data-finish>Mark job done</button>';
     } else {
-      html = next('done', 'Job done', 'Back to all jobs', 'data-jback');
+      html = next('done', 'Job done', 'Send the summary to the group', 'data-summary');
     }
     put(bar, `<div>${html}</div>`);
   }
@@ -1291,6 +1292,306 @@
     H.toast('Warranty record saved.');
   }
 
+  /* ======================================================= job summary == */
+  /* A picture of the job for the Imperium group chat: the car and the
+     service, steps done out of steps, each stage, the skips and the notes.
+     Drawn straight onto a canvas, so it looks the same on every phone and
+     needs nothing from the internet. */
+  const C = {
+    bg: '#121113', panel: '#1A181B', line: 'rgba(244, 241, 236, 0.10)', steel: '#35323A',
+    ivory: '#F4F1EC', ash: '#C3BEB8', slate: '#928D89',
+    amber: '#FFB020', amberLit: '#FFCB63', good: '#57D08A', warn: '#FF7A66',
+  };
+  const FONT = { display: "'Big Shoulders Display', 'Instrument Sans', sans-serif", sans: "'Instrument Sans', system-ui, sans-serif" };
+  const CARD_W = 1080, PAD = 72, INNER = CARD_W - PAD * 2;
+
+  function wrapLines(ctx, text, max) {
+    const lines = [];
+    let line = '';
+    for (const w of String(text || '').split(/\s+/).filter(Boolean)) {
+      const t = line ? line + ' ' + w : w;
+      if (!line || ctx.measureText(t).width <= max) line = t;
+      else { lines.push(line); line = w; }
+    }
+    if (line) lines.push(line);
+    return lines;
+  }
+  function loadImage(src) {
+    return new Promise((ok, no) => {
+      if (!src) return no(new Error('no image'));
+      const img = new Image();
+      img.onload = () => ok(img);
+      img.onerror = no;
+      img.src = src;
+    });
+  }
+  function rounded(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  // Lays the card out from the top. Run once to measure and once to paint.
+  function drawCard(ctx, d, logo, height) {
+    const text = (str, x, y, font, color, align) => {
+      ctx.font = font;
+      ctx.fillStyle = color;
+      ctx.textAlign = align || 'left';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText(str, x, y);
+    };
+    const block = (str, y, font, color, lh, max) => {
+      ctx.font = font;
+      const lines = wrapLines(ctx, str, max || INNER);
+      lines.forEach((l, i) => text(l, PAD, y + lh * (i + 1) - Math.round(lh * 0.22), font, color));
+      return y + lh * lines.length;
+    };
+    if (height) {
+      ctx.fillStyle = C.bg;
+      ctx.fillRect(0, 0, CARD_W, height);
+      const glow = ctx.createRadialGradient(CARD_W / 2, -80, 40, CARD_W / 2, -80, 760);
+      glow.addColorStop(0, 'rgba(255, 176, 32, 0.16)');
+      glow.addColorStop(1, 'rgba(255, 176, 32, 0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, CARD_W, 700);
+    }
+    let y = PAD;
+
+    // Brand and date.
+    if (logo) {
+      const h = 50, w = Math.round(logo.width * (h / logo.height));
+      ctx.drawImage(logo, PAD, y, w, h);
+    }
+    text(d.when, CARD_W - PAD, y + 36, `500 30px ${FONT.sans}`, C.slate, 'right');
+    y += 50 + 58;
+
+    // The car, then the service.
+    y = block(d.title, y, `700 112px ${FONT.display}`, C.ivory, 106);
+    y += 10;
+    y = block(d.services, y, `600 44px ${FONT.sans}`, C.amber, 56);
+    if (d.sub) y = block(d.sub, y + 6, `400 34px ${FONT.sans}`, C.slate, 46);
+    y += 44;
+
+    // Steps done out of steps, with the gauge.
+    const panelH = 320;
+    if (height) {
+      rounded(ctx, PAD, y, INNER, panelH, 28);
+      ctx.fillStyle = C.panel;
+      ctx.fill();
+      ctx.strokeStyle = C.line;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      const cx = PAD + 40 + 120, cy = y + panelH / 2, r = 120;
+      const lit = d.full ? 60 : d.total ? Math.round(60 * d.done / d.total) : 0;
+      ctx.lineCap = 'round';
+      for (let i = 0; i < 60; i++) {
+        const a = (i * 6 - 90) * Math.PI / 180, major = i % 5 === 0;
+        const r1 = r - (major ? 30 : 22);
+        ctx.strokeStyle = i < lit ? (major || d.full ? C.amberLit : C.amber) : C.steel;
+        ctx.lineWidth = major ? 6 : 4;
+        ctx.beginPath();
+        ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
+        ctx.lineTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+        ctx.stroke();
+      }
+      if (d.full) {
+        ctx.strokeStyle = C.amber;
+        ctx.lineWidth = 10;
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        ctx.moveTo(cx - 38, cy + 2);
+        ctx.lineTo(cx - 10, cy + 30);
+        ctx.lineTo(cx + 42, cy - 28);
+        ctx.stroke();
+      } else {
+        text(`${d.total ? Math.round(100 * d.done / d.total) : 0}%`, cx, cy + 22, `700 64px ${FONT.display}`, C.ivory, 'center');
+      }
+      const tx = PAD + 360, room = PAD + INNER - 32 - tx;
+      // Shrinks a line until it fits inside the panel, so nothing runs off the edge.
+      const fit = (str, weight, size, family) => {
+        ctx.font = `${weight} ${size}px ${family}`;
+        while (size > 22 && ctx.measureText(str).width > room) ctx.font = `${weight} ${size -= 2}px ${family}`;
+        return ctx.font;
+      };
+      const top = d.skippedText ? y + 136 : y + 152;
+      ctx.font = `700 140px ${FONT.display}`;
+      const doneW = ctx.measureText(String(d.done)).width;
+      text(String(d.done), tx, top, `700 140px ${FONT.display}`, C.ivory);
+      text(`/${d.total}`, tx + doneW + 6, top, `700 84px ${FONT.display}`, C.slate);
+      text('steps done', tx, top + 56, `600 40px ${FONT.sans}`, C.ash);
+      text(d.status, tx, top + 108, fit(d.status, 600, 32, FONT.sans), d.statusColor);
+      if (d.skippedText) text(d.skippedText, tx, top + 150, fit(d.skippedText, 600, 30, FONT.sans), C.warn);
+    }
+    y += panelH + 56;
+
+    // Each stage, then the clips and the second check.
+    const row = (name, done, total, color) => {
+      if (height) {
+        text(name, PAD, y + 40, `600 36px ${FONT.sans}`, C.ivory);
+        text(`${done}/${total}`, CARD_W - PAD, y + 42, `700 46px ${FONT.display}`, done >= total ? C.amber : C.ivory, 'right');
+        rounded(ctx, PAD, y + 62, INNER, 8, 4);
+        ctx.fillStyle = 'rgba(244, 241, 236, 0.08)';
+        ctx.fill();
+        if (total && done) {
+          rounded(ctx, PAD, y + 62, Math.max(8, INNER * Math.min(1, done / total)), 8, 4);
+          ctx.fillStyle = color;
+          ctx.fill();
+        }
+      }
+      y += 100;
+    };
+    for (const s of d.stages) row(s.name, s.done, s.total, C.amber);
+    if (d.clipsTotal) row('Clips filmed', d.clipsDone, d.clipsTotal, C.amberLit);
+    if (d.checksTotal) row('Second check', d.checksDone, d.checksTotal, C.good);
+    y += 12;
+
+    const heading = (str, color) => {
+      if (height) {
+        ctx.fillStyle = C.line;
+        ctx.fillRect(PAD, y, INNER, 2);
+      }
+      y += 40;
+      y = block(str, y, `700 56px ${FONT.display}`, color, 60);
+      y += 14;
+    };
+    if (d.skipped.length) {
+      heading(`Skipped (${d.skipped.length})`, C.warn);
+      for (const k of d.skipped) {
+        y = block(k.step, y, `600 34px ${FONT.sans}`, C.ivory, 46);
+        y = block(`${k.reason} (${k.by})`, y, `400 32px ${FONT.sans}`, C.ash, 44);
+        y += 22;
+      }
+    }
+    heading(d.notes.length ? `Notes (${d.notes.length})` : 'Notes', C.ivory);
+    if (!d.notes.length) y = block('No notes on this job.', y, `400 32px ${FONT.sans}`, C.slate, 44) + 22;
+    for (const n of d.notes) {
+      y = block(n.step, y, `600 30px ${FONT.sans}`, C.amber, 42);
+      y = block(n.note, y, `400 34px ${FONT.sans}`, C.ivory, 48);
+      y = block(n.by, y, `400 28px ${FONT.sans}`, C.slate, 40);
+      y += 24;
+    }
+
+    // Who.
+    if (height) { ctx.fillStyle = C.line; ctx.fillRect(PAD, y, INNER, 2); }
+    y += 34;
+    if (d.who) y = block(d.who, y, `400 30px ${FONT.sans}`, C.ash, 44);
+    y = block('Imperium Detailing job checklist', y + 6, `400 26px ${FONT.sans}`, C.slate, 38);
+    return y + PAD - 20;
+  }
+
+  function summaryFacts(c) {
+    const j = c.j;
+    const r = S.report(j.lists, c.meta, c.st);
+    const s = r.sum;
+    const full = s.stage === 'signed' || s.stage === 'done';
+    const status = s.stage === 'done' ? (s.signedBy ? `Job done. Checked by ${s.signedBy}.` : 'Job done. Let through without a check.')
+      : s.stage === 'signed' ? (s.signedBy ? `Signed off by ${s.signedBy}` : 'Let through without a check')
+      : s.stage === 'ready' ? 'Every step done. Waiting on the second check.'
+      : `${s.total - s.done} to go`;
+    const names = list => (list.length > 1 ? list.slice(0, -1).join(', ') + ' and ' + list[list.length - 1] : list[0] || '');
+    const who = [r.crew.length ? `Worked by ${names(r.crew)}.` : '', s.signedBy ? `Checked by ${s.signedBy}.` : '',
+      s.overrideBy ? `Let through by ${s.overrideBy}: ${s.overrideReason}` : '',
+      s.ceramicPitched ? `Ceramic pitched: ${s.ceramicPitched}.` : '', s.planPitched ? `Plan pitched: ${s.planPitched}.` : ''].filter(Boolean).join(' ');
+    const [y, m, dd] = j.date.split('-').map(Number);
+    return {
+      title: j.car || j.customer || 'Job',
+      services: (j.services || []).join(' + '),
+      sub: [j.car ? j.customer : '', j.suburb].filter(Boolean).join(', '),
+      when: new Date(y, m - 1, dd).toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' }),
+      done: s.done, total: s.total, full,
+      status,
+      skippedText: s.skipped ? `${plural(s.skipped, 'step')} skipped` : '',
+      statusColor: s.stage === 'done' || s.stage === 'signed' ? C.good : s.stage === 'ready' ? '#4E9BE8' : C.amber,
+      stages: r.stages.map(x => ({ ...x, name: SHORT[x.key] || x.name })),
+      clipsDone: r.clipsDone, clipsTotal: r.clipsTotal, checksDone: r.checksDone, checksTotal: r.checksTotal,
+      skipped: r.skipped,
+      notes: r.notes.map(x => ({ ...x, by: [x.by, SHORT[x.stage] || x.stage].filter(Boolean).join(', ') })),
+      who,
+    };
+  }
+
+  async function summaryCanvas() {
+    const c = ctxNow();
+    const d = summaryFacts(c);
+    try {
+      await Promise.all([`700 112px ${FONT.display}`, `600 40px ${FONT.sans}`, `400 34px ${FONT.sans}`]
+        .map(f => (document.fonts && document.fonts.load ? document.fonts.load(f) : null)));
+    } catch {}
+    const brand = document.querySelector('.head img');
+    let logo = null;
+    try { logo = await loadImage(brand && brand.src); } catch {}
+    const probe = document.createElement('canvas').getContext('2d');
+    const height = Math.ceil(drawCard(probe, d, logo, 0));
+    const canvas = document.createElement('canvas');
+    canvas.width = CARD_W;
+    canvas.height = height;
+    drawCard(canvas.getContext('2d'), d, logo, height);
+    return canvas;
+  }
+
+  let sumBlob = null, sumUrl = '', sumName = '';
+  const sumSay = m => { $('sumMsg').textContent = m; };
+  async function openSummary() {
+    const j = model.jobs[openId];
+    if (!j || !j.lists) return;
+    sumBlob = null;
+    if (sumUrl) URL.revokeObjectURL(sumUrl);
+    sumUrl = '';
+    $('sumImg').hidden = true;
+    $('sumWait').hidden = false;
+    for (const id of ['sumCopy', 'sumShare', 'sumSave']) $(id).disabled = true;
+    sumSay('');
+    $('sumDlg').showModal();
+    try {
+      const canvas = await summaryCanvas();
+      sumBlob = await new Promise((ok, no) => canvas.toBlob(b => (b ? ok(b) : no(new Error('no picture'))), 'image/png'));
+    } catch {
+      $('sumWait').textContent = 'The picture couldn’t be made on this phone.';
+      return;
+    }
+    sumUrl = URL.createObjectURL(sumBlob);
+    sumName = `imperium-${String(j.car || j.customer || 'job').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${j.date}.png`;
+    $('sumImg').src = sumUrl;
+    $('sumImg').hidden = false;
+    $('sumWait').hidden = true;
+    const file = new File([sumBlob], sumName, { type: 'image/png' });
+    $('sumShare').hidden = !(navigator.canShare && navigator.canShare({ files: [file] }));
+    for (const id of ['sumCopy', 'sumShare', 'sumSave']) $(id).disabled = false;
+  }
+  /* The picture is ready before the tap, so the copy happens inside the tap:
+     Safari only lets a page write to the clipboard straight after one. */
+  async function copySummary() {
+    if (!sumBlob) return;
+    try {
+      if (!navigator.clipboard || !window.ClipboardItem) throw new Error('no clipboard');
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': sumBlob })]);
+      sumSay('Copied. Open the Imperium group chat and paste it.');
+      H.buzz(14);
+    } catch {
+      sumSay('This phone won’t copy a picture from here. Hold your finger on the picture and tap Copy, or use Share.');
+    }
+  }
+  async function shareSummary() {
+    if (!sumBlob) return;
+    const file = new File([sumBlob], sumName, { type: 'image/png' });
+    try { await navigator.share({ files: [file], title: 'Job summary' }); }
+    catch (err) { if (err && err.name !== 'AbortError') sumSay('Sharing didn’t work here. Copy or Save it instead.'); }
+  }
+  function saveSummary() {
+    if (!sumUrl) return;
+    const a = document.createElement('a');
+    a.href = sumUrl;
+    a.download = sumName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    sumSay(`Saved ${sumName}.`);
+  }
+
   /* ================================================================= admin == */
   function paintAdmin() {
     const host = $('jobsAdmin');
@@ -1537,7 +1838,7 @@
   document.addEventListener('click', e => {
     const t = e.target.closest('[data-open-job],[data-tick],[data-how],[data-goto],[data-next],[data-next-step],[data-val],[data-copy],[data-paint],[data-warranty],' +
       '[data-note],[data-skip],[data-unskip],[data-form-save],[data-form-cancel],[data-signoff],[data-override],[data-finish],[data-reopen],[data-pickwho],' +
-      '[data-jback],[data-svc],[data-jday],[data-sop-edit],[data-sop-export],[data-ed-tab],[data-ed-move],[data-ed-del],[data-ed-add],[data-ed-svc],[data-ed-rmsvc],[data-ed-addsvc],[data-ed-reset]');
+      '[data-jback],[data-summary],[data-svc],[data-jday],[data-sop-edit],[data-sop-export],[data-ed-tab],[data-ed-move],[data-ed-del],[data-ed-add],[data-ed-svc],[data-ed-rmsvc],[data-ed-addsvc],[data-ed-reset]');
     if (!t) return;
     const d = t.dataset;
     if (d.openJob) openJob(d.openJob);
@@ -1561,6 +1862,7 @@
     else if (d.reopen !== undefined) reopen();
     else if (d.pickwho !== undefined) H.openWho();
     else if (d.jback !== undefined) leaveJob();
+    else if (d.summary !== undefined) openSummary();
     else if (d.svc) {
       jd.services = jd.services.includes(d.svc) ? jd.services.filter(x => x !== d.svc) : jd.services.concat([d.svc]);
       $('jdErr').hidden = true;
@@ -1595,6 +1897,11 @@
 
   $('newJobBtn').addEventListener('click', () => openJobDlg(null));
   $('jvEdit').addEventListener('click', () => openJobDlg(openId));
+  $('jvShare').addEventListener('click', openSummary);
+  $('sumCopy').addEventListener('click', copySummary);
+  $('sumShare').addEventListener('click', shareSummary);
+  $('sumSave').addEventListener('click', saveSummary);
+  $('sumClose').addEventListener('click', () => $('sumDlg').close());
   $('jvBack').addEventListener('click', leaveJob);
   $('jdCancel').addEventListener('click', () => $('jobDlg').close());
   $('jdSave').addEventListener('click', saveJd);

@@ -88,6 +88,14 @@ as the SOPs say.
   service gets, paint limits); and **download the SOPs** as markdown, in the
   same layout as the original Appendix.
 
+- **Job summary for the group chat.** *Summary* at the top of a job (and
+  *Send the summary to the group* once it's done) makes a picture: the car,
+  the service, steps done out of steps (say 46/46 for a full detail), each
+  stage, clips filmed, the second check, anything skipped and why, and every
+  note. **Copy image**, then paste it into the Imperium group chat. On a phone
+  that won't copy pictures from a web page, *Share* sends it straight to an
+  app, or hold your finger on the picture to copy or save it.
+
 A job keeps its own copy of the lists it started with. Editing an SOP changes
 new jobs only. Two phones can work the same job: each tick is saved on its own,
 and the later tick wins.

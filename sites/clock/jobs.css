@@ -569,3 +569,21 @@ dialog.tall { max-height: min(88dvh, 760px); overflow: auto; overscroll-behavior
 .ed-svc b { display: block; margin-bottom: 9px; color: var(--ivory); font-weight: 600; }
 .ed-svc .seg button { min-height: 40px; padding: 7px 12px; }
 .ed-svc .two { margin-top: 10px; }
+
+/* =========================================================== job summary == */
+.jv-acts { display: flex; gap: 8px; }
+.jv-acts .btn { min-height: 44px; padding: 8px 14px; }
+.sum-frame {
+  margin-top: 6px;
+  border: 1px solid var(--line-2);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--graphite);
+}
+.sum-frame img { display: block; width: 100%; height: auto; -webkit-touch-callout: default; }
+.sum-wait { margin: 0; padding: 60px 16px; text-align: center; color: var(--slate); font-size: var(--t-small); }
+.sum-acts { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; margin-top: 14px; }
+.sum-acts .btn { min-height: 52px; }
+.sum-acts .btn[hidden] { display: none; }
+.sum-msg { margin: 8px 0 0; min-height: 1.5em; color: var(--ash); font-size: var(--t-small); }
+

@@ -878,7 +878,10 @@ dialog .ask-body { margin: 0; color: var(--slate); font-size: var(--t-small); }
     <section class="view jobv" id="v-job" hidden>
       <div class="jv-nav">
         <button class="jv-back" id="jvBack" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Jobs</button>
-        <button class="btn" id="jvEdit" type="button">Job details</button>
+        <span class="jv-acts">
+          <button class="btn" id="jvShare" type="button">Summary</button>
+          <button class="btn" id="jvEdit" type="button">Details</button>
+        </span>
       </div>
       <button class="strip" id="jvLink" type="button" hidden></button>
       <div class="jv-hero">
@@ -1095,6 +1098,23 @@ dialog .ask-body { margin: 0; color: var(--slate); font-size: var(--t-small); }
     <button class="btn key" id="jdSave" type="button">Start the job</button>
   </div>
   <div class="dlg-foot" id="jdFoot" hidden><button class="ghost danger" id="jdDelete" type="button">Delete this job</button></div>
+</dialog>
+
+<!-- The picture for the group chat. -->
+<dialog id="sumDlg" class="tall">
+  <h3>Job summary</h3>
+  <p class="ask-body">Copy the picture, then paste it into the Imperium group chat.</p>
+  <div class="sum-acts">
+    <button class="btn key" id="sumCopy" type="button" disabled>Copy image</button>
+    <button class="btn" id="sumShare" type="button" hidden disabled>Share</button>
+    <button class="btn" id="sumSave" type="button" disabled>Save</button>
+  </div>
+  <p class="sum-msg" id="sumMsg" aria-live="polite"></p>
+  <div class="sum-frame">
+    <img id="sumImg" alt="A summary of this job: the car, the service, steps done and the notes" hidden>
+    <p class="sum-wait" id="sumWait">Making the picture&hellip;</p>
+  </div>
+  <div class="acts"><button class="btn" id="sumClose" type="button">Done</button></div>
 </dialog>
 
 <dialog id="paintDlg" class="tall">

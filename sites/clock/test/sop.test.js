@@ -258,3 +258,29 @@ test('a job list fits in a Google Sheet cell, one list per cell', () => {
     assert.ok(JSON.stringify(t).length < 45000, t.key);
   }
 });
+
+test('the summary picture: steps by stage, notes and skips in order, who did it', () => {
+  const { meta, lists } = build('Full detail');
+  let st = allDone(meta, 'AJ');
+  st = J.merge(st, J.tickPatch(st, 'int-steps-1', 'Lucas', '2026-10-01T05:00:00Z'));
+  st = J.merge(st, J.tickPatch(st, 'int-steps-1', 'Lucas', '2026-10-01T05:01:00Z'));
+  st = J.merge(st, J.skipPatch(st, 'ext-steps-12', 'Lucas', 'Customer asked for no tyre shine', '2026-10-01T05:02:00Z'));
+  st = J.merge(st, J.notePatch(st, 'ext-steps-6', 'Lucas', 'Heavy sap on the roof', '2026-10-01T05:03:00Z'));
+  st = J.merge(st, J.notePatch(st, 'job-on-arrival-2', 'AJ', 'Kerbed rear left wheel, photo taken', '2026-10-01T05:04:00Z'));
+  const r = J.report(lists, meta, st);
+  assert.equal(r.sum.done, 46);          // a skip still settles the step
+  assert.equal(r.sum.total, 46);
+  assert.equal(r.sum.skipped, 1);
+  assert.deepEqual(r.stages.map(s => [s.name, s.done, s.total]), [
+    ['Rules for every job', 9, 9], ['Exterior detail', 14, 14], ['Interior detail', 12, 12], ['Handover and after', 11, 11],
+  ]);
+  assert.deepEqual(r.notes.map(n => [n.step, n.note, n.by]), [
+    ['Walk around the car with the customer', 'Kerbed rear left wheel, photo taken', 'AJ'],
+    ['Clay', 'Heavy sap on the roof', 'Lucas'],
+  ]);
+  assert.deepEqual(r.skipped, [{ step: 'Tyre shine', stage: 'exterior', reason: 'Customer asked for no tyre shine', by: 'Lucas' }]);
+  assert.deepEqual(r.crew, ['AJ', 'Lucas']);
+  assert.deepEqual([r.clipsDone, r.clipsTotal, r.checksDone, r.checksTotal], [0, 22, 0, 12]);
+  assert.equal(J.label({ detail: 'Send the on-our-way text with a real arrival time.' }), 'Send the on-our-way text with a real arrival\u2026');
+});
+

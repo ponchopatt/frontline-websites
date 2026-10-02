@@ -265,6 +265,39 @@
     return c;
   }
 
+  // A short name for a step, for places with no room for the whole line.
+  function label(it) {
+    if (it.title) return it.title.replace(/[.:,]$/, '');
+    var first = String(it.detail || '').split(/[.:](\s|$)/)[0];      // up to the first full stop or colon
+    var w = first.split(/\s+/).filter(Boolean);
+    return w.slice(0, 8).join(' ').replace(/[.:,]$/, '') + (w.length > 8 ? '\u2026' : '');
+  }
+
+  /* What the job summary picture shows: progress by stage, every note and
+     every skip in checklist order, who worked the job and who checked it. */
+  function report(lists, meta, state) {
+    var sum = summary(meta, state);
+    var stages = [], notes = [], skipped = [], crew = [], clipsDone = 0, clipsTotal = 0;
+    (lists || []).forEach(function (t) {
+      var k = counts(t, state);
+      clipsDone += k.clipsDone;
+      clipsTotal += k.clipsTotal;
+      if (t.key !== 'signoff' && k.total) stages.push({ key: t.key, name: t.name, done: k.done, total: k.total });
+    });
+    eachItem(lists, function (it, s, t) {
+      var x = item(state, it.id);
+      if (!x) return;
+      if (it.type === 'step' && x.by && (x.done || x.skipped) && crew.indexOf(x.by) === -1) crew.push(x.by);
+      if (x.skipped && !x.done) skipped.push({ step: label(it), stage: t.key, reason: x.reason || '', by: x.by || '' });
+      if (x.note) notes.push({ step: label(it), stage: t.key, note: x.note, by: x.noteBy || x.by || '' });
+    });
+    return {
+      sum: sum, stages: stages, notes: notes, skipped: skipped, crew: crew,
+      clipsDone: clipsDone, clipsTotal: clipsTotal,
+      checksDone: sum.signDone, checksTotal: sum.signTotal,
+    };
+  }
+
   function paintFlags(reading, set) {
     var s = settings(set);
     var r = ((reading && reading.r) || []).map(function (v) {
@@ -428,6 +461,8 @@
     eachItem: eachItem,
     nextStep: nextStep,
     counts: counts,
+    label: label,
+    report: report,
     paintFlags: paintFlags,
     addYear: addYear,
     warrantyDefaults: warrantyDefaults,
