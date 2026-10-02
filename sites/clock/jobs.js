@@ -959,6 +959,9 @@
   }
 
   /* ========================================================= open & close == */
+  // Some preview windows refuse history changes; the back button then just isn't wired.
+  function pushHistory(state) { try { history.pushState(state, ''); } catch {} }
+
   function openJob(id) {
     if (!model.jobs[id]) return;
     if (H.tab() !== 'jobs') {
@@ -976,7 +979,7 @@
     $('v-jobs').hidden = true;
     $('v-job').hidden = false;
     document.body.setAttribute('data-jobview', '');
-    if (!history.state || history.state.job !== id) history.pushState({ job: id }, '');
+    if (!history.state || history.state.job !== id) pushHistory({ job: id });
     buildJobView();
     paintJob(true);
     paintStrip();
@@ -1342,7 +1345,7 @@
     $('v-admin').hidden = true;
     $('v-sop').hidden = false;
     document.body.setAttribute('data-jobview', '');
-    history.pushState({ sop: true }, '');
+    pushHistory({ sop: true });
     renderEd();
     scrollTo({ top: 0 });
   }
@@ -1620,7 +1623,7 @@
     const s = history.state || {};
     if (openId && !s.job) closeJob();
     if (ed && !s.sop) {
-      if (ed.dirty.size) { history.pushState({ sop: true }, ''); leaveSop(); }
+      if (ed.dirty.size) { pushHistory({ sop: true }); leaveSop(); }
       else closeSop();
     }
   });
