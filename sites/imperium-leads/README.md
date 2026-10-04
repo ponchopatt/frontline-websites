@@ -29,6 +29,7 @@ Numbers. A phone app (add it to the home screen) shared by Angus and Ananth.
 | `imperium-leads.html` | The page. |
 | `public/claude-shim.js` | The storage layer and the PIN screen. |
 | `public/reviews.js` | The review steps, the texts, what's due and the 30-day counts (plain script, shared with the tests). |
+| `public/model.js` | The lead model: stages, follow-up fields and the one-off upgrade (plain script, shared with the tests). |
 | `public/sw.js`, `public/manifest.json`, icons | Home-screen app; opens with no signal (the list needs one). |
 | `api/unlock.js` | PIN check and sign-in. |
 | `api/lead.js` | New enquiries in. |
@@ -78,8 +79,15 @@ Headers: `Content-Type: application/json` and `x-lead-secret: <LEAD_SECRET>`.
 ```json
 { "name": "Jo Smith", "phone": "0400 123 456", "email": "jo@example.com",
   "service": "Ceramic coating", "vehicle": "Kluger", "suburb": "Gungahlin",
-  "when": "As soon as possible", "notes": "Dog hair", "source": "Meta ad · Brand film", "form": "facebook" }
+  "when": "asap", "notes": "Dog hair", "source": "Meta ad · Brand film", "form": "facebook" }
 ```
+
+- `name` or `phone`: at least one is needed. The rest are optional.
+- `when` (or `timeline`): the timeline answer, as the form's key (`asap`, `within_1_2_weeks`,
+  `just_browsing`) or its words ("Within 1 to 2 weeks"). It sets the lead's score: ASAP is Hot,
+  1 to 2 weeks is Warm, Just browsing is Browsing.
+- `owner`: `Angus` or `Ananth` when the source knows who it's for. Without one, leads are shared
+  out in turn (`_system/owner-turn` remembers whose go is next).
 
 - `source`: anything with meta, facebook or instagram → Meta ad; google → Google; tiktok →
   TikTok; else Website. The ad's name is whatever comes after `·`.
@@ -118,6 +126,33 @@ Scenario: **Facebook Lead Ads → Watch New Leads**, then **HTTP → Make a requ
 ```
 
 The `{{1.…}}` names depend on the questions in the instant form; pick them from Make's list.
+
+## Follow-up fields (v2)
+
+Each lead also carries `stage`, `touches`, `timeline`, `score`, `scoreBy`, `schedule`,
+`snoozeUntil`, `lostReason`, `doNotText`, `junk` and `modelVersion` (`public/model.js` says what
+each one means). Nothing old is removed: `nextFollowUp` is still the due date, `quoted` the quote
+and `log` the touch log. Every save works the new fields out from the old status, so both stay in
+step until the new screens replace the old ones.
+
+Leads from before v2 get the fields from **Upgrade the leads (one-off)** on the Numbers tab. It
+shows what will move where first, then:
+
+1. **Save a backup**: copies every lead to `backups/leads-<time>` and downloads a JSON file.
+2. **Run the upgrade**: adds the fields to each lead. Leads with no owner go to whoever logged
+   them last, else in turn, oldest first (the old value is kept in `ownerWas`).
+
+| Old | New stage |
+|---|---|
+| New, nothing logged | New |
+| Contacted, or anything logged | Chasing |
+| Quoted | Quoted |
+| Booked, job still to come | Booked |
+| Booked and the job date has passed, marked done, or a job added directly | Done |
+| …and a review text has gone out (or they reviewed or declined) | Review asked |
+| Lost ("Why lost?" becomes the reason) | Lost |
+
+Running it twice does nothing more. The card hides once every lead is upgraded.
 
 ## Reviews
 
@@ -167,6 +202,6 @@ curl "https://<this app>/api/remind?slot=morning&force=1" -H "Authorization: Bea
 
 ```
 npm install
-npm test          # lead mapping, the reminder lists, Canberra dates, the review steps
+npm test          # lead mapping, the reminder lists, Canberra dates, the review steps, the lead model
 node build.mjs    # needs SUPABASE_URL and SUPABASE_ANON_KEY to point at a project
 ```

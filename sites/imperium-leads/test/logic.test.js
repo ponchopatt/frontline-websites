@@ -85,7 +85,31 @@ test("a lead is saved exactly as the app's Add tab saves one", () => {
     reviewNudgedAt: null,
     reviewLeftAt: null,
     reviewNotes: "",
+    stage: "New",
+    touches: 0,
+    timeline: "asap",
+    score: "Hot",
+    scoreBy: "timeline",
+    schedule: "full",
+    snoozeUntil: "",
+    lostReason: "",
+    doNotText: false,
+    junk: false,
+    modelVersion: 2,
   });
+});
+
+test("a lead's timeline, score and owner come from the form", () => {
+  const at = new Date("2026-10-04T01:00:00Z");
+  const b = (input) => buildLead({ name: "Jo", phone: "0400 000 000", ...input }, at);
+  assert.equal(b({ when: "within_1_2_weeks" }).score, "Warm");
+  assert.equal(b({ when: "Within 1 to 2 weeks" }).timeline, "within_1_2_weeks");
+  const browsing = b({ when: "just_browsing" });
+  assert.deepEqual([browsing.timeline, browsing.score, browsing.schedule], ["just_browsing", "Browsing", "browsing"]);
+  assert.deepEqual([b({}).timeline, b({}).score, b({}).scoreBy], ["", "", ""]);
+  assert.equal(b({ timeline: "asap", when: "just_browsing" }).timeline, "asap"); // an explicit timeline wins
+  assert.equal(b({ owner: "ananth" }).owner, "Ananth");
+  assert.equal(b({ owner: "Bob" }).owner, "");
 });
 
 test("Canberra's day and hour, through daylight saving", () => {

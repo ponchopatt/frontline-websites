@@ -1,6 +1,6 @@
 import { json, readJson, sameSecret } from "../lib/http.js";
 import { buildLead, phoneKey } from "../lib/lead-map.js";
-import { adminClient } from "../lib/supabase.js";
+import { adminClient, readDoc, writeDoc } from "../lib/supabase.js";
 
 /*
   POST /api/lead — a new enquiry from a website form, Make.com or anything else.
@@ -8,7 +8,13 @@ import { adminClient } from "../lib/supabase.js";
   Make.com (and any server) sends the shared secret in an "x-lead-secret" header. The website's
   forms post straight from the visitor's browser, where a secret can't be kept, so those are let
   in by where they come from instead (the site's own address). One lead per phone number a day.
+
+  Each new lead gets an owner: the one the source names ("owner": "Angus" or "Ananth"), else
+  Angus and Ananth in turn.
 */
+
+const TURN = ["_system", "owner-turn"];
+const PEOPLE = ["Angus", "Ananth"];
 
 const SITE_ORIGINS = (process.env.LEAD_ORIGINS || "https://imperiumdetailing.com.au,https://www.imperiumdetailing.com.au")
   .split(",")
@@ -55,6 +61,13 @@ export async function POST(request) {
     if (same) return json({ ok: true, duplicate: true, id: same.id }, 200, headers);
   }
 
+  // Nobody named: whoever's turn it is.
+  const byTurn = !lead.owner;
+  if (byTurn) {
+    const turn = await readDoc(db, ...TURN).catch(() => null);
+    lead.owner = PEOPLE.includes(turn && turn.next) ? turn.next : PEOPLE[0];
+  }
+
   // The id carries the phone and day, so two posts at the same moment still make one lead.
   const id = key ? `in-${lead.date}-${key}` : crypto.randomUUID();
   const { data: inserted, error } = await db
@@ -62,5 +75,7 @@ export async function POST(request) {
     .upsert({ collection: "leads", id, data: lead, updated_at: new Date().toISOString() }, { onConflict: "collection,id", ignoreDuplicates: true })
     .select("id");
   if (error) return json({ ok: false, error: "Couldn't save the lead" }, 500, headers);
+  // Pass the turn on only when a lead was really added (and never let it stop the lead).
+  if (byTurn && inserted.length) await writeDoc(db, ...TURN, { next: PEOPLE[(PEOPLE.indexOf(lead.owner) + 1) % 2] }).catch(() => {});
   return json({ ok: true, duplicate: inserted.length === 0, id }, 200, headers);
 }

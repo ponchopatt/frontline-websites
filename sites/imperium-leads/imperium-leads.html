@@ -241,6 +241,9 @@ tr:last-child td{border-bottom:0}
         </label>
         <label>Car<input id="f-car" placeholder="Kluger"></label>
         <label>Suburb<input id="f-suburb" placeholder="Gungahlin"></label>
+        <label class="full">When do they want it?
+          <div class="seg three" id="f-timeline" data-value=""><button type="button" data-v="asap">ASAP</button><button type="button" data-v="within_1_2_weeks">1 to 2 weeks</button><button type="button" data-v="just_browsing">Just browsing</button></div>
+        </label>
         <label class="full">Where are they at?
           <div class="seg three" id="f-stage" data-value="New"><button type="button" data-v="New">New lead</button><button type="button" data-v="Quoted">Quoted</button><button type="button" data-v="Booked">Booked</button></div>
         </label>
@@ -267,6 +270,16 @@ tr:last-child td{border-bottom:0}
 
   <!-- NUMBERS -->
   <section id="view-numbers" role="tabpanel">
+    <div class="card" id="upCard" hidden>
+      <div class="eyebrow"><span>Upgrade the leads (one-off)</span><span class="n" id="upTodo">0</span></div>
+      <p class="help">Adds the new follow-up fields to every lead: stage, touches, timeline, hot or not, and an owner for leads with none. Nothing already saved is changed or deleted. Check what it will do, save a backup, then run it.</p>
+      <div style="overflow-x:auto"><table id="upMoves"></table></div>
+      <div id="upFacts" class="help"></div>
+      <details><summary class="help" style="cursor:pointer">Every lead, one by one</summary><div class="log" id="upRows" style="margin-top:8px"></div></details>
+      <button class="btn secondary" id="upBackup" type="button">1. Save a backup</button>
+      <button class="btn" id="upRun" type="button" disabled>2. Run the upgrade</button>
+      <p class="help" id="upMsg" role="status" aria-live="polite"></p>
+    </div>
     <div class="seg three" id="period" data-value="30"><button type="button" data-v="month">This month</button><button type="button" data-v="30">Last 30 days</button><button type="button" data-v="all">All time</button></div>
     <div class="seg three" id="nWho" data-value=""><button type="button" data-v="">Both</button><button type="button" data-v="Angus">Angus</button><button type="button" data-v="Ananth">Ananth</button></div>
     <div class="tiles" id="tiles"></div>
@@ -340,6 +353,7 @@ tr:last-child td{border-bottom:0}
   // ---------- ADD ----------
   seg($("#f-source"));
   seg($("#f-service"));
+  seg($("#f-timeline"));
   const stageChanged=v=>{ $("#dateWrap").hidden = v!=="Booked"; $("#priceWrap").hidden = v==="New"; $("#saveBtn").textContent = v==="Booked" ? "Save booking" : "Save lead"; };
   seg($("#f-stage"), stageChanged);
   $("#addForm").addEventListener("submit", async e=>{
@@ -363,12 +377,13 @@ tr:last-child td{border-bottom:0}
       log: talked ? [{at:now, by:who||"", type:"text", outcome: stage==="Booked" ? "Booked" : "Quote given", note:""}] : [],
       objection:"", lostWhy:"", jobDate: stage==="Booked" ? jobDate : "", revenue: stage==="Booked" ? price : null, paid:"", plan:"", upsellOffered:"", upsellTaken:"",
       reviewAsked:"", reviewLeft:"", nextDue:"", notes: $("#f-notes").value.trim(),
-      completedAt:null, reviewStatus:null, reviewAskedAt:null, reviewTextSentAt:null, reviewNudgedAt:null, reviewLeftAt:null, reviewNotes:""
+      completedAt:null, reviewStatus:null, reviewAskedAt:null, reviewTextSentAt:null, reviewNudgedAt:null, reviewLeftAt:null, reviewNotes:"",
+      timeline: $("#f-timeline").dataset.value||""
     };
     const btn=$("#saveBtn"); btn.disabled=true;
     try{
-      await db.collection("leads").add(doc);
-      $("#addForm").reset(); setSeg($("#f-source"),""); setSeg($("#f-service"),""); setSeg($("#f-stage"),"New"); stageChanged("New");
+      await db.collection("leads").add(M.sync(doc,today()));
+      $("#addForm").reset(); setSeg($("#f-source"),""); setSeg($("#f-service"),""); setSeg($("#f-timeline"),""); setSeg($("#f-stage"),"New"); stageChanged("New");
       toast(stage==="Booked" ? "Booked. Legend." : stage==="Quoted" ? "Saved. They're on tomorrow's follow-up list." : "Saved. Now text them, then log it.");
     }catch(err){ writeFail(err); }
     btn.disabled=false;
@@ -554,12 +569,13 @@ tr:last-child td{border-bottom:0}
         ...R.completePatch(null, owed ? new Date(t+"T12:00:00").toISOString() : now)
       };
       const b=g("#j-save"); b.disabled=true;
-      try{ const ref=await db.collection("leads").add(doc); toast(owed?"Added to payments due.":"Job saved. Now ask for a review."); closeSheet(); if(!owed) openReview(ref.id); }catch(err){ b.disabled=false; writeFail(err); }
+      try{ const ref=await db.collection("leads").add(M.sync(doc,today())); toast(owed?"Added to payments due.":"Job saved. Now ask for a review."); closeSheet(); if(!owed) openReview(ref.id); }catch(err){ b.disabled=false; writeFail(err); }
     });
   }
 
   // ---------- REVIEWS (the steps and words live in /reviews.js) ----------
   const R=window.ILReviews;
+  const M=window.ILModel;
   const REVIEW_PILL={not_asked:"due",asked_in_person:"due",text_sent:"contacted",nudged:"contacted",reviewed:"done",declined:"muted",skip:"muted"};
   const REVIEW_TOAST={asked_in_person:"Nice. Text them the link tonight.",text_sent:"Text logged. Nudge in 3 days if no review.",nudged:"Nudge logged. That's the last one.",reviewed:"Legend. Reply to it within 24 hours.",declined:"No worries. Leave it there.",skip:"Skipped.",not_asked:"Back to the start."};
   const revPill=l=>{ const st=R.statusOf(l); return st?'<span class="pill '+(REVIEW_PILL[st]||"muted")+'">'+esc(R.LABELS[st])+'</span>':""; };
@@ -706,7 +722,7 @@ tr:last-child td{border-bottom:0}
     g("#t-save").addEventListener("click",async()=>{
       const type=g("#t-type").dataset.value, out=g("#t-out").dataset.value, now=new Date().toISOString();
       const entry={at:now, by:who||"", type:type==="text"?"text":"call", pickedUp: type==="answered"?"Yes":type==="noanswer"?"No":"", outcome: type==="answered"?out:(type==="text"?"Texted":"No answer"), note:g("#t-note").value.trim()};
-      const upd={...l, lastContact:now, log:[...(l.log||[]),entry].slice(-30), updatedAt:now};
+      const upd={...l, lastContact:now, log:[...(l.log||[]),entry], updatedAt:now};
       const fuv=g("#t-fu").dataset.value; const fuDate= fuv==="pick" ? (g("#t-fuDate").value||addDays(1)) : addDays(Number(fuv)||1);
       if(type!=="answered"){ if(upd.status==="New") upd.status="Contacted"; upd.nextFollowUp=fuDate; if(upd.replyMins==null && l.status==="New") upd.replyMins=Math.max(0,Math.round((Date.now()-new Date(l.createdAt||now))/60000)); }
       else if(out==="Booked"){ upd.status="Booked"; upd.jobDate=g("#t-jobDate").value||""; upd.revenue=num(g("#t-rev").value); upd.car=g("#t-car").value.trim(); upd.suburb=g("#t-suburb").value.trim(); upd.service=g("#t-service").dataset.value||upd.service; upd.nextFollowUp=""; upd.objection=""; }
@@ -718,13 +734,13 @@ tr:last-child td{border-bottom:0}
       try{ await db.doc("leads/"+id).set(clean(upd)); toast(out==="Booked"?"Booked. Legend.":"Logged."); closeSheet(); }catch(err){ b.disabled=false; writeFail(err); }
     });
   }
-  function clean(o){ const c={...o}; delete c.id; c.booked = c.status==="Booked"?"Yes":c.status==="Lost"?"No":"Pending"; return c; }
+  function clean(o){ const c={...o}; delete c.id; c.booked = c.status==="Booked"?"Yes":c.status==="Lost"?"No":"Pending"; return M.sync(c,today()); }
   function closeSheet(){ const s=$("#sheet"); if(s) s.remove(); }
   async function quickTouch(id,type,btn){
     const l=leads.find(x=>x.id===id); if(!l||!db) return;
     const now=new Date().toISOString();
     const entry={at:now, by:who||"", type:type==="texted"?"text":"call", pickedUp:type==="noanswer"?"No":"", outcome:type==="texted"?"Texted":"No answer", note:""};
-    const upd={...l, lastContact:now, log:[...(l.log||[]),entry].slice(-30), updatedAt:now, nextFollowUp:addDays(1)};
+    const upd={...l, lastContact:now, log:[...(l.log||[]),entry], updatedAt:now, nextFollowUp:addDays(1)};
     if(upd.status==="New") upd.status="Contacted";
     if(upd.replyMins==null && l.status==="New") upd.replyMins=Math.max(0,Math.round((Date.now()-new Date(l.createdAt||now))/60000));
     if(btn) btn.disabled=true;
@@ -822,6 +838,7 @@ tr:last-child td{border-bottom:0}
     return d>=addDays(-30);
   }
   function renderNumbers(){
+    renderUpgrade();
     const w=$("#nWho").dataset.value;
     const rows=leads.filter(l=>inPeriod(l) && (!w||l.owner===w));
     const booked=rows.filter(l=>l.status==="Booked"), rev=booked.reduce((a,l)=>a+(l.revenue||0),0);
@@ -855,10 +872,54 @@ tr:last-child td{border-bottom:0}
     $("#dueList").innerHTML=due.map(l=>leadCard(l,{tag:'<span class="pill due">'+esc(l.nextDue)+'</span>'})).join(""); wire($("#dueList"));
   }
 
+  // ---------- ONE-OFF UPGRADE (the new follow-up fields) ----------
+  // Shows what it will do to every lead first. Needs a backup before it runs. Writes only the new
+  // fields (and an owner where there's none), merged into each lead, so nothing saved is lost.
+  let upBacked=false, upBusy=false;
+  function upPlan(){ return M.plan(leads.map(l=>({...l})),today()); }
+  function renderUpgrade(){
+    const card=$("#upCard"); if(!card) return;
+    const p=upPlan();
+    card.hidden = !p.todo && !upBusy;
+    if(card.hidden) return;
+    $("#upTodo").textContent=p.todo+" to do";
+    $("#upMoves").innerHTML='<tr><th>Now</th><th class="n">Leads</th></tr>'+p.moves.map(m=>'<tr><td>'+esc(m.move)+'</td><td class="n">'+m.n+'</td></tr>').join("");
+    const tl=p.timelines;
+    $("#upFacts").innerHTML='Owners: '+p.owners.kept+' already have one, '+p.owners.logged+' go to whoever logged them last, '+p.owners.turn+' are shared out in turn.<br>Timeline found: '+tl.asap+' ASAP, '+tl.within_1_2_weeks+' 1 to 2 weeks, '+tl.just_browsing+' just browsing, '+tl.none+' not known.';
+    $("#upRows").innerHTML=p.rows.map(r=>'<div><span>'+esc(r.owner)+(r.ownerFrom?"*":"")+'</span><div>'+esc(r.name)+(r.car?" · "+esc(r.car):"")+': '+esc(r.from)+' → <b>'+esc(r.to)+'</b>'+(r.touches?' · '+r.touches+' touch'+(r.touches===1?"":"es"):"")+(r.timeline?' · '+esc(M.TIMELINES[r.timeline]):"")+'</div></div>').join("")+'<p class="help">* owner given by the upgrade.</p>';
+    $("#upRun").disabled = !upBacked || upBusy || !p.todo;
+  }
+  $("#upBackup").addEventListener("click",async()=>{
+    if(!db){ toast("Not connected. Try again in a sec."); return; }
+    const b=$("#upBackup"); b.disabled=true; $("#upMsg").textContent="Saving a backup…";
+    try{
+      const snap=await db.collection("leads").get();
+      const rows=snap.docs.map(x=>({id:x.id, data:x.data()})), stamp=new Date().toISOString();
+      // One copy in the database, and one on this phone.
+      await db.doc("backups/leads-"+stamp.replace(/[:.]/g,"-")).set({savedAt:stamp, count:rows.length, leads:rows});
+      if(dl){ try{ await dl.save({filename:"imperium-leads-backup-"+today()+".json", data:JSON.stringify({savedAt:stamp, leads:rows},null,1)}); }catch(e){} }
+      upBacked=true; $("#upMsg").textContent="Backup saved: "+rows.length+" leads. Now run the upgrade.";
+    }catch(err){ $("#upMsg").textContent="Couldn't save the backup. Check your signal and try again."; }
+    b.disabled=false; renderUpgrade();
+  });
+  $("#upRun").addEventListener("click",async()=>{
+    if(!db||!upBacked||upBusy) return;
+    upBusy=true; const todo=upPlan().rows.filter(r=>r.needed); let done=0, failed=0;
+    $("#upRun").disabled=true;
+    for(const r of todo){
+      try{ await db.doc("leads/"+r.id).update(r.patch); done++; }catch(e){ failed++; }
+      $("#upMsg").textContent="Upgrading… "+(done+failed)+" of "+todo.length;
+    }
+    upBusy=false;
+    $("#upMsg").textContent=failed ? done+" done, "+failed+" didn't save. Tap Run again to finish them." : "Done. All "+done+" leads upgraded.";
+    toast(failed?"Some didn't save. Run it again.":"Upgrade done.");
+    renderUpgrade();
+  });
+
   // ---------- EXPORT ----------
   $("#exportBtn").addEventListener("click", async()=>{
     if(!dl) return;
-    const cols=["date","owner","name","phone","source","ad","referredBy","service","car","suburb","status","replyMins","quoted","objection","lostWhy","nextFollowUp","lastContact","jobDate","jobTime","address","access","revenue","paid","plan","upsellOffered","upsellTaken","reviewAsked","reviewLeft","nextDue","notes","touches","completedAt","reviewStatus","reviewAskedAt","reviewTextSentAt","reviewNudgedAt","reviewLeftAt","reviewNotes"];
+    const cols=["date","owner","name","phone","source","ad","referredBy","service","car","suburb","status","replyMins","quoted","objection","lostWhy","nextFollowUp","lastContact","jobDate","jobTime","address","access","revenue","paid","plan","upsellOffered","upsellTaken","reviewAsked","reviewLeft","nextDue","notes","touches","completedAt","reviewStatus","reviewAskedAt","reviewTextSentAt","reviewNudgedAt","reviewLeftAt","reviewNotes","stage","touches","timeline","score","schedule","snoozeUntil","lostReason","doNotText","junk"];
     const q=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
     const csv=[cols.join(",")].concat(leads.slice().sort((a,b)=>(a.date||"").localeCompare(b.date||"")).map(l=>cols.map(c=>q(c==="touches"?(l.log||[]).length:l[c])).join(","))).join("\n");
     try{ await dl.save({filename:"imperium-leads-"+today()+".csv", data:csv}); }catch(e){ if(e&&e.code!=="cancelled") toast("Couldn't download"); }
