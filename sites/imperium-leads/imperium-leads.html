@@ -89,6 +89,16 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .tag.hot{background:var(--bad-bg);color:var(--bad)}
 .tag.warm{background:var(--warn-bg);color:var(--warn)}
 .tag.browsing{background:var(--surface2);color:var(--muted)}
+.today-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.today-h .seg{flex:0 0 132px}
+.today-h .seg button{padding:8px 4px}
+.sec{display:flex;flex-direction:column;gap:6px}
+#tLists{gap:14px}
+.sec > .eyebrow,details.sec > summary{padding:0 2px}
+details.sec > summary{cursor:pointer;list-style:none}
+details.sec > summary::-webkit-details-marker{display:none}
+details.sec[open] > summary span[aria-hidden]{transform:rotate(180deg)}
+.later{display:flex;align-items:center;gap:2px;margin:0}
 .choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .choice .btn{padding:16px 8px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -154,7 +164,7 @@ tr:last-child td{border-bottom:0}
 <div class="gate" id="gate" hidden>
   <div class="card">
     <h1>Who's this?</h1>
-    <p class="help">Picks which morning and evening list you see. Numbers are always both of you together.</p>
+    <p class="help">Today shows your leads first. Numbers are always both of you together.</p>
     <div class="seg two" id="whoPick"><button type="button" data-v="Angus">Angus</button><button type="button" data-v="Ananth">Ananth</button></div>
   </div>
 </div>
@@ -163,8 +173,7 @@ tr:last-child td{border-bottom:0}
   <div class="top-in">
     <div class="brand"><b>IMPERIUM <span>LEADS</span></b><button class="who" id="whoBtn" title="Switch person">…</button></div>
     <div class="tabs" role="tablist">
-      <button class="tab" role="tab" id="tab-morning" aria-selected="true" data-tab="morning">Morning<span class="dot" id="dotMorning" hidden></span></button>
-      <button class="tab" role="tab" id="tab-evening" aria-selected="false" data-tab="evening">Evening<span class="dot" id="dotEvening" hidden></span></button>
+      <button class="tab" role="tab" id="tab-today" aria-selected="true" data-tab="today">Today<span class="dot" id="dotToday" hidden></span></button>
       <button class="tab" role="tab" id="tab-add" aria-selected="false" data-tab="add">Add</button>
       <button class="tab" role="tab" id="tab-leads" aria-selected="false" data-tab="leads">Leads</button>
       <button class="tab" role="tab" id="tab-numbers" aria-selected="false" data-tab="numbers">Numbers</button>
@@ -175,28 +184,27 @@ tr:last-child td{border-bottom:0}
 <main>
   <div id="offline" class="banner" hidden>Can't reach the shared list. Make sure you're signed into claude.ai in this browser, allow any popup, then <button type="button" class="mini" id="retryBtn" style="color:var(--warn)">try again</button>.</div>
 
-  <!-- MORNING -->
-  <section id="view-morning" role="tabpanel">
-    <div><h1 id="mHead">Morning</h1><p class="help" id="mSub"></p></div>
-    <div class="card">
-      <div class="eyebrow"><span>Follow up today</span><span class="n" id="fuCount">0</span></div>
-      <p class="help">New leads first, then anyone due a chase. Tap a button to log what you did.</p>
-      <div class="list" id="fuList"></div>
+  <!-- TODAY -->
+  <section id="view-today" role="tabpanel">
+    <div class="today-h">
+      <div><h1 id="tHead">Today</h1><p class="help" id="tSub"></p></div>
+      <div class="seg two" id="tView" data-value="mine"><button type="button" data-v="mine">Mine</button><button type="button" data-v="all">All</button></div>
+    </div>
+    <p class="help later" id="tLater" hidden></p>
+    <div id="tLists" class="sec">
+    <div class="sec" id="s-callFirst" hidden><div class="eyebrow"><span>Call first</span><span class="n"></span></div><div class="list"></div></div>
+    <div class="sec" id="s-fresh" hidden><div class="eyebrow"><span>New</span><span class="n"></span></div><div class="list"></div></div>
+    <div class="sec" id="s-hot" hidden><div class="eyebrow"><span>Hot, due today</span><span class="n"></span></div><div class="list"></div></div>
+    <div class="sec" id="s-due" hidden><div class="eyebrow"><span>Due today</span><span class="n"></span></div><div class="list"></div></div>
+    <details class="sec" id="s-waiting" hidden><summary class="eyebrow"><span>Waiting (<span class="wn"></span>)</span><span aria-hidden="true">▾</span></summary><div class="list"></div></details>
+    <div class="empty" id="tClear" hidden>All done. Nobody else to chase today.</div>
     </div>
     <div class="card">
       <div class="eyebrow"><span>Jobs today</span><span class="n" id="jobsCount">0</span></div>
       <div class="list" id="jobsList"></div>
       <div class="eyebrow" style="margin-top:4px"><span>Tomorrow</span><span class="n" id="jobsTmCount">0</span></div>
       <div class="list" id="jobsTmList"></div>
-    </div>
-    <div class="card">
-      <button class="btn" id="quickTextBtn" type="button">Make a review text</button>
-      <div class="eyebrow"><span>Reviews due today</span><span class="n" id="revDueCount">0</span></div>
-      <p class="help">Review texts to send and one-off nudges. Copy, send, then tap the button.</p>
-      <div class="list" id="revDueList"></div>
-      <div class="eyebrow" style="margin-top:4px"><span>Reviews, last 30 days</span></div>
-      <div class="tiles" id="revTiles"></div>
-      <div class="row"><button class="btn secondary small" id="revSettingsBtn" type="button">Review settings</button><button class="btn secondary small" id="hoursBtn" type="button">Call hours</button></div>
+      <button class="btn secondary" id="addJobBtn" type="button">+ Add a job done today</button>
     </div>
     <div class="card">
       <div class="eyebrow"><span>Payments due</span><span class="n" id="owedTotal">$0</span></div>
@@ -204,31 +212,16 @@ tr:last-child td{border-bottom:0}
       <div class="list" id="owedList"></div>
       <button class="btn secondary" id="addOwedBtn" type="button">+ Add someone who owes you</button>
     </div>
+    <div class="card">
+      <div class="eyebrow"><span>Reviews due today</span><span class="n" id="revDueCount">0</span></div>
+      <div class="list" id="revDueList"></div>
+      <button class="btn" id="quickTextBtn" type="button">Make a review text</button>
+      <div class="row"><button class="btn secondary small" id="revSettingsBtn" type="button">Review settings</button><button class="btn secondary small" id="hoursBtn" type="button">Call hours</button></div>
+    </div>
     <div class="card" id="reelsCard">
       <div class="eyebrow"><span>Reels posted today</span><span class="n" id="reelsWho"></span></div>
       <div class="counter"><b><span id="reelsN">0</span><span style="color:var(--muted);font-size:16px;font-weight:600"> / 2</span></b><div class="row" style="flex-wrap:nowrap"><button class="btn secondary small" id="reelsMinus">−</button><button class="btn small" id="reelsPlus">Posted one</button></div></div>
       <p class="help">2 a day is the target. Morning post around 7am, evening around 4pm.</p>
-    </div>
-  </section>
-
-  <!-- EVENING -->
-  <section id="view-evening" role="tabpanel">
-    <div><h1>Evening</h1><p class="help">Log every lead you touched today, then close the day.</p></div>
-    <div class="card">
-      <div class="eyebrow"><span>Leads to log</span><span class="n" id="evCount">0</span></div>
-      <p class="help">Anyone new today, due today, or that you talked to. A tick means it's logged.</p>
-      <div class="list" id="evList"></div>
-    </div>
-    <div class="card">
-      <div class="eyebrow"><span>Jobs done today</span><span class="n" id="evJobsCount">0</span></div>
-      <div class="list" id="evJobsList"></div>
-      <button class="btn secondary" id="addJobBtn" type="button">+ Add a job done today</button>
-    </div>
-    <div class="card">
-      <div class="eyebrow"><span>Today so far</span></div>
-      <div class="tiles" id="evTiles"></div>
-      <button class="btn" id="closeDay">Close the day</button>
-      <p class="help" id="closedNote" hidden></p>
     </div>
   </section>
 
@@ -299,6 +292,7 @@ tr:last-child td{border-bottom:0}
       </div>
       <p class="help">Type the spend from Ads Manager. It's remembered on this phone only.</p>
     </div>
+    <div class="card"><div class="eyebrow">Reviews, last 30 days</div><div class="tiles" id="revTiles"></div></div>
     <div class="card" id="dueCard" hidden><div class="eyebrow">Due for their next service</div><div class="list" id="dueList"></div></div>
   </section>
 </main>
@@ -353,7 +347,7 @@ tr:last-child td{border-bottom:0}
   document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>showTab(t.dataset.tab)));
   function showTab(name){
     document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",String(t.dataset.tab===name)));
-    ["morning","evening","add","leads","numbers"].forEach(n=>{ $("#view-"+n).hidden = n!==name; });
+    ["today","add","leads","numbers"].forEach(n=>{ $("#view-"+n).hidden = n!==name; });
     try{ localStorage.setItem("il-tab",name); }catch(e){}
     renderAll();
   }
@@ -464,35 +458,45 @@ tr:last-child td{border-bottom:0}
   }
   function fallbackCopy(t,done){ const ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); try{ document.execCommand("copy"); done(); }catch(e){ toast("Long-press the number to copy it"); } ta.remove(); }
 
-  // ---------- MORNING ----------
-  function renderMorning(){
-    const t=today();
-    $("#mHead").textContent="Morning"+(who?", "+who:"");
-    const lists=M.todayLists(leads,{now:new Date(), hours:H(), all:true}), jobsN=leads.filter(l=>l.status==="Booked"&&l.jobDate===t).length;
-    const fu=[...lists.callFirst,...lists.fresh,...lists.hot,...lists.due];
-    $("#mSub").textContent=new Date().toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"long"})+" · "+fu.length+" to chase · "+jobsN+" job"+(jobsN===1?"":"s")+" today"+(lists.later?" · "+lists.later+" came in overnight, call from "+M.clock(H().start):"");
-    $("#fuCount").textContent=fu.length;
-    $("#dotMorning").hidden=!fu.length; $("#dotMorning").textContent=fu.length;
-    $("#fuList").innerHTML = fu.length ? fu.map(l=>leadCard(l)).join("") : '<div class="empty">Nobody to chase. Go get more leads.</div>';
-    wire($("#fuList"));
+  // ---------- TODAY ----------
+  // Call first, New, Hot, Due today, then Waiting folded. Each list shrinks as things are logged.
+  let tView="mine", waitingLeads=[];
+  seg($("#tView"),v=>{ tView=v; renderAll(); });
+  const lists = () => M.todayLists(leads,{now:new Date(), hours:H(), who, all:tView==="all"});
+  // Someone else's lead on my list: it's been left a day past due.
+  const theirs = l => tView==="mine" && l.owner && l.owner!==who ? '<div class="sub">'+esc(l.owner)+'\'s, not touched for a day</div>' : "";
+  function renderToday(){
+    const t=today(), L=lists();
+    $("#tHead").textContent="Today"+(who?", "+who:"");
+    $("#tSub").textContent=new Date().toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"long",timeZone:"Australia/Sydney"})+" · "+(L.left?L.left+" left":"all done");
+    $("#tLater").hidden=!L.later;
+    if(L.later) $("#tLater").innerHTML=MOON+esc(L.later+" came in overnight. Call from "+M.clock(H().start)+".");
+    ["callFirst","fresh","hot","due"].forEach(k=>{
+      const box=$("#s-"+k), list=L[k];
+      box.hidden=!list.length; box.querySelector(".n").textContent=list.length;
+      box.querySelector(".list").innerHTML=list.map(l=>leadCard(l,{extra:theirs(l)})).join("");
+      wire(box.querySelector(".list"));
+    });
+    waitingLeads=L.waiting;
+    const w=$("#s-waiting"); w.hidden=!waitingLeads.length; w.querySelector(".wn").textContent=waitingLeads.length;
+    if(w.open) renderWaiting(); else w.querySelector(".list").innerHTML="";
+    $("#tClear").hidden=!!L.left;
     const jobs=leads.filter(l=>l.status==="Booked" && l.jobDate===t), tm=leads.filter(l=>l.status==="Booked" && l.jobDate===addDays(1));
     $("#jobsCount").textContent=jobs.length; $("#jobsTmCount").textContent=tm.length;
     $("#jobsList").innerHTML = jobs.length ? jobs.map(l=>leadCard(l,{tag:'<span class="pill booked">'+(l.revenue!=null?money(l.revenue):l.quoted!=null?money(l.quoted):"Booked")+'</span>',
       actions:'<div class="acts">'+jobDoneBtn(l)+'<label class="toggle" style="flex:1"><span>Paid</span><input type="checkbox" data-field="paid" '+(l.paid==="Yes"?"checked":"")+'></label><button class="btn secondary small" data-act="open">Open</button></div>'})).join("") : '<div class="empty">No jobs booked for today.</div>';
     wire($("#jobsList")); wireToggles($("#jobsList"));
-    $("#jobsTmList").innerHTML = tm.length ? tm.map(l=>leadCard(l,{tag:'<span class="pill booked">Tomorrow</span>'})).join("") : '<div class="empty">Nothing tomorrow yet.</div>';
+    $("#jobsTmList").innerHTML = tm.length ? tm.map(l=>leadCard(l,{tag:'<span class="pill booked">Tomorrow</span>', actions:""})).join("") : '<div class="empty">Nothing tomorrow yet.</div>';
     wire($("#jobsTmList"));
     const rset=R.settings(reviewSettings), revDue=R.due(leads,rset,new Date());
     $("#revDueCount").textContent=revDue.length;
     $("#revDueList").innerHTML = revDue.length ? revDue.map(d=>leadCard(d.lead,{tag:'<span class="pill due">'+(d.kind==="text"?"Text":"Nudge")+'</span>', extra:'<div class="sub" style="color:var(--text);font-weight:600">'+esc(d.what)+'</div>',
       actions:'<div class="acts"><button class="btn small" data-act="copyReview">Copy text</button><button class="btn secondary small" data-act="reviewDone" data-status="'+d.done+'">'+esc(d.doneLabel)+'</button></div>'})).join("") : '<div class="empty">Nothing due today.</div>';
     wire($("#revDueList"));
-    const rs=R.stats(leads,new Date(),30), tl=(v,label)=>'<div class="tile"><b>'+v+'</b><span>'+label+'</span></div>';
-    $("#revTiles").innerHTML=tl(rs.done,"Jobs done")+tl(rs.asked,"Asked")+tl(rs.texts,"Texts sent")+tl(rs.reviewed,"Reviews")+tl(pct(rs.asked,rs.done),"Ask rate")+tl(pct(rs.reviewed,rs.done),"Review rate");
     const owed=leads.filter(owes).sort((a,b)=>a.jobDate.localeCompare(b.jobDate));
     $("#owedTotal").textContent=money(owed.reduce((a,l)=>a+(l.revenue??l.quoted??0),0));
     $("#owedList").innerHTML = owed.length ? owed.map(l=>{
-      const days=Math.round((new Date(t+"T12:00:00")-new Date(l.jobDate+"T12:00:00"))/864e5);
+      const days=M.daysBetween(l.jobDate,t);
       return leadCard(l,{tag:'<span class="pill owes">Owes</span>', extra:'<div class="sub">Job on '+esc(dayName(l.jobDate))+(days===0?" (today)":days===1?" (yesterday)":" ("+days+" days ago)")+'</div>',
         actions:'<div class="acts"><button class="btn small" data-act="paid">Paid</button><button class="btn secondary small" data-act="open" style="flex:0 0 auto">Open</button></div>'});
     }).join("") : '<div class="empty">Nobody owes you anything.</div>';
@@ -501,18 +505,23 @@ tr:last-child td{border-bottom:0}
     const r=(day&&day.reels&&day.reels[who])||0;
     $("#reelsN").textContent=r; $("#reelsWho").textContent=who||"";
   }
+  // Waiting stays folded; its cards are only drawn when it's opened.
+  function renderWaiting(){
+    const box=$("#s-waiting .list");
+    box.innerHTML=waitingLeads.map(l=>leadCard(l,{extra:'<div class="sub">Check in on '+esc(dayName(l.nextFollowUp))+'</div>'})).join("");
+    wire(box);
+  }
+  $("#s-waiting").addEventListener("toggle",()=>{ if($("#s-waiting").open) renderWaiting(); else $("#s-waiting .list").innerHTML=""; });
   function wireToggles(el){
     el.querySelectorAll("input[type=checkbox][data-field]").forEach(cb=>cb.addEventListener("change",async()=>{
       const id=cb.closest(".lead").dataset.id, l=leads.find(x=>x.id===id); if(!l||!db) return;
-      const upd=clean({...l,[cb.dataset.field]: cb.checked?"Yes":"No", updatedAt:new Date().toISOString()});
-      try{ await db.doc("leads/"+id).set(upd); }catch(err){ cb.checked=!cb.checked; writeFail(err); }
+      if(!await save(id,{[cb.dataset.field]: cb.checked?"Yes":"No"})) cb.checked=!cb.checked;
     }));
   }
   async function markPaid(id,btn){
     const l=leads.find(x=>x.id===id); if(!l||!db) return;
     if(btn) btn.disabled=true;
-    try{ await db.doc("leads/"+id).set(clean({...l, paid:"Yes", updatedAt:new Date().toISOString()})); toast("Marked paid."); }
-    catch(err){ if(btn) btn.disabled=false; writeFail(err); }
+    if(await save(id,{paid:"Yes"})) toast("Marked paid."); else if(btn) btn.disabled=false;
   }
   $("#reelsPlus").addEventListener("click",()=>bumpReels(1)); $("#reelsMinus").addEventListener("click",()=>bumpReels(-1));
   async function bumpReels(d){
@@ -521,39 +530,6 @@ tr:last-child td{border-bottom:0}
     const next={...(day||{}), reels:{...cur,[who]:n}}; delete next.id;
     try{ await db.doc("days/"+today()).set(next); if(n>=2&&d>0) toast("Both reels done. Nice."); }catch(err){ writeFail(err); }
   }
-
-  // ---------- EVENING ----------
-  function loggedToday(l){ const t=today(); return (l.log||[]).some(e=>localDate(e.at)===t); }
-  // New today or due a chase, and not logged yet. A job added straight from "Add a job" isn't a lead to chase.
-  function needsLog(l){ const t=today(); return l.kind!=="job" && (l.date===t || (isOpen(l) && l.nextFollowUp && l.nextFollowUp<=t)) && !loggedToday(l); }
-  function renderEvening(){
-    const t=today();
-    const ev=leads.filter(l=> loggedToday(l) || needsLog(l))
-      .sort((a,b)=>(loggedToday(a)?1:0)-(loggedToday(b)?1:0));
-    const todo=ev.filter(l=>!loggedToday(l));
-    $("#evCount").textContent=todo.length+" to go"; $("#dotEvening").hidden=!todo.length; $("#dotEvening").textContent=todo.length;
-    $("#evList").innerHTML = ev.length ? ev.map(l=>leadCard(l,{tag: loggedToday(l)?'<span class="pill done">✓ logged</span>':'<span class="pill '+(l.status||"new").toLowerCase()+'">'+esc(l.status||"New")+'</span>', actions: loggedToday(l)?'<div class="acts"><button class="btn secondary small" data-act="open">Open</button></div>':undefined})).join("") : '<div class="empty">Nothing to log today.</div>';
-    wire($("#evList"));
-    const jobs=leads.filter(l=>l.status==="Booked" && l.jobDate===t);
-    $("#evJobsCount").textContent=jobs.length;
-    $("#evJobsList").innerHTML = jobs.length ? jobs.map(l=>leadCard(l,{tag:'<span class="pill booked">'+(l.revenue!=null?money(l.revenue):"$?")+'</span>',
-      actions:'<div class="acts">'+jobDoneBtn(l)+'<label class="toggle" style="flex:1"><span>Paid</span><input type="checkbox" data-field="paid" '+(l.paid==="Yes"?"checked":"")+'></label><label class="toggle" style="flex:1"><span>Upsell offered</span><input type="checkbox" data-field="upsellOffered" '+(l.upsellOffered==="Yes"?"checked":"")+'></label><button class="btn secondary small" data-act="open">Revenue &amp; more</button></div>'})).join("") : '<div class="empty">No jobs today.</div>';
-    wire($("#evJobsList")); wireToggles($("#evJobsList"));
-    const newToday=leads.filter(l=>l.date===t).length, touches=leads.reduce((a,l)=>a+(l.log||[]).filter(e=>localDate(e.at)===t).length,0);
-    const bookedToday=leads.filter(l=>(l.log||[]).some(e=>localDate(e.at)===t && e.outcome==="Booked")).length;
-    const rev=jobs.reduce((a,l)=>a+(l.revenue||0),0);
-    const tile=(v,label)=>'<div class="tile"><b>'+v+'</b><span>'+label+'</span></div>';
-    $("#evTiles").innerHTML=tile(newToday,"New leads")+tile(touches,"Calls & texts")+tile(bookedToday,"Booked today")+tile(money(rev),"Revenue today")+tile(jobs.length,"Jobs done")+(who==="Ananth"?tile((day&&day.reels&&day.reels[who])||0,"Reels posted"):"");
-    const closed=day&&day.closed&&day.closed[who];
-    $("#closeDay").hidden=!!closed; $("#closedNote").hidden=!closed; if(closed) $("#closedNote").textContent="Day closed by "+who+". You can still log things.";
-  }
-  $("#closeDay").addEventListener("click",async()=>{
-    if(!db||!who) return;
-    const todo=leads.filter(needsLog).length;
-    if(todo){ toast(todo+" lead"+(todo===1?"":"s")+" still not logged. Do those first."); return; }
-    const next={...(day||{}), closed:{...((day&&day.closed)||{}),[who]:true}}; delete next.id;
-    try{ await db.doc("days/"+today()).set(next); toast("Day closed. Good work."); }catch(err){ writeFail(err); }
-  });
 
   // ---------- ADD A JOB (work that didn't come in as a lead here) ----------
   $("#addJobBtn").addEventListener("click",()=>openJob(false));
@@ -952,6 +928,8 @@ tr:last-child td{border-bottom:0}
     return d>=addDays(-30);
   }
   function renderNumbers(){
+    const rs=R.stats(leads,new Date(),30), rt=(v,label)=>'<div class="tile"><b>'+v+'</b><span>'+label+'</span></div>';
+    $("#revTiles").innerHTML=rt(rs.done,"Jobs done")+rt(rs.asked,"Asked")+rt(rs.texts,"Texts sent")+rt(rs.reviewed,"Reviews")+rt(pct(rs.asked,rs.done),"Ask rate")+rt(pct(rs.reviewed,rs.done),"Review rate");
     const w=$("#nWho").dataset.value;
     const rows=leads.filter(l=>inPeriod(l) && (!w||l.owner===w));
     const booked=rows.filter(l=>l.status==="Booked"), rev=booked.reduce((a,l)=>a+(l.revenue||0),0);
@@ -1016,9 +994,9 @@ tr:last-child td{border-bottom:0}
   // ---------- BOOT ----------
   function renderAll(){
     const cur=document.querySelector('.tab[aria-selected="true"]').dataset.tab;
-    if(cur==="morning") renderMorning(); else if(cur==="evening") renderEvening(); else if(cur==="leads") renderList(); else if(cur==="numbers") renderNumbers();
-    const fu=M.todayLists(leads,{now:new Date(), hours:H(), all:true}).left; $("#dotMorning").hidden=!fu; $("#dotMorning").textContent=fu;
-    const todo=leads.filter(needsLog).length; $("#dotEvening").hidden=!todo; $("#dotEvening").textContent=todo;
+    if(cur==="today") renderToday(); else if(cur==="leads") renderList(); else if(cur==="numbers") renderNumbers();
+    // The count left, on the tab.
+    const left=lists().left; $("#dotToday").hidden=!left; $("#dotToday").textContent=left;
   }
   function migrate(d){
     if(!d.status){ d.status = d.booked==="Yes"?"Booked":d.booked==="No"?"Lost":(d.quoted!=null?"Quoted":d.replyMins!=null?"Contacted":"New"); }
@@ -1028,7 +1006,7 @@ tr:last-child td{border-bottom:0}
     return d;
   }
   renderAll();
-  try{ const t=localStorage.getItem("il-tab"); if(t && $("#view-"+t)) showTab(t); }catch(e){}
+  try{ const t=localStorage.getItem("il-tab"); if(t && $("#view-"+t)) showTab(t); else showTab("today"); }catch(e){}
 
   let dbTries=0;
   function connect(){

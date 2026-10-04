@@ -1,13 +1,13 @@
 # Imperium Leads
 
-The lead tracker for Imperium Detailing: Morning chase list, Evening log, Add, Leads and
-Numbers. A phone app (add it to the home screen) shared by Angus and Ananth.
+The lead tracker for Imperium Detailing: Today, Add, Leads and Numbers. A phone app (add it to
+the home screen) shared by Angus and Ananth.
 
 - **The page** is `imperium-leads.html`. Adding a lead or booking asks for the essentials only
-  (service, car, suburb, and for a booking the date and price). Morning shows **Payments due**:
-  jobs done and not paid, oldest first, with a Paid button and "Add someone who owes you". Evening
-  has "Add a job done today" for work that never came in as a lead (repeat customers,
-  referrals). How it stores things all lives in `public/claude-shim.js`, so the page only changes
+  (service, car, suburb, and for a booking the date and price). **Today** is the one list to work
+  through (below), with Jobs today, **Payments due** (jobs done and not paid, oldest first, with a
+  Paid button and "Add someone who owes you"), "Add a job done today" for work that never came in
+  as a lead, the review texts and the reels counter underneath. How it stores things all lives in `public/claude-shim.js`, so the page only changes
   when what it shows does.
 - **Storage** is one Supabase table of JSON documents (`supabase/schema.sql`). The shim gives the
   page the `claude.use("db")` API it was written for (doc/collection, get/set/update/delete,
@@ -18,7 +18,7 @@ Numbers. A phone app (add it to the home screen) shared by Angus and Ananth.
 - **New enquiries** arrive at `POST /api/lead` from the website's booking and fleet forms and
   from Make.com (Facebook instant forms). One lead per phone number per day.
 - **Reviews**: tap **Job done** on a job and the app walks you through asking for a Google review
-  (see below). Morning shows the review texts and nudges due today, and the last 30 days.
+  (see below). Today shows the review texts and nudges due today; Numbers has the last 30 days.
 - **Reminders** go by email at about 07:25 (chase list and today's jobs) and 17:20 (leads not
   logged yet), Canberra time.
 
@@ -130,8 +130,8 @@ The `{{1.…}}` names depend on the questions in the instant form; pick them fro
 
 ## Follow-ups and call hours
 
-**Call hours** are 8:00am to 7:00pm every day, Canberra time (**Call hours** on the first tab
-changes them; `settings/hours`). A lead that comes in outside them isn't shown until they start;
+**Call hours** are 8:00am to 7:00pm every day, Canberra time (**Call hours** on Today changes
+them; `settings/hours`). A lead that comes in outside them isn't shown until they start;
 then it's first on the list with a moon, and its 5-minute reply clock starts then too. The
 Numbers tab counts reply times from that adjusted start (`replyMins` itself is still saved
 counting from when the lead came in).
@@ -161,6 +161,22 @@ lead to `backups/` first, then merges the new fields into each lead. Leads alrea
 last touch go to Waiting with their first check-in 30 days on (no catch-up texts are sent or
 queued). What it changed is kept on each lead in `v3Was`. It never deletes a lead, and a lead
 it can't read is left as it is.
+
+## Today
+
+One list, in this order. Each section only shows when it has someone in it, and the whole list
+shrinks as you log things. The count left is on the tab.
+
+1. **Call first**: leads that came in out of call hours (the moon), from the start of call hours.
+2. **New**: not called or texted yet.
+3. **Hot, due today**: tagged Hot, or Quoted.
+4. **Due today**: everything else due, including Waiting leads due their monthly check-in.
+5. **Waiting (17)**: folded shut; tap to open.
+
+Inside each: Quoted, then Hot, Warm, Browsing; oldest first. Today shows your own leads; **All**
+shows both of you. A lead nobody has touched for 24 hours past when it was due shows on both
+lists, marked with whose it is. Close the day, the "Today so far" tiles and the "Leads to log"
+list are gone.
 
 ## The lead card
 
@@ -194,7 +210,7 @@ after a job the payment text ([link] left for you to paste), then the review ask
 
 ## Reviews
 
-Tap **Job done** on a job card (Morning or Evening), or **Job done: ask for a review** when you
+Tap **Job done** on a job card (Jobs today), or **Job done: ask for a review** when you
 open a booked job. That sets `completedAt` and `reviewStatus: "not_asked"`, and the Review card
 walks through it:
 
@@ -212,11 +228,11 @@ Each step stamps its time on the lead: `reviewAskedAt`, `reviewTextSentAt`, `rev
 are kept in step for the Numbers tab. A wrong tap can be fixed with **Review status** in the lead's
 edit sheet. Leads are JSON documents, so no database change was needed.
 
-**Make a review text** (top of the Reviews card on Morning) is for anyone, lead or not: type their
+**Make a review text** (in the Reviews card on Today) is for anyone, lead or not: type their
 name, the car if you like, and your name, and it writes the review text with the link, ready to
 copy and paste into a text.
 
-**Review settings** (Morning, under the review counts) holds the review link, who the texts are
+**Review settings** (Today, in the Reviews card) holds the review link, who the texts are
 signed by and the business name. Both phones share them (`settings/reviews`); empty ones fall
 back to `https://g.page/r/CSwRG2iKFelCEAE/review`, Angus and Imperium Detailing.
 
