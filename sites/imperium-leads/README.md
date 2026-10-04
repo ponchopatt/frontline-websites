@@ -29,6 +29,7 @@ Numbers. A phone app (add it to the home screen) shared by Angus and Ananth.
 | `imperium-leads.html` | The page. |
 | `public/claude-shim.js` | The storage layer and the PIN screen. |
 | `public/reviews.js` | The review steps, the texts, what's due and the 30-day counts (plain script, shared with the tests). |
+| `public/texts.js` | The texts and the price sheet (plain script, shared with the tests). |
 | `public/model.js` | The lead model: stages, call hours, the schedule, Today's lists and the upgrade (plain script, shared with the server and the tests through `lib/model.js`). |
 | `public/sw.js`, `public/manifest.json`, icons | Home-screen app; opens with no signal (the list needs one). |
 | `api/unlock.js` | PIN check and sign-in. |
@@ -160,6 +161,36 @@ lead to `backups/` first, then merges the new fields into each lead. Leads alrea
 last touch go to Waiting with their first check-in 30 days on (no catch-up texts are sent or
 queued). What it changed is kept on each lead in `v3Was`. It never deletes a lead, and a lead
 it can't read is left as it is.
+
+## The lead card
+
+Closed, a lead shows only its name and car, then service · timeline · stage and touches ("Chasing
+2 of 4") · the quote · the owner, its tag (Hot, Warm or Browsing) and one short note. Email,
+form ID and the full notes are behind **Open**. About twice as many fit on a screen as before.
+
+Eight buttons, nothing else:
+
+| Button | Does |
+|---|---|
+| Call | rings them |
+| Text | opens the phone's messages app with the right text filled in (`public/texts.js`) |
+| Copy | copies the phone number |
+| Open | everything else: email, form ID, notes, history, add a note, edit |
+| Texted | logs a text; the schedule sets the next day |
+| No answer | logs the call, then offers the missed-call text, one tap |
+| Answered | one question: Quoted (how much), Booked (which day; the price is filled from the quote), Not now (which day) or Lost (why) |
+| Not now | pick a day; it's off Today till then |
+
+After a quote, the quote text is ready to send, with the hours and two days to fill in.
+
+**Texts.** Nothing is sent by the app: every text is sent by one of you from your own phone.
+`public/texts.js` holds the wording and the price sheet ("from" prices, hatch/sedan): Full detail
+$225, Exterior $110, Interior $140, Paint correction $397, Ceramic $997. Maintenance plan and
+Pre-sale have no price, so their texts say "I'll confirm the price". A quote you typed in is
+used instead of the sheet. The Text button picks: the first text for a new lead (the missed-call
+text if the call today wasn't answered), then the day 1, day 3 and day 7 texts (browsing: day 3),
+the quote text on the day of the quote then the same three, a check-in for Waiting leads, and
+after a job the payment text ([link] left for you to paste), then the review ask once it's paid.
 
 ## Reviews
 

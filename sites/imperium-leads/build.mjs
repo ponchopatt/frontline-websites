@@ -22,6 +22,7 @@ const HEAD = `<!doctype html>
 <script src="/claude-shim.js"></script>
 <script src="/reviews.js"></script>
 <script src="/model.js"></script>
+<script src="/texts.js"></script>
 `;
 
 writeFileSync(join(pub, "index.html"), HEAD + readFileSync(join(here, "imperium-leads.html"), "utf8"));

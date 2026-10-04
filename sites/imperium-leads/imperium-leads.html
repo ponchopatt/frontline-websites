@@ -69,17 +69,30 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .help{font-size:12px;color:var(--muted);margin:0}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:600;font-size:14px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .2s;z-index:20;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
-.list{display:flex;flex-direction:column;gap:8px}
-.lead{display:grid;grid-template-columns:1fr auto;gap:2px 12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-align:left;font:inherit;color:var(--text);width:100%}
-button.lead{cursor:pointer}
-button.lead:focus-visible{outline:2px solid var(--accent)}
-.lead .name{font-weight:700}
-.lead .sub{color:var(--muted);font-size:13px;grid-column:1}
-.lead .note{font-size:13px;grid-column:1/-1;margin-top:4px;padding-top:6px;border-top:1px dashed var(--line)}
-.lead .money{font-variant-numeric:tabular-nums;font-weight:600;text-align:right}
-.lead .acts{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.list{display:flex;flex-direction:column;gap:6px}
+.lead{display:flex;flex-direction:column;gap:1px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:9px 11px;text-align:left;font:inherit;color:var(--text);width:100%;min-width:0}
+.lead.new{border-color:var(--accent)}
+.lead .l1{display:flex;align-items:center;gap:8px;min-width:0}
+.lead .nm{flex:1;min-width:0;font-weight:700;font-size:15px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lead .nm .car{color:var(--muted);font-weight:500}
+.lead .meta,.lead .sub{font-size:12.5px;line-height:1.35;color:var(--muted)}
+.lead .note{font-size:12.5px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.do{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.lead .do{margin-top:6px}
+.b{font:inherit;font-size:12.5px;font-weight:600;min-height:32px;padding:0 2px;border-radius:9px;border:1px solid var(--line);background:var(--surface2);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;white-space:nowrap}
+.b.go{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.b[aria-disabled="true"]{opacity:.4;cursor:default}
+.b:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lead .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 .lead .acts .btn{flex:1}
-.lead .phone{grid-column:1/-1;display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px}
+.tag{font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 9px;border-radius:999px;white-space:nowrap;border:0;font-family:inherit}
+.tag.hot{background:var(--bad-bg);color:var(--bad)}
+.tag.warm{background:var(--warn-bg);color:var(--warn)}
+.tag.browsing{background:var(--surface2);color:var(--muted)}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice .btn{padding:16px 8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips .btn{flex:1 1 calc(50% - 6px)}
 .mini{font:inherit;font-size:12px;font-weight:700;letter-spacing:.04em;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface2);color:var(--accent);text-decoration:none;cursor:pointer}
 .mini:focus-visible{outline:2px solid var(--accent)}
 .lead.new{border-color:var(--accent)}
@@ -391,37 +404,56 @@ tr:last-child td{border-bottom:0}
   }
 
   // ---------- SHARED CARD ----------
+  // Closed, a lead shows only: name, car, service, timeline, stage and touches, its tag, the
+  // quote, the owner and one short note. Email, form ID and full notes are behind Open.
+  const T=window.ILTexts;
+  const digits = p => String(p||"").replace(/[^\d+]/g,"");
+  // The newest note, else what they wrote on the form (without the When/Email/form parts).
+  function shortNote(l){
+    const log=l.log||[];
+    for(let i=log.length-1;i>=0;i--) if(log[i]&&log[i].note) return log[i].note;
+    return l.objection ? "Objection: "+l.objection : M.plainNotes(l.notes);
+  }
+  // The words the Text button fills in, for where the lead is up to.
+  function textFor(l,key){ return T.message(l,{today:today(), key, owner:l.owner||who||"", reviewLink:R.settings(reviewSettings).reviewLink}).text; }
+  function tagPill(l){ return l.score ? '<span class="tag '+esc(l.score.toLowerCase())+'">'+esc(l.score)+'</span>' : ""; }
   function leadCard(l, opts={}){
-    const st=stage(l), stCls=st.toLowerCase().replace(/\s+/g,"-"), t=today();
-    const snoozed=l.snoozeUntil&&l.snoozeUntil>t;
-    const due=!snoozed && ["Chasing","Quoted","Waiting"].includes(st) && l.nextFollowUp && l.nextFollowUp<=t;
+    const st=stage(l), t=today(), snoozed=l.snoozeUntil&&l.snoozeUntil>t;
     const night=(st==="New"||M.againPending(l)) && M.isOvernight(l,H());
-    const last=(l.log||[]).slice(-1)[0];
-    const tag = opts.tag!==undefined ? opts.tag : '<span class="pill '+stCls+'">'+esc(st)+'</span>';
-    const money_ = l.revenue!=null?money(l.revenue):(l.quoted!=null?'<span style="color:var(--muted)">q '+money(l.quoted)+'</span>':"");
-    return '<div class="lead '+(st==="New"?"new":"")+'" data-id="'+esc(l.id)+'">'+
-      '<div class="name">'+(night?MOON:"")+esc(l.name||"No name")+' <span style="color:var(--muted);font-weight:500">· '+esc(l.car||"car?")+'</span></div>'+tag+
-      '<div class="sub">'+esc(l.service||"")+(l.suburb?" · "+esc(l.suburb):"")+' · '+esc(l.source||"")+(l.ad?" ("+esc(l.ad)+")":"")+(l.owner?" · "+esc(l.owner):"")+'</div>'+
-      '<div class="money">'+money_+'</div>'+
-      (l.phone?'<div class="sub phone"><span style="user-select:all">'+esc(l.phone)+'</span><a class="mini" href="tel:'+esc(l.phone.replace(/\s+/g,""))+'">Call</a><a class="mini" href="sms:'+esc(l.phone.replace(/\s+/g,""))+'">Text</a><button type="button" class="mini" data-act="copy">Copy</button></div>':"")+
+    const prog=M.progress(l,t);
+    const where=snoozed ? "Not now till "+dayName(l.snoozeUntil) : st+(prog?" "+prog:"")+(l.paused?", paused":"");
+    const price=st==="New" ? null : (["Booked","Done","Review asked"].includes(st) && l.revenue!=null ? l.revenue : l.quoted);
+    const meta=[l.service, M.TIMELINES[l.timeline], where, price!=null?money(price):"", l.owner].filter(Boolean).join(" · ");
+    const note=shortNote(l);
+    return '<div class="lead'+(st==="New"?" new":"")+'" data-id="'+esc(l.id)+'">'+
+      '<div class="l1"><span class="nm">'+(night?MOON:"")+esc(l.name||"No name")+(l.car?'<span class="car"> · '+esc(l.car)+'</span>':"")+'</span>'+(opts.tag!==undefined?opts.tag:tagPill(l))+'</div>'+
+      '<div class="meta">'+esc(meta)+'</div>'+
       (opts.extra||"")+
-      (due||snoozed||l.paused?'<div class="sub">'+(due?'<span class="pill due">Due today</span> ':"")+(l.paused?'<span class="pill paused">Paused</span> ':"")+(snoozed?'<span class="pill waiting">Not now till '+esc(dayName(l.snoozeUntil))+'</span>':"")+'</div>':"")+
-      (l.source==="Referral"&&l.referredBy?'<div class="sub">Referred by '+esc(l.referredBy)+'</div>':"")+
-      ((last&&last.note)||l.objection||l.notes ? '<div class="note">'+esc(last&&last.note ? last.note : (l.objection ? "Objection: "+l.objection : l.notes))+'</div>' : "")+
-      (opts.actions||"")+
+      (note?'<div class="note">'+esc(note)+'</div>':"")+
+      (opts.actions!==undefined ? opts.actions : leadButtons(l))+
     '</div>';
   }
-  const ACTS = '<div class="acts"><button class="btn secondary small" data-act="texted">Texted</button><button class="btn secondary small" data-act="noanswer">No answer</button><button class="btn small" data-act="touch">Answered…</button><button class="btn secondary small" data-act="open" style="flex:0 0 auto">Open</button></div>';
+  // The eight buttons, and nothing else.
+  function leadButtons(l){
+    const ph=digits(l.phone), off=label=>'<span class="b" aria-disabled="true">'+label+'</span>';
+    return '<div class="do">'+
+      (ph?'<a class="b" data-act="call" href="tel:'+esc(ph)+'">Call</a><a class="b" data-act="text" href="'+esc(T.smsHref(ph,textFor(l)))+'">Text</a><button type="button" class="b" data-act="copy">Copy</button>':off("Call")+off("Text")+off("Copy"))+
+      '<button type="button" class="b" data-act="open">Open</button>'+
+      '<button type="button" class="b" data-act="texted">Texted</button><button type="button" class="b" data-act="noanswer">No answer</button>'+
+      '<button type="button" class="b go" data-act="answered">Answered</button><button type="button" class="b" data-act="notnow">Not now</button>'+
+    '</div>';
+  }
   function wire(el){
     el.querySelectorAll("[data-act]").forEach(b=>b.addEventListener("click",e=>{
       e.stopPropagation();
-      const card=b.closest(".lead"), id=card.dataset.id, a=b.dataset.act;
-      if(a==="touch") openTouch(id); else if(a==="open") openEdit(id); else if(a==="paid") markPaid(id,b);
-      else if(a==="done") markDone(id); else if(a==="review") openReview(id);
+      const id=b.closest("[data-id]").dataset.id, a=b.dataset.act;
+      if(a==="call"||a==="text") return; // the link opens the phone or messages app
+      if(a==="open") openEdit(id); else if(a==="answered") openAnswered(id); else if(a==="notnow") openNotNow(id);
+      else if(a==="texted"||a==="noanswer") quickTouch(id,a,b);
+      else if(a==="paid") markPaid(id,b); else if(a==="done") markDone(id); else if(a==="review") openReview(id);
       else if(a==="copyReview"){ const l=leads.find(x=>x.id===id), d=l&&R.due([l],reviewSettings,new Date())[0]; if(d) copyText(d.text,"Copied"); }
       else if(a==="reviewDone"){ b.disabled=true; setReview(id,b.dataset.status).then(ok=>{ if(!ok) b.disabled=false; }); }
       else if(a==="copy"){ const l=leads.find(x=>x.id===id); copyText(l&&l.phone||""); }
-      else quickTouch(id,a,b);
     }));
     el.querySelectorAll(".lead").forEach(c=>{ c.style.cursor="pointer"; c.addEventListener("click",e=>{ if(e.target.closest("button,a,input,label")) return; openEdit(c.dataset.id); }); });
   }
@@ -441,7 +473,7 @@ tr:last-child td{border-bottom:0}
     $("#mSub").textContent=new Date().toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"long"})+" · "+fu.length+" to chase · "+jobsN+" job"+(jobsN===1?"":"s")+" today"+(lists.later?" · "+lists.later+" came in overnight, call from "+M.clock(H().start):"");
     $("#fuCount").textContent=fu.length;
     $("#dotMorning").hidden=!fu.length; $("#dotMorning").textContent=fu.length;
-    $("#fuList").innerHTML = fu.length ? fu.map(l=>leadCard(l,{actions:ACTS})).join("") : '<div class="empty">Nobody to chase. Go get more leads.</div>';
+    $("#fuList").innerHTML = fu.length ? fu.map(l=>leadCard(l)).join("") : '<div class="empty">Nobody to chase. Go get more leads.</div>';
     wire($("#fuList"));
     const jobs=leads.filter(l=>l.status==="Booked" && l.jobDate===t), tm=leads.filter(l=>l.status==="Booked" && l.jobDate===addDays(1));
     $("#jobsCount").textContent=jobs.length; $("#jobsTmCount").textContent=tm.length;
@@ -500,7 +532,7 @@ tr:last-child td{border-bottom:0}
       .sort((a,b)=>(loggedToday(a)?1:0)-(loggedToday(b)?1:0));
     const todo=ev.filter(l=>!loggedToday(l));
     $("#evCount").textContent=todo.length+" to go"; $("#dotEvening").hidden=!todo.length; $("#dotEvening").textContent=todo.length;
-    $("#evList").innerHTML = ev.length ? ev.map(l=>leadCard(l,{tag: loggedToday(l)?'<span class="pill done">✓ logged</span>':'<span class="pill '+(l.status||"new").toLowerCase()+'">'+esc(l.status||"New")+'</span>', actions: loggedToday(l)?'<div class="acts"><button class="btn secondary small" data-act="touch">Log another</button><button class="btn secondary small" data-act="open">Open</button></div>':ACTS})).join("") : '<div class="empty">Nothing to log today.</div>';
+    $("#evList").innerHTML = ev.length ? ev.map(l=>leadCard(l,{tag: loggedToday(l)?'<span class="pill done">✓ logged</span>':'<span class="pill '+(l.status||"new").toLowerCase()+'">'+esc(l.status||"New")+'</span>', actions: loggedToday(l)?'<div class="acts"><button class="btn secondary small" data-act="open">Open</button></div>':undefined})).join("") : '<div class="empty">Nothing to log today.</div>';
     wire($("#evList"));
     const jobs=leads.filter(l=>l.status==="Booked" && l.jobDate===t);
     $("#evJobsCount").textContent=jobs.length;
@@ -702,59 +734,95 @@ tr:last-child td{border-bottom:0}
     });
   });
 
-  // ---------- TOUCH (call / text log) ----------
-  function openTouch(id){
-    const l=leads.find(x=>x.id===id); if(!l) return;
+  // ---------- ANSWERED, NOT NOW, NO ANSWER ----------
+  function sheet(html){
+    closeSheet();
     const s=document.createElement("div"); s.className="sheet"; s.id="sheet";
-    s.innerHTML='<div class="sheet-in">'+
-      '<div class="sheet-h"><div><h2>'+esc(l.name||"Lead")+'</h2><p class="help">'+esc(l.car||"")+' · '+esc(l.service||"")+(l.phone?' · <span style="user-select:all">'+esc(l.phone)+'</span>':"")+'</p></div><button class="x" id="closeSheet">Close</button></div>'+
-      '<label>What did you do?<div class="seg three" id="t-type" data-value=""><button type="button" data-v="text">Texted</button><button type="button" data-v="answered">Called, answered</button><button type="button" data-v="noanswer">Called, no answer</button></div></label>'+
-      '<label id="t-outWrap" hidden>How did it go?<div class="seg" id="t-out" data-value=""><button type="button" data-v="Booked">Booked</button><button type="button" data-v="Quote given">Quote given</button><button type="button" data-v="Needs follow-up">Needs follow-up</button><button type="button" data-v="Lost">Lost</button></div></label>'+
-      '<div id="t-bookWrap" hidden class="grid"><label>Date booked for<input id="t-jobDate" type="date" value="'+esc(l.jobDate||"")+'"></label><label>Price $<input id="t-rev" type="number" inputmode="numeric" value="'+(l.revenue??l.quoted??"")+'"></label><label>Car<input id="t-car" value="'+esc(l.car||"")+'"></label><label>Suburb<input id="t-suburb" value="'+esc(l.suburb||"")+'"></label>'+
-        '<label class="full">Service<div class="seg" id="t-service" data-value="'+esc(l.service||"")+'">'+SERVICES.map(v=>'<button type="button" data-v="'+esc(v)+'">'+esc(v==="Maintenance plan"?"Maint. plan":v)+'</button>').join("")+'</div></label></div>'+
-      '<label id="t-quoteWrap" hidden>Quoted $<input id="t-quoted" type="number" inputmode="numeric" value="'+(l.quoted??"")+'"></label>'+
-      '<label id="t-objWrap" hidden>What\'s holding them back?<div class="seg three" id="t-obj" data-value="'+esc(l.objection||"")+'">'+OBJ.map(o=>'<button type="button" data-v="'+esc(o)+'">'+esc(o)+'</button>').join("")+'</div></label>'+
-      '<label id="t-lostWrap" hidden>Why lost?<div class="seg three" id="t-lost" data-value="">'+LOST.map(o=>'<button type="button" data-v="'+esc(o)+'">'+esc(o)+'</button>').join("")+'</div></label>'+
-      '<label id="t-fuWrap" hidden>Chase them again<div class="seg" id="t-fu" data-value="1"><button type="button" data-v="1">Tomorrow</button><button type="button" data-v="2">In 2 days</button><button type="button" data-v="7">In a week</button><button type="button" data-v="pick">Pick a date</button></div><input id="t-fuDate" type="date" hidden style="margin-top:6px"></label>'+
-      '<label>What happened? (one line)<textarea id="t-note" placeholder="Wants to check with his wife, call back Thursday arvo."></textarea></label>'+
-      '<button class="btn" id="t-save" disabled>Save</button>'+
-    '</div>';
+    s.innerHTML='<div class="sheet-in">'+html+'</div>';
     document.body.appendChild(s);
-    const g=sel=>s.querySelector(sel);
-    const show=(sel,v)=>{ g(sel).hidden=!v; };
-    const sync=()=>{
-      const type=g("#t-type").dataset.value, out=g("#t-out").dataset.value;
-      show("#t-outWrap", type==="answered");
-      const answered=type==="answered";
-      show("#t-bookWrap", answered && out==="Booked");
-      show("#t-quoteWrap", answered && out==="Quote given");
-      show("#t-objWrap", answered && (out==="Quote given"||out==="Needs follow-up"));
-      show("#t-lostWrap", answered && out==="Lost");
-      show("#t-fuWrap", (type&&!answered) || (answered && (out==="Quote given"||out==="Needs follow-up")));
-      g("#t-save").disabled = !type || (answered && !out) || (answered && out==="Booked" && !g("#t-jobDate").value);
-    };
-    seg(g("#t-type"),sync); seg(g("#t-out"),sync); seg(g("#t-obj")); seg(g("#t-lost")); seg(g("#t-service"));
-    g("#t-jobDate").addEventListener("input",sync); g("#t-jobDate").addEventListener("change",sync);
-    seg(g("#t-fu"), v=>{ g("#t-fuDate").hidden = v!=="pick"; });
-    g("#closeSheet").addEventListener("click",closeSheet); s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
-    g("#t-save").addEventListener("click",async()=>{
-      const type=g("#t-type").dataset.value, out=g("#t-out").dataset.value, now=new Date().toISOString(), note=g("#t-note").value.trim();
-      const fuv=g("#t-fu").dataset.value, picked=fuv==="pick" ? g("#t-fuDate").value : "";
-      const cur=leads.find(x=>x.id===id)||l;
-      let patch;
-      if(type!=="answered"){
-        patch=M.touch(cur,{at:now, by:who||"", type:type==="text"?"text":"call", pickedUp:type==="noanswer"?"No":"", outcome:type==="text"?"Texted":"No answer", note});
-        if(picked) Object.assign(patch, M.snooze(M.sync({...cur,...patch},today()), picked));
-      }
-      else if(out==="Booked") patch={...M.answer(cur,"booked",{date:g("#t-jobDate").value||"", price:num(g("#t-rev").value)},now,who), car:g("#t-car").value.trim(), suburb:g("#t-suburb").value.trim(), service:g("#t-service").dataset.value||cur.service, objection:""};
-      else if(out==="Quote given") patch={...M.answer(cur,"quoted",{amount:num(g("#t-quoted").value)},now,who), objection:g("#t-obj").dataset.value||""};
-      else if(out==="Lost") patch=M.answer(cur,"lost",{reason:M.OLD_LOST[g("#t-lost").dataset.value]||"other"},now,who);
-      else patch={...M.answer(cur,"notnow",{date:picked||addDays(Number(fuv)||1)},now,who), objection:g("#t-obj").dataset.value||""};
-      if(note && patch.log && patch.log.length) patch.log[patch.log.length-1].note=note;
-      const b=g("#t-save"); b.disabled=true;
-      if(await save(id,patch)){ toast(out==="Booked"&&type==="answered"?"Booked. Legend.":nextToast(id)); closeSheet(); } else b.disabled=false;
-    });
+    s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
+    const x=s.querySelector("#closeSheet"); if(x) x.addEventListener("click",closeSheet);
+    return sel=>s.querySelector(sel);
   }
+  const head=(l,sub)=>'<div class="sheet-h"><div><h2>'+esc(l.name||"Lead")+'</h2><p class="help">'+esc(sub)+'</p></div><button class="x" id="closeSheet">Close</button></div>';
+  // Quick picks for a date, then any date.
+  function datePicker(){
+    const d=n=>addDays(n), month=()=>{ const t=today(); return M.addDays(t, 30); };
+    return '<div class="chips">'+[["Tomorrow",d(1)],["Next week",d(7)],["In 2 weeks",d(14)],["Next month",month()]].map(([lab,v])=>'<button type="button" class="btn secondary" data-date="'+v+'">'+lab+'</button>').join("")+'</div>'+
+      '<label>Or pick a day<input type="date" id="a-date" min="'+addDays(1)+'"></label>';
+  }
+  // Answered: one question. Each answer asks for the one thing it needs, then saves.
+  function openAnswered(id){
+    const l=leads.find(x=>x.id===id); if(!l) return;
+    const g=sheet(head(l,"They answered. What happened?")+
+      '<div class="choice" id="a-pick"><button type="button" class="btn secondary" data-v="quoted">Quoted</button><button type="button" class="btn secondary" data-v="booked">Booked</button><button type="button" class="btn secondary" data-v="notnow">Not now</button><button type="button" class="btn secondary" data-v="lost">Lost</button></div>'+
+      '<div id="a-more"></div>');
+    const more=g("#a-more");
+    const pick=v=>{
+      g("#a-pick").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===v)));
+      g("#a-pick").querySelectorAll("button").forEach(b=>b.classList.toggle("secondary",b.dataset.v!==v));
+      const sheetPrice=T.priceFor(l.service);
+      if(v==="quoted"){
+        more.innerHTML='<label>How much? $<input id="a-amount" type="number" inputmode="decimal" min="0" value="'+(l.quoted??sheetPrice??"")+'"></label><button class="btn" id="a-save">Save quote</button>';
+        g("#a-save").addEventListener("click",()=>{ const amount=num(g("#a-amount").value); if(amount==null){ toast("Type the price"); return; } answer(id,"quoted",{amount}); });
+      } else if(v==="booked"){
+        more.innerHTML='<div class="grid"><label>Booked for<input id="a-job" type="date" min="'+today()+'"></label><label>Price $<input id="a-price" type="number" inputmode="decimal" min="0" value="'+(l.quoted??sheetPrice??"")+'"></label></div><button class="btn" id="a-save">Save booking</button>';
+        g("#a-save").addEventListener("click",()=>{ const date=g("#a-job").value; if(!date){ toast("Pick the day they're booked for"); return; } answer(id,"booked",{date, price:num(g("#a-price").value)}); });
+      } else if(v==="notnow"){
+        more.innerHTML='<p class="help">When should it come back?</p>'+datePicker();
+        more.querySelectorAll("[data-date]").forEach(b=>b.addEventListener("click",()=>answer(id,"notnow",{date:b.dataset.date})));
+        g("#a-date").addEventListener("change",()=>{ if(g("#a-date").value) answer(id,"notnow",{date:g("#a-date").value}); });
+      } else {
+        more.innerHTML='<p class="help">Why?</p><div class="chips">'+Object.entries(M.LOST_REASONS).map(([k,lab])=>'<button type="button" class="btn secondary" data-reason="'+k+'">'+esc(lab)+'</button>').join("")+'</div>';
+        more.querySelectorAll("[data-reason]").forEach(b=>b.addEventListener("click",()=>answer(id,"lost",{reason:b.dataset.reason})));
+      }
+      const first=more.querySelector("input"); if(first && v!=="notnow") first.focus();
+    };
+    g("#a-pick").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>pick(b.dataset.v)));
+  }
+  async function answer(id,choice,data){
+    const l=leads.find(x=>x.id===id); if(!l) return;
+    document.querySelectorAll("#sheet button").forEach(b=>b.disabled=true);
+    if(!await save(id,M.answer(l,choice,data,new Date().toISOString(),who))){ document.querySelectorAll("#sheet button").forEach(b=>b.disabled=false); return; }
+    if(choice==="quoted") return sendQuote(id);
+    closeSheet();
+    toast(choice==="booked"?"Booked. Legend.":choice==="lost"?"Saved as lost.":"Saved. Back on "+dayName(data.date)+".");
+  }
+  // Straight after a quote: the quote text, with the hours and days to fill in.
+  function sendQuote(id){
+    const l=leads.find(x=>x.id===id); if(!l) return;
+    const ph=digits(l.phone);
+    const g=sheet(head(l,"Quote saved. Send it?")+
+      '<div class="grid"><label>Takes about (hours)<input id="q-hours" inputmode="decimal" placeholder="3"></label><span></span><label>First day<input id="q-day1" placeholder="Tue"></label><label>Second day<input id="q-day2" placeholder="Thu"></label></div>'+
+      '<p class="say" id="q-text"></p>'+
+      '<div class="row">'+(ph?'<a class="btn" id="q-send" style="text-align:center;text-decoration:none">Text it</a>':'')+'<button class="btn secondary" id="q-copy">Copy</button><button class="btn secondary" id="q-done">Done</button></div>');
+    const make=()=>T.fill("quote",l,{owner:l.owner||who, hours:g("#q-hours").value.trim(), days:[g("#q-day1").value.trim(), g("#q-day2").value.trim()]});
+    const show=()=>{ const t=make(); g("#q-text").textContent=t; if(g("#q-send")) g("#q-send").href=T.smsHref(ph,t); };
+    ["#q-hours","#q-day1","#q-day2"].forEach(sel=>g(sel).addEventListener("input",show));
+    show();
+    g("#q-copy").addEventListener("click",()=>copyText(make(),"Copied"));
+    g("#q-done").addEventListener("click",closeSheet);
+    toast("Quote saved. First chase in 2 days.");
+  }
+  // Not now: pick when it comes back; it's off Today until then.
+  function openNotNow(id){
+    const l=leads.find(x=>x.id===id); if(!l) return;
+    const g=sheet(head(l,"Not now. When should it come back?")+datePicker());
+    const go=async date=>{ document.querySelectorAll("#sheet button").forEach(b=>b.disabled=true); if(await save(id,M.snooze(l,date))){ closeSheet(); toast("Off the list till "+dayName(date)+"."); } };
+    document.querySelectorAll("#sheet [data-date]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.date)));
+    g("#a-date").addEventListener("change",()=>{ if(g("#a-date").value) go(g("#a-date").value); });
+  }
+  // No answer: logged, then the missed-call text is one tap away.
+  function afterNoAnswer(id){
+    const l=leads.find(x=>x.id===id); if(!l) return;
+    const ph=digits(l.phone), text=textFor(l,"missed");
+    sheet(head(l,"No answer, logged. "+nextToast(id).replace(/^Logged\. /,""))+
+      '<p class="say">'+esc(text)+'</p>'+
+      '<div class="row">'+(ph?'<a class="btn" href="'+esc(T.smsHref(ph,text))+'" id="m-send" style="text-align:center;text-decoration:none">Send the missed-call text</a>':'')+'<button class="btn secondary" id="m-done">Done</button></div>');
+    document.querySelector("#m-done").addEventListener("click",closeSheet);
+    const send=document.querySelector("#m-send"); if(send) send.addEventListener("click",()=>setTimeout(closeSheet,300));
+  }
+
   function clean(o){ const c={...o}; delete c.id; return M.sync(c,today()); }
   function closeSheet(){ const s=$("#sheet"); if(s) s.remove(); }
   // Save only what changed, merged into the lead, so the other phone's changes aren't lost.
@@ -776,7 +844,8 @@ tr:last-child td{border-bottom:0}
     const l=leads.find(x=>x.id===id); if(!l||!db) return;
     const entry={at:new Date().toISOString(), by:who||"", type:type==="texted"?"text":"call", pickedUp:type==="noanswer"?"No":"", outcome:type==="texted"?"Texted":"No answer", note:""};
     if(btn) btn.disabled=true;
-    if(await save(id,M.touch(l,entry))) toast(nextToast(id)); else if(btn) btn.disabled=false;
+    if(!await save(id,M.touch(l,entry))){ if(btn) btn.disabled=false; return; }
+    if(type==="noanswer") afterNoAnswer(id); else { closeSheet(); toast(nextToast(id)); }
   }
 
   // ---------- LEADS LIST ----------
@@ -794,16 +863,26 @@ tr:last-child td{border-bottom:0}
     const l=leads.find(x=>x.id===id); if(!l) return;
     const yn=(name,v)=>'<div class="seg two" data-name="'+name+'" data-value="'+esc(v||"")+'"><button type="button" data-v="Yes">Yes</button><button type="button" data-v="No">No</button></div>';
     const opt=(arr,v)=>arr.map(o=>'<option'+(o===v?" selected":"")+'>'+esc(o)+'</option>').join("");
-    const s=document.createElement("div"); s.className="sheet"; s.id="sheet";
-    s.innerHTML='<div class="sheet-in">'+
-      '<div class="sheet-h"><h2>'+esc(l.name||"Lead")+'</h2><div class="row" style="flex-wrap:nowrap"><button class="btn small" id="e-touch">Log a call or text</button><button class="x" id="closeSheet">Close</button></div></div>'+
+    const ph=digits(l.phone), st=stage(l);
+    const what=e=>e.type==="note"?"Note":e.type==="call"?(e.pickedUp==="Yes"?"Call":"Call, no answer"):"Text";
+    const g=sheet(
+      '<div class="sheet-h"><div><h2>'+esc(l.name||"Lead")+'</h2><p class="help">'+esc([l.car,l.service,l.suburb].filter(Boolean).join(" · "))+'</p></div><button class="x" id="closeSheet">Close</button></div>'+
       (canWrite?"":'<div class="banner">View only. Ask for edit access.</div>')+
-      (R.isDone(l)?'<div id="reviewBox"></div>':l.status==="Booked"?'<button class="btn" id="e-done">Job done: ask for a review</button>':"")+
+      '<div class="lead-acts" data-id="'+esc(l.id)+'"><div class="do">'+
+        (ph?'<a class="b" data-act="call" href="tel:'+esc(ph)+'">Call</a><a class="b" data-act="text" href="'+esc(T.smsHref(ph,textFor(l)))+'">Text</a><button type="button" class="b" data-act="copy">Copy</button>':"")+
+        '<button type="button" class="b" data-act="texted">Texted</button><button type="button" class="b" data-act="noanswer">No answer</button><button type="button" class="b go" data-act="answered">Answered</button><button type="button" class="b" data-act="notnow">Not now</button>'+
+      '</div></div>'+
+      '<div class="row" style="flex-wrap:nowrap"><input id="e-note" maxlength="200" placeholder="Add a note"><button class="btn small" id="e-addNote">Add</button></div>'+
       '<div class="grid">'+
-        '<label>Stage<select id="e-stage">'+opt(M.ALL_STAGES,stage(l))+'</select></label>'+
-        '<label>Whose lead<select id="e-owner"><option value="">–</option>'+opt(["Angus","Ananth"],l.owner)+'</select></label>'+
+        '<label>Phone<input id="e-phone" inputmode="tel" value="'+esc(l.phone)+'"></label>'+
+        '<label>Email<input id="e-email" inputmode="email" value="'+esc(l.email||"")+'"></label>'+
+        (l.formId?'<label class="full">Form ID<input value="'+esc(l.formId)+'" readonly></label>':"")+
+      '</div>'+
+      (R.isDone(l)?'<div id="reviewBox"></div>':st==="Booked"?'<button class="btn" id="e-done">Job done: ask for a review</button>':"")+
+      '<div class="grid">'+
+        '<label>Stage<select id="e-stage">'+opt(M.ALL_STAGES,st)+'</select></label>'+
+        '<label>Whose lead<select id="e-owner"><option value="">–</option>'+opt(M.PEOPLE,l.owner)+'</select></label>'+
         '<label>Name<input id="e-name" value="'+esc(l.name)+'"></label>'+
-        '<label>Phone<input id="e-phone" value="'+esc(l.phone)+'"></label>'+
         '<label>Came in<input id="e-date" type="date" value="'+esc(l.date)+'"></label>'+
         '<label>Chase again on<input id="e-fu" type="date" value="'+esc(l.nextFollowUp||"")+'"></label>'+
         '<label>Source<select id="e-source">'+opt(SOURCES,l.source)+'</select></label>'+
@@ -812,14 +891,14 @@ tr:last-child td{border-bottom:0}
         '<label>Service<select id="e-service">'+opt(SERVICES,l.service)+'</select></label>'+
         '<label>Car<input id="e-car" value="'+esc(l.car)+'"></label>'+
         '<label>Suburb<input id="e-suburb" value="'+esc(l.suburb)+'"></label>'+
-        '<label>Quoted $<input id="e-quoted" type="number" inputmode="numeric" value="'+(l.quoted??"")+'"></label>'+
+        '<label>Quoted $<input id="e-quoted" type="number" inputmode="decimal" value="'+(l.quoted??"")+'"></label>'+
         '<label>Objection<select id="e-obj"><option value="">–</option>'+opt(OBJ,l.objection)+'</select></label>'+
-        '<label>Why lost?<select id="e-lostWhy"><option value="">–</option>'+opt(LOST,l.lostWhy)+'</select></label>'+
+        '<label>Why lost?<select id="e-lost"><option value="">–</option>'+Object.entries(M.LOST_REASONS).map(([k,v])=>'<option value="'+k+'"'+(k===l.lostReason?" selected":"")+'>'+esc(v)+'</option>').join("")+'</select></label>'+
       '</div>'+
       '<hr class="divider"><div class="eyebrow">The job</div>'+
       '<div class="grid">'+
         '<label>Date booked for<input id="e-jobDate" type="date" value="'+esc(l.jobDate)+'"></label>'+
-        '<label>Price $<input id="e-revenue" type="number" inputmode="numeric" value="'+(l.revenue??"")+'"></label>'+
+        '<label>Price $<input id="e-revenue" type="number" inputmode="decimal" value="'+(l.revenue??"")+'"></label>'+
         '<label>Paid?'+yn("paid",l.paid)+'</label>'+
         '<label>On maintenance plan?'+yn("plan",l.plan)+'</label>'+
         '<label>Upsell offered?'+yn("upsellOffered",l.upsellOffered)+'</label>'+
@@ -828,27 +907,35 @@ tr:last-child td{border-bottom:0}
         '<label class="full">Next service due<input id="e-nextDue" type="date" value="'+esc(l.nextDue)+'"></label>'+
         '<label class="full">Notes<textarea id="e-notes">'+esc(l.notes)+'</textarea></label>'+
       '</div>'+
-      ((l.log||[]).length?'<hr class="divider"><div class="eyebrow">History</div><div class="log">'+(l.log||[]).slice().reverse().map(e=>'<div><span>'+esc((e.at||"").slice(5,10).replace("-","/"))+' '+esc(e.by||"")+'</span><div>'+esc(e.type==="call"?(e.pickedUp==="Yes"?"Call · ":"Call, no answer · "):"Text · ")+esc(e.outcome||"")+(e.note?' — '+esc(e.note):"")+'</div></div>').join("")+'</div>':"")+
-      '<button class="btn" id="saveEdit"'+(canWrite?"":" disabled")+'>Save changes</button>'+
-    '</div>';
-    document.body.appendChild(s);
+      ((l.log||[]).length?'<hr class="divider"><div class="eyebrow">History</div><div class="log">'+(l.log||[]).slice().reverse().map(e=>'<div><span>'+esc(dayName(localDate(e.at)))+' '+esc(e.by||"")+'</span><div>'+esc(what(e))+(e.outcome?' · '+esc(e.outcome):"")+(e.note?' — '+esc(e.note):"")+'</div></div>').join("")+'</div>':"")+
+      '<button class="btn" id="saveEdit"'+(canWrite?"":" disabled")+'>Save changes</button>'
+    );
+    const s=document.querySelector("#sheet");
     s.querySelectorAll(".seg").forEach(x=>seg(x));
-    s.querySelector("#closeSheet").addEventListener("click",closeSheet); s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
-    s.querySelector("#e-touch").addEventListener("click",()=>{ closeSheet(); openTouch(id); });
-    const rbox=s.querySelector("#reviewBox"); if(rbox) showReview(rbox,id);
-    const doneBtn=s.querySelector("#e-done"); if(doneBtn) doneBtn.addEventListener("click",()=>markDone(id));
-    const rsel=s.querySelector("#e-rstatus");
+    wire(s);
+    const rbox=g("#reviewBox"); if(rbox) showReview(rbox,id);
+    const doneBtn=g("#e-done"); if(doneBtn) doneBtn.addEventListener("click",()=>markDone(id));
+    const rsel=g("#e-rstatus");
     if(rsel) rsel.addEventListener("change",async()=>{ if(await setReview(id,rsel.value)&&rbox) showReview(rbox,id); });
-    s.querySelector("#saveEdit").addEventListener("click",async()=>{
-      const g=sel=>s.querySelector(sel); const sv=name=>s.querySelector('[data-name="'+name+'"]').dataset.value||"";
-      const upd={ ...(leads.find(x=>x.id===id)||l),
-        stage:g("#e-stage").value, owner:g("#e-owner").value, name:g("#e-name").value.trim(), phone:g("#e-phone").value.trim(), date:g("#e-date").value, nextFollowUp:g("#e-fu").value,
+    // A note on a lead being chased pauses its schedule.
+    g("#e-addNote").addEventListener("click",async()=>{
+      const text=g("#e-note").value.trim(); if(!text){ g("#e-note").focus(); return; }
+      const cur=leads.find(x=>x.id===id)||l, b=g("#e-addNote"); b.disabled=true;
+      if(await save(id,M.note(cur,text,new Date().toISOString(),who))){ toast(["Chasing","Quoted"].includes(stage(cur))?"Note added. Paused till you pick what's next.":"Note added."); closeSheet(); } else b.disabled=false;
+    });
+    g("#saveEdit").addEventListener("click",async()=>{
+      const sv=name=>s.querySelector('[data-name="'+name+'"]').dataset.value||"";
+      const cur=leads.find(x=>x.id===id)||l, picked=g("#e-stage").value, fu=g("#e-fu").value;
+      const upd={ owner:g("#e-owner").value, name:g("#e-name").value.trim(), phone:g("#e-phone").value.trim(), email:g("#e-email").value.trim(), date:g("#e-date").value,
         source:g("#e-source").value, ad:g("#e-ad").value.trim(), referredBy:g("#e-ref").value.trim(), service:g("#e-service").value, car:g("#e-car").value.trim(), suburb:g("#e-suburb").value.trim(),
-        quoted:num(g("#e-quoted").value), objection:g("#e-obj").value, lostWhy:g("#e-lostWhy").value,
+        quoted:num(g("#e-quoted").value), objection:g("#e-obj").value,
         jobDate:g("#e-jobDate").value, revenue:num(g("#e-revenue").value), paid:sv("paid"), plan:sv("plan"), upsellOffered:sv("upsellOffered"), upsellTaken:sv("upsellTaken"),
-        nextDue:g("#e-nextDue").value, notes:g("#e-notes").value.trim(), updatedAt:new Date().toISOString() };
-      if(!isOpen(upd)) upd.nextFollowUp="";
-      if(upd.lostWhy) upd.lostReason=M.OLD_LOST[upd.lostWhy]||"other";
+        nextDue:g("#e-nextDue").value, notes:g("#e-notes").value.trim() };
+      const lost=g("#e-lost").value;
+      if(lost){ upd.lostReason=lost; upd.lostWhy=M.LOST_WORDS[lost]; }
+      // A different stage starts that stage's schedule; a date picked here wins.
+      if(picked!==stage(cur)) Object.assign(upd, M.setStage({...cur,...upd},picked,today()));
+      if(fu!==(cur.nextFollowUp||"")) upd.nextFollowUp=fu;
       const b=g("#saveEdit"); b.disabled=true;
       if(await save(id,upd)){ toast("Saved"); closeSheet(); } else b.disabled=false;
     });

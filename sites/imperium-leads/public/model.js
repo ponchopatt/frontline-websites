@@ -394,6 +394,18 @@
     return p;
   }
 
+  // A stage picked by hand in Open (to fix something): the schedule starts again from today.
+  function setStage(l, stage, today) {
+    var p = { stage: stage, paused: false, snoozeUntil: "" };
+    if (stage === "New") assign(p, { chaseFrom: "", touches: 0, nextFollowUp: today });
+    else if (stage === "Chasing") assign(p, { schedule: scheduleFor(merged(l, { stage: "Chasing" })), chaseFrom: today, touches: 1, lastTouchOn: today, nextFollowUp: addDays(today, 1) });
+    else if (stage === "Quoted") assign(p, { schedule: "quoted", quotedOn: today, chaseFrom: today, touches: 0, lastTouchOn: today, nextFollowUp: addDays(today, STEPS.quoted[0]) });
+    else if (stage === "Waiting") p.nextFollowUp = addDays(today, CHECK_IN_DAYS);
+    else p.nextFollowUp = "";
+    if (stage === "Lost" && !LOST_REASONS[l.lostReason]) assign(p, { lostReason: "other", lostWhy: LOST_WORDS.other });
+    return p;
+  }
+
   // A tag changed by hand. A lead being chased moves to that tag's schedule straight away.
   function retag(l, tag, today) {
     var p = { score: TAGS.indexOf(tag) !== -1 ? tag : "", scoreBy: "human" };
@@ -673,7 +685,7 @@
     isTouch: isTouch, touchDays: touchDays, touchDayList: touchDayList, lastTouch: lastTouch, againPending: againPending,
     legacyStage: legacyStage, stageOf: stageOf, statusFor: statusFor, scheduleFor: scheduleFor, runLength: runLength,
     sync: sync, newFields: newFields, dueAfter: dueAfter, touch: touch, snooze: snooze, answer: answer, note: note,
-    retag: retag, nextTag: nextTag, progress: progress,
+    setStage: setStage, retag: retag, nextTag: nextTag, progress: progress,
     arrivedAt: arrivedAt, isOvernight: isOvernight, replyMinutes: replyMinutes,
     place: place, stale: stale, rank: rank, todayLists: todayLists, quoteDay: quoteDay, fridayWrap: fridayWrap,
     phoneKey: phoneKey, isOpen: isOpen, matchPhone: matchPhone, mergeEnquiry: mergeEnquiry,

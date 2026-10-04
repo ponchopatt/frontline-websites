@@ -5,7 +5,7 @@
   release shows up on the next open.
 */
 const CACHE = "imperium-leads-shell-v4";
-const SHELL = ["/", "/claude-shim.js", "/reviews.js", "/model.js", "/vendor/supabase.js", "/config.js", "/manifest.json", "/icon-192.png", "/icon-512.png", "/apple-touch-icon.png"];
+const SHELL = ["/", "/claude-shim.js", "/reviews.js", "/model.js", "/texts.js", "/vendor/supabase.js", "/config.js", "/manifest.json", "/icon-192.png", "/icon-512.png", "/apple-touch-icon.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
