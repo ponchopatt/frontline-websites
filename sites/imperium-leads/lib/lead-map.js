@@ -1,3 +1,4 @@
+import M from "./model.js";
 import { canberraDate } from "./time.js";
 
 /*
@@ -40,27 +41,12 @@ export function mapService(service) {
 }
 
 /** Digits only, with +61 written the Australian way: "+61 400 000 000" → "0400000000". */
-export function phoneKey(phone) {
-  let d = String(phone ?? "").replace(/\D/g, "");
-  if (d.startsWith("61") && d.length === 11) d = "0" + d.slice(2);
-  return d;
-}
+export const phoneKey = (phone) => M.phoneKey(phone);
 
-/*
-  The timeline answer, from the form's keys (asap, within_1_2_weeks, just_browsing) or its words.
-  The same rule as timelineOf in public/model.js (a test checks they agree).
-*/
-export function mapTimeline(value) {
-  const s = String(value ?? "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-  if (!s) return "";
-  if (/\bbrows/.test(s) || /\bjust looking\b/.test(s)) return "just_browsing";
-  if (/\basap\b|\bas soon as\b/.test(s)) return "asap";
-  if (/\b1 (to )?2 weeks?\b|\bwithin 1\b|\bwithin 2 weeks?\b/.test(s)) return "within_1_2_weeks";
-  return "";
-}
+/** The timeline answer, from the form's keys (asap, within_1_2_weeks, just_browsing) or its words. */
+export const mapTimeline = (value) => M.timelineOf(value);
 
-const SCORE = { asap: "Hot", within_1_2_weeks: "Warm", just_browsing: "Browsing" };
-const PEOPLE = ["Angus", "Ananth"];
+const PEOPLE = M.PEOPLE;
 
 /** "Angus" or "Ananth" when the source names one, else "". */
 export function mapOwner(value) {
@@ -121,16 +107,8 @@ export function buildLead(input, now = new Date()) {
     reviewLeftAt: null,
     reviewNotes: "",
     // The follow-up fields (public/model.js describes them).
-    stage: "New",
-    touches: 0,
-    timeline,
-    score: SCORE[timeline] || "",
-    scoreBy: SCORE[timeline] ? "timeline" : "",
-    schedule: timeline === "just_browsing" ? "browsing" : "full",
-    snoozeUntil: "",
-    lostReason: "",
-    doNotText: false,
-    junk: false,
-    modelVersion: 2,
+    ...M.newFields(timeline),
+    email: clip(input.email, 200),
+    formId: clip(input.formId ?? input.form_id ?? input.leadgen_id, 120),
   };
 }

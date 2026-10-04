@@ -29,7 +29,7 @@ Numbers. A phone app (add it to the home screen) shared by Angus and Ananth.
 | `imperium-leads.html` | The page. |
 | `public/claude-shim.js` | The storage layer and the PIN screen. |
 | `public/reviews.js` | The review steps, the texts, what's due and the 30-day counts (plain script, shared with the tests). |
-| `public/model.js` | The lead model: stages, follow-up fields and the one-off upgrade (plain script, shared with the tests). |
+| `public/model.js` | The lead model: stages, call hours, the schedule, Today's lists and the upgrade (plain script, shared with the server and the tests through `lib/model.js`). |
 | `public/sw.js`, `public/manifest.json`, icons | Home-screen app; opens with no signal (the list needs one). |
 | `api/unlock.js` | PIN check and sign-in. |
 | `api/lead.js` | New enquiries in. |
@@ -127,32 +127,39 @@ Scenario: **Facebook Lead Ads → Watch New Leads**, then **HTTP → Make a requ
 
 The `{{1.…}}` names depend on the questions in the instant form; pick them from Make's list.
 
-## Follow-up fields (v2)
+## Follow-ups and call hours
 
-Each lead also carries `stage`, `touches`, `timeline`, `score`, `scoreBy`, `schedule`,
-`snoozeUntil`, `lostReason`, `doNotText`, `junk` and `modelVersion` (`public/model.js` says what
-each one means). Nothing old is removed: `nextFollowUp` is still the due date, `quoted` the quote
-and `log` the touch log. Every save works the new fields out from the old status, so both stay in
-step until the new screens replace the old ones.
+**Call hours** are 8:00am to 7:00pm every day, Canberra time (**Call hours** on the first tab
+changes them; `settings/hours`). A lead that comes in outside them isn't shown until they start;
+then it's first on the list with a moon, and its 5-minute reply clock starts then too. The
+Numbers tab counts reply times from that adjusted start (`replyMins` itself is still saved
+counting from when the lead came in).
 
-Leads from before v2 get the fields from **Upgrade the leads (one-off)** on the Numbers tab. It
-shows what will move where first, then:
+**The schedule**, counted from the first touch. A call and a text on the same day are one touch.
 
-1. **Save a backup**: copies every lead to `backups/leads-<time>` and downloads a JSON file.
-2. **Run the upgrade**: adds the fields to each lead. Leads with no owner go to whoever logged
-   them last, else in turn, oldest first (the old value is kept in `ownerWas`).
+| Lead | Touches | Then |
+|---|---|---|
+| Hot, Warm or no tag | day 0, 1, 3, 7 | Waiting |
+| Just browsing | day 0, 3 | Waiting |
+| Quoted | day 2, 5, 9 after the quote | Waiting |
 
-| Old | New stage |
-|---|---|
-| New, nothing logged | New |
-| Contacted, or anything logged | Chasing |
-| Quoted | Quoted |
-| Booked, job still to come | Booked |
-| Booked and the job date has passed, marked done, or a job added directly | Done |
-| …and a review text has gone out (or they reviewed or declined) | Review asked |
-| Lost ("Why lost?" becomes the reason) | Lost |
+Logging Texted, No answer or a call sets the next due day. A missed day doesn't pile up: the lead
+just shows as due today. **Waiting** (it was going to be called Cold) keeps the lead: it comes
+up once every 30 days for a check-in text, then waits again. **Not now** takes a lead off the
+list until a day you pick, then its schedule carries on with the same gaps. **Answered** stops
+the schedule and asks one question (quoted, booked, not now or lost). A note on a lead being
+chased pauses it: it comes back the next day it's due, at the soonest tomorrow, marked Paused.
 
-Running it twice does nothing more. The card hides once every lead is upgraded.
+Each lead keeps: `stage`, `schedule`, `chaseFrom`, `touches`, `lastTouchOn`, `quotedOn`,
+`nextFollowUp`, `snoozeUntil`, `paused`, `timeline`, `score`, `lostReason`, `junk`, and
+`modelVersion: 3` (`public/model.js` describes each). Nothing older is removed; `status` is kept
+in step with the stage.
+
+**The upgrade** runs by itself when the app opens and a lead needs it: it saves a copy of every
+lead to `backups/` first, then merges the new fields into each lead. Leads already past their
+last touch go to Waiting with their first check-in 30 days on (no catch-up texts are sent or
+queued). What it changed is kept on each lead in `v3Was`. It never deletes a lead, and a lead
+it can't read is left as it is.
 
 ## Reviews
 

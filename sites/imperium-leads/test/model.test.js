@@ -47,29 +47,21 @@ test("every old lead maps to one new stage", () => {
   assert.equal(s({}), "New");
 });
 
-test("a call and a text on the same day are one touch; touches stop at 4", () => {
-  const log = [at("2026-10-01", "09:00"), at("2026-10-01", "09:05"), at("2026-10-02"), at("2026-10-01", "23:30")].map((x) => ({ at: x }));
-  assert.equal(M.touchDays(log), 2);
-  // 00:30 on the 2nd in Canberra (before daylight saving starts on the 4th) is still the 1st in UTC.
-  assert.equal(M.touchDays([{ at: "2026-10-01T14:30:00Z" }, { at: "2026-10-01T13:30:00Z" }]), 2);
-  const many = ["01", "02", "03", "04", "05", "06"].map((d) => ({ at: at(`2026-09-${d}`) }));
-  assert.equal(M.fields({ status: "Contacted", log: many }, TODAY).touches, 4);
-});
-
-test("the new fields: lost reasons carry across, a score set by hand stays, browsing gets the short schedule", () => {
-  const f = (l) => plain(M.fields(l, TODAY));
+test("touches stop at the end of the schedule; a lost reason carries across; a tag set by hand stays", () => {
+  const f = (l) => plain(M.upgradeFields({ modelVersion: 2, owner: "Angus", ...l }, TODAY));
+  const many = ["25", "26", "27", "28", "29", "30"].map((d) => ({ at: at(`2026-09-${d}`), type: "text" }));
+  assert.deepEqual([f({ status: "Contacted", log: many }).touches, f({ status: "Contacted", log: many }).stage], [4, "Waiting"]);
   const old = { "Too expensive": "price", Timing: "timing", "Went elsewhere": "went_elsewhere", "No reply": "no_reply", Other: "other", "": "other" };
   for (const [why, reason] of Object.entries(old)) assert.equal(f({ status: "Lost", lostWhy: why }).lostReason, reason, why);
   assert.equal(f({ status: "Quoted", lostWhy: "Timing" }).lostReason, "");
   const browsing = f({ status: "New", notes: "When: Just browsing" });
   assert.deepEqual([browsing.timeline, browsing.score, browsing.schedule, browsing.scoreBy], ["just_browsing", "Browsing", "browsing", "timeline"]);
   const byHand = f({ status: "New", timeline: "just_browsing", score: "Hot", scoreBy: "human" });
-  assert.deepEqual([byHand.score, byHand.scoreBy], ["Hot", "human"]);
-  assert.equal(f({ status: "Contacted", stage: "Cold" }).stage, "Cold");
-  assert.deepEqual([f({}).doNotText, f({}).junk, f({}).snoozeUntil, f({}).modelVersion], [false, false, "", 2]);
+  assert.deepEqual([byHand.score, byHand.scoreBy, byHand.schedule], ["Hot", "human", "full"]);
+  assert.deepEqual([f({}).doNotText, f({}).junk, f({}).snoozeUntil, f({}).paused, f({}).modelVersion], [false, false, "", false, 3]);
 });
 
-test("saving keeps every old field as it was and adds the new ones", () => {
+test("saving keeps every old field and keeps status in step with the stage", () => {
   const lead = {
     date: "2026-09-20", createdAt: at("2026-09-20"), owner: "Ananth", name: "Jo", phone: "0400", status: "Quoted", quoted: 250,
     nextFollowUp: "2026-10-02", lostWhy: "", notes: "When: ASAP", log: [{ at: at("2026-09-21"), by: "Ananth", type: "text" }],
@@ -77,7 +69,13 @@ test("saving keeps every old field as it was and adds the new ones", () => {
   };
   const out = plain(M.sync(lead, TODAY));
   for (const k of Object.keys(lead)) assert.deepEqual(out[k], plain(lead)[k], k);
-  assert.deepEqual([out.stage, out.touches, out.timeline, out.score, out.modelVersion], ["Quoted", 1, "asap", "Hot", 2]);
+  assert.deepEqual([out.stage, out.booked], ["Quoted", "Pending"]);
+  const status = (stage, old) => M.sync({ stage, status: old }, TODAY).status;
+  assert.deepEqual(["New", "Chasing", "Quoted", "Booked", "Lost"].map((s) => status(s, "New")), ["New", "Contacted", "Quoted", "Booked", "Lost"]);
+  assert.deepEqual([status("Waiting", "Quoted"), status("Waiting", "Contacted"), status("Cold", "New")], ["Quoted", "Contacted", "Contacted"]);
+  // A booking moves on once the job date has passed, and doesn't move back.
+  assert.equal(M.sync({ stage: "Booked", jobDate: "2026-10-01" }, TODAY).stage, "Done");
+  assert.equal(M.sync({ stage: "Done", jobDate: "2026-10-09" }, TODAY).stage, "Done");
 });
 
 test("a lead from the form and one typed into the Add tab have the same fields", () => {
@@ -87,33 +85,25 @@ test("a lead from the form and one typed into the Add tab have the same fields",
     address: "", jobTime: "", access: "", service: "Full detail", car: "", suburb: "", replyMins: null, quoted: null, status: "New",
     nextFollowUp: TODAY, lastContact: "", log: [], objection: "", lostWhy: "", jobDate: "", revenue: null, paid: "", plan: "",
     upsellOffered: "", upsellTaken: "", reviewAsked: "", reviewLeft: "", nextDue: "", notes: "", completedAt: null, reviewStatus: null,
-    reviewAskedAt: null, reviewTextSentAt: null, reviewNudgedAt: null, reviewLeftAt: null, reviewNotes: "", timeline: "asap", booked: "Pending",
+    reviewAskedAt: null, reviewTextSentAt: null, reviewNudgedAt: null, reviewLeftAt: null, reviewNotes: "", booked: "Pending",
+    ...M.newFields("asap"),
   };
-  assert.deepEqual(Object.keys(plain(M.sync(typed, TODAY))).sort(), Object.keys(api).sort());
+  assert.deepEqual(Object.keys(plain(M.sync(typed, TODAY))).sort(), Object.keys(plain(M.sync(api, TODAY))).sort());
+  assert.deepEqual(Object.keys(api).sort(), Object.keys(typed).sort());
 });
 
-test("the upgrade: shows every lead's move first, gives an owner to leads with none, and runs once", () => {
+test("the upgrade gives an owner to leads with none: whoever logged them last, else in turn", () => {
   const leads = [
-    { id: "a", name: "A", createdAt: at("2026-09-01"), status: "Contacted", owner: "", log: [{ at: at("2026-09-02"), by: "Ananth" }] },
+    { id: "a", name: "A", createdAt: at("2026-09-01"), status: "Contacted", owner: "", log: [{ at: at("2026-09-02"), by: "Ananth", type: "text" }] },
     { id: "b", name: "B", createdAt: at("2026-09-02"), status: "New", owner: "", notes: "When: asap" },
     { id: "c", name: "C", createdAt: at("2026-09-03"), status: "New", owner: "" },
-    { id: "d", name: "D", createdAt: at("2026-09-04"), status: "Booked", owner: "Angus", jobDate: "2026-09-10" },
-    { id: "e", name: "E", createdAt: at("2026-09-05"), status: "Lost", owner: "Ananth", lostWhy: "Too expensive" },
+    { id: "d", name: "D", createdAt: at("2026-09-04"), status: "Booked", owner: "Angus", jobDate: "2026-09-10", modelVersion: 3 },
   ];
   const p = plain(M.plan(leads, TODAY));
-  assert.equal(p.todo, 5);
   const row = (id) => p.rows.find((r) => r.id === id);
-  assert.deepEqual([row("a").owner, row("a").ownerFrom], ["Ananth", "logged"]);
-  assert.deepEqual([row("b").owner, row("c").owner], ["Angus", "Ananth"]); // in turn, oldest first
+  assert.equal(p.todo, 3);
+  assert.deepEqual([row("a").patch.owner, row("b").patch.owner, row("c").patch.owner], ["Ananth", "Angus", "Ananth"]);
   assert.equal(row("b").patch.ownerWas, "");
-  assert.equal(row("d").patch.owner, undefined); // has one: left alone
-  assert.deepEqual([row("d").from, row("d").to], ["Booked, job date passed", "Done"]);
-  assert.equal(row("e").patch.lostReason, "price");
-  assert.deepEqual(p.owners, { kept: 2, logged: 1, turn: 2 });
-  assert.deepEqual(p.timelines, { asap: 1, within_1_2_weeks: 0, just_browsing: 0, none: 4 });
-  assert.ok(p.moves.some((m) => m.move === "Contacted → Chasing" && m.n === 1));
-  // Applied (the way the page merges it in), nothing is left to do, and the old fields are as they were.
-  const after = leads.map((l) => ({ ...l, ...p.rows.find((r) => r.id === l.id).patch }));
-  assert.equal(M.plan(after, TODAY).todo, 0);
-  for (const l of leads) for (const k of Object.keys(l)) if (k !== "owner") assert.deepEqual(after.find((x) => x.id === l.id)[k], l[k]);
+  assert.equal(row("d"), undefined); // up to date and owned: left alone
+  assert.equal(row("b").patch.score, "Hot");
 });
