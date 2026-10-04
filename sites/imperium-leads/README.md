@@ -226,10 +226,11 @@ shows a hundred at a time, with **Show more** for the rest.
 real, but is left off Today and out of the Numbers. "It's real after all" undoes it.
 
 **Numbers** shows six figures: Leads, Booked, Close rate, Revenue, Replied within 5 minutes
-(from the start of call hours for overnight leads) and Cost per booked job from ads. Under it,
-cost per booked job for each ad, from the weekly ad spend: **Add this week's ad spend** takes a
-figure per ad from Ads Manager and saves it for both phones (`spend/<Monday>`). A week counts in
-a period by its Monday. Ad figures count both of you. **More** has the rest: average job, per
+(from the start of call hours for overnight leads) and Cost per booked job from ads: the total
+ad spend in the period divided by the leads from ads (source Meta ad, or with an ad's name) that
+booked. **Add this week's ad spend** takes one total a week from Ads Manager and saves it for both
+phones (`spend/<Monday>`); per-ad figures are left to Ads Manager. A week counts in a period by
+its Monday. Ad figures count both of you. **More** has the rest: average job, per
 lead, still open, touches per lead, on a plan, upsells, lost reasons, reviews asked vs left, the
 last 30 days of reviews, by source, by service, and who's due for their next service. The
 period filters and the person filter are as before.

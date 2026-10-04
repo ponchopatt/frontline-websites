@@ -546,42 +546,38 @@
     return addDays(date, -((dow + 6) % 7));
   }
   /*
-    Ad spend from the weekly form: weeks is [{ weekOf: "2026-10-05", byAd: { "Brand film": 120 } }].
-    keep(weekOf) says which weeks count. Returns { byAd: { name: dollars }, total }.
+    Total ad spend from the weekly form: weeks is [{ weekOf: "2026-10-05", total: 350 }] (an
+    older week saved per ad, { byAd: { "Brand film": 120 } }, counts as the sum). keep(weekOf)
+    says which weeks count.
   */
-  function spendByAd(weeks, keep) {
-    var byAd = {}, total = 0;
+  function adSpend(weeks, keep) {
+    var total = 0;
     (weeks || []).forEach(function (w) {
       if (!w || !isDay(w.weekOf) || (keep && !keep(w.weekOf))) return;
-      Object.keys(w.byAd || {}).forEach(function (ad) {
-        var n = Number(w.byAd[ad]);
-        if (!ad || !isFinite(n) || n <= 0) return;
-        byAd[ad] = (byAd[ad] || 0) + n;
-        total += n;
-      });
+      var n = Number(w.total);
+      if (w.total == null || w.total === "" || !isFinite(n)) {
+        n = 0;
+        Object.keys(w.byAd || {}).forEach(function (ad) { var v = Number(w.byAd[ad]); if (isFinite(v) && v > 0) n += v; });
+      }
+      if (n > 0) total += n;
     });
-    return { byAd: byAd, total: total };
+    return total;
   }
   function isBooked(l, today) {
     return BOOKED.indexOf(stageOf(l, today)) !== -1;
   }
+  // A lead from the ads: it came from a Meta ad, or it has an ad's name on it.
+  function fromAds(l) {
+    return !!l && (l.source === "Meta ad" || !!l.ad);
+  }
   /*
-    Cost per booked job for each ad: that ad's spend divided by the leads from it that booked.
-    Returns [{ ad, spend, leads, booked, perBooked }] (perBooked null when nothing booked yet), and
-    the whole lot in `all`.
+    Cost per booked job from ads: the total spend divided by the leads from ads that booked.
+    Returns { spend, leads, booked, perBooked } (perBooked null when nothing's booked or spent).
   */
   function costPerBooked(leads, spend, today) {
-    var names = {};
-    Object.keys(spend.byAd).forEach(function (ad) { names[ad] = true; });
-    (leads || []).forEach(function (l) { if (l && l.ad) names[l.ad] = true; });
-    var rows = Object.keys(names).sort().map(function (ad) {
-      var from = leads.filter(function (l) { return l && l.ad === ad; });
-      var booked = from.filter(function (l) { return isBooked(l, today); }).length;
-      var sp = spend.byAd[ad] || 0;
-      return { ad: ad, spend: sp, leads: from.length, booked: booked, perBooked: booked && sp ? sp / booked : null };
-    });
-    var bookedFromAds = rows.reduce(function (a, r) { return a + r.booked; }, 0);
-    return { rows: rows, all: bookedFromAds && spend.total ? spend.total / bookedFromAds : null };
+    var from = (leads || []).filter(fromAds);
+    var booked = from.filter(function (l) { return isBooked(l, today); }).length;
+    return { spend: spend, leads: from.length, booked: booked, perBooked: booked && spend ? spend / booked : null };
   }
 
   /* ------------------------------------------------------------ the same person again */
@@ -740,7 +736,7 @@
     setStage: setStage, retag: retag, nextTag: nextTag, progress: progress,
     arrivedAt: arrivedAt, isOvernight: isOvernight, replyMinutes: replyMinutes,
     place: place, stale: stale, rank: rank, todayLists: todayLists, quoteDay: quoteDay, fridayWrap: fridayWrap,
-    mondayOf: mondayOf, spendByAd: spendByAd, isBooked: isBooked, costPerBooked: costPerBooked,
+    mondayOf: mondayOf, adSpend: adSpend, isBooked: isBooked, fromAds: fromAds, costPerBooked: costPerBooked,
     phoneKey: phoneKey, isOpen: isOpen, matchPhone: matchPhone, mergeEnquiry: mergeEnquiry,
     needsUpgrade: needsUpgrade, upgradeFields: upgradeFields, plan: plan,
   };

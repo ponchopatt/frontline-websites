@@ -49,23 +49,22 @@ test("a booking or job from the last 30 days takes the enquiry; older ones make 
   assert.deepEqual(M.matchPhone([lead("fake", { stage: "Chasing", junk: true })], "0400 111 222", TODAY), {});
 });
 
-test("weekly ad spend: cost per booked job by ad, and spend changes it", () => {
+test("weekly ad spend: one total a week; cost per booked job from ads, and spend changes it", () => {
   assert.equal(M.mondayOf("2026-10-04"), "2026-09-28"); // a Sunday
   assert.equal(M.mondayOf("2026-10-05"), "2026-10-05");
   const leads = [
-    lead("a", { ad: "Brand film", stage: "Booked", jobDate: "2026-10-20" }),
-    lead("b", { ad: "Brand film", stage: "Chasing" }),
-    lead("c", { ad: "Snow foam", stage: "Done", completedAt: at("2026-10-03") }),
-    lead("d", { ad: "Snow foam", stage: "Booked", jobDate: "2026-10-20" }),
-    lead("e", { ad: "", stage: "Booked" }),
+    lead("a", { source: "Meta ad", ad: "Brand film", stage: "Booked", jobDate: "2026-10-20" }),
+    lead("b", { source: "Meta ad", ad: "", stage: "Chasing" }),
+    lead("c", { source: "Meta ad", stage: "Done", completedAt: at("2026-10-03") }),
+    lead("d", { source: "Referral", ad: "", stage: "Booked", jobDate: "2026-10-20" }), // not from the ads
   ];
-  const weeks = [{ weekOf: "2026-09-28", byAd: { "Brand film": 100, "Snow foam": 60 } }, { weekOf: "2026-10-05", byAd: { "Brand film": 50, Nothing: "" } }, { weekOf: "2026-08-03", byAd: { "Brand film": 999 } }];
-  const spend = M.spendByAd(weeks, (w) => w >= "2026-09-01");
-  assert.deepEqual(spend, { byAd: { "Brand film": 150, "Snow foam": 60 }, total: 210 });
-  const c = M.costPerBooked(leads, spend, TODAY);
-  assert.deepEqual(c.rows.map((r) => [r.ad, r.spend, r.leads, r.booked, r.perBooked]), [["Brand film", 150, 2, 1, 150], ["Snow foam", 60, 2, 2, 30]]);
-  assert.equal(c.all, 70);
-  // Spend goes up, cost per booked job goes up.
-  const more = M.costPerBooked(leads, M.spendByAd([...weeks, { weekOf: "2026-10-05", byAd: { "Snow foam": 40 } }], (w) => w >= "2026-09-01"), TODAY);
-  assert.equal(more.rows.find((r) => r.ad === "Snow foam").perBooked, 50);
+  // An older week saved per ad still counts, as its sum.
+  const weeks = [{ weekOf: "2026-09-28", total: 300 }, { weekOf: "2026-10-05", total: "" , byAd: { "Brand film": 50, "Snow foam": 50 } }, { weekOf: "2026-08-03", total: 999 }];
+  const spend = M.adSpend(weeks, (w) => w >= "2026-09-01");
+  assert.equal(spend, 400);
+  assert.deepEqual(M.costPerBooked(leads, spend, TODAY), { spend: 400, leads: 3, booked: 2, perBooked: 200 });
+  // Spend goes up, cost per booked job goes up; nothing spent or booked, no figure.
+  assert.equal(M.costPerBooked(leads, M.adSpend([...weeks, { weekOf: "2026-10-12", total: 100 }], (w) => w >= "2026-09-01"), TODAY).perBooked, 250);
+  assert.equal(M.costPerBooked(leads, 0, TODAY).perBooked, null);
+  assert.equal(M.costPerBooked([leads[1]], 400, TODAY).perBooked, null);
 });

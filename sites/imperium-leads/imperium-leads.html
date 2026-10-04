@@ -280,10 +280,10 @@ tr:last-child td{border-bottom:0}
     <div class="seg three" id="nWho" data-value=""><button type="button" data-v="">Both</button><button type="button" data-v="Angus">Angus</button><button type="button" data-v="Ananth">Ananth</button></div>
     <div class="tiles" id="tiles"></div>
     <div class="card">
-      <div class="eyebrow"><span>Cost per booked job, by ad</span></div>
-      <div style="overflow-x:auto"><table id="byAd"></table></div>
+      <div class="eyebrow"><span>Ad spend</span></div>
+      <div style="overflow-x:auto"><table id="adSpend"></table></div>
       <button class="btn secondary" id="spendBtn" type="button">Add this week's ad spend</button>
-      <p class="help">Type each ad's spend from Ads Manager once a week. Saved for both phones. Counts both of you.</p>
+      <p class="help">Once a week, type the total spent on ads (from Ads Manager). Saved for both phones. Counts both of you.</p>
     </div>
     <details class="card" id="more">
       <summary class="eyebrow" style="cursor:pointer"><span>More</span><span aria-hidden="true">▾</span></summary>
@@ -983,15 +983,14 @@ tr:last-child td{border-bottom:0}
     const replied=rows.filter(l=>M.replyMinutes(l,h)!=null), fast=replied.filter(l=>M.replyMinutes(l,h)<=5).length;
     const closeRate=rows.length?booked.length/rows.length:0, fastRate=replied.length?fast/replied.length:null;
     // Ads: the weekly spend (both phones) against what each ad booked (both of you).
-    const ads=M.costPerBooked(live, M.spendByAd(spendWeeks, inPeriodDay), t);
+    const ads=M.costPerBooked(live, M.adSpend(spendWeeks, inPeriodDay), t);
     const tile=(v,label,cls="")=>'<div class="tile '+cls+'"><b>'+v+'</b><span>'+label+'</span></div>';
     $("#tiles").innerHTML=
       tile(rows.length,"Leads")+tile(booked.length,"Booked")+tile(pct(booked.length,rows.length),"Close rate",closeRate>=.4?"good":closeRate>=.25?"warn":rows.length?"bad":"")+
       tile(money(rev),"Revenue")+tile(fastRate==null?"–":Math.round(fastRate*100)+"%","Replied ≤5 min",fastRate==null?"":fastRate>=.8?"good":fastRate>=.5?"warn":"bad")+
-      tile(ads.all==null?"–":money(ads.all),"Per booked job (ads)");
-    $("#byAd").innerHTML = ads.rows.length ? '<tr><th>Ad</th><th class="n">Spend</th><th class="n">Leads</th><th class="n">Booked</th><th class="n">Per booked</th></tr>'+
-      ads.rows.map(r=>'<tr><td>'+esc(r.ad)+'</td><td class="n">'+money(r.spend)+'</td><td class="n">'+r.leads+'</td><td class="n">'+r.booked+'</td><td class="n">'+(r.perBooked==null?"–":money(r.perBooked))+'</td></tr>').join("")
-      : '<tr><td class="empty">No ads or spend in this period yet.</td></tr>';
+      tile(ads.perBooked==null?"–":money(ads.perBooked),"Per booked job (ads)");
+    const row=(label,v)=>'<tr><td>'+label+'</td><td class="n">'+v+'</td></tr>';
+    $("#adSpend").innerHTML=row("Spent in this period",money(ads.spend))+row("Leads from ads",ads.leads)+row("Booked from ads",ads.booked)+row("Per booked job",ads.perBooked==null?"–":money(ads.perBooked));
     // More.
     const plan=rows.filter(l=>l.plan==="Yes").length, upsO=rows.filter(l=>l.upsellOffered==="Yes").length, upsT=rows.filter(l=>l.upsellTaken==="Yes").length;
     const open=rows.filter(isOpen).length, touches=rows.reduce((a,l)=>a+M.touchDays(l.log),0);
@@ -1016,29 +1015,20 @@ tr:last-child td{border-bottom:0}
     $("#dueCard").hidden=!due.length;
     $("#dueList").innerHTML=due.map(l=>leadCard(l,{tag:'<span class="pill due">'+esc(l.nextDue)+'</span>'})).join(""); wire($("#dueList"));
   }
-  // The weekly ad spend: one figure per ad, saved for both phones (spend/<Monday>).
+  // The weekly ad spend: one total a week, saved for both phones (spend/<Monday>).
   $("#spendBtn").addEventListener("click",()=>{
     const mon=M.mondayOf(today()), weeks=[0,1,2,3].map(n=>M.addDays(mon,-7*n));
-    const recent=M.addDays(today(),-120);
-    const names=[...new Set([...leads.filter(l=>l.ad && (l.date||"")>=recent).map(l=>l.ad), ...spendWeeks.flatMap(w=>Object.keys(w.byAd||{}))])].sort();
-    const g=sheet('<div class="sheet-h"><div><h2>Ad spend</h2><p class="help">From Ads Manager, for the week. Saved for both phones.</p></div><button class="x" id="closeSheet">Close</button></div>'+
+    const g=sheet('<div class="sheet-h"><div><h2>Ad spend</h2><p class="help">The total spent on ads that week, from Ads Manager. Saved for both phones.</p></div><button class="x" id="closeSheet">Close</button></div>'+
       '<label>Week<select id="sp-week">'+weeks.map((w,i)=>'<option value="'+w+'">'+(i===0?"This week":i===1?"Last week":i+" weeks ago")+' (from '+esc(dayName(w))+')</option>').join("")+'</select></label>'+
-      '<div class="grid" id="sp-ads"></div>'+
-      '<div class="grid"><label>Another ad<input id="sp-newName" placeholder="Ad name"></label><label>$<input id="sp-newAmt" type="number" inputmode="decimal" min="0"></label></div>'+
+      '<label>Total spent $<input id="sp-total" type="number" inputmode="decimal" min="0" placeholder="0"></label>'+
       '<button class="btn" id="sp-save">Save</button>');
-    const fill=()=>{
-      const doc=spendWeeks.find(w=>w.weekOf===g("#sp-week").value)||{byAd:{}};
-      const all=[...new Set([...names,...Object.keys(doc.byAd||{})])];
-      g("#sp-ads").innerHTML=all.length?all.map(ad=>'<label>'+esc(ad)+' $<input type="number" inputmode="decimal" min="0" data-ad="'+esc(ad)+'" value="'+(doc.byAd&&doc.byAd[ad]!=null?esc(doc.byAd[ad]):"")+'"></label>').join(""):'<p class="help full">No ads on any leads yet. Add one below.</p>';
-    };
+    const fill=()=>{ const w=g("#sp-week").value, n=M.adSpend(spendWeeks.filter(x=>x.weekOf===w)); g("#sp-total").value=n||""; };
     g("#sp-week").addEventListener("change",fill); fill();
     g("#sp-save").addEventListener("click",async()=>{
       if(!db){ toast("Not connected. Try again in a sec."); return; }
-      const byAd={};
-      document.querySelectorAll("#sp-ads [data-ad]").forEach(i=>{ const n=num(i.value); if(n!=null) byAd[i.dataset.ad]=n; });
-      const nn=g("#sp-newName").value.trim(), na=num(g("#sp-newAmt").value); if(nn&&na!=null) byAd[nn]=na;
+      const total=num(g("#sp-total").value); if(total==null){ toast("Type the total spent"); g("#sp-total").focus(); return; }
       const week=g("#sp-week").value, b=g("#sp-save"); b.disabled=true;
-      try{ await db.doc("spend/"+week).set({weekOf:week, byAd, updatedAt:new Date().toISOString(), by:who||""}); toast("Saved."); closeSheet(); }
+      try{ await db.doc("spend/"+week).set({weekOf:week, total, updatedAt:new Date().toISOString(), by:who||""}); toast("Saved."); closeSheet(); }
       catch(err){ b.disabled=false; writeFail(err); }
     });
   });
