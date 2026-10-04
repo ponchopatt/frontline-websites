@@ -535,6 +535,52 @@
     };
   }
 
+  /* ------------------------------------------------------------ ad spend */
+
+  // The Monday of the week a day is in (weeks run Monday to Sunday).
+  function mondayOf(date) {
+    var dow = new Date(date + "T12:00:00Z").getUTCDay();
+    return addDays(date, -((dow + 6) % 7));
+  }
+  /*
+    Ad spend from the weekly form: weeks is [{ weekOf: "2026-10-05", byAd: { "Brand film": 120 } }].
+    keep(weekOf) says which weeks count. Returns { byAd: { name: dollars }, total }.
+  */
+  function spendByAd(weeks, keep) {
+    var byAd = {}, total = 0;
+    (weeks || []).forEach(function (w) {
+      if (!w || !isDay(w.weekOf) || (keep && !keep(w.weekOf))) return;
+      Object.keys(w.byAd || {}).forEach(function (ad) {
+        var n = Number(w.byAd[ad]);
+        if (!ad || !isFinite(n) || n <= 0) return;
+        byAd[ad] = (byAd[ad] || 0) + n;
+        total += n;
+      });
+    });
+    return { byAd: byAd, total: total };
+  }
+  function isBooked(l, today) {
+    return BOOKED.indexOf(stageOf(l, today)) !== -1;
+  }
+  /*
+    Cost per booked job for each ad: that ad's spend divided by the leads from it that booked.
+    Returns [{ ad, spend, leads, booked, perBooked }] (perBooked null when nothing booked yet), and
+    the whole lot in `all`.
+  */
+  function costPerBooked(leads, spend, today) {
+    var names = {};
+    Object.keys(spend.byAd).forEach(function (ad) { names[ad] = true; });
+    (leads || []).forEach(function (l) { if (l && l.ad) names[l.ad] = true; });
+    var rows = Object.keys(names).sort().map(function (ad) {
+      var from = leads.filter(function (l) { return l && l.ad === ad; });
+      var booked = from.filter(function (l) { return isBooked(l, today); }).length;
+      var sp = spend.byAd[ad] || 0;
+      return { ad: ad, spend: sp, leads: from.length, booked: booked, perBooked: booked && sp ? sp / booked : null };
+    });
+    var bookedFromAds = rows.reduce(function (a, r) { return a + r.booked; }, 0);
+    return { rows: rows, all: bookedFromAds && spend.total ? spend.total / bookedFromAds : null };
+  }
+
   /* ------------------------------------------------------------ the same person again */
 
   function phoneKey(phone) {
@@ -554,7 +600,7 @@
   function matchPhone(leads, phone, today) {
     var key = phoneKey(phone);
     if (key.length < 6) return {};
-    var same = (leads || []).filter(function (l) { return l && phoneKey(l.phone) === key; })
+    var same = (leads || []).filter(function (l) { return l && !l.junk && phoneKey(l.phone) === key; })
       .sort(function (a, b) { return String(b.createdAt || b.date || "").localeCompare(String(a.createdAt || a.date || "")); });
     if (!same.length) return {};
     var hit = same.filter(function (l) {
@@ -688,6 +734,7 @@
     setStage: setStage, retag: retag, nextTag: nextTag, progress: progress,
     arrivedAt: arrivedAt, isOvernight: isOvernight, replyMinutes: replyMinutes,
     place: place, stale: stale, rank: rank, todayLists: todayLists, quoteDay: quoteDay, fridayWrap: fridayWrap,
+    mondayOf: mondayOf, spendByAd: spendByAd, isBooked: isBooked, costPerBooked: costPerBooked,
     phoneKey: phoneKey, isOpen: isOpen, matchPhone: matchPhone, mergeEnquiry: mergeEnquiry,
     needsUpgrade: needsUpgrade, upgradeFields: upgradeFields, plan: plan,
   };

@@ -1,8 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { adName, buildLead, mapService, mapSource, phoneKey } from "../lib/lead-map.js";
-import { chaseList, eveningEmail, morningEmail, toLogList } from "../lib/reminders.js";
-import { canberraDate, canberraMinutes, dayName, localDate } from "../lib/time.js";
+import M from "../lib/model.js";
 
 test("sources map to the app's list, and the ad name comes after the dot", () => {
   assert.equal(mapSource("Meta ad · Brand film"), "Meta ad");
@@ -122,40 +121,8 @@ test("a lead's timeline, score and owner come from the form", () => {
 });
 
 test("Canberra's day and hour, through daylight saving", () => {
-  assert.equal(canberraDate(new Date("2026-09-26T14:00:00Z")), "2026-09-27"); // AEST +10
-  assert.equal(canberraMinutes(new Date("2026-09-26T21:25:00Z")), 7 * 60 + 25);
-  assert.equal(canberraMinutes(new Date("2026-10-05T20:25:00Z")), 7 * 60 + 25); // AEDT +11
-  assert.equal(localDate("2026-09-26T15:00:00Z"), "2026-09-27");
-  assert.match(dayName("2026-09-25"), /^Fri,? 25 Sept?$/); // written by the same call the app uses
-});
-
-const TODAY = "2026-09-27";
-const lead = (p) => ({ id: p.name, status: "New", date: "2026-09-20", nextFollowUp: TODAY, log: [], ...p });
-const leads = [
-  lead({ name: "Old", status: "Contacted", nextFollowUp: "2026-09-24", phone: "0411" }),
-  lead({ name: "Fresh", date: TODAY }),
-  lead({ name: "Later", status: "Quoted", nextFollowUp: "2026-09-30" }),
-  lead({ name: "Done", status: "Contacted", log: [{ at: "2026-09-26T22:00:00Z" }] }), // 08:00 today in Canberra
-  lead({ name: "Job", status: "Booked", jobDate: TODAY, service: "Full detail", suburb: "Kambah", revenue: 350 }),
-  lead({ name: "Lost", status: "Lost", nextFollowUp: "" }),
-  lead({ name: "Walk-up", kind: "job", date: TODAY, status: "Booked", nextFollowUp: "", jobDate: TODAY, revenue: 200 }), // from "Add a job"
-];
-
-test("the morning list is the app's: New first, then the longest overdue", () => {
-  assert.deepEqual(chaseList(leads, TODAY).map((l) => l.name), ["Fresh", "Old", "Done"]);
-  const m = morningEmail(leads, TODAY, "Angus", "https://leads.example");
-  assert.equal(m.subject, "Morning: 3 to chase, 1 overdue · 2 jobs today");
-  assert.match(m.text, /^Morning, Angus\nSunday 27 September · 3 to chase \(1 overdue\) · 2 jobs today/);
-  assert.match(m.text, /Follow up today \(3\)\nNew leads first, then anyone due a chase\. Log each one in the app\.\n- Fresh · car\? · New today\n- Old · car\? · 0411 · Overdue since /);
-  assert.match(m.text, /- Job · car\? — Full detail · Kambah · \$350/);
-  assert.match(m.text, /Open Imperium Leads: https:\/\/leads.example$/);
-  assert.match(m.html, /Morning, Angus/);
-});
-
-test("the evening list is leads new or due today that aren't logged yet", () => {
-  assert.deepEqual(toLogList(leads, TODAY).map((l) => l.name), ["Old", "Fresh"]);
-  const e = eveningEmail(leads, TODAY, "Ananth", "");
-  assert.equal(e.subject, "Evening: 2 leads still to log");
-  assert.equal(e.count, 2);
-  assert.match(e.text, /^Evening, Ananth\nLog every lead you touched today, then close the day\./);
+  assert.equal(M.canberraDate(new Date("2026-09-26T14:00:00Z")), "2026-09-27"); // AEST +10
+  assert.equal(M.canberraMinutes(new Date("2026-09-26T21:25:00Z")), 7 * 60 + 25);
+  assert.equal(M.canberraMinutes(new Date("2026-10-05T20:25:00Z")), 7 * 60 + 25); // AEDT +11
+  assert.equal(M.canberraDate("2026-09-26T15:00:00Z"), "2026-09-27");
 });

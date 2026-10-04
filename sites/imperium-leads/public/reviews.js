@@ -55,10 +55,13 @@
     return String((l && l.car) || "").trim() || "car";
   }
 
+  // The review ask, sent once they've paid.
   function text(l, s) {
     s = settings(s);
-    return "Hey " + firstName(l) + ", " + s.senderName + " from " + s.businessName + " here. Thanks again for today, the " + car(l) +
-      " came up great. If you've got a minute, a Google review would mean a lot to us: " + s.reviewLink + "\nCheers, " + s.senderName;
+    return "Thanks " + firstName(l) + ", payment received. If you've got a minute, a Google review would mean a lot to us: " + s.reviewLink;
+  }
+  function paid(l) {
+    return !!l && l.paid === "Yes";
   }
   function nudge(l, s) {
     s = settings(s);
@@ -114,7 +117,8 @@
           buttons: [{ status: "asked_in_person", label: "Asked in person", primary: true }, { status: "skip", label: "Skip", primary: false }],
         };
       case "asked_in_person":
-        return { title: "Send this text tonight:", say: text(l, s), copy: true, buttons: [{ status: "text_sent", label: "Text sent", primary: true }] };
+        if (!paid(l)) return { title: "Tick Paid once the money's in. The review text comes up then.", say: "", copy: false, buttons: [] };
+        return { title: "Paid. Send this text:", say: text(l, s), copy: true, buttons: [{ status: "text_sent", label: "Text sent", primary: true }] };
       case "text_sent":
         if (nudgeDue(l, now)) {
           return {
@@ -172,13 +176,13 @@
     };
   }
 
-  // Due today: the text for anyone asked in person, and the one nudge once a text is 3 days old.
+  // Due today: the text for anyone asked in person who has paid, and the one nudge once a text is 3 days old.
   function due(leads, s, now) {
     now = now || new Date();
     var out = [];
     leads.forEach(function (l) {
       var st = statusOf(l);
-      if (st === "asked_in_person") out.push({ lead: l, kind: "text", what: "Send the review text", done: "text_sent", doneLabel: "Text sent", text: text(l, s) });
+      if (st === "asked_in_person" && paid(l)) out.push({ lead: l, kind: "text", what: "Send the review text", done: "text_sent", doneLabel: "Text sent", text: text(l, s) });
       else if (st === "text_sent" && nudgeDue(l, now)) out.push({ lead: l, kind: "nudge", what: "Send one nudge", done: "nudged", doneLabel: "Nudged", text: nudge(l, s) });
     });
     return out.sort(function (a, b) {

@@ -89,6 +89,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .tag.hot{background:var(--bad-bg);color:var(--bad)}
 .tag.warm{background:var(--warn-bg);color:var(--warn)}
 .tag.browsing{background:var(--surface2);color:var(--muted)}
+.tag.none{background:none;color:var(--muted);border:1px dashed var(--line)}
+button.tag{cursor:pointer}
 .today-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .today-h .seg{flex:0 0 132px}
 .today-h .seg button{padding:8px 4px}
@@ -190,6 +192,7 @@ tr:last-child td{border-bottom:0}
       <div><h1 id="tHead">Today</h1><p class="help" id="tSub"></p></div>
       <div class="seg two" id="tView" data-value="mine"><button type="button" data-v="mine">Mine</button><button type="button" data-v="all">All</button></div>
     </div>
+    <div class="card" id="friday" hidden></div>
     <p class="help later" id="tLater" hidden></p>
     <div id="tLists" class="sec">
     <div class="sec" id="s-callFirst" hidden><div class="eyebrow"><span>Call first</span><span class="n"></span></div><div class="list"></div></div>
@@ -281,19 +284,22 @@ tr:last-child td{border-bottom:0}
     <div class="seg three" id="period" data-value="30"><button type="button" data-v="month">This month</button><button type="button" data-v="30">Last 30 days</button><button type="button" data-v="all">All time</button></div>
     <div class="seg three" id="nWho" data-value=""><button type="button" data-v="">Both</button><button type="button" data-v="Angus">Angus</button><button type="button" data-v="Ananth">Ananth</button></div>
     <div class="tiles" id="tiles"></div>
-    <div class="card"><div class="eyebrow">By source</div><div style="overflow-x:auto"><table id="bySource"></table></div></div>
-    <div class="card"><div class="eyebrow">By service</div><div style="overflow-x:auto"><table id="byService"></table></div></div>
-    <div class="card"><div class="eyebrow">Why we lose them</div><div style="overflow-x:auto"><table id="byLost"></table></div></div>
     <div class="card">
-      <div class="eyebrow">Meta ads</div>
-      <div class="grid">
-        <label>Ad spend for this period $<input id="spend" type="number" inputmode="numeric" min="0" placeholder="0"></label>
-        <div id="adStats" style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);justify-content:flex-end"></div>
-      </div>
-      <p class="help">Type the spend from Ads Manager. It's remembered on this phone only.</p>
+      <div class="eyebrow"><span>Cost per booked job, by ad</span></div>
+      <div style="overflow-x:auto"><table id="byAd"></table></div>
+      <button class="btn secondary" id="spendBtn" type="button">Add this week's ad spend</button>
+      <p class="help">Type each ad's spend from Ads Manager once a week. Saved for both phones. Counts both of you.</p>
     </div>
-    <div class="card"><div class="eyebrow">Reviews, last 30 days</div><div class="tiles" id="revTiles"></div></div>
-    <div class="card" id="dueCard" hidden><div class="eyebrow">Due for their next service</div><div class="list" id="dueList"></div></div>
+    <details class="card" id="more">
+      <summary class="eyebrow" style="cursor:pointer"><span>More</span><span aria-hidden="true">▾</span></summary>
+      <div class="tiles" id="moreTiles"></div>
+      <div class="eyebrow">Lost reasons</div><div style="overflow-x:auto"><table id="byLost"></table></div>
+      <div class="eyebrow">Reviews</div><div style="overflow-x:auto"><table id="reviews"></table></div>
+      <div class="eyebrow">Reviews, last 30 days</div><div class="tiles" id="revTiles"></div>
+      <div class="eyebrow">By source</div><div style="overflow-x:auto"><table id="bySource"></table></div>
+      <div class="eyebrow">By service</div><div style="overflow-x:auto"><table id="byService"></table></div>
+      <div id="dueCard" hidden><div class="eyebrow">Due for their next service</div><div class="list" id="dueList"></div></div>
+    </details>
   </section>
 </main>
 
@@ -305,7 +311,6 @@ tr:last-child td{border-bottom:0}
   const SOURCES=["Meta ad","Google","Instagram","TikTok","Website","Referral","Repeat","Other"];
   const SERVICES=["Full detail","Interior","Exterior","Correction","Ceramic","Maintenance plan","Pre-sale","Not sure"];
   const OBJ=["Price","Timing","Checking with partner","Wants more info","Thinking about it","Other"];
-  const LOST=["Too expensive","No reply","Went elsewhere","Timing","Other"];
   let db=null, dl=null, leads=[], day=null, canWrite=true, who=null, unsubDay=null, reviewSettings={}, hoursSaved={};
   const H = () => M.hours(hoursSaved);
   const MOON = '<svg class="moon" viewBox="0 0 24 24" aria-label="Came in overnight" role="img"><path fill="currentColor" d="M21 14.5A8.5 8.5 0 0 1 9.5 3a8.5 8.5 0 1 0 11.5 11.5z"/></svg>';
@@ -384,9 +389,20 @@ tr:last-child td{border-bottom:0}
     // Quoted or booked already: as if they'd answered (but it doesn't count as a reply time).
     if(talked){ Object.assign(doc, M.answer(doc, stage==="Booked"?"booked":"quoted", stage==="Booked"?{date:jobDate, price}:{amount:price}, now, who), {replyMins:null}); }
     const btn=$("#saveBtn"); btn.disabled=true;
+    const resetForm=()=>{ $("#addForm").reset(); setSeg($("#f-source"),""); setSeg($("#f-service"),""); setSeg($("#f-timeline"),""); setSeg($("#f-stage"),"New"); stageChanged("New"); };
+    // The same phone number: onto that lead if it's open or from the last 30 days, else a new lead marked Repeat.
+    const match=M.matchPhone(leads, doc.phone, today());
+    if(match.merge){
+      const target=match.merge;
+      let patch=M.mergeEnquiry(target, doc, now);
+      if(talked){ patch={...patch, ...M.answer({...target,...patch}, stage==="Booked"?"booked":"quoted", stage==="Booked"?{date:jobDate, price}:{amount:price}, now, who)}; delete patch.replyMins; }
+      if(await save(target.id, patch)){ resetForm(); toast((target.name||"They")+" is already a lead. Added to that card."); }
+      btn.disabled=false; return;
+    }
+    if(match.repeatOf) doc.repeatOf=match.repeatOf;
     try{
       await db.collection("leads").add(M.sync(doc,today()));
-      $("#addForm").reset(); setSeg($("#f-source"),""); setSeg($("#f-service"),""); setSeg($("#f-timeline"),""); setSeg($("#f-stage"),"New"); stageChanged("New");
+      resetForm();
       toast(stage==="Booked" ? "Booked. Legend." : stage==="Quoted" ? "Saved. First chase in 2 days." : "Saved. Now text them, then log it.");
     }catch(err){ writeFail(err); }
     btn.disabled=false;
@@ -410,14 +426,17 @@ tr:last-child td{border-bottom:0}
   }
   // The words the Text button fills in, for where the lead is up to.
   function textFor(l,key){ return T.message(l,{today:today(), key, owner:l.owner||who||"", reviewLink:R.settings(reviewSettings).reviewLink}).text; }
-  function tagPill(l){ return l.score ? '<span class="tag '+esc(l.score.toLowerCase())+'">'+esc(l.score)+'</span>' : ""; }
+  // One tap changes the tag: Hot, Warm, Browsing, round again.
+  // The payment text after a job (the link is left for you to paste), or the review ask once paid.
+  function payText(l){ const ph=digits(l.phone); return ph?'<a class="btn secondary small" data-act="text" href="'+esc(T.smsHref(ph,textFor(l)))+'" style="text-align:center;text-decoration:none">'+(l.paid==="Yes"?"Review text":"Payment text")+'</a>':""; }
+  function tagPill(l){ return '<button type="button" class="tag '+esc((l.score||"none").toLowerCase())+'" data-act="tag" aria-label="Tag: '+esc(l.score||"none")+'. Tap to change.">'+esc(l.score||"Tag")+'</button>'; }
   function leadCard(l, opts={}){
     const st=stage(l), t=today(), snoozed=l.snoozeUntil&&l.snoozeUntil>t;
     const night=(st==="New"||M.againPending(l)) && M.isOvernight(l,H());
     const prog=M.progress(l,t);
-    const where=snoozed ? "Not now till "+dayName(l.snoozeUntil) : st+(prog?" "+prog:"")+(l.paused?", paused":"");
+    const where=snoozed ? "Not now till "+dayName(l.snoozeUntil) : M.againPending(l) ? "Enquired again" : st+(prog?" "+prog:"")+(l.paused?", paused":"");
     const price=st==="New" ? null : (["Booked","Done","Review asked"].includes(st) && l.revenue!=null ? l.revenue : l.quoted);
-    const meta=[l.service, M.TIMELINES[l.timeline], where, price!=null?money(price):"", l.owner].filter(Boolean).join(" · ");
+    const meta=[l.repeatOf?"Repeat":"", l.junk?"Not real":"", l.service, M.TIMELINES[l.timeline], where, price!=null?money(price):"", l.owner].filter(Boolean).join(" · ");
     const note=shortNote(l);
     return '<div class="lead'+(st==="New"?" new":"")+'" data-id="'+esc(l.id)+'">'+
       '<div class="l1"><span class="nm">'+(night?MOON:"")+esc(l.name||"No name")+(l.car?'<span class="car"> · '+esc(l.car)+'</span>':"")+'</span>'+(opts.tag!==undefined?opts.tag:tagPill(l))+'</div>'+
@@ -448,6 +467,7 @@ tr:last-child td{border-bottom:0}
       else if(a==="copyReview"){ const l=leads.find(x=>x.id===id), d=l&&R.due([l],reviewSettings,new Date())[0]; if(d) copyText(d.text,"Copied"); }
       else if(a==="reviewDone"){ b.disabled=true; setReview(id,b.dataset.status).then(ok=>{ if(!ok) b.disabled=false; }); }
       else if(a==="copy"){ const l=leads.find(x=>x.id===id); copyText(l&&l.phone||""); }
+      else if(a==="tag") retag(id,b);
     }));
     el.querySelectorAll(".lead").forEach(c=>{ c.style.cursor="pointer"; c.addEventListener("click",e=>{ if(e.target.closest("button,a,input,label")) return; openEdit(c.dataset.id); }); });
   }
@@ -469,6 +489,15 @@ tr:last-child td{border-bottom:0}
     const t=today(), L=lists();
     $("#tHead").textContent="Today"+(who?", "+who:"");
     $("#tSub").textContent=new Date().toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"long",timeZone:"Australia/Sydney"})+" · "+(L.left?L.left+" left":"all done");
+    // Friday from 5:00pm: how the week's ending. Counts only; it moves nothing.
+    const fri=M.fridayWrap(leads,{now:new Date(), hours:H()});
+    $("#friday").hidden=!fri;
+    if(fri){
+      const row=(label,n)=>'<tr><td>'+esc(label)+'</td><td class="n">'+n+'</td></tr>';
+      $("#friday").innerHTML='<div class="eyebrow"><span>Friday wrap-up</span><span>Both of you</span></div><table>'+
+        row("Call first",fri.callFirst)+row("New",fri.fresh)+row("Hot, due today",fri.hot)+row("Due today",fri.due)+row("Waiting",fri.waiting)+
+        row("Quoted, no reply for 14 days",fri.quotedQuiet)+row("Still in New",fri.stillNew)+'</table>';
+    }
     $("#tLater").hidden=!L.later;
     if(L.later) $("#tLater").innerHTML=MOON+esc(L.later+" came in overnight. Call from "+M.clock(H().start)+".");
     ["callFirst","fresh","hot","due"].forEach(k=>{
@@ -484,7 +513,7 @@ tr:last-child td{border-bottom:0}
     const jobs=leads.filter(l=>l.status==="Booked" && l.jobDate===t), tm=leads.filter(l=>l.status==="Booked" && l.jobDate===addDays(1));
     $("#jobsCount").textContent=jobs.length; $("#jobsTmCount").textContent=tm.length;
     $("#jobsList").innerHTML = jobs.length ? jobs.map(l=>leadCard(l,{tag:'<span class="pill booked">'+(l.revenue!=null?money(l.revenue):l.quoted!=null?money(l.quoted):"Booked")+'</span>',
-      actions:'<div class="acts">'+jobDoneBtn(l)+'<label class="toggle" style="flex:1"><span>Paid</span><input type="checkbox" data-field="paid" '+(l.paid==="Yes"?"checked":"")+'></label><button class="btn secondary small" data-act="open">Open</button></div>'})).join("") : '<div class="empty">No jobs booked for today.</div>';
+      actions:'<div class="acts">'+jobDoneBtn(l)+'<label class="toggle" style="flex:1"><span>Paid</span><input type="checkbox" data-field="paid" '+(l.paid==="Yes"?"checked":"")+'></label>'+payText(l)+'<button class="btn secondary small" data-act="open">Open</button></div>'})).join("") : '<div class="empty">No jobs booked for today.</div>';
     wire($("#jobsList")); wireToggles($("#jobsList"));
     $("#jobsTmList").innerHTML = tm.length ? tm.map(l=>leadCard(l,{tag:'<span class="pill booked">Tomorrow</span>', actions:""})).join("") : '<div class="empty">Nothing tomorrow yet.</div>';
     wire($("#jobsTmList"));
@@ -498,7 +527,7 @@ tr:last-child td{border-bottom:0}
     $("#owedList").innerHTML = owed.length ? owed.map(l=>{
       const days=M.daysBetween(l.jobDate,t);
       return leadCard(l,{tag:'<span class="pill owes">Owes</span>', extra:'<div class="sub">Job on '+esc(dayName(l.jobDate))+(days===0?" (today)":days===1?" (yesterday)":" ("+days+" days ago)")+'</div>',
-        actions:'<div class="acts"><button class="btn small" data-act="paid">Paid</button><button class="btn secondary small" data-act="open" style="flex:0 0 auto">Open</button></div>'});
+        actions:'<div class="acts"><button class="btn small" data-act="paid">Paid</button>'+payText(l)+'<button class="btn secondary small" data-act="open" style="flex:0 0 auto">Open</button></div>'});
     }).join("") : '<div class="empty">Nobody owes you anything.</div>';
     wire($("#owedList"));
     $("#reelsCard").hidden = who!=="Ananth";
@@ -581,7 +610,7 @@ tr:last-child td{border-bottom:0}
   // ---------- REVIEWS (the steps and words live in /reviews.js) ----------
   const R=window.ILReviews;
   const REVIEW_PILL={not_asked:"due",asked_in_person:"due",text_sent:"contacted",nudged:"contacted",reviewed:"done",declined:"muted",skip:"muted"};
-  const REVIEW_TOAST={asked_in_person:"Nice. Text them the link tonight.",text_sent:"Text logged. Nudge in 3 days if no review.",nudged:"Nudge logged. That's the last one.",reviewed:"Legend. Reply to it within 24 hours.",declined:"No worries. Leave it there.",skip:"Skipped.",not_asked:"Back to the start."};
+  const REVIEW_TOAST={asked_in_person:"Nice. The review text comes up once they've paid.",text_sent:"Text logged. Nudge in 3 days if no review.",nudged:"Nudge logged. That's the last one.",reviewed:"Legend. Reply to it within 24 hours.",declined:"No worries. Leave it there.",skip:"Skipped.",not_asked:"Back to the start."};
   const revPill=l=>{ const st=R.statusOf(l); return st?'<span class="pill '+(REVIEW_PILL[st]||"muted")+'">'+esc(R.LABELS[st])+'</span>':""; };
   // On a job card: "Job done" until it's marked, then where the review is up to.
   function jobDoneBtn(l){
@@ -641,25 +670,20 @@ tr:last-child td{border-bottom:0}
     s.querySelector("#closeSheet").addEventListener("click",closeSheet); s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
     showReview(s.querySelector("#reviewBox"),id);
   }
-  // A review text for anyone: type their name (and yours), copy, paste into a text.
+  // A review text for anyone who's paid: type their name, copy, paste into a text.
   $("#quickTextBtn").addEventListener("click",()=>{
-    const set=R.settings(reviewSettings);
     const s=document.createElement("div"); s.className="sheet"; s.id="sheet";
     s.innerHTML='<div class="sheet-in">'+
-      '<div class="sheet-h"><div><h2>Review text</h2><p class="help">Type their name, copy it, paste it into a text.</p></div><button class="x" id="closeSheet">Close</button></div>'+
-      '<div class="grid">'+
-        '<label>Their name<input id="qt-name" placeholder="Jo" autocomplete="off"></label>'+
-        '<label>Car (optional)<input id="qt-car" placeholder="Kluger" autocomplete="off"></label>'+
-        '<label class="full">Your name<input id="qt-me" value="'+esc(who||set.senderName)+'" autocomplete="off"></label>'+
-      '</div>'+
+      '<div class="sheet-h"><div><h2>Review text</h2><p class="help">For once they\'ve paid. Type their name, copy it, paste it into a text.</p></div><button class="x" id="closeSheet">Close</button></div>'+
+      '<label>Their name<input id="qt-name" placeholder="Jo" autocomplete="off"></label>'+
       '<p class="say" id="qt-text"></p>'+
       '<button class="btn" id="qt-copy">Copy text</button>'+
     '</div>';
     document.body.appendChild(s);
     const g=sel=>s.querySelector(sel);
-    const make=()=>R.text({name:g("#qt-name").value, car:g("#qt-car").value}, {...reviewSettings, senderName:g("#qt-me").value});
+    const make=()=>R.text({name:g("#qt-name").value}, reviewSettings);
     const show=()=>{ g("#qt-text").textContent=make(); };
-    ["#qt-name","#qt-car","#qt-me"].forEach(sel=>g(sel).addEventListener("input",show));
+    g("#qt-name").addEventListener("input",show);
     show();
     g("#qt-copy").addEventListener("click",()=>{ if(!g("#qt-name").value.trim()){ toast("Type their name first"); g("#qt-name").focus(); return; } copyText(make(),"Copied. Paste it into a text."); });
     g("#closeSheet").addEventListener("click",closeSheet); s.addEventListener("click",e=>{ if(e.target===s) closeSheet(); });
@@ -801,6 +825,11 @@ tr:last-child td{border-bottom:0}
 
   function clean(o){ const c={...o}; delete c.id; return M.sync(c,today()); }
   function closeSheet(){ const s=$("#sheet"); if(s) s.remove(); }
+  async function retag(id,btn){
+    const l=leads.find(x=>x.id===id); if(!l) return;
+    const tag=M.nextTag(l.score); btn.disabled=true;
+    if(await save(id,M.retag(l,tag,today()))) toast("Tagged "+tag+"."); else btn.disabled=false;
+  }
   // Save only what changed, merged into the lead, so the other phone's changes aren't lost.
   async function save(id,patch){
     const l=leads.find(x=>x.id===id); if(!l||!db) return false;
@@ -884,7 +913,11 @@ tr:last-child td{border-bottom:0}
         '<label class="full">Notes<textarea id="e-notes">'+esc(l.notes)+'</textarea></label>'+
       '</div>'+
       ((l.log||[]).length?'<hr class="divider"><div class="eyebrow">History</div><div class="log">'+(l.log||[]).slice().reverse().map(e=>'<div><span>'+esc(dayName(localDate(e.at)))+' '+esc(e.by||"")+'</span><div>'+esc(what(e))+(e.outcome?' · '+esc(e.outcome):"")+(e.note?' — '+esc(e.note):"")+'</div></div>').join("")+'</div>':"")+
-      '<button class="btn" id="saveEdit"'+(canWrite?"":" disabled")+'>Save changes</button>'
+      ((l.enquiries||[]).length?'<hr class="divider"><div class="eyebrow">Enquired again</div><div class="log">'+(l.enquiries||[]).slice().reverse().map(e=>'<div><span>'+esc(dayName(localDate(e.at)))+'</span><div>'+esc([e.source+(e.ad?" ("+e.ad+")":""),e.service,e.car,e.notes].filter(Boolean).join(" · "))+'</div></div>').join("")+'</div>':"")+
+      (l.repeatOf?'<p class="help">A repeat: this person was a lead before. <button type="button" class="mini" id="e-repeat">Open the old lead</button></p>':"")+
+      '<button class="btn" id="saveEdit"'+(canWrite?"":" disabled")+'>Save changes</button>'+
+      '<button class="btn secondary" id="e-junk">'+(l.junk?"It's real after all":"Not real (a test or fake lead)")+'</button>'+
+      '<p class="help">'+(l.junk?"Marked not real: kept here, but left off Today and out of the Numbers.":"Not real keeps it here but leaves it off Today and out of the Numbers. Nothing is ever deleted.")+'</p>'
     );
     const s=document.querySelector("#sheet");
     s.querySelectorAll(".seg").forEach(x=>seg(x));
@@ -893,6 +926,11 @@ tr:last-child td{border-bottom:0}
     const doneBtn=g("#e-done"); if(doneBtn) doneBtn.addEventListener("click",()=>markDone(id));
     const rsel=g("#e-rstatus");
     if(rsel) rsel.addEventListener("change",async()=>{ if(await setReview(id,rsel.value)&&rbox) showReview(rbox,id); });
+    g("#e-junk").addEventListener("click",async()=>{
+      const b=g("#e-junk"), was=!!l.junk; b.disabled=true;
+      if(await save(id,{junk:!was})){ toast(was?"Back in.":"Marked not real."); closeSheet(); } else b.disabled=false;
+    });
+    const rep=g("#e-repeat"); if(rep) rep.addEventListener("click",()=>openEdit(l.repeatOf));
     // A note on a lead being chased pauses its schedule.
     g("#e-addNote").addEventListener("click",async()=>{
       const text=g("#e-note").value.trim(); if(!text){ g("#e-note").focus(); return; }
@@ -918,51 +956,84 @@ tr:last-child td{border-bottom:0}
   }
 
   // ---------- NUMBERS ----------
+  // Six figures up top, the rest under More. Leads marked not real are left out of all of it.
+  let spendWeeks=[];
   seg($("#period"),renderNumbers); seg($("#nWho"),renderNumbers);
-  try{ $("#spend").value = localStorage.getItem("il-spend")||""; }catch(e){}
-  $("#spend").addEventListener("input",()=>{ try{ localStorage.setItem("il-spend",$("#spend").value); }catch(e){} renderNumbers(); });
-  function inPeriod(l){
-    const p=$("#period").dataset.value, d=l.date||(l.createdAt||"").slice(0,10);
+  function inPeriodDay(d){
+    const p=$("#period").dataset.value;
     if(p==="all"||!d) return true;
     if(p==="month") return d.slice(0,7)===today().slice(0,7);
     return d>=addDays(-30);
   }
+  const inPeriod = l => inPeriodDay(l.date||localDate(l.createdAt));
   function renderNumbers(){
-    const rs=R.stats(leads,new Date(),30), rt=(v,label)=>'<div class="tile"><b>'+v+'</b><span>'+label+'</span></div>';
-    $("#revTiles").innerHTML=rt(rs.done,"Jobs done")+rt(rs.asked,"Asked")+rt(rs.texts,"Texts sent")+rt(rs.reviewed,"Reviews")+rt(pct(rs.asked,rs.done),"Ask rate")+rt(pct(rs.reviewed,rs.done),"Review rate");
-    const w=$("#nWho").dataset.value;
-    const rows=leads.filter(l=>inPeriod(l) && (!w||l.owner===w));
-    const booked=rows.filter(l=>l.status==="Booked"), rev=booked.reduce((a,l)=>a+(l.revenue||0),0);
+    const w=$("#nWho").dataset.value, t=today(), h=H();
+    const live=leads.filter(l=>!l.junk && inPeriod(l)), rows=live.filter(l=>!w||l.owner===w);
+    const isBooked=l=>M.isBooked(l,t);
+    const booked=rows.filter(isBooked), rev=booked.reduce((a,l)=>a+(l.revenue||0),0);
     // Counted from the start of call hours for a lead that came in overnight.
-    const replied=rows.filter(l=>M.replyMinutes(l,H())!=null), fast=replied.filter(l=>M.replyMinutes(l,H())<=5).length;
-    const asked=rows.filter(l=>l.reviewAsked==="Yes").length, left=rows.filter(l=>l.reviewLeft==="Yes").length;
-    const plan=rows.filter(l=>l.plan==="Yes").length, upsO=rows.filter(l=>l.upsellOffered==="Yes").length, upsT=rows.filter(l=>l.upsellTaken==="Yes").length;
-    const open=rows.filter(isOpen).length;
-    const touches=rows.reduce((a,l)=>a+(l.log||[]).length,0);
+    const replied=rows.filter(l=>M.replyMinutes(l,h)!=null), fast=replied.filter(l=>M.replyMinutes(l,h)<=5).length;
     const closeRate=rows.length?booked.length/rows.length:0, fastRate=replied.length?fast/replied.length:null;
+    // Ads: the weekly spend (both phones) against what each ad booked (both of you).
+    const ads=M.costPerBooked(live, M.spendByAd(spendWeeks, inPeriodDay), t);
     const tile=(v,label,cls="")=>'<div class="tile '+cls+'"><b>'+v+'</b><span>'+label+'</span></div>';
     $("#tiles").innerHTML=
       tile(rows.length,"Leads")+tile(booked.length,"Booked")+tile(pct(booked.length,rows.length),"Close rate",closeRate>=.4?"good":closeRate>=.25?"warn":rows.length?"bad":"")+
-      tile(money(rev),"Revenue")+tile(booked.length?money(rev/booked.length):"–","Avg job")+tile(rows.length?money(rev/rows.length):"–","Per lead")+
-      tile(fastRate==null?"–":Math.round(fastRate*100)+"%","Replied ≤5 min",fastRate==null?"":fastRate>=.8?"good":fastRate>=.5?"warn":"bad")+
-      tile(open,"Still open",open>5?"warn":"")+
-      tile(rows.length?(touches/rows.length).toFixed(1):"–","Touches per lead")+tile(plan,"On plan")+tile(asked?pct(left,asked):"–","Reviews left ÷ asked")+tile(upsO?pct(upsT,upsO):"–","Upsells taken");
+      tile(money(rev),"Revenue")+tile(fastRate==null?"–":Math.round(fastRate*100)+"%","Replied ≤5 min",fastRate==null?"":fastRate>=.8?"good":fastRate>=.5?"warn":"bad")+
+      tile(ads.all==null?"–":money(ads.all),"Per booked job (ads)");
+    $("#byAd").innerHTML = ads.rows.length ? '<tr><th>Ad</th><th class="n">Spend</th><th class="n">Leads</th><th class="n">Booked</th><th class="n">Per booked</th></tr>'+
+      ads.rows.map(r=>'<tr><td>'+esc(r.ad)+'</td><td class="n">'+money(r.spend)+'</td><td class="n">'+r.leads+'</td><td class="n">'+r.booked+'</td><td class="n">'+(r.perBooked==null?"–":money(r.perBooked))+'</td></tr>').join("")
+      : '<tr><td class="empty">No ads or spend in this period yet.</td></tr>';
+    // More.
+    const plan=rows.filter(l=>l.plan==="Yes").length, upsO=rows.filter(l=>l.upsellOffered==="Yes").length, upsT=rows.filter(l=>l.upsellTaken==="Yes").length;
+    const open=rows.filter(isOpen).length, touches=rows.reduce((a,l)=>a+M.touchDays(l.log),0);
+    $("#moreTiles").innerHTML=tile(booked.length?money(rev/booked.length):"–","Avg job")+tile(rows.length?money(rev/rows.length):"–","Per lead")+tile(open,"Still open")+
+      tile(rows.length?(touches/rows.length).toFixed(1):"–","Touches per lead")+tile(plan,"On plan")+tile(upsO?pct(upsT,upsO):"–","Upsells taken");
     const table=(el,key,opts,label)=>{
-      const groups=opts.map(o=>{ const g=rows.filter(l=>l[key]===o); const b=g.filter(l=>l.status==="Booked"); const r=b.reduce((a,l)=>a+(l.revenue||0),0); return {o,n:g.length,b:b.length,r}; }).filter(g=>g.n);
+      const groups=opts.map(o=>{ const g=rows.filter(l=>l[key]===o); const b=g.filter(isBooked); const r=b.reduce((a,l)=>a+(l.revenue||0),0); return {o,n:g.length,b:b.length,r}; }).filter(g=>g.n);
       if(!groups.length){ el.innerHTML='<tr><td class="empty">Nothing in this period yet.</td></tr>'; return; }
       const max=Math.max(...groups.map(g=>g.n));
       el.innerHTML='<tr><th>'+label+'</th><th class="n">Leads</th><th class="n">Booked</th><th class="n">Close</th><th class="n">Revenue</th></tr>'+
         groups.map(g=>'<tr><td>'+esc(g.o)+'<div class="bar"><i style="width:'+Math.round(100*g.n/max)+'%"></i></div></td><td class="n">'+g.n+'</td><td class="n">'+g.b+'</td><td class="n">'+pct(g.b,g.n)+'</td><td class="n">'+money(g.r)+'</td></tr>').join("");
     };
     table($("#bySource"),"source",SOURCES,"Source"); table($("#byService"),"service",SERVICES,"Service");
-    const lost=rows.filter(l=>l.status==="Lost"); const lg=LOST.map(o=>({o,n:lost.filter(l=>l.lostWhy===o).length})).filter(g=>g.n);
+    const lost=rows.filter(l=>stage(l)==="Lost"), reasonOf=l=>M.LOST_REASONS[l.lostReason]?l.lostReason:(M.OLD_LOST[l.lostWhy]||"other");
+    const lg=Object.keys(M.LOST_REASONS).map(k=>({o:M.LOST_REASONS[k],n:lost.filter(l=>reasonOf(l)===k).length})).filter(g=>g.n);
     $("#byLost").innerHTML = lg.length ? '<tr><th>Reason</th><th class="n">Leads</th><th class="n">Share</th></tr>'+lg.map(g=>'<tr><td>'+esc(g.o)+'</td><td class="n">'+g.n+'</td><td class="n">'+pct(g.n,lost.length)+'</td></tr>').join("") : '<tr><td class="empty">No lost leads in this period.</td></tr>';
-    const spend=Number($("#spend").value)||0, meta=rows.filter(l=>l.source==="Meta ad"), metaB=meta.filter(l=>l.status==="Booked"), metaR=metaB.reduce((a,l)=>a+(l.revenue||0),0);
-    $("#adStats").innerHTML = spend ? ('<div>Cost per lead: <b style="color:var(--text)">'+(meta.length?money(spend/meta.length):"–")+'</b></div><div>Cost per booking: <b style="color:var(--text)">'+(metaB.length?money(spend/metaB.length):"–")+'</b></div><div>Revenue ÷ spend: <b style="color:var(--text)">'+(metaR?(metaR/spend).toFixed(1)+"x":"–")+'</b></div>') : '<div>'+meta.length+' Meta leads, '+metaB.length+' booked.</div>';
-    const due=leads.filter(l=>l.nextDue && l.nextDue<=addDays(14)).sort((a,b)=>a.nextDue.localeCompare(b.nextDue));
+    const asked=rows.filter(l=>l.reviewAsked==="Yes").length, left=rows.filter(l=>l.reviewLeft==="Yes").length;
+    $("#reviews").innerHTML='<tr><th>Asked</th><th class="n">Left a review</th><th class="n">Share</th></tr><tr><td>'+asked+'</td><td class="n">'+left+'</td><td class="n">'+pct(left,asked)+'</td></tr>';
+    const rs=R.stats(leads.filter(l=>!l.junk),new Date(),30), rt=(v,label)=>'<div class="tile"><b>'+v+'</b><span>'+label+'</span></div>';
+    $("#revTiles").innerHTML=rt(rs.done,"Jobs done")+rt(rs.asked,"Asked")+rt(rs.texts,"Texts sent")+rt(rs.reviewed,"Reviews")+rt(pct(rs.asked,rs.done),"Ask rate")+rt(pct(rs.reviewed,rs.done),"Review rate");
+    const due=leads.filter(l=>!l.junk && l.nextDue && l.nextDue<=addDays(14)).sort((a,b)=>a.nextDue.localeCompare(b.nextDue));
     $("#dueCard").hidden=!due.length;
     $("#dueList").innerHTML=due.map(l=>leadCard(l,{tag:'<span class="pill due">'+esc(l.nextDue)+'</span>'})).join(""); wire($("#dueList"));
   }
+  // The weekly ad spend: one figure per ad, saved for both phones (spend/<Monday>).
+  $("#spendBtn").addEventListener("click",()=>{
+    const mon=M.mondayOf(today()), weeks=[0,1,2,3].map(n=>M.addDays(mon,-7*n));
+    const recent=M.addDays(today(),-120);
+    const names=[...new Set([...leads.filter(l=>l.ad && (l.date||"")>=recent).map(l=>l.ad), ...spendWeeks.flatMap(w=>Object.keys(w.byAd||{}))])].sort();
+    const g=sheet('<div class="sheet-h"><div><h2>Ad spend</h2><p class="help">From Ads Manager, for the week. Saved for both phones.</p></div><button class="x" id="closeSheet">Close</button></div>'+
+      '<label>Week<select id="sp-week">'+weeks.map((w,i)=>'<option value="'+w+'">'+(i===0?"This week":i===1?"Last week":i+" weeks ago")+' (from '+esc(dayName(w))+')</option>').join("")+'</select></label>'+
+      '<div class="grid" id="sp-ads"></div>'+
+      '<div class="grid"><label>Another ad<input id="sp-newName" placeholder="Ad name"></label><label>$<input id="sp-newAmt" type="number" inputmode="decimal" min="0"></label></div>'+
+      '<button class="btn" id="sp-save">Save</button>');
+    const fill=()=>{
+      const doc=spendWeeks.find(w=>w.weekOf===g("#sp-week").value)||{byAd:{}};
+      const all=[...new Set([...names,...Object.keys(doc.byAd||{})])];
+      g("#sp-ads").innerHTML=all.length?all.map(ad=>'<label>'+esc(ad)+' $<input type="number" inputmode="decimal" min="0" data-ad="'+esc(ad)+'" value="'+(doc.byAd&&doc.byAd[ad]!=null?esc(doc.byAd[ad]):"")+'"></label>').join(""):'<p class="help full">No ads on any leads yet. Add one below.</p>';
+    };
+    g("#sp-week").addEventListener("change",fill); fill();
+    g("#sp-save").addEventListener("click",async()=>{
+      if(!db){ toast("Not connected. Try again in a sec."); return; }
+      const byAd={};
+      document.querySelectorAll("#sp-ads [data-ad]").forEach(i=>{ const n=num(i.value); if(n!=null) byAd[i.dataset.ad]=n; });
+      const nn=g("#sp-newName").value.trim(), na=num(g("#sp-newAmt").value); if(nn&&na!=null) byAd[nn]=na;
+      const week=g("#sp-week").value, b=g("#sp-save"); b.disabled=true;
+      try{ await db.doc("spend/"+week).set({weekOf:week, byAd, updatedAt:new Date().toISOString(), by:who||""}); toast("Saved."); closeSheet(); }
+      catch(err){ b.disabled=false; writeFail(err); }
+    });
+  });
 
   // ---------- UPGRADE (older leads get the follow-up fields, by themselves) ----------
   // Runs once per open, when a lead needs it: saves a backup of every lead first, then merges
@@ -1020,6 +1091,7 @@ tr:last-child td{border-bottom:0}
       $("#offline").hidden=true;
       db.doc("settings/reviews").onSnapshot(sn=>{ reviewSettings = sn.exists ? sn.data() : {}; renderAll(); }, ()=>{});
       db.doc("settings/hours").onSnapshot(sn=>{ hoursSaved = sn.exists ? sn.data() : {}; renderAll(); }, ()=>{});
+      db.collection("spend").onSnapshot(snap=>{ spendWeeks=snap.docs.map(x=>x.data()); renderAll(); }, ()=>{});
       db.collection("leads").orderBy("createdAt","desc").onSnapshot(snap=>{ leads=snap.docs.map(x=>migrate(Object.assign({id:x.id},x.data()))); renderAll(); upgradeOnLoad(); }, err=>{ $("#offline").hidden=false; });
       let dayKey=null;
       const subDay=()=>{ const k=today(); if(k===dayKey) return; dayKey=k; if(unsubDay) unsubDay(); unsubDay=db.doc("days/"+k).onSnapshot(sn=>{ day = sn.exists ? sn.data() : null; renderAll(); }, ()=>{}); };

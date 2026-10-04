@@ -1,13 +1,18 @@
 import { json, readJson, sameSecret } from "../lib/http.js";
 import { buildLead, phoneKey } from "../lib/lead-map.js";
-import { adminClient, readDoc, writeDoc } from "../lib/supabase.js";
+import M from "../lib/model.js";
+import { adminClient, readCollection, readDoc, writeDoc } from "../lib/supabase.js";
 
 /*
   POST /api/lead — a new enquiry from a website form, Make.com or anything else.
 
   Make.com (and any server) sends the shared secret in an "x-lead-secret" header. The website's
   forms post straight from the visitor's browser, where a secret can't be kept, so those are let
-  in by where they come from instead (the site's own address). One lead per phone number a day.
+  in by where they come from instead (the site's own address).
+
+  A phone number that's already a lead goes on that lead when it's still open or came in within
+  the last 30 days (it shows as new again on Today). Someone from longer ago gets a new lead,
+  marked as a repeat of the old one.
 
   Each new lead gets an owner: the one the source names ("owner": "Angus" or "Ananth"), else
   Angus and Ananth in turn.
@@ -53,12 +58,26 @@ export async function POST(request) {
   const db = adminClient();
   const key = phoneKey(lead.phone);
 
-  // Already in today (typed into the app, or sent by the form and the ad both)?
+  // The same person again?
   if (key) {
-    const { data, error } = await db.from("docs").select("id,data").eq("collection", "leads").eq("data->>date", lead.date);
-    if (error) return json({ ok: false, error: "Couldn't check for a duplicate" }, 500, headers);
-    const same = data.find((r) => phoneKey(r.data.phone) === key);
-    if (same) return json({ ok: true, duplicate: true, id: same.id }, 200, headers);
+    let rows;
+    try {
+      rows = await readCollection(db, "leads");
+    } catch {
+      return json({ ok: false, error: "Couldn't check for a duplicate" }, 500, headers);
+    }
+    const match = M.matchPhone(rows.map((r) => ({ id: r.id, ...r.data })), lead.phone, lead.date);
+    if (match.merge) {
+      const old = rows.find((r) => r.id === match.merge.id).data;
+      const merged = M.sync({ ...old, ...M.mergeEnquiry(match.merge, lead, lead.createdAt), updatedAt: lead.createdAt }, lead.date);
+      try {
+        await writeDoc(db, "leads", match.merge.id, merged);
+      } catch {
+        return json({ ok: false, error: "Couldn't save the lead" }, 500, headers);
+      }
+      return json({ ok: true, duplicate: true, merged: true, id: match.merge.id }, 200, headers);
+    }
+    if (match.repeatOf) lead.repeatOf = match.repeatOf;
   }
 
   // Nobody named: whoever's turn it is.

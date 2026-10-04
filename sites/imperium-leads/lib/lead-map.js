@@ -1,5 +1,4 @@
 import M from "./model.js";
-import { canberraDate } from "./time.js";
 
 /*
   A form or ad enquiry, as the app's own "Add" tab would have saved it. The field set matches
@@ -55,7 +54,7 @@ export function mapOwner(value) {
 }
 
 export function buildLead(input, now = new Date()) {
-  const date = canberraDate(now);
+  const date = M.canberraDate(now);
   const notes = [
     input.when ? `When: ${clip(input.when)}` : "",
     input.email ? `Email: ${clip(input.email)}` : "",

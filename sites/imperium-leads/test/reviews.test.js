@@ -22,7 +22,7 @@ test("the texts are filled with their first name, the car and the settings", () 
   assert.equal(s.businessName, "Imperium Detailing");
   assert.equal(
     R.text(jo, s),
-    "Hey Jo, Angus from Imperium Detailing here. Thanks again for today, the Kluger came up great. If you've got a minute, a Google review would mean a lot to us: https://g.page/r/CSwRG2iKFelCEAE/review\nCheers, Angus",
+    "Thanks Jo, payment received. If you've got a minute, a Google review would mean a lot to us: https://g.page/r/CSwRG2iKFelCEAE/review",
   );
   assert.equal(
     R.nudge(jo, { senderName: "Ananth" }),
@@ -34,7 +34,7 @@ test("the texts are filled with their first name, the car and the settings", () 
   );
   // Blank settings fall back to the defaults; a missing name or car still reads well.
   assert.equal(R.settings({ senderName: "  ", reviewLink: "" }).senderName, "Angus");
-  assert.match(R.text({ name: "", car: "" }, s), /^Hey there, .* the car came up great/);
+  assert.match(R.text({ name: "", car: "" }, s), /^Thanks there, payment received\./);
 });
 
 test("marking a job done starts the flow at not asked, and keeps anything already there", () => {
@@ -73,8 +73,12 @@ test("the guide shows the right words and buttons for each step", () => {
   assert.equal(st.say, R.SCRIPT);
   assert.deepEqual(btns(st), ["Asked in person", "Skip"]);
 
+  // The review text only comes up once they've paid.
   st = R.step({ ...jo, reviewStatus: "asked_in_person" }, {}, NOW);
-  assert.equal(st.title, "Send this text tonight:");
+  assert.equal(st.title, "Tick Paid once the money's in. The review text comes up then.");
+  assert.deepEqual([st.say, st.copy, btns(st)], ["", false, []]);
+  st = R.step({ ...jo, reviewStatus: "asked_in_person", paid: "Yes" }, {}, NOW);
+  assert.equal(st.title, "Paid. Send this text:");
   assert.equal(st.say, R.text(jo, {}));
   assert.equal(st.copy, true);
   assert.deepEqual(btns(st), ["Text sent"]);
@@ -99,9 +103,10 @@ test("the guide shows the right words and buttons for each step", () => {
   assert.deepEqual(btns(st), []);
 });
 
-test("due today: texts for anyone asked in person, then nudges 3 or more days after the text", () => {
+test("due today: texts for anyone asked in person who has paid, then nudges 3 or more days after the text", () => {
   const leads = [
-    { ...jo, id: "asked", name: "Asked Anna", reviewStatus: "asked_in_person", reviewAskedAt: at("2026-09-29") },
+    { ...jo, id: "asked", name: "Asked Anna", reviewStatus: "asked_in_person", reviewAskedAt: at("2026-09-29"), paid: "Yes" },
+    { ...jo, id: "unpaid", name: "Unpaid Uma", reviewStatus: "asked_in_person", reviewAskedAt: at("2026-09-29"), paid: "No" },
     { ...jo, id: "t2", name: "Two Days", reviewStatus: "text_sent", reviewTextSentAt: at("2026-09-27") },
     { ...jo, id: "t3", name: "Three Days", reviewStatus: "text_sent", reviewTextSentAt: at("2026-09-26") },
     { ...jo, id: "t9", name: "Nine Days", reviewStatus: "text_sent", reviewTextSentAt: at("2026-09-20") },
@@ -113,7 +118,7 @@ test("due today: texts for anyone asked in person, then nudges 3 or more days af
   assert.deepEqual(plain(d.map((x) => x.lead.id)), ["asked", "t9", "t3"]);
   assert.deepEqual(plain(d.map((x) => x.what)), ["Send the review text", "Send one nudge", "Send one nudge"]);
   assert.equal(d[0].text, R.text(leads[0], {}));
-  assert.equal(d[1].text, R.nudge(leads[3], {}));
+  assert.equal(d[1].text, R.nudge(leads[4], {}));
   assert.equal(d[1].done, "nudged");
 });
 

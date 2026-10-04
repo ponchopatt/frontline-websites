@@ -7,8 +7,8 @@ the home screen) shared by Angus and Ananth.
   (service, car, suburb, and for a booking the date and price). **Today** is the one list to work
   through (below), with Jobs today, **Payments due** (jobs done and not paid, oldest first, with a
   Paid button and "Add someone who owes you"), "Add a job done today" for work that never came in
-  as a lead, the review texts and the reels counter underneath. How it stores things all lives in `public/claude-shim.js`, so the page only changes
-  when what it shows does.
+  as a lead, the review texts and the reels counter underneath. How it stores things all lives
+  in `public/claude-shim.js`, so the page only changes when what it shows does.
 - **Storage** is one Supabase table of JSON documents (`supabase/schema.sql`). The shim gives the
   page the `claude.use("db")` API it was written for (doc/collection, get/set/update/delete,
   onSnapshot) on top of it, with live updates between the two phones.
@@ -16,11 +16,12 @@ the home screen) shared by Angus and Ananth.
   phone in as the one shared login (`team@imperiumdetailing.com.au`). Five wrong PINs in a row
   lock it for 15 minutes, then longer.
 - **New enquiries** arrive at `POST /api/lead` from the website's booking and fleet forms and
-  from Make.com (Facebook instant forms). One lead per phone number per day.
+  from Make.com (Facebook instant forms). The same phone number goes on the lead that's already
+  there (see below).
 - **Reviews**: tap **Job done** on a job and the app walks you through asking for a Google review
   (see below). Today shows the review texts and nudges due today; Numbers has the last 30 days.
-- **Reminders** go by email at about 07:25 (chase list and today's jobs) and 17:20 (leads not
-  logged yet), Canberra time.
+- **No AI and no texting service.** Nothing needs an API key. Every text is sent by one of you
+  from your own phone; the app only fills in the words. Leads are never deleted.
 
 ## Files
 
@@ -34,8 +35,7 @@ the home screen) shared by Angus and Ananth.
 | `public/sw.js`, `public/manifest.json`, icons | Home-screen app; opens with no signal (the list needs one). |
 | `api/unlock.js` | PIN check and sign-in. |
 | `api/lead.js` | New enquiries in. |
-| `api/remind.js` | The morning and evening emails (Vercel cron, `vercel.json`). |
-| `lib/` | Lead mapping, the reminder lists, Canberra dates, Supabase helpers. |
+| `lib/` | Lead mapping, the shared model for the server, Supabase helpers. |
 | `supabase/schema.sql` | The table, its team-only rule, live updates. |
 | `build.mjs` | Makes `public/index.html` (the page plus the phone-app tags), copies supabase-js, writes `public/config.js`. |
 
@@ -44,10 +44,7 @@ the home screen) shared by Angus and Ananth.
 1. **Supabase** (free): New project `imperium-leads`, region Sydney. SQL Editor → New query →
    paste all of `supabase/schema.sql` → Run. From Project Settings → API keys, copy the Project
    URL, the publishable (anon) key and the secret (service_role) key.
-2. **Resend** (free): add and verify the domain `imperiumdetailing.com.au` (it gives you DNS
-   records to add), then create an API key. Until the domain is verified Resend only delivers
-   to your own address.
-3. **Vercel**: Add New → Project → import `frontline-websites` → Root Directory
+2. **Vercel**: Add New → Project → import `frontline-websites` → Root Directory
    `sites/imperium-leads` → Framework Preset "Other". Add these environment variables, then Deploy:
 
    | Name | Value |
@@ -57,16 +54,13 @@ the home screen) shared by Angus and Ananth.
    | `SUPABASE_SERVICE_ROLE_KEY` | secret (service_role) key. Server only. |
    | `LEADS_PIN` | the 4-digit team PIN |
    | `LEAD_SECRET` | a long random string; Make.com sends it |
-   | `CRON_SECRET` | a long random string; Vercel sends it to the reminder job |
-   | `RESEND_API_KEY` | from Resend |
-   | `REMIND_FROM` | `Imperium Leads <leads@imperiumdetailing.com.au>` |
-   | `REMIND_ANGUS` | Angus's email |
-   | `REMIND_ANANTH` | Ananth's email |
 
    Optional: `LEAD_ORIGINS` (the website addresses allowed to post leads without the secret;
-   defaults to `https://imperiumdetailing.com.au,https://www.imperiumdetailing.com.au`),
-   `APP_URL` (the link in the emails; defaults to the production address).
-4. **The website** (`sites/imperium-detailing` on Vercel): add `NEXT_PUBLIC_LEADS_API` =
+   defaults to `https://imperiumdetailing.com.au,https://www.imperiumdetailing.com.au`).
+
+   The reminder emails are gone, so `CRON_SECRET`, `RESEND_API_KEY`, `REMIND_FROM`,
+   `REMIND_ANGUS`, `REMIND_ANANTH` and `APP_URL` aren't used any more; they can be deleted.
+3. **The website** (`sites/imperium-detailing` on Vercel): add `NEXT_PUBLIC_LEADS_API` =
    `https://<this app>/api/lead`, then redeploy. Until it's set the forms work as before and
    simply don't copy leads across.
 
@@ -89,14 +83,20 @@ Headers: `Content-Type: application/json` and `x-lead-secret: <LEAD_SECRET>`.
   1 to 2 weeks is Warm, Just browsing is Browsing.
 - `owner`: `Angus` or `Ananth` when the source knows who it's for. Without one, leads are shared
   out in turn (`_system/owner-turn` remembers whose go is next).
-
+- `email` and `formId` (or `form_id`, `leadgen_id`) are kept on the lead, shown only in Open.
 - `source`: anything with meta, facebook or instagram → Meta ad; google → Google; tiktok →
   TikTok; else Website. The ad's name is whatever comes after `·`.
 - `service`: full, interior, exterior, correction, ceramic, maintenance or pre-sale in the text
   picks that service; anything else is Not sure.
-- `when`, `email`, `notes` and `form` go into the lead's notes.
-- Answers `{"ok":true,"duplicate":false,"id":"…"}`, or `"duplicate":true` when that phone
-  number already has a lead today.
+- `when`, `email`, `notes` and `form` also go into the lead's notes.
+- **The same phone number** (however it's written) goes on the lead that's already there when
+  that lead is still open (New, Chasing, Quoted, Waiting) or came in within the last 30 days:
+  the enquiry is added to its list, empty fields are filled in, and it shows under New on Today
+  marked "Enquired again" (a Waiting or Lost lead starts its schedule again). Someone from longer
+  ago gets a new lead, marked Repeat (`repeatOf` is the old lead). The Add tab does the same.
+  Leads marked Not real are never matched.
+- Answers `{"ok":true,"duplicate":false,"id":"…"}`, or `{"ok":true,"duplicate":true,"merged":true,"id":"…"}`
+  when it went on an existing lead.
 
 The website's forms post from the visitor's browser, where a secret can't be kept, so those
 are let in by their address (`LEAD_ORIGINS`) instead of the secret.
@@ -208,6 +208,28 @@ text if the call today wasn't answered), then the day 1, day 3 and day 7 texts (
 the quote text on the day of the quote then the same three, a check-in for Waiting leads, and
 after a job the payment text ([link] left for you to paste), then the review ask once it's paid.
 
+## Tags, Not real, the Numbers and Friday
+
+**Tags** come from the timeline answer: ASAP is Hot, 1 to 2 weeks is Warm, Just browsing is
+Browsing. One tap on the tag changes it (Hot, Warm, Browsing, round again); a lead being chased
+moves to that tag's schedule straight away (Browsing: day 0 and 3).
+
+**Not real** (in Open) is for test and fake leads: the lead stays on the Leads tab, marked Not
+real, but is left off Today and out of the Numbers. "It's real after all" undoes it.
+
+**Numbers** shows six figures: Leads, Booked, Close rate, Revenue, Replied within 5 minutes
+(from the start of call hours for overnight leads) and Cost per booked job from ads. Under it,
+cost per booked job for each ad, from the weekly ad spend: **Add this week's ad spend** takes a
+figure per ad from Ads Manager and saves it for both phones (`spend/<Monday>`). A week counts in
+a period by its Monday. Ad figures count both of you. **More** has the rest: average job, per
+lead, still open, touches per lead, on a plan, upsells, lost reasons, reviews asked vs left, the
+last 30 days of reviews, by source, by service, and who's due for their next service. The
+period filters and the person filter are as before.
+
+**Friday from 5:00pm** Today shows a wrap-up for both of you: how many are in each section, how
+many quoted leads have had no reply for 14 days or more, and how many are still New. It moves
+nothing.
+
 ## Reviews
 
 Tap **Job done** on a job card (Jobs today), or **Job done: ask for a review** when you
@@ -217,7 +239,7 @@ walks through it:
 | Status | The card says | Buttons |
 |---|---|---|
 | `not_asked` | At handover, walk them round the car, then say this (the in-person script) | Asked in person, Skip |
-| `asked_in_person` | Send this text tonight (with their first name, the car and the settings) | Copy text, Text sent |
+| `asked_in_person` | Not paid yet: tick Paid first. Once paid, the review ask ("Thanks [name], payment received…") | Copy text, Text sent |
 | `text_sent` | Before 3 days: when to nudge. From 3 days: the one nudge text | Copy text, Nudged, They reviewed, Declined |
 | `nudged` | Leave it now. Never a second nudge | They reviewed, Declined |
 | `reviewed` | Reply within 24 hours (reply template) | Copy text |
@@ -228,34 +250,17 @@ Each step stamps its time on the lead: `reviewAskedAt`, `reviewTextSentAt`, `rev
 are kept in step for the Numbers tab. A wrong tap can be fixed with **Review status** in the lead's
 edit sheet. Leads are JSON documents, so no database change was needed.
 
-**Make a review text** (in the Reviews card on Today) is for anyone, lead or not: type their
-name, the car if you like, and your name, and it writes the review text with the link, ready to
-copy and paste into a text.
+**Make a review text** (in the Reviews card on Today) is for anyone who's paid, lead or not: type
+their name and it writes the review ask with the link, ready to copy and paste into a text.
 
-**Review settings** (Today, in the Reviews card) holds the review link, who the texts are
-signed by and the business name. Both phones share them (`settings/reviews`); empty ones fall
+**Review settings** (Today, in the Reviews card) holds the review link, who the nudge and reply
+texts are signed by and the business name. Both phones share them (`settings/reviews`); empty ones fall
 back to `https://g.page/r/CSwRG2iKFelCEAE/review`, Angus and Imperium Detailing.
-
-## Reminders
-
-Vercel's clock is UTC and Canberra moves an hour for daylight saving, so the cron calls
-`/api/remind` at both the summer and the winter time; only the call in the right Canberra hour
-sends, once a day. On Vercel's free plan a job runs some time within its hour, so the morning
-email lands between about 07:00 and 08:00 and the evening one between 17:00 and 18:00.
-
-The evening email is only sent when something still needs logging.
-
-To test by hand (needs the cron secret):
-
-```
-curl "https://<this app>/api/remind?slot=morning&dry=1" -H "Authorization: Bearer <CRON_SECRET>"    # show, don't send
-curl "https://<this app>/api/remind?slot=morning&force=1" -H "Authorization: Bearer <CRON_SECRET>"  # send now
-```
 
 ## Develop
 
 ```
 npm install
-npm test          # lead mapping, the reminder lists, Canberra dates, the review steps, the lead model
+npm test          # lead mapping, the schedule, call hours, Today's lists, duplicates, the texts, the review steps
 node build.mjs    # needs SUPABASE_URL and SUPABASE_ANON_KEY to point at a project
 ```

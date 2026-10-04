@@ -4,7 +4,7 @@
   touched, so no lead data is ever stored here. When online the network always wins, so a new
   release shows up on the next open.
 */
-const CACHE = "imperium-leads-shell-v5";
+const CACHE = "imperium-leads-shell-v6";
 const SHELL = ["/", "/claude-shim.js", "/reviews.js", "/model.js", "/texts.js", "/vendor/supabase.js", "/config.js", "/manifest.json", "/icon-192.png", "/icon-512.png", "/apple-touch-icon.png"];
 
 self.addEventListener("install", (event) => {
