@@ -60,7 +60,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .btn{font:inherit;font-weight:700;font-size:15px;letter-spacing:.04em;padding:14px 18px;border-radius:12px;border:0;background:var(--accent);color:var(--accent-ink);cursor:pointer;width:100%}
 .btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--line);font-weight:600}
-.btn.danger{background:var(--bad-bg);color:var(--bad);border:1px solid var(--line)}
 .btn.small{padding:9px 12px;font-size:13px;width:auto}
 .btn:disabled{opacity:.5;cursor:default}
 .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -110,14 +109,10 @@ details.sec[open] > summary span[aria-hidden]{transform:rotate(180deg)}
 .lead.new{border-color:var(--accent)}
 .pill{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;justify-self:end;white-space:nowrap}
 .pill.booked{background:var(--good-bg);color:var(--good)}
-.pill.lost{background:var(--bad-bg);color:var(--bad)}
-.pill.new{background:var(--accent-bg);color:var(--accent)}
-.pill.contacted,.pill.quoted{background:var(--warn-bg);color:var(--warn)}
+.pill.contacted{background:var(--warn-bg);color:var(--warn)}
 .pill.done{background:var(--good-bg);color:var(--good)}
 .pill.due{background:var(--warn-bg);color:var(--warn)}
 .pill.owes{background:var(--bad-bg);color:var(--bad)}
-.pill.waiting,.pill.paused{background:var(--surface2);color:var(--muted)}
-.pill.chasing{background:var(--warn-bg);color:var(--warn)}
 .moon{width:14px;height:14px;vertical-align:-2px;margin-right:4px;color:var(--warn)}
 .filters{display:flex;gap:8px;flex-wrap:wrap}
 .filters select,.filters input{flex:1;min-width:120px}
@@ -271,7 +266,7 @@ tr:last-child td{border-bottom:0}
     <div class="filters">
       <input id="q" placeholder="Search name, car, suburb, phone">
       <select id="fStatus">
-        <option value="">All</option><option value="open">Open (new, contacted, quoted)</option><option value="New">New</option><option value="Contacted">Contacted</option><option value="Quoted">Quoted</option><option value="Booked">Booked</option><option value="Lost">Lost</option><option value="owed">Owes money</option>
+        <option value="">All</option><option value="chase">Being chased (new, chasing, quoted)</option><option>New</option><option>Chasing</option><option>Quoted</option><option>Booked</option><option>Done</option><option>Review asked</option><option>Waiting</option><option>Lost</option><option value="owed">Owes money</option><option value="junk">Not real</option>
       </select>
       <select id="fWho"><option value="">Both of us</option><option value="Angus">Angus's</option><option value="Ananth">Ananth's</option></select>
     </div>
@@ -854,13 +849,17 @@ tr:last-child td{border-bottom:0}
   }
 
   // ---------- LEADS LIST ----------
-  $("#q").addEventListener("input",renderList); $("#fStatus").addEventListener("change",renderList); $("#fWho").addEventListener("change",renderList);
+  // Every lead stays here, whatever its stage, newest first. A hundred at a time keeps it quick.
+  let listShown=100;
+  ["#q","#fStatus","#fWho"].forEach(sel=>$(sel).addEventListener(sel==="#q"?"input":"change",()=>{ listShown=100; renderList(); }));
   function renderList(){
     const q=$("#q").value.trim().toLowerCase(), fs=$("#fStatus").value, fw=$("#fWho").value;
-    const rows=leads.filter(l=>(!fs || (fs==="open"?isOpen(l):fs==="owed"?owes(l):l.status===fs)) && (!fw||l.owner===fw) && (!q||[l.name,l.car,l.suburb,l.phone,l.service,l.notes].join(" ").toLowerCase().includes(q)));
+    const match=l=>!fs || (fs==="chase"?["New","Chasing","Quoted"].includes(stage(l)):fs==="owed"?owes(l):fs==="junk"?!!l.junk:stage(l)===fs);
+    const rows=leads.filter(l=>match(l) && (!fw||l.owner===fw) && (!q||[l.name,l.car,l.suburb,l.phone,l.email,l.service,l.notes].join(" ").toLowerCase().includes(q)));
     const el=$("#list");
-    el.innerHTML = rows.length ? rows.map(l=>leadCard(l)).join("") : '<div class="empty">'+(leads.length?"Nothing matches.":"No leads yet. Add the first one.")+'</div>';
+    el.innerHTML = rows.length ? rows.slice(0,listShown).map(l=>leadCard(l)).join("")+(rows.length>listShown?'<button class="btn secondary" id="listMore" type="button">Show more ('+(rows.length-listShown)+' to go)</button>':"") : '<div class="empty">'+(leads.length?"Nothing matches.":"No leads yet. Add the first one.")+'</div>';
     wire(el);
+    const more=$("#listMore"); if(more) more.addEventListener("click",()=>{ listShown+=100; renderList(); });
   }
 
   // ---------- EDIT SHEET ----------
@@ -1047,7 +1046,12 @@ tr:last-child td{border-bottom:0}
     try{
       const stamp=new Date().toISOString();
       await db.doc("backups/leads-"+stamp.replace(/[:.]/g,"-")).set({savedAt:stamp, reason:"before the version "+M.VERSION+" upgrade", count:leads.length, leads:leads.map(l=>{ const d={...l}; delete d.id; return {id:l.id, data:d}; })});
-      for(const r of p.rows){ try{ await db.doc("leads/"+r.id).update(r.patch); }catch(e){} }
+      for(const r of p.rows){
+        // The other phone may have upgraded it (and logged something) since: then leave it be.
+        const cur=leads.find(x=>x.id===r.id);
+        if(!cur || !M.needsUpgrade(cur)) continue;
+        try{ await db.doc("leads/"+r.id).update(r.patch); }catch(e){}
+      }
       upgraded=true;
     }catch(e){ /* no backup, no upgrade: try again next time */ }
     upgrading=false;

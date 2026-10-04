@@ -214,6 +214,10 @@ after a job the payment text ([link] left for you to paste), then the review ask
 Browsing. One tap on the tag changes it (Hot, Warm, Browsing, round again); a lead being chased
 moves to that tag's schedule straight away (Browsing: day 0 and 3).
 
+**The Leads tab** keeps every lead, whatever its stage (nothing is archived or deleted): filter
+by stage, owner, "Owes money" or "Not real", and search by name, car, suburb, phone or email. It
+shows a hundred at a time, with **Show more** for the rest.
+
 **Not real** (in Open) is for test and fake leads: the lead stays on the Leads tab, marked Not
 real, but is left off Today and out of the Numbers. "It's real after all" undoes it.
 
