@@ -68,3 +68,16 @@ test("weekly ad spend: one total a week; cost per booked job from ads, and spend
   assert.equal(M.costPerBooked(leads, 0, TODAY).perBooked, null);
   assert.equal(M.costPerBooked([leads[1]], 400, TODAY).perBooked, null);
 });
+
+test("money: booked, cash collected and still to collect", () => {
+  const leads = [
+    lead("paid", { stage: "Done", completedAt: at("2026-10-03"), revenue: 225, paid: "Yes" }),
+    lead("owes", { stage: "Done", completedAt: at("2026-10-03"), revenue: 140, paid: "No" }),
+    lead("soon", { stage: "Booked", jobDate: "2026-10-20", revenue: 397 }),
+    lead("quoted", { stage: "Quoted", quoted: 997 }), // not booked: not counted
+    lead("lost", { stage: "Lost", revenue: 500, paid: "Yes" }),
+    lead("noprice", { stage: "Booked", jobDate: "2026-10-20", revenue: null }),
+  ];
+  assert.deepEqual(M.takings(leads, TODAY), { booked: 762, collected: 225, toCollect: 537 });
+  assert.deepEqual(M.takings([], TODAY), { booked: 0, collected: 0, toCollect: 0 });
+});

@@ -978,7 +978,7 @@ tr:last-child td{border-bottom:0}
     const w=$("#nWho").dataset.value, t=today(), h=H();
     const live=leads.filter(l=>!l.junk && inPeriod(l)), rows=live.filter(l=>!w||l.owner===w);
     const isBooked=l=>M.isBooked(l,t);
-    const booked=rows.filter(isBooked), rev=booked.reduce((a,l)=>a+(l.revenue||0),0);
+    const booked=rows.filter(isBooked), cash=M.takings(rows,t), rev=cash.booked;
     // Counted from the start of call hours for a lead that came in overnight.
     const replied=rows.filter(l=>M.replyMinutes(l,h)!=null), fast=replied.filter(l=>M.replyMinutes(l,h)<=5).length;
     const closeRate=rows.length?booked.length/rows.length:0, fastRate=replied.length?fast/replied.length:null;
@@ -987,7 +987,8 @@ tr:last-child td{border-bottom:0}
     const tile=(v,label,cls="")=>'<div class="tile '+cls+'"><b>'+v+'</b><span>'+label+'</span></div>';
     $("#tiles").innerHTML=
       tile(rows.length,"Leads")+tile(booked.length,"Booked")+tile(pct(booked.length,rows.length),"Close rate",closeRate>=.4?"good":closeRate>=.25?"warn":rows.length?"bad":"")+
-      tile(money(rev),"Revenue")+tile(fastRate==null?"–":Math.round(fastRate*100)+"%","Replied ≤5 min",fastRate==null?"":fastRate>=.8?"good":fastRate>=.5?"warn":"bad")+
+      tile(fastRate==null?"–":Math.round(fastRate*100)+"%","Replied ≤5 min",fastRate==null?"":fastRate>=.8?"good":fastRate>=.5?"warn":"bad")+
+      tile(money(cash.booked),"Booked $")+tile(money(cash.collected),"Cash collected","good")+tile(money(cash.toCollect),"Still to collect",cash.toCollect>0?"warn":"")+
       tile(ads.perBooked==null?"–":money(ads.perBooked),"Per booked job (ads)");
     const row=(label,v)=>'<tr><td>'+label+'</td><td class="n">'+v+'</td></tr>';
     $("#adSpend").innerHTML=row("Spent in this period",money(ads.spend))+row("Leads from ads",ads.leads)+row("Booked from ads",ads.booked)+row("Per booked job",ads.perBooked==null?"–":money(ads.perBooked));

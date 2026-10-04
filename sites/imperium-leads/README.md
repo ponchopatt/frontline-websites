@@ -225,8 +225,10 @@ shows a hundred at a time, with **Show more** for the rest.
 **Not real** (in Open) is for test and fake leads: the lead stays on the Leads tab, marked Not
 real, but is left off Today and out of the Numbers. "It's real after all" undoes it.
 
-**Numbers** shows six figures: Leads, Booked, Close rate, Revenue, Replied within 5 minutes
-(from the start of call hours for overnight leads) and Cost per booked job from ads: the total
+**Numbers** shows: Leads, Booked, Close rate, Replied within 5 minutes (from the start of call
+hours for overnight leads), the money (**Booked $**: the price of every booked job, done or not;
+**Cash collected**: the ones ticked Paid; **Still to collect**: the rest), and Cost per booked
+job from ads: the total
 ad spend in the period divided by the leads from ads (source Meta ad, or with an ad's name) that
 booked. **Add this week's ad spend** takes one total a week from Ads Manager and saves it for both
 phones (`spend/<Monday>`); per-ad figures are left to Ads Manager. A week counts in a period by

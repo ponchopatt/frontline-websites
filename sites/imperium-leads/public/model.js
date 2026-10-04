@@ -566,6 +566,22 @@
   function isBooked(l, today) {
     return BOOKED.indexOf(stageOf(l, today)) !== -1;
   }
+  /*
+    The money from booked jobs: { booked, collected, toCollect } in dollars. Booked is the price
+    of every booked job (done or not); collected is the ones ticked Paid; the rest is still to
+    collect.
+  */
+  function takings(leads, today) {
+    var booked = 0, collected = 0;
+    (leads || []).forEach(function (l) {
+      if (!l || !isBooked(l, today)) return;
+      var n = Number(l.revenue);
+      if (!isFinite(n) || n <= 0) return;
+      booked += n;
+      if (l.paid === "Yes") collected += n;
+    });
+    return { booked: booked, collected: collected, toCollect: booked - collected };
+  }
   // A lead from the ads: it came from a Meta ad, or it has an ad's name on it.
   function fromAds(l) {
     return !!l && (l.source === "Meta ad" || !!l.ad);
@@ -736,7 +752,7 @@
     setStage: setStage, retag: retag, nextTag: nextTag, progress: progress,
     arrivedAt: arrivedAt, isOvernight: isOvernight, replyMinutes: replyMinutes,
     place: place, stale: stale, rank: rank, todayLists: todayLists, quoteDay: quoteDay, fridayWrap: fridayWrap,
-    mondayOf: mondayOf, adSpend: adSpend, isBooked: isBooked, fromAds: fromAds, costPerBooked: costPerBooked,
+    mondayOf: mondayOf, adSpend: adSpend, isBooked: isBooked, takings: takings, fromAds: fromAds, costPerBooked: costPerBooked,
     phoneKey: phoneKey, isOpen: isOpen, matchPhone: matchPhone, mergeEnquiry: mergeEnquiry,
     needsUpgrade: needsUpgrade, upgradeFields: upgradeFields, plan: plan,
   };
