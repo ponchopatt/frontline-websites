@@ -58,7 +58,8 @@ test("the Text button picks the right words for where the lead is up to", () => 
   assert.equal(w({ stage: "Waiting" }), "checkin");
   assert.equal(w({ stage: "Booked", jobDate: "2026-10-11" }), "after");
   assert.equal(w({ stage: "Booked", jobDate: "2026-10-11", paid: "Yes" }), "review");
-  // The same person enquiring again starts from the first text.
+  // The same person enquiring again starts from the first text, even after a booking.
+  assert.equal(w({ stage: "Booked", jobDate: "2026-10-20", againAt: at(TODAY, "09:00") }), "first");
   assert.equal(w({ stage: "Chasing", touches: 2, againAt: at(TODAY, "09:00"), log: [{ at: at("2026-10-05"), type: "text" }] }), "first");
 });
 

@@ -406,7 +406,8 @@
     return p;
   }
 
-  // A tag changed by hand. A lead being chased moves to that tag's schedule straight away.
+  // A tag changed by hand. A lead being chased moves to that tag's schedule straight away (it's
+  // never parked in Waiting by a tag change, so tapping round to the right tag undoes it).
   function retag(l, tag, today) {
     var p = { score: TAGS.indexOf(tag) !== -1 ? tag : "", scoreBy: "human" };
     var stage = stageOf(l, today);
@@ -415,8 +416,10 @@
     if (stage !== "Chasing") return p;
     var schedule = scheduleFor(next), done = Number(l.touches) || 0;
     p.schedule = schedule;
-    if (done >= runLength(schedule)) return assign(p, { stage: "Waiting", nextFollowUp: addDays(today, CHECK_IN_DAYS) });
-    if (!(l.snoozeUntil && l.snoozeUntil > today)) p.nextFollowUp = dueAfter(schedule, l.chaseFrom || today, done, l.lastTouchOn || "");
+    if (l.snoozeUntil && l.snoozeUntil > today) return p;
+    // Already past that schedule's last touch: one more, the next day; that touch moves it to Waiting.
+    if (done >= runLength(schedule)) p.nextFollowUp = laterDay(today, addDays(l.lastTouchOn || today, 1));
+    else p.nextFollowUp = dueAfter(schedule, l.chaseFrom || today, done, l.lastTouchOn || "");
     return p;
   }
   function nextTag(tag) {
@@ -594,8 +597,10 @@
   }
   /*
     A new enquiry from a phone number that's already a lead. Returns { merge: lead } when it
-    should go on that lead (it's still open, or came in within 30 days), { repeatOf: id } when
-    it's someone from longer ago (a new lead marked Repeat), or {} when the number is new.
+    should go on that lead (it's still open, or came in within 30 days and its job isn't done
+    yet), { repeatOf: id } otherwise (a new lead marked Repeat: someone from longer ago, or a
+    customer whose job is done, so the old job and its takings stay as they were), or {} when
+    the number is new.
   */
   function matchPhone(leads, phone, today) {
     var key = phoneKey(phone);
@@ -605,7 +610,8 @@
     if (!same.length) return {};
     var hit = same.filter(function (l) {
       var d = l.date || canberraDate(l.createdAt);
-      return isOpen(l, today) || (isDay(d) && daysBetween(d, today) <= 30);
+      var s = stageOf(l, today);
+      return isOpen(l, today) || (s !== "Done" && s !== "Review asked" && isDay(d) && daysBetween(d, today) <= 30);
     })[0];
     return hit ? { merge: hit } : { repeatOf: same[0].id };
   }

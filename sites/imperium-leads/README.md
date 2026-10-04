@@ -90,11 +90,13 @@ Headers: `Content-Type: application/json` and `x-lead-secret: <LEAD_SECRET>`.
   picks that service; anything else is Not sure.
 - `when`, `email`, `notes` and `form` also go into the lead's notes.
 - **The same phone number** (however it's written) goes on the lead that's already there when
-  that lead is still open (New, Chasing, Quoted, Waiting) or came in within the last 30 days:
-  the enquiry is added to its list, empty fields are filled in, and it shows under New on Today
-  marked "Enquired again" (a Waiting or Lost lead starts its schedule again). Someone from longer
-  ago gets a new lead, marked Repeat (`repeatOf` is the old lead). The Add tab does the same.
-  Leads marked Not real are never matched.
+  that lead is still open (New, Chasing, Quoted, Waiting) or came in within the last 30 days and
+  its job isn't done yet: the enquiry is added to its list, empty fields are filled in, and it
+  shows under New on Today marked "Enquired again" (a Waiting or Lost lead starts its schedule
+  again). Someone from longer ago, or a customer whose job is done, gets a new lead marked Repeat
+  (`repeatOf` is the old lead), so the old job and its takings stay as they were. The Add tab
+  does the same. Leads marked Not real are never matched. Only the changed fields are written,
+  so a phone saving the same lead at that moment loses nothing.
 - Answers `{"ok":true,"duplicate":false,"id":"…"}`, or `{"ok":true,"duplicate":true,"merged":true,"id":"…"}`
   when it went on an existing lead.
 
@@ -159,7 +161,9 @@ in step with the stage.
 **The upgrade** runs by itself when the app opens and a lead needs it: it saves a copy of every
 lead to `backups/` first, then merges the new fields into each lead. Leads already past their
 last touch go to Waiting with their first check-in 30 days on (no catch-up texts are sent or
-queued). What it changed is kept on each lead in `v3Was`. It never deletes a lead, and a lead
+queued). Each lead's changes are worked out again just before it's written, and anything done
+to a lead before the upgrade reaches it is worked out from its upgraded fields, so nothing
+logged in the meantime is undone. What it changed is kept on each lead in `v3Was`. It never deletes a lead, and a lead
 it can't read is left as it is.
 
 ## Today

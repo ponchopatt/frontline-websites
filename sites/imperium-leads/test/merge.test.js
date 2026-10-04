@@ -38,6 +38,9 @@ test("a booking or job from the last 30 days takes the enquiry; older ones make 
   assert.equal(M.matchPhone([booked], "0400 111 222", TODAY).merge.id, "b");
   const after = M.sync({ ...booked, ...M.mergeEnquiry(booked, fresh, at(TODAY)) }, TODAY);
   assert.deepEqual([after.stage, M.place(after, TODAY, new Date(at(TODAY, "11:00")), H)], ["Booked", "fresh"]);
+  // A job that's done, even last week: a new lead marked Repeat, so the old job and its takings stay.
+  const doneLastWeek = lead("done", { stage: "Done", status: "Booked", date: "2026-10-01", jobDate: "2026-10-03", completedAt: at("2026-10-03"), revenue: 225, paid: "Yes" });
+  assert.deepEqual(M.matchPhone([doneLastWeek], "0400 111 222", TODAY), { repeatOf: "done" });
   const oldJob = lead("old", { stage: "Done", status: "Booked", date: "2026-08-01", createdAt: at("2026-08-01"), jobDate: "2026-08-05", completedAt: at("2026-08-05") });
   const oldLost = lead("lost", { stage: "Lost", status: "Lost", date: "2026-07-01", createdAt: at("2026-07-01") });
   assert.deepEqual(M.matchPhone([oldLost, oldJob], "0400 111 222", TODAY), { repeatOf: "old" }); // the newest

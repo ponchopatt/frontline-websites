@@ -259,3 +259,27 @@ test("the upgrade never removes a lead, keeps what it changed, and runs once", (
 function pick(o, keys) {
   return keys.split(" ").map((k) => o[k]);
 }
+
+test("changing a tag never parks a lead in Waiting, so tapping round to the right tag undoes it", () => {
+  let l = texted(texted(lead({ timeline: "within_1_2_weeks" }), "2026-10-12"), "2026-10-13"); // Warm, 2 of 4
+  const browsing = apply(l, M.retag(l, "Browsing", "2026-10-14"));
+  assert.deepEqual([browsing.stage, browsing.schedule, browsing.nextFollowUp], ["Chasing", "browsing", "2026-10-14"]); // one more, then Waiting
+  const hot = apply(browsing, M.retag(browsing, "Hot", "2026-10-14"));
+  assert.deepEqual([hot.stage, hot.schedule, hot.nextFollowUp], ["Chasing", "full", "2026-10-15"]); // back on day 3
+  const done = texted(browsing, "2026-10-14");
+  assert.equal(done.stage, "Waiting");
+});
+
+test("a lead logged while the upgrade runs keeps what was logged when the upgrade is worked out again", () => {
+  const today = "2026-10-04";
+  const v2 = { id: "x", modelVersion: 2, owner: "Angus", status: "Contacted", stage: "Chasing", touches: 1, createdAt: at("2026-10-01"), date: "2026-10-01", nextFollowUp: "2026-10-04", log: [{ at: at("2026-10-03"), by: "Angus", type: "text" }] };
+  // Texted today before the upgrade reached it: the page works it out from the upgraded lead
+  // (and saves the new fields with it), so the schedule counts from the first touch.
+  const view = { ...v2, ...M.upgradeFields(v2, today) };
+  const f = { ...view, ...M.touch(view, { at: at(today), by: "Angus", type: "text" }) };
+  assert.deepEqual([f.stage, f.touches, f.lastTouchOn, f.chaseFrom, f.nextFollowUp, f.modelVersion], ["Chasing", 2, today, "2026-10-03", "2026-10-06", 3]);
+  assert.equal(M.plan([f], today).todo, 0); // nothing left for the upgrade to change
+  // Not now and Not real set before the upgrade are kept too.
+  const snoozed = M.upgradeFields({ ...v2, ...M.snooze(v2, "2026-10-20"), junk: true }, today);
+  assert.deepEqual([snoozed.snoozeUntil, snoozed.nextFollowUp, snoozed.junk], ["2026-10-20", "2026-10-20", true]);
+});

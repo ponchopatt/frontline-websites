@@ -93,11 +93,12 @@
   */
   function which(l, today) {
     var stage = M.stageOf(l, today);
-    if (stage === "Booked" || stage === "Done" || stage === "Review asked") return l.paid === "Yes" ? "review" : "after";
-    if (stage === "Waiting" || stage === "Lost") return "checkin";
     var last = M.lastTouch(l);
     var missed = !!last && last.type === "call" && last.pickedUp === "No" && M.canberraDate(last.at) === today;
-    if (stage === "New" || M.againPending(l)) return missed ? "missed" : "first";
+    if (M.againPending(l)) return missed ? "missed" : "first";
+    if (stage === "Booked" || stage === "Done" || stage === "Review asked") return l.paid === "Yes" ? "review" : "after";
+    if (stage === "Waiting" || stage === "Lost") return "checkin";
+    if (stage === "New") return missed ? "missed" : "first";
     if (missed) return "missed";
     var done = Number(l.touches) || 0;
     if (stage === "Quoted") return done === 0 && l.quotedOn === today ? "quote" : ["day1", "day3", "day7"][Math.min(done, 2)];

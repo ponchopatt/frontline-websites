@@ -388,7 +388,7 @@ tr:last-child td{border-bottom:0}
     // The same phone number: onto that lead if it's open or from the last 30 days, else a new lead marked Repeat.
     const match=M.matchPhone(leads, doc.phone, today());
     if(match.merge){
-      const target=match.merge;
+      const target=current(match.merge.id)||match.merge;
       let patch=M.mergeEnquiry(target, doc, now);
       if(talked){ patch={...patch, ...M.answer({...target,...patch}, stage==="Booked"?"booked":"quoted", stage==="Booked"?{date:jobDate, price}:{amount:price}, now, who)}; delete patch.replyMins; }
       if(await save(target.id, patch)){ resetForm(); toast((target.name||"They")+" is already a lead. Added to that card."); }
@@ -505,19 +505,20 @@ tr:last-child td{border-bottom:0}
     const w=$("#s-waiting"); w.hidden=!waitingLeads.length; w.querySelector(".wn").textContent=waitingLeads.length;
     if(w.open) renderWaiting(); else w.querySelector(".list").innerHTML="";
     $("#tClear").hidden=!!L.left;
-    const jobs=leads.filter(l=>l.status==="Booked" && l.jobDate===t), tm=leads.filter(l=>l.status==="Booked" && l.jobDate===addDays(1));
+    const real=leads.filter(l=>!l.junk);
+    const jobs=real.filter(l=>l.status==="Booked" && l.jobDate===t), tm=real.filter(l=>l.status==="Booked" && l.jobDate===addDays(1));
     $("#jobsCount").textContent=jobs.length; $("#jobsTmCount").textContent=tm.length;
     $("#jobsList").innerHTML = jobs.length ? jobs.map(l=>leadCard(l,{tag:'<span class="pill booked">'+(l.revenue!=null?money(l.revenue):l.quoted!=null?money(l.quoted):"Booked")+'</span>',
       actions:'<div class="acts">'+jobDoneBtn(l)+'<label class="toggle" style="flex:1"><span>Paid</span><input type="checkbox" data-field="paid" '+(l.paid==="Yes"?"checked":"")+'></label>'+payText(l)+'<button class="btn secondary small" data-act="open">Open</button></div>'})).join("") : '<div class="empty">No jobs booked for today.</div>';
     wire($("#jobsList")); wireToggles($("#jobsList"));
     $("#jobsTmList").innerHTML = tm.length ? tm.map(l=>leadCard(l,{tag:'<span class="pill booked">Tomorrow</span>', actions:""})).join("") : '<div class="empty">Nothing tomorrow yet.</div>';
     wire($("#jobsTmList"));
-    const rset=R.settings(reviewSettings), revDue=R.due(leads,rset,new Date());
+    const rset=R.settings(reviewSettings), revDue=R.due(real,rset,new Date());
     $("#revDueCount").textContent=revDue.length;
     $("#revDueList").innerHTML = revDue.length ? revDue.map(d=>leadCard(d.lead,{tag:'<span class="pill due">'+(d.kind==="text"?"Text":"Nudge")+'</span>', extra:'<div class="sub" style="color:var(--text);font-weight:600">'+esc(d.what)+'</div>',
       actions:'<div class="acts"><button class="btn small" data-act="copyReview">Copy text</button><button class="btn secondary small" data-act="reviewDone" data-status="'+d.done+'">'+esc(d.doneLabel)+'</button></div>'})).join("") : '<div class="empty">Nothing due today.</div>';
     wire($("#revDueList"));
-    const owed=leads.filter(owes).sort((a,b)=>a.jobDate.localeCompare(b.jobDate));
+    const owed=real.filter(owes).sort((a,b)=>a.jobDate.localeCompare(b.jobDate));
     $("#owedTotal").textContent=money(owed.reduce((a,l)=>a+(l.revenue??l.quoted??0),0));
     $("#owedList").innerHTML = owed.length ? owed.map(l=>{
       const days=M.daysBetween(l.jobDate,t);
@@ -587,6 +588,7 @@ tr:last-child td{border-bottom:0}
       const now=new Date().toISOString(), on=f=>g('[data-field="'+f+'"]').checked?"Yes":"No";
       const picked=owed ? (g("#j-date").value||today()) : today(), t=picked>today()?today():picked;
       const doc={
+        ...M.newFields(""), stage:"Done",
         kind:"job", date:t, createdAt:now, owner:who||"",
         name:g("#j-name").value.trim(), phone:g("#j-phone").value.trim(),
         source:g("#j-source").dataset.value||"Other", ad:"", referredBy:"",
@@ -615,15 +617,15 @@ tr:last-child td{border-bottom:0}
     const l=leads.find(x=>x.id===id); if(!l||!db) return;
     if(!R.isDone(l)){
       const now=new Date().toISOString();
-      try{ await db.doc("leads/"+id).set(clean({...l, ...R.completePatch(l,now), updatedAt:now})); }catch(err){ writeFail(err); return; }
+      if(!await save(id,R.completePatch(l,now))) return;
     }
     openReview(id);
   }
   async function setReview(id,status){
     const l=leads.find(x=>x.id===id); if(!l||!db) return false;
     const now=new Date().toISOString();
-    try{ await db.doc("leads/"+id).set(clean({...l, ...R.completePatch(l,now), ...R.patch(l,status,now), updatedAt:now})); toast(REVIEW_TOAST[status]||"Saved."); return true; }
-    catch(err){ writeFail(err); return false; }
+    if(!await save(id,{...R.completePatch(l,now), ...R.patch(l,status,now)})) return false;
+    toast(REVIEW_TOAST[status]||"Saved."); return true;
   }
   // The Review card: what to do next, the words, the buttons, notes, the link and the rules.
   function showReview(box,id){
@@ -648,7 +650,7 @@ tr:last-child td{border-bottom:0}
     const notes=box.querySelector("[data-rv-notes]");
     notes.addEventListener("change",async()=>{
       const cur=leads.find(x=>x.id===id); if(!cur||!db) return;
-      try{ await db.doc("leads/"+id).set(clean({...cur, reviewNotes:notes.value.trim(), updatedAt:new Date().toISOString()})); toast("Note saved."); }catch(err){ writeFail(err); }
+      if(await save(id,{reviewNotes:notes.value.trim()})) toast("Note saved.");
     });
   }
   function openReview(id){
@@ -776,7 +778,7 @@ tr:last-child td{border-bottom:0}
     g("#a-pick").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>pick(b.dataset.v)));
   }
   async function answer(id,choice,data){
-    const l=leads.find(x=>x.id===id); if(!l) return;
+    const l=current(id); if(!l) return;
     document.querySelectorAll("#sheet button").forEach(b=>b.disabled=true);
     if(!await save(id,M.answer(l,choice,data,new Date().toISOString(),who))){ document.querySelectorAll("#sheet button").forEach(b=>b.disabled=false); return; }
     if(choice==="quoted") return sendQuote(id);
@@ -801,7 +803,7 @@ tr:last-child td{border-bottom:0}
   }
   // Not now: pick when it comes back; it's off Today until then.
   function openNotNow(id){
-    const l=leads.find(x=>x.id===id); if(!l) return;
+    const l=current(id); if(!l) return;
     const g=sheet(head(l,"Not now. When should it come back?")+datePicker());
     const go=async date=>{ document.querySelectorAll("#sheet button").forEach(b=>b.disabled=true); if(await save(id,M.snooze(l,date))){ closeSheet(); toast("Off the list till "+dayName(date)+"."); } };
     document.querySelectorAll("#sheet [data-date]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.date)));
@@ -821,16 +823,23 @@ tr:last-child td{border-bottom:0}
   function clean(o){ const c={...o}; delete c.id; return M.sync(c,today()); }
   function closeSheet(){ const s=$("#sheet"); if(s) s.remove(); }
   async function retag(id,btn){
-    const l=leads.find(x=>x.id===id); if(!l) return;
+    const l=current(id); if(!l) return;
     const tag=M.nextTag(l.score); btn.disabled=true;
     if(await save(id,M.retag(l,tag,today()))) toast("Tagged "+tag+"."); else btn.disabled=false;
   }
   // Save only what changed, merged into the lead, so the other phone's changes aren't lost.
+  // A lead the upgrade hasn't reached yet gets its new fields saved along with the change.
   async function save(id,patch){
     const l=leads.find(x=>x.id===id); if(!l||!db) return false;
-    const next=clean({...l,...patch,updatedAt:new Date().toISOString()}), diff={};
+    const next=clean({...current(id),...patch,updatedAt:new Date().toISOString()}), diff={};
     Object.keys(next).forEach(k=>{ if(JSON.stringify(next[k])!==JSON.stringify(l[k])) diff[k]=next[k]; });
     try{ await db.doc("leads/"+id).update(diff); Object.assign(l,diff); return true; }catch(err){ writeFail(err); return false; }
+  }
+  // A lead as the actions see it: one the upgrade hasn't reached yet gets its new fields first,
+  // so nothing is ever worked out from the old fields.
+  function current(id){
+    const l=leads.find(x=>x.id===id); if(!l) return null;
+    return (Number(l.modelVersion)||0)<M.VERSION ? {...l, ...M.upgradeFields(l,today())} : l;
   }
   // What happens next, once it's saved.
   function nextToast(id){
@@ -841,7 +850,7 @@ tr:last-child td{border-bottom:0}
     return "Logged.";
   }
   async function quickTouch(id,type,btn){
-    const l=leads.find(x=>x.id===id); if(!l||!db) return;
+    const l=current(id); if(!l||!db) return;
     const entry={at:new Date().toISOString(), by:who||"", type:type==="texted"?"text":"call", pickedUp:type==="noanswer"?"No":"", outcome:type==="texted"?"Texted":"No answer", note:""};
     if(btn) btn.disabled=true;
     if(!await save(id,M.touch(l,entry))){ if(btn) btn.disabled=false; return; }
@@ -933,12 +942,12 @@ tr:last-child td{border-bottom:0}
     // A note on a lead being chased pauses its schedule.
     g("#e-addNote").addEventListener("click",async()=>{
       const text=g("#e-note").value.trim(); if(!text){ g("#e-note").focus(); return; }
-      const cur=leads.find(x=>x.id===id)||l, b=g("#e-addNote"); b.disabled=true;
+      const cur=current(id)||l, b=g("#e-addNote"); b.disabled=true;
       if(await save(id,M.note(cur,text,new Date().toISOString(),who))){ toast(["Chasing","Quoted"].includes(stage(cur))?"Note added. Paused till you pick what's next.":"Note added."); closeSheet(); } else b.disabled=false;
     });
     g("#saveEdit").addEventListener("click",async()=>{
       const sv=name=>s.querySelector('[data-name="'+name+'"]').dataset.value||"";
-      const cur=leads.find(x=>x.id===id)||l, picked=g("#e-stage").value, fu=g("#e-fu").value;
+      const cur=current(id)||l, picked=g("#e-stage").value, fu=g("#e-fu").value;
       const upd={ owner:g("#e-owner").value, name:g("#e-name").value.trim(), phone:g("#e-phone").value.trim(), email:g("#e-email").value.trim(), date:g("#e-date").value,
         source:g("#e-source").value, ad:g("#e-ad").value.trim(), referredBy:g("#e-ref").value.trim(), service:g("#e-service").value, car:g("#e-car").value.trim(), suburb:g("#e-suburb").value.trim(),
         quoted:num(g("#e-quoted").value), objection:g("#e-obj").value,
@@ -1047,10 +1056,14 @@ tr:last-child td{border-bottom:0}
       const stamp=new Date().toISOString();
       await db.doc("backups/leads-"+stamp.replace(/[:.]/g,"-")).set({savedAt:stamp, reason:"before the version "+M.VERSION+" upgrade", count:leads.length, leads:leads.map(l=>{ const d={...l}; delete d.id; return {id:l.id, data:d}; })});
       for(const r of p.rows){
-        // The other phone may have upgraded it (and logged something) since: then leave it be.
+        // Worked out again from the lead as it is now, so anything logged on it while this runs
+        // (here or on the other phone) is kept. Already upgraded: left be.
         const cur=leads.find(x=>x.id===r.id);
         if(!cur || !M.needsUpgrade(cur)) continue;
-        try{ await db.doc("leads/"+r.id).update(r.patch); }catch(e){}
+        const now=M.plan([{...cur}],today()).rows[0]; if(!now) continue;
+        const patch={...now.patch};
+        if(patch.owner && r.patch.owner){ patch.owner=r.patch.owner; patch.ownerWas=r.patch.ownerWas; } // the turn worked out across all leads
+        try{ await db.doc("leads/"+r.id).update(patch); }catch(e){}
       }
       upgraded=true;
     }catch(e){ /* no backup, no upgrade: try again next time */ }

@@ -70,10 +70,15 @@ export async function POST(request) {
     if (match.merge) {
       const old = rows.find((r) => r.id === match.merge.id).data;
       const merged = M.sync({ ...old, ...M.mergeEnquiry(match.merge, lead, lead.createdAt), updatedAt: lead.createdAt }, lead.date);
-      try {
-        await writeDoc(db, "leads", match.merge.id, merged);
-      } catch {
-        return json({ ok: false, error: "Couldn't save the lead" }, 500, headers);
+      // Only what changed, merged in, so a phone saving the same lead at that moment loses nothing.
+      const patch = Object.fromEntries(Object.entries(merged).filter(([k, v]) => JSON.stringify(v) !== JSON.stringify(old[k])));
+      const { error } = await db.rpc("docs_merge", { p_collection: "leads", p_id: match.merge.id, p_patch: patch });
+      if (error) {
+        try {
+          await writeDoc(db, "leads", match.merge.id, merged);
+        } catch {
+          return json({ ok: false, error: "Couldn't save the lead" }, 500, headers);
+        }
       }
       return json({ ok: true, duplicate: true, merged: true, id: match.merge.id }, 200, headers);
     }
@@ -88,11 +93,18 @@ export async function POST(request) {
   }
 
   // The id carries the phone and day, so two posts at the same moment still make one lead.
-  const id = key ? `in-${lead.date}-${key}` : crypto.randomUUID();
-  const { data: inserted, error } = await db
-    .from("docs")
-    .upsert({ collection: "leads", id, data: lead, updated_at: new Date().toISOString() }, { onConflict: "collection,id", ignoreDuplicates: true })
-    .select("id");
+  const insert = (id) =>
+    db.from("docs").upsert({ collection: "leads", id, data: lead, updated_at: new Date().toISOString() }, { onConflict: "collection,id", ignoreDuplicates: true }).select("id");
+  let id = key ? `in-${lead.date}-${key}` : crypto.randomUUID();
+  let { data: inserted, error } = await insert(id);
+  // That id is taken by a lead marked not real (so it wasn't matched above): this one is real, keep it.
+  if (!error && !inserted.length) {
+    const taken = await readDoc(db, "leads", id).catch(() => null);
+    if (taken && taken.junk) {
+      id = crypto.randomUUID();
+      ({ data: inserted, error } = await insert(id));
+    }
+  }
   if (error) return json({ ok: false, error: "Couldn't save the lead" }, 500, headers);
   // Pass the turn on only when a lead was really added (and never let it stop the lead).
   if (byTurn && inserted.length) await writeDoc(db, ...TURN, { next: PEOPLE[(PEOPLE.indexOf(lead.owner) + 1) % 2] }).catch(() => {});
