@@ -237,6 +237,10 @@ lead, still open, touches per lead, on a plan, upsells, lost reasons, reviews as
 last 30 days of reviews, by source, by service, and who's due for their next service. The
 period filters and the person filter are as before.
 
+**Tap any figure** on Numbers (or a row in By source, By service or Lost reasons) for the
+run-down: who's in it, with their price, paid or not, job day, owner and so on. Tap a name to
+open that lead.
+
 **Friday from 5:00pm** Today shows a wrap-up for both of you: how many are in each section, how
 many quoted leads have had no reply for 14 days or more, and how many are still New. It moves
 nothing.

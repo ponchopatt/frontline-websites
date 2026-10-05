@@ -121,6 +121,18 @@ details.sec[open] > summary span[aria-hidden]{transform:rotate(180deg)}
 .tile b{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
 .tile span{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
 .tile.good b{color:var(--good)} .tile.warn b{color:var(--warn)} .tile.bad b{color:var(--bad)}
+button.tile{font:inherit;color:var(--text);text-align:left;cursor:pointer;width:100%}
+button.tile:focus-visible,tr[data-drill]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+tr[data-drill]{cursor:pointer}
+.rd{display:flex;flex-direction:column}
+.rd-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:10px 2px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--text);font:inherit;text-align:left;cursor:pointer;width:100%}
+.rd-row:last-child{border-bottom:0}
+.rd-row .rd-name{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rd-row .rd-name span{color:var(--muted);font-weight:500}
+.rd-row .r{font-weight:700;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.rd-row .r.good{color:var(--good)} .rd-row .r.warn{color:var(--warn)} .rd-row .r.bad{color:var(--bad)}
+.rd-row .ln{grid-column:1/-1;font-size:12.5px;color:var(--muted)}
+.rd-row:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:8px}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:6px 0;border-bottom:1px solid var(--line)}
 td{padding:8px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
@@ -279,6 +291,7 @@ tr:last-child td{border-bottom:0}
     <div class="seg three" id="period" data-value="30"><button type="button" data-v="month">This month</button><button type="button" data-v="30">Last 30 days</button><button type="button" data-v="all">All time</button></div>
     <div class="seg three" id="nWho" data-value=""><button type="button" data-v="">Both</button><button type="button" data-v="Angus">Angus</button><button type="button" data-v="Ananth">Ananth</button></div>
     <div class="tiles" id="tiles"></div>
+    <p class="help" style="margin-top:-6px">Tap a number to see who's in it.</p>
     <div class="card">
       <div class="eyebrow"><span>Ad spend</span></div>
       <div style="overflow-x:auto"><table id="adSpend"></table></div>
@@ -984,30 +997,53 @@ tr:last-child td{border-bottom:0}
     const closeRate=rows.length?booked.length/rows.length:0, fastRate=replied.length?fast/replied.length:null;
     // Ads: the weekly spend (both phones) against what each ad booked (both of you).
     const ads=M.costPerBooked(live, M.adSpend(spendWeeks, inPeriodDay), t);
-    const tile=(v,label,cls="")=>'<div class="tile '+cls+'"><b>'+v+'</b><span>'+label+'</span></div>';
+    // Every figure keeps the leads behind it: tap it for the run-down.
+    const price=l=>Number(l.revenue)>0?Number(l.revenue):0, jobs=n=>n+" job"+(n===1?"":"s");
+    const paidLine=l=>[l.service, l.jobDate?"Job "+dayName(l.jobDate):"", l.paid==="Yes"?"Paid":"Not paid", l.owner];
+    const byJob=(a,b)=>String(a.jobDate||"").localeCompare(String(b.jobDate||""));
+    const bookedRows=booked.slice().sort(byJob);
+    const paid=bookedRows.filter(l=>price(l)&&l.paid==="Yes"), unpaid=bookedRows.filter(l=>price(l)&&l.paid!=="Yes");
+    const fromAds=live.filter(l=>M.fromAds(l)&&isBooked(l)).sort(byJob);
+    drill={
+      leads:{title:"Leads", items:rows.map(l=>({l, r:stage(l), ln:[l.service, l.source+(l.ad?" ("+l.ad+")":""), "Came in "+dayName(l.date||localDate(l.createdAt)), l.owner]}))},
+      booked:{title:"Booked", items:bookedRows.map(l=>({l, r:price(l)?money(price(l)):"", ln:paidLine(l)}))},
+      close:{title:"Close rate", sub:booked.length+" of "+rows.length+" booked", items:rows.slice().sort((a,b)=>(isBooked(b)?1:0)-(isBooked(a)?1:0)).map(l=>({l, r:isBooked(l)?"Booked":stage(l), cls:isBooked(l)?"good":"", ln:[l.service, l.source, l.owner]}))},
+      replied:{title:"Replied within 5 minutes", sub:fast+" of "+replied.length+" fast, counted from 8am for overnight leads", items:replied.slice().sort((a,b)=>M.replyMinutes(a,h)-M.replyMinutes(b,h)).map(l=>{ const m=M.replyMinutes(l,h); return {l, r:mins(m), cls:m<=5?"good":"bad", ln:[l.service, "Came in "+dayName(l.date||localDate(l.createdAt)), l.owner]}; })},
+      bookedMoney:{title:"Booked $", sub:money(cash.booked)+" from "+jobs(bookedRows.filter(price).length), items:bookedRows.filter(price).map(l=>({l, r:money(price(l)), cls:l.paid==="Yes"?"good":"", ln:paidLine(l)}))},
+      collected:{title:"Cash collected", sub:money(cash.collected)+" from "+jobs(paid.length), items:paid.map(l=>({l, r:money(price(l)), cls:"good", ln:paidLine(l)}))},
+      toCollect:{title:"Still to collect", sub:money(cash.toCollect)+" from "+jobs(unpaid.length), items:unpaid.map(l=>({l, r:money(price(l)), cls:"warn", ln:[l.service, l.jobDate?(l.jobDate<t?"Job was "+dayName(l.jobDate):l.jobDate===t?"Job today":"Job "+dayName(l.jobDate)):"", l.owner]}))},
+      ads:{title:"Per booked job (ads)", sub:money(ads.spend)+" spent, "+ads.booked+" booked from ads (both of you)", items:fromAds.map(l=>({l, r:price(l)?money(price(l)):"", ln:[l.service, l.source+(l.ad?" ("+l.ad+")":""), l.jobDate?"Job "+dayName(l.jobDate):"", l.owner]}))},
+    };
+    const tile=(v,label,cls="",key="")=>key?'<button type="button" class="tile '+cls+'" data-drill="'+key+'"><b>'+v+'</b><span>'+label+'</span></button>':'<div class="tile '+cls+'"><b>'+v+'</b><span>'+label+'</span></div>';
     $("#tiles").innerHTML=
-      tile(rows.length,"Leads")+tile(booked.length,"Booked")+tile(pct(booked.length,rows.length),"Close rate",closeRate>=.4?"good":closeRate>=.25?"warn":rows.length?"bad":"")+
-      tile(fastRate==null?"–":Math.round(fastRate*100)+"%","Replied ≤5 min",fastRate==null?"":fastRate>=.8?"good":fastRate>=.5?"warn":"bad")+
-      tile(money(cash.booked),"Booked $")+tile(money(cash.collected),"Cash collected","good")+tile(money(cash.toCollect),"Still to collect",cash.toCollect>0?"warn":"")+
-      tile(ads.perBooked==null?"–":money(ads.perBooked),"Per booked job (ads)");
+      tile(rows.length,"Leads","","leads")+tile(booked.length,"Booked","","booked")+tile(pct(booked.length,rows.length),"Close rate",closeRate>=.4?"good":closeRate>=.25?"warn":rows.length?"bad":"","close")+
+      tile(fastRate==null?"–":Math.round(fastRate*100)+"%","Replied ≤5 min",fastRate==null?"":fastRate>=.8?"good":fastRate>=.5?"warn":"bad","replied")+
+      tile(money(cash.booked),"Booked $","","bookedMoney")+tile(money(cash.collected),"Cash collected","good","collected")+tile(money(cash.toCollect),"Still to collect",cash.toCollect>0?"warn":"","toCollect")+
+      tile(ads.perBooked==null?"–":money(ads.perBooked),"Per booked job (ads)","","ads");
     const row=(label,v)=>'<tr><td>'+label+'</td><td class="n">'+v+'</td></tr>';
     $("#adSpend").innerHTML=row("Spent in this period",money(ads.spend))+row("Leads from ads",ads.leads)+row("Booked from ads",ads.booked)+row("Per booked job",ads.perBooked==null?"–":money(ads.perBooked));
     // More.
     const plan=rows.filter(l=>l.plan==="Yes").length, upsO=rows.filter(l=>l.upsellOffered==="Yes").length, upsT=rows.filter(l=>l.upsellTaken==="Yes").length;
     const open=rows.filter(isOpen).length, touches=rows.reduce((a,l)=>a+M.touchDays(l.log),0);
-    $("#moreTiles").innerHTML=tile(booked.length?money(rev/booked.length):"–","Avg job")+tile(rows.length?money(rev/rows.length):"–","Per lead")+tile(open,"Still open")+
-      tile(rows.length?(touches/rows.length).toFixed(1):"–","Touches per lead")+tile(plan,"On plan")+tile(upsO?pct(upsT,upsO):"–","Upsells taken");
+    drill.open={title:"Still open", items:rows.filter(isOpen).map(l=>({l, r:stage(l), ln:[l.service, l.nextFollowUp?"Next "+dayName(l.nextFollowUp):"", l.owner]}))};
+    drill.touches={title:"Touches per lead", sub:"Days with a call or text", items:rows.slice().sort((a,b)=>M.touchDays(b.log)-M.touchDays(a.log)).map(l=>({l, r:String(M.touchDays(l.log)), ln:[stage(l), l.service, l.owner]}))};
+    drill.plan={title:"On a plan", items:rows.filter(l=>l.plan==="Yes").map(l=>({l, r:"", ln:[l.service, l.owner]}))};
+    drill.upsells={title:"Upsells", sub:upsT+" taken of "+upsO+" offered", items:rows.filter(l=>l.upsellOffered==="Yes").map(l=>({l, r:l.upsellTaken==="Yes"?"Taken":"Not taken", cls:l.upsellTaken==="Yes"?"good":"", ln:[l.service, l.owner]}))};
+    $("#moreTiles").innerHTML=tile(booked.length?money(rev/booked.length):"–","Avg job","","bookedMoney")+tile(rows.length?money(rev/rows.length):"–","Per lead","","leads")+tile(open,"Still open","","open")+
+      tile(rows.length?(touches/rows.length).toFixed(1):"–","Touches per lead","","touches")+tile(plan,"On plan","","plan")+tile(upsO?pct(upsT,upsO):"–","Upsells taken","","upsells");
     const table=(el,key,opts,label)=>{
-      const groups=opts.map(o=>{ const g=rows.filter(l=>l[key]===o); const b=g.filter(isBooked); const r=b.reduce((a,l)=>a+(l.revenue||0),0); return {o,n:g.length,b:b.length,r}; }).filter(g=>g.n);
+      const groups=opts.map(o=>{ const g=rows.filter(l=>l[key]===o); const b=g.filter(isBooked); const r=b.reduce((a,l)=>a+(l.revenue||0),0); return {o,g,n:g.length,b:b.length,r}; }).filter(g=>g.n);
+      groups.forEach(g=>{ drill[key+":"+g.o]={title:g.o, sub:g.b+" of "+g.n+" booked", items:g.g.map(l=>({l, r:isBooked(l)?(price(l)?money(price(l)):"Booked"):stage(l), cls:isBooked(l)?"good":"", ln:[key==="source"?l.service:l.source, "Came in "+dayName(l.date||localDate(l.createdAt)), l.owner]}))}; });
       if(!groups.length){ el.innerHTML='<tr><td class="empty">Nothing in this period yet.</td></tr>'; return; }
       const max=Math.max(...groups.map(g=>g.n));
       el.innerHTML='<tr><th>'+label+'</th><th class="n">Leads</th><th class="n">Booked</th><th class="n">Close</th><th class="n">Revenue</th></tr>'+
-        groups.map(g=>'<tr><td>'+esc(g.o)+'<div class="bar"><i style="width:'+Math.round(100*g.n/max)+'%"></i></div></td><td class="n">'+g.n+'</td><td class="n">'+g.b+'</td><td class="n">'+pct(g.b,g.n)+'</td><td class="n">'+money(g.r)+'</td></tr>').join("");
+        groups.map(g=>'<tr data-drill="'+esc(key+":"+g.o)+'" tabindex="0"><td>'+esc(g.o)+'<div class="bar"><i style="width:'+Math.round(100*g.n/max)+'%"></i></div></td><td class="n">'+g.n+'</td><td class="n">'+g.b+'</td><td class="n">'+pct(g.b,g.n)+'</td><td class="n">'+money(g.r)+'</td></tr>').join("");
     };
     table($("#bySource"),"source",SOURCES,"Source"); table($("#byService"),"service",SERVICES,"Service");
     const lost=rows.filter(l=>stage(l)==="Lost"), reasonOf=l=>M.LOST_REASONS[l.lostReason]?l.lostReason:(M.OLD_LOST[l.lostWhy]||"other");
-    const lg=Object.keys(M.LOST_REASONS).map(k=>({o:M.LOST_REASONS[k],n:lost.filter(l=>reasonOf(l)===k).length})).filter(g=>g.n);
-    $("#byLost").innerHTML = lg.length ? '<tr><th>Reason</th><th class="n">Leads</th><th class="n">Share</th></tr>'+lg.map(g=>'<tr><td>'+esc(g.o)+'</td><td class="n">'+g.n+'</td><td class="n">'+pct(g.n,lost.length)+'</td></tr>').join("") : '<tr><td class="empty">No lost leads in this period.</td></tr>';
+    const lg=Object.keys(M.LOST_REASONS).map(k=>({k,o:M.LOST_REASONS[k],n:lost.filter(l=>reasonOf(l)===k).length})).filter(g=>g.n);
+    lg.forEach(g=>{ drill["lost:"+g.k]={title:"Lost: "+g.o, items:lost.filter(l=>reasonOf(l)===g.k).map(l=>({l, r:l.quoted!=null?money(l.quoted):"", ln:[l.service, "Came in "+dayName(l.date||localDate(l.createdAt)), l.owner]}))}; });
+    $("#byLost").innerHTML = lg.length ? '<tr><th>Reason</th><th class="n">Leads</th><th class="n">Share</th></tr>'+lg.map(g=>'<tr data-drill="lost:'+g.k+'" tabindex="0"><td>'+esc(g.o)+'</td><td class="n">'+g.n+'</td><td class="n">'+pct(g.n,lost.length)+'</td></tr>').join("") : '<tr><td class="empty">No lost leads in this period.</td></tr>';
     const asked=rows.filter(l=>l.reviewAsked==="Yes").length, left=rows.filter(l=>l.reviewLeft==="Yes").length;
     $("#reviews").innerHTML='<tr><th>Asked</th><th class="n">Left a review</th><th class="n">Share</th></tr><tr><td>'+asked+'</td><td class="n">'+left+'</td><td class="n">'+pct(left,asked)+'</td></tr>';
     const rs=R.stats(leads.filter(l=>!l.junk),new Date(),30), rt=(v,label)=>'<div class="tile"><b>'+v+'</b><span>'+label+'</span></div>';
@@ -1016,6 +1052,21 @@ tr:last-child td{border-bottom:0}
     $("#dueCard").hidden=!due.length;
     $("#dueList").innerHTML=due.map(l=>leadCard(l,{tag:'<span class="pill due">'+esc(l.nextDue)+'</span>'})).join(""); wire($("#dueList"));
   }
+  // Tap a figure: who's in it. Tap a name to open that lead.
+  let drill={};
+  const mins=m=>m<60?m+" min":m<1440?Math.floor(m/60)+" hr"+(m%60?" "+(m%60)+" min":""):Math.round(m/1440)+" day"+(Math.round(m/1440)===1?"":"s");
+  function openDrill(key){
+    const d=drill[key]; if(!d) return;
+    const period={month:"This month","30":"Last 30 days",all:"All time"}[$("#period").dataset.value]||"", w=$("#nWho").dataset.value;
+    const sub=[d.sub, period, w?w+"'s":"Both of you"].filter(Boolean).join(" · ");
+    const g=sheet('<div class="sheet-h"><div><h2>'+esc(d.title)+'</h2><p class="help">'+esc(sub)+'</p></div><button class="x" id="closeSheet">Close</button></div>'+
+      (d.items.length?'<div class="rd">'+d.items.map(it=>'<button type="button" class="rd-row" data-id="'+esc(it.l.id)+'"><span class="rd-name">'+esc(it.l.name||"No name")+(it.l.car?'<span> · '+esc(it.l.car)+'</span>':"")+'</span><span class="r '+(it.cls||"")+'">'+esc(it.r||"")+'</span><span class="ln">'+esc(it.ln.filter(Boolean).join(" · "))+'</span></button>').join("")+'</div>'
+        :'<div class="empty">Nobody in this one yet.</div>'));
+    document.querySelectorAll("#sheet .rd-row").forEach(b=>b.addEventListener("click",()=>openEdit(b.dataset.id)));
+  }
+  $("#view-numbers").addEventListener("click",e=>{ const b=e.target.closest("[data-drill]"); if(b) openDrill(b.dataset.drill); });
+  $("#view-numbers").addEventListener("keydown",e=>{ const b=e.target.closest("tr[data-drill]"); if(b&&(e.key==="Enter"||e.key===" ")){ e.preventDefault(); openDrill(b.dataset.drill); } });
+
   // The weekly ad spend: one total a week, saved for both phones (spend/<Monday>).
   $("#spendBtn").addEventListener("click",()=>{
     const mon=M.mondayOf(today()), weeks=[0,1,2,3].map(n=>M.addDays(mon,-7*n));
