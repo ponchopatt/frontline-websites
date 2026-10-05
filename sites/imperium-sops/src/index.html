@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Imperium SOPs</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#09090A">
+<link rel="icon" href="{{ICON}}">
+<link rel="apple-touch-icon" href="{{ICON}}">
+<style>
+{{FONTS}}
+{{CSS}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <span class="brand" id="brand"><img src="{{LOGO}}" alt="Imperium Detailing" width="40" height="24"><span class="wordmark">SOPs</span></span>
+    <button class="back" id="back" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Jobs</button>
+    <button class="who" id="whoBtn" type="button"><span class="pip"></span><span id="whoName">Who are you?</span></button>
+  </header>
+
+  <main>
+    <section id="vJobs">
+      <button class="go start" id="newJob" type="button">Start a job</button>
+      <div id="jobList"></div>
+    </section>
+
+    <section id="vJob" hidden>
+      <div class="title-row">
+        <h1 class="jt" id="jt"></h1>
+        <button class="btn" id="details" type="button">Details</button>
+      </div>
+      <p class="js" id="js"></p>
+      <div id="jobBody"></div>
+      <div class="finish" id="finish"></div>
+    </section>
+
+    <nav class="foot">
+      <a href="full.html">
+        <span>Full guide<small>Every step, filming, door knocking, handover, prices</small></span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<dialog id="whoDlg">
+  <h3>Who are you?</h3>
+  <div class="people" id="whoList"></div>
+  <div class="other">
+    <input id="whoOther" type="text" autocomplete="off" placeholder="Someone else? Type your name" aria-label="Your name">
+    <button class="btn key" id="whoOtherGo" type="button">Use</button>
+  </div>
+  <p class="sub-note">Your name goes with each tick, in the summary for the group.</p>
+  <div class="acts"><button class="btn" id="whoCancel" type="button">Just looking</button></div>
+</dialog>
+
+<dialog id="jobDlg">
+  <h3 id="jdTitle">Start a job</h3>
+  <div class="field">
+    <span class="lab">Service <em>(one or more)</em></span>
+    <div class="chips" id="jdSvc"></div>
+  </div>
+  <div class="field"><label class="lab" for="jdCar">Car</label><input id="jdCar" type="text" autocomplete="off" placeholder="e.g. Tesla Model 3"></div>
+  <div class="field two">
+    <div><label class="lab" for="jdName">Customer <em>(optional)</em></label><input id="jdName" type="text" autocomplete="off"></div>
+    <div><label class="lab" for="jdSuburb">Suburb <em>(optional)</em></label><input id="jdSuburb" type="text" autocomplete="off"></div>
+  </div>
+  <div class="field">
+    <span class="lab">Day</span>
+    <div class="chips" id="jdDays"></div>
+    <input id="jdDate" type="date" hidden style="margin-top:10px" aria-label="Day of the job">
+  </div>
+  <p class="err" id="jdErr" hidden></p>
+  <div class="acts">
+    <button class="btn" id="jdCancel" type="button">Cancel</button>
+    <button class="btn key" id="jdSave" type="button">Start the job</button>
+  </div>
+  <div class="dlg-foot" id="jdFoot" hidden><button class="ghost danger" id="jdDelete" type="button">Delete this job</button></div>
+</dialog>
+
+<dialog id="askDlg">
+  <h3 id="askTitle"></h3>
+  <p class="sub-note" id="askBody"></p>
+  <div class="acts">
+    <button class="btn" id="askNo" type="button">Cancel</button>
+    <button class="btn key" id="askYes" type="button">Delete</button>
+  </div>
+</dialog>
+
+<dialog id="sumDlg">
+  <h3>Job summary</h3>
+  <p class="sub-note">Copy the picture, then paste it into the Imperium group chat.</p>
+  <div class="sum-acts">
+    <button class="btn key" id="sumCopy" type="button" disabled>Copy image</button>
+    <button class="btn" id="sumShare" type="button" hidden disabled>Share</button>
+    <button class="btn" id="sumSave" type="button" disabled>Save</button>
+  </div>
+  <p class="sum-msg" id="sumMsg" aria-live="polite"></p>
+  <div class="sum-frame">
+    <img id="sumImg" alt="A summary of this job: the car, the five ticks with who did each and when, and the total time" hidden>
+    <p class="sum-wait" id="sumWait">Making the picture&hellip;</p>
+  </div>
+  <div class="acts"><button class="btn" id="sumClose" type="button">Done</button></div>
+</dialog>
+
+<script>
+window.GUIDE = {{DATA}};
+</script>
+<script>
+{{JS}}
+</script>
+</body>
+</html>
