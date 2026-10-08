@@ -43,7 +43,7 @@ export interface CoverFlowCarouselProps {
   onCtaClick?: (item: CarouselItem) => void;
 }
 
-const ACCENT = "#3a8fe0";
+const ACCENT = "#2a84dc";
 const BG = "#050608";
 
 export function CoverFlowCarousel({
@@ -272,7 +272,7 @@ export function CoverFlowCarousel({
                   transformOrigin: "center center",
                   transition,
                   boxShadow: isCenter
-                    ? "0 25px 60px rgba(0,0,0,0.9), 0 0 40px rgba(58,143,224,0.22)"
+                    ? "0 25px 60px rgba(0,0,0,0.9), 0 0 40px rgba(42,132,220,0.22)"
                     : "0 15px 35px rgba(0,0,0,0.5)",
                   cursor: isCenter ? "default" : "pointer",
                 }}
@@ -394,7 +394,7 @@ export function CoverFlowCarousel({
                         backgroundColor: ACCENT,
                         borderRadius: "2px",
                         margin: "8px auto 6px",
-                        boxShadow: "0 0 8px rgba(58,143,224,0.7)",
+                        boxShadow: "0 0 8px rgba(42,132,220,0.7)",
                       }}
                     />
 
@@ -429,12 +429,12 @@ export function CoverFlowCarousel({
                         minHeight: "44px",
                         padding: "10px 20px",
                         borderRadius: "8px",
-                        background: `linear-gradient(135deg, ${ACCENT} 0%, #1f6fc4 100%)`,
+                        background: ACCENT,
                         color: "#050608",
                         fontSize: "0.9rem",
                         fontWeight: 600,
                         textDecoration: "none",
-                        boxShadow: "0 4px 14px rgba(0,0,0,0.4), 0 0 15px rgba(58,143,224,0.3)",
+                        boxShadow: "0 4px 14px rgba(0,0,0,0.4), 0 0 15px rgba(42,132,220,0.3)",
                       }}
                     >
                       {item.ctaText || "See what's included"}
@@ -485,7 +485,7 @@ export function CoverFlowCarousel({
                   width: idx === currentIndex ? "28px" : "8px",
                   borderRadius: "9999px",
                   backgroundColor: idx === currentIndex ? ACCENT : "rgba(243,245,248,0.28)",
-                  boxShadow: idx === currentIndex ? "0 0 10px rgba(58,143,224,0.7)" : "none",
+                  boxShadow: idx === currentIndex ? "0 0 10px rgba(42,132,220,0.7)" : "none",
                   transition: reduceMotion ? "none" : "all 300ms ease",
                 }}
               />

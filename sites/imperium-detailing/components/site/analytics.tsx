@@ -5,14 +5,36 @@ import Script from "next/script";
 import { site } from "@/lib/site";
 import { track } from "@/lib/track";
 
+// The chat button sits 20px in from the bottom-right corner. Below 1400px wide
+// the page's own prices, buttons and links reach that corner as you scroll, so
+// the widget only loads from there up (globals.css hides it if the window is
+// then made narrower). Measured on every page: from 1376px nothing passes under it.
+export const CHAT_MIN_WIDTH = 1400;
+
+// The widget draws in an open shadow root that page CSS can't reach. This one
+// rule goes inside it: no greeting bubble popping up, just the small button.
+const QUIET_CHAT = ".lc_text-widget--prompt{display:none!important}";
+
+function quietChat() {
+  const root = document.querySelector("chat-widget")?.shadowRoot;
+  if (!root) return false;
+  if (!root.querySelector("style[data-quiet-chat]")) {
+    const style = document.createElement("style");
+    style.dataset.quietChat = "";
+    style.textContent = QUIET_CHAT;
+    root.appendChild(style);
+  }
+  return true;
+}
+
 // Google Ads tag (existing), Meta Pixel (when an ID is set), and the chat widget.
-// The widget loads last, only on screens wide enough that it doesn't sit on the phone bar.
+// The widget loads last, only on screens wide enough that it can't cover anything.
 // Every call and text link on the site reports a contact event, tagged with the section it came from.
 export function Analytics() {
   const [wide, setWide] = useState(false);
 
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)");
+    const mq = window.matchMedia(`(min-width: ${CHAT_MIN_WIDTH}px)`);
     const update = () => setWide(mq.matches);
     update();
     mq.addEventListener("change", update);
@@ -31,6 +53,17 @@ export function Analytics() {
       document.removeEventListener("click", onClick, { capture: true });
     };
   }, []);
+
+  // The widget adds its element, then fills its shadow root and marks the element
+  // "hydrated". Watching for both catches the root as soon as it exists.
+  useEffect(() => {
+    if (!wide || quietChat()) return;
+    const watch = new MutationObserver(() => {
+      if (quietChat()) watch.disconnect();
+    });
+    watch.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
+    return () => watch.disconnect();
+  }, [wide]);
 
   return (
     <>

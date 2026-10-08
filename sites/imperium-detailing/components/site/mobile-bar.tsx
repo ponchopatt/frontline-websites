@@ -61,7 +61,7 @@ export function MobileBar() {
         }`}
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
-        <nav aria-label="Quick contact" className="grid grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-2 px-4 py-3">
+        <nav aria-label="Contact" className="grid grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-2 px-4 py-3">
           <a href={smsHref()} className={`${buttonClass("primary")} px-3`}>
             Text us your car
           </a>

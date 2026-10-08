@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { og } from "@/lib/seo";
 import Link from "next/link";
 import { services, formatPrice } from "@/lib/services";
+import { prices, site } from "@/lib/site";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Booking } from "@/components/site/booking";
 
 // Keeps the existing /car-detailing-canberra URL alive for search traffic.
 export const metadata: Metadata = {
-  title: "Car Detailing Canberra from $225",
-  description: "Mobile car detailing in Canberra: full details from $225, interior from $140, exterior from $110. We come to your driveway or workplace, no call-out fee.",
+  title: `Car Detailing Canberra from ${formatPrice(prices.full)}`,
+  description: `Mobile car detailing in Canberra: full details from ${formatPrice(prices.full)}, interior from ${formatPrice(prices.interior)}, exterior from ${formatPrice(prices.exterior)}. We come to your driveway or workplace, no call-out fee.`,
   alternates: { canonical: "/car-detailing-canberra/" }, openGraph: og("/car-detailing-canberra/"),
 };
 
@@ -24,6 +25,7 @@ export default function CarDetailingCanberraPage() {
                 <h2 className="display-caps text-2xl">{s.name}</h2>
                 <p className="mt-2 text-[15px] text-muted-foreground">{s.forWho}</p>
                 <p className="mt-3 text-[15px] text-foreground">From {formatPrice(s.priceFrom)}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{site.afterpay}</p>
               </Link>
             </li>
           ))}

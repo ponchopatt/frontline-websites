@@ -16,7 +16,7 @@ const steps = [
   {
     n: "3",
     h: "Handover",
-    p: "We send a photo when we're done, walk you through the finish, and take card or transfer once you're happy. Coated cars leave with a wash guide and a written warranty.",
+    p: "We send a photo when we're done, walk you through the finish, and take card, transfer or Afterpay once you're happy. Coated cars leave with a wash guide and a written warranty.",
   },
 ];
 
@@ -26,7 +26,7 @@ const steps = [
 export function Process() {
   return (
     <section id="how" className="section-y relative border-t border-border">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_40%_at_15%_20%,rgba(31,111,196,0.12),transparent_70%)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_40%_at_15%_20%,rgba(42,132,220,0.12),transparent_70%)]" />
       <div className="container-x relative mx-auto max-w-6xl">
         <SectionHeading title="We come to you." intro="No shop to drop the car at. Your driveway, your apartment car park or your workplace, anywhere in Canberra and Queanbeyan, for the same price." />
         <ol className="m-0 grid list-none gap-7 p-0 md:grid-cols-3 md:gap-12">

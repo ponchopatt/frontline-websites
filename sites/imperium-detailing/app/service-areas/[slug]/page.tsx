@@ -54,7 +54,7 @@ export default async function AreaPage({ params }: { params: Promise<Params> }) 
       <section className="relative overflow-hidden">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-[200px] -top-[100px] -z-10 hidden size-[860px] bg-[radial-gradient(closest-side,rgba(31,111,196,0.22),rgba(15,61,110,0.08),rgba(5,6,8,0)_70%)] md:block"
+          className="pointer-events-none absolute -right-[200px] -top-[100px] -z-10 hidden size-[860px] bg-[radial-gradient(closest-side,rgba(42,132,220,0.22),rgba(42,132,220,0.08),rgba(5,6,8,0)_70%)] md:block"
         />
         <div className="container-x mx-auto grid max-w-6xl pb-10 pt-5 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] md:grid-rows-[auto_1fr] md:gap-x-12 md:pb-28 md:pt-12 lg:gap-x-24">
           <div className="md:col-start-1 md:row-start-1">
@@ -67,7 +67,7 @@ export default async function AreaPage({ params }: { params: Promise<Params> }) 
             {best && (
               <Link
                 href={`/services/${best.slug}/`}
-                className="order-first flex items-center justify-between gap-4 rounded-xl border border-accent px-5 py-[18px] text-foreground no-underline shadow-[0_0_60px_rgba(31,111,196,0.18)] hover:bg-card md:order-last md:rounded-[14px] lg:max-[1400px]:order-first md:px-8 md:py-7 md:shadow-[0_0_80px_rgba(31,111,196,0.18)]"
+                className="order-first flex items-center justify-between gap-4 rounded-xl border border-accent px-5 py-[18px] text-foreground no-underline shadow-[0_0_60px_rgba(42,132,220,0.18)] hover:bg-card md:order-last md:rounded-[14px] lg:max-[1400px]:order-first md:px-8 md:py-7 md:shadow-[0_0_80px_rgba(42,132,220,0.18)]"
               >
                 <span>
                   <span className="block text-xs text-muted-foreground md:text-sm">Most booked in {a.name}</span>
@@ -170,7 +170,7 @@ export default async function AreaPage({ params }: { params: Promise<Params> }) 
             ))}
           </ul>
           <p className="m-0 mt-3.5 text-[13px] text-muted-foreground md:mt-5 md:text-sm">
-            From-prices for a hatch or sedan. No call-out fee in {a.name}.
+            From-prices for a hatch or sedan. No call-out fee in {a.name}. {site.afterpay}.
           </p>
         </div>
       </section>

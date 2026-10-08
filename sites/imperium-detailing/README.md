@@ -18,7 +18,7 @@ npm run check      # pre-deploy checks on ./out — links, metadata, schema, ima
 | What | File |
 | --- | --- |
 | Business facts: phone, email, hours, stats, quote promise | `lib/site.ts` |
-| Prices | `lib/site.ts` (`prices`) |
+| Prices | `lib/site.ts` (`prices`: each service's from-price, plans, cancellation fee) and `lib/pricing.ts` (every size, ranges and coating tiers) |
 | The five services: copy, inclusions, FAQs, images | `lib/services.ts` |
 | Nine districts and their suburbs | `lib/areas.ts` |
 | The two guides | `lib/articles.ts` |
@@ -34,7 +34,7 @@ Pages: `/`, `/services/` and five service pages, `/service-areas/` and nine dist
 
 ```
 NEXT_PUBLIC_FORM_ENDPOINT=      # where the quote form POSTs JSON (LeadConnector webhook, Formspree, etc.)
-NEXT_PUBLIC_META_PIXEL_ID=      # Meta Pixel ID; empty = not loaded
+NEXT_PUBLIC_META_PIXEL_ID=      # Meta Pixel ID; defaults to 1403106564199026. Set it to an empty value to turn the pixel off
 NEXT_PUBLIC_GOOGLE_ADS_ID=      # defaults to the existing AW-17065776345
 NEXT_PUBLIC_CHAT_WIDGET_ID=     # defaults to the existing LeadConnector chat widget
 NEXT_PUBLIC_LEADS_API=          # Imperium Leads intake, e.g. https://<leads app>/api/lead; empty = forms don't copy leads there

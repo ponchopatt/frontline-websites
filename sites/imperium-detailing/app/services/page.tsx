@@ -11,7 +11,7 @@ import { PriceGuide } from "@/components/site/price-guide";
 export const metadata: Metadata = {
   title: "Services and Prices",
   description:
-    "Every Imperium Detailing service with real from-prices: full detail $225, interior $140, exterior $110, paint correction $397, ceramic coating $997.",
+    `Every Imperium Detailing service with real from-prices: ceramic coating ${formatPrice(prices.ceramic)}, paint correction ${formatPrice(prices.correction)}, full detail ${formatPrice(prices.full)}, interior ${formatPrice(prices.interior)}, exterior ${formatPrice(prices.exterior)}.`,
   alternates: { canonical: "/services/" }, openGraph: og("/services/"),
 };
 
@@ -34,6 +34,7 @@ export default function ServicesPage() {
                 <span className="text-sm text-muted-foreground">from</span>
                 <span className="display-caps block text-4xl">{formatPrice(s.priceFrom)}</span>
                 <span className="mt-1 block text-sm text-muted-foreground">{s.duration}</span>
+                <span className="mt-1 block text-sm text-muted-foreground">{site.afterpay}</span>
               </div>
             </Link>
           ))}
@@ -42,13 +43,15 @@ export default function ServicesPage() {
           <div className="md:col-span-9">
             <h2 className="display-caps text-3xl">Maintenance plans</h2>
             <p className="mt-2 text-[15px] text-muted-foreground">
-              Already detailed? We come back every month, or every fortnight, and keep it that way. Exterior only from $90 a month, inside and out from $150, quoted for your car.
+              Already detailed? We come back every month, or every fortnight, and keep it that way. Exterior only from {formatPrice(prices.maintenanceExterior)} a month, inside and out from{" "}
+              {formatPrice(prices.maintenanceMonthly)}, quoted for your car.
             </p>
           </div>
           <div className="md:col-span-3 md:text-right">
             <span className="text-sm text-muted-foreground">from</span>
             <span className="display-caps block text-4xl">{formatPrice(prices.maintenanceExterior)}</span>
             <span className="mt-1 block text-sm text-muted-foreground">a month</span>
+            <span className="mt-1 block text-sm text-muted-foreground">{site.afterpay}</span>
           </div>
         </Link>
         <Link href="/tesla-ev-detailing-canberra/" className="mt-4 grid gap-4 rounded-lg border border-border p-5 no-underline transition-colors hover:bg-card md:grid-cols-12 md:items-center md:p-6">

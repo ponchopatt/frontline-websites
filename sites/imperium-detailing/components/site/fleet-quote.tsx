@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { site, smsHref, telHref } from "@/lib/site";
 import { formatPrice } from "@/lib/services";
-import { jobs, tiers, ceramicTiers, guidePrice, conditionRange, type JobId, type SizeId, type Tier } from "@/lib/pricing";
+import { jobs, tiers, ceramicTiers, guidePrice, guideText, type Guide, type JobId, type SizeId, type Tier } from "@/lib/pricing";
 import { fleetSizes, type FleetSizeId } from "@/lib/fleet";
 import { sendToLeads } from "@/lib/leads-hook";
 import { track } from "@/lib/track";
@@ -41,10 +41,10 @@ const stepBtn =
  * sedan, so both come back null and are counted as "quoted" instead of being
  * extrapolated from a price that was never set for them.
  */
-function unitPrice(service: JobId, size: FleetSizeId, tier: Tier): number | null {
+function unitPrice(service: JobId, size: FleetSizeId, tier: Tier): Guide | null {
   if (size === "truck") return null;
-  if (service === "ceramic") return ceramicTiers[size as SizeId][tier];
-  return guidePrice(service, size as SizeId, tier).price;
+  const g = guidePrice(service, size as SizeId, tier);
+  return g.price === null ? null : g;
 }
 
 const accessOptions = [
@@ -78,21 +78,19 @@ export function FleetQuote() {
     const parts = fleetSizes
       .filter((s) => g.counts[s.id] > 0)
       .map((s) => ({ size: s, n: g.counts[s.id], each: unitPrice(g.service, s.id, g.tier) }));
-    const total = parts.reduce((sum, p) => sum + (p.each === null ? 0 : p.each * p.n), 0);
+    const total = parts.reduce((sum, p) => sum + (p.each?.price ?? 0) * p.n, 0);
+    // Full and interior details are a range; everything else has the same number at both ends.
+    const totalHigh = parts.reduce((sum, p) => sum + (p.each ? (p.each.high ?? p.each.price ?? 0) : 0) * p.n, 0);
     const quoted = parts.reduce((sum, p) => sum + (p.each === null ? p.n : 0), 0);
     const count = parts.reduce((sum, p) => sum + p.n, 0);
-    return { g, meta, parts, total, quoted, count, monthly: g.service === "maintenance" };
+    return { g, meta, parts, total, totalHigh, quoted, count, monthly: g.service === "maintenance" };
   });
 
   const totalVehicles = lines.reduce((s, l) => s + l.count, 0);
   const oneOff = lines.filter((l) => !l.monthly).reduce((s, l) => s + l.total, 0);
   const monthly = lines.filter((l) => l.monthly).reduce((s, l) => s + l.total, 0);
+  const oneOffHigh = lines.filter((l) => !l.monthly).reduce((s, l) => s + l.totalHigh, 0);
   const quotedVehicles = lines.reduce((s, l) => s + l.quoted, 0);
-  // The condition allowance only ever applies to full and interior details.
-  const conditionVehicles = lines
-    .filter((l) => l.g.service === "full" || l.g.service === "interior")
-    .reduce((s, l) => s + l.parts.reduce((n, p) => n + (p.each === null ? 0 : p.n), 0), 0);
-  const conditionCeiling = conditionVehicles * conditionRange;
 
   // The headline rolls to its new value, like the price guide's does.
   const [shown, setShown] = useState(0);
@@ -122,10 +120,9 @@ export function FleetQuote() {
     .join("\n");
 
   const estimateLine = [
-    oneOff > 0 ? `Guide total ${formatPrice(oneOff)}` : "",
+    oneOff > 0 ? `Guide total ${formatPrice(oneOff)}${oneOffHigh > oneOff ? `–${formatPrice(oneOffHigh)}` : ""}` : "",
     monthly > 0 ? `${formatPrice(monthly)} a month` : "",
     quotedVehicles > 0 ? `${quotedVehicles} vehicle${quotedVehicles === 1 ? "" : "s"} quoted separately` : "",
-    conditionCeiling > 0 ? `condition up to ${formatPrice(conditionCeiling)}` : "",
   ]
     .filter(Boolean)
     .join(", ");
@@ -340,7 +337,7 @@ export function FleetQuote() {
                           <span className="block text-xs text-muted-foreground">
                             {each === null
                               ? `${s.eg} — quoted`
-                              : `${s.eg} — ${formatPrice(each)} ${g.service === "maintenance" ? "each a month" : "each"}`}
+                              : `${s.eg} — ${guideText({ ...each, suffix: "" })} ${g.service === "maintenance" ? "each a month" : "each"}`}
                           </span>
                         </span>
                         <span className="flex shrink-0 items-center gap-1.5">
@@ -526,7 +523,7 @@ export function FleetQuote() {
                       <span className="block text-xs text-muted-foreground">{l.parts.map((p) => `${p.n} × ${p.size.label}`).join(", ")}</span>
                     </span>
                     <span className="shrink-0 text-right tabular-nums text-foreground">
-                      {l.total > 0 ? `${formatPrice(l.total)}${l.monthly ? "/mo" : ""}` : "quoted"}
+                      {l.total > 0 ? `${formatPrice(l.total)}${l.totalHigh > l.total ? `–${formatPrice(l.totalHigh)}` : ""}${l.monthly ? "/mo" : ""}` : "quoted"}
                       {l.total > 0 && l.quoted > 0 && (
                         <span className="block text-xs font-normal text-muted-foreground">+ {l.quoted} quoted</span>
                       )}
@@ -543,16 +540,17 @@ export function FleetQuote() {
                 vehicles are priced for the vehicle.
               </p>
             )}
-            {conditionCeiling > 0 && (
+            {oneOffHigh > oneOff && (
               <p className="m-0">
-                Condition can add up to {formatPrice(conditionCeiling)} across the {conditionVehicles} interior and full{" "}
-                {conditionVehicles === 1 ? "detail" : "details"}, agreed with you before we start. Worst case {formatPrice(oneOff + conditionCeiling)}
-                {quotedVehicles > 0 ? ", plus whatever the quoted vehicles come to" : ""}.
+                Full and interior details are priced as a range, set by each vehicle&apos;s condition, so this comes to between {formatPrice(oneOff)} and{" "}
+                {formatPrice(oneOffHigh)}
+                {quotedVehicles > 0 ? ", plus whatever the quoted vehicles come to" : ""}. We confirm the price before we start, never after.
               </p>
             )}
             <p className="m-0">This is a guide at our published per-car prices. Nothing is booked and nothing is charged until we confirm it with you.</p>
+            <p className="m-0">{site.afterpay}.</p>
             <p className="m-0">
-              No volume discount, and no business mark-up. We come back with the price per vehicle, how many days it takes and the dates we have open.
+              The same price per vehicle a private customer pays, and no business mark-up. We come back with the price per vehicle, how many days it takes and the dates we have open.
             </p>
           </div>
 
@@ -560,7 +558,7 @@ export function FleetQuote() {
             <button
               type="submit"
               disabled={status === "sending"}
-              className="lift inline-flex min-h-[52px] items-center justify-center rounded-lg bg-accent px-6 text-base font-semibold text-accent-foreground hover:bg-[#5aa6f0] disabled:opacity-60"
+              className="lift inline-flex min-h-[52px] items-center justify-center rounded-lg bg-accent px-6 text-base font-semibold text-accent-foreground hover:bg-accent/85 disabled:opacity-60"
             >
               {status === "sending" ? "Sending…" : totalVehicles > 0 ? `Send these ${totalVehicles} vehicles` : "Send the fleet through"}
             </button>

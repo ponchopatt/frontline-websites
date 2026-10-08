@@ -11,11 +11,11 @@ import { buttonClass } from "@/components/site/link-button";
 
 // The playbook's four qualifying questions plus contact details.
 const serviceOptions = [
+  "Ceramic coating",
+  "Paint correction",
   "Full detail",
   "Interior detail",
   "Exterior detail",
-  "Paint correction",
-  "Ceramic coating",
   "Regular maintenance plan",
   "Not sure, recommend something",
 ];

@@ -12,13 +12,12 @@ import { CtaBand } from "@/components/site/cta-band";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Maintenance Plans Canberra from $90",
-  description:
-    "Monthly car maintenance in Canberra. Exterior from $90 a month, inside and out from $150. A coating-safe hand wash at your place, monthly or fortnightly.",
+  title: `Maintenance Plans Canberra from ${formatPrice(prices.maintenanceExterior)}`,
+  description: `Monthly car maintenance in Canberra. Exterior from ${formatPrice(prices.maintenanceExterior)} a month, inside and out from ${formatPrice(prices.maintenanceMonthly)}. A coating-safe hand wash at your place, monthly or fortnightly.`,
   alternates: { canonical: "/maintenance/" }, openGraph: og("/maintenance/"),
 };
 
-// The three plans, cheapest first. The middle one is the one we recommend, so it
+// The three plans, lowest price first. The middle one is the one we recommend, so it
 // carries the accent border, the glow and the filled button (and leads on a phone).
 type Plan = {
   every: string;
@@ -39,7 +38,7 @@ type Plan = {
 const plans: Plan[] = [
   {
     every: "Exterior, monthly",
-    who: "The outside kept the way we left it. The cheapest way onto a schedule, and enough for a car that lives in a garage and carries nobody but you.",
+    who: "The outside kept the way we left it. The simplest way onto a schedule, and enough for a car that lives in a garage and carries nobody but you.",
     price: prices.maintenanceExterior,
     note: "Quoted for your car",
     cta: "Get it quoted",
@@ -67,8 +66,8 @@ const plans: Plan[] = [
 // Laptops go to the quote form with the plan already picked; phones get a text.
 const formHref = `/book/?service=${encodeURIComponent("Regular maintenance plan")}`;
 
-// Split so the two prices mean something: the first list is the $90 visit, the
-// second is what the extra $60 buys.
+// Split so the two prices mean something: the first list is the exterior visit,
+// the second is what inside and out adds on top of it.
 const outside = [
   "Pre-rinse and snow foam, so grit lifts off before anything touches the paint",
   "Two-bucket, pH-neutral hand wash with clean mitts, never a brush",
@@ -76,7 +75,7 @@ const outside = [
   "Door jambs and exterior glass",
   "Bonded contamination checked and spot-treated",
   "Protection topped up: a coating booster on coated cars, a sealant on the rest",
-  "A quick note on anything we notice: stone chips, swirl marks, coating health",
+  "A short note on anything we notice: stone chips, swirl marks, coating health",
 ];
 
 const inside = [
@@ -92,11 +91,11 @@ const faq: FaqItem[] = [
   },
   {
     q: "How is it priced?",
-    a: "The exterior plan starts at $90 a month and inside and out starts at $150, quoted for your car from its size, colour and how it's used. Fortnightly visits are quoted on request. It's the same number every month, and the number you're quoted is the number you pay.",
+    a: `The exterior plan starts at ${formatPrice(prices.maintenanceExterior)} a month and inside and out starts at ${formatPrice(prices.maintenanceMonthly)}, quoted for your car from its size, colour and how it's used. Fortnightly visits are quoted on request. It's the same number every month, and the number you're quoted is the number you pay.`,
   },
   {
-    q: "What's the difference between the $90 plan and the $150 one?",
-    a: "The $90 plan is the outside: snow foam, a two-bucket hand wash, wheels and arches, glass, and the protection topped up. The $150 plan is that visit plus the interior reset, so the vacuum, the dash, console and door cards, and the inside of the glass. Both are the same two people, the same month, at your place.",
+    q: `What's the difference between the ${formatPrice(prices.maintenanceExterior)} plan and the ${formatPrice(prices.maintenanceMonthly)} one?`,
+    a: `The ${formatPrice(prices.maintenanceExterior)} plan is the outside: snow foam, a two-bucket hand wash, wheels and arches, glass, and the protection topped up. The ${formatPrice(prices.maintenanceMonthly)} plan is that visit plus the interior reset, so the vacuum, the dash, console and door cards, and the inside of the glass. Both are the same two people, the same month, at your place.`,
   },
   {
     q: "Do I need to be home?",
@@ -134,7 +133,7 @@ export default function MaintenancePage() {
       <section className="relative overflow-hidden">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-40 top-0 -z-10 hidden size-[860px] bg-[radial-gradient(closest-side,rgba(31,111,196,0.26),rgba(15,61,110,0.1),rgba(5,6,8,0)_70%)] md:block"
+          className="pointer-events-none absolute -right-40 top-0 -z-10 hidden size-[860px] bg-[radial-gradient(closest-side,rgba(42,132,220,0.26),rgba(42,132,220,0.08),rgba(5,6,8,0)_70%)] md:block"
         />
         <div className="container-x mx-auto grid max-w-6xl gap-5 pb-10 pt-5 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] md:items-center md:gap-x-12 md:pb-28 md:pt-12 lg:gap-x-24">
           <div>
@@ -162,13 +161,17 @@ export default function MaintenancePage() {
               ))}
             </ul>
 
+            <p className="m-0 mt-2 text-xs text-muted-foreground md:hidden">{site.afterpay}.</p>
+
             <div className="mt-9 hidden gap-3 md:flex">
               <QuoteCta sms={sms} formHref={formHref} />
               <LinkButton href={telHref} variant="ghost">
                 Call {site.phoneDisplay}
               </LinkButton>
             </div>
-            <p className="m-0 mt-4 hidden text-[15px] text-muted-foreground md:block">{site.quotePromise}</p>
+            <p className="m-0 mt-4 hidden text-[15px] text-muted-foreground md:block">
+              {site.quotePromise} {site.afterpay}.
+            </p>
           </div>
           <Picture
             name="m4-mitt"
@@ -196,7 +199,7 @@ export default function MaintenancePage() {
                 key={r.every}
                 className={`flex flex-col rounded-[14px] border bg-card p-6 lg:p-9 ${
                   r.featured
-                    ? "order-first border-accent shadow-[0_0_60px_rgba(31,111,196,0.2)] md:order-none md:shadow-[0_30px_80px_rgba(0,0,0,0.6),0_0_100px_rgba(31,111,196,0.22)]"
+                    ? "order-first border-accent shadow-[0_0_60px_rgba(42,132,220,0.2)] md:order-none md:shadow-[0_30px_80px_rgba(0,0,0,0.6),0_0_100px_rgba(42,132,220,0.22)]"
                     : "border-border"
                 }`}
               >
@@ -224,7 +227,7 @@ export default function MaintenancePage() {
             ))}
           </ul>
           <p className="m-0 mt-[18px] text-sm text-secondary-foreground md:mt-7 md:text-base">
-            {"Same number every month. The number you're quoted is the number you pay."}
+            {`Same number every month. The number you're quoted is the number you pay. ${site.afterpay}.`}
           </p>
         </div>
       </section>
@@ -297,7 +300,7 @@ export default function MaintenancePage() {
             </p>
             <p className="m-0 mt-4 max-w-[56ch] text-[15px] text-muted-foreground md:text-base">
               This one is a work ute on a monthly exterior plan. The exterior maintenance plan starts at{" "}
-              <b className="font-medium text-foreground">{formatPrice(prices.maintenanceExterior)} a month</b>, quoted for your vehicle.
+              <b className="font-medium text-foreground">{formatPrice(prices.maintenanceExterior)} a month</b>, quoted for your vehicle. {site.afterpay}.
             </p>
             <div className="mt-8 hidden gap-3 md:flex">
               <QuoteCta sms={sms} formHref={formHref} />

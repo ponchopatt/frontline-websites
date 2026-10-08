@@ -114,6 +114,7 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
                   </li>
                 ))}
               </ul>
+              <p className="mt-4 text-sm text-muted-foreground">{site.afterpay}</p>
             </div>
           </aside>
         </div>

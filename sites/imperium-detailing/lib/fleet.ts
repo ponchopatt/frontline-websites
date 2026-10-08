@@ -1,5 +1,5 @@
-import { formatPrice } from "./services";
-import { guidePrice, conditionRange, sizes, type JobId, type SizeId } from "./pricing";
+import { cancellationPolicy } from "./site";
+import { guidePrice, guideText, sizes, type JobId, type SizeId } from "./pricing";
 
 /**
  * The fleet page's own content. Prices live in lib/pricing.ts and are read from
@@ -7,10 +7,7 @@ import { guidePrice, conditionRange, sizes, type JobId, type SizeId } from "./pr
  */
 
 /** Every price below comes through here, so none of them is retyped. */
-const at = (job: JobId, size: SizeId) => {
-  const g = guidePrice(job, size, 3);
-  return g.price === null ? "quoted" : formatPrice(g.price);
-};
+const at = (job: JobId, size: SizeId) => guideText(guidePrice(job, size, 3));
 
 /** The sizes a business picks from. Bikes are not fleet work; trucks are, and they are quoted. */
 export type FleetSizeId = Exclude<SizeId, "bike"> | "truck";
@@ -68,7 +65,7 @@ export const fleetProcess: { step: string; detail: string }[] = [
   {
     step: "We quote it per vehicle",
     detail:
-      "The same per-car prices, itemised by size, with the condition allowance on any interiors and full details priced in up front so there is nothing to argue about on the day.",
+      "The same per-car prices, itemised by size, with where each interior and full detail sits in its range priced in up front so there is nothing to argue about on the day.",
   },
   {
     step: "We give you dates",
@@ -78,7 +75,7 @@ export const fleetProcess: { step: string; detail: string }[] = [
   {
     step: "Two of us arrive with everything",
     detail:
-      "You supply the outdoor tap, the 240V power point and access to the vehicles. Nobody needs to stand over us. Payment is due on completion, by card or bank transfer.",
+      "You supply the outdoor tap, the 240V power point and access to the vehicles. Nobody needs to stand over us. Payment is due on completion, by card, bank transfer or Afterpay.",
   },
 ];
 
@@ -99,7 +96,8 @@ export const fleetPaperwork: { term: string; detail: string }[] = [
     detail: "Fully insured, and we guarantee the finish we hand back. If something is not right, tell us within a couple of days and we come back and fix it.",
   },
   { term: "Coatings", detail: "A separate written warranty, set out on the warranty page." },
-  { term: "Payment", detail: "Due on completion, by card or bank transfer, once you have seen the result. No card fees." },
+  { term: "Payment", detail: "Due on completion, by card, bank transfer or Afterpay, once you have seen the result. No card fees." },
+  { term: "Cancellation", detail: cancellationPolicy },
   { term: "Travel", detail: "No call-out fee and no travel fee anywhere in the ACT or Queanbeyan." },
   { term: "Weather", detail: "If the forecast makes the day unworkable we move it, at no charge." },
   { term: "Hours", detail: "Every day, 8:30am to 5:30pm. Book at least a day ahead. Same-day is sometimes possible by phone." },
@@ -107,8 +105,8 @@ export const fleetPaperwork: { term: string; detail: string }[] = [
 
 export const fleetFaq: { q: string; a: string }[] = [
   {
-    q: "Do we get a discount for multiple vehicles?",
-    a: `No. The price is the same per vehicle as it would be for a private customer, set by the size of the car: exterior ${at("exterior", "sedan")}, ${at("exterior", "suv")} or ${at("exterior", "large")}, interior ${at("interior", "sedan")}, ${at("interior", "suv")} or ${at("interior", "large")}, full detail ${at("full", "sedan")}, ${at("full", "suv")} or ${at("full", "large")}. Two of us and one van do the same work on car six as on car one, so car six costs what car one did. Nothing is marked up because you are a business either.`,
+    q: "Is there a fleet rate for multiple vehicles?",
+    a: `No. The price is the same per vehicle as it would be for a private customer, set by the size of the car: full detail ${at("full", "sedan")}, ${at("full", "suv")} or ${at("full", "large")}, interior ${at("interior", "sedan")}, ${at("interior", "suv")} or ${at("interior", "large")}, exterior ${at("exterior", "sedan")}, ${at("exterior", "suv")} or ${at("exterior", "large")}. Where a full or interior detail lands in its range depends on the vehicle's condition. Two of us and one van do the same work on car six as on car one, so car six costs what car one did. Nothing is marked up because you are a business either.`,
   },
   {
     q: "What do we need to have on site?",
@@ -120,7 +118,7 @@ export const fleetFaq: { q: string; a: string }[] = [
   },
   {
     q: "How many vehicles can you do in a day?",
-    a: "Work it from the times: about an hour a vehicle for an exterior detail, an hour and a half for an interior, three hours for a full detail on a sedan, and longer on anything bigger. There are two of us working at once, from 8:30am to 5:30pm. Send your numbers and we will come back with the actual days rather than a round figure that suits us."
+    a: "Work it from the times: about three hours for a full detail on a sedan, an hour and a half for an interior, an hour a vehicle for an exterior detail, and longer on anything bigger. There are two of us working at once, from 8:30am to 5:30pm. Send your numbers and we will come back with the actual days rather than a round figure that suits us."
   },
   {
     q: "Can you work in our basement or office car park?",
@@ -128,7 +126,7 @@ export const fleetFaq: { q: string; a: string }[] = [
   },
   {
     q: "Which of our vehicles counts as what size?",
-    a: `Hatches and sedans are the sedan price. SUVs and utes are the SUV price. 4WDs, vans and 8-seaters are the large price. A motorbike full detail is ${at("full", "bike")}. Trucks we quote over the phone, because a prime mover and a rigid are not the same job.`,
+    a: `Hatches and sedans are the sedan price. SUVs and utes are the SUV price. 4WDs, vans and 7-seaters are the large price. A motorbike full detail is ${at("full", "bike")}. Trucks we quote over the phone, because a prime mover and a rigid are not the same job.`,
   },
   {
     q: "Do trays, canopies, roof racks and van shelving cost more?",
@@ -140,7 +138,7 @@ export const fleetFaq: { q: string; a: string }[] = [
   },
   {
     q: "How long is each vehicle off the road?",
-    a: "About an hour for an exterior detail, about an hour and a half for an interior, and about three hours for a full detail on a sedan. Larger vehicles take longer. We work 8:30am to 5:30pm, every day.",
+    a: "About three hours for a full detail on a sedan, about an hour and a half for an interior, and about an hour for an exterior detail. Larger vehicles take longer. We work 8:30am to 5:30pm, every day.",
   },
   {
     q: "Can we book a weekend, when the yard is quiet?",
@@ -148,15 +146,15 @@ export const fleetFaq: { q: string; a: string }[] = [
   },
   {
     q: "Can we try you on one vehicle first?",
-    a: `Yes, and we would rather you did. One vehicle is priced exactly the same as it would be for anyone else, so a single ute is ${at("exterior", "suv")} for an exterior detail or ${at("full", "suv")} for a full detail. See the work before you hand over the fleet.`,
+    a: `Yes, and we would rather you did. One vehicle is priced exactly the same as it would be for anyone else, so a single ute is ${at("full", "suv")} for a full detail or ${at("exterior", "suv")} for an exterior detail. See the work before you hand over the fleet.`,
   },
   {
-    q: `What is the up-to-${formatPrice(conditionRange)} condition charge?`,
-    a: `It applies to full and interior details only, it is capped at ${formatPrice(conditionRange)} a vehicle, and it is agreed with you before any work starts, never added afterwards. On a work fleet, assume it is in play. Send photos of the worst two with your enquiry and we will price it in before the day.`,
+    q: "Why are full and interior details a range?",
+    a: "Because condition decides how long they take. Each size has a low and a high number, and where a vehicle lands depends on its condition. We confirm the price before we start, never after. On a work fleet, assume the top end is in play. Send photos of the worst two with your enquiry and we will price it in before the day.",
   },
   {
     q: "When do we pay, and what does it cost to get you out here?",
-    a: "Payment is due on completion, by card or bank transfer, once you have seen the result. There are no card fees, and no call-out or travel fees anywhere in the ACT or Queanbeyan. ABN 81 254 863 265, and we are fully insured.",
+    a: `Payment is due on completion, by card, bank transfer or Afterpay, once you have seen the result. There are no card fees, and no call-out or travel fees anywhere in the ACT or Queanbeyan. ${cancellationPolicy} ABN 81 254 863 265, and we are fully insured.`,
   },
   {
     q: "Do you do window tinting, paint protection film or rim repairs?",

@@ -105,7 +105,7 @@ export function Header() {
           </a>
           <Link
             href="/book/"
-            className="lift cta-glow inline-flex h-11 items-center rounded-full bg-accent px-[22px] text-[15px] font-semibold text-accent-foreground no-underline hover:bg-[#5aa6f0]"
+            className="lift cta-glow inline-flex h-11 items-center rounded-full bg-accent px-[22px] text-[15px] font-semibold text-accent-foreground no-underline hover:bg-accent/85"
           >
             Get a quote
           </Link>

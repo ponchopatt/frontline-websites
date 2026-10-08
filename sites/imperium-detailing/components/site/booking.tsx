@@ -1,6 +1,6 @@
 import { BookingForm } from "@/components/site/booking-form";
 import { SectionHeading } from "@/components/site/section-heading";
-import { site, smsHref, telHref } from "@/lib/site";
+import { site, smsHref, telHref, cancellationPolicy } from "@/lib/site";
 
 type Props = { title?: string; headingAs?: "h1" | "h2"; defaultService?: string };
 
@@ -13,9 +13,11 @@ const details = [
     term: "On the day, we need",
     value: "An outdoor tap and a 240V power point within reach. Correction and coating also need a garage or covered space.",
   },
+  { term: "Payment", value: `Card, bank transfer or Afterpay, once you've seen the result. ${site.afterpay}.` },
+  { term: "Cancellations", value: cancellationPolicy },
 ];
 
-// Phones: heading, one line saying a text is quicker, then straight into the
+// Phones: heading, one line offering a text instead, then straight into the
 // form (the full details list used to push the first field below the fold on
 // /book/). Laptops: the heading and the details on the left, the form in a card
 // on the right.
@@ -34,9 +36,9 @@ export function Booking({ title = "Book your detail.", headingAs = "h2", default
                 <span className="hidden md:inline">{site.quotePromise}</span>
                 {/* TODO(pat): confirm this line (new copy for the redesign). */}
                 <span className="md:hidden">
-                  Texting is quicker:{" "}
+                  Prefer to text?{" "}
                   <a href={smsHref()} className="text-foreground underline underline-offset-4">
-                    text us your car
+                    Text us your car
                   </a>
                   . Or fill this in.
                 </span>
@@ -65,6 +67,10 @@ export function Booking({ title = "Book your detail.", headingAs = "h2", default
           <div className="rounded-[14px] md:border md:border-border md:bg-card md:p-10">
             <BookingForm defaultService={defaultService} />
           </div>
+          {/* Phones don't get the details list, so the two terms that matter before booking sit under the form. */}
+          <p className="m-0 mt-5 text-sm text-muted-foreground md:hidden">
+            {site.afterpay}. {cancellationPolicy}
+          </p>
         </div>
       </div>
     </section>

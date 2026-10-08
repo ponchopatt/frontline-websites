@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { site, smsHref, telHref, prices } from "@/lib/site";
-import { getService } from "@/lib/services";
+import { getService, formatPrice } from "@/lib/services";
 import { hasWebm } from "@/lib/media";
 import { QuoteCta } from "@/components/site/quote-cta";
 import { buttonVariants, pill } from "@/components/site/link-button";
@@ -141,11 +141,11 @@ export function Hero() {
     <section aria-label="Imperium Detailing" className="relative overflow-hidden">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-[120px] top-10 -z-10 hidden size-[900px] bg-[radial-gradient(closest-side,rgba(31,111,196,0.30),rgba(15,61,110,0.12),rgba(5,6,8,0)_70%)] lg:block"
+        className="pointer-events-none absolute -right-[120px] top-10 -z-10 hidden size-[900px] bg-[radial-gradient(closest-side,rgba(42,132,220,0.30),rgba(42,132,220,0.08),rgba(5,6,8,0)_70%)] lg:block"
       />
       <div className="mx-auto max-w-6xl lg:container-x lg:grid lg:grid-cols-[minmax(0,1fr)_clamp(300px,29.2vw,420px)] lg:gap-x-20 lg:max-[1400px]:grid-cols-[minmax(0,1fr)_min(clamp(300px,29.2vw,420px),max(240px,calc((100svh-260px)*9/16)))] lg:pb-[120px] lg:pt-[72px]">
         <div className="hero-panel relative lg:col-start-2 lg:row-start-1 lg:pt-2">
-          <div className="relative h-[clamp(170px,calc(100svh-564px),280px)] overflow-hidden bg-card md:h-[440px] lg:aspect-[9/16] lg:h-auto lg:rounded-[14px] lg:shadow-[0_30px_80px_rgba(0,0,0,0.7),0_0_120px_rgba(31,111,196,0.25)]">
+          <div className="relative h-[clamp(170px,calc(100svh-564px),280px)] overflow-hidden bg-card md:h-[440px] lg:aspect-[9/16] lg:h-auto lg:rounded-[14px] lg:shadow-[0_30px_80px_rgba(0,0,0,0.7),0_0_120px_rgba(42,132,220,0.25)]">
             {/* The poster is a real <picture> under the video rather than the
                 video's poster attribute, so phones can be sent their own crop.
                 It is the first screen's largest paint, so it loads eagerly at
@@ -211,13 +211,16 @@ export function Hero() {
                   </span>
                   <span className="text-[15px]">
                     <span className="sr-only md:not-sr-only">from </span>
-                    <span className="display-caps text-[30px] leading-none md:text-4xl">${p.price}</span>
+                    <span className="display-caps text-[30px] leading-none md:text-4xl">{formatPrice(p.price)}</span>
                   </span>
                 </Link>
               </li>
             ))}
           </ul>
-          <p className="hero-note m-0 mt-2 text-xs text-muted-foreground md:hidden">From-prices for a hatch or sedan.</p>
+          <p className="hero-note m-0 mt-2 text-xs text-muted-foreground md:mt-3 md:text-sm">
+            <span className="md:hidden">From-prices for a hatch or sedan. </span>
+            {site.afterpay}.
+          </p>
 
           {/* No buttons on a phone: the bar pinned to the bottom is the call to action. */}
           <div className="hero-cta mt-9 hidden gap-3 md:flex">

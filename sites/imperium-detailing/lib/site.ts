@@ -17,6 +17,9 @@ export const site = {
   notOffered: ["Paint protection film (PPF)", "Window tinting", "Rim repairs"],
   // The response promise shown next to every call to action. Keep it true.
   quotePromise: "You'll have a quote back within a few hours, 7 days a week.",
+  // Shown next to prices, in the booking section and on /terms/.
+  afterpay: "Afterpay available",
+  cancellationHours: 24,
   stats: { cars: "400+", rating: "4.9", reviewCount: 45, warrantyYears: 7 },
   // Google Business Profile: where the reviews are read, and the direct "write a review" link.
   // The business profile itself, not a Maps search — a search can list competitors
@@ -32,22 +35,28 @@ export const site = {
   // domain restriction or hCaptcha in the Web3Forms dashboard.
   formEndpoint: process.env.NEXT_PUBLIC_FORM_ENDPOINT ?? "https://api.web3forms.com/submit",
   formAccessKey: process.env.NEXT_PUBLIC_FORM_ACCESS_KEY ?? "9711fb99-65d5-4280-811a-ff2cb61b6565",
-  metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "",
+  metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "1403106564199026",
   googleAdsId: process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ?? "AW-17065776345",
   chatWidgetId: process.env.NEXT_PUBLIC_CHAT_WIDGET_ID ?? "6a43315455ef5e64138101d7",
 };
 
+// The "from" price of each service: the hatch-or-sedan price, or the low end of its
+// range. lib/pricing.ts reads these for the sedan column, so each number lives once.
 export const prices = {
-  exterior: 110,
-  interior: 140,
-  full: 225,
-  correction: 397,
+  exterior: 130,
+  interior: 170,
+  full: 250,
+  correction: 497,
   ceramic: 997,
   /** Exterior-only maintenance plan, per month. The entry price on the plans page. */
-  maintenanceExterior: 90,
+  maintenanceExterior: 110,
   /** Inside-and-out maintenance plan, per month. Fortnightly visits are quoted per car. */
-  maintenanceMonthly: 150,
+  maintenanceMonthly: 180,
+  /** Charged when a booking is cancelled with less than site.cancellationHours notice. */
+  lateCancellation: 50,
 };
+
+export const cancellationPolicy = `Cancellations with less than ${site.cancellationHours} hours notice incur a $${prices.lateCancellation} fee.`;
 
 /**
  * "a full detail" but "an exterior detail". Every service name the site owns

@@ -3,7 +3,7 @@ import { og } from "@/lib/seo";
 import Link from "next/link";
 import { site, prices, telHref, smsHref } from "@/lib/site";
 import { formatPrice } from "@/lib/services";
-import { guidePrice, ceramicTiers, conditionRange, type JobId, type SizeId } from "@/lib/pricing";
+import { guidePrice, guideText, ceramicTiers, sizes, rangeNote, type JobId, type SizeId } from "@/lib/pricing";
 import { fleetSegments, fleetProcess, fleetSiteNeeds, fleetPaperwork, fleetFaq } from "@/lib/fleet";
 import { Faq } from "@/components/site/faq";
 import { Picture } from "@/components/site/picture";
@@ -22,32 +22,25 @@ export const metadata: Metadata = {
   }),
 };
 
-const COLS: { id: SizeId; label: string; eg: string }[] = [
-  { id: "sedan", label: "Hatch or sedan", eg: "Corolla, Model 3, 3 Series" },
-  { id: "suv", label: "SUV or ute", eg: "RAV4, Model Y, Ranger" },
-  { id: "large", label: "4WD, van or 8-seater", eg: "LandCruiser, Patrol, Carnival" },
-];
+// Bikes are not fleet work, so the table is the three car sizes.
+const COLS = sizes.filter((s) => s.id !== "bike");
+const large = COLS.find((c) => c.id === "large")!.label;
 
 const ROWS: { job: JobId; label: string; note: string; href?: string }[] = [
-  { job: "exterior", label: "Exterior detail", note: "About an hour", href: "/services/exterior-car-detailing-canberra/" },
-  { job: "interior", label: "Interior detail", note: "About an hour and a half", href: "/services/interior-car-detailing-canberra/" },
-  { job: "full", label: "Full detail", note: "About three hours on a sedan", href: "/services/full-car-detail-canberra/" },
-  { job: "correction", label: "Paint correction", note: "Single stage, covered space", href: "/services/paint-correction-canberra/" },
   { job: "ceramic", label: "Ceramic coating", note: "3-year, rises with the warranty", href: "/services/ceramic-coating-canberra/" },
+  { job: "correction", label: "Paint correction", note: "Single stage, covered space", href: "/services/paint-correction-canberra/" },
+  { job: "full", label: "Full detail", note: "About three hours on a sedan", href: "/services/full-car-detail-canberra/" },
+  { job: "interior", label: "Interior detail", note: "About an hour and a half", href: "/services/interior-car-detailing-canberra/" },
+  { job: "exterior", label: "Exterior detail", note: "About an hour", href: "/services/exterior-car-detailing-canberra/" },
   { job: "maintenance", label: "Maintenance plan", note: "Per month, per vehicle", href: "/maintenance/" },
 ];
 
 /** Every price on this page comes through here, so none of them is typed twice. */
-const price = (job: JobId, size: SizeId) => {
-  const g = guidePrice(job, size, 3);
-  return g.price === null ? "quoted" : formatPrice(g.price);
-};
+const price = (job: JobId, size: SizeId) => guideText(guidePrice(job, size, 3));
 
 const cell = (job: JobId, size: SizeId) => {
-  const g = guidePrice(job, size, 3);
-  if (g.price === null) return "Quoted";
-  // The plan's price is a floor for a sedan, not a flat sedan rate.
-  return `${job === "maintenance" ? "From " : ""}${formatPrice(g.price)}${g.suffix}`;
+  const t = price(job, size);
+  return t.charAt(0).toUpperCase() + t.slice(1);
 };
 
 const P = ({ children }: { children: React.ReactNode }) => <p className="m-0">{children}</p>;
@@ -81,7 +74,7 @@ export default function FleetPage() {
             name: `${r.label} — ${c.label}`,
             priceCurrency: "AUD",
             price: g.price,
-            priceSpecification: { "@type": "PriceSpecification", minPrice: g.price, priceCurrency: "AUD" },
+            priceSpecification: { "@type": "PriceSpecification", minPrice: g.price, ...(g.high !== null && { maxPrice: g.high }), priceCurrency: "AUD" },
           };
         }),
       ),
@@ -162,7 +155,7 @@ export default function FleetPage() {
         <div className="container-x mx-auto max-w-6xl py-14 md:py-20">
           <h2 className="display-caps text-3xl md:text-5xl">Fleet prices in Canberra: the same per car a private customer pays</h2>
           <p className="mt-6 max-w-[64ch] text-[17px] text-secondary-foreground">
-            There is no fleet rate here, and no bulk discount. A ute in a line of six is priced the same as a ute on a driveway in Chifley, because it
+            There is no fleet rate here. A ute in a line of six is priced the same as a ute on a driveway in Chifley, because it
             is the same work. Two people, one van, and car six takes the same hours as car one. We would rather you read that here than find it out on
             the phone. Nothing is marked up because you are a business either.
           </p>
@@ -216,17 +209,16 @@ export default function FleetPage() {
             <P>
               Ceramic coating rises with the warranty you pick. On a hatch or sedan it is {formatPrice(ceramicTiers.sedan[3])},{" "}
               {formatPrice(ceramicTiers.sedan[5])} or {formatPrice(ceramicTiers.sedan[7])} for three, five or seven years. On an SUV or ute,{" "}
-              {formatPrice(ceramicTiers.suv[3])}, {formatPrice(ceramicTiers.suv[5])} or {formatPrice(ceramicTiers.suv[7])}. On a 4WD, van or
-              8-seater, {formatPrice(ceramicTiers.large[3])}, {formatPrice(ceramicTiers.large[5])} or {formatPrice(ceramicTiers.large[7])}.
+              {formatPrice(ceramicTiers.suv[3])}, {formatPrice(ceramicTiers.suv[5])} or {formatPrice(ceramicTiers.suv[7])}. On a{" "}
+              {large}, {formatPrice(ceramicTiers.large[3])}, {formatPrice(ceramicTiers.large[5])} or {formatPrice(ceramicTiers.large[7])}.
             </P>
             <P>
-              Paint correction is priced for a single-stage machine correction, which is what takes swirl marks and haze out. Deeper scratches need a
+              Paint correction is priced from the single-stage machine correction, which is what takes swirl marks and haze out. Deeper scratches need a
               multi-stage job and we quote that from photos rather than off this table.
             </P>
             <P>
-              Full and interior details can carry up to {formatPrice(conditionRange)} a vehicle for condition. On a work fleet, assume that is live.
-              It is agreed with you before we start and never added afterwards, and across a run of vehicles we would rather price it from photos up
-              front than have that conversation eight times in your car park.
+              Full and interior details are priced as a range for each size. {rangeNote} On a work fleet, assume the top end is live, and across a
+              run of vehicles we would rather price it from photos up front than have that conversation eight times in your car park.
             </P>
             <P>
               A motorbike full detail is {price("full", "bike")}. Trucks we quote over the phone, because a prime mover, a tipper and a rigid are not the same job and
@@ -234,7 +226,7 @@ export default function FleetPage() {
             </P>
             <P>
               What is not on the invoice: a call-out fee anywhere in the ACT or Queanbeyan, a travel fee, a card fee, or a charge for water and power.
-              The tap and the power point are yours, so that part comes off your supply.
+              The tap and the power point are yours, so that part comes off your supply. {site.afterpay}.
             </P>
           </div>
         </div>
@@ -313,9 +305,9 @@ export default function FleetPage() {
                 is about an hour a vehicle and takes the dust and road film off the graphics as well as the paint.
               </P>
               <P>
-                Utes are priced as an SUV: {price("exterior", "suv")} for an exterior detail, {price("interior", "suv")} for an interior, {price("full", "suv")} for a
-                full detail. Vans, 4WDs and 8-seaters are the large price, at {price("exterior", "large")}, {price("interior", "large")} and{" "}
-                {price("full", "large")}. Trays,
+                Utes are priced as an SUV: {price("full", "suv")} for a full detail, {price("interior", "suv")} for an interior, {price("exterior", "suv")} for an
+                exterior detail. Vans, 4WDs and 7-seaters are the large price, at {price("full", "large")}, {price("interior", "large")} and{" "}
+                {price("exterior", "large")}. Trays,
                 canopies, roof racks and fitted-out van shelving are more work than an empty tub, so tell us what is on the vehicle and we will price
                 it before the day rather than on it.
               </P>
@@ -330,8 +322,8 @@ export default function FleetPage() {
               </P>
               <P>
                 Interiors on a work fleet are their own job. Site dust, servo food, dog hair, and a cab that doubles as an office. That is exactly what
-                the up-to-{formatPrice(conditionRange)} condition allowance exists for. Send photos of the worst two with your enquiry and we will
-                price it in before the day.
+                the range on interior and full details is for. Send photos of the worst two with your enquiry and we will price it in before the
+                day.
               </P>
             </div>
           </div>
@@ -385,11 +377,11 @@ export default function FleetPage() {
               One dark trade-in corrected so the paint holds a reflection instead of throwing haze across every photo is {price("correction", "sedan")} on a hatch
               or sedan, {price("correction", "suv")} on an SUV or ute and {price("correction", "large")} on a 4WD or van, done at your yard. That is a single-stage
               correction; a car that needs more than that gets quoted from photos first. A full detail on an individual unit before it goes up is{" "}
-              {price("full", "sedan")} to {price("full", "large")} by size.
+              {formatPrice(guidePrice("full", "sedan").price!)} to {formatPrice(guidePrice("full", "large").high!)}, by size and condition.
             </P>
             <P>
               Two constraints before you ask. Correction and coating need covered space for the day, so if every car on the lot sits in the open we
-              cannot do that work there. And it is per vehicle at card prices. If what you need is twenty units presented quickly at a trade rate, we
+              cannot do that work there. And it is per vehicle at card prices. If what you need is twenty units turned around in bulk at a trade rate, we
               are the wrong supplier, and we would rather say so now than waste a fortnight of your time.
             </P>
           </div>
@@ -417,7 +409,7 @@ export default function FleetPage() {
               </P>
               <P>
                 Keeping them that way is a different product. A maintenance plan is us coming back on a schedule. The exterior plan starts at{" "}
-                {price("maintenance", "sedan")} a month for a hatch or sedan and inside and out starts at {formatPrice(prices.maintenanceMonthly)}, with larger vehicles quoted for
+                {formatPrice(prices.maintenanceExterior)} a month for a hatch or sedan and inside and out starts at {formatPrice(prices.maintenanceMonthly)}, with larger vehicles quoted for
                 the vehicle. What a visit covers is set out on the{" "}
                 <Link href="/maintenance/" className="text-foreground underline underline-offset-4">
                   maintenance plans page
@@ -462,7 +454,7 @@ export default function FleetPage() {
           <div className="mt-6 grid max-w-[64ch] gap-4 text-[17px] text-secondary-foreground">
             <P>We do not fit paint protection film, we do not tint windows and we do not repair rims. If PPF is already on a vehicle, we will ceramic coat over it.</P>
             <P>
-              We are not a bulk wash service. An exterior detail is an hour of hand work on one vehicle, not a pass through a machine. If what the fleet needs is a cheap weekly wash, that is a different product at a different price and we are not trying to match
+              We are not a bulk wash service. An exterior detail is an hour of hand work on one vehicle, not a pass through a machine. If what the fleet needs is a weekly bulk wash, that is a different product at a different price and we are not trying to match
               it.
             </P>
             <P>

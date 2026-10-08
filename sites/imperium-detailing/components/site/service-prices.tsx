@@ -1,13 +1,27 @@
-import { sizes, tiers, ceramicTiers, jobs, guidePrice, type JobId } from "@/lib/pricing";
+import { sizes, tiers, ceramicTiers, jobs, guidePrice, rangeNote, type JobId } from "@/lib/pricing";
 import { formatPrice } from "@/lib/services";
+import { site } from "@/lib/site";
 
 // Heading scale for the service pages' split sections (heading on the left, the
 // content on the right): 48px on a phone to 80px on a laptop, as in the mockup.
 export const splitHeading = "display-caps text-[clamp(3rem,5.6vw,5rem)]";
 
-type Row = { label: string; cells: (number | null)[] };
+/** A fixed price, a "from" price, or a range (full and interior details). null is quoted. */
+type Cell = { price: number; high: number | null; from: boolean } | null;
+type Row = { label: string; cells: Cell[] };
 
-const money = (n: number | null) => (n === null ? "Quoted" : formatPrice(n));
+const fixed = (price: number): Cell => ({ price, high: null, from: false });
+
+function Money({ c }: { c: Cell }) {
+  if (c === null) return <>Quoted</>;
+  return (
+    <>
+      {c.from && <span className="font-sans text-sm normal-case text-muted-foreground">from </span>}
+      {formatPrice(c.price)}
+      {c.high !== null && `–${formatPrice(c.high)}`}
+    </>
+  );
+}
 
 /**
  * The price table on a service page, every number from lib/pricing.ts.
@@ -24,15 +38,24 @@ export function ServicePrices({ slug, name }: { slug: string; name: string }) {
   const ceramic = job === "ceramic";
 
   const rows: Row[] = ceramic
-    ? tiers.map((t) => ({ label: `${t}-year warranty`, cells: sizes.map((z) => ceramicTiers[z.id][t]) }))
-    : [{ label: name, cells: sizes.map((z) => guidePrice(job, z.id).price) }];
+    ? tiers.map((t) => ({ label: `${t}-year warranty`, cells: sizes.map((z) => fixed(ceramicTiers[z.id][t])) }))
+    : [
+        {
+          label: name,
+          cells: sizes.map((z) => {
+            const g = guidePrice(job, z.id);
+            return g.price === null ? null : { price: g.price, high: g.high, from: g.from };
+          }),
+        },
+      ];
+  const ranged = rows.some((r) => r.cells.some((c) => c !== null && c.high !== null));
 
   // TODO(pat): confirm heading. "Three tiers. One method." and the line under
   // it are new copy for the redesign; so is "What it costs." on the other four.
   const title = ceramic ? "Three tiers. One method." : "What it costs.";
-  // The other four use the price guide's own line for a hatch or sedan. For the
-  // full and interior details that is the condition note (up to $75, agreed
-  // before we start), straight from guidePrice.
+  // The other four use the price guide's own line for a hatch or sedan, straight
+  // from guidePrice. Full and interior details are a range, so the range note
+  // sits under the table, as it does under the price guide.
   const intro = ceramic
     ? "Every tier gets the same prep, polish and coating by the same two people. The warranty length is what changes."
     : guidePrice(job, "sedan").why;
@@ -55,7 +78,7 @@ export function ServicePrices({ slug, name }: { slug: string; name: string }) {
               its own header and the four prices sat at uneven gaps. There the
               table is fixed: four equal size columns, the service name gets the
               rest, and a long size header wraps onto a second line (balanced, so
-              "8-seater" stays whole), bottom-aligned. */}
+              "7-seater" stays whole), bottom-aligned. */}
           <table className={`hidden w-full border-collapse text-base md:table ${ceramic ? "" : "table-fixed"}`}>
             <caption className="sr-only">
               {ceramic ? `${name} prices by written warranty and vehicle size` : `${name} prices by vehicle size`}
@@ -64,7 +87,7 @@ export function ServicePrices({ slug, name }: { slug: string; name: string }) {
               <colgroup>
                 <col />
                 {sizes.map((z) => (
-                  <col key={z.id} className="w-[15%]" />
+                  <col key={z.id} className={ranged ? "w-[18%]" : "w-[15%]"} />
                 ))}
               </colgroup>
             )}
@@ -89,9 +112,15 @@ export function ServicePrices({ slug, name }: { slug: string; name: string }) {
                   {r.cells.map((c, i) => (
                     <td
                       key={sizes[i].id}
-                      className={`pl-4 text-right ${c === null ? "text-base text-muted-foreground" : "display-caps text-[clamp(1.75rem,2.5vw,2.25rem)]"}`}
+                      className={`pl-4 text-right ${
+                        c === null
+                          ? "text-base text-muted-foreground"
+                          : ranged
+                            ? "display-caps whitespace-nowrap text-[clamp(1.25rem,1.75vw,1.625rem)]"
+                            : "display-caps text-[clamp(1.75rem,2.5vw,2.25rem)]"
+                      }`}
                     >
-                      {money(c)}
+                      <Money c={c} />
                     </td>
                   ))}
                 </tr>
@@ -107,7 +136,9 @@ export function ServicePrices({ slug, name }: { slug: string; name: string }) {
                   {sizes.map((z, i) => (
                     <div key={z.id} className="contents">
                       <dt className="text-muted-foreground">{z.label}</dt>
-                      <dd className={`m-0 text-right ${r.cells[i] === null ? "text-muted-foreground" : "font-semibold"}`}>{money(r.cells[i])}</dd>
+                      <dd className={`m-0 text-right ${r.cells[i] === null ? "text-muted-foreground" : "font-semibold"}`}>
+                        <Money c={r.cells[i]} />
+                      </dd>
                     </div>
                   ))}
                 </dl>
@@ -115,7 +146,10 @@ export function ServicePrices({ slug, name }: { slug: string; name: string }) {
             ))}
           </ul>
 
+          {ranged && <p className="m-0 mt-4 text-[15px] text-foreground md:mt-5">{rangeNote}</p>}
+          {job === "correction" && <p className="m-0 mt-4 text-[15px] text-foreground md:mt-5">{jobs.find((j) => j.id === "correction")!.note}</p>}
           {bikeNote && <p className="m-0 mt-4 text-sm text-muted-foreground md:mt-5 md:text-[15px]">{bikeNote}</p>}
+          <p className="m-0 mt-2 text-sm text-muted-foreground md:text-[15px]">{site.afterpay}.</p>
         </div>
       </div>
     </section>

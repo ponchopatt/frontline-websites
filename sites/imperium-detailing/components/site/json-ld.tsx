@@ -1,4 +1,5 @@
 import { site, prices } from "@/lib/site";
+import { ceramicTiers } from "@/lib/pricing";
 import { services } from "@/lib/services";
 import { areas } from "@/lib/areas";
 
@@ -17,7 +18,9 @@ export function JsonLd() {
     logo: `${site.url}/brand/logo-full-dark-640.png`,
     description:
       "Premium mobile car detailing in Canberra and Queanbeyan: ceramic coatings, paint correction, full, interior and exterior details at your home or workplace.",
-    priceRange: "$110 - $1597",
+    // Lowest one-off price (an exterior detail on a hatch) to the highest (a 7-year
+    // coating on the large size).
+    priceRange: `$${prices.exterior} - $${ceramicTiers.large[7]}`,
     address: {
       "@type": "PostalAddress",
       addressLocality: site.address.locality,
@@ -66,7 +69,7 @@ export function JsonLd() {
         name: "Maintenance plan",
         url: `${site.url}/maintenance/`,
         priceCurrency: "AUD",
-        // The cheapest plan on offer, which is what minPrice means. Inside and
+        // The lowest plan on offer, which is what minPrice means. Inside and
         // out is prices.maintenanceMonthly.
         price: prices.maintenanceExterior,
         priceSpecification: { "@type": "UnitPriceSpecification", minPrice: prices.maintenanceExterior, priceCurrency: "AUD", unitText: "month" },

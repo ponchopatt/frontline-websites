@@ -20,7 +20,7 @@ type Props = {
 export const pill =
   "lift min-h-[52px] whitespace-nowrap items-center justify-center rounded-full px-7 text-base font-semibold no-underline";
 export const buttonVariants = {
-  primary: "cta-glow bg-accent text-accent-foreground hover:bg-[#5aa6f0]",
+  primary: "cta-glow bg-accent text-accent-foreground hover:bg-accent/85",
   ghost: "border border-border-strong bg-transparent text-foreground hover:border-secondary-foreground/60",
 };
 export const buttonClass = (variant: keyof typeof buttonVariants = "primary") => `inline-flex ${pill} ${buttonVariants[variant]}`;

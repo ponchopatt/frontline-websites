@@ -20,7 +20,7 @@ type Props = {
 export function BeforeAfter({ before, after, caption, title = "Before and after.", intro, note, cta }: Props) {
   return (
     <section id="before-after" className="section-y relative border-t border-border">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_40%_at_80%_50%,rgba(31,111,196,0.14),transparent_70%)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_40%_at_80%_50%,rgba(42,132,220,0.14),transparent_70%)]" />
       <div className="container-x relative mx-auto grid max-w-6xl md:grid-cols-12 md:grid-rows-[auto_auto] md:gap-x-12 lg:gap-x-20">
         <div className="md:col-span-5 md:row-start-1 md:self-end [&>div]:mb-7 md:[&>div]:mb-0">
           <SectionHeading title={title} />

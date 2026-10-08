@@ -1,4 +1,17 @@
-import type { Faq } from "./services";
+import { formatPrice, type Faq } from "./services";
+import { prices } from "./site";
+import { ceramicTiers, guidePrice, rangeNote, sizes, type JobId } from "./pricing";
+
+/** A service's price across the sizes, from the hatch's low end to the large size's high end: "$low to $high". */
+const span = (job: JobId) => {
+  const lo = guidePrice(job, "sedan");
+  const hi = guidePrice(job, "large");
+  return `${formatPrice(lo.price!)} to ${formatPrice(hi.high ?? hi.price!)}`;
+};
+
+/** How much each longer coating warranty adds, smallest step to largest. */
+const tierSteps = (["sedan", "suv", "large"] as const).flatMap((z) => [ceramicTiers[z][5] - ceramicTiers[z][3], ceramicTiers[z][7] - ceramicTiers[z][5]]);
+const largeSize = sizes.find((z) => z.id === "large")!.label;
 
 export type Section = { h: string; p?: string[]; list?: string[] };
 
@@ -20,26 +33,26 @@ export const articles: Article[] = [
   {
     slug: "car-detailing-cost-canberra",
     published: "2026-09-12",
-    updated: "2026-09-13",
+    updated: "2026-10-08",
     title: "Car Detailing Cost in Canberra (2026)",
     description:
-      "Real Canberra detailing prices: what a full detail, interior, exterior, paint correction and ceramic coating actually cost, and what moves the price.",
+      "Real Canberra detailing prices: what a ceramic coating, paint correction, full detail, interior and exterior actually cost, and what moves the price.",
     h1: "How much does car detailing cost in Canberra?",
     intro:
-      "In Canberra in 2026, a mobile exterior detail runs $110 to $140, an interior detail $140 to $170, and a full detail (inside and out) $225 to $270 depending on vehicle size. Paint correction starts at $397 and a 3-year ceramic coating starts at $997. These are real, no-surprise prices, not \"from\" hooks.",
+      `In Canberra in 2026, a 3-year ceramic coating starts at ${formatPrice(prices.ceramic)} and paint correction at ${formatPrice(prices.correction)}. A full detail (inside and out) runs ${span("full")}, an interior detail ${span("interior")}, and a mobile exterior detail ${span("exterior")}, depending on vehicle size and condition. These are real, no-surprise prices, not "from" hooks.`,
     sections: [
       {
         h: "Pricing by service and vehicle size",
         p: [
           "All prices are AUD for a mobile service. You supply an outdoor tap and a 240V power point; we bring the van, the gear and the product. Ceramic coating and paint correction need a covered garage or workspace.",
-          "Sedan pricing covers most hatches too. The 4WD and 8-seater bracket includes LandCruiser, Patrol, Ram, LDV and full-size 4WDs. A condition-based adjustment of up to $75 applies to genuinely extreme jobs, and we tell you before we start.",
+          `Sedan pricing covers most hatches too. The ${largeSize} bracket includes LandCruiser, Patrol, Ram, LDV and full-size 4WDs. Full and interior details are priced as a range for each size. ${rangeNote}`,
         ],
         list: [
-          "Exterior detail: $110 to $140",
-          "Interior detail: $140 to $170",
-          "Full detail: $225 to $270",
-          "Paint correction: from $397",
-          "Ceramic coating: from $997 (3-year tier)",
+          `Ceramic coating: from ${formatPrice(prices.ceramic)} (3-year tier)`,
+          `Paint correction: from ${formatPrice(prices.correction)}`,
+          `Full detail: ${span("full")}`,
+          `Interior detail: ${span("interior")}`,
+          `Exterior detail: ${span("exterior")}`,
         ],
       },
       {
@@ -49,7 +62,7 @@ export const articles: Article[] = [
           "Vehicle size. A LandCruiser has a lot more paint on it than a Corolla, and more of it up high where you need a step to reach. Every price scales with size.",
           "Interior condition. A tidy interior takes about 1.5 hours to deep-clean. Years of pet hair, sand or spilled milk can double that, and stains that need multiple extraction passes cost more product too.",
           "Paint condition. Regular decontamination is priced into every exterior detail. Heavy bonded contamination or oxidation on an unwaxed daily driver may push you into paint-correction territory.",
-          "Coating tier. Longer warranties mean more layers, more prep and more time. Expect a step-up of roughly $150 to $250 per tier.",
+          `Coating tier. Longer warranties mean more layers, more prep and more time. Expect a step-up of roughly ${formatPrice(Math.min(...tierSteps))} to ${formatPrice(Math.max(...tierSteps))} per tier.`,
           "Correction stages. A single-stage correction removes light swirl marks and haze. Multi-stage correction for deep scratches and heavier defects is quoted from photos, because what it takes depends on how deep the damage goes and there is no honest multiplier for that.",
           "Add-ons. Engine bay cleaning, headlight polishing and plastic trim restoration sit outside the standard details and are quoted on the car. Leather cleaning and conditioning is not one of them: it is in every interior detail and every full detail already.",
         ],
@@ -66,8 +79,8 @@ export const articles: Article[] = [
     ],
     faq: [
       {
-        q: "What's the cheapest way to keep the car looking good?",
-        a: "The exterior detail at $110 for a hatch or sedan. It's a genuine two-bucket hand wash with chemical decontamination, a spray sealant, wheels, tyres and glass, not a hose-and-shampoo touch-up. If your interior is already tidy, it's the most cost-effective way to keep the outside sharp.",
+        q: "What's the simplest way to keep the car looking good?",
+        a: `The exterior detail, ${formatPrice(prices.exterior)} for a hatch or sedan. It's a genuine two-bucket hand wash with chemical decontamination, a spray sealant, wheels, tyres and glass, not a hose-and-shampoo touch-up. If your interior is already tidy, it's the simplest way to keep the outside sharp.`,
       },
       {
         q: "Why does a full detail cost more than an automatic wash?",
@@ -75,7 +88,7 @@ export const articles: Article[] = [
       },
       {
         q: "Do you charge more for a really dirty car?",
-        a: "Only if the condition changes the job significantly. A normal-messy family car is priced as-is. Genuinely extreme cases, like years of pet hair matted into the fabric or mould from a leak, we flag on inspection and quote a fair adjustment before starting. No surprise invoices.",
+        a: "Full and interior details are priced as a range for each size, and condition is what decides where your car lands. A normal-messy family car sits toward the low end; years of pet hair matted into the fabric or mould from a leak sit toward the top. We confirm the price before we start, never after. No surprise invoices.",
       },
       {
         q: "Is there a travel fee?",

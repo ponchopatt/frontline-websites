@@ -1,3 +1,19 @@
+import { prices } from "./site";
+import { formatPrice } from "./services";
+import { ceramicTiers } from "./pricing";
+
+// Every price in the copy below is read from lib/site.ts and lib/pricing.ts, never retyped.
+const price = {
+  ceramic: formatPrice(prices.ceramic),
+  correction: formatPrice(prices.correction),
+  full: formatPrice(prices.full),
+  interior: formatPrice(prices.interior),
+  exterior: formatPrice(prices.exterior),
+  plan: formatPrice(prices.maintenanceExterior),
+  /** The 7-year coating on the large size: the top of the coating range. */
+  coatingTop: formatPrice(ceramicTiers.large[7]),
+};
+
 export type Area = {
   slug: string;
   name: string;
@@ -23,7 +39,7 @@ export const areas: Area[] = [
     name: "Inner North",
     blurb: "Apartment and townhouse living. No driveway, no problem: we detail at your building or workplace.",
     intro: [
-      "At the 2021 census, flats were the most common home in the inner north — 42.6 per cent of dwellings, ahead of separate houses. Most come with parking, but it is a numbered bay under a building, not a driveway. So the first question on a job here is not the car. It is where the car sits, and whether a van, a hose and a power point can reach it. Exterior detailing starts at $110, interior at $140.",
+      `At the 2021 census, flats were the most common home in the inner north — 42.6 per cent of dwellings, ahead of separate houses. Most come with parking, but it is a numbered bay under a building, not a driveway. So the first question on a job here is not the car. It is where the car sits, and whether a van, a hose and a power point can reach it. Interior detailing starts at ${price.interior}, exterior at ${price.exterior}.`,
     ],
     sections: [
       {
@@ -38,15 +54,15 @@ export const areas: Area[] = [
       {
         h: "Covered space beats a back yard",
         p: [
-          "Paint correction from $397 and ceramic coating from $997 both need a garage or covered space for the day. A car park can be a better room for that than a back yard. No wind, no pollen landing on a wet panel, no sun tracking across the bonnet.",
+          `Ceramic coating from ${price.ceramic} and paint correction from ${price.correction} both need a garage or covered space for the day. A car park can be a better room for that than a back yard. No wind, no pollen landing on a wet panel, no sun tracking across the bonnet.`,
           "The limit is height. Sprinkler heads, ducts and pipe runs hang below the slab, so the clear height is always less than the ceiling looks. We measure the ramp and the lowest point overhead before a coating goes in the diary.",
-          "Coating runs from $997 for three years up to $1,597 for seven years on a large 4WD.",
+          `Coating runs from ${price.ceramic} for three years up to ${price.coatingTop} for seven years on a large 4WD.`,
         ],
       },
       {
         h: "Pines overhead, cold panels",
         p: [
-          "This is the leafy end of Canberra. Park under the pines at Haig Park, or along the older streets, and needles collect in shuts, cowls and roof rails. Resin marks the flat panels. Spring adds pollen on top. A full detail from $225 takes that back off. The monthly plan, from $90 for the exterior, is what keeps it off.",
+          `This is the leafy end of Canberra. Park under the pines at Haig Park, or along the older streets, and needles collect in shuts, cowls and roof rails. Resin marks the flat panels. Spring adds pollen on top. A full detail from ${price.full} takes that back off. The monthly plan, from ${price.plan} for the exterior, is what keeps it off.`,
           "Cold is the other half of a winter job. Panels are cold, water will not leave the surface and a coating cures slowly. Winter coating work gets a longer booking window, and we will move a day before we cut a cure short.",
           "Two of us, one van, three jobs a day across the inner north. No shop and no drop-off. We do not fit paint protection film, window tinting or rim repairs.",
         ],
@@ -61,7 +77,7 @@ export const areas: Area[] = [
     name: "Inner South",
     blurb: "Prestige and near-new vehicles. Ceramic coating and paint correction, at your door.",
     intro: [
-      "More than nine in ten homes in Kingston are flats. Out in Forrest and Red Hill the houses sit on big blocks, and the cover over the car is whatever was built behind the house long before the street was heritage-listed. Paint correction from $397 and ceramic coating from $997 both need a roof over the car for a full day. So around here the site usually decides the booking, not the car.",
+      `More than nine in ten homes in Kingston are flats. Out in Forrest and Red Hill the houses sit on big blocks, and the cover over the car is whatever was built behind the house long before the street was heritage-listed. Ceramic coating from ${price.ceramic} and paint correction from ${price.correction} both need a roof over the car for a full day. So around here the site usually decides the booking, not the car.`,
     ],
     sections: [
       {
@@ -82,8 +98,8 @@ export const areas: Area[] = [
       {
         h: "Why mobile in the inner south",
         p: [
-          "Nothing around here is far from a workshop, so convenience is a thin reason to book a mobile detailer and we are not going to pretend otherwise. The reason is the day itself. Correction from $397, or a coating from $997 for three years up to $1,597 for a large 4WD on seven, takes the car out of your hands for most of a day plus two trips either end. Mobile, it never leaves the spot it already parks in. Two of us, three jobs a day, no more.",
-          "If the car is a daily commuter that parks underground and sits under leaves at the other end, interior from $140 or the monthly plan from $90 is the honest place to start, not a coating.",
+          `Nothing around here is far from a workshop, so convenience is a thin reason to book a mobile detailer and we are not going to pretend otherwise. The reason is the day itself. A coating from ${price.ceramic} for three years up to ${price.coatingTop} for a large 4WD on seven, or correction from ${price.correction}, takes the car out of your hands for most of a day plus two trips either end. Mobile, it never leaves the spot it already parks in. Two of us, three jobs a day, no more.`,
+          `If the car is a daily commuter that parks underground and sits under leaves at the other end, interior from ${price.interior} or the monthly plan from ${price.plan} is the honest place to start, not a coating.`,
           "On site we need an outdoor tap and a 240V point. Correction and coating also need a garage or covered space. We bring the rest.",
         ],
       },
@@ -97,8 +113,8 @@ export const areas: Area[] = [
     name: "Gungahlin",
     blurb: "Family SUVs and school-run cars. Interior deep cleans in your own driveway.",
     intro: [
-      "Gungahlin is Canberra's newest town centre, and most of it is still houses on their own block — two in three homes, going by the census. That means a driveway, and a driveway is all we need. Two of us, one van, three jobs a day. Exterior from $110, interior from $140, a full detail from $225. You supply an outdoor tap and a 240V power point. We bring everything else.",
-      "Paint correction from $397 and ceramic coating from $997 are the exception. Those need covered space for the day, so tell us what you have before we book.",
+      `Gungahlin is Canberra's newest town centre, and most of it is still houses on their own block — two in three homes, going by the census. That means a driveway, and a driveway is all we need. Two of us, one van, three jobs a day. A full detail from ${price.full}, interior from ${price.interior}, exterior from ${price.exterior}. You supply an outdoor tap and a 240V power point. We bring everything else.`,
+      `Ceramic coating from ${price.ceramic} and paint correction from ${price.correction} are the exception. Those need covered space for the day, so tell us what you have before we book.`,
     ],
     sections: [
       {
@@ -120,9 +136,9 @@ export const areas: Area[] = [
       {
         h: "Family cars, done at the house",
         p: [
-          "The median age here is 32, and the cars match it. Kids, sport, the weekly shop, something spilled in the boot. The cabin usually needs more work than the paint does, which is why the interior detail starts at $140 and the full detail at $225.",
+          `The median age here is 32, and the cars match it. Kids, sport, the weekly shop, something spilled in the boot. The cabin usually needs more work than the paint does, which is why the interior detail starts at ${price.interior} and the full detail at ${price.full}.`,
           "Dropping a car at a workshop costs you most of a day and two runs across the city. Working at the house costs you the driveway. That is the whole argument for doing it this way.",
-          "If the car works that hard every week, the monthly plan, from $90, is what keeps a corrected finish from sliding back.",
+          `If the car works that hard every week, the monthly plan, from ${price.plan}, is what keeps a corrected finish from sliding back.`,
         ],
       },
     ],
@@ -133,9 +149,9 @@ export const areas: Area[] = [
   {
     slug: "belconnen",
     name: "Belconnen",
-    blurb: "The biggest district we cover. Everything from a quick exterior refresh to a full family-car detail.",
+    blurb: "The biggest district we cover. Everything from an exterior refresh to a full family-car detail.",
     intro: [
-      "Belconnen is the biggest district we cover and the least uniform. An ex-govie on a wide block in Page, a townhouse in Bruce, an apartment over the town centre. We come to the car, which counts for more the further out you live. Exterior details start at $110.",
+      `Belconnen is the biggest district we cover and the least uniform. An ex-govie on a wide block in Page, a townhouse in Bruce, an apartment over the town centre. We come to the car, which counts for more the further out you live. Exterior details start at ${price.exterior}.`,
     ],
     sections: [
       {
@@ -150,14 +166,14 @@ export const areas: Area[] = [
         h: "The reserves sit between the suburbs",
         p: [
           "Mount Rogers, the Pinnacle, Aranda Bushland. The reserves here sit between the suburbs rather than past them, so plenty of streets back straight onto gums.",
-          "Park under those and the car picks up sap, pollen, dust and bird mess, and it keeps picking it up between washes. Most of the time that is an exterior job. A full detail from $225 if the inside has had a season of kids, dogs and bikes as well.",
+          `Park under those and the car picks up sap, pollen, dust and bird mess, and it keeps picking it up between washes. Most of the time that is an exterior job. A full detail from ${price.full} if the inside has had a season of kids, dogs and bikes as well.`,
         ],
       },
       {
         h: "Frost, sun and the 2020 hail",
         p: [
           "Frost sits on anything left out on the driveway from about May to August. Summer runs the other way and the paint bakes dry more often than it gets rinsed. Neither is kind to a clear coat.",
-          "Then there was January 2020. Hail of four to six centimetres fell across the southern half of Belconnen and on through Acton to the inner south, and plenty of cars from those streets still wear it. Paint with that history usually wants correction first, from $397, before a ceramic coating from $997 is worth doing.",
+          `Then there was January 2020. Hail of four to six centimetres fell across the southern half of Belconnen and on through Acton to the inner south, and plenty of cars from those streets still wear it. Paint with that history usually wants correction first, from ${price.correction}, before a ceramic coating from ${price.ceramic} is worth doing.`,
           "Two of us, one van, three jobs a day. No shop and no drop-off. We do not fit paint protection film, window tinting or rim repairs, and we will tell you that rather than take the booking.",
         ],
       },
@@ -171,7 +187,7 @@ export const areas: Area[] = [
     name: "Woden Valley",
     blurb: "Established suburbs, long-term residents. Regular maintenance details on a schedule.",
     intro: [
-      "Woden Valley was Canberra's first satellite town, and the suburbs here have been lived in a long time. Most of what we pull up to is a brick veneer govvie set back from the kerb, with a driveway long enough to work on. Not all of it, though. Parts of Curtin and Hughes were laid out on Radburn lines, so the car sits at the rear off a service road, on the side the address does not mention. The houses at Swinger Hill in Phillip sit in small groups around shared courts. So the first thing we ask is not what the car is. It is where it sits. An exterior detail starts at $110 and a full one at $225.",
+      `Woden Valley was Canberra's first satellite town, and the suburbs here have been lived in a long time. Most of what we pull up to is a brick veneer govvie set back from the kerb, with a driveway long enough to work on. Not all of it, though. Parts of Curtin and Hughes were laid out on Radburn lines, so the car sits at the rear off a service road, on the side the address does not mention. The houses at Swinger Hill in Phillip sit in small groups around shared courts. So the first thing we ask is not what the car is. It is where it sits. A full detail starts at ${price.full} and an exterior one at ${price.exterior}.`,
     ],
     sections: [
       {
@@ -189,7 +205,7 @@ export const areas: Area[] = [
       {
         h: "Cars that stay put",
         p: [
-          "About a third of homes here are owned outright, more than the ACT as a whole. People in Woden stay, and the same car sits in the same driveway under the same tree for years. That is a maintenance job rather than a one-off, which is what the monthly plan, from $90, is for. Paint correction from $397 and ceramic coating from $997 both need dry covered space for the day, and in the rear courts that cover is often shared with a neighbour, so we settle it before booking. From the house we need an outdoor tap and a 240V point. Everything else is in the van. Two of us, three jobs a day at the most.",
+          `About a third of homes here are owned outright, more than the ACT as a whole. People in Woden stay, and the same car sits in the same driveway under the same tree for years. That is a maintenance job rather than a one-off, which is what the monthly plan, from ${price.plan}, is for. Ceramic coating from ${price.ceramic} and paint correction from ${price.correction} both need dry covered space for the day, and in the rear courts that cover is often shared with a neighbour, so we settle it before booking. From the house we need an outdoor tap and a 240V point. Everything else is in the van. Two of us, three jobs a day at the most.`,
         ],
       },
     ],
@@ -202,7 +218,7 @@ export const areas: Area[] = [
     name: "Weston Creek",
     blurb: "Leafy streets are hard on paint. Sap, pollen and bird mess removed and sealed against.",
     intro: [
-      "Weston Creek has two kinds of house on it, sometimes on the same street. There are the originals, built together when the district first went up, and there are the ones that replaced what burned when the January 2003 fires came through Duffy and the streets beside it. The difference that matters to us is cover. An open carport and a lock-up garage are not the same job. A full detail starts at $225 either way, but what we can do past that depends on which one is yours.",
+      `Weston Creek has two kinds of house on it, sometimes on the same street. There are the originals, built together when the district first went up, and there are the ones that replaced what burned when the January 2003 fires came through Duffy and the streets beside it. The difference that matters to us is cover. An open carport and a lock-up garage are not the same job. A full detail starts at ${price.full} either way, but what we can do past that depends on which one is yours.`,
     ],
     sections: [
       {
@@ -214,13 +230,13 @@ export const areas: Area[] = [
       {
         h: "Sap, pollen and bird mess",
         p: [
-          "The street trees here are mature and they drop all year. Bark and gum nuts you can sweep off. The sticky film underneath is the problem, because a hose will not move it, and bird mess sits on top of it and bakes in. Grass pollen adds to the load from October to December, off the pastures around Canberra. Left on the paint long enough, all of it etches, and by then washing does not bring it back. That is what paint correction, from $397, is for. It goes before a coating, not after.",
+          `The street trees here are mature and they drop all year. Bark and gum nuts you can sweep off. The sticky film underneath is the problem, because a hose will not move it, and bird mess sits on top of it and bakes in. Grass pollen adds to the load from October to December, off the pastures around Canberra. Left on the paint long enough, all of it etches, and by then washing does not bring it back. That is what paint correction, from ${price.correction}, is for. It goes before a coating, not after.`,
         ],
       },
       {
         h: "Mobile, so the car stays home",
         p: [
-          "There is no industrial pocket in this district, so a workshop detail means crossing town and going without the car for the day. We come to you instead. Two of us, one van, three jobs a day at most, and no shop to hurry back to. Ceramic coating runs from $997 for three years up to $1,597 for seven years on a large 4WD, and the monthly plan from $90 after it is what stops your own weekend wash turning back into decontamination work. We do not fit paint protection film, window tinting or rim repairs, so if that is what you are after, we are the wrong van.",
+          `There is no industrial pocket in this district, so a workshop detail means crossing town and going without the car for the day. We come to you instead. Two of us, one van, three jobs a day at most, and no shop to hurry back to. Ceramic coating runs from ${price.ceramic} for three years up to ${price.coatingTop} for seven years on a large 4WD, and the monthly plan from ${price.plan} after it is what stops your own weekend wash turning back into decontamination work. We do not fit paint protection film, window tinting or rim repairs, so if that is what you are after, we are the wrong van.`,
         ],
       },
     ],
@@ -233,7 +249,7 @@ export const areas: Area[] = [
     name: "Tuggeranong",
     blurb: "Deep south, furthest from city detailers. The mobile advantage is sharpest down here.",
     intro: [
-      "Banks is the last suburb on the map going south. After that it is paddocks, then Namadgi. That distance is the ordinary reason people down this end book a van instead of driving north and leaving the car with someone for a day. The other reason is what sits over the valley every winter. Exterior detail from $110, full detail from $225. Two of us, one van, three cars a day.",
+      `Banks is the last suburb on the map going south. After that it is paddocks, then Namadgi. That distance is the ordinary reason people down this end book a van instead of driving north and leaving the car with someone for a day. The other reason is what sits over the valley every winter. Full detail from ${price.full}, exterior detail from ${price.exterior}. Two of us, one van, three cars a day.`,
     ],
     sections: [
       {
@@ -248,14 +264,14 @@ export const areas: Area[] = [
         h: "Wood smoke sits in this valley",
         p: [
           "Cold nights put an inversion over the valley and hold the smoke down instead of letting it lift. The ACT's southern air monitor at Monash recorded 51 of the Territory's 67 daily PM2.5 exceedances between 2015 and 2022, most of it wood heater smoke.",
-          "It settles on horizontal panels and it works into the cabin. That is why interior detail from $140 is not an afterthought down here. Half the time it is the job that changes how the car feels.",
+          `It settles on horizontal panels and it works into the cabin. That is why interior detail from ${price.interior} is not an afterthought down here. Half the time it is the job that changes how the car feels.`,
         ],
       },
       {
         h: "Old gums and a decade of brush washes",
         p: [
           "These streets were planted when the town went in, so the trees are mature eucalypts now. Old enough to drop limbs, shed bark and put gum nuts on whatever is parked underneath. Add a decade of automatic brush washes and you get the swirls and the flat patches under the streetlight.",
-          "Paint correction from $397 is what takes that back. A ceramic coating holds the result afterwards, $997 for three years up to $1,597 for seven on a large 4WD. The monthly maintenance plan, from $90, is there so you keep it rather than pay for it twice.",
+          `Paint correction from ${price.correction} is what takes that back. A ceramic coating holds the result afterwards, ${price.ceramic} for three years up to ${price.coatingTop} for seven on a large 4WD. The monthly maintenance plan, from ${price.plan}, is there so you keep it rather than pay for it twice.`,
           "We do not fit paint protection film, window tinting or rim repairs.",
         ],
       },
@@ -269,7 +285,7 @@ export const areas: Area[] = [
     name: "Molonglo Valley",
     blurb: "Brand-new estates, brand-new cars. Ceramic coating from day one protects new paint properly.",
     intro: [
-      "Molonglo Valley has the newest suburbs in Canberra and the thinnest tree cover of any district in the ACT, 6.16 per cent at the last count. Most cars here sit on an open driveway with nothing over them. We come to you. Paint correction starts at $397 and ceramic coating at $997.",
+      `Molonglo Valley has the newest suburbs in Canberra and the thinnest tree cover of any district in the ACT, 6.16 per cent at the last count. Most cars here sit on an open driveway with nothing over them. We come to you. Ceramic coating starts at ${price.ceramic} and paint correction at ${price.correction}.`,
     ],
     sections: [
       {
@@ -289,9 +305,9 @@ export const areas: Area[] = [
       {
         h: "The window where a coating does most",
         p: [
-          "A lot of the paint out here has never had a bad year. That changes what a coating is buying. On a car that has been through years of brush washes, the correction has to happen first, and that is a full day before the coating starts. On paint still close to original, the spend goes into the coating instead of into undoing damage. Three years from $997. Seven years on a large 4WD, $1,597.",
+          `A lot of the paint out here has never had a bad year. That changes what a coating is buying. On a car that has been through years of brush washes, the correction has to happen first, and that is a full day before the coating starts. On paint still close to original, the spend goes into the coating instead of into undoing damage. Three years from ${price.ceramic}. Seven years on a large 4WD, ${price.coatingTop}.`,
           "New is not the same as perfect. Cars come off transport and out of dealer washbays with marks already in them, so we put a light across the panels before quoting, not after.",
-          "Parts of the district are still a building site. Earthworks and truck traffic put grit in the air, and it settles and stays. That is what the monthly plan, from $90, is for. Upkeep, not rescue.",
+          `Parts of the district are still a building site. Earthworks and truck traffic put grit in the air, and it settles and stays. That is what the monthly plan, from ${price.plan}, is for. Upkeep, not rescue.`,
         ],
       },
     ],
@@ -304,13 +320,13 @@ export const areas: Area[] = [
     name: "Queanbeyan",
     blurb: "Cross-border coverage. Work utes and tradie vehicles alongside family cars.",
     intro: [
-      "Everything here sits on the NSW side of the border: NSW plates, NSW planning rules, and a line the ABS ignores when it counts the whole built-up area as one city. Plenty of people cross it to work, so these are daily cars. Parked outside at home, parked outside all day at the other end. We come to you. Exterior work starts at $110, and all that has to come from the house is an outdoor tap and a 240V power point.",
+      `Everything here sits on the NSW side of the border: NSW plates, NSW planning rules, and a line the ABS ignores when it counts the whole built-up area as one city. Plenty of people cross it to work, so these are daily cars. Parked outside at home, parked outside all day at the other end. We come to you. Exterior work starts at ${price.exterior}, and all that has to come from the house is an outdoor tap and a 240V power point.`,
     ],
     sections: [
       {
         h: "Two off-street spaces, not always covered",
         p: [
-          "Most houses on this side of the border have two off-street spaces. So in Karabar, Crestwood, Jerrabomberra and Googong there is nearly always a driveway to work on. What you do not always get is a roof over it. A carport or an open hardstand is fine for an exterior detail, an interior or a full detail.",
+          "Most houses on this side of the border have two off-street spaces. So in Karabar, Crestwood, Jerrabomberra and Googong there is nearly always a driveway to work on. What you do not always get is a roof over it. A carport or an open hardstand is fine for a full detail, an interior or an exterior detail.",
           "Paint correction and ceramic coating are the exception. Those need a garage or covered space for the day, out of sun, wind and dust. It is worth settling that before the booking rather than on the morning.",
         ],
       },

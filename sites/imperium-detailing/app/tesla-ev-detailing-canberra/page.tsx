@@ -125,6 +125,7 @@ export default function EvPage() {
                   <h3 className="display-caps text-2xl">{s.name}</h3>
                   <p className="mt-2 text-[15px] text-muted-foreground">{s.forWho}</p>
                   <p className="mt-3 text-[15px] text-foreground">From {formatPrice(s.priceFrom)}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{site.afterpay}</p>
                 </Link>
               </li>
             ))}

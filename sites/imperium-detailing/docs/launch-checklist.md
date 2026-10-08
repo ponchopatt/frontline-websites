@@ -15,7 +15,7 @@ Tick every line before the domain points at the new site. Lines marked "needs Pa
 
 ## Content truth check (needs Pat)
 
-- [ ] Prices in the guide match what you charge, including the $75 condition range on full and interior details.
+- [ ] Prices in the guide match what you charge, including the ranges on full and interior details.
 - [ ] Every "what's included" list matches what you actually do on the day.
 - [ ] Opening hours: every day, 8:30am to 5:30pm.
 - [ ] Review count and rating match Google.

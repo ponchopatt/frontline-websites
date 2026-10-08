@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { og } from "@/lib/seo";
 import Link from "next/link";
-import { site } from "@/lib/site";
+import { site, cancellationPolicy } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
@@ -19,16 +19,19 @@ export default function TermsPage() {
       <P>These are the terms that apply when you book Imperium Detailing. They&apos;re short because the way we work is simple.</P>
 
       <H>Quotes and prices</H>
-      <P>Our from-prices are genuine minimums for the service on a standard sedan or hatch in normal condition. Your quote is fixed once we&apos;ve seen the car, either in photos or in person. If a car turns out to be in genuinely extreme condition, we&apos;ll tell you before we start and agree any adjustment with you. No surprise invoices.</P>
+      <P>Our from-prices are the starting price for each service on a hatch or sedan. Full and interior details are priced as a range for each vehicle size, and where your car lands in the range depends on its condition. Your price is fixed once we&apos;ve seen the car, either in photos or in person, and we confirm it before we start, never after. No surprise invoices.</P>
 
       <H>Bookings and access</H>
       <P>We work at your home, apartment car park or workplace. You need to give us access to the car, an outdoor tap and a standard 240V power point. Paint correction and ceramic coating also need an enclosed garage or covered space out of direct sun, wind and dust. If those aren&apos;t available on the day, we may need to reschedule.</P>
+
+      <H>Cancellations</H>
+      <P>{cancellationPolicy} Tell us as early as you can and we&apos;ll move the booking to a day that suits you.</P>
 
       <H>Weather</H>
       <P>Rain, frost and extreme heat affect what we can do safely and well. If the forecast makes the job unworkable we&apos;ll contact you as early as we can to move it, and there&apos;s no charge for a weather reschedule.</P>
 
       <H>Payment</H>
-      <P>Payment is due on completion, by card or bank transfer, once you&apos;ve seen the result. There are no card fees and no travel fees anywhere in the ACT or Queanbeyan.</P>
+      <P>Payment is due on completion, once you&apos;ve seen the result. We take card, bank transfer and Afterpay. There are no card fees and no travel fees anywhere in the ACT or Queanbeyan.</P>
 
       <H>Our workmanship</H>
       <P>We&apos;re fully insured and we guarantee the finish we hand back. If something isn&apos;t right, tell us within a couple of days and we&apos;ll come back and fix it. Ceramic coatings carry a separate written warranty, explained on the <Link href="/warranty/" className="underline underline-offset-4">warranty page</Link>.</P>

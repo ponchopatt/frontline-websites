@@ -1,5 +1,7 @@
 import { prices } from "./site";
 
+export const formatPrice = (n: number) => `$${n.toLocaleString("en-AU")}`;
+
 export type Faq = { q: string; a: string };
 
 export type Service = {
@@ -43,7 +45,7 @@ export const services: Service[] = [
     line: "Written 3, 5 or 7-year warranty",
     title: "Ceramic Coating Canberra (Mobile)",
     description:
-      "Multi-layer SiO2 ceramic coating applied at your home, with a written 3, 5 or 7-year warranty. Prep, polish and coating by the same two people, from $997.",
+      `Multi-layer SiO2 ceramic coating applied at your home, with a written 3, 5 or 7-year warranty. Prep, polish and coating by the same two people, from ${formatPrice(prices.ceramic)}.`,
     h1: "Ceramic coating for Canberra conditions",
     priceFrom: prices.ceramic,
     duration: "Around 5 hours on site. Leave the car undercover for 24 hours after.",
@@ -108,7 +110,7 @@ export const services: Service[] = [
     line: "Measured, corrected, photographed",
     title: "Paint Correction Canberra",
     description:
-      "Mobile paint correction in Canberra from $397. Swirl marks, scratches and haze machine-polished out at your home, with photos before and after.",
+      `Mobile paint correction in Canberra from ${formatPrice(prices.correction)}. Swirl marks, scratches and haze machine-polished out at your home, with photos before and after.`,
     h1: "Paint correction. Swirls, scratches, gone.",
     priceFrom: prices.correction,
     duration: "Half a day to a full day, depending on stages.",
@@ -167,7 +169,7 @@ export const services: Service[] = [
     line: "Inside and out, in your driveway",
     title: "Full Car Detailing Canberra (Mobile)",
     description:
-      "A complete inside-and-out reset: decontamination wash, machine-applied protection, and a top-to-bottom interior clean, in your driveway. From $225.",
+      `A complete inside-and-out reset: decontamination wash, machine-applied protection, and a top-to-bottom interior clean, in your driveway. From ${formatPrice(prices.full)}.`,
     h1: "Full car detailing, anywhere in Canberra",
     priceFrom: prices.full,
     duration: "About 3 hours for a sedan; longer for SUVs, utes and 4WDs.",
@@ -208,7 +210,7 @@ export const services: Service[] = [
       },
       {
         q: "Do I need to be home?",
-        a: "No. As long as we can access the car, a tap and a power point, you can leave us to it. We'll send a photo when we're finished and take payment by card or transfer once you're happy with the result.",
+        a: "No. As long as we can access the car, a tap and a power point, you can leave us to it. We'll send a photo when we're finished and take payment by card, transfer or Afterpay once you're happy with the result.",
       },
     ],
     related: ["interior-car-detailing-canberra", "exterior-car-detailing-canberra"],
@@ -220,7 +222,7 @@ export const services: Service[] = [
     line: "Steam and extraction, no perfume",
     title: "Interior Car Detailing Canberra",
     description:
-      "Interior car detailing in Canberra from $140: vacuum, steam, hot-water extraction and leather conditioning at your home or work. No call-out fee.",
+      `Interior car detailing in Canberra from ${formatPrice(prices.interior)}: vacuum, steam, hot-water extraction and leather conditioning at your home or work. No call-out fee.`,
     h1: "Interior detailing that actually gets the kid mess out",
     priceFrom: prices.interior,
     duration: "About 1.5 hours for a tidy interior; longer for heavy stains or pet hair.",
@@ -274,7 +276,7 @@ export const services: Service[] = [
     line: "Decontaminated, then sealed",
     title: "Exterior Car Detailing Canberra",
     description:
-      "Proper wash and chemical decontamination of paint, wheels, glass and trim, finished with a spray coating or sealant that protects for months. From $110.",
+      `Proper wash and chemical decontamination of paint, wheels, glass and trim, finished with a spray coating or sealant that protects for months. From ${formatPrice(prices.exterior)}.`,
     h1: "Exterior detailing and paint protection",
     priceFrom: prices.exterior,
     duration: "About an hour.",
@@ -318,7 +320,7 @@ export const services: Service[] = [
         a: "An exterior detail cleans and protects but doesn't correct paint defects. Swirls, wash marring and light scratches need paint correction. If your paint has visible defects, we'll flag it on inspection and give you a price.",
       },
     ],
-    related: ["full-car-detail-canberra", "ceramic-coating-canberra"],
+    related: ["ceramic-coating-canberra", "full-car-detail-canberra"],
   },
 ];
 
@@ -328,4 +330,3 @@ export const coreServices = services.filter((s) =>
   ["ceramic-coating-canberra", "paint-correction-canberra", "full-car-detail-canberra"].includes(s.slug),
 );
 
-export const formatPrice = (n: number) => `$${n.toLocaleString("en-AU")}`;

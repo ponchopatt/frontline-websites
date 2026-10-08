@@ -85,7 +85,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
       <section className="relative overflow-hidden">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-40 top-0 -z-10 hidden size-[860px] bg-[radial-gradient(closest-side,rgba(31,111,196,0.28),rgba(15,61,110,0.1),rgba(5,6,8,0)_70%)] lg:block"
+          className="pointer-events-none absolute -right-40 top-0 -z-10 hidden size-[860px] bg-[radial-gradient(closest-side,rgba(42,132,220,0.28),rgba(42,132,220,0.08),rgba(5,6,8,0)_70%)] lg:block"
         />
         <div className="container-x mx-auto flex max-w-6xl flex-col pb-14 pt-5 md:pb-24 md:pt-12 lg:grid lg:grid-cols-[minmax(0,1fr)_clamp(300px,27.8vw,400px)] lg:grid-rows-[repeat(5,auto)_1fr] lg:max-[1400px]:grid-cols-[minmax(0,1fr)_min(clamp(300px,27.8vw,400px),max(240px,calc((100svh-228px)*9/16)))] lg:gap-x-24 lg:pb-28">
           <div className="lg:col-start-1 lg:row-start-1">
@@ -99,6 +99,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
           <div className="hero-strip order-2 mt-[18px] flex max-w-[700px] items-baseline justify-between gap-6 border-y border-border py-3.5 md:mt-9 md:items-center md:justify-start md:gap-10 md:py-5 lg:order-none lg:col-start-1 lg:row-start-3">
             <span className="shrink-0 text-sm md:text-[15px]">
               from <span className="display-caps text-[44px] leading-none md:text-[56px]">{formatPrice(s.priceFrom)}</span>
+              <span className="mt-1 block text-xs text-muted-foreground md:text-sm">{site.afterpay}</span>
             </span>
             <span className="max-w-[22ch] text-right text-[13px] text-muted-foreground md:max-w-none md:text-left md:text-[15px]">{s.duration}</span>
           </div>

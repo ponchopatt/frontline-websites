@@ -5,7 +5,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { site, smsHref, telHref } from "@/lib/site";
 import { formatPrice } from "@/lib/services";
-import { sizes, jobs, tiers, ceramicTiers, guidePrice, type JobId, type SizeId, type Tier } from "@/lib/pricing";
+import { sizes, jobs, tiers, ceramicTiers, guidePrice, guideText, rangeNote, type JobId, type SizeId, type Tier } from "@/lib/pricing";
 import { SectionHeading } from "@/components/site/section-heading";
 import { buttonClass, buttonVariants, pill } from "@/components/site/link-button";
 
@@ -28,20 +28,28 @@ export function PriceGuide({ title = "Your price in ten seconds." }: { title?: s
   const formService = jobMeta.label === "Maintenance plan" ? "Regular maintenance plan" : jobMeta.label;
   const sizeMeta = sizes.find((s) => s.id === size)!;
 
-  // The number rolls to its new value instead of snapping (or snaps, for reduced motion).
-  const [display, setDisplay] = useState(guide.price ?? 0);
-  const last = useRef(guide.price ?? 0);
+  // The numbers roll to their new values instead of snapping (or snap, for reduced motion).
+  // A fixed price is a range whose two ends are the same number.
+  const [display, setDisplay] = useState({ low: guide.price ?? 0, high: guide.high ?? guide.price ?? 0 });
+  const last = useRef(display);
   useEffect(() => {
-    const target = guide.price;
-    if (target === null || target === last.current) return;
-    const o = { v: last.current };
+    if (guide.price === null) return;
+    const target = { low: guide.price, high: guide.high ?? guide.price };
+    if (target.low === last.current.low && target.high === last.current.high) return;
+    const o = { ...last.current };
     last.current = target;
     const instant = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const tween = gsap.to(o, { v: target, duration: instant ? 0 : 0.5, ease: "expo.out", onUpdate: () => setDisplay(Math.round(o.v)) });
+    const tween = gsap.to(o, {
+      low: target.low,
+      high: target.high,
+      duration: instant ? 0 : 0.5,
+      ease: "expo.out",
+      onUpdate: () => setDisplay({ low: Math.round(o.low), high: Math.round(o.high) }),
+    });
     return () => {
       tween.kill();
     };
-  }, [guide.price]);
+  }, [guide.price, guide.high]);
 
   // On a phone the answer sits below the choices, so picking the job brings it into view.
   const picked = useRef(false);
@@ -58,7 +66,8 @@ export function PriceGuide({ title = "Your price in ten seconds." }: { title?: s
   const sms =
     guide.price === null
       ? smsHref(`Hi Imperium, I'd like a quote for a ${label} on my ${vehicle}.\nVehicle: \nSuburb: `)
-      : smsHref(`Hi Imperium, I'd like to lock in a ${label} for my ${vehicle}. Guide price ${formatPrice(guide.price)}${guide.suffix}.\nVehicle: \nSuburb: `);
+      : smsHref(`Hi Imperium, I'd like to lock in a ${label} for my ${vehicle}. Guide price ${guideText(guide)}.\nVehicle: \nSuburb: `);
+  const spoken = guideText(guide);
 
   return (
     <section id="price-guide" className="section-y border-t border-border">
@@ -140,18 +149,20 @@ export function PriceGuide({ title = "Your price in ten seconds." }: { title?: s
                   Quoted for you
                 </p>
               ) : (
-                <p key={`${guide.price}${guide.suffix}`} className="price-in m-0 mt-1.5 flex items-baseline gap-2 md:mt-2.5 md:gap-2.5">
-                  <span className="text-sm text-muted-foreground md:text-[15px]">from</span>
-                  <span aria-hidden="true" className="display-caps text-[72px] tabular-nums md:text-8xl">
-                    {formatPrice(display)}
+                <p key={`${guide.price}-${guide.high}${guide.suffix}`} className="price-in m-0 mt-1.5 flex items-baseline gap-2 md:mt-2.5 md:gap-2.5">
+                  {guide.from && <span className="text-sm text-muted-foreground md:text-[15px]">from</span>}
+                  <span aria-hidden="true" className={`display-caps tabular-nums ${guide.high === null ? "text-[72px] md:text-8xl" : "text-[56px] md:text-7xl"}`}>
+                    {formatPrice(display.low)}
+                    {guide.high !== null && `–${formatPrice(display.high)}`}
                   </span>
                   {guide.suffix && <span className="text-lg text-muted-foreground">{guide.suffix.trim()}</span>}
                   <span className="sr-only" aria-live="polite">
-                    From {formatPrice(guide.price)}
-                    {guide.suffix}
+                    {spoken.charAt(0).toUpperCase() + spoken.slice(1)}
                   </span>
                 </p>
               )}
+              {guide.high !== null && <p className="mt-3.5 text-[15px] text-foreground md:mt-4">{rangeNote}</p>}
+              {guide.price !== null && <p className="mt-2 text-sm text-muted-foreground">{site.afterpay}</p>}
               <p className="mt-3.5 text-[15px] text-secondary-foreground md:mt-5">{guide.why}</p>
               <p className="mt-2 text-[15px] text-muted-foreground">{jobMeta.note}</p>
               <div className="mt-7 flex flex-col gap-3">

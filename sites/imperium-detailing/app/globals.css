@@ -4,7 +4,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Imperium Detailing colour tokens — carried over exactly from the current site. */
+/* Imperium Detailing colour tokens: black, white and one blue (#2a84dc). The greys are
+   tints of black and white; --destructive only ever marks a form error. */
 :root {
   --background: #050608;
   --foreground: #f3f5f8;
@@ -12,13 +13,13 @@
   --card-foreground: #f3f5f8;
   --popover: #0c0f14;
   --popover-foreground: #f3f5f8;
-  --primary: #1f6fc4;
+  --primary: #2a84dc;
   --primary-foreground: #f3f5f8;
   --secondary: #11161d;
   --secondary-foreground: #c2c8d0;
   --muted: #11161d;
   --muted-foreground: #8a909a;
-  --accent: #3a8fe0;
+  --accent: #2a84dc;
   --accent-foreground: #050608;
   --destructive: #b3261e;
   --destructive-foreground: #f3f5f8;
@@ -30,10 +31,9 @@
   --input: rgba(194, 200, 208, 0.46);
   /* The ghost button's edge: stronger than a divider, so it reads as a control. */
   --border-strong: rgba(194, 200, 208, 0.28);
-  --ring: #3a8fe0;
+  --ring: #2a84dc;
   --radius: 0.5rem;
-  --glow: #1f6fc4;
-  --glow-deep: #0f3d6e;
+  --glow: #2a84dc;
 }
 
 @theme inline {
@@ -126,7 +126,7 @@
 
 /* The blue radial glow the current site uses behind panels — kept, used sparingly. */
 .radial-glow {
-  background: radial-gradient(closest-side, rgba(31, 111, 196, 0.35), rgba(15, 61, 110, 0.15), rgba(5, 6, 8, 0) 70%);
+  background: radial-gradient(closest-side, rgba(42, 132, 220, 0.35), rgba(42, 132, 220, 0.08), rgba(5, 6, 8, 0) 70%);
 }
 
 /* ---------- v2: premium layer ---------- */
@@ -241,7 +241,7 @@ body::after {
 }
 
 ::selection {
-  background: rgba(58, 143, 224, 0.45);
+  background: rgba(42, 132, 220, 0.45);
   color: #fff;
 }
 
@@ -287,16 +287,16 @@ body::after {
    lift's grey drop shadow, is what shows on hover; it only brightens. */
 .cta-glow {
   box-shadow:
-    0 0 0 1px rgba(58, 143, 224, 0.35),
-    0 10px 36px rgba(58, 143, 224, 0.32);
+    0 0 0 1px rgba(42, 132, 220, 0.35),
+    0 10px 36px rgba(42, 132, 220, 0.32);
 }
 .cta-glow:hover {
   box-shadow:
-    0 0 0 1px rgba(58, 143, 224, 0.45),
-    0 14px 44px rgba(58, 143, 224, 0.42);
+    0 0 0 1px rgba(42, 132, 220, 0.45),
+    0 14px 44px rgba(42, 132, 220, 0.42);
 }
 .cta-glow:active {
-  box-shadow: 0 0 0 1px rgba(58, 143, 224, 0.35);
+  box-shadow: 0 0 0 1px rgba(42, 132, 220, 0.35);
 }
 @keyframes price-in {
   from {
@@ -352,8 +352,8 @@ details[open] > :not(summary) {
    bubble, and the iframes it uses on some plans. If a later version renders
    inside a closed shadow root, CSS cannot reach it; set the mobile bottom
    offset in the widget's own settings to the same 88px instead.
-   Today analytics.tsx only loads the widget from 768px up, so on phones this
-   is a guard for the day it is switched on there. */
+   Today analytics.tsx only loads the widget from 1400px up (CHAT_MIN_WIDTH), so
+   on phones this is a guard for the day it is switched on there. */
 @media (max-width: 767px) {
   #lc_text-widget,
   .lc_text-widget,
@@ -362,6 +362,15 @@ details[open] > :not(summary) {
   iframe[src*="leadconnectorhq.com"],
   iframe[src*="msgsndr.com"] {
     bottom: calc(var(--phone-bar-h) + 12px) !important;
+  }
+}
+
+/* Below 1400px wide (CHAT_MIN_WIDTH in analytics.tsx) the page's prices and
+   buttons reach the chat button's corner, so the widget never loads there. If
+   the window is made narrower after it loaded, this keeps it out of the way. */
+@media (max-width: 1399px) {
+  chat-widget {
+    display: none !important;
   }
 }
 
@@ -391,7 +400,7 @@ html {
 .panel-glow {
   box-shadow:
     0 30px 80px rgba(0, 0, 0, 0.7),
-    0 0 120px rgba(31, 111, 196, 0.22);
+    0 0 120px rgba(42, 132, 220, 0.22);
 }
 
 /* Gradient-faded giant wordmark in the footer. */

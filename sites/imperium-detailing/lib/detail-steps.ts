@@ -61,10 +61,10 @@ export const detailSteps: DetailStep[] = [
   },
   {
     id: "coat",
-    label: "Ceramic sealant",
-    short: "The protection goes on last, panel by panel, and cures hard onto the clear coat.",
+    label: "Spray sealant",
+    short: "A spray sealant goes on last, panel by panel. Not a ceramic coating: that is its own service.",
     video: "/media/steps/ceramic-sealant.mp4",
     poster: "/media/steps/ceramic-sealant.webp",
-    alt: "Water beading up and running straight off a freshly coated bonnet",
+    alt: "Water beading up and running straight off a freshly sealed bonnet",
   },
 ];

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CoverFlowCarousel, type CarouselItem } from "@/components/ui/3-d-coverflow-carousel";
 import { services, formatPrice } from "@/lib/services";
+import { site } from "@/lib/site";
 import { imageSrc, imageSrcSet } from "@/components/site/picture";
 import { SectionHeading } from "@/components/site/section-heading";
 import { hasWebm } from "@/lib/media";
@@ -26,7 +27,7 @@ export function ServicesCoverflow() {
       <div className="container-x mx-auto max-w-6xl">
         <SectionHeading
           title="What we do, and what it costs."
-          intro="Real from-prices. The number you're quoted is the number you pay, anywhere in Canberra and Queanbeyan, with no call-out fee. Swipe or use the arrows."
+          intro={`Real from-prices. The number you're quoted is the number you pay, anywhere in Canberra and Queanbeyan, with no call-out fee. ${site.afterpay}. Swipe or use the arrows.`}
         />
       </div>
       <CoverFlowCarousel items={items} autoplayDelay={8000} />

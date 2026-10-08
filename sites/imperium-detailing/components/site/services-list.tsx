@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { services, formatPrice } from "@/lib/services";
-import { prices } from "@/lib/site";
+import { prices, site } from "@/lib/site";
 import { LoopVideo } from "@/components/site/loop-video";
 
 // Most expensive first, the order someone weighing up the work reads in.
@@ -40,7 +40,7 @@ export function ServicesList() {
           </h2>
           {/* Every service page has its price table by vehicle size. */}
           <p className="m-0 max-w-[34ch] text-[15px] text-muted-foreground md:mb-2 md:text-lg">
-            Prices are for a hatch or sedan.<span className="hidden md:inline"> Bigger cars are listed on each page.</span>
+            Prices are for a hatch or sedan. {site.afterpay}.<span className="hidden md:inline"> Bigger cars are listed on each page.</span>
           </p>
         </div>
 
@@ -77,9 +77,10 @@ export function ServicesList() {
           <span className="hidden md:inline">Keep it that way: </span>
           <Link href="/maintenance/" className="text-foreground underline underline-offset-4 hover:text-white">
             <span className="md:hidden">Maintenance plans</span>
-            <span className="hidden md:inline">maintenance plans</span> from ${prices.maintenanceExterior} a month
+            <span className="hidden md:inline">maintenance plans</span>
           </Link>
-          <span className="hidden md:inline">. Same number every month.</span>
+          . Exterior from {formatPrice(prices.maintenanceExterior)} a month, inside and out from {formatPrice(prices.maintenanceMonthly)}.
+          <span className="hidden md:inline"> Same number every month.</span>
         </p>
       </div>
     </section>
