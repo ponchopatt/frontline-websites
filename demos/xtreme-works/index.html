@@ -1,0 +1,1464 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Xtreme Works | Concreters Sydney — Residential, Commercial &amp; Industrial</title>
+<meta name="description" content="Family-owned Sydney concreters. Driveways, paths and slabs, kerb and gutter, commercial and industrial pours across Greater Sydney, Western Sydney and the Blue Mountains. Free quotes: 0433 597 455.">
+<!-- A demo built as a proposal. It carries a real business's name and must never be indexed. -->
+<meta name="robots" content="noindex,nofollow,noarchive,noimageindex">
+<meta name="theme-color" content="#15191E">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://xtreme-works-demo-frontline.vercel.app/">
+<meta property="og:site_name" content="Xtreme Works">
+<meta property="og:locale" content="en_AU">
+<meta property="og:title" content="Xtreme Works | Strength in every pour">
+<meta property="og:description" content="Family-owned Sydney concreters: residential, commercial and industrial pours across Greater Sydney, Western Sydney and the Blue Mountains.">
+<meta property="og:image" content="https://xtreme-works-demo-frontline.vercel.app/assets/og-xtreme.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Xtreme Works logo and the words Strength in every pour, beside a ride-on trowel seen from above">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Xtreme Works | Strength in every pour">
+<meta name="twitter:description" content="Family-owned Sydney concreters: residential, commercial and industrial.">
+<meta name="twitter:image" content="https://xtreme-works-demo-frontline.vercel.app/assets/og-xtreme.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
+<link rel="preload" as="image" href="media/hero-phone.webp" media="(max-width: 899px)" fetchpriority="high">
+<link rel="preload" as="image" href="media/bay-pour.webp" media="(min-width: 900px)" fetchpriority="high">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/anybody-var.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/hanken-var.woff2">
+<style>
+@font-face{font-family:'Anybody';font-style:normal;font-weight:100 900;font-stretch:50% 150%;font-display:swap;
+  src:url(fonts/anybody-var.woff2) format('woff2-variations'),url(fonts/anybody-var.woff2) format('woff2')}
+@font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:100 900;font-display:swap;
+  src:url(fonts/hanken-var.woff2) format('woff2-variations'),url(fonts/hanken-var.woff2) format('woff2')}
+/* Metric-matched stand-ins, so nothing jumps when the real faces arrive. */
+@font-face{font-family:'Anybody Fallback';src:local('Arial Narrow Bold'),local('ArialNarrow-Bold'),local('Arial Bold'),local('Arial-BoldMT'),local('Liberation Sans Narrow Bold'),local('Roboto Condensed Bold'),local('Roboto Bold');
+  size-adjust:92%;ascent-override:96%;descent-override:26%;line-gap-override:0%}
+@font-face{font-family:'Hanken Fallback';src:local('Arial'),local('Helvetica Neue'),local('Liberation Sans'),local('Roboto');
+  size-adjust:98%;ascent-override:100%;descent-override:29%;line-gap-override:0%}
+
+/* ----------------------------------------------------------------- tokens
+   Set in concrete. The top of the page is the wet pour: dark, moving, their
+   footage. It cures as you go down to the pale grey of a finished slab, ruled
+   by saw-cut control joints. Ink is their logo's navy. The one loud colour is
+   the hi-vis their crew actually wears, kept to what needs a hand on it. */
+:root{
+  --wet:#15191E; --wet-2:#1C2128; --wet-3:#262C35; --wet-line:rgba(241,240,236,.12);
+  --slab:#E3E1DB; --slab-2:#D9D6CF; --slab-3:#CDC9C1;
+  --navy:#0B1624; --ink-2:#434B55; --ink-3:#525A64;
+  --joint-d:rgba(11,22,36,.18); --joint-l:rgba(255,255,255,.55);
+  --on-wet:#F1F0EC; --on-wet-2:#B4BAC2; --on-wet-3:#8C939C;
+  --hv:#D4FF3F; --hv-2:#C2F01F; --hv-ink:#0B1624;
+  --display:'Anybody','Anybody Fallback',Impact,'Arial Narrow',sans-serif;
+  --body:'Hanken Grotesk','Hanken Fallback',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --max:1360px; --pad:clamp(20px,4.2vw,56px);
+  --r:6px;
+  --ease:cubic-bezier(.2,.7,.2,1);
+  --hd:68px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--hd) + 12px)}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--slab);color:var(--navy);font:400 1.0625rem/1.6 var(--body);
+  -webkit-font-smoothing:antialiased;overflow-x:clip}
+img,video{display:block;max-width:100%;height:auto}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3,h4,p,ul,ol,figure,blockquote{margin:0}
+ul,ol{padding:0;list-style:none}
+:focus-visible{outline:3px solid var(--hv);outline-offset:3px;border-radius:2px}
+.slabbed :focus-visible,.slab-sec :focus-visible{outline-color:var(--navy)}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--pad)}
+.skip{position:fixed;left:12px;top:-60px;z-index:100;background:var(--hv);color:var(--hv-ink);padding:10px 16px;font-weight:700;border-radius:var(--r);text-decoration:none}
+.skip:focus{top:12px}
+
+/* Display type: Anybody, squeezed narrow and heavy like the lettering in their logo. */
+.disp{font-family:var(--display);font-stretch:62%;font-weight:850;letter-spacing:-.005em;line-height:.92;text-wrap:balance}
+h2.disp{font-size:clamp(2.6rem,6.2vw,5.4rem)}
+.lede{font-size:clamp(1.08rem,1.5vw,1.25rem);line-height:1.55;color:var(--ink-2);max-width:60ch}
+.wet .lede,.wet-sec .lede{color:var(--on-wet-2)}
+.label{font:700 .8125rem/1.2 var(--body);letter-spacing:.02em;color:var(--ink-3)}
+.wet-sec .label{color:var(--on-wet-3)}
+
+/* Control joint: a saw cut across the slab. Two hairlines, shadow over light. */
+.joint{height:2px;border:0;margin:0;background:linear-gradient(var(--joint-d) 0 1px,var(--joint-l) 1px 2px)}
+.wet-sec .joint{background:linear-gradient(rgba(0,0,0,.5) 0 1px,rgba(255,255,255,.07) 1px 2px)}
+
+/* Cured concrete: a faint aggregate grain over the pale sections. */
+.slab-sec{position:relative;background:var(--slab);isolation:isolate}
+.slab-sec::before{content:"";position:absolute;inset:0;z-index:-1;opacity:.5;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .04 0 0 0 0 .08 0 0 0 0 .14 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wet-sec{background:var(--wet);color:var(--on-wet)}
+
+/* ---------------------------------------------------------------- buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55em;min-height:52px;padding:0 1.35em;
+  border-radius:var(--r);font:700 1rem/1 var(--body);text-decoration:none;border:2px solid transparent;cursor:pointer;
+  transition:background .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease),transform .2s var(--ease)}
+.btn:active{transform:translateY(1px)}
+.btn-hv{background:var(--hv);color:var(--hv-ink)}
+.btn-hv:hover{background:var(--hv-2)}
+.btn-line{border-color:rgba(241,240,236,.55);color:var(--on-wet)}
+.btn-line:hover{border-color:var(--on-wet);background:rgba(241,240,236,.08)}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-navy:hover{background:#1a2b42}
+.btn-ghost{border-color:var(--navy);color:var(--navy)}
+.btn-ghost:hover{background:var(--navy);color:#fff}
+.btn svg{width:18px;height:18px;flex:none}
+
+/* ----------------------------------------------------------------- header */
+.hd{position:fixed;inset:0 0 auto;z-index:50;height:var(--hd);color:var(--on-wet);
+  transition:background .3s var(--ease),box-shadow .3s var(--ease)}
+.hd.solid{background:rgba(21,25,30,.94);box-shadow:0 1px 0 rgba(255,255,255,.06);backdrop-filter:saturate(1.2) blur(8px)}
+.hd-in{height:100%;display:flex;align-items:center;gap:clamp(14px,2.4vw,32px);max-width:var(--max);margin-inline:auto;padding-inline:var(--pad)}
+.brand{display:block;flex:none}
+.brand img{height:56px;width:auto}
+.nav{display:flex;gap:clamp(14px,2vw,28px);margin-left:auto}
+.nav a{font-weight:600;font-size:.98rem;text-decoration:none;opacity:.86;padding:8px 0;position:relative}
+.nav a:hover{opacity:1}
+.nav a::after{content:"";position:absolute;left:0;right:100%;bottom:2px;height:2px;background:var(--hv);transition:right .25s var(--ease)}
+.nav a:hover::after{right:0}
+.hd-call{font-weight:700;text-decoration:none;white-space:nowrap;font-variant-numeric:tabular-nums}
+.hd .btn{min-height:44px;padding:0 1.05em}
+.menu-btn{display:none;margin-left:auto;background:none;border:2px solid rgba(241,240,236,.4);border-radius:var(--r);
+  min-height:44px;padding:0 14px;font-weight:700;cursor:pointer}
+.mnav{display:none}
+@media (max-width:980px){
+  .nav,.hd-call{display:none}
+  .menu-btn{display:inline-flex;align-items:center;gap:8px}
+  .hd .btn{display:none}
+  .mnav{position:fixed;inset:var(--hd) 0 auto;z-index:49;background:var(--wet);padding:8px var(--pad) 22px;
+    border-bottom:1px solid var(--wet-line);color:var(--on-wet)}
+  .mnav.open{display:block}
+  .mnav a{display:block;padding:14px 0;font:800 1.6rem/1 var(--display);font-stretch:70%;text-decoration:none;border-bottom:1px solid var(--wet-line)}
+  .mnav .btn{margin-top:18px;width:100%;font-family:var(--body);font-size:1rem;font-stretch:100%}
+}
+
+/* ------------------------------------------------------------------- hero
+   Three bays of formwork, one step of a pour in each: their own footage.
+   On a phone, one bay plays all three in a row. */
+.hero{position:relative;min-height:100svh;max-height:1100px;display:flex;align-items:flex-end;background:var(--wet);color:var(--on-wet);overflow:hidden}
+.bays{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:#0d1013}
+.bay{position:relative;overflow:hidden;background:var(--wet-2)}
+.bay img,.bay video,.hero-phone img,.hero-phone video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.bay video,.hero-phone video{opacity:0;transition:opacity .6s var(--ease)}
+.bay video.on,.hero-phone video.on{opacity:1}
+.bay figcaption{position:absolute;top:calc(var(--hd) + 18px);left:18px;z-index:2;display:flex;align-items:baseline;gap:10px;
+  font:800 1.05rem/1 var(--display);font-stretch:75%;color:var(--on-wet);text-shadow:0 1px 10px rgba(0,0,0,.45)}
+.bay figcaption b{color:var(--hv);font-weight:850}
+.hero-phone{display:none;position:absolute;inset:0}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(13,16,19,.55) 0,rgba(13,16,19,0) 22%,rgba(13,16,19,0) 38%,rgba(13,16,19,.72) 68%,rgba(13,16,19,.94) 100%)}
+.hero-copy{position:relative;z-index:2;width:100%;max-width:var(--max);margin-inline:auto;padding:0 var(--pad) clamp(28px,5vh,56px)}
+.status{display:inline-flex;align-items:center;gap:9px;margin-bottom:18px;padding:7px 12px;border-radius:999px;
+  background:rgba(13,16,19,.6);border:1px solid var(--wet-line);font-size:.875rem;font-weight:600;color:var(--on-wet-2)}
+.status i{width:9px;height:9px;border-radius:50%;background:var(--on-wet-3);flex:none}
+.status.open i{background:var(--hv);box-shadow:0 0 0 4px rgba(212,255,63,.18)}
+.status.open{color:var(--on-wet)}
+.h1{font-family:var(--display);font-stretch:62%;font-weight:860;font-size:clamp(3.6rem,10.4vw,9.4rem);line-height:.86;
+  letter-spacing:-.01em;max-width:11ch;color:var(--on-wet)}
+.h1 .w{display:inline-block;white-space:nowrap}
+.h1 .c{display:inline-block;text-align:center;contain:layout style}
+.h1 em{font-style:normal;color:var(--hv)}
+.hero-sub{margin-top:22px;max-width:46ch;font-size:clamp(1.06rem,1.45vw,1.25rem);line-height:1.5;color:var(--on-wet-2)}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:30px;padding-top:20px;border-top:1px solid var(--wet-line);
+  font-size:.95rem;color:var(--on-wet-2)}
+.hero-facts b{font:850 1.45rem/1 var(--display);font-stretch:70%;color:var(--on-wet);margin-right:5px;font-variant-numeric:tabular-nums}
+.hero-facts li{display:flex;align-items:baseline}
+.pause{position:absolute;z-index:3;right:var(--pad);bottom:clamp(28px,5vh,56px);display:inline-flex;align-items:center;gap:8px;
+  min-height:44px;padding:0 15px;border-radius:999px;border:1px solid var(--wet-line);background:rgba(13,16,19,.6);
+  color:var(--on-wet-2);font-size:.85rem;font-weight:600;cursor:pointer}
+.pause:hover{color:var(--on-wet)}
+.pause svg{width:14px;height:14px}
+@media (max-width:1180px){.pause{bottom:auto;top:calc(var(--hd) + 16px)}}
+@media (max-width:899px){
+  .bays{display:none}
+  .hero-phone{display:block}
+  .hero{max-height:none}
+  .hero::after{background:linear-gradient(180deg,rgba(13,16,19,.5) 0,rgba(13,16,19,.05) 20%,rgba(13,16,19,.25) 42%,rgba(13,16,19,.88) 70%,rgba(13,16,19,.97) 100%)}
+  .hero-copy{padding-top:calc(var(--hd) + 40vh)}
+  .hero-cta .btn{flex:1 1 200px}
+}
+@media (prefers-reduced-motion:reduce){.pause{display:none}}
+
+/* --------------------------------------------------------------- trusted */
+.trusted{padding:clamp(56px,8vw,104px) 0}
+.trusted-grid{display:grid;grid-template-columns:1fr 1.25fr;gap:clamp(32px,6vw,96px);align-items:center}
+.clients{display:grid;grid-template-columns:repeat(3,1fr);gap:28px 34px;align-items:center;margin-top:24px}
+.clients li{display:flex;align-items:center;justify-content:flex-start;height:52px}
+.clients img{max-height:46px;width:auto;max-width:100%;filter:grayscale(1) contrast(1.1);opacity:.8;mix-blend-mode:multiply;transition:filter .3s,opacity .3s}
+.clients li:hover img{filter:none;opacity:1}
+.pull{position:relative;padding-left:clamp(0px,3vw,40px)}
+.pull blockquote{font:850 clamp(2rem,4.2vw,3.6rem)/1 var(--display);font-stretch:66%;letter-spacing:-.005em;text-wrap:balance}
+.pull blockquote::before{content:"“";display:block;font-size:2.2em;line-height:.55;color:var(--navy);opacity:.22}
+.pull figcaption{margin-top:18px;font-weight:700;color:var(--ink-2)}
+.pull figcaption span{display:block;font-weight:500;color:var(--ink-3);font-size:.94rem}
+@media (max-width:900px){.trusted-grid{grid-template-columns:minmax(0,1fr)}.clients{grid-template-columns:repeat(2,1fr)}.pull{padding-left:0}}
+
+/* -------------------------------------------------------------- services */
+.services{padding:clamp(64px,9vw,120px) 0 clamp(56px,8vw,104px)}
+.sec-head{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(20px,5vw,80px);align-items:end}
+.sec-head .lede{justify-self:start}
+@media (max-width:900px){.sec-head{grid-template-columns:minmax(0,1fr)}}
+.stages{display:grid;grid-template-columns:repeat(6,1fr);margin-top:clamp(40px,6vw,72px);border-top:2px solid var(--navy)}
+.stages li{position:relative;padding:18px 18px 0 0}
+.stages li+li{padding-left:18px;border-left:1px solid var(--joint-d)}
+.stages b{display:block;font:850 1.45rem/1 var(--display);font-stretch:64%;margin:8px 0 8px}
+.stages .n{font:800 .82rem/1 var(--body);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.stages p{font-size:.95rem;line-height:1.5;color:var(--ink-2)}
+@media (max-width:1100px){.stages{grid-template-columns:repeat(3,1fr)}.stages li:nth-child(4){padding-left:0;border-left:0}.stages li:nth-child(n+4){margin-top:26px;border-top:1px solid var(--joint-d);padding-top:22px}}
+@media (max-width:620px){.stages{grid-template-columns:minmax(0,1fr)}.stages li,.stages li+li{padding:16px 0;border-left:0;border-top:1px solid var(--joint-d);margin:0}.stages li:first-child{border-top:0}}
+.lanes{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,22px);margin-top:clamp(48px,7vw,88px)}
+.lane{display:flex;flex-direction:column;background:var(--wet);color:var(--on-wet);border-radius:var(--r);overflow:hidden}
+.lane-media{position:relative;aspect-ratio:4/5;background:var(--wet-2);overflow:hidden}
+.lane-media img,.lane-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lane-media video{opacity:0;transition:opacity .5s}
+.lane-media video.on{opacity:1}
+.lane-media figcaption{position:absolute;left:14px;right:14px;bottom:12px;z-index:2;font-size:.82rem;font-weight:600;color:var(--on-wet);text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.lane-media::after{content:"";position:absolute;inset:auto 0 0;height:40%;background:linear-gradient(transparent,rgba(13,16,19,.75));z-index:1}
+.lane-body{padding:22px 22px 26px;display:flex;flex-direction:column;gap:12px;flex:1}
+.lane h3{font:850 2rem/.95 var(--display);font-stretch:62%}
+.lane p{color:var(--on-wet-2);font-size:.98rem;line-height:1.55}
+.lane ul{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px}
+.lane li{font-size:.8rem;font-weight:600;padding:5px 9px;border-radius:4px;background:var(--wet-3);color:var(--on-wet)}
+@media (max-width:980px){.lanes{grid-template-columns:minmax(0,1fr)}.lane{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr)}.lane-media{aspect-ratio:auto;min-height:320px}}
+@media (max-width:620px){.lane{display:flex}.lane-media{aspect-ratio:4/3;min-height:0}}
+
+/* --------------------------------------------------------- Croydon Park */
+.croydon{padding:clamp(64px,9vw,120px) 0;overflow:hidden}
+.cp-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(28px,5vw,72px);align-items:center}
+.cp-num{font-family:var(--display);font-stretch:58%;font-weight:880;font-size:clamp(5.4rem,19vw,17rem);line-height:.8;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;color:var(--on-wet);white-space:nowrap}
+.cp-num sup{font-size:.36em;vertical-align:.95em;margin-left:.04em;color:var(--hv);font-stretch:70%}
+.cp-place{display:flex;gap:14px;align-items:baseline;margin:18px 0 22px;font:800 1.5rem/1 var(--display);font-stretch:70%;color:var(--hv)}
+.cp-place span{font:600 .95rem/1.2 var(--body);color:var(--on-wet-3)}
+.cp-quote{font-size:clamp(1.1rem,1.6vw,1.3rem);line-height:1.5;color:var(--on-wet);max-width:44ch}
+.cp-quote q{quotes:"“" "”"}
+.cp-note{margin-top:14px;color:var(--on-wet-3);font-size:.95rem}
+.cp-media{position:relative;aspect-ratio:9/16;max-height:78vh;justify-self:end;width:100%;max-width:420px;border-radius:var(--r);overflow:hidden;background:var(--wet-2)}
+.cp-media img,.cp-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cp-media video{opacity:0;transition:opacity .5s}.cp-media video.on{opacity:1}
+.cp-tag{position:absolute;z-index:2;left:12px;top:12px;font-size:.8rem;font-weight:700;padding:6px 9px;border-radius:4px;background:rgba(13,16,19,.7);color:var(--on-wet)}
+.textlink{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-weight:700;text-underline-offset:4px;color:var(--hv)}
+.slab-sec .textlink{color:var(--navy)}
+@media (max-width:900px){.cp-grid{grid-template-columns:minmax(0,1fr)}.cp-media{justify-self:start;max-width:none;aspect-ratio:4/5}}
+
+/* ------------------------------------------------------ Project Roselands
+   One job in four phases. The stage stays put while the phases scroll past;
+   a hi-vis level line along the stage shows how far through the job you are. */
+.rose{padding:clamp(64px,9vw,120px) 0 clamp(40px,6vw,80px);border-top:1px solid rgba(255,255,255,.05)}
+.rose-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:clamp(20px,5vw,80px);align-items:end;margin-bottom:clamp(36px,5vw,64px)}
+.rose-grid{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(40px,7vw,120px)}
+.rose-stage{position:sticky;top:calc(var(--hd) + 20px);align-self:start;height:min(78vh,820px)}
+.rose-screen{position:relative;height:100%;aspect-ratio:9/16;max-width:100%;border-radius:var(--r);overflow:hidden;background:var(--wet-2)}
+.rose-screen img,.rose-screen video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s var(--ease)}
+.rose-screen .on{opacity:1}
+.rose-screen img.base{opacity:1}
+.level{position:absolute;left:0;right:0;bottom:0;z-index:3;height:5px;background:rgba(13,16,19,.6)}
+.level i{position:absolute;inset:0 auto 0 0;width:calc(var(--p,0)*100%);background:var(--hv);box-shadow:0 0 14px rgba(212,255,63,.55)}
+.rose-count{position:absolute;z-index:3;left:14px;top:14px;padding:6px 10px;border-radius:4px;background:rgba(13,16,19,.72);font-weight:700;font-size:.86rem;font-variant-numeric:tabular-nums}
+.phase{min-height:72vh;display:flex;flex-direction:column;justify-content:center;padding:30px 0;border-top:1px solid var(--wet-line)}
+.phase:first-child{border-top:0}
+.phase .n{font:850 4.6rem/.8 var(--display);font-stretch:58%;color:#646D78;transition:color .4s var(--ease)}
+.phase.on .n{color:var(--hv)}
+.phase h3{margin-top:14px;font:850 clamp(2rem,3.6vw,3.2rem)/.95 var(--display);font-stretch:62%}
+.phase p{margin-top:14px;color:var(--on-wet-2);max-width:42ch}
+.phase .meta{margin-top:14px;font-size:.88rem;color:var(--on-wet-3)}
+.phase .meta a{color:var(--on-wet-2);text-underline-offset:3px}
+.phase-media{display:none}
+@media (max-width:899px){
+  .rose-head{grid-template-columns:minmax(0,1fr)}
+  .rose-grid{display:block}
+  .rose-stage{display:none}
+  .phase{min-height:0;padding:28px 0}
+  .phase .n{color:var(--hv);font-size:3.4rem}
+  .phase-media{display:block;position:relative;margin-top:18px;aspect-ratio:4/5;border-radius:var(--r);overflow:hidden;background:var(--wet-2)}
+  .phase-media img,.phase-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .phase-media video{opacity:0;transition:opacity .5s}.phase-media video.on{opacity:1}
+}
+
+/* ----------------------------------------------- finishes + curing clock */
+.finish-sec{padding:clamp(64px,9vw,120px) 0}
+.fin-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(32px,6vw,96px);margin-top:clamp(36px,5vw,64px);align-items:start}
+.finishes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.finishes li{display:flex;align-items:center;gap:14px;padding:10px 12px 10px 10px;background:var(--slab-2);border-radius:var(--r);font-weight:600;line-height:1.25}
+.sw{width:54px;height:54px;flex:none;border-radius:4px;background:#b9b5ac;box-shadow:inset 0 0 0 1px rgba(11,22,36,.12),inset 0 -6px 12px rgba(11,22,36,.08)}
+.sw-plain{background:#bdb9b0}
+.sw-colour{background:linear-gradient(135deg,#a98f78,#8f7461)}
+.sw-agg{background:radial-gradient(circle at 20% 30%,#8a8174 0 3px,transparent 4px),radial-gradient(circle at 70% 60%,#6f665c 0 4px,transparent 5px),radial-gradient(circle at 45% 80%,#9b9284 0 3px,transparent 4px),radial-gradient(circle at 80% 20%,#7d7569 0 3px,transparent 4px),radial-gradient(circle at 30% 65%,#a39a8c 0 2.5px,transparent 3.5px),#c2bcb1;background-size:22px 22px,26px 26px,18px 18px,24px 24px,16px 16px,auto}
+.sw-broom{background:repeating-linear-gradient(90deg,#bdb9b0 0 3px,#aeaaa1 3px 4px,#c4c0b7 4px 7px)}
+.sw-stamp{background:linear-gradient(90deg,transparent 48%,rgba(11,22,36,.18) 48% 52%,transparent 52%),linear-gradient(transparent 48%,rgba(11,22,36,.18) 48% 52%,transparent 52%),#b8afa3;background-size:27px 18px}
+.sw-steel{background:linear-gradient(160deg,#c9c6bf,#9d9a94 55%,#c6c3bb);}
+.sw-machine{background:repeating-radial-gradient(circle at 30% 120%,#b9b6af 0 6px,#aaa7a0 6px 7px,#c1beb7 7px 12px)}
+.fin-note{margin-top:14px;font-size:.88rem;color:var(--ink-3)}
+.cure{background:var(--navy);color:var(--on-wet);border-radius:var(--r);padding:clamp(22px,3vw,36px)}
+.cure h3{font:850 clamp(1.9rem,3vw,2.6rem)/.95 var(--display);font-stretch:62%}
+.cure .row{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 18px;margin-top:20px}
+.cure label{display:grid;gap:6px;font-size:.88rem;font-weight:700;color:var(--on-wet-2)}
+.cure input[type=date]{min-height:48px;padding:0 12px;border-radius:var(--r);border:2px solid rgba(241,240,236,.3);background:var(--wet-2);color:var(--on-wet);color-scheme:dark}
+.cure .today-btn{min-height:48px;padding:0 14px;border-radius:var(--r);border:2px solid rgba(241,240,236,.3);background:none;font-weight:700;cursor:pointer}
+.track{position:relative;margin:34px 0 8px;height:12px;border-radius:2px;background:linear-gradient(90deg,#5d6672,#8b939c 40%,#c9ccd0)}
+.track .fill{position:absolute;inset:0 auto 0 0;width:var(--fill,0%);background:var(--hv);border-radius:2px;transition:width .5s var(--ease)}
+.tick{position:absolute;top:-9px;width:3px;height:30px;background:var(--on-wet);transform:translateX(-1px)}
+.tick span{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:.78rem;font-weight:700;color:var(--on-wet-2)}
+.track .now{position:absolute;top:22px;transform:translateX(-50%);font-size:.78rem;font-weight:800;color:var(--hv);white-space:nowrap}
+.milestones{display:grid;gap:10px;margin-top:40px}
+.ms{display:grid;grid-template-columns:auto 1fr auto;gap:4px 14px;align-items:baseline;padding:14px 0;border-top:1px solid rgba(241,240,236,.14)}
+.ms b{font:850 1.5rem/1 var(--display);font-stretch:66%}
+.ms .when{font-weight:700;color:var(--on-wet);text-align:right;font-variant-numeric:tabular-nums}
+.ms .what{grid-column:1/-1;font-size:.9rem;color:var(--on-wet-3)}
+.ms.done b,.ms.done .when{color:var(--hv)}
+.cure .src{margin-top:16px;font-size:.84rem;color:var(--on-wet-3)}
+@media (max-width:900px){.fin-grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:460px){.finishes{grid-template-columns:minmax(0,1fr)}}
+
+/* -------------------------------------------------------------- the wall */
+.wall-sec{padding:clamp(64px,9vw,120px) 0}
+.wall{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:clamp(36px,5vw,60px)}
+.tile{position:relative;aspect-ratio:9/16;border-radius:4px;overflow:hidden;background:var(--wet-2)}
+.tile img,.tile video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tile video{opacity:0;transition:opacity .5s}.tile video.on{opacity:1}
+.tile figcaption{position:absolute;z-index:2;left:10px;bottom:9px;right:10px;font-size:.78rem;font-weight:700;color:var(--on-wet);text-shadow:0 1px 6px rgba(0,0,0,.7)}
+.tile::after{content:"";position:absolute;inset:auto 0 0;height:34%;background:linear-gradient(transparent,rgba(13,16,19,.7));z-index:1}
+@media (max-width:1000px){.wall{grid-template-columns:repeat(3,1fr)}.wall .tile:nth-child(n+10){display:none}}
+@media (max-width:620px){.wall{grid-template-columns:repeat(2,1fr)}.wall .tile:nth-child(n+7){display:none}}
+.gymea>*{min-width:0}
+.gymea{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:clamp(24px,4vw,64px);margin-top:clamp(56px,8vw,104px);align-items:start}
+.gymea h3{font:850 clamp(2.2rem,4vw,3.4rem)/.92 var(--display);font-stretch:62%}
+.gymea ol{margin-top:18px;counter-reset:g}
+.gymea ol li{counter-increment:g;display:grid;grid-template-columns:2.2em 1fr;padding:9px 0;border-top:1px solid var(--wet-line);color:var(--on-wet-2);font-size:.97rem}
+.gymea ol li::before{content:counter(g);font-weight:800;color:var(--hv);font-variant-numeric:tabular-nums}
+.strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;scrollbar-color:var(--wet-3) transparent}
+.strip figure{flex:0 0 min(62vw,300px);scroll-snap-align:start}
+.strip img{aspect-ratio:3/4;object-fit:cover;width:100%;border-radius:4px;background:var(--wet-2)}
+.strip figcaption{margin-top:7px;font-size:.82rem;color:var(--on-wet-3)}
+.strip-hint{font-size:.85rem;color:var(--on-wet-3);margin-top:6px}
+@media (max-width:900px){.gymea{grid-template-columns:minmax(0,1fr)}}
+
+/* ------------------------------------------------------------------ crew */
+.crew-sec{padding:clamp(64px,9vw,120px) 0}
+.crew-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);align-items:end}
+.crew-photo{margin-top:clamp(36px,5vw,60px);position:relative;border-radius:var(--r);overflow:hidden}
+.crew-photo img{width:100%;aspect-ratio:21/9;object-fit:cover;object-position:50% 40%}
+.crew-photo figcaption{position:absolute;left:16px;bottom:14px;font-weight:700;font-size:.88rem;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.team{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(20px,2.4vw,28px)}
+.person{background:var(--slab-2);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.person img{width:100%;aspect-ratio:4/5;object-fit:cover;background:#cfccc5}
+.mono{aspect-ratio:4/5;display:grid;place-items:center;background:var(--navy);color:var(--slab);font:880 6.5rem/1 var(--display);font-stretch:60%;letter-spacing:.02em}
+.person-body{padding:18px 18px 22px}
+.person h3{font:850 1.75rem/.95 var(--display);font-stretch:62%}
+.role{margin-top:6px;font-weight:700;font-size:.9rem;color:var(--ink-3)}
+.person p{margin-top:12px;font-size:.96rem;line-height:1.55;color:var(--ink-2)}
+@media (max-width:900px){.crew-top{grid-template-columns:minmax(0,1fr)}.team{grid-template-columns:1fr 1fr}.crew-photo img{aspect-ratio:16/10}}
+@media (max-width:560px){.team{grid-template-columns:minmax(0,1fr)}.person{display:grid;grid-template-columns:120px 1fr}.person img,.person .mono{aspect-ratio:auto;height:100%;min-height:150px}.mono{font-size:3.4rem}}
+.director{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);margin-top:clamp(20px,2.4vw,28px);background:var(--wet);color:var(--on-wet);border-radius:var(--r);overflow:hidden}
+.director img{width:100%;height:100%;object-fit:cover;aspect-ratio:3/4}
+.director-body{padding:clamp(24px,4vw,56px);display:flex;flex-direction:column;justify-content:center}
+.director blockquote{font:850 clamp(1.8rem,3.2vw,2.9rem)/1 var(--display);font-stretch:64%;text-wrap:balance}
+.director cite{display:block;margin-top:18px;font-style:normal;font-weight:700}
+.director cite span{display:block;font-weight:500;color:var(--on-wet-3);font-size:.94rem}
+.director p{margin-top:16px;color:var(--on-wet-2);max-width:52ch}
+.director .textlink{color:var(--hv)}
+@media (max-width:900px){.director{grid-template-columns:minmax(0,1fr)}.director img{aspect-ratio:4/3;object-position:50% 25%}}
+
+/* --------------------------------------------------------------- process */
+.process-sec{padding:clamp(56px,8vw,104px) 0}
+.process{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:clamp(32px,5vw,56px);border-top:2px solid var(--navy)}
+.process li{padding:20px 22px 0 0}
+.process li+li{padding-left:22px;border-left:1px solid var(--joint-d)}
+.process .n{font:880 3.4rem/.9 var(--display);font-stretch:58%;color:#817D75}
+.process h3{margin-top:10px;font:850 1.7rem/.95 var(--display);font-stretch:64%}
+.process p{margin-top:10px;font-size:.95rem;color:var(--ink-2);line-height:1.55}
+@media (max-width:980px){.process{grid-template-columns:1fr 1fr}.process li:nth-child(3){padding-left:0;border-left:0}.process li:nth-child(n+3){margin-top:24px;padding-top:20px;border-top:1px solid var(--joint-d)}}
+@media (max-width:560px){.process{grid-template-columns:minmax(0,1fr)}.process li,.process li+li{padding:18px 0;border-left:0;margin:0;border-top:1px solid var(--joint-d)}.process li:first-child{border-top:0}}
+
+/* ------------------------------------------------------------- instagram */
+.ig-sec{padding:clamp(56px,8vw,96px) 0;overflow:hidden}
+.ig-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:18px}
+.reels{display:flex;gap:12px;margin-top:28px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;scrollbar-color:var(--wet-3) transparent}
+.reel{flex:0 0 clamp(180px,19vw,240px);scroll-snap-align:start;text-decoration:none}
+.reel-img{position:relative;aspect-ratio:9/16;border-radius:var(--r);overflow:hidden;background:var(--wet-2)}
+.reel-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.reel:hover .reel-img img{transform:scale(1.03)}
+.plays{position:absolute;left:10px;bottom:10px;display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:4px;background:rgba(13,16,19,.78);font-size:.8rem;font-weight:800;color:#fff}
+.plays svg{width:12px;height:12px}
+.reel p{margin-top:9px;font-size:.9rem;font-weight:600;line-height:1.35;color:var(--on-wet)}
+.reel p span{display:block;font-weight:500;color:var(--on-wet-3);font-size:.84rem}
+.ig-note{margin-top:10px;font-size:.84rem;color:var(--on-wet-3)}
+
+/* ------------------------------------------------------------------- FAQ */
+.faq-sec{padding:clamp(64px,9vw,120px) 0}
+.faq-grid{display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr);gap:clamp(28px,5vw,80px);margin-top:clamp(32px,5vw,56px);align-items:start}
+.faq-side{position:sticky;top:calc(var(--hd) + 24px)}
+.faq-search input{width:100%;min-height:52px;padding:0 14px;border-radius:var(--r);border:2px solid var(--slab-3);background:#f4f3f0}
+.faq-search input:focus{border-color:var(--navy);outline:none}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chips button{min-height:40px;padding:0 12px;border-radius:999px;border:1.5px solid var(--slab-3);background:transparent;font-weight:600;font-size:.9rem;cursor:pointer}
+.chips button[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+.faq-group+.faq-group{margin-top:34px}
+.faq-group h3{font:850 1.55rem/1 var(--display);font-stretch:64%;padding-bottom:10px;border-bottom:2px solid var(--navy)}
+.qa{border-bottom:1px solid var(--joint-d)}
+.qa summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;padding:16px 0;font-weight:700;font-size:1.04rem;line-height:1.35}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::after{content:"";flex:none;width:12px;height:12px;margin-top:5px;border-right:2.5px solid var(--navy);border-bottom:2.5px solid var(--navy);transform:rotate(45deg);transition:transform .25s var(--ease)}
+.qa[open] summary::after{transform:rotate(225deg);margin-top:9px}
+.qa .a{padding:0 0 18px;color:var(--ink-2);max-width:66ch}
+.qa .a p+p,.qa .a p+ul,.qa .a ul+p{margin-top:8px}
+.qa .a ul{display:grid;gap:4px;margin-top:6px}
+.qa .a li{padding-left:16px;position:relative}
+.qa .a li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:2px;background:var(--navy)}
+.qa .a a{font-weight:700;text-underline-offset:3px;overflow-wrap:anywhere}
+.faq-empty{padding:20px 0;font-weight:600}
+mark{background:var(--hv);color:var(--navy);padding:0 2px}
+@media (max-width:900px){.faq-grid{grid-template-columns:minmax(0,1fr)}.faq-side{position:static}}
+
+/* ----------------------------------------------------------------- quote */
+.quote-sec{padding:clamp(64px,9vw,120px) 0}
+.q-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(24px,4vw,64px);margin-top:clamp(32px,5vw,56px);align-items:start}
+.tabs{display:flex;gap:6px;padding:6px;background:var(--wet-2);border-radius:calc(var(--r) + 4px);width:max-content;max-width:100%}
+.tabs button{min-height:48px;padding:0 18px;border-radius:var(--r);border:0;background:none;color:var(--on-wet-2);font-weight:700;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--hv);color:var(--hv-ink)}
+.panel{margin-top:20px;background:var(--wet-2);border-radius:var(--r);padding:clamp(20px,3vw,36px)}
+.panel h3{font:850 clamp(1.8rem,3vw,2.5rem)/.95 var(--display);font-stretch:62%}
+.panel>p{margin-top:10px;color:var(--on-wet-2)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;margin-top:22px}
+.f{display:grid;gap:6px}
+.f.full{grid-column:1/-1}
+.f label,.f legend{font-weight:700;font-size:.9rem;color:var(--on-wet)}
+.f .opt{font-weight:500;color:var(--on-wet-3)}
+.f input,.f select,.f textarea{width:100%;min-height:50px;padding:0 13px;border-radius:var(--r);border:2px solid rgba(241,240,236,.18);background:var(--wet);color:var(--on-wet)}
+.f textarea{min-height:110px;padding:12px 13px;resize:vertical}
+.f select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--on-wet-2) 50%),linear-gradient(135deg,var(--on-wet-2) 50%,transparent 50%);background-position:calc(100% - 20px) 21px,calc(100% - 14px) 21px;background-size:6px 6px;background-repeat:no-repeat;padding-right:36px}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--hv);outline:none}
+.f input[aria-invalid=true],.f select[aria-invalid=true]{border-color:#ff8a6a}
+.err{font-size:.84rem;font-weight:600;color:#ffb39e}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg label{position:relative}
+.seg input{position:absolute;opacity:0;width:1px;height:1px}
+.seg span{display:inline-flex;align-items:center;min-height:42px;padding:0 13px;border-radius:999px;border:1.5px solid rgba(241,240,236,.25);font-weight:600;font-size:.92rem;cursor:pointer}
+.seg input:checked+span{background:var(--on-wet);color:var(--navy);border-color:var(--on-wet)}
+.seg input:focus-visible+span{outline:3px solid var(--hv);outline-offset:2px}
+fieldset{border:0;padding:0;margin:0;min-width:0}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;margin-top:22px}
+.small{font-size:.86rem;color:var(--on-wet-3)}
+.sent{margin-top:18px;padding:16px;border-radius:var(--r);background:rgba(212,255,63,.12);border:1px solid rgba(212,255,63,.4);color:var(--on-wet)}
+.send-list{display:grid;gap:8px;margin-top:18px}
+.send-list li{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:var(--r);background:var(--wet);font-weight:600}
+.send-list li::before{content:"";width:10px;height:10px;border-radius:2px;background:var(--hv);flex:none}
+.aside{display:grid;gap:12px}
+.card{border-radius:var(--r);padding:20px 22px;background:var(--wet-2)}
+.card h3{font:850 1.5rem/1 var(--display);font-stretch:64%}
+.big-num{display:block;margin-top:8px;font:880 clamp(2.1rem,3.4vw,2.8rem)/1 var(--display);font-stretch:60%;text-decoration:none;color:var(--hv);font-variant-numeric:tabular-nums}
+.card a{overflow-wrap:anywhere}
+.hours{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin-top:10px;font-size:.95rem}
+.hours dt{color:var(--on-wet-3)}
+.hours dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums}
+.hours .today{color:var(--hv)}
+@media (max-width:980px){.q-grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:620px){.fgrid{grid-template-columns:minmax(0,1fr)}.tabs{width:100%}.tabs button{flex:1;padding:0 10px}}
+
+/* ---------------------------------------------------------------- footer */
+.ft{background:#0e1115;color:var(--on-wet-2);padding:clamp(48px,7vw,88px) 0 calc(28px + env(safe-area-inset-bottom))}
+.ft-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr;gap:28px}
+.ft img{width:150px;height:auto}
+.ft h3{font:800 1.1rem/1 var(--display);font-stretch:72%;color:var(--on-wet);margin-bottom:12px}
+.ft li{padding:3px 0}
+.ft a{text-decoration:none}
+.ft a:hover{color:var(--on-wet);text-decoration:underline}
+.ft-base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:44px;padding-top:20px;border-top:1px solid var(--wet-line);font-size:.85rem;color:var(--on-wet-3)}
+@media (max-width:900px){.ft-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.ft-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* -------------------------------------------------------------- phone bar */
+.pbar{position:fixed;z-index:45;left:0;right:0;bottom:0;display:none;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:rgba(21,25,30,.96);border-top:1px solid var(--wet-line);transform:translateY(110%);transition:transform .3s var(--ease)}
+.pbar.show{transform:none}
+.pbar .btn{flex:1;min-height:50px}
+@media (max-width:899px){.pbar{display:flex}.ft{padding-bottom:calc(96px + env(safe-area-inset-bottom))}}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="hd" id="hd">
+  <div class="hd-in">
+    <a class="brand" href="#top" aria-label="Xtreme Works, back to the top"><img src="assets/logo-white-200.webp" srcset="assets/logo-white-200.webp 200w, assets/logo-white-400.webp 400w" sizes="64px" width="64" height="56" alt=""></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#services">Services</a>
+      <a href="#work">Our work</a>
+      <a href="#crew">The crew</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="hd-call" href="tel:+61433597455">0433 597 455</a>
+    <a class="btn btn-hv" href="#quote">Free quote</a>
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mnav">Menu</button>
+  </div>
+</header>
+<nav class="mnav" id="mnav" aria-label="Main">
+  <a href="#services">Services</a>
+  <a href="#work">Our work</a>
+  <a href="#crew">The crew</a>
+  <a href="#faq">FAQ</a>
+  <a href="tel:+61433597455">0433 597 455</a>
+  <a class="btn btn-hv" href="#quote">Get a free quote</a>
+</nav>
+
+<main id="main">
+
+<!-- =============================================================== HERO -->
+<section class="hero wet" id="top" aria-labelledby="h1">
+  <div class="bays" aria-hidden="true">
+    <figure class="bay"><img src="media/bay-pour.webp" alt="" width="540" height="960" loading="lazy"><video muted loop playsinline preload="none" data-src="media/bay-pour"></video><figcaption><b>01</b>Pour</figcaption></figure>
+    <figure class="bay"><img src="media/bay-screed.webp" alt="" width="540" height="960" loading="lazy"><video muted loop playsinline preload="none" data-src="media/bay-screed"></video><figcaption><b>02</b>Screed</figcaption></figure>
+    <figure class="bay"><img src="media/bay-trowel.webp" alt="" width="540" height="960" loading="lazy"><video muted loop playsinline preload="none" data-src="media/bay-trowel"></video><figcaption><b>03</b>Finish</figcaption></figure>
+  </div>
+  <div class="hero-phone">
+    <img src="media/hero-phone.webp" alt="The Xtreme Works crew placing, screeding and power-trowelling a concrete slab" width="540" height="960" loading="lazy">
+    <video muted loop playsinline preload="none" data-src="media/hero-phone" aria-hidden="true"></video>
+  </div>
+  <div class="hero-copy">
+    <p class="status" id="status"><i></i><span>Mon–Sat 7am–6pm · Sun 7am–3pm</span></p>
+    <h1 class="h1" id="h1">Strength in every&nbsp;<em>pour.</em></h1>
+    <p class="hero-sub">Family-owned concreters for homes, builders and big commercial slabs, right across Greater Sydney, Western Sydney and the Blue Mountains.</p>
+    <div class="hero-cta">
+      <a class="btn btn-hv" href="#quote">Get a free quote</a>
+      <a class="btn btn-line" href="tel:+61433597455"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z"/></svg>Call 0433 597 455</a>
+    </div>
+    <ul class="hero-facts">
+      <li><b>15+</b>years</li>
+      <li><b>200+</b>projects</li>
+      <li><b>30+</b>crew</li>
+      <li>Licensed &amp; insured</li>
+    </ul>
+  </div>
+  <button class="pause" id="pause" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg><span>Pause video</span></button>
+</section>
+
+<!-- ============================================================ TRUSTED -->
+<section class="trusted slab-sec" aria-labelledby="trusted-h">
+  <div class="wrap trusted-grid">
+    <div>
+      <h2 class="label" id="trusted-h">Trusted by our clients</h2>
+      <ul class="clients">
+        <li><img src="assets/client-total.webp" alt="TOTAL Construction" width="380" height="120" loading="lazy"></li>
+        <li><img src="assets/client-patterson.webp" alt="Patterson Building Group" width="757" height="120" loading="lazy"></li>
+        <li><img src="assets/client-formcom.webp" alt="FORMCOM" width="784" height="120" loading="lazy"></li>
+        <li><img src="assets/client-mountview.webp" alt="Mountview Construction" width="611" height="120" loading="lazy"></li>
+        <li><img src="assets/client-jensen.webp" alt="Jensen Projects" width="327" height="120" loading="lazy"></li>
+      </ul>
+    </div>
+    <figure class="pull">
+      <blockquote>Great communication, quality work and a genuinely great people to deal with.</blockquote>
+      <figcaption>Patterson Building Group<span>Builder, on working with Xtreme Works</span></figcaption>
+    </figure>
+  </div>
+</section>
+<hr class="joint">
+
+<!-- =========================================================== SERVICES -->
+<section class="services slab-sec" id="services" aria-labelledby="services-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="disp" id="services-h">One crew, every stage of the pour.</h2>
+      <p class="lede">We specialise in residential, commercial and industrial concreting, covering excavation, formwork, reinforcement, placing, finishing and after-care. From small footpaths to large industrial slabs, no job is too big or small for us.</p>
+    </div>
+    <ol class="stages" aria-label="What we do, in the order a job runs">
+      <li><span class="n">01</span><b>Demolition &amp; excavation</b><p>Old concrete out. We manage all excavation and disposal of spoil.</p></li>
+      <li><span class="n">02</span><b>Drainage &amp; levels</b><p>Falls, spoon drains and pits, so water runs off instead of pooling.</p></li>
+      <li><span class="n">03</span><b>Formwork &amp; reo</b><p>Mesh, bar chairs, dowels and any engineered reinforcement required.</p></li>
+      <li><span class="n">04</span><b>Placing</b><p>Pumps and compact gear organised when access is tight.</p></li>
+      <li><span class="n">05</span><b>Finishing</b><p>Plain, coloured, exposed, broom, stamped or trowelled.</p></li>
+      <li><span class="n">06</span><b>After-care</b><p>Curing, sealing, washing and long-term care, all explained.</p></li>
+    </ol>
+
+    <div class="lanes">
+      <article class="lane">
+        <figure class="lane-media">
+          <img src="media/wall-bush.webp" alt="" width="360" height="640" loading="lazy">
+          <video muted loop playsinline preload="none" data-src="media/wall-bush" aria-hidden="true"></video>
+          <figcaption>From our residential projects</figcaption>
+        </figure>
+        <div class="lane-body">
+          <h3>Residential</h3>
+          <p>Practical, durable work that lifts your home, with every pour prepared and finished properly. We help you pick the colour, design and texture.</p>
+          <ul><li>Driveways</li><li>Footpaths</li><li>Patios</li><li>Alfresco slabs</li><li>Extensions</li><li>Old concrete removed</li></ul>
+        </div>
+      </article>
+      <article class="lane">
+        <figure class="lane-media">
+          <img src="media/wall-deck.webp" alt="" width="360" height="640" loading="lazy">
+          <video muted loop playsinline preload="none" data-src="media/wall-deck" aria-hidden="true"></video>
+          <figcaption>From our commercial projects</figcaption>
+        </figure>
+        <div class="lane-body">
+          <h3>Commercial &amp; industrial</h3>
+          <p>Clean, reliable concreting on time and to specification. We work to engineered plans alongside builders, engineers and site managers, and supply pour plans and SWMS.</p>
+          <ul><li>Shopfronts</li><li>Car parks</li><li>Developments</li><li>Industrial slabs</li><li>Hardstands</li><li>Warehouses</li><li>Suspended decks</li></ul>
+        </div>
+      </article>
+      <article class="lane">
+        <figure class="lane-media">
+          <img src="media/abbotsford.webp" alt="" width="540" height="960" loading="lazy">
+          <video muted loop playsinline preload="none" data-src="media/abbotsford" aria-hidden="true"></video>
+          <figcaption>Abbotsford: footpath, kerb &amp; gutter</figcaption>
+        </figure>
+        <div class="lane-body">
+          <h3>Council &amp; civil</h3>
+          <p>Kerbs, gutters and council crossovers: formwork, steel fixing, concrete placement and excavation, all done by our own crew.</p>
+          <ul><li>Kerb &amp; gutter</li><li>Council crossovers</li><li>Laybacks</li><li>Council footpaths</li><li>Driveway ramps</li></ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================= CROYDON PARK -->
+<section class="croydon wet-sec" id="work" aria-labelledby="cp-h">
+  <div class="wrap cp-grid">
+    <div>
+      <h2 class="vh" id="cp-h">Croydon Park: a 1,600 square metre slab</h2>
+      <p class="cp-num" aria-hidden="true"><span id="cpNum">1,600</span><sup>m²</sup></p>
+      <p class="cp-place">Croydon Park <span>One slab</span></p>
+      <p class="cp-quote"><q>At our project in Croydon Park, our team are completing a 1600 square meter slab.</q></p>
+      <p class="cp-note">That’s roughly six tennis courts of concrete, placed, screeded and machine-trowelled by the crew.</p>
+      <a class="textlink" href="https://www.instagram.com/p/DbKVykCRp2c/" target="_blank" rel="noopener">Watch the Croydon Park reel on Instagram<span class="vh"> (opens in a new tab)</span> ↗</a>
+    </div>
+    <figure class="cp-media">
+      <img src="media/croydon.webp" alt="Drone view looking straight down on the Croydon Park slab, with concrete pump booms over the deck" width="540" height="960" loading="lazy">
+      <video muted loop playsinline preload="none" data-src="media/croydon" aria-hidden="true"></video>
+      <figcaption class="cp-tag">From the drone</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===================================================== PROJECT ROSELANDS -->
+<section class="rose wet-sec" aria-labelledby="rose-h">
+  <div class="wrap">
+    <div class="rose-head">
+      <h2 class="disp" id="rose-h">Project Roselands, start to finish.</h2>
+      <p class="lede">One job, four phases, filmed on site and posted as we went. This is what “excavation, formwork, reinforcement, placing and finishing” looks like in practice.</p>
+    </div>
+    <div class="rose-grid">
+      <div class="rose-stage" aria-hidden="true">
+        <div class="rose-screen" id="roseScreen">
+          <img class="base" src="media/roselands-1.webp" alt="" width="540" height="960" loading="lazy">
+          <video muted loop playsinline preload="none" data-src="media/roselands-1" data-phase="1"></video>
+          <video muted loop playsinline preload="none" data-src="media/roselands-2" data-phase="2"></video>
+          <video muted loop playsinline preload="none" data-src="media/roselands-3" data-phase="3"></video>
+          <video muted loop playsinline preload="none" data-src="media/roselands-4" data-phase="4"></video>
+          <p class="rose-count" id="roseCount">Phase 1 of 4</p>
+          <div class="level" id="level"><i></i></div>
+        </div>
+      </div>
+      <ol class="rose-steps">
+        <li class="phase on" data-phase="1">
+          <span class="n">01</span>
+          <h3>Demolition &amp; excavation</h3>
+          <p>Traffic control up, footpath closed, then the old concrete broken out, loaded onto the truck and carted away.</p>
+          <p class="meta">Posted 10 Mar 2026 · <a href="https://www.instagram.com/p/DVr_ghmkcyq/" target="_blank" rel="noopener">See the reel<span class="vh"> on Instagram (opens in a new tab)</span></a></p>
+          <figure class="phase-media"><img src="media/roselands-1.webp" alt="An excavator breaking out old concrete slabs beside the road in Roselands" width="540" height="960" loading="lazy"><video muted loop playsinline preload="none" data-src="media/roselands-1" aria-hidden="true"></video></figure>
+        </li>
+        <li class="phase" data-phase="2">
+          <span class="n">02</span>
+          <h3>Formwork, sub-grade &amp; reo</h3>
+          <p>The ground trimmed and compacted, string lines and forms set to level, and the reinforcement in before a drop of concrete arrives.</p>
+          <p class="meta">Posted 11 Mar 2026 · <a href="https://www.instagram.com/p/DVu0ToqEbSE/" target="_blank" rel="noopener">See the reel<span class="vh"> on Instagram (opens in a new tab)</span></a></p>
+          <figure class="phase-media"><img src="media/roselands-2.webp" alt="Crew in hi-vis setting string lines and timber forms" width="540" height="960" loading="lazy"><video muted loop playsinline preload="none" data-src="media/roselands-2" aria-hidden="true"></video></figure>
+        </li>
+        <li class="phase" data-phase="3">
+          <span class="n">03</span>
+          <h3>Concrete placement</h3>
+          <p>Placed straight from the truck, screeded off the forms, bull-floated, edged and power-trowelled to a clean, even finish.</p>
+          <p class="meta">Posted 13 Mar 2026 · <a href="https://www.instagram.com/p/DV19mwvkp5T/" target="_blank" rel="noopener">See the reel<span class="vh"> on Instagram (opens in a new tab)</span></a></p>
+          <figure class="phase-media"><img src="media/roselands-3.webp" alt="Concrete pouring from a truck chute into the formwork" width="540" height="960" loading="lazy"><video muted loop playsinline preload="none" data-src="media/roselands-3" aria-hidden="true"></video></figure>
+        </li>
+        <li class="phase" data-phase="4">
+          <span class="n">04</span>
+          <h3>Formwork stripping</h3>
+          <p>Forms stripped once the slab had set, then the old kerb and gutter broken out for the next stage of the job.</p>
+          <p class="meta">Posted 21 Mar 2026 · <a href="https://www.instagram.com/p/DWKbGGSE7fT/" target="_blank" rel="noopener">See the reel<span class="vh"> on Instagram (opens in a new tab)</span></a></p>
+          <figure class="phase-media"><img src="media/roselands-4.webp" alt="A crew member levering timber formwork away from the finished concrete" width="540" height="960" loading="lazy"><video muted loop playsinline preload="none" data-src="media/roselands-4" aria-hidden="true"></video></figure>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================ FINISHES + CURE CLOCK -->
+<section class="finish-sec slab-sec" id="finishes" aria-labelledby="fin-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="disp" id="fin-h">Pick a finish. Know when you can drive on it.</h2>
+      <p class="lede">We help homeowners choose the colour, design and texture. Once it’s poured, here’s how long it needs before you walk, park or put weight on it.</p>
+    </div>
+    <div class="fin-grid">
+      <div>
+        <h3 class="label">The finishes we lay</h3>
+        <ul class="finishes" style="margin-top:14px">
+          <li><span class="sw sw-plain" aria-hidden="true"></span>Plain concrete</li>
+          <li><span class="sw sw-colour" aria-hidden="true"></span>Coloured concrete</li>
+          <li><span class="sw sw-agg" aria-hidden="true"></span>Exposed aggregate</li>
+          <li><span class="sw sw-broom" aria-hidden="true"></span>Broom finish (non-slip)</li>
+          <li><span class="sw sw-stamp" aria-hidden="true"></span>Stamped or stencilled</li>
+          <li><span class="sw sw-steel" aria-hidden="true"></span>Burnished / steel trowel</li>
+          <li><span class="sw sw-machine" aria-hidden="true"></span>Machine trowel (industrial)</li>
+        </ul>
+        <p class="fin-note">Swatches are drawn, not photographed: ask us to show you the real thing on your inspection. Sealing is recommended and can be included in your quote.</p>
+      </div>
+      <div class="cure" id="cure">
+        <h3>When can I use my new slab?</h3>
+        <div class="row">
+          <label>Pour day<input type="date" id="pourDay" required></label>
+          <button class="today-btn" type="button" id="pourToday">It’s being poured today</button>
+        </div>
+        <div class="track" aria-hidden="true"><div class="fill" id="cureFill"></div></div>
+        <div class="milestones" id="milestones" aria-live="polite">
+          <div class="ms" data-days="2"><b>Walk on it</b><span class="when" data-when>24–48 hours</span><span class="what">Foot traffic only.</span></div>
+          <div class="ms" data-days="7"><b>Light vehicles</b><span class="when" data-when>7 days</span><span class="what">Cars and small vehicles.</span></div>
+          <div class="ms" data-days="28"><b>Full strength</b><span class="when" data-when>28 days</span><span class="what">Fully cured.</span></div>
+        </div>
+        <p class="src">Curing times from our FAQ. You’ll also get detailed after-care instructions covering curing, sealing and washing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ THE WALL -->
+<section class="wall-sec wet-sec" aria-labelledby="wall-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="disp" id="wall-h">Straight off the slab.</h2>
+      <p class="lede">Real jobs, filmed on site by the crew. Residential paths and slabs, commercial decks, the lot.</p>
+    </div>
+    <div class="wall" id="wall">
+      <figure class="tile"><img src="media/wall-float.webp" alt="" width="360" height="640" loading="lazy"><video muted loop playsinline preload="none" data-src="media/wall-float" aria-hidden="true"></video><figcaption>Residential slab</figcaption></figure>
+      <figure class="tile"><img src="media/wall-mesh.webp" alt="" width="360" height="640" loading="lazy"><video muted loop playsinline preload="none" data-src="media/wall-mesh" aria-hidden="true"></video><figcaption>Commercial: reo ready to pour</figcaption></figure>
+      <figure class="tile"><img src="media/wall-path.webp" alt="" width="360" height="640" loading="lazy"><video muted loop playsinline preload="none" data-src="media/wall-path" aria-hidden="true"></video><figcaption>Residential side path</figcaption></figure>
+      <figure class="tile"><img src="media/wall-ramp.webp" alt="" width="360" height="640" loading="lazy"><video muted loop playsinline preload="none" data-src="media/wall-ramp" aria-hidden="true"></video><figcaption>Commercial ramp finish</figcaption></figure>
+      <figure class="tile"><img src="media/wall-slab.webp" alt="" width="360" height="640" loading="lazy"><video muted loop playsinline preload="none" data-src="media/wall-slab" aria-hidden="true"></video><figcaption>Residential slab</figcaption></figure>
+      <figure class="tile"><img src="media/wall-formwork.webp" alt="" width="360" height="640" loading="lazy"><video muted loop playsinline preload="none" data-src="media/wall-formwork" aria-hidden="true"></video><figcaption>Commercial formwork</figcaption></figure>
+      <figure class="tile"><img src="media/wall-screed.webp" alt="" width="360" height="640" loading="lazy"><video muted loop playsinline preload="none" data-src="media/wall-screed" aria-hidden="true"></video><figcaption>Residential screed</figcaption></figure>
+      <figure class="tile"><img src="media/wall-pump.webp" alt="" width="360" height="640" loading="lazy"><video muted loop playsinline preload="none" data-src="media/wall-pump" aria-hidden="true"></video><figcaption>Commercial deck pour</figcaption></figure>
+      <figure class="tile"><img src="media/wall-bush.webp" alt="" width="360" height="640" loading="lazy"><video muted loop playsinline preload="none" data-src="media/wall-bush" aria-hidden="true"></video><figcaption>Residential slab</figcaption></figure>
+      <figure class="tile"><img src="media/wall-deck.webp" alt="" width="360" height="640" loading="lazy"><video muted loop playsinline preload="none" data-src="media/wall-deck" aria-hidden="true"></video><figcaption>Commercial suspended slab</figcaption></figure>
+    </div>
+
+    <div class="gymea">
+      <div>
+        <h3>Stage 2, Gymea. Old to new.</h3>
+        <ol>
+          <li>Demolition and removal of existing concrete</li>
+          <li>Excavation for a new council footpath</li>
+          <li>Formwork and reinforced steel to the council footpath, external paths and driveway ramp to the basement</li>
+          <li>Layback, council crossover, kerb and gutter</li>
+          <li>Concrete placement throughout</li>
+        </ol>
+        <a class="textlink" href="https://www.instagram.com/p/DThBpM9Ef8_/" target="_blank" rel="noopener">See all 16 shots on Instagram<span class="vh"> (opens in a new tab)</span> ↗</a>
+      </div>
+      <div>
+        <div class="strip" tabindex="0" role="region" aria-label="Gymea photos, scroll sideways">
+          <figure><img src="assets/gymea-02-600.webp" alt="Formwork and reinforcement set out for a new footpath" width="600" height="800" loading="lazy"><figcaption>Formwork and reo</figcaption></figure>
+          <figure><img src="assets/gymea-08-600.webp" alt="A freshly poured kerb and gutter beside the road" width="600" height="800" loading="lazy"><figcaption>Kerb and gutter</figcaption></figure>
+          <figure><img src="assets/gymea-15-600.webp" alt="A new path poured between timber forms, with a drainage pit" width="600" height="800" loading="lazy"><figcaption>Paths and pits</figcaption></figure>
+          <figure><img src="assets/gymea-01-600.webp" alt="Crew finishing a new council footpath" width="600" height="800" loading="lazy"><figcaption>Council footpath</figcaption></figure>
+          <figure><img src="assets/gymea-12-600.webp" alt="Reinforcement and edge forms for the crossover" width="600" height="800" loading="lazy"><figcaption>Crossover set-out</figcaption></figure>
+          <figure><img src="assets/gymea-05-600.webp" alt="The finished driveway ramp down to the basement" width="600" height="800" loading="lazy"><figcaption>Driveway ramp, finished</figcaption></figure>
+        </div>
+        <p class="strip-hint">Swipe or scroll sideways for more.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ CREW -->
+<section class="crew-sec slab-sec" id="crew" aria-labelledby="crew-h">
+  <div class="wrap">
+    <div class="crew-top">
+      <h2 class="disp" id="crew-h">Family-owned. Our name on every job.</h2>
+      <p class="lede">“Xtreme Works is a family business, putting our name and reputation behind every job we take on.” Built from the ground up by Teufolau, run day to day by AJ, with 30+ skilled professionals on the tools.</p>
+    </div>
+    <figure class="crew-photo">
+      <img src="assets/crew-backs-1080.webp" srcset="assets/crew-backs-720.webp 720w, assets/crew-backs-1080.webp 1080w" sizes="(min-width:1360px) 1248px, 92vw" alt="Two of the crew from behind on a fresh slab, Xtreme Works logos on their hi-vis shirts" width="1080" height="718" loading="lazy">
+      <figcaption>On site, in the shirts</figcaption>
+    </figure>
+    <div class="team">
+      <article class="person">
+        <img src="assets/team-aj-480.webp" srcset="assets/team-aj-480.webp 480w, assets/team-aj-800.webp 800w" sizes="(min-width:900px) 30vw, (min-width:560px) 46vw, 120px" alt="Aloha Junior Kolo" width="480" height="600" loading="lazy">
+        <div class="person-body">
+          <h3>Aloha Junior Kolo</h3>
+          <p class="role">Director · “AJ”</p>
+          <p>Known for his strong work ethic, loyalty and hands-on leadership. Oversees every project with a focus on quality, honesty and looking after clients and crew like family.</p>
+        </div>
+      </article>
+      <article class="person">
+        <img src="assets/team-teufolau-480.webp" srcset="assets/team-teufolau-480.webp 480w, assets/team-teufolau-800.webp 800w" sizes="(min-width:900px) 30vw, (min-width:560px) 46vw, 120px" alt="Teufolau Kolo" width="480" height="600" loading="lazy">
+        <div class="person-body">
+          <h3>Teufolau Kolo</h3>
+          <p class="role">Founder &amp; site manager</p>
+          <p>Built Xtreme Works from the ground up and leads the team across residential, commercial and industrial projects, with a hands-on approach.</p>
+        </div>
+      </article>
+      <article class="person">
+        <div class="mono" aria-hidden="true">DI</div>
+        <div class="person-body">
+          <h3>Daniel Ibrahim</h3>
+          <p class="role">Operations manager</p>
+          <p>Runs the admin, the office and day-to-day operations, so the crew has everything it needs to deliver quality work.</p>
+        </div>
+      </article>
+    </div>
+    <div class="director">
+      <img src="assets/site-daniel-aj-1080.webp" srcset="assets/site-daniel-aj-600.webp 600w, assets/site-daniel-aj-1080.webp 1080w" sizes="(min-width:900px) 40vw, 92vw" alt="AJ and Daniel Tupou standing together on a job site" width="1080" height="1440" loading="lazy">
+      <div class="director-body">
+        <blockquote>“With my football career coming to a near end, I’m thinking about life after football.”</blockquote>
+        <cite>Daniel Tupou<span>Director at Xtreme Works, and a current NRL player for the Sydney Roosters</span></cite>
+        <p>His words, from the Xtreme Works film: “We’re a contractor working right across Sydney. Our main services are concreting, steel fixing, formwork and excavation.”</p>
+        <a class="textlink" href="https://www.instagram.com/p/DdVzzO2IQbl/" target="_blank" rel="noopener">Watch the film on Instagram (235K plays)<span class="vh"> (opens in a new tab)</span> ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="joint">
+
+<!-- ============================================================= PROCESS -->
+<section class="process-sec slab-sec" aria-labelledby="proc-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="disp" id="proc-h">How every job runs.</h2>
+      <p class="lede">The same four steps on a garden path or a warehouse floor.</p>
+    </div>
+    <ol class="process">
+      <li><span class="n">01</span><h3>Thorough planning</h3><p>We take the time to understand the scope, site conditions, timelines and requirements before work begins, so risks are minimised and the job is set up from day one.</p></li>
+      <li><span class="n">02</span><h3>Streamlined execution</h3><p>A structured, efficient process on site. Clear communication, experienced supervision and coordinated trades keep the momentum up.</p></li>
+      <li><span class="n">03</span><h3>Quality completion</h3><p>Quality is checked at every stage, not just at the end, to Australian Standards and our own high expectations.</p></li>
+      <li><span class="n">04</span><h3>Aftercare &amp; support</h3><p>Our commitment doesn’t end at handover. We stay available for questions and support. Long-term relationships matter to us.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- =========================================================== INSTAGRAM -->
+<section class="ig-sec wet-sec" aria-labelledby="ig-h">
+  <div class="wrap">
+    <div class="ig-head">
+      <h2 class="disp" id="ig-h">Follow the pours.</h2>
+      <a class="btn btn-line" href="https://www.instagram.com/xtremeworks.au/" target="_blank" rel="noopener">@xtremeworks.au on Instagram<span class="vh"> (opens in a new tab)</span></a>
+    </div>
+    <div class="reels">
+      <a class="reel" href="https://www.instagram.com/p/DdVzzO2IQbl/" target="_blank" rel="noopener"><div class="reel-img"><img src="assets/reel-DdVzzO2IQbl-360.webp" alt="" width="360" height="640" loading="lazy"><span class="plays"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>235K plays</span></div><p>Meet the team<span>Sep 2026</span></p></a>
+      <a class="reel" href="https://www.instagram.com/p/DVr_ghmkcyq/" target="_blank" rel="noopener"><div class="reel-img"><img src="assets/reel-DVr_ghmkcyq-360.webp" alt="" width="360" height="639" loading="lazy"><span class="plays"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>13.4K plays</span></div><p>Roselands: demolition &amp; excavation<span>Mar 2026</span></p></a>
+      <a class="reel" href="https://www.instagram.com/p/DamivEDRn8I/" target="_blank" rel="noopener"><div class="reel-img"><img src="assets/reel-DamivEDRn8I-360.webp" alt="" width="360" height="640" loading="lazy"><span class="plays"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>13.2K plays</span></div><p>NAIDOC Week at Mission Australia<span>Jul 2026</span></p></a>
+      <a class="reel" href="https://www.instagram.com/p/DX_h19SImVs/" target="_blank" rel="noopener"><div class="reel-img"><img src="assets/reel-DX_h19SImVs-360.webp" alt="" width="360" height="640" loading="lazy"><span class="plays"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>12.5K plays</span></div><p>Abbotsford: footpath, kerb &amp; gutter<span>May 2026</span></p></a>
+      <a class="reel" href="https://www.instagram.com/p/DbKVykCRp2c/" target="_blank" rel="noopener"><div class="reel-img"><img src="assets/reel-DbKVykCRp2c-360.webp" alt="" width="360" height="640" loading="lazy"><span class="plays"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>7.2K plays</span></div><p>Croydon Park: 1,600 m² slab<span>Jul 2026</span></p></a>
+      <a class="reel" href="https://www.instagram.com/p/DWn9PDBiH11/" target="_blank" rel="noopener"><div class="reel-img"><img src="assets/reel-DWn9PDBiH11-360.webp" alt="" width="360" height="639" loading="lazy"><span class="plays"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>7K plays</span></div><p>Kerbs, gutters &amp; council crossovers<span>Apr 2026</span></p></a>
+    </div>
+    <p class="ig-note">Play counts as of October 2026.</p>
+  </div>
+</section>
+
+<!-- ================================================================= FAQ -->
+<section class="faq-sec slab-sec" id="faq" aria-labelledby="faq-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="disp" id="faq-h">Straight answers.</h2>
+      <p class="lede">36 questions we get asked about cost, curing, drainage, compliance and booking. Search them, or pick a topic.</p>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-side">
+        <label class="faq-search"><span class="vh">Search the questions</span><input type="search" id="faqQ" placeholder="Search: curing, deposit, drainage…" autocomplete="off"></label>
+        <div class="chips" id="chips" role="group" aria-label="Show questions about"></div>
+        <p class="small" style="color:var(--ink-3);margin-top:16px" id="faqCount" aria-live="polite"></p>
+      </div>
+      <div id="faqList">
+        <section class="faq-group" data-cat="general" data-short="General" aria-labelledby="fq-general">
+          <h3 id="fq-general">General</h3>
+          <details class="qa"><summary>What services does Xtreme Works provide?</summary><div class="a"><p>We specialise in residential, commercial and industrial concreting, covering excavation, formwork, reinforcement, placing, finishing and after-care.</p></div></details>
+          <details class="qa"><summary>Are you licensed and insured?</summary><div class="a"><p>Yes. Our team is fully licensed, insured and compliant with Australian Standards.</p></div></details>
+          <details class="qa"><summary>Do you work on both small-scale and large-scale projects?</summary><div class="a"><p>Absolutely. From small footpaths to large industrial slabs, no job is too big or small for us.</p></div></details>
+          <details class="qa"><summary>What areas do you service?</summary><div class="a"><p>Greater Sydney, Western Sydney, the Blue Mountains and surrounding regions.</p></div></details>
+          <details class="qa"><summary>What is the process to book a quote?</summary><div class="a"><p>To book a quote, residential clients can schedule a site inspection. Commercial and industrial clients should send their plans to: <a href="mailto:AJK.xtremeworks@hotmail.com">AJK.xtremeworks@hotmail.com</a></p></div></details>
+        </section>
+        <section class="faq-group" data-cat="cost" data-short="Cost &amp; quotes" aria-labelledby="fq-cost">
+          <h3 id="fq-cost">Cost, quotes &amp; payments</h3>
+          <details class="qa"><summary>How much does concreting cost?</summary><div class="a"><p>Costs vary based on size, access, excavation needs, reinforcement, finish type and site conditions.</p><p>For accurate pricing:</p><ul><li>Residential: Book a site inspection</li><li>Commercial/Industrial: Send plans</li></ul><p>Email <a href="mailto:AJK.xtremeworks@hotmail.com">AJK.xtremeworks@hotmail.com</a></p></div></details>
+          <details class="qa"><summary>Do you provide free quotes?</summary><div class="a"><p>Yes, we offer free, no-obligation quotes.</p></div></details>
+          <details class="qa"><summary>Do you offer fixed pricing?</summary><div class="a"><p>Yes, once we complete a site inspection or review your plans, we issue a fixed quote outlining all inclusions.</p></div></details>
+          <details class="qa"><summary>What payment methods do you accept?</summary><div class="a"><p>We accept bank transfer, staged progress payments and invoices for commercial/industrial works.</p></div></details>
+          <details class="qa"><summary>Do you require deposits?</summary><div class="a"><p>Yes. A small deposit may be required to secure your booking and materials.</p></div></details>
+        </section>
+        <section class="faq-group" data-cat="residential" data-short="Residential" aria-labelledby="fq-residential">
+          <h3 id="fq-residential">Residential projects</h3>
+          <details class="qa"><summary>Do you do driveways and pathways?</summary><div class="a"><p>Yes—driveways, footpaths, patios, alfresco slabs and extensions.</p></div></details>
+          <details class="qa"><summary>Can you remove old concrete?</summary><div class="a"><p>Yes. We can demolish and dispose of existing concrete.</p></div></details>
+          <details class="qa"><summary>Can you help me choose a finish?</summary><div class="a"><p>Absolutely. We assist homeowners in selecting colour, design and texture options.</p></div></details>
+        </section>
+        <section class="faq-group" data-cat="commercial" data-short="Commercial &amp; industrial" aria-labelledby="fq-commercial">
+          <h3 id="fq-commercial">Commercial &amp; industrial projects</h3>
+          <details class="qa"><summary>Do you work to engineered plans?</summary><div class="a"><p>Yes. Email all drawings and documents to:</p><p>Email <a href="mailto:AJK.xtremeworks@hotmail.com">AJK.xtremeworks@hotmail.com</a></p></div></details>
+          <details class="qa"><summary>Do you coordinate with builders, engineers, and site managers?</summary><div class="a"><p>Yes, we regularly collaborate with builders, engineers, and site managers to ensure seamless project execution.</p></div></details>
+          <details class="qa"><summary>Do you provide pour schedules and risk assessments?</summary><div class="a"><p>Yes. We can supply pour plans, SWMS and required documentation</p></div></details>
+          <details class="qa"><summary>Can you complete large pours or multi-stage slabs?</summary><div class="a"><p>Yes. We have experienced crews for large industrial slabs, hardstands, warehouses and suspended decks.</p></div></details>
+        </section>
+        <section class="faq-group" data-cat="timelines" data-short="Timelines" aria-labelledby="fq-timelines">
+          <h3 id="fq-timelines">Timelines &amp; scheduling</h3>
+          <details class="qa"><summary>How quickly can you start?</summary><div class="a"><p>Start times depend on current workload, weather and project size. We provide an estimated schedule after inspection or plan review.</p></div></details>
+          <details class="qa"><summary>How long does a typical job take?</summary><div class="a"><p>Small residential works may take 1–2 days, while commercial/industrial slabs may require multi-day preparation and coordinated pours.</p></div></details>
+          <details class="qa"><summary>Can you work after hours or weekends?</summary><div class="a"><p>Yes. For commercial and industrial sites, we can arrange night works, weekend works or shutdown coordination as required.</p></div></details>
+        </section>
+        <section class="faq-group" data-cat="after" data-short="After the job" aria-labelledby="fq-after">
+          <h3 id="fq-after">After the job</h3>
+          <details class="qa"><summary>Will you clean up the site after completing the job?</summary><div class="a"><p>Yes, we ensure all jobs are left clean and tidy, with all rubbish removed, so you don&#x27;t have to worry about the cleanup.</p></div></details>
+          <details class="qa"><summary>Will you provide after-care instructions for my concrete?</summary><div class="a"><p>Yes, we provide detailed after-care instructions, including curing, sealing, washing, and long-term maintenance to ensure your concrete lasts.</p></div></details>
+          <details class="qa"><summary>Do you provide warranties?</summary><div class="a"><p>We do not offer a formal written warranty; however, we stand by our workmanship. If any defect arises that is caused by our work, we will promptly attend to it and rectify the issue as soon as we become aware of it or are notified.</p></div></details>
+        </section>
+        <section class="faq-group" data-cat="site" data-short="Site prep &amp; drainage" aria-labelledby="fq-site">
+          <h3 id="fq-site">Site preparation &amp; drainage</h3>
+          <details class="qa"><summary>Do you handle excavation?</summary><div class="a"><p>Yes. We manage all excavation and disposal of spoil.</p></div></details>
+          <details class="qa"><summary>Do you install reinforcement?</summary><div class="a"><p>Absolutely—we install mesh, bar chairs, dowels and any engineered reinforcement required.</p></div></details>
+          <details class="qa"><summary>Can you fix drainage or level issues?</summary><div class="a"><p>Yes. We can build falls, install spoon drains, pits, or improve water runoff to prevent pooling.</p></div></details>
+          <details class="qa"><summary>What if my site has limited access?</summary><div class="a"><p>We assess access during inspection. If needed, we organise concrete pumps and compact equipment.</p></div></details>
+        </section>
+        <section class="faq-group" data-cat="finishes" data-short="Finishes &amp; curing" aria-labelledby="fq-finishes">
+          <h3 id="fq-finishes">Finishes &amp; curing</h3>
+          <details class="qa"><summary>What types of finishes do you offer?</summary><div class="a"><p>Plain concrete</p><ul><li>Coloured concrete</li><li>Exposed aggregate</li><li>Broom-finish (non-slip)</li><li>Stamped or stencilled</li><li>Burnished/steel trowel finish</li><li>Machine trowel finish (industrial)</li></ul></div></details>
+          <details class="qa"><summary>What is the curing time for concrete?</summary><div class="a"><p>Concrete curing times are as follows: Walk on: 24–48 hours, Light vehicles: 7 days, Full strength: 28 days.</p></div></details>
+          <details class="qa"><summary>Do you seal the concrete?</summary><div class="a"><p>Yes. Sealing is recommended and can be included in your quote.</p></div></details>
+        </section>
+        <section class="faq-group" data-cat="safety" data-short="Safety &amp; compliance" aria-labelledby="fq-safety">
+          <h3 id="fq-safety">Safety &amp; compliance</h3>
+          <details class="qa"><summary>Do you follow Australian Standards?</summary><div class="a"><p>Yes. All works comply with AS3600 (Concrete Structures) and relevant codes.</p></div></details>
+          <details class="qa"><summary>Do you provide SWMS and insurances?</summary><div class="a"><p>Yes—for commercial/industrial projects, we can supply all compliance documentation upon request.</p></div></details>
+          <details class="qa"><summary>Are your workers trained?</summary><div class="a"><p>Yes. Our team holds the required tickets, induction cards and qualifications.</p></div></details>
+        </section>
+        <section class="faq-group" data-cat="booking" data-short="Booking" aria-labelledby="fq-booking">
+          <h3 id="fq-booking">Booking &amp; contact</h3>
+          <details class="qa"><summary>How do I book a site inspection?</summary><div class="a"><p>Call or email us, and we will schedule a time that suits you.</p><p>Email <a href="mailto:AJK.xtremeworks@hotmail.com">AJK.xtremeworks@hotmail.com</a></p></div></details>
+          <details class="qa"><summary>What do I send if I’m a builder or company?</summary><div class="a"><p>Please include:</p><ul><li>Plans</li><li>Site address</li><li>Required finishes</li><li>Engineering notes</li><li>Project timeframes</li></ul></div></details>
+          <details class="qa"><summary>What’s the fastest way to get a quote?</summary><div class="a"><p>Residential → Book a visit</p><ul><li>Commercial/Industrial: Send plans via email</li></ul></div></details>
+        </section>
+        <p class="faq-empty" id="faqEmpty" hidden>No questions match that. Call us on <a href="tel:+61433597455">0433 597 455</a> and ask.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================== QUOTE -->
+<section class="quote-sec wet-sec" id="quote" aria-labelledby="quote-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="disp" id="quote-h">Get a free quote.</h2>
+      <p class="lede">Free and no-obligation. Homeowners book a site inspection; builders and companies send plans. Either way you get a fixed quote listing every inclusion.</p>
+    </div>
+    <div class="q-grid">
+      <div>
+        <div class="tabs" role="tablist" aria-label="Who is asking?">
+          <button role="tab" type="button" id="tab-home" aria-selected="true" aria-controls="panel-home">I’m a homeowner</button>
+          <button role="tab" type="button" id="tab-build" aria-selected="false" aria-controls="panel-build" tabindex="-1">I’m a builder or company</button>
+        </div>
+
+        <div class="panel" role="tabpanel" id="panel-home" aria-labelledby="tab-home">
+          <h3>Book a site inspection.</h3>
+          <p>Tell us a little about the job and we’ll call to set a time that suits you.</p>
+          <form id="homeForm" novalidate>
+            <div class="fgrid">
+              <div class="f"><label for="h-name">Your name</label><input id="h-name" name="name" autocomplete="name" required></div>
+              <div class="f"><label for="h-phone">Phone</label><input id="h-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></div>
+              <div class="f"><label for="h-email">Email <span class="opt">(optional)</span></label><input id="h-email" name="email" type="email" autocomplete="email"></div>
+              <div class="f"><label for="h-addr">Project address</label><input id="h-addr" name="address" autocomplete="street-address" required></div>
+              <fieldset class="f full">
+                <legend>What do you need?</legend>
+                <div class="seg">
+                  <label><input type="radio" name="job" value="Driveway" checked><span>Driveway</span></label>
+                  <label><input type="radio" name="job" value="Path or footpath"><span>Path or footpath</span></label>
+                  <label><input type="radio" name="job" value="Patio or alfresco slab"><span>Patio or alfresco</span></label>
+                  <label><input type="radio" name="job" value="Slab or extension"><span>Slab or extension</span></label>
+                  <label><input type="radio" name="job" value="Remove old concrete"><span>Remove old concrete</span></label>
+                  <label><input type="radio" name="job" value="Something else"><span>Something else</span></label>
+                </div>
+              </fieldset>
+              <div class="f"><label for="h-finish">Finish <span class="opt">(if you know)</span></label>
+                <select id="h-finish" name="finish"><option>Not sure yet</option><option>Plain concrete</option><option>Coloured concrete</option><option>Exposed aggregate</option><option>Broom finish (non-slip)</option><option>Stamped or stencilled</option><option>Burnished / steel trowel</option></select></div>
+              <div class="f"><label for="h-budget">Rough budget <span class="opt">(optional)</span></label><input id="h-budget" name="budget" inputmode="text" placeholder="e.g. $8,000"></div>
+              <div class="f full"><label for="h-notes">Anything else? <span class="opt">(optional)</span></label><textarea id="h-notes" name="notes" placeholder="Size, access, old concrete to come out, when you’d like it done…"></textarea></div>
+            </div>
+            <div class="form-foot">
+              <button class="btn btn-hv" type="submit">Request my site inspection</button>
+              <p class="small">Or call <a href="tel:+61433597455">0433 597 455</a>.</p>
+            </div>
+            <p class="sent" id="homeSent" role="status" hidden></p>
+          </form>
+        </div>
+
+        <div class="panel" role="tabpanel" id="panel-build" aria-labelledby="tab-build" hidden>
+          <h3>Send us your plans.</h3>
+          <p>For commercial and industrial work we price from your drawings. Please include:</p>
+          <ul class="send-list">
+            <li>Plans</li><li>Site address</li><li>Required finishes</li><li>Engineering notes</li><li>Project timeframes</li>
+          </ul>
+          <form id="buildForm" novalidate>
+            <div class="fgrid">
+              <div class="f"><label for="b-co">Company</label><input id="b-co" name="company" autocomplete="organization" required></div>
+              <div class="f"><label for="b-name">Your name</label><input id="b-name" name="name" autocomplete="name" required></div>
+              <div class="f"><label for="b-phone">Phone</label><input id="b-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></div>
+              <div class="f"><label for="b-site">Site address</label><input id="b-site" name="site" required></div>
+              <div class="f"><label for="b-type">Project type</label><select id="b-type" name="type"><option>Commercial</option><option>Industrial</option><option>Residential development</option><option>Council or civil works</option></select></div>
+              <div class="f"><label for="b-when">Start <span class="opt">(roughly)</span></label><input id="b-when" name="when" placeholder="e.g. late November"></div>
+            </div>
+            <div class="form-foot">
+              <a class="btn btn-hv" id="mailPlans" href="mailto:AJK.xtremeworks@hotmail.com?subject=Plans%20for%20quote">Email the plans</a>
+              <p class="small">Opens your email to <b>AJK.xtremeworks@hotmail.com</b> with these details filled in. Attach the drawings and send.</p>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <aside class="aside" aria-label="Other ways to reach us">
+        <div class="card">
+          <h3>Call the crew</h3>
+          <a class="big-num" href="tel:+61433597455">0433 597 455</a>
+        </div>
+        <div class="card">
+          <h3>Email</h3>
+          <p style="margin-top:8px"><a href="mailto:info@xtremeworks.com.au">info@xtremeworks.com.au</a></p>
+          <p class="small" style="margin-top:8px">Plans for commercial and industrial jobs: <a href="mailto:AJK.xtremeworks@hotmail.com">AJK.xtremeworks@hotmail.com</a></p>
+        </div>
+        <div class="card">
+          <h3>Hours</h3>
+          <dl class="hours" id="hours">
+            <dt data-d="1">Monday</dt><dd data-d="1">7am–6pm</dd>
+            <dt data-d="2">Tuesday</dt><dd data-d="2">7am–6pm</dd>
+            <dt data-d="3">Wednesday</dt><dd data-d="3">7am–6pm</dd>
+            <dt data-d="4">Thursday</dt><dd data-d="4">7am–6pm</dd>
+            <dt data-d="5">Friday</dt><dd data-d="5">7am–6pm</dd>
+            <dt data-d="6">Saturday</dt><dd data-d="6">7am–6pm</dd>
+            <dt data-d="0">Sunday</dt><dd data-d="0">7am–3pm</dd>
+          </dl>
+        </div>
+        <div class="card">
+          <h3>Where we pour</h3>
+          <p style="margin-top:8px">Greater Sydney, Western Sydney, the Blue Mountains and surrounding regions.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="ft">
+  <div class="wrap">
+    <div class="ft-grid">
+      <div>
+        <img src="assets/logo-white-400.webp" alt="Xtreme Works Pty Ltd, Concrete Work" width="150" height="132" loading="lazy">
+        <p style="margin-top:16px;max-width:30ch">Concreting without compromise, from major commercial pours to the smallest residential paths and slabs.</p>
+      </div>
+      <div>
+        <h3>Get in touch</h3>
+        <ul>
+          <li><a href="tel:+61433597455">0433 597 455</a></li>
+          <li><a href="mailto:info@xtremeworks.com.au">info@xtremeworks.com.au</a></li>
+          <li><a href="https://www.instagram.com/xtremeworks.au/" target="_blank" rel="noopener">Instagram @xtremeworks.au<span class="vh"> (opens in a new tab)</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>The work</h3>
+        <ul>
+          <li><a href="#services">Residential</a></li>
+          <li><a href="#services">Commercial &amp; industrial</a></li>
+          <li><a href="#services">Kerb, gutter &amp; council</a></li>
+          <li><a href="#finishes">Finishes &amp; curing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Work with us</h3>
+        <p>Passionate about concrete and want to join a dynamic crew? Send your resume and cover letter to <a href="mailto:info@xtremeworks.com.au">info@xtremeworks.com.au</a>.</p>
+      </div>
+    </div>
+    <div class="ft-base">
+      <span>© 2026 Xtreme Works Pty Ltd. Licensed and insured. Works to AS 3600.</span>
+      <span>A demo built by Frontline Systems as a proposal for Xtreme Works. Not their live site.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="pbar" id="pbar">
+  <a class="btn btn-line" href="tel:+61433597455">Call</a>
+  <a class="btn btn-hv" href="#quote">Free quote</a>
+</div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"GeneralContractor","name":"Xtreme Works Pty Ltd",
+ "url":"https://xtreme-works-demo-frontline.vercel.app/","logo":"https://xtreme-works-demo-frontline.vercel.app/assets/logo-navy.png",
+ "image":"https://xtreme-works-demo-frontline.vercel.app/assets/og-xtreme.jpg","telephone":"+61 433 597 455","email":"info@xtremeworks.com.au",
+ "areaServed":["Greater Sydney","Western Sydney","Blue Mountains"],"sameAs":["https://www.instagram.com/xtremeworks.au/"],
+ "openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"07:00","closes":"18:00"},
+  {"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"07:00","closes":"15:00"}]}
+</script>
+<script>
+/* Xtreme Works demo. No libraries: every effect here is plain browser code, and
+   every element's default CSS is its finished state, so nothing depends on this
+   script to be seen. */
+(() => {
+  const SITE = {
+    formAccessKey: '',   /* paste a Web3Forms key to make the homeowner form email the team. Empty = demo mode. */
+    plansEmail: 'AJK.xtremeworks@hotmail.com',
+  };
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  /* ---------------------------------------------------- Sydney time, hours */
+  const HOURS = { 0: [7, 15], 1: [7, 18], 2: [7, 18], 3: [7, 18], 4: [7, 18], 5: [7, 18], 6: [7, 18] };
+  const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  function sydneyNow() {
+    const p = Object.fromEntries(new Intl.DateTimeFormat('en-AU', { timeZone: 'Australia/Sydney', weekday: 'short', hour: 'numeric', minute: 'numeric', hourCycle: 'h23', year: 'numeric', month: 'numeric', day: 'numeric' })
+      .formatToParts(new Date()).map((x) => [x.type, x.value]));
+    const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday);
+    return { day, h: +p.hour + +p.minute / 60, y: +p.year, m: +p.month, d: +p.day };
+  }
+  const fmtH = (h) => (h === 12 ? '12pm' : h > 12 ? `${h - 12}pm` : `${h}am`);
+  function paintStatus() {
+    const n = sydneyNow();
+    const [o, c] = HOURS[n.day];
+    const el = $('#status');
+    let text;
+    if (n.h >= o && n.h < c) { el.classList.add('open'); text = `Open now · until ${fmtH(c)} today`; }
+    else {
+      el.classList.remove('open');
+      const next = n.h < o ? 0 : 1;
+      const d = (n.day + next) % 7;
+      text = `Closed now · opens ${fmtH(HOURS[d][0])} ${next ? (d === (n.day + 1) % 7 ? 'tomorrow' : DAYS[d]) : 'today'}`;
+    }
+    $('span', el).textContent = text;
+    $$(`#hours [data-d="${n.day}"]`).forEach((x) => x.classList.add('today'));
+  }
+  paintStatus();
+  setInterval(paintStatus, 60000);
+
+  /* -------------------------------------------- the headline sets like concrete
+     Each letter starts thin and pale, then hardens to full weight, left to right
+     like a pour front. Every letter keeps its finished width the whole time, so
+     the line never reflows. Runs once, only if the face is ready in time. */
+  function setHeadline() {
+    const h = $('#h1');
+    if (reduce.matches || !h.animate) return;
+    const html = h.innerHTML;
+    // Split into words, then letters, keeping the <em> on "pour."
+    const parts = [];
+    h.childNodes.forEach((node) => {
+      const isEm = node.nodeType === 1;
+      node.textContent.split(/(\s+)/).forEach((w) => { if (w) parts.push({ w, em: isEm }); });
+    });
+    const frag = document.createDocumentFragment();
+    let i = 0;
+    const letters = [];
+    parts.forEach(({ w, em }) => {
+      if (/^\s+$/.test(w)) { frag.append(' '); return; }
+      const word = document.createElement(em ? 'em' : 'span');
+      word.className = 'w';
+      word.setAttribute('aria-hidden', 'true');
+      [...w].forEach((ch) => { const c = document.createElement('span'); c.className = 'c'; c.textContent = ch; c.style.setProperty('--i', i++); word.append(c); letters.push(c); });
+      frag.append(word);
+    });
+    h.setAttribute('aria-label', h.textContent.replace(/\s+/g, ' ').trim());
+    h.textContent = '';
+    h.append(frag);
+    // Lock each letter to its finished width.
+    letters.forEach((c) => { c.style.width = c.getBoundingClientRect().width + 'px'; });
+    letters.forEach((c, k) => {
+      c.animate([
+        { fontWeight: 160, opacity: .35, transform: 'translateY(.08em)', filter: 'blur(1.5px)' },
+        { fontWeight: 860, opacity: 1, transform: 'none', filter: 'blur(0)' },
+      ], { duration: 760, delay: 80 + k * 30, easing: 'cubic-bezier(.2,.75,.25,1)', fill: 'backwards' });
+    });
+    // Back to plain text once it has set, for selection and resizing.
+    setTimeout(() => { h.innerHTML = html; h.removeAttribute('aria-label'); }, 80 + letters.length * 30 + 900);
+  }
+  const fontWait = document.fonts && document.fonts.load ? Promise.race([
+    document.fonts.load('860 100px Anybody'), new Promise((r) => setTimeout(() => r('late'), 900)),
+  ]) : Promise.resolve('late');
+  fontWait.then((r) => { if (r !== 'late' && document.fonts.check('860 100px Anybody')) setHeadline(); });
+
+  /* ------------------------------------------------------------------ video
+     Clips load only when they come near the screen, play only while on it, and
+     stop for reduced motion or the Pause button. Without this script, every
+     clip shows its poster. */
+  const canWebm = document.createElement('video').canPlayType('video/webm; codecs="vp9"');
+  let paused = false;
+  const visible = new Set();
+  let ready = false;
+  const queued = new Set();
+  addEventListener('load', () => setTimeout(() => { ready = true; queued.forEach((v) => { load(v); tryPlay(v); }); queued.clear(); }, 1200), { once: true });
+  function load(v) {
+    if (v.dataset.loaded) return;
+    if (!ready) { queued.add(v); return; }
+    v.dataset.loaded = '1';
+    v.src = v.dataset.src + (canWebm ? '.webm' : '.mp4');
+    v.addEventListener('playing', () => v.classList.add('on'), { once: true });
+  }
+  function shown(v) { return v.offsetParent !== null || getComputedStyle(v).position === 'fixed'; }
+  function tryPlay(v) {
+    if (paused || reduce.matches || !visible.has(v) || !shown(v)) return;
+    if (v.dataset.phase && v.dataset.phase !== String(roseActive)) return;
+    load(v);
+    const p = v.play();
+    if (p && p.catch) p.catch(() => {});
+  }
+  const near = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting && !reduce.matches && !paused) load(e.target); }), { rootMargin: '600px 0px' });
+  const onScreen = new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting) { visible.add(e.target); tryPlay(e.target); }
+    else { visible.delete(e.target); e.target.pause(); }
+  }), { threshold: 0.15 });
+  const videos = $$('video[data-src]');
+  videos.forEach((v) => { near.observe(v); onScreen.observe(v); });
+  const pauseBtn = $('#pause');
+  pauseBtn.addEventListener('click', () => {
+    paused = !paused;
+    pauseBtn.setAttribute('aria-pressed', String(paused));
+    $('span', pauseBtn).textContent = paused ? 'Play video' : 'Pause video';
+    pauseBtn.querySelector('path').setAttribute('d', paused ? 'M8 5v14l11-7z' : 'M7 5h4v14H7zM13 5h4v14h-4z');
+    videos.forEach((v) => (paused ? v.pause() : tryPlay(v)));
+  });
+  reduce.addEventListener?.('change', () => videos.forEach((v) => (reduce.matches ? v.pause() : tryPlay(v))));
+  addEventListener('resize', () => videos.forEach(tryPlay), { passive: true });
+
+  /* --------------------------------------------- header, phone bar, menu */
+  const hd = $('#hd'), pbar = $('#pbar'), hero = $('.hero'), quote = $('#quote');
+  let quoteOn = false;
+  new IntersectionObserver(([e]) => { quoteOn = e.isIntersecting; sync(); }, { threshold: 0.05 }).observe(quote);
+  function sync() {
+    const past = hero.getBoundingClientRect().bottom < 80;
+    hd.classList.toggle('solid', scrollY > 30);
+    pbar.classList.toggle('show', past && !quoteOn);
+  }
+  addEventListener('scroll', sync, { passive: true });
+  sync();
+  const menuBtn = $('#menuBtn'), mnav = $('#mnav');
+  function setMenu(open) {
+    menuBtn.setAttribute('aria-expanded', String(open));
+    mnav.classList.toggle('open', open);
+    menuBtn.textContent = open ? 'Close' : 'Menu';
+    if (open) hd.classList.add('solid');
+  }
+  menuBtn.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
+  mnav.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && mnav.classList.contains('open')) { setMenu(false); menuBtn.focus(); } });
+
+  /* ------------------------------------------------ Croydon Park number */
+  const cp = $('#cpNum');
+  if (cp && !reduce.matches) {
+    new IntersectionObserver(([e], o) => {
+      if (!e.isIntersecting) return;
+      o.disconnect();
+      const t0 = performance.now(), dur = 1400;
+      const step = (t) => {
+        const k = Math.min(1, (t - t0) / dur), v = Math.round(1600 * (1 - Math.pow(1 - k, 3)));
+        cp.textContent = v.toLocaleString('en-AU');
+        if (k < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }, { threshold: 0.6 }).observe(cp);
+  }
+
+  /* --------------------------------------------------- Project Roselands
+     The phase in the middle of the screen drives the stage: its clip plays,
+     the counter updates, and the level line runs across as you scroll. */
+  let roseActive = 1;
+  const phases = $$('.phase'), screen = $('#roseScreen'), level = $('#level'), count = $('#roseCount');
+  function setPhase(n) {
+    if (n === roseActive) return;
+    roseActive = n;
+    phases.forEach((p) => p.classList.toggle('on', +p.dataset.phase === n));
+    count.textContent = `Phase ${n} of 4`;
+    $$('video[data-phase]', screen).forEach((v) => {
+      const on = +v.dataset.phase === n;
+      if (on) { load(v); v.classList.add('on'); tryPlay(v); } else { v.classList.remove('on'); v.pause(); }
+    });
+  }
+  const phaseIO = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) setPhase(+e.target.dataset.phase); }), { rootMargin: '-45% 0px -45% 0px' });
+  phases.forEach((p) => phaseIO.observe(p));
+  const steps = $('.rose-steps');
+  function roseProgress() {
+    const r = steps.getBoundingClientRect(), mid = innerHeight / 2;
+    const p = Math.min(1, Math.max(0, (mid - r.top) / r.height));
+    level.style.setProperty('--p', p.toFixed(3));
+  }
+  addEventListener('scroll', roseProgress, { passive: true });
+  roseProgress();
+  // The first phase's clip is "on" from the start.
+  const firstRose = $('video[data-phase="1"]', screen);
+  firstRose.addEventListener('playing', () => firstRose.classList.add('on'), { once: true });
+
+  /* -------------------------------------------------------- curing clock */
+  const pour = $('#pourDay'), fill = $('#cureFill'), msWrap = $('#milestones');
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const nowS = sydneyNow();
+  const today = new Date(nowS.y, nowS.m - 1, nowS.d);
+  pour.value = iso(today);
+  const fmt = (d) => d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' });
+  const add = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+  // Ticks along the 28-day track: walk on (day 1–2), light vehicles (day 7), full strength (day 28).
+  const track = $('.track');
+  [[2, 'Walk'], [7, 'Cars'], [28, 'Full']].forEach(([d, t]) => {
+    const tick = document.createElement('span');
+    tick.className = 'tick';
+    tick.style.left = `${(d / 28) * 100}%`;
+    tick.innerHTML = `<span>${t}</span>`;
+    track.append(tick);
+  });
+  const nowMark = document.createElement('span');
+  nowMark.className = 'now';
+  track.append(nowMark);
+  function paintCure() {
+    const [y, m, d] = (pour.value || iso(today)).split('-').map(Number);
+    const p = new Date(y, m - 1, d);
+    const age = Math.round((today - p) / 864e5);
+    $$('.ms', msWrap).forEach((ms) => {
+      const days = +ms.dataset.days;
+      const when = $('[data-when]', ms);
+      if (days === 2) when.textContent = `${fmt(add(p, 1))} – ${fmt(add(p, 2))}`;
+      else when.textContent = fmt(add(p, days));
+      ms.classList.toggle('done', age >= days);
+    });
+    const k = Math.min(28, Math.max(0, age));
+    fill.style.setProperty('--fill', `${(k / 28) * 100}%`);
+    fill.style.width = `${(k / 28) * 100}%`;
+    nowMark.style.left = `${(k / 28) * 100}%`;
+    // Keep the label on the track at either end.
+    nowMark.style.transform = k < 3 ? 'none' : k > 25 ? 'translateX(-100%)' : 'translateX(-50%)';
+    nowMark.textContent = age < 0 ? '' : age === 0 ? 'Poured today' : age >= 28 ? 'Fully cured' : `Today: day ${age}`;
+  }
+  pour.addEventListener('input', paintCure);
+  $('#pourToday').addEventListener('click', () => { pour.value = iso(today); paintCure(); });
+  paintCure();
+
+  /* ------------------------------------------------------------------ FAQ */
+  const groups = $$('.faq-group'), chips = $('#chips'), q = $('#faqQ'), empty = $('#faqEmpty'), countEl = $('#faqCount');
+  let cat = 'general';
+  const all = document.createElement('button');
+  all.type = 'button'; all.dataset.cat = 'all'; all.setAttribute('aria-pressed', 'false');
+  all.textContent = `All ${$$('.qa').length}`;
+  chips.append(all);
+  groups.forEach((g) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.dataset.cat = g.dataset.cat; b.setAttribute('aria-pressed', String(g.dataset.cat === cat));
+    b.textContent = g.dataset.short;
+    chips.append(b);
+  });
+  chips.addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    cat = b.dataset.cat;
+    $$('button', chips).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    filterFaq();
+  });
+  const originals = new Map($$('.qa').map((d) => [d, { s: $('summary', d).innerHTML, a: $('.a', d).innerHTML }]));
+  function hl(html, term) {
+    if (!term) return html;
+    const re = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return html.replace(/(<[^>]+>)|([^<]+)/g, (m, tag, text) => (tag ? tag : text.replace(re, '<mark>$1</mark>')));
+  }
+  function filterFaq() {
+    const term = q.value.trim().toLowerCase();
+    let shown = 0;
+    groups.forEach((g) => {
+      let any = 0;
+      const inCat = cat === 'all' || g.dataset.cat === cat;
+      $$('.qa', g).forEach((d) => {
+        const o = originals.get(d);
+        const hit = inCat && (!term || d.textContent.toLowerCase().includes(term));
+        d.hidden = !hit;
+        $('summary', d).innerHTML = hl(o.s, term);
+        $('.a', d).innerHTML = hl(o.a, term);
+        if (hit) { any++; shown++; if (term) d.open = true; }
+      });
+      g.hidden = !any;
+    });
+    empty.hidden = shown > 0;
+    countEl.textContent = `Showing ${shown} of ${originals.size} questions.`;
+  }
+  q.addEventListener('input', () => {
+    // A search looks through every topic.
+    if (q.value.trim() && cat !== 'all') { cat = 'all'; $$('button', chips).forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.cat === 'all'))); }
+    filterFaq();
+  });
+  filterFaq();
+
+  /* ---------------------------------------------------------------- quote */
+  const tabs = $$('[role=tab]');
+  function selectTab(t) {
+    tabs.forEach((x) => {
+      const on = x === t;
+      x.setAttribute('aria-selected', String(on));
+      x.tabIndex = on ? 0 : -1;
+      $('#' + x.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+  tabs.forEach((t, k) => {
+    t.addEventListener('click', () => selectTab(t));
+    t.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const n = tabs[(k + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      selectTab(n); n.focus();
+    });
+  });
+  function check(form) {
+    let first = null;
+    $$('[required]', form).forEach((f) => {
+      const bad = !f.value.trim() || (f.type === 'tel' && f.value.replace(/\D/g, '').length < 8);
+      f.setAttribute('aria-invalid', String(bad));
+      let msg = f.parentElement.querySelector('.err');
+      if (bad) {
+        if (!msg) { msg = document.createElement('span'); msg.className = 'err'; msg.id = f.id + '-err'; f.parentElement.append(msg); }
+        msg.textContent = f.type === 'tel' && f.value.trim() ? 'That number looks too short.' : 'Please fill this in.';
+        f.setAttribute('aria-describedby', msg.id);
+        first = first || f;
+      } else if (msg) { msg.remove(); f.removeAttribute('aria-describedby'); }
+    });
+    if (first) first.focus();
+    return !first;
+  }
+  const home = $('#homeForm'), sent = $('#homeSent');
+  home.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!check(home)) return;
+    const data = Object.fromEntries(new FormData(home));
+    const btn = $('button[type=submit]', home);
+    if (!SITE.formAccessKey) {   /* demo mode: no network call at all */
+      sent.innerHTML = `<b>Thanks, ${esc(data.name.split(' ')[0])}.</b> Demo mode: nothing was sent. On the live site this goes straight to the Xtreme Works team, who call you back on ${esc(data.phone)} to book the inspection.`;
+      sent.hidden = false; return;
+    }
+    btn.disabled = true;
+    try {
+      const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ access_key: SITE.formAccessKey, subject: `Site inspection request: ${data.job}`, from_name: 'xtremeworks website', ...data }) });
+      const j = await r.json();
+      if (!j.success) throw new Error();
+      sent.innerHTML = `<b>Thanks, ${esc(data.name.split(' ')[0])}.</b> We’ll call you on ${esc(data.phone)} to book a time.`;
+    } catch {
+      sent.innerHTML = 'That didn’t send. Please call <a href="tel:+61433597455">0433 597 455</a> instead, or try again.';
+    }
+    sent.hidden = false; btn.disabled = false;
+  });
+  const build = $('#buildForm'), mail = $('#mailPlans');
+  function mailHref() {
+    const d = Object.fromEntries(new FormData(build));
+    const body = [
+      'Hi Xtreme Works team,', '', 'Please find our plans attached for a quote.', '',
+      `Company: ${d.company || ''}`, `Contact: ${d.name || ''}`, `Phone: ${d.phone || ''}`,
+      `Site address: ${d.site || ''}`, `Project type: ${d.type || ''}`, `Start: ${d.when || ''}`, '',
+      'Required finishes:', 'Engineering notes:', 'Project timeframes:', '', '(Plans attached)',
+    ].join('\n');
+    return `mailto:${SITE.plansEmail}?subject=${encodeURIComponent(`Plans for quote${d.site ? ` – ${d.site}` : ''}`)}&body=${encodeURIComponent(body)}`;
+  }
+  build.addEventListener('input', () => { mail.href = mailHref(); });
+  mail.href = mailHref();
+  mail.addEventListener('click', (e) => { if (!check(build)) e.preventDefault(); else mail.href = mailHref(); });
+})();
+</script>
+</body>
+</html>
