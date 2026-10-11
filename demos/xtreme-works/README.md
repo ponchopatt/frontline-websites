@@ -51,21 +51,23 @@ Built from everything on their website and their Instagram, scraped 11 Oct 2026.
   one bay plays all three in a row. A live **open/closed status** in Sydney time from their
   hours. The headline **sets like concrete** on load: each letter hardens from thin to full
   weight, left to right, without the line ever reflowing. Runs once; off under reduced motion.
-- **Trusted by** their five client logos and the Patterson Building Group testimonial.
+- **Trusted by**: the Patterson Building Group testimonial set big, then their five client logos.
 - **"One crew, every stage of the pour"**: six stages in job order, all in their own FAQ words,
-  then three lanes (Residential, Commercial & industrial, Council & civil) with their footage.
+  then three lanes (Residential, Commercial & industrial, Kerb, gutter & council) with their footage.
 - **Croydon Park, 1,600 m²**: the number counts up, beside their drone shot of the slab, with
   their own caption quoted.
-- **Project Roselands, start to finish**: their four Instagram phases as a scroll story. On
+- **The film**: the cover of their brand film, its play count (235,292), and Daniel Tupou's own
+  lines from it. "Watch the film" opens it on Instagram.
+- **Project Roselands, phase by phase**: their four Instagram phases as a scroll story. On
   desktop the clip stage stays put while the phases scroll past and a hi-vis "level line" fills;
   on phones each phase carries its own clip.
-- **Finishes + "When can I use my new slab?"**: their seven finishes, and a calculator that takes
+- **Finishes + "When can I use my new slab?"**: their seven finishes as a list, and a calculator that takes
   a pour day and gives the walk-on, light-vehicle and full-strength dates from their FAQ
   (24–48 hours, 7 days, 28 days), marking where today sits.
-- **"Straight off the slab"**: a wall of ten of their own site clips (they only play on screen),
+- **"Straight off the slab"**: a wall of eight of their own site clips (they only play on screen),
   and Stage 2 Gymea with their own project list and photos.
-- **The crew**: AJ, Teufolau and Daniel Ibrahim, the crew photo, and Daniel Tupou with his own
-  quote from the film (linked to Instagram, not re-hosted: it contains NRL broadcast footage).
+- **The crew**: the crew photo, then AJ, Teufolau, Daniel Tupou and Daniel Ibrahim. The film is
+  linked to Instagram, not re-hosted: it contains NRL broadcast footage.
 - **Process 01–04** in their words. **Instagram row** with play counts. **All 36 FAQ answers**
   with topic chips and search (highlights matches).
 - **Two-way quote**: homeowners book a site inspection (form); builders get their own checklist
@@ -84,8 +86,9 @@ poster and all 36 FAQ answers are on the page.
 | `assets/logo-navy-*`, `logo-white-*`, `logo-navy.png` | Their logo (transparent PNG from their site), trimmed; the white version is the same artwork recoloured for dark backgrounds |
 | `assets/favicon-32.png`, `apple-touch-icon.png`, `icon-512.png`, `og-xtreme.jpg` | Built from their logo; the share card adds a frame of their own trowel footage |
 | `assets/team-aj-*`, `team-teufolau-*` | Their team page portraits, cropped |
-| `assets/site-daniel-aj-*` | Instagram, 10 Sep 2026 ("Iron Sharpens Iron") — AJ and Daniel Tupou on site |
-| `assets/crew-backs-*`, `crew-front-*` | Instagram, 22 Apr 2026 |
+| `assets/team-tupou-480.webp` | Instagram, 10 Sep 2026 ("Iron Sharpens Iron"), cropped to Daniel Tupou |
+| `assets/film-cover-720.webp` | The cover frame of their brand film reel (Sep 2026) |
+| `assets/crew-backs-*` | Instagram, 22 Apr 2026 |
 | `assets/gymea-*` | Instagram, 15 Jan 2026 ("Stage 2 - Gymea") |
 | `assets/reel-*` | Cover frames of their Instagram reels |
 | `assets/client-*` | The five client logos from their "Trusted by our clients" strip, white background removed |
@@ -93,7 +96,7 @@ poster and all 36 FAQ answers are on the page.
 | `media/roselands-1…4` | Their four Project Roselands reels (Mar 2026) |
 | `media/croydon.*` | Their Croydon Park reel (Jul 2026), drone shots |
 | `media/abbotsford.*` | AJ's Abbotsford reel (May 2026) |
-| `media/wall-*` | The 15 project videos on their website (iPhone HDR, tone-mapped to normal colour) |
+| `media/wall-*` | Ten of the 15 project videos on their website (iPhone HDR, tone-mapped to normal colour): eight on the wall, two in the service lanes |
 
 All audio is stripped. Clips are trimmed to the clean shots: no captions, title cards or logo end
 cards from the reels are shown.
@@ -107,7 +110,7 @@ it). The five oldest Instagram posts weren't reachable without a login.
 
 | # | What | Currently |
 |---|---|---|
-| 1 | Daniel Tupou: role, and permission to feature him | Shown as "Director at Xtreme Works, and a current NRL player for the Sydney Roosters" — his own words in their film. He is not on their team page. |
+| 1 | Daniel Tupou: role, and permission to feature him | Shown as "Director" in the crew, and "Director at Xtreme Works, and a current NRL player for the Sydney Roosters" by the film — his own words in it. He is not on their team page. |
 | 2 | Years in the industry | The site says **15+ years**; the film says **"20 years in the industry"**. The demo uses 15+. |
 | 3 | "200+ projects", "30+ crew" | Their own homepage numbers, carried over. "200+ satisfied clients" is left out (it repeats the project count). |
 | 4 | Permission to use the Instagram footage and photos, and the client logos | All from their own accounts and site. |
@@ -116,17 +119,16 @@ it). The five oldest Instagram posts weren't reachable without a login.
 | 7 | Plans email | Uses `AJK.xtremeworks@hotmail.com` from their FAQ. Suggest a domain address. |
 | 8 | Careers email | The demo uses `info@xtremeworks.com.au`, assuming the `.com` on their site is a typo. |
 | 9 | The testimonial | Quoted verbatim: "…and a genuinely great people to deal with." Ask Patterson if the "a" can go. |
-| 10 | "About six tennis courts" | Our comparison, not theirs: 1,600 m² ÷ 260.9 m² (a doubles court) ≈ 6.1. Drop it if they'd rather not. |
-| 11 | Instagram play counts | As of 11 Oct 2026, labelled "as of October 2026". They'll go stale. |
-| 12 | Web3Forms key | `SITE.formAccessKey` is empty, so the homeowner form runs in demo mode and sends nothing. |
-| 13 | Finish swatches | Drawn in CSS, labelled as drawings. Swap for photos of their own finishes when they have them. |
+| 10 | Instagram numbers | Plays, likes and comments as of 11 Oct 2026, labelled "as of October 2026". They'll go stale. |
+| 11 | Web3Forms key | `SITE.formAccessKey` is empty, so the homeowner form runs in demo mode and sends nothing. |
+| 12 | Finish photos | The finishes are a plain list (their FAQ's seven, with its "non-slip" and "industrial" notes as tags). Add photos of their own finishes when they have them. |
 
 ## Checks
 
 - `tools/paint-check.mjs` passes all six conditions (desktop, 390, 375, no JS, GSAP blocked,
   reduced motion): no missing content, no horizontal scroll, no console errors, no failed requests.
   Run it with `CHROME_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome` in this sandbox.
-- Lighthouse (local `python3 -m http.server`, uncompressed): **mobile 94 · 100 · 100**,
+- Lighthouse (local `python3 -m http.server`, uncompressed): **mobile 91–94 · 100 · 100** (performance moves a few points run to run),
   **desktop 100 · 100 · 100** (Performance · Accessibility · Best Practices). SEO 66 is correct:
   the only failing audit is "Page is blocked from indexing", which is the point of a demo.
 
