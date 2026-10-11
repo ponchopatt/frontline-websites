@@ -112,12 +112,13 @@ h2.disp{font-size:clamp(2.6rem,6.2vw,5.4rem)}
 /* ----------------------------------------------------------------- header */
 .hd{position:fixed;inset:0 0 auto;z-index:50;height:var(--hd);color:var(--on-wet);
   transition:background .3s var(--ease),box-shadow .3s var(--ease)}
+.hd::before{content:"";position:absolute;inset:0 0 -32px;z-index:-1;pointer-events:none;background:linear-gradient(rgba(13,16,19,.75),rgba(13,16,19,0));transition:opacity .3s}.hd.solid::before{opacity:0}
 .hd.solid{background:rgba(21,25,30,.94);box-shadow:0 1px 0 rgba(255,255,255,.06);backdrop-filter:saturate(1.2) blur(8px)}
 .hd-in{height:100%;display:flex;align-items:center;gap:clamp(14px,2.4vw,32px);max-width:var(--max);margin-inline:auto;padding-inline:var(--pad)}
 .brand{display:block;flex:none}
 .brand img{height:56px;width:auto}
 .nav{display:flex;gap:clamp(14px,2vw,28px);margin-left:auto}
-.nav a{font-weight:600;font-size:.98rem;text-decoration:none;opacity:.86;padding:8px 0;position:relative}
+.nav a{font-weight:600;font-size:.98rem;text-decoration:none;padding:8px 0;position:relative}
 .nav a:hover{opacity:1}
 .nav a::after{content:"";position:absolute;left:0;right:100%;bottom:2px;height:2px;background:var(--hv);transition:right .25s var(--ease)}
 .nav a:hover::after{right:0}
@@ -162,7 +163,7 @@ h2.disp{font-size:clamp(2.6rem,6.2vw,5.4rem)}
 .h1{font-family:var(--display);font-stretch:62%;font-weight:860;font-size:clamp(3.6rem,10.4vw,9.4rem);line-height:.86;
   letter-spacing:-.01em;max-width:11ch;color:var(--on-wet)}
 .h1 .w{display:inline-block;white-space:nowrap}
-.h1 .c{display:inline-block;text-align:center;contain:layout style}
+.h1 .c{display:inline-block;text-align:center;contain:style}
 .h1 em{font-style:normal;color:var(--hv)}
 .hero-sub{margin-top:22px;max-width:46ch;font-size:clamp(1.06rem,1.45vw,1.25rem);line-height:1.5;color:var(--on-wet-2)}
 .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
@@ -412,7 +413,7 @@ h2.disp{font-size:clamp(2.6rem,6.2vw,5.4rem)}
 .faq-sec{padding:clamp(64px,9vw,120px) 0}
 .faq-grid{display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr);gap:clamp(28px,5vw,80px);margin-top:clamp(32px,5vw,56px);align-items:start}
 .faq-side{position:sticky;top:calc(var(--hd) + 24px)}
-.faq-search input{width:100%;min-height:52px;padding:0 14px;border-radius:var(--r);border:2px solid var(--slab-3);background:#f4f3f0}
+.faq-search input{width:100%;min-height:52px;padding:0 14px;border-radius:var(--r);border:2px solid #7d786f;background:#f4f3f0}
 .faq-search input:focus{border-color:var(--navy);outline:none}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
 .chips button{min-height:40px;padding:0 12px;border-radius:999px;border:1.5px solid var(--slab-3);background:transparent;font-weight:600;font-size:.9rem;cursor:pointer}
@@ -448,11 +449,12 @@ mark{background:var(--hv);color:var(--navy);padding:0 2px}
 .f.full{grid-column:1/-1}
 .f label,.f legend{font-weight:700;font-size:.9rem;color:var(--on-wet)}
 .f .opt{font-weight:500;color:var(--on-wet-3)}
-.f input,.f select,.f textarea{width:100%;min-height:50px;padding:0 13px;border-radius:var(--r);border:2px solid rgba(241,240,236,.18);background:var(--wet);color:var(--on-wet)}
+.f input,.f select,.f textarea{width:100%;min-height:50px;padding:0 13px;border-radius:var(--r);border:2px solid rgba(241,240,236,.42);background:var(--wet);color:var(--on-wet)}
 .f textarea{min-height:110px;padding:12px 13px;resize:vertical}
 .f select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--on-wet-2) 50%),linear-gradient(135deg,var(--on-wet-2) 50%,transparent 50%);background-position:calc(100% - 20px) 21px,calc(100% - 14px) 21px;background-size:6px 6px;background-repeat:no-repeat;padding-right:36px}
 .f input:focus,.f select:focus,.f textarea:focus{border-color:var(--hv);outline:none}
 .f input[aria-invalid=true],.f select[aria-invalid=true]{border-color:#ff8a6a}
+.f ::placeholder{color:var(--on-wet-3);opacity:1}.faq-search input::placeholder{color:var(--ink-3);opacity:1}
 .err{font-size:.84rem;font-weight:600;color:#ffb39e}
 .seg{display:flex;flex-wrap:wrap;gap:6px}
 .seg label{position:relative}
@@ -463,6 +465,7 @@ mark{background:var(--hv);color:var(--navy);padding:0 2px}
 fieldset{border:0;padding:0;margin:0;min-width:0}
 .form-foot{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;margin-top:22px}
 .small{font-size:.86rem;color:var(--on-wet-3)}
+.sent:empty{margin:0;padding:0;border:0}
 .sent{margin-top:18px;padding:16px;border-radius:var(--r);background:rgba(212,255,63,.12);border:1px solid rgba(212,255,63,.4);color:var(--on-wet)}
 .send-list{display:grid;gap:8px;margin-top:18px}
 .send-list li{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:var(--r);background:var(--wet);font-weight:600}
@@ -493,10 +496,10 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
 
 /* -------------------------------------------------------------- phone bar */
 .pbar{position:fixed;z-index:45;left:0;right:0;bottom:0;display:none;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));
-  background:rgba(21,25,30,.96);border-top:1px solid var(--wet-line);transform:translateY(110%);transition:transform .3s var(--ease)}
-.pbar.show{transform:none}
+  background:rgba(21,25,30,.96);border-top:1px solid var(--wet-line);transform:translateY(110%);visibility:hidden;transition:transform .3s var(--ease),visibility 0s .3s}
+.pbar.show{transform:none;visibility:visible;transition:transform .3s var(--ease)}
 .pbar .btn{flex:1;min-height:50px}
-@media (max-width:899px){.pbar{display:flex}.ft{padding-bottom:calc(96px + env(safe-area-inset-bottom))}}
+@media (max-width:899px){html{scroll-padding-bottom:calc(84px + env(safe-area-inset-bottom))}.pbar{display:flex}.ft{padding-bottom:calc(96px + env(safe-area-inset-bottom))}}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
 </style>
@@ -532,12 +535,12 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
 <!-- =============================================================== HERO -->
 <section class="hero wet" id="top" aria-labelledby="h1">
   <div class="bays" aria-hidden="true">
-    <figure class="bay"><img src="media/bay-pour.webp" alt="" width="540" height="960" loading="lazy"><video muted loop playsinline preload="none" data-src="media/bay-pour"></video><figcaption><b>01</b>Pour</figcaption></figure>
+    <figure class="bay"><picture><source media="(max-width: 899px)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="><img src="media/bay-pour.webp" alt="" width="540" height="960" fetchpriority="high"></picture><video muted loop playsinline preload="none" data-src="media/bay-pour"></video><figcaption><b>01</b>Pour</figcaption></figure>
     <figure class="bay"><img src="media/bay-screed.webp" alt="" width="540" height="960" loading="lazy"><video muted loop playsinline preload="none" data-src="media/bay-screed"></video><figcaption><b>02</b>Screed</figcaption></figure>
     <figure class="bay"><img src="media/bay-trowel.webp" alt="" width="540" height="960" loading="lazy"><video muted loop playsinline preload="none" data-src="media/bay-trowel"></video><figcaption><b>03</b>Finish</figcaption></figure>
   </div>
   <div class="hero-phone">
-    <img src="media/hero-phone.webp" alt="The Xtreme Works crew placing, screeding and power-trowelling a concrete slab" width="540" height="960" loading="lazy">
+    <picture><source media="(min-width: 900px)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="><img src="media/hero-phone.webp" alt="The Xtreme Works crew placing, screeding and power-trowelling a concrete slab" width="540" height="960" fetchpriority="high"></picture>
     <video muted loop playsinline preload="none" data-src="media/hero-phone" aria-hidden="true"></video>
   </div>
   <div class="hero-copy">
@@ -555,7 +558,7 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
       <li>Licensed &amp; insured</li>
     </ul>
   </div>
-  <button class="pause" id="pause" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg><span>Pause video</span></button>
+  <button class="pause" id="pause" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg><span>Pause video</span></button>
 </section>
 
 <!-- ============================================================ TRUSTED -->
@@ -686,10 +689,10 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
       <div class="rose-stage" aria-hidden="true">
         <div class="rose-screen" id="roseScreen">
           <img class="base" src="media/roselands-1.webp" alt="" width="540" height="960" loading="lazy">
-          <video muted loop playsinline preload="none" data-src="media/roselands-1" data-phase="1"></video>
-          <video muted loop playsinline preload="none" data-src="media/roselands-2" data-phase="2"></video>
-          <video muted loop playsinline preload="none" data-src="media/roselands-3" data-phase="3"></video>
-          <video muted loop playsinline preload="none" data-src="media/roselands-4" data-phase="4"></video>
+          <video muted loop playsinline preload="none" data-src="media/roselands-1" data-phase="1" data-poster="media/roselands-1.webp"></video>
+          <video muted loop playsinline preload="none" data-src="media/roselands-2" data-phase="2" data-poster="media/roselands-2.webp"></video>
+          <video muted loop playsinline preload="none" data-src="media/roselands-3" data-phase="3" data-poster="media/roselands-3.webp"></video>
+          <video muted loop playsinline preload="none" data-src="media/roselands-4" data-phase="4" data-poster="media/roselands-4.webp"></video>
           <p class="rose-count" id="roseCount">Phase 1 of 4</p>
           <div class="level" id="level"><i></i></div>
         </div>
@@ -1025,7 +1028,7 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
               <button class="btn btn-hv" type="submit">Request my site inspection</button>
               <p class="small">Or call <a href="tel:+61433597455">0433 597 455</a>.</p>
             </div>
-            <p class="sent" id="homeSent" role="status" hidden></p>
+            <p class="sent" id="homeSent" role="status"></p>
           </form>
         </div>
 
@@ -1120,10 +1123,10 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
   </div>
 </footer>
 
-<div class="pbar" id="pbar">
+<nav class="pbar" id="pbar" aria-label="Call or get a quote">
   <a class="btn btn-line" href="tel:+61433597455">Call</a>
   <a class="btn btn-hv" href="#quote">Free quote</a>
-</div>
+</nav>
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"GeneralContractor","name":"Xtreme Works Pty Ltd",
@@ -1170,7 +1173,7 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
       text = `Closed now · opens ${fmtH(HOURS[d][0])} ${next ? (d === (n.day + 1) % 7 ? 'tomorrow' : DAYS[d]) : 'today'}`;
     }
     $('span', el).textContent = text;
-    $$(`#hours [data-d="${n.day}"]`).forEach((x) => x.classList.add('today'));
+    $$('#hours [data-d]').forEach((x) => x.classList.toggle('today', +x.dataset.d === n.day));
   }
   paintStatus();
   setInterval(paintStatus, 60000);
@@ -1245,17 +1248,20 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
     if (p && p.catch) p.catch(() => {});
   }
   const near = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting && !reduce.matches && !paused) load(e.target); }), { rootMargin: '600px 0px' });
+  /* The desktop stage's posters load only when it comes near (it is hidden on phones). */
+  const stage = $('.rose-stage');
+  if (stage) new IntersectionObserver(([e], o) => { if (!e.isIntersecting) return; o.disconnect(); $$('video[data-poster]', stage).forEach((v) => { v.poster = v.dataset.poster; }); }, { rootMargin: '600px 0px' }).observe(stage);
   const onScreen = new IntersectionObserver((es) => es.forEach((e) => {
     if (e.isIntersecting) { visible.add(e.target); tryPlay(e.target); }
     else { visible.delete(e.target); e.target.pause(); }
   }), { threshold: 0.15 });
   const videos = $$('video[data-src]');
   videos.forEach((v) => { near.observe(v); onScreen.observe(v); });
+  videos.forEach((v) => v.addEventListener('play', () => { if (paused || reduce.matches || !visible.has(v)) v.pause(); }));
   const pauseBtn = $('#pause');
   pauseBtn.addEventListener('click', () => {
     paused = !paused;
-    pauseBtn.setAttribute('aria-pressed', String(paused));
-    $('span', pauseBtn).textContent = paused ? 'Play video' : 'Pause video';
+        $('span', pauseBtn).textContent = paused ? 'Play video' : 'Pause video';
     pauseBtn.querySelector('path').setAttribute('d', paused ? 'M8 5v14l11-7z' : 'M7 5h4v14H7zM13 5h4v14h-4z');
     videos.forEach((v) => (paused ? v.pause() : tryPlay(v)));
   });
@@ -1278,7 +1284,7 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
     menuBtn.setAttribute('aria-expanded', String(open));
     mnav.classList.toggle('open', open);
     menuBtn.textContent = open ? 'Close' : 'Menu';
-    if (open) hd.classList.add('solid');
+    hd.classList.toggle('solid', open || scrollY > 30);
   }
   menuBtn.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
   mnav.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
@@ -1287,6 +1293,7 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
   /* ------------------------------------------------ Croydon Park number */
   const cp = $('#cpNum');
   if (cp && !reduce.matches) {
+    new IntersectionObserver(([e], o) => { if (!e.isIntersecting) return; o.disconnect(); if (e.boundingClientRect.top >= innerHeight) cp.textContent = '0'; }, { rootMargin: '0px 0px 100% 0px' }).observe(cp);
     new IntersectionObserver(([e], o) => {
       if (!e.isIntersecting) return;
       o.disconnect();
@@ -1297,7 +1304,7 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
         if (k < 1) requestAnimationFrame(step);
       };
       requestAnimationFrame(step);
-    }, { threshold: 0.6 }).observe(cp);
+    }, { threshold: 0 }).observe(cp);
   }
 
   /* --------------------------------------------------- Project Roselands
@@ -1312,7 +1319,7 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
     count.textContent = `Phase ${n} of 4`;
     $$('video[data-phase]', screen).forEach((v) => {
       const on = +v.dataset.phase === n;
-      if (on) { load(v); v.classList.add('on'); tryPlay(v); } else { v.classList.remove('on'); v.pause(); }
+      if (on) { v.classList.add('on'); tryPlay(v); } else { v.classList.remove('on'); v.pause(); }
     });
   }
   const phaseIO = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) setPhase(+e.target.dataset.phase); }), { rootMargin: '-45% 0px -45% 0px' });
@@ -1350,6 +1357,7 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
   nowMark.className = 'now';
   track.append(nowMark);
   function paintCure() {
+    if (!pour.value) { $$('.ms', msWrap).forEach((ms) => { ms.classList.remove('done'); $('[data-when]', ms).textContent = { 2: '24–48 hours', 7: '7 days', 28: '28 days' }[ms.dataset.days]; }); fill.style.width = '0%'; nowMark.textContent = ''; return; }
     const [y, m, d] = (pour.value || iso(today)).split('-').map(Number);
     const p = new Date(y, m - 1, d);
     const age = Math.round((today - p) / 864e5);
@@ -1394,22 +1402,23 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
   const originals = new Map($$('.qa').map((d) => [d, { s: $('summary', d).innerHTML, a: $('.a', d).innerHTML }]));
   function hl(html, term) {
     if (!term) return html;
-    const re = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    const re = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/'/g, "['‘’]")})`, 'gi');
     return html.replace(/(<[^>]+>)|([^<]+)/g, (m, tag, text) => (tag ? tag : text.replace(re, '<mark>$1</mark>')));
   }
   function filterFaq() {
-    const term = q.value.trim().toLowerCase();
+    const term = q.value.trim().toLowerCase().replace(/[‘’]/g, "'");
     let shown = 0;
     groups.forEach((g) => {
       let any = 0;
       const inCat = cat === 'all' || g.dataset.cat === cat;
       $$('.qa', g).forEach((d) => {
         const o = originals.get(d);
-        const hit = inCat && (!term || d.textContent.toLowerCase().includes(term));
+        const hit = inCat && (!term || d.textContent.toLowerCase().replace(/[‘’]/g, "'").includes(term));
         d.hidden = !hit;
         $('summary', d).innerHTML = hl(o.s, term);
         $('.a', d).innerHTML = hl(o.a, term);
-        if (hit) { any++; shown++; if (term) d.open = true; }
+        if (!term && d.dataset.auto) { d.open = false; delete d.dataset.auto; }
+        if (hit) { any++; shown++; if (term && !d.open) { d.open = true; d.dataset.auto = '1'; } }
       });
       g.hidden = !any;
     });
@@ -1443,13 +1452,13 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
   });
   function check(form) {
     let first = null;
-    $$('[required]', form).forEach((f) => {
-      const bad = !f.value.trim() || (f.type === 'tel' && f.value.replace(/\D/g, '').length < 8);
+    $$('[required],[type=email]', form).forEach((f) => {
+      const bad = (f.required && !f.value.trim()) || (f.type === 'tel' && f.value.replace(/\D/g, '').length < 8) || (f.type === 'email' && f.validity.typeMismatch);
       f.setAttribute('aria-invalid', String(bad));
       let msg = f.parentElement.querySelector('.err');
       if (bad) {
         if (!msg) { msg = document.createElement('span'); msg.className = 'err'; msg.id = f.id + '-err'; f.parentElement.append(msg); }
-        msg.textContent = f.type === 'tel' && f.value.trim() ? 'That number looks too short.' : 'Please fill this in.';
+        msg.textContent = !f.value.trim() ? 'Please fill this in.' : f.type === 'tel' ? 'That number looks too short.' : 'That email address doesn’t look right.';
         f.setAttribute('aria-describedby', msg.id);
         first = first || f;
       } else if (msg) { msg.remove(); f.removeAttribute('aria-describedby'); }
@@ -1464,7 +1473,7 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
     const data = Object.fromEntries(new FormData(home));
     const btn = $('button[type=submit]', home);
     if (!SITE.formAccessKey) {   /* demo mode: no network call at all */
-      sent.innerHTML = `<b>Thanks, ${esc(data.name.split(' ')[0])}.</b> Demo mode: nothing was sent. On the live site this goes straight to the Xtreme Works team, who call you back on ${esc(data.phone)} to book the inspection.`;
+      sent.innerHTML = `<b>Thanks, ${esc(data.name.trim().split(/\s+/)[0])}.</b> Demo mode: nothing was sent. On the live site this goes straight to the Xtreme Works team, who call you back on ${esc(data.phone)} to book the inspection.`;
       sent.hidden = false; return;
     }
     btn.disabled = true;
@@ -1473,7 +1482,7 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
         body: JSON.stringify({ access_key: SITE.formAccessKey, subject: `Site inspection request: ${data.job}`, from_name: 'xtremeworks website', ...data }) });
       const j = await r.json();
       if (!j.success) throw new Error();
-      sent.innerHTML = `<b>Thanks, ${esc(data.name.split(' ')[0])}.</b> We’ll call you on ${esc(data.phone)} to book a time.`;
+      sent.innerHTML = `<b>Thanks, ${esc(data.name.trim().split(/\s+/)[0])}.</b> We’ll call you on ${esc(data.phone)} to book a time.`;
     } catch {
       sent.innerHTML = 'That didn’t send. Please call <a href="tel:+61433597455">0433 597 455</a> instead, or try again.';
     }
