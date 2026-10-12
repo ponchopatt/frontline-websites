@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bloom Nutrition | Health and Wellness Supplements for Women</title>
+<meta name="description" content="Bloom Nutrition provides health and wellness supplements for women, with high quality ingredients to support energy, gut health and hormone balance. Shop our greens, beauty and fitness supplements.">
+<!-- A speed demo built as a proposal. It carries a real business's name and must never be indexed. -->
+<meta name="robots" content="noindex,nofollow,noarchive,noimageindex">
+<meta name="theme-color" content="#215b32">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preload" as="image" type="image/avif" media="(max-width:959px)" imagesrcset="assets/hero-m-480.avif 480w, assets/hero-m-688.avif 688w" imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" media="(min-width:960px)" imagesrcset="assets/hero-d-640.avif 640w, assets/hero-d-960.avif 960w, assets/hero-d-1440.avif 1440w" imagesizes="56vw" fetchpriority="high">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/fraunces-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/poppins-600.woff2">
+<style>
+/* Fonts. Bloom's own faces (Gazpacho, TT Travels, Timesquare) are licensed to bloomnu.com,
+   so the demo uses free look-alikes: Fraunces Black (soft) for Gazpacho, Poppins for the rest.
+   Poppins is already on Bloom's site. Fallback metrics keep text from jumping when fonts land. */
+@font-face{font-family:'Fraunces';font-weight:900;font-display:swap;src:url(fonts/fraunces-900.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:400;font-display:swap;src:url(fonts/poppins-400.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:600;font-display:swap;src:url(fonts/poppins-600.woff2) format('woff2')}
+@font-face{font-family:'Poppins Fallback';src:local('Arial');size-adjust:112.2%;ascent-override:93.6%;descent-override:31.2%;line-gap-override:8.9%}
+@font-face{font-family:'Fraunces Fallback';src:local('Georgia');size-adjust:104%;ascent-override:95%;descent-override:25%;line-gap-override:0%}
+
+/* Tokens, read from bloomnu.com's computed styles. */
+:root{
+  --green:#215b32; --green-2:#174424; --sage:#bedeb4; --mint:#c4e7bc;
+  --cream:#fbf1e4; --cream-2:#fdf8f1; --card:#fdf4ea; --lav:#e2d3fc;
+  --muted:#4d6553; --strike:#6b6b6b; --line:rgba(33,91,50,.14);
+  --wrap:1280px; --gutter:clamp(16px,4vw,40px); --r:18px;
+  --display:'Fraunces','Fraunces Fallback',Georgia,serif;
+  --sans:'Poppins','Poppins Fallback',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:96px}
+body{margin:0;background:#fff;color:var(--green);font:400 15px/1.5 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img,video{display:block;max-width:100%;height:auto}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+h1,h2,h3,p{margin:0}
+h1,h2{text-wrap:balance}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gutter)}
+.display{font-family:var(--display);font-weight:900;letter-spacing:-.005em;line-height:1.12}
+.h2{font-size:clamp(32px,4.2vw,56px);text-align:center}
+:focus-visible{outline:3px solid #2f8a4a;outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--green);color:#fff;padding:10px 16px;border-radius:999px;text-decoration:none;font-weight:600}
+.skip:focus{top:12px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 32px;border-radius:999px;background:var(--green);color:#fff;font:600 17px/1 var(--sans);text-decoration:none;letter-spacing:.01em;transition:transform .18s ease,background-color .18s ease,box-shadow .18s ease}
+.btn:hover{background:var(--green-2);transform:translateY(-1px);box-shadow:0 8px 20px -10px rgba(23,68,36,.6)}
+.btn:active{transform:translateY(0)}
+.btn-lg{min-height:64px;padding:18px 48px;font-size:clamp(18px,1.8vw,26px)}
+
+/* Announcement bar: two messages, cross-faded with CSS only. */
+.ann{position:relative;height:34px;background:var(--green);color:#fff;font-size:13px;overflow:hidden}
+.ann a{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 12px;text-align:center;text-decoration:underline;text-underline-offset:2px;animation:ann 9s infinite;white-space:nowrap}
+.ann a + a{animation-delay:-4.5s}
+.ann b{font-weight:600}
+@keyframes ann{0%,46%{opacity:1;visibility:visible}50%,96%{opacity:0;visibility:hidden}100%{opacity:1;visibility:visible}}
+
+/* Header */
+.hdr{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line)}
+.hdr-in{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:60px;max-width:1440px;margin:0 auto;padding:0 var(--gutter)}
+.logo{display:block;color:var(--green);line-height:0}
+.logo svg{width:84px;height:auto}
+.nav{display:none;gap:clamp(18px,2.6vw,40px);align-items:center}
+.nav > a,.nav > .shop > button{font:600 16px/1 var(--sans);text-decoration:none;padding:10px 0;display:inline-flex;gap:6px;align-items:center}
+.nav > a:hover,.nav > .shop > button:hover{text-decoration:underline;text-underline-offset:6px}
+.tools{display:flex;justify-content:flex-end;align-items:center;gap:4px}
+.ico{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:999px;text-decoration:none}
+.ico:hover{background:var(--cream-2)}
+.ico svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.pill{display:none;align-items:center;min-height:32px;padding:6px 16px;border-radius:999px;background:var(--green);color:#fff;font:600 12.5px/1 var(--sans);text-decoration:none;margin-right:8px}
+.pill:hover{background:var(--green-2)}
+.burger{justify-self:start}
+.hide-sm{display:none}
+@media (min-width:960px){
+  .hdr-in{height:72px}
+  .logo svg{width:94px}
+  .nav,.pill{display:flex}
+  .hide-sm{display:inline-grid}
+  .burger{display:none}
+}
+
+/* Shop mega panel */
+.shop{display:flex}
+.mega{position:absolute;left:0;right:0;top:100%;background:#fff;border-radius:0 0 24px 24px;box-shadow:0 30px 60px -30px rgba(23,68,36,.35);display:none;overflow:hidden}
+.mega.open{display:grid;grid-template-columns:288px 1fr;animation:drop .18s ease-out}
+@keyframes drop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.mega-cats{background:var(--cream-2);padding:12px 0 24px;display:flex;flex-direction:column}
+.mega-cats a{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:56px;padding:0 24px 0 40px;font:600 16px/1.2 var(--sans);white-space:nowrap;text-decoration:none}
+.mega-cats a:hover,.mega-cats a:first-child{background:var(--cream)}
+.mega-cats a svg{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:2}
+.mega-cats .tag{background:var(--green);color:#fff;font-size:10.5px;line-height:1.1;padding:4px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.02em}
+.mega-cats .btn{align-self:center;margin-top:16px;min-height:36px;padding:8px 18px;font-size:16px}
+.mega-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,220px));gap:16px;justify-content:center;align-content:center;padding:40px}
+.mega-tiles a{text-decoration:none;text-align:center;font-weight:600}
+.mega-tiles img{aspect-ratio:1;object-fit:contain;background:var(--card);border-radius:16px;margin-bottom:12px;width:100%}
+
+/* Mobile drawer */
+.drawer{margin:0;max-height:none;height:100%;width:min(88vw,380px);border:0;padding:0;background:#fff;color:var(--green)}
+.drawer::backdrop{background:rgba(16,40,22,.45)}
+.drawer[open]{animation:slide .22s ease-out}
+@keyframes slide{from{transform:translateX(-100%)}to{transform:none}}
+.drawer-top{display:flex;justify-content:space-between;align-items:center;padding:8px 8px 8px 20px;border-bottom:1px solid var(--line)}
+.drawer nav a{display:flex;justify-content:space-between;align-items:center;min-height:54px;padding:0 20px;border-bottom:1px solid var(--line);font-weight:600;text-decoration:none}
+.drawer nav .sub{font-weight:400;padding-left:32px;min-height:46px;background:var(--cream-2)}
+.drawer .btn{margin:20px}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;background:linear-gradient(180deg,#ffd8fa 0%,#ffe2fe 40%,#e9e5ff 100%)}
+.hero-in{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:1440px;margin:0 auto}
+.hero-copy{padding:28px var(--gutter) 0;display:flex;flex-direction:column;align-items:center;gap:10px}
+.hero h1{font-size:clamp(46px,12vw,64px);line-height:1}
+.hero p{font-size:clamp(15px,4vw,18px);color:#2b2b4d}
+.hero .btn-lg{margin-top:10px}
+.hero picture{width:100%;max-width:688px}
+.hero img{width:100%;aspect-ratio:688/521}
+@media (min-width:960px){
+  .hero{background:linear-gradient(110deg,#ffe3ff 0%,#f6e3fe 42%,#e7dcfb 70%,#d9d4f9 100%)}
+  .hero-in{flex-direction:row;justify-content:space-between;text-align:center;min-height:clamp(420px,35.5vw,640px)}
+  .hero picture{order:-1;flex:0 0 auto;width:auto;max-width:none;align-self:stretch;display:flex;align-items:flex-end}
+  .hero img{height:100%;width:auto;aspect-ratio:1440/944;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
+  .hero-copy{flex:1;padding:40px var(--gutter);gap:clamp(12px,1.4vw,20px)}
+  .hero h1{font-size:clamp(64px,7.2vw,112px);line-height:.98}
+  .hero p{font-size:clamp(18px,1.75vw,26px)}
+}
+
+/* Section rhythm */
+.sec{padding:clamp(48px,6vw,80px) 0}
+
+/* Best sellers carousel */
+.rail{position:relative;margin-top:clamp(24px,3vw,40px)}
+.track{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(232px,62vw,298px);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);padding:4px var(--gutter) 12px;margin:0;list-style:none;scrollbar-width:none;overscroll-behavior-x:contain}
+.track::-webkit-scrollbar{display:none}
+.track > li{scroll-snap-align:start}
+.arrow{position:absolute;top:calc(50% - 60px);z-index:2;display:none;place-items:center;width:44px;height:44px;border-radius:999px;background:#fff;box-shadow:0 4px 16px -4px rgba(23,68,36,.35);transition:opacity .2s}
+.arrow svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2}
+.arrow.prev{left:calc(var(--gutter) - 8px)}
+.arrow.next{right:calc(var(--gutter) - 8px)}
+.arrow[disabled]{opacity:0;pointer-events:none}
+@media (min-width:960px) and (pointer:fine){.arrow{display:grid}}
+.card{display:flex;flex-direction:column}
+.card-media{position:relative;display:block;aspect-ratio:1;border-radius:14px;background:var(--card);overflow:hidden}
+.card-media img{width:100%;height:100%;object-fit:contain;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.card:hover .card-media img{transform:scale(1.04)}
+.badge{position:absolute;top:10px;left:10px;z-index:1;background:var(--green);color:#fff;font:600 12px/1 var(--sans);padding:6px 8px;border-radius:4px;letter-spacing:.04em}
+.card-body{display:flex;flex-direction:column;gap:4px;padding:12px 2px 0;flex:1}
+.card h3{font:600 16px/1.3 var(--sans)}
+.card h3 a{text-decoration:none}
+.price{font-weight:600;font-size:13.5px;display:flex;gap:6px}
+.price s{color:var(--strike);font-weight:400}
+.variant{font-size:12.5px;display:flex;gap:6px;flex-wrap:wrap;min-height:19px}
+.variant b{font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.swatches{display:flex;gap:6px;margin:8px 0 10px;min-height:40px}
+.sw{position:relative;width:40px;height:40px;border-radius:999px;display:grid;place-items:center;transition:transform .15s}
+.sw img{width:34px;height:34px;border-radius:999px}
+.sw[aria-pressed=true]{box-shadow:inset 0 0 0 2px var(--green)}
+.sw:hover{transform:scale(1.08)}
+.sw[data-available=false]::after{content:"";position:absolute;inset:6px;background:linear-gradient(135deg,transparent 46%,rgba(33,91,50,.75) 47%,rgba(33,91,50,.75) 53%,transparent 54%);border-radius:999px}
+.atc{margin-top:auto;display:flex;align-items:center;justify-content:center;min-height:42px;border-radius:8px;background:var(--green);color:#fff;font:600 13.5px/1 var(--sans);text-decoration:none;transition:background-color .18s}
+.atc:hover{background:var(--green-2)}
+.atc[aria-disabled=true]{background:#9fb3a4;pointer-events:none}
+
+/* Subscribe & Save */
+.subs{display:grid;align-items:center;background:linear-gradient(180deg,#fff 0%,#f3fbf1 100%)}
+.subs-copy{padding:clamp(40px,6vw,72px) var(--gutter);text-align:center;display:flex;flex-direction:column;align-items:center;gap:clamp(20px,2.4vw,32px)}
+.subs h2{font-size:clamp(34px,3.6vw,52px)}
+.perks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:520px;width:100%;list-style:none;margin:0;padding:0}
+.perks li{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12.5px;line-height:1.3;font-weight:600}
+.perks svg{width:56px;height:56px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.subs picture img{width:100%}
+@media (min-width:800px){
+  .subs{grid-template-columns:1fr 1fr}
+  .perks li{font-size:14px}
+}
+
+/* Categories */
+.cats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:1150px;margin:clamp(24px,3vw,40px) auto 0;padding:0 var(--gutter);list-style:none}
+.cats a{display:block;text-decoration:none;border-radius:var(--r);overflow:hidden;background:var(--cream);transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s}
+.cats a:hover{transform:translateY(-4px);box-shadow:0 18px 30px -22px rgba(23,68,36,.55)}
+.cats img{width:100%;aspect-ratio:993/1020;object-fit:cover}
+.cats span{display:block;padding:clamp(12px,1.4vw,20px) 10px;text-align:center;font:600 clamp(15px,1.4vw,20px)/1.2 var(--sans)}
+@media (min-width:800px){.cats{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}}
+
+/* Founder */
+.founder{display:grid;background:var(--sage)}
+.founder img{width:100%;height:100%;object-fit:cover;aspect-ratio:1500/1432}
+.founder-copy{padding:clamp(40px,6vw,80px) var(--gutter);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:20px;max-width:720px;margin:0 auto}
+.founder h2{font-size:clamp(30px,2.6vw,36px)}
+.founder p{font-size:16px;line-height:1.6}
+@media (min-width:800px){.founder{grid-template-columns:1fr 1fr}}
+
+/* Retailer marquee */
+.retail{background:var(--green);overflow:hidden;padding:22px 0}
+.retail-track{display:flex;width:max-content;animation:marquee 46s linear infinite}
+.retail:hover .retail-track{animation-play-state:paused}
+.retail ul{display:flex;align-items:center;gap:clamp(36px,4vw,64px);padding:0 clamp(18px,2vw,32px);margin:0;list-style:none}
+.retail img{height:28px;width:auto;opacity:.95}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* Beverages */
+.bev{position:relative;background:var(--lav);overflow:hidden}
+.bev picture img{width:100%}
+.bev-copy{position:absolute;left:0;right:0;top:0;padding:40px var(--gutter);display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px}
+.bev h2{font-size:clamp(30px,7.6vw,41px);max-width:14ch}
+.bev p{max-width:36ch;color:#2b3b2f}
+@media (min-width:800px){
+  .bev-copy{top:0;bottom:0;left:auto;right:0;width:46%;justify-content:center;padding:40px clamp(24px,4vw,80px) 80px}
+  .bev h2{font-size:clamp(32px,2.9vw,41px);max-width:none}
+}
+
+/* The drinks image ends in a purple floor strip (6% of the phone image, 8% of the desktop
+   one). A sage wave sits over it and carries the colour into the videos below. */
+.bev::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:15vw;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 40C320 0 760-6 1040 12s320 34 400 18V100H0z' fill='%23bedeb4'/%3E%3C/svg%3E") no-repeat center bottom/100% 100%}
+@media (min-width:800px){.bev::after{height:6vw}}
+
+/* UGC videos */
+.ugc{position:relative;background:var(--sage)}
+.ugc .track{grid-auto-columns:clamp(180px,46vw,218px);gap:14px}
+.vid{position:relative;display:block;width:100%;aspect-ratio:9/16;border-radius:12px;overflow:hidden;background:#9fbf95}
+.vid img,.vid video{width:100%;height:100%;object-fit:cover}
+.vid .play{position:absolute;inset:0;display:grid;place-items:center;transition:background-color .2s}
+.vid .play span{display:grid;place-items:center;width:56px;height:56px;border-radius:999px;background:rgba(255,255,255,.88);box-shadow:0 6px 18px -6px rgba(0,0,0,.45);transition:transform .2s}
+.vid .play svg{width:22px;height:22px;margin-left:3px;fill:var(--green)}
+.vid:hover .play span{transform:scale(1.08)}
+
+/* Footer */
+.ftr{background:var(--green);color:#fff;padding:clamp(48px,5vw,64px) 0 32px}
+.ftr-in{display:grid;gap:40px;max-width:1150px;margin:0 auto;padding:0 var(--gutter)}
+.news{text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
+.news h2{font-size:20px}
+.news form{display:flex;flex-direction:column;gap:10px;width:100%;max-width:440px;margin-top:8px}
+.news input{min-height:46px;border-radius:24px;border:2px solid transparent;padding:0 20px;font:400 15px var(--sans);color:var(--green);background:#fff}
+.news input:focus-visible{outline:none;border-color:var(--mint)}
+.news button{min-height:46px;border-radius:24px;background:var(--mint);color:var(--green);font-weight:600}
+.news button:hover{background:#d5efcf}
+.news .note{font-size:13px;color:#d9eed4;min-height:20px}
+.social{display:flex;justify-content:center;gap:clamp(28px,5vw,64px);margin:0 0 12px;padding:0;list-style:none}
+.social a{display:grid;place-items:center;width:44px;height:44px}
+.social img{height:30px;width:auto}
+.links details{border-bottom:1px solid rgba(255,255,255,.55)}
+.links summary{display:flex;justify-content:space-between;align-items:center;min-height:52px;font-size:20px;cursor:pointer;list-style:none}
+.links summary::-webkit-details-marker{display:none}
+.links summary::after{content:"+";font-size:26px;line-height:1;transition:transform .2s}
+.links details[open] summary::after{transform:rotate(45deg)}
+.links ul{list-style:none;margin:0;padding:0 0 16px;display:grid;gap:6px}
+.links a{text-decoration:none;opacity:.9}
+.links a:hover{opacity:1;text-decoration:underline}
+.legal{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-top:20px;font-size:11.5px;line-height:1.5;opacity:.85}
+.legal .logo{color:#fff}
+.legal .logo svg{width:72px}
+.demo-note{max-width:1150px;margin:32px auto 0;padding:16px var(--gutter) 0;border-top:1px solid rgba(255,255,255,.2);font-size:12px;opacity:.75;text-align:center}
+@media (min-width:860px){.ftr-in{grid-template-columns:1fr 1fr;align-items:start;gap:64px}}
+
+/* Quiz pop-up (no third-party app; nothing collected) */
+.quiz{border:0;padding:0;width:min(92vw,460px);border-radius:28px;background:linear-gradient(160deg,#ff5f6d 0%,#ff8c37 55%,#ffc53d 100%);color:#fff;box-shadow:0 40px 80px -30px rgba(0,0,0,.5)}
+.quiz::backdrop{background:rgba(16,40,22,.5)}
+.quiz[open]{animation:pop .25s cubic-bezier(.2,.8,.2,1)}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.quiz-in{position:relative;padding:44px 28px 32px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px}
+.quiz .x{position:absolute;top:10px;left:10px}
+.quiz .x svg{stroke:#fff}
+.quiz-logo{color:#fff;line-height:0}
+.quiz-logo svg{width:110px;height:auto}
+.quiz h2{font-size:clamp(30px,8vw,40px);line-height:1.05}
+.quiz-opts{display:grid;gap:10px;width:100%;max-width:340px;margin-top:8px}
+.quiz-opts a{display:grid;place-items:center;min-height:56px;border-radius:999px;background:var(--green);color:#fff;text-decoration:none;font-weight:600;font-size:18px;transition:transform .15s,background-color .15s}
+.quiz-opts a:hover{background:var(--green-2);transform:translateY(-1px)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .ann a + a{display:none}
+  .ann a{animation:none}
+  .retail-track{animation:none;width:auto;flex-wrap:wrap;justify-content:center}
+  .retail ul[aria-hidden]{display:none}
+  .retail ul{flex-wrap:wrap;justify-content:center;row-gap:20px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 792 288"><path d="M93.42,76.9c7.27-1.37,23.42-6.17,21.47-33.41,0,0-29.57,3.26-25.88,30.12,0,0,.28,2.16,1.32,3A3.93,3.93,0,0,0,93.42,76.9Z"/><path d="M84.62,72.86C84.2,61.52,80.6,36,38.9,32.73c0,0-1.78,45.53,39.73,46.05,0,0,3.34.07,4.85-1.31C84.4,76.62,84.7,74.94,84.62,72.86Z"/><path d="M65.91,233.13s-.07,1.53,2.3.93,4.55-1.17,6.86-1.63c12.18-2.4,21.82-1,33.83,1.14,24.42,4.38,51.53,8.29,73.23-6.75,12.08-8.36,20.33-21.9,21.12-36.69a41.67,41.67,0,0,0-16.15-35.24,40.14,40.14,0,0,0-21.76-8.13,39.64,39.64,0,0,0,19.91-34.38,40.07,40.07,0,0,0-15.17-31c-9.85-7.8-22.38-10.32-34.69-9.53-11,.71-21.72,4.19-32.43,7.38C92.61,82.27,84.3,84.44,73.8,83.32c-2-.21-4-.55-5.91-.88s-2,1.07-2,1.07Zm48.44-18.94c-4.09-4.2-5.78-10.53-5.78-17.88V159.63c0-2.85.92-3.3,5.35-3.67,0,0,17.48-1.76,27.53,5.93,10.7,8.18,14.54,23.43,11.64,36.47-2.35,10.56-10.06,20-21.32,21.34C125.69,220.41,118.77,218.74,114.35,214.19Zm13.08-122c9.16,1.07,15.43,8.77,17.34,17.36,2.36,10.6-.76,23-9.46,29.65-8.17,6.26-22.39,4.82-22.39,4.82-3.6-.3-4.36-.67-4.35-3V111.19c0-6,1.38-11.12,4.7-14.54C116.86,93,122.49,91.6,127.43,92.17Z"/><path d="M263.93,230c0,1.87-1.46,2.91-4.16,2.7-4.15-.41-13.87-.83-26.33-.83s-20.37.42-24.73.83c-2.71.21-4.16-.83-4.16-2.7s1.45-2.7,3.95-3.53c4.36-1.25,5-5.61,5-13.3v-107c0-7.69-.63-12.06-5-13.51-2.5-.62-3.95-1.66-3.95-3.53,0-2.08,1.25-3.12,3.74-3.74,7.27-1.25,26.55-5,42.13-12.68,2.7-1.46,4.57-.21,4.57,2.7V213.2c0,7.69.63,12.05,5.2,13.3C262.68,227.33,263.93,228.16,263.93,230Z"/><path d="M388.33,173.51c0,34.29-23.69,61.93-61.51,61.93-38,0-61.51-27.64-61.51-61.93.2-34.09,23.48-61.93,61.51-61.93C364.64,111.58,388.33,139.42,388.33,173.51ZM309,177.11c4.69,24.84,14.41,45.54,27.91,43,13-3.06,12.6-25.74,8.1-50.22-4.86-24.66-14.58-45.54-27.9-43C304,130,304.34,152.63,309,177.11Z"/><path d="M517.56,173.51c0,34.29-23.7,61.93-61.52,61.93-38,0-61.51-27.64-61.51-61.93.21-34.09,23.48-61.93,61.51-61.93C493.86,111.58,517.56,139.42,517.56,173.51Zm-79.32,3.6c4.68,24.84,14.4,45.54,27.9,43,13-3.06,12.6-25.74,8.1-50.22-4.86-24.66-14.58-45.54-27.9-43C433.2,130,433.56,152.63,438.24,177.11Z"/><path d="M527.81,213.2c0,7.69-.62,12.05-5.19,13.3-2.29.83-3.74,1.66-3.74,3.53s1.45,2.91,4.16,2.7c4.36-.41,12.26-.83,24.72-.83s22.19.42,26.34.83c2.7.21,4.16-.83,4.16-2.7s-1.25-2.7-3.74-3.53c-4.57-1.25-5.2-5.61-5.2-13.3V163.42c0-14.54,5.41-29.3,20.16-29.3,14.55,0,18.08,14.13,18.08,30.34V213.2c0,7.69-.42,12.05-5,13.3-2.49.83-4,1.66-4,3.53s1.67,2.91,4.37,2.7c4.15-.41,12-.83,24.52-.83s22.18.42,26.34.83c2.7.21,4.36-.83,4.36-2.7s-1.45-2.7-4-3.53c-4.57-1.25-5-5.61-5-13.3V163.42c0-14.54,5.4-29.3,20-29.3s18.28,14.13,18.28,30.34V213.2c0,7.69-.62,12.05-5.19,13.3-2.5.83-3.74,1.66-3.74,3.53s1.45,2.91,4.15,2.7c4.16-.41,13.87-.83,26.34-.83s20.37.42,24.73.83c2.7.21,4.16-.83,4.16-2.7s-1.46-2.7-4-3.53c-4.37-1.25-5-5.61-5-13.3V160.83c0-32.42-14.49-49.25-44-49.25-22.65,0-33.87,12.26-39.49,23.69-5.81-15.59-19.89-23.69-40.46-23.69-19.42,0-30,9.84-35.69,20.52,0-2.17.07-5.33-.06-7.57a11,11,0,0,0-1.71-5.88c-3.35-4.53-12.84-3.61-21.19-3.68L523,115c-2.71.06-3.24,1.55-3.24,2.79,0,1.87,1.76,2.6,3,3.45,4.44,2.68,5,5.61,5,13.3Z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><path d="M2.5 3.5h2.6l2.4 11.2a1.6 1.6 0 0 0 1.6 1.3h8.6a1.6 1.6 0 0 0 1.6-1.2l1.7-7H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="10" r="3.4"/><path d="M5.9 18.5a7.5 7.5 0 0 1 12.2 0"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></symbol>
+</svg>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="ann" role="region" aria-label="Offers">
+  <a href="https://bloomnu.com/collections/sale"><span><b>FREE</b> Full-Size Colostrum on $85+ ($30 Value)</span></a>
+  <a href="https://bloomnu.com/pages/subscription"><span><b>15% OFF</b> for LIFE when you Sub &amp; Save! ✨</span></a>
+</div>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <button class="ico burger" type="button" aria-label="Open menu" data-open-drawer><svg><use href="#i-menu"/></svg></button>
+    <nav class="nav" aria-label="Main">
+      <div class="shop">
+        <button type="button" aria-expanded="false" aria-controls="mega">Shop</button>
+        <div class="mega" id="mega">
+          <div class="mega-cats">
+            <a href="https://bloomnu.com/collections/best-sellers"><span>Shop Best Sellers</span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"/></svg></a>
+<a href="https://bloomnu.com/collections/greens-superfoods"><span>Greens &amp; Superfoods</span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"/></svg></a>
+<a href="https://bloomnu.com/collections/energy"><span>Hydration &amp; Energy</span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"/></svg></a>
+<a href="https://bloomnu.com/collections/protein-creatine"><span>Protein &amp; Creatine</span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"/></svg></a>
+<a href="https://bloomnu.com/collections/wellness"><span>Colostrum &amp; Collagen</span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"/></svg></a>
+<a href="https://bloomnu.com/collections/bundles"><span>Bundles</span><span class="tag">Save up to 30%</span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"/></svg></a>
+<a href="https://bloomnu.com/products/sparkling-energy"><span>Bloom™ Sparkling Energy</span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"/></svg></a>
+<a href="https://bloomnu.com/products/bloom-pop"><span>Bloom Pop™</span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"/></svg></a>
+            <a class="btn" href="https://bloomnu.com/collections/best-sellers">Shop All</a>
+          </div>
+          <div class="mega-tiles"><a href="https://bloomnu.com/products/clear-protein?variant=47564596838500"><img src="assets/p-clear-protein-320.webp" width="320" height="320" loading="lazy" decoding="async" alt="">Clear Protein</a><a href="https://bloomnu.com/products/greens-superfoods?variant=40264038973540"><img src="assets/p-greens-320.webp" width="320" height="320" loading="lazy" decoding="async" alt="">Greens &amp; Superfoods</a><a href="https://bloomnu.com/products/creatine?variant=44569140166756"><img src="assets/p-creatine-320.webp" width="320" height="320" loading="lazy" decoding="async" alt="">Creatine Monohydrate</a><a href="https://bloomnu.com/products/creatine-gummies?variant=46362528645220"><img src="assets/p-creatine-gummies-320.webp" width="320" height="320" loading="lazy" decoding="async" alt="">Creatine Gummies</a></div>
+        </div>
+      </div>
+      <a href="https://bloomnu.com/pages/bloom-into-your-best-self-quiz">Take The Quiz</a>
+      <a href="https://bloomnu.com/pages/subscription">Subscribe &amp; Save 15%</a>
+    </nav>
+    <a class="logo" href="./" aria-label="Bloom Nutrition, home"><svg fill="currentColor" viewBox="0 0 792 288"><use href="#logo"/></svg></a>
+    <div class="tools">
+      <a class="pill" href="https://bloomnu.com/collections/best-sellers">Shop Best Sellers</a>
+      <a class="ico hide-sm" href="https://bloomnu.com/search" aria-label="Search"><svg><use href="#i-search"/></svg></a>
+      <a class="ico" href="https://bloomnu.com/cart" aria-label="Cart"><svg><use href="#i-cart"/></svg></a>
+      <a class="ico" href="https://bloomnu.com/account/login" aria-label="Account"><svg><use href="#i-user"/></svg></a>
+    </div>
+  </div>
+</header>
+
+<dialog class="drawer" id="drawer" aria-label="Menu">
+  <div class="drawer-top">
+    <a class="logo" href="./" aria-label="Bloom Nutrition, home"><svg fill="currentColor" viewBox="0 0 792 288" style="width:80px"><use href="#logo"/></svg></a>
+    <button class="ico" type="button" aria-label="Close menu" data-close><svg><use href="#i-x"/></svg></button>
+  </div>
+  <nav aria-label="Mobile">
+    <a href="https://bloomnu.com/collections/best-sellers">Shop</a>
+    <a class="sub" href="https://bloomnu.com/collections/best-sellers">Shop Best Sellers</a>
+<a class="sub" href="https://bloomnu.com/collections/greens-superfoods">Greens &amp; Superfoods</a>
+<a class="sub" href="https://bloomnu.com/collections/energy">Hydration &amp; Energy</a>
+<a class="sub" href="https://bloomnu.com/collections/protein-creatine">Protein &amp; Creatine</a>
+<a class="sub" href="https://bloomnu.com/collections/wellness">Colostrum &amp; Collagen</a>
+<a class="sub" href="https://bloomnu.com/collections/bundles">Bundles</a>
+<a class="sub" href="https://bloomnu.com/products/sparkling-energy">Bloom™ Sparkling Energy</a>
+<a class="sub" href="https://bloomnu.com/products/bloom-pop">Bloom Pop™</a>
+    <a href="https://bloomnu.com/pages/bloom-into-your-best-self-quiz">Take The Quiz</a>
+    <a href="https://bloomnu.com/pages/subscription">Subscribe &amp; Save 15%</a>
+    <a href="https://bloomnu.com/search">Search</a>
+    <a href="https://bloomnu.com/account/login">Account</a>
+  </nav>
+  <a class="btn" href="https://bloomnu.com/collections/best-sellers">Shop Best Sellers</a>
+</dialog>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-in">
+      <div class="hero-copy">
+        <h1 class="display" id="hero-title">Fitness Starter&nbsp;Kit</h1>
+        <p>Subscribe now and receive 3 FREE gifts!</p>
+        <a class="btn btn-lg" href="https://bloomnu.com/products/fitness-starter-set">25% OFF FOR LIFE</a>
+      </div>
+      <picture>
+        <source type="image/avif" media="(min-width:960px)" srcset="assets/hero-d-640.avif 640w, assets/hero-d-960.avif 960w, assets/hero-d-1440.avif 1440w" sizes="56vw">
+        <source type="image/webp" media="(min-width:960px)" srcset="assets/hero-d-640.webp 640w, assets/hero-d-960.webp 960w, assets/hero-d-1440.webp 1440w" sizes="56vw">
+        <source type="image/avif" srcset="assets/hero-m-480.avif 480w, assets/hero-m-688.avif 688w" sizes="100vw">
+        <img src="assets/hero-m-688.webp" srcset="assets/hero-m-480.webp 480w, assets/hero-m-688.webp 688w" sizes="100vw" width="688" height="521" fetchpriority="high" decoding="async" alt="Bloom Creatine Monohydrate and High Energy Pre-Workout, with a free frother, shaker and sample sticks">
+      </picture>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="best-title">
+    <h2 class="display h2 wrap" id="best-title">Shop our Best Sellers</h2>
+    <div class="rail" data-rail>
+      <button class="arrow prev" type="button" aria-label="Previous products" data-prev disabled><svg><use href="#i-left"/></svg></button>
+      <ul class="track" data-track>
+<li class="card" data-title="Daily Hydration Sticks"><a class="card-media" href="https://bloomnu.com/products/hydration-sticks?variant=49188312285284" data-product="https://bloomnu.com/products/hydration-sticks" tabindex="-1" aria-hidden="true"><picture><source type="image/avif" srcset="assets/p-hydration-320.avif 320w, assets/p-hydration-440.avif 440w, assets/p-hydration-600.avif 600w" sizes="(min-width:960px) 298px, 62vw"><img src="assets/p-hydration-600.webp" srcset="assets/p-hydration-320.webp 320w, assets/p-hydration-440.webp 440w, assets/p-hydration-600.webp 600w" sizes="(min-width:960px) 298px, 62vw" width="600" height="600" loading="lazy" decoding="async" alt="Daily Hydration Sticks"></picture></a><div class="card-body"><h3><a href="https://bloomnu.com/products/hydration-sticks?variant=49188312285284" data-product="https://bloomnu.com/products/hydration-sticks">Daily Hydration Sticks</a></h3><p class="price"><span data-price>$9.99</span><s data-compare hidden></s></p><p class="variant"><b data-flavor>Peach Pineapple</b><span data-size>5 count</span></p><div class="swatches" role="group" aria-label="Flavor"><button class="sw" type="button" aria-pressed="true" title="Peach Pineapple" data-flavor="Peach Pineapple" data-size="5 count" data-variant="49188312285284" data-price="9.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/dailyhydration_PP_01B.png?v=1788822848&amp;width=600"><img src="assets/sw-peach-pineapple-peachpineapple100x100.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Peach Pineapple</span></button><button class="sw" type="button" aria-pressed="false" title="Strawberry Lemonade" data-flavor="Strawberry Lemonade" data-size="5 count" data-variant="48411754168420" data-price="9.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/dailyhydration_SL_01B_12b90466-6fa5-49af-b6bf-201135693048.png?v=1790723309&amp;width=600"><img src="assets/sw-strawberry-lemonade-flavoriconsl.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Strawberry Lemonade</span></button><button class="sw" type="button" aria-pressed="false" title="Variety Pack" data-flavor="Variety Pack" data-size="10 count" data-variant="48440186994788" data-price="18.98" data-compare="19.98" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/hydration-variety-01_621fe4d9-2577-45fa-b38d-48fcbdd727f0.png?v=1789761566&amp;width=600"><img src="assets/sw-variety-pack-flavoricontrio.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Variety Pack</span></button><button class="sw" type="button" aria-pressed="false" title="Rocket Blast, sold out" data-flavor="Rocket Blast" data-size="5 count" data-variant="48411754135652" data-price="9.99" data-compare="" data-available="false" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/dailyhydration_RB_01B_4277db77-d10c-45dc-8d29-cbb9ef124668.png?v=1790723466&amp;width=600"><img src="assets/sw-rocket-blast-flavoriconrb.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Rocket Blast, sold out</span></button></div><a class="atc" data-atc href="https://bloomnu.com/cart/add?id=49188312285284&amp;quantity=1">Add To Cart</a></div></li>
+<li class="card" data-title="Clear Protein"><a class="card-media" href="https://bloomnu.com/products/clear-protein?variant=47564596838500" data-product="https://bloomnu.com/products/clear-protein" tabindex="-1" aria-hidden="true"><picture><source type="image/avif" srcset="assets/p-clear-protein-320.avif 320w, assets/p-clear-protein-440.avif 440w, assets/p-clear-protein-600.avif 600w" sizes="(min-width:960px) 298px, 62vw"><img src="assets/p-clear-protein-600.webp" srcset="assets/p-clear-protein-320.webp 320w, assets/p-clear-protein-440.webp 440w, assets/p-clear-protein-600.webp 600w" sizes="(min-width:960px) 298px, 62vw" width="600" height="600" loading="lazy" decoding="async" alt="Clear Protein"></picture></a><div class="card-body"><h3><a href="https://bloomnu.com/products/clear-protein?variant=47564596838500" data-product="https://bloomnu.com/products/clear-protein">Clear Protein</a></h3><p class="price"><span data-price>$29.99</span><s data-compare hidden></s></p><p class="variant"><b data-flavor>Strawberry Watermelon</b><span data-size>Single Pack</span></p><div class="swatches" role="group" aria-label="Flavor"><button class="sw" type="button" aria-pressed="true" title="Strawberry Watermelon" data-flavor="Strawberry Watermelon" data-size="Single Pack" data-variant="47564596838500" data-price="29.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloomclear_SW_01_eadd2819-fd49-45b2-860d-0894c6ce45a5.png?v=1790723646&amp;width=600"><img src="assets/sw-strawberry-watermelon-sw.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Strawberry Watermelon</span></button><button class="sw" type="button" aria-pressed="false" title="Raspberry Lemon" data-flavor="Raspberry Lemon" data-size="Single Pack" data-variant="47564596805732" data-price="29.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloomclear_RL_01_9f6a0397-9fa7-48fd-993f-17e689237f28.png?v=1790723733&amp;width=600"><img src="assets/sw-raspberry-lemon-raspberrylemonprotein.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Raspberry Lemon</span></button><button class="sw" type="button" aria-pressed="false" title="Variety Pack" data-flavor="Variety Pack" data-size="2 Pack" data-variant="50426183549028" data-price="53.98" data-compare="59.98" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/Clear-Variety-SW-RL.png?v=1790173588&amp;width=600"><img src="assets/sw-variety-pack-6789.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Variety Pack</span></button></div><a class="atc" data-atc href="https://bloomnu.com/cart/add?id=47564596838500&amp;quantity=1">Add To Cart</a></div></li>
+<li class="card" data-title="Greens &amp; Superfoods"><a class="card-media" href="https://bloomnu.com/products/greens-superfoods?variant=40264038973540" data-product="https://bloomnu.com/products/greens-superfoods" tabindex="-1" aria-hidden="true"><picture><source type="image/avif" srcset="assets/p-greens-320.avif 320w, assets/p-greens-440.avif 440w, assets/p-greens-600.avif 600w" sizes="(min-width:960px) 298px, 62vw"><img src="assets/p-greens-600.webp" srcset="assets/p-greens-320.webp 320w, assets/p-greens-440.webp 440w, assets/p-greens-600.webp 600w" sizes="(min-width:960px) 298px, 62vw" width="600" height="600" loading="lazy" decoding="async" alt="Greens &amp; Superfoods"></picture></a><div class="card-body"><h3><a href="https://bloomnu.com/products/greens-superfoods?variant=40264038973540" data-product="https://bloomnu.com/products/greens-superfoods">Greens &amp; Superfoods</a></h3><p class="price"><span data-price>$33.99</span><s data-compare hidden></s></p><p class="variant"><b data-flavor>Mango</b><span data-size>30ct</span></p><div class="swatches" role="group" aria-label="Flavor"><button class="sw" type="button" aria-pressed="false" title="Berry" data-flavor="Berry" data-size="30ct" data-variant="31472189931620" data-price="33.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloomgreens_30_berry_shopify_01_f1d3d24f-0d47-457d-90f9-1d7f5641ab8f.png?v=1790723866&amp;width=600"><img src="assets/sw-berry-strawberrygreens.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Berry</span></button><button class="sw" type="button" aria-pressed="false" title="Orange Passionfruit" data-flavor="Orange Passionfruit" data-size="30ct" data-variant="42266891583588" data-price="33.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloomgreens_30_orangepassionfruit_shopify_01.png?v=1782412723&amp;width=600"><img src="assets/sw-orange-passionfruit-orangepassionfruitd522.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Orange Passionfruit</span></button><button class="sw" type="button" aria-pressed="true" title="Mango" data-flavor="Mango" data-size="30ct" data-variant="40264038973540" data-price="33.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloomgreens_30_mango_shopify_01.png?v=1782412723&amp;width=600"><img src="assets/sw-mango-mangogreens.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Mango</span></button><button class="sw" type="button" aria-pressed="false" title="Citrus" data-flavor="Citrus" data-size="30ct" data-variant="32499602784356" data-price="33.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloomgreens_30_citrus_shopify_01.png?v=1782413226&amp;width=600"><img src="assets/sw-citrus-citrusgreens.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Citrus</span></button></div><a class="atc" data-atc href="https://bloomnu.com/cart/add?id=40264038973540&amp;quantity=1">Add To Cart</a></div></li>
+<li class="card" data-title="Creatine Gummies"><a class="card-media" href="https://bloomnu.com/products/creatine-gummies?variant=46362528645220" data-product="https://bloomnu.com/products/creatine-gummies" tabindex="-1" aria-hidden="true"><picture><source type="image/avif" srcset="assets/p-creatine-gummies-320.avif 320w, assets/p-creatine-gummies-440.avif 440w, assets/p-creatine-gummies-600.avif 600w" sizes="(min-width:960px) 298px, 62vw"><img src="assets/p-creatine-gummies-600.webp" srcset="assets/p-creatine-gummies-320.webp 320w, assets/p-creatine-gummies-440.webp 440w, assets/p-creatine-gummies-600.webp 600w" sizes="(min-width:960px) 298px, 62vw" width="600" height="600" loading="lazy" decoding="async" alt="Creatine Gummies"></picture></a><div class="card-body"><h3><a href="https://bloomnu.com/products/creatine-gummies?variant=46362528645220" data-product="https://bloomnu.com/products/creatine-gummies">Creatine Gummies</a></h3><p class="price"><span data-price>$19.99</span><s data-compare hidden></s></p><p class="variant"><b data-flavor>Berry Boost</b><span data-size>36 gummies</span></p><div class="swatches" role="group" aria-label="Flavor"><button class="sw" type="button" aria-pressed="true" title="Berry Boost" data-flavor="Berry Boost" data-size="36 gummies" data-variant="46362528645220" data-price="19.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/creatinegummies_01_36535931-971e-4040-9b59-b9e034c109d2.png?v=1790724403&amp;width=600"><img src="assets/sw-berry-boost-bb.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Berry Boost</span></button><button class="sw" type="button" aria-pressed="false" title="Orange Squeeze" data-flavor="Orange Squeeze" data-size="36 gummies" data-variant="46362528677988" data-price="19.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/creatinegummies_OS_01_3e833a3f-86f5-4820-901f-288f2fdac0bc.png?v=1790724403&amp;width=600"><img src="assets/sw-orange-squeeze-os.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Orange Squeeze</span></button></div><a class="atc" data-atc href="https://bloomnu.com/cart/add?id=46362528645220&amp;quantity=1">Add To Cart</a></div></li>
+<li class="card" data-title="Gut Health &amp; Beauty Duo"><a class="card-media" href="https://bloomnu.com/products/ultimate-gut-health-duo?variant=49261152043108" data-product="https://bloomnu.com/products/ultimate-gut-health-duo" tabindex="-1" aria-hidden="true"><span class="badge">25% OFF</span><picture><source type="image/avif" srcset="assets/p-gut-duo-320.avif 320w, assets/p-gut-duo-440.avif 440w, assets/p-gut-duo-600.avif 600w" sizes="(min-width:960px) 298px, 62vw"><img src="assets/p-gut-duo-600.webp" srcset="assets/p-gut-duo-320.webp 320w, assets/p-gut-duo-440.webp 440w, assets/p-gut-duo-600.webp 600w" sizes="(min-width:960px) 298px, 62vw" width="600" height="600" loading="lazy" decoding="async" alt="Gut Health &amp; Beauty Duo"></picture></a><div class="card-body"><h3><a href="https://bloomnu.com/products/ultimate-gut-health-duo?variant=49261152043108" data-product="https://bloomnu.com/products/ultimate-gut-health-duo">Gut Health &amp; Beauty Duo</a></h3><p class="price"><span data-price>$52.49</span><s data-compare>$69.99</s></p><p class="variant"><b data-flavor>Strawberry Kiwi</b><span data-size></span></p><div class="swatches" role="group" aria-label="Flavor"><button class="sw" type="button" aria-pressed="true" title="Strawberry Kiwi" data-flavor="Strawberry Kiwi" data-size="" data-variant="49261152043108" data-price="52.49" data-compare="69.99" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloom_GHD_SK_01B_9384d2c9-c11c-47e9-8a1b-4e42a4746032.png?v=1790724802&amp;width=600"><img src="assets/sw-strawberry-kiwi-strawberrykiwigreens.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Strawberry Kiwi</span></button><button class="sw" type="button" aria-pressed="false" title="Berry" data-flavor="Berry" data-size="" data-variant="43940558340196" data-price="52.49" data-compare="69.99" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloom_GHD_berry_01B_483bf48e-02ae-4fba-918c-74c30f289e29.png?v=1790724821&amp;width=600"><img src="assets/sw-berry-strawberrygreens.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Berry</span></button><button class="sw" type="button" aria-pressed="false" title="Mango" data-flavor="Mango" data-size="" data-variant="43933892509796" data-price="52.49" data-compare="69.99" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloom_GHD_mango_01B_876273cd-d813-44fe-a64a-bf4bf092d3d8.png?v=1790724802&amp;width=600"><img src="assets/sw-mango-mangogreens.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Mango</span></button></div><a class="atc" data-atc href="https://bloomnu.com/cart/add?id=49261152043108&amp;quantity=1">Add To Cart</a></div></li>
+<li class="card" data-title="Creatine Monohydrate"><a class="card-media" href="https://bloomnu.com/products/creatine?variant=44569140166756" data-product="https://bloomnu.com/products/creatine" tabindex="-1" aria-hidden="true"><picture><source type="image/avif" srcset="assets/p-creatine-320.avif 320w, assets/p-creatine-440.avif 440w, assets/p-creatine-600.avif 600w" sizes="(min-width:960px) 298px, 62vw"><img src="assets/p-creatine-600.webp" srcset="assets/p-creatine-320.webp 320w, assets/p-creatine-440.webp 440w, assets/p-creatine-600.webp 600w" sizes="(min-width:960px) 298px, 62vw" width="600" height="600" loading="lazy" decoding="async" alt="Creatine Monohydrate"></picture></a><div class="card-body"><h3><a href="https://bloomnu.com/products/creatine?variant=44569140166756" data-product="https://bloomnu.com/products/creatine">Creatine Monohydrate</a></h3><p class="price"><span data-price>$19.99</span><s data-compare hidden></s></p><p class="variant"><b data-flavor>Raspberry Lemon</b><span data-size></span></p><div class="swatches" role="group" aria-label="Flavor"><button class="sw" type="button" aria-pressed="true" title="Raspberry Lemon" data-flavor="Raspberry Lemon" data-size="" data-variant="44569140166756" data-price="19.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloomcreatine_RL_shopfiy_01B_6cf65bd9-4cf2-4433-9fe2-ba3cc923e319.png?v=1790724222&amp;width=600"><img src="assets/sw-raspberry-lemon-rlbd19fd8be3534818a3.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Raspberry Lemon</span></button><button class="sw" type="button" aria-pressed="false" title="Unflavored" data-flavor="Unflavored" data-size="" data-variant="44569140199524" data-price="19.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloomcreatine_UN_shopfiy_01B_dac090d9-78d9-45d7-a28c-83063cce74bc_1.png?v=1790724222&amp;width=600"><img src="assets/sw-unflavored-un.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Unflavored</span></button></div><a class="atc" data-atc href="https://bloomnu.com/cart/add?id=44569140166756&amp;quantity=1">Add To Cart</a></div></li>
+<li class="card" data-title="Energy Sticks"><a class="card-media" href="https://bloomnu.com/products/energy-sticks?variant=48330968662116" data-product="https://bloomnu.com/products/energy-sticks" tabindex="-1" aria-hidden="true"><picture><source type="image/avif" srcset="assets/p-energy-sticks-320.avif 320w, assets/p-energy-sticks-440.avif 440w, assets/p-energy-sticks-600.avif 600w" sizes="(min-width:960px) 298px, 62vw"><img src="assets/p-energy-sticks-600.webp" srcset="assets/p-energy-sticks-320.webp 320w, assets/p-energy-sticks-440.webp 440w, assets/p-energy-sticks-600.webp 600w" sizes="(min-width:960px) 298px, 62vw" width="600" height="600" loading="lazy" decoding="async" alt="Energy Sticks"></picture></a><div class="card-body"><h3><a href="https://bloomnu.com/products/energy-sticks?variant=48330968662116" data-product="https://bloomnu.com/products/energy-sticks">Energy Sticks</a></h3><p class="price"><span data-price>$10.49</span><s data-compare hidden></s></p><p class="variant"><b data-flavor>Shirley Temple</b><span data-size>10ct</span></p><div class="swatches" role="group" aria-label="Flavor"><button class="sw" type="button" aria-pressed="true" title="Shirley Temple" data-flavor="Shirley Temple" data-size="10ct" data-variant="48330968662116" data-price="10.49" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/EnergySticks_PDP_ShirleyTemple_Shopify_01B_3dd2a5b7-1785-431d-833b-452e8afbfe5c.png?v=1790782375&amp;width=600"><img src="assets/sw-shirley-temple-st.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Shirley Temple</span></button><button class="sw" type="button" aria-pressed="false" title="Variety Pack" data-flavor="Variety Pack" data-size="10ct" data-variant="48330978295908" data-price="10.49" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/EnergySticks_PDP_SplashPack_Shopify_01B_a7bfaf13-d515-4f71-aafa-a3bcb3c84893.png?v=1790782413&amp;width=600"><img src="assets/sw-variety-pack-splashpack.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Variety Pack</span></button><button class="sw" type="button" aria-pressed="false" title="Strawberry Watermelon" data-flavor="Strawberry Watermelon" data-size="10ct" data-variant="45313891237988" data-price="10.49" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/energysticks_10ct_SW_shopify_01B_80d418e7-4d7e-4584-931e-653a938164f5.png?v=1790782375&amp;width=600"><img src="assets/sw-strawberry-watermelon-sw.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Strawberry Watermelon</span></button><button class="sw" type="button" aria-pressed="false" title="Peach Mango" data-flavor="Peach Mango" data-size="10ct" data-variant="45313891270756" data-price="10.49" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/energysticks_10ct_PM_shopify_01B_75b1702b-2689-42c5-991c-734a4ce1f31d.png?v=1790782375&amp;width=600"><img src="assets/sw-peach-mango-peachmango.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Peach Mango</span></button></div><a class="atc" data-atc href="https://bloomnu.com/cart/add?id=48330968662116&amp;quantity=1">Add To Cart</a></div></li>
+<li class="card" data-title="High Energy Pre-Workout"><a class="card-media" href="https://bloomnu.com/products/preworkout?variant=42592075415652" data-product="https://bloomnu.com/products/preworkout" tabindex="-1" aria-hidden="true"><picture><source type="image/avif" srcset="assets/p-preworkout-320.avif 320w, assets/p-preworkout-440.avif 440w, assets/p-preworkout-600.avif 600w" sizes="(min-width:960px) 298px, 62vw"><img src="assets/p-preworkout-600.webp" srcset="assets/p-preworkout-320.webp 320w, assets/p-preworkout-440.webp 440w, assets/p-preworkout-600.webp 600w" sizes="(min-width:960px) 298px, 62vw" width="600" height="600" loading="lazy" decoding="async" alt="High Energy Pre-Workout"></picture></a><div class="card-body"><h3><a href="https://bloomnu.com/products/preworkout?variant=42592075415652" data-product="https://bloomnu.com/products/preworkout">High Energy Pre-Workout</a></h3><p class="price"><span data-price>$39.99</span><s data-compare hidden></s></p><p class="variant"><b data-flavor>Raspberry Lemonade</b><span data-size></span></p><div class="swatches" role="group" aria-label="Flavor"><button class="sw" type="button" aria-pressed="true" title="Raspberry Lemonade" data-flavor="Raspberry Lemonade" data-size="" data-variant="42592075415652" data-price="39.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloom_hepwo_RL_shopfiy_01B_5eebed33-6995-46cd-b8eb-8fe1f204c643.png?v=1790725103&amp;width=600"><img src="assets/sw-raspberry-lemonade-raspberrylemonade.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Raspberry Lemonade</span></button><button class="sw" type="button" aria-pressed="false" title="Sour Gummy" data-flavor="Sour Gummy" data-size="" data-variant="42592075546724" data-price="39.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloom_hepwo_SG_shopfiy_01B_7489c7d7-f9b3-4369-bbeb-1a80e78d2db7.png?v=1790725102&amp;width=600"><img src="assets/sw-sour-gummy-sourgummy.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Sour Gummy</span></button><button class="sw" type="button" aria-pressed="false" title="Strawberry Mango" data-flavor="Strawberry Mango" data-size="" data-variant="42592075645028" data-price="39.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloom_hepwo_SM_shopfiy_01B_fa3f2621-bb55-477b-9301-6ed31fe62808.png?v=1790725196&amp;width=600"><img src="assets/sw-strawberry-mango-strawberrymango.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Strawberry Mango</span></button><button class="sw" type="button" aria-pressed="false" title="Sour Peach Ring, sold out" data-flavor="Sour Peach Ring" data-size="" data-variant="42592075382884" data-price="39.99" data-compare="" data-available="false" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloom_hepwo_SPR_shopfiy_01B_083ad5e0-3dff-4c5a-a4be-d23ad7c76e9e.png?v=1790725102&amp;width=600"><img src="assets/sw-sour-peach-ring-sourpeachring.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Sour Peach Ring, sold out</span></button></div><a class="atc" data-atc href="https://bloomnu.com/cart/add?id=42592075415652&amp;quantity=1">Add To Cart</a></div></li>
+<li class="card" data-title="Colostrum &amp; Collagen Peptides"><a class="card-media" href="https://bloomnu.com/products/colostrum-collagen?variant=43897521569892" data-product="https://bloomnu.com/products/colostrum-collagen" tabindex="-1" aria-hidden="true"><picture><source type="image/avif" srcset="assets/p-colostrum-320.avif 320w, assets/p-colostrum-440.avif 440w, assets/p-colostrum-600.avif 600w" sizes="(min-width:960px) 298px, 62vw"><img src="assets/p-colostrum-600.webp" srcset="assets/p-colostrum-320.webp 320w, assets/p-colostrum-440.webp 440w, assets/p-colostrum-600.webp 600w" sizes="(min-width:960px) 298px, 62vw" width="600" height="600" loading="lazy" decoding="async" alt="Colostrum &amp; Collagen Peptides"></picture></a><div class="card-body"><h3><a href="https://bloomnu.com/products/colostrum-collagen?variant=43897521569892" data-product="https://bloomnu.com/products/colostrum-collagen">Colostrum &amp; Collagen Peptides</a></h3><p class="price"><span data-price>$29.99</span><s data-compare hidden></s></p><p class="variant"><b data-flavor>Unflavored</b><span data-size>25ct</span></p><div class="swatches" role="group" aria-label="Flavor"><button class="sw" type="button" aria-pressed="true" title="Unflavored" data-flavor="Unflavored" data-size="25ct" data-variant="43897521569892" data-price="29.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloomcolostrum_UNF_25ct_shopify_01B_ac692bb6-0908-43d2-a34a-974be74e75c9.png?v=1790724030&amp;width=600"><img src="assets/sw-unflavored-colostrumunflavored.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Unflavored</span></button><button class="sw" type="button" aria-pressed="false" title="Strawberries &amp; Cream" data-flavor="Strawberries &amp; Cream" data-size="25ct" data-variant="45833129492580" data-price="29.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloomcolostrum_ST_25ct_shopify_01B_105888f0-53d1-4350-a1f6-9092c0be489d.png?v=1790724096&amp;width=600"><img src="assets/sw-strawberries-and-cream-strawberrycolostrum.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Strawberries &amp; Cream</span></button><button class="sw" type="button" aria-pressed="false" title="Orange Cream" data-flavor="Orange Cream" data-size="25ct" data-variant="44461766082660" data-price="29.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloomcolostrum_OC_25ct_shopify_01B_bd1c9115-7bdc-4eea-ae20-780311399413.png?v=1790724067&amp;width=600"><img src="assets/sw-orange-cream-orangecolostrum.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Orange Cream</span></button></div><a class="atc" data-atc href="https://bloomnu.com/cart/add?id=43897521569892&amp;quantity=1">Add To Cart</a></div></li>
+<li class="card" data-title="Whey Isolate Protein"><a class="card-media" href="https://bloomnu.com/products/protein?variant=32421409521764" data-product="https://bloomnu.com/products/protein" tabindex="-1" aria-hidden="true"><picture><source type="image/avif" srcset="assets/p-whey-320.avif 320w, assets/p-whey-440.avif 440w, assets/p-whey-600.avif 600w" sizes="(min-width:960px) 298px, 62vw"><img src="assets/p-whey-600.webp" srcset="assets/p-whey-320.webp 320w, assets/p-whey-440.webp 440w, assets/p-whey-600.webp 600w" sizes="(min-width:960px) 298px, 62vw" width="600" height="600" loading="lazy" decoding="async" alt="Whey Isolate Protein"></picture></a><div class="card-body"><h3><a href="https://bloomnu.com/products/protein?variant=32421409521764" data-product="https://bloomnu.com/products/protein">Whey Isolate Protein</a></h3><p class="price"><span data-price>$54.99</span><s data-compare hidden></s></p><p class="variant"><b data-flavor>Iced Coffee</b><span data-size></span></p><div class="swatches" role="group" aria-label="Flavor"><button class="sw" type="button" aria-pressed="true" title="Iced Coffee" data-flavor="Iced Coffee" data-size="" data-variant="32421409521764" data-price="54.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloom_whey_cof_01_fda52ea8-649e-4647-b1bb-1c822823061f.png?v=1790724671&amp;width=600"><img src="assets/sw-iced-coffee-icedcoffee.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Iced Coffee</span></button><button class="sw" type="button" aria-pressed="false" title="Vanilla" data-flavor="Vanilla" data-size="" data-variant="31471831842916" data-price="54.99" data-compare="" data-available="true" data-image="https://cdn.shopify.com/s/files/1/0143/0952/3556/files/bloom_whey_van_01_c725feb9-a79f-4813-acf4-ba14d28ca9f5.png?v=1790724649&amp;width=600"><img src="assets/sw-vanilla-vanillad92385bf66ec41.webp" width="36" height="36" loading="lazy" decoding="async" alt=""><span class="vh">Vanilla</span></button></div><a class="atc" data-atc href="https://bloomnu.com/cart/add?id=32421409521764&amp;quantity=1">Add To Cart</a></div></li>
+<li class="card" data-title="Hormone Health Intro Bundle"><a class="card-media" href="https://bloomnu.com/products/hormone-health-intro-bundle?variant=45770043981924" data-product="https://bloomnu.com/products/hormone-health-intro-bundle" tabindex="-1" aria-hidden="true"><span class="badge">30% OFF</span><picture><source type="image/avif" srcset="assets/p-hormone-320.avif 320w, assets/p-hormone-440.avif 440w, assets/p-hormone-600.avif 600w" sizes="(min-width:960px) 298px, 62vw"><img src="assets/p-hormone-600.webp" srcset="assets/p-hormone-320.webp 320w, assets/p-hormone-440.webp 440w, assets/p-hormone-600.webp 600w" sizes="(min-width:960px) 298px, 62vw" width="600" height="600" loading="lazy" decoding="async" alt="Hormone Health Intro Bundle"></picture></a><div class="card-body"><h3><a href="https://bloomnu.com/products/hormone-health-intro-bundle?variant=45770043981924" data-product="https://bloomnu.com/products/hormone-health-intro-bundle">Hormone Health Intro Bundle</a></h3><p class="price"><span data-price>$41.99</span><s data-compare>$59.99</s></p><p class="variant"><b data-flavor></b><span data-size>30 Day Supply</span></p><div class="swatches"></div><a class="atc" data-atc href="https://bloomnu.com/cart/add?id=45770043981924&amp;quantity=1">Add To Cart</a></div></li>
+      </ul>
+      <button class="arrow next" type="button" aria-label="More products" data-next><svg><use href="#i-right"/></svg></button>
+    </div>
+  </section>
+
+  <section class="subs" aria-labelledby="subs-title">
+    <div class="subs-copy">
+      <h2 class="display" id="subs-title">Save 15% with<br>wellness on repeat</h2>
+      <ul class="perks">
+        <li><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="26"/><path d="M33.5 21.5c-1-1.6-3-2.6-5.5-2.6-3.1 0-5.4 1.7-5.4 4.2 0 6 11.4 3 11.4 9.4 0 2.6-2.4 4.4-5.8 4.4-2.7 0-4.9-1.1-6-3M28 15.5v3.4m0 18.6v3"/></svg>15% off every order</li>
+        <li><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="26"/><path d="M15 21.5h16v13H15zM31 25.5h5.5l4 4.5v4.5H31"/><circle cx="20" cy="36" r="2.4"/><circle cx="36" cy="36" r="2.4"/></svg>free shipping, always</li>
+        <li><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="26"/><path d="m16 23 6 4.5L28 18l6 9.5 6-4.5-2.5 13h-19z"/></svg>VIP member perks</li>
+        <li><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="26"/><path d="m33.5 17.5 5 5L23 38l-6.5 1.5L18 33zM31 20l5 5"/></svg>modify, pause, or cancel anytime</li>
+      </ul>
+      <a class="btn" href="https://bloomnu.com/pages/subscription">Subscribe &amp; Save</a>
+    </div>
+    <picture>
+      <source type="image/avif" media="(min-width:800px)" srcset="assets/save-d-720.avif 720w, assets/save-d-1080.avif 1080w, assets/save-d-1440.avif 1440w" sizes="50vw">
+      <source type="image/webp" media="(min-width:800px)" srcset="assets/save-d-720.webp 720w, assets/save-d-1080.webp 1080w, assets/save-d-1440.webp 1440w" sizes="50vw">
+      <source type="image/avif" srcset="assets/save-m-480.avif 480w, assets/save-m-800.avif 800w" sizes="100vw">
+      <img src="assets/save-m-800.webp" srcset="assets/save-m-480.webp 480w, assets/save-m-800.webp 800w" sizes="100vw" width="800" height="465" loading="lazy" decoding="async" alt="Hands lifting Bloom Greens, Colostrum and Pre-Workout tubs out of a Bloom subscription box">
+    </picture>
+  </section>
+
+  <section class="sec" aria-labelledby="cats-title">
+    <h2 class="display h2 wrap" id="cats-title">Bloom Into Your Best Self</h2>
+    <ul class="cats">
+<li><a href="https://bloomnu.com/products/greens-superfoods"><picture><source type="image/avif" srcset="assets/cat-greens-300.avif 300w, assets/cat-greens-420.avif 420w, assets/cat-greens-560.avif 560w" sizes="(min-width:800px) 270px, 45vw"><img src="assets/cat-greens-560.webp" srcset="assets/cat-greens-300.webp 300w, assets/cat-greens-420.webp 420w, assets/cat-greens-560.webp 560w" sizes="(min-width:800px) 270px, 45vw" width="993" height="1020" loading="lazy" decoding="async" alt="Bloom Greens &amp; Superfoods tubs stacked high"></picture><span>Greens</span></a></li>
+<li><a href="https://bloomnu.com/collections/wellness"><picture><source type="image/avif" srcset="assets/cat-wellness-300.avif 300w, assets/cat-wellness-420.avif 420w, assets/cat-wellness-560.avif 560w" sizes="(min-width:800px) 270px, 45vw"><img src="assets/cat-wellness-560.webp" srcset="assets/cat-wellness-300.webp 300w, assets/cat-wellness-420.webp 420w, assets/cat-wellness-560.webp 560w" sizes="(min-width:800px) 270px, 45vw" width="993" height="1020" loading="lazy" decoding="async" alt="Bloom Colostrum &amp; Collagen Peptides beside an iced coffee"></picture><span>Beauty &amp; Wellness</span></a></li>
+<li><a href="https://bloomnu.com/collections/gym-supplements"><picture><source type="image/avif" srcset="assets/cat-fitness-300.avif 300w, assets/cat-fitness-420.avif 420w, assets/cat-fitness-560.avif 560w" sizes="(min-width:800px) 270px, 45vw"><img src="assets/cat-fitness-560.webp" srcset="assets/cat-fitness-300.webp 300w, assets/cat-fitness-420.webp 420w, assets/cat-fitness-560.webp 560w" sizes="(min-width:800px) 270px, 45vw" width="993" height="1020" loading="lazy" decoding="async" alt="Bloom High Energy Pre-Workout with raspberries and lemon"></picture><span>Fitness</span></a></li>
+<li><a href="https://bloomnu.com/collections/all-products"><picture><source type="image/avif" srcset="assets/cat-all-300.avif 300w, assets/cat-all-420.avif 420w, assets/cat-all-560.avif 560w" sizes="(min-width:800px) 270px, 45vw"><img src="assets/cat-all-560.webp" srcset="assets/cat-all-300.webp 300w, assets/cat-all-420.webp 420w, assets/cat-all-560.webp 560w" sizes="(min-width:800px) 270px, 45vw" width="993" height="1020" loading="lazy" decoding="async" alt="The Bloom supplements lineup with a Sparkling Energy can"></picture><span>Shop All</span></a></li>
+    </ul>
+  </section>
+
+  <section class="founder" aria-labelledby="founder-title">
+    <picture>
+      <source type="image/avif" srcset="assets/founder-480.avif 480w, assets/founder-720.avif 720w, assets/founder-1080.avif 1080w, assets/founder-1440.avif 1440w" sizes="(min-width:800px) 50vw, 100vw">
+      <img src="assets/founder-720.webp" srcset="assets/founder-480.webp 480w, assets/founder-720.webp 720w, assets/founder-1080.webp 1080w, assets/founder-1440.webp 1440w" sizes="(min-width:800px) 50vw, 100vw" width="1500" height="1432" loading="lazy" decoding="async" alt="Mari Llewellyn, founder of Bloom (@marillewellyn)">
+    </picture>
+    <div class="founder-copy">
+      <h2 class="display" id="founder-title">Daily wellness reimagined</h2>
+      <p>During her fitness journey, Mari struggled to find delicious and nutritious supplements that fit into her lifestyle. She was inspired to create Bloom: easy-to-use, effective solutions that taste amazing and give your body the nutrients it needs.</p>
+      <p>From bloat relief to radiant beauty, we specialize in supplements that support every woman’s goals — wellness, but make it flavorful, functional, and fun!</p>
+      <a class="btn" href="https://bloomnu.com/pages/about-us">OUR STORY</a>
+    </div>
+  </section>
+
+  <section class="retail" aria-label="Find Bloom in store">
+    <div class="retail-track">
+      <ul><li><img src="assets/r-walmart.webp" width="267" height="64" style="width:117px" loading="lazy" decoding="async" alt="Walmart"></li><li><img src="assets/r-amazon.webp" width="212" height="64" style="width:93px" loading="lazy" decoding="async" alt="Amazon"></li><li><img src="assets/r-ulta.webp" width="157" height="64" style="width:69px" loading="lazy" decoding="async" alt="Ulta Beauty"></li><li><img src="assets/r-target.webp" width="256" height="64" style="width:112px" loading="lazy" decoding="async" alt="Target"></li><li><img src="assets/r-samsclub.webp" width="370" height="63" style="width:164px" loading="lazy" decoding="async" alt="Sam&#x27;s Club"></li><li><img src="assets/r-wegmans.webp" width="185" height="64" style="width:81px" loading="lazy" decoding="async" alt="Wegmans"></li><li><img src="assets/r-gnc.webp" width="247" height="47" style="width:147px" loading="lazy" decoding="async" alt="GNC"></li><li><img src="assets/r-cvs.webp" width="259" height="64" style="width:113px" loading="lazy" decoding="async" alt="CVS"></li><li><img src="assets/r-walgreens.webp" width="309" height="64" style="width:135px" loading="lazy" decoding="async" alt="Walgreens"></li><li><img src="assets/r-safeway.webp" width="342" height="64" style="width:150px" loading="lazy" decoding="async" alt="Safeway"></li><li><img src="assets/r-albertsons.webp" width="444" height="64" style="width:194px" loading="lazy" decoding="async" alt="Albertsons"></li><li><img src="assets/r-kroger.webp" width="115" height="64" style="width:50px" loading="lazy" decoding="async" alt="Kroger"></li></ul>
+      <ul aria-hidden="true"><li><img src="assets/r-walmart.webp" width="267" height="64" style="width:117px" loading="lazy" decoding="async" alt=""></li><li><img src="assets/r-amazon.webp" width="212" height="64" style="width:93px" loading="lazy" decoding="async" alt=""></li><li><img src="assets/r-ulta.webp" width="157" height="64" style="width:69px" loading="lazy" decoding="async" alt=""></li><li><img src="assets/r-target.webp" width="256" height="64" style="width:112px" loading="lazy" decoding="async" alt=""></li><li><img src="assets/r-samsclub.webp" width="370" height="63" style="width:164px" loading="lazy" decoding="async" alt=""></li><li><img src="assets/r-wegmans.webp" width="185" height="64" style="width:81px" loading="lazy" decoding="async" alt=""></li><li><img src="assets/r-gnc.webp" width="247" height="47" style="width:147px" loading="lazy" decoding="async" alt=""></li><li><img src="assets/r-cvs.webp" width="259" height="64" style="width:113px" loading="lazy" decoding="async" alt=""></li><li><img src="assets/r-walgreens.webp" width="309" height="64" style="width:135px" loading="lazy" decoding="async" alt=""></li><li><img src="assets/r-safeway.webp" width="342" height="64" style="width:150px" loading="lazy" decoding="async" alt=""></li><li><img src="assets/r-albertsons.webp" width="444" height="64" style="width:194px" loading="lazy" decoding="async" alt=""></li><li><img src="assets/r-kroger.webp" width="115" height="64" style="width:50px" loading="lazy" decoding="async" alt=""></li></ul>
+    </div>
+  </section>
+
+  <section class="bev" aria-labelledby="bev-title">
+    <picture>
+      <source type="image/avif" media="(min-width:800px)" srcset="assets/bev-d-960.avif 960w, assets/bev-d-1440.avif 1440w, assets/bev-d-2200.avif 2200w" sizes="100vw">
+      <source type="image/webp" media="(min-width:800px)" srcset="assets/bev-d-960.webp 960w, assets/bev-d-1440.webp 1440w, assets/bev-d-2200.webp 2200w" sizes="100vw">
+      <source type="image/avif" srcset="assets/bev-m-480.avif 480w, assets/bev-m-760.avif 760w" sizes="100vw">
+      <img src="assets/bev-m-760.webp" srcset="assets/bev-m-480.webp 480w, assets/bev-m-760.webp 760w" sizes="100vw" width="760" height="966" loading="lazy" decoding="async" alt="Bloom Pop prebiotic sodas and Bloom Sparkling Energy cans">
+    </picture>
+    <div class="bev-copy">
+      <h2 class="display" id="bev-title">Bursting with flavor, bubbling with benefits</h2>
+      <p>Discover our lineup of better-for-you beverages. Available nationwide.</p>
+      <a class="btn" href="https://bloomnu.com/collections/beverage">DRINK BLOOM</a>
+    </div>
+  </section>
+
+  <section class="ugc sec" aria-labelledby="ugc-title">
+    <h2 class="display h2 wrap" id="ugc-title">Blooming looks good on you</h2>
+    <div class="rail" data-rail>
+      <button class="arrow prev" type="button" aria-label="Previous videos" data-prev disabled><svg><use href="#i-left"/></svg></button>
+      <ul class="track" data-track>
+<li><button class="vid" type="button" aria-label="Play customer video 1 of 6" data-video data-webm="https://res.cloudinary.com/benovel/video/upload/f_webm,vc_vp9/q_auto/if_w_gt_h_mul_9_div_16/c_limit,w_w,ar_9:16/b_blurred:2000:-10,c_pad,h_w_div_9_mul_16,w_w/if_end/if_h_gt_w_mul_16_div_9/c_crop,ar_9:16,w_1.0/if_end/c_limit,h_640,w_480/v1722277182/666a1e4876d03a00081499ce/videos/n4scswr5zqt2cgdbzzgo.webm" data-mp4="https://res.cloudinary.com/benovel/video/upload/f_mp4/q_auto/if_w_gt_h_mul_9_div_16/c_limit,w_w,ar_9:16/b_blurred:2000:-10,c_pad,h_w_div_9_mul_16,w_w/if_end/if_h_gt_w_mul_16_div_9/c_crop,ar_9:16,w_1.0/if_end/c_limit,h_640,w_480/v1722277182/666a1e4876d03a00081499ce/videos/n4scswr5zqt2cgdbzzgo.mp4"><picture><source type="image/avif" srcset="assets/ugc-1-300.avif 300w" sizes="218px"><img src="assets/ugc-1-300.webp" srcset="assets/ugc-1-300.webp 300w" sizes="218px" width="360" height="640" loading="lazy" decoding="async" alt=""></picture><span class="play" aria-hidden="true"><span><svg viewBox="0 0 24 24"><use href="#i-play"/></svg></span></span></button></li>
+<li><button class="vid" type="button" aria-label="Play customer video 2 of 6" data-video data-webm="https://res.cloudinary.com/benovel/video/upload/f_webm,vc_vp9/q_auto/if_w_gt_h_mul_9_div_16/c_limit,w_w,ar_9:16/b_blurred:2000:-10,c_pad,h_w_div_9_mul_16,w_w/if_end/if_h_gt_w_mul_16_div_9/c_crop,ar_9:16,w_1.0/if_end/c_limit,h_640,w_480/v1722280596/666a1e4876d03a00081499ce/videos/hkrwnmgall5d9trfrpcy.webm" data-mp4="https://res.cloudinary.com/benovel/video/upload/f_mp4/q_auto/if_w_gt_h_mul_9_div_16/c_limit,w_w,ar_9:16/b_blurred:2000:-10,c_pad,h_w_div_9_mul_16,w_w/if_end/if_h_gt_w_mul_16_div_9/c_crop,ar_9:16,w_1.0/if_end/c_limit,h_640,w_480/v1722280596/666a1e4876d03a00081499ce/videos/hkrwnmgall5d9trfrpcy.mp4"><picture><source type="image/avif" srcset="assets/ugc-2-300.avif 300w" sizes="218px"><img src="assets/ugc-2-300.webp" srcset="assets/ugc-2-300.webp 300w" sizes="218px" width="360" height="640" loading="lazy" decoding="async" alt=""></picture><span class="play" aria-hidden="true"><span><svg viewBox="0 0 24 24"><use href="#i-play"/></svg></span></span></button></li>
+<li><button class="vid" type="button" aria-label="Play customer video 3 of 6" data-video data-webm="https://res.cloudinary.com/benovel/video/upload/f_webm,vc_vp9/q_auto/if_w_gt_h_mul_9_div_16/c_limit,w_w,ar_9:16/b_blurred:2000:-10,c_pad,h_w_div_9_mul_16,w_w/if_end/if_h_gt_w_mul_16_div_9/c_crop,ar_9:16,w_1.0/if_end/c_limit,h_640,w_480/v1726009441/666a1e4876d03a00081499ce/videos/mgrf1jgokakgqjeulvfo.webm" data-mp4="https://res.cloudinary.com/benovel/video/upload/f_mp4/q_auto/if_w_gt_h_mul_9_div_16/c_limit,w_w,ar_9:16/b_blurred:2000:-10,c_pad,h_w_div_9_mul_16,w_w/if_end/if_h_gt_w_mul_16_div_9/c_crop,ar_9:16,w_1.0/if_end/c_limit,h_640,w_480/v1726009441/666a1e4876d03a00081499ce/videos/mgrf1jgokakgqjeulvfo.mp4"><picture><source type="image/avif" srcset="assets/ugc-3-300.avif 300w" sizes="218px"><img src="assets/ugc-3-300.webp" srcset="assets/ugc-3-300.webp 300w" sizes="218px" width="360" height="640" loading="lazy" decoding="async" alt=""></picture><span class="play" aria-hidden="true"><span><svg viewBox="0 0 24 24"><use href="#i-play"/></svg></span></span></button></li>
+<li><button class="vid" type="button" aria-label="Play customer video 4 of 6" data-video data-webm="https://res.cloudinary.com/benovel/video/upload/f_webm,vc_vp9/q_auto/if_w_gt_h_mul_9_div_16/c_limit,w_w,ar_9:16/b_blurred:2000:-10,c_pad,h_w_div_9_mul_16,w_w/if_end/if_h_gt_w_mul_16_div_9/c_crop,ar_9:16,w_1.0/if_end/c_limit,h_640,w_480/v1724796737/666a1e4876d03a00081499ce/videos/shjqhbmjvwcfawnknemo.webm" data-mp4="https://res.cloudinary.com/benovel/video/upload/f_mp4/q_auto/if_w_gt_h_mul_9_div_16/c_limit,w_w,ar_9:16/b_blurred:2000:-10,c_pad,h_w_div_9_mul_16,w_w/if_end/if_h_gt_w_mul_16_div_9/c_crop,ar_9:16,w_1.0/if_end/c_limit,h_640,w_480/v1724796737/666a1e4876d03a00081499ce/videos/shjqhbmjvwcfawnknemo.mp4"><picture><source type="image/avif" srcset="assets/ugc-4-300.avif 300w" sizes="218px"><img src="assets/ugc-4-300.webp" srcset="assets/ugc-4-300.webp 300w" sizes="218px" width="360" height="640" loading="lazy" decoding="async" alt=""></picture><span class="play" aria-hidden="true"><span><svg viewBox="0 0 24 24"><use href="#i-play"/></svg></span></span></button></li>
+<li><button class="vid" type="button" aria-label="Play customer video 5 of 6" data-video data-webm="https://res.cloudinary.com/benovel/video/upload/f_webm,vc_vp9/q_auto/if_w_gt_h_mul_9_div_16/c_limit,w_w,ar_9:16/b_blurred:2000:-10,c_pad,h_w_div_9_mul_16,w_w/if_end/if_h_gt_w_mul_16_div_9/c_crop,ar_9:16,w_1.0/if_end/c_limit,h_640,w_480/v1722277879/666a1e4876d03a00081499ce/videos/ku5shm1o49jcttn7qtmi.webm" data-mp4="https://res.cloudinary.com/benovel/video/upload/f_mp4/q_auto/if_w_gt_h_mul_9_div_16/c_limit,w_w,ar_9:16/b_blurred:2000:-10,c_pad,h_w_div_9_mul_16,w_w/if_end/if_h_gt_w_mul_16_div_9/c_crop,ar_9:16,w_1.0/if_end/c_limit,h_640,w_480/v1722277879/666a1e4876d03a00081499ce/videos/ku5shm1o49jcttn7qtmi.mp4"><picture><source type="image/avif" srcset="assets/ugc-5-300.avif 300w" sizes="218px"><img src="assets/ugc-5-300.webp" srcset="assets/ugc-5-300.webp 300w" sizes="218px" width="360" height="640" loading="lazy" decoding="async" alt=""></picture><span class="play" aria-hidden="true"><span><svg viewBox="0 0 24 24"><use href="#i-play"/></svg></span></span></button></li>
+<li><button class="vid" type="button" aria-label="Play customer video 6 of 6" data-video data-webm="https://res.cloudinary.com/benovel/video/upload/f_webm,vc_vp9/q_auto/if_w_gt_h_mul_9_div_16/c_limit,w_w,ar_9:16/b_blurred:2000:-10,c_pad,h_w_div_9_mul_16,w_w/if_end/if_h_gt_w_mul_16_div_9/c_crop,ar_9:16,w_1.0/if_end/c_limit,h_640,w_480/v1722277545/666a1e4876d03a00081499ce/videos/d7hjdtj2nbfou05dyenk.webm" data-mp4="https://res.cloudinary.com/benovel/video/upload/f_mp4/q_auto/if_w_gt_h_mul_9_div_16/c_limit,w_w,ar_9:16/b_blurred:2000:-10,c_pad,h_w_div_9_mul_16,w_w/if_end/if_h_gt_w_mul_16_div_9/c_crop,ar_9:16,w_1.0/if_end/c_limit,h_640,w_480/v1722277545/666a1e4876d03a00081499ce/videos/d7hjdtj2nbfou05dyenk.mp4"><picture><source type="image/avif" srcset="assets/ugc-6-300.avif 300w" sizes="218px"><img src="assets/ugc-6-300.webp" srcset="assets/ugc-6-300.webp 300w" sizes="218px" width="360" height="640" loading="lazy" decoding="async" alt=""></picture><span class="play" aria-hidden="true"><span><svg viewBox="0 0 24 24"><use href="#i-play"/></svg></span></span></button></li>
+      </ul>
+      <button class="arrow next" type="button" aria-label="More videos" data-next><svg><use href="#i-right"/></svg></button>
+    </div>
+  </section>
+</main>
+
+<footer class="ftr">
+  <div class="ftr-in">
+    <div class="news">
+      <h2 class="display">Don't miss a thing!</h2>
+      <p>Get on the list for updates about exclusive offers, product launches, and more.</p>
+      <form data-news novalidate>
+        <label class="vh" for="news-email">Email</label>
+        <input id="news-email" type="email" autocomplete="email" placeholder="Enter your email" required>
+        <button type="submit">Stay in Touch</button>
+        <p class="note" data-note role="status"></p>
+      </form>
+    </div>
+    <div>
+      <ul class="social">
+        <li><a href="https://www.instagram.com/bloomsupps/" aria-label="Bloom on Instagram"><img src="assets/s-instagram.webp" width="80" height="80" alt="" loading="lazy" style="height:30px;width:30px"></a></li>
+        <li><a href="https://www.tiktok.com/@bloom" aria-label="Bloom on TikTok"><img src="assets/s-tiktok.webp" width="80" height="90" alt="" loading="lazy" style="height:30px;width:27px"></a></li>
+        <li><a href="https://www.facebook.com/bloomsupps/" aria-label="Bloom on Facebook"><img src="assets/s-facebook.webp" width="48" height="95" alt="" loading="lazy" style="height:30px;width:15px"></a></li>
+        <li><a href="https://www.linkedin.com/company/bloom-nutrition-llc/" aria-label="Bloom on LinkedIn"><img src="assets/s-linkedin.webp" width="80" height="80" alt="" loading="lazy" style="height:30px;width:30px"></a></li>
+      </ul>
+      <div class="links">
+        <details><summary>Shop</summary><ul>
+          <li><a href="https://bloomnu.com/products/greens-superfoods">Greens &amp; Superfoods</a></li>
+          <li><a href="https://bloomnu.com/products/preworkout">Pre-Workout</a></li>
+        </ul></details>
+        <details><summary>Community</summary><ul>
+          <li><a href="https://bloomnu.com/pages/store-locator">Store Locator</a></li>
+          <li><a href="https://bloomnu.com/pages/tyb">Rewards</a></li>
+          <li><a href="https://bloomnu.com/pages/exclusive-discounts">Exclusive Discounts</a></li>
+          <li><a href="https://bloomnu.com/blogs/journal">The Bloom Journal</a></li>
+        </ul></details>
+        <details><summary>Company</summary><ul>
+          <li><a href="https://bloomnu.com/pages/about-us">About Us</a></li>
+          <li><a href="https://nutrabolt.wd108.myworkdayjobs.com/BloomNu_Careers">Careers</a></li>
+          <li><a href="https://bloomnu.com/pages/partnerships">Partnerships</a></li>
+        </ul></details>
+        <details><summary>Support</summary><ul>
+          <li><a href="https://bloomnu.com/pages/faq">Frequently Asked Questions</a></li>
+          <li><a href="https://bloomnu.com/pages/contact-us">Contact</a></li>
+          <li><a href="https://bloomnu.com/pages/privacy-policy">Privacy Policy</a></li>
+          <li><a href="https://bloomnu.com/pages/terms-of-service">Terms of Service</a></li>
+          <li><a href="https://bloomnu.com/pages/sale-terms-conditions">Promotional Terms &amp; Conditions</a></li>
+        </ul></details>
+      </div>
+      <div class="legal">
+        <address style="font-style:normal">Bloom Nu LLC<br>2401E 6th Street, STE 3037-201<br>Austin, Texas 78702<br>bloomnu.com</address>
+        <a class="logo" href="./" aria-label="Bloom Nutrition, home"><svg fill="currentColor" viewBox="0 0 792 288"><use href="#logo"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <p class="demo-note">A speed demo built by Frontline Systems as a proposal for Bloom Nutrition. Not Bloom's live site. Product links, prices and the cart go to bloomnu.com.</p>
+</footer>
+
+<dialog class="quiz" id="quiz" aria-labelledby="quiz-title">
+  <div class="quiz-in">
+    <button class="ico x" type="button" aria-label="Close" data-close><svg><use href="#i-x"/></svg></button>
+    <span class="quiz-logo"><svg fill="currentColor" viewBox="0 0 792 288" aria-hidden="true"><use href="#logo"/></svg></span>
+    <h2 class="display" id="quiz-title">What are you looking for?</h2>
+    <p>Let us know and we’ll point you to the right Bloom.</p>
+    <div class="quiz-opts">
+      <a href="https://bloomnu.com/collections/gym-supplements">Fitness Fuel</a>
+      <a href="https://bloomnu.com/products/ultimate-gut-health-duo">Gut Health</a>
+      <a href="https://bloomnu.com/collections/energy">Energy Boost</a>
+      <a href="https://bloomnu.com/pages/bloom-into-your-best-self-quiz">I'm not sure!</a>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const money = n => '$' + Number(n).toFixed(2);
+
+  // Carousels: arrow buttons scroll one card; they hide at either end.
+  for (const rail of $$('[data-rail]')) {
+    const track = $('[data-track]', rail), prev = $('[data-prev]', rail), next = $('[data-next]', rail);
+    const step = () => (track.firstElementChild?.getBoundingClientRect().width || 280) + 14;
+    const sync = () => {
+      prev.disabled = track.scrollLeft < 8;
+      next.disabled = track.scrollLeft + track.clientWidth > track.scrollWidth - 8;
+    };
+    prev.addEventListener('click', () => track.scrollBy({ left: -step() * 2, behavior: 'smooth' }));
+    next.addEventListener('click', () => track.scrollBy({ left: step() * 2, behavior: 'smooth' }));
+    // Measure after the first paint, never during it, so loading never forces a layout.
+    let queued = false;
+    const later = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; sync(); }); } };
+    track.addEventListener('scroll', later, { passive: true });
+    addEventListener('resize', later, { passive: true });
+    requestAnimationFrame(later);
+  }
+
+  // Flavour swatches: swap the photo, flavour, size, price and the cart link.
+  document.addEventListener('click', e => {
+    const sw = e.target.closest('.sw');
+    if (!sw) return;
+    const card = sw.closest('.card'), d = sw.dataset;
+    $$('.sw', card).forEach(b => b.setAttribute('aria-pressed', b === sw));
+    $('[data-flavor]', card).textContent = d.flavor;
+    $('[data-size]', card).textContent = d.size || '';
+    $('[data-price]', card).textContent = money(d.price);
+    const cmp = $('[data-compare]', card);
+    cmp.textContent = d.compare ? money(d.compare) : '';
+    cmp.hidden = !d.compare;
+    const atc = $('[data-atc]', card), ok = d.available === 'true';
+    atc.textContent = ok ? 'Add To Cart' : 'Sold Out';
+    atc.setAttribute('aria-disabled', !ok);
+    atc.href = 'https://bloomnu.com/cart/add?id=' + d.variant + '&quantity=1';
+    for (const a of $$('a[data-product]', card)) a.href = a.dataset.product + '?variant=' + d.variant;
+    if (d.image) {
+      const img = $('img', $('.card-media', card));
+      for (const s of $$('source', $('.card-media', card))) s.remove();
+      img.srcset = ''; img.src = d.image; img.alt = card.dataset.title + ', ' + d.flavor;
+    }
+  });
+
+  // Shop mega panel: hover on mouse, click/tap and keyboard everywhere.
+  const shop = $('.shop'), btn = $('button', shop), mega = $('#mega');
+  let t;
+  const open = v => { clearTimeout(t); mega.classList.toggle('open', v); btn.setAttribute('aria-expanded', v); };
+  btn.addEventListener('click', () => open(!mega.classList.contains('open')));
+  if (matchMedia('(hover:hover)').matches) {
+    shop.addEventListener('pointerenter', () => open(true));
+    shop.addEventListener('pointerleave', () => { t = setTimeout(() => open(false), 160); });
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && mega.classList.contains('open')) { open(false); btn.focus(); } });
+  document.addEventListener('click', e => { if (!shop.contains(e.target)) open(false); });
+
+  // Dialogs: the mobile drawer and the quiz pop-up.
+  const drawer = $('#drawer'), quiz = $('#quiz');
+  $('[data-open-drawer]').addEventListener('click', () => drawer.showModal());
+  for (const d of [drawer, quiz]) {
+    d.addEventListener('click', e => { if (e.target === d || e.target.closest('[data-close]')) d.close(); });
+  }
+  // The quiz shows once per visit, 12 seconds in, never over another dialog.
+  let seen = false;
+  try { seen = sessionStorage.getItem('bloom-quiz') === '1'; } catch {}
+  if (!seen) setTimeout(() => {
+    if (document.querySelector('dialog[open]') || document.hidden) return;
+    quiz.showModal();
+    try { sessionStorage.setItem('bloom-quiz', '1'); } catch {}
+  }, 12000);
+
+  // Customer videos: nothing loads until someone taps play.
+  document.addEventListener('click', e => {
+    const v = e.target.closest('[data-video]');
+    if (!v) return;
+    const vid = document.createElement('video');
+    vid.controls = true; vid.playsInline = true; vid.autoplay = true; vid.preload = 'auto';
+    vid.poster = $('img', v).currentSrc;
+    for (const [src, type] of [[v.dataset.webm, 'video/webm'], [v.dataset.mp4, 'video/mp4']]) {
+      const s = document.createElement('source'); s.src = src; s.type = type; vid.append(s);
+    }
+    vid.setAttribute('aria-label', v.getAttribute('aria-label'));
+    const wrap = document.createElement('div');
+    wrap.className = 'vid';
+    wrap.append(vid);
+    v.replaceWith(wrap);
+    vid.play().catch(() => {});
+  });
+
+  // Newsletter: demo mode. Nothing is sent anywhere.
+  const form = $('[data-news]');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const note = $('[data-note]', form), input = $('input', form);
+    note.textContent = input.checkValidity()
+      ? 'Demo mode — on the live site this signs you up through Klaviyo.'
+      : 'Please enter a valid email address.';
+  });
+})();
+</script>
+</body>
+</html>

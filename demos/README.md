@@ -43,3 +43,4 @@ Give it a URL that does not impersonate them. `bondi-demo-frontline.vercel.app` 
 | `eurotech-canberra` | Eurotech Canberra | Fyshwick, Canberra | Built, not yet sent |
 | `aqua-brothers` | Aqua Brothers Plumbing | Canberra | Built, not yet sent |
 | `xtreme-works` | Xtreme Works | Sydney | Built, not yet sent |
+| `bloom-nutrition` | Bloom Nutrition (speed remake of bloomnu.com's homepage) | Austin, Texas | Built, not yet sent |
