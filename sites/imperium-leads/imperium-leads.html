@@ -205,6 +205,43 @@ main.wide{max-width:1400px}
 @media (max-width:420px){.tiles{grid-template-columns:repeat(2,1fr)}}
 #bTotals{grid-template-columns:repeat(3,1fr)}
 @media (max-width:420px){#bTotals .tile b{font-size:17px}#bTotals .tile span{font-size:10px}}
+/* Phone: one board column at a time, a stage strip to jump between them, tabs at the bottom. */
+.stages{display:none}
+@media (max-width:700px){
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -4px 16px rgba(0,0,0,.06)}
+  .tab{font-size:10.5px;padding:14px 0 12px;border-bottom:0;border-top:3px solid transparent}
+  .tab[aria-selected="true"]{border-top-color:var(--accent);color:var(--accent)}
+  .top-in{padding-bottom:10px}
+  main{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  .toast{bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+  .bulkbar{bottom:calc(68px + env(safe-area-inset-bottom,0px))}
+  .board-h h1{font-size:18px}
+  #bTotals{gap:6px}
+  #bTotals .tile{padding:8px}
+  .stages{display:flex;gap:6px;overflow-x:auto;margin-inline:-16px;padding:2px 16px 4px;scrollbar-width:none;position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--toph,52px));z-index:4;background:var(--bg)}
+  .stages::-webkit-scrollbar{display:none}
+  .stages button{flex:0 0 auto;font:inherit;font-size:13px;font-weight:700;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--text);cursor:pointer;display:flex;gap:6px;align-items:center;white-space:nowrap}
+  .stages button .n{font-size:11px;background:var(--surface2);border-radius:999px;padding:1px 7px}
+  .stages button.cold{border-color:var(--bad)}
+  .stages button[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .stages button[aria-current="true"] .n{background:rgba(255,255,255,.22)}
+  .board{gap:16px;scroll-padding-inline:16px;scrollbar-width:none;transition:height .15s;overflow-y:hidden}
+  .board::-webkit-scrollbar{display:none}
+  .col{flex:0 0 calc(100vw - 32px);min-width:0;background:none;border:0;padding:0;gap:10px}
+  .col-h{display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 8px}
+  .col-h .t{font-size:13px;justify-content:flex-start;gap:8px}
+  .col-h .c{grid-column:1/-1}
+  .board-h{flex-wrap:nowrap}
+  .board-h .seg{flex-basis:120px}
+  .bcard{padding:12px 14px;gap:5px;border-radius:14px;box-shadow:var(--shadow)}
+  .bcard .nm{font-size:16px}
+  .bcard .val{font-size:16px}
+  .bcard .meta{font-size:13px}
+  .bcard .acts{grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}
+  .bcard .acts .b{min-height:42px;font-size:14px}
+  .bcard .acts.two{grid-template-columns:1fr 1fr}
+  .board-help{display:none}
+}
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}
 </style>
 
@@ -340,8 +377,9 @@ main.wide{max-width:1400px}
       <div class="seg two" id="bWho" data-value=""><button type="button" data-v="">Both</button><button type="button" data-v="mine">Mine</button></div>
     </div>
     <div class="tiles" id="bTotals"></div>
+    <div class="stages" id="bStages" aria-label="Jump to a stage"></div>
     <div class="board" id="board"></div>
-    <p class="help">Worth: the booked price, else the quote, else the price sheet (shown with ~). Orange and red edges are leads going cold.</p>
+    <p class="help board-help">Worth: the booked price, else the quote, else the price sheet (shown with ~). Orange and red edges are leads going cold.</p>
   </section>
 
   <!-- NUMBERS -->
@@ -992,6 +1030,13 @@ main.wide{max-width:1400px}
     $("#bTotals").innerHTML='<div class="tile"><b>'+money(quotedSum)+'</b><span>Quoted</span></div>'+
       '<div class="tile"><b>'+money(sumOf("Booked"))+'</b><span>Booked, coming up</span></div>'+
       '<div class="tile '+(owedSum?"warn":"")+'"><b>'+money(owedSum)+'</b><span>To collect</span></div>';
+    const board=$("#board");
+    $("#bStages").innerHTML=[...board.querySelectorAll(".col")].map((c,i)=>'<button type="button" data-i="'+i+'"'+(c.querySelector(".col-h .c:not([style])")?' class="cold"':"")+'>'+esc(c.querySelector(".t span").textContent)+'<span class="n">'+c.querySelector(".t .n").textContent+'</span></button>').join("");
+    $("#bStages").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{ const c=board.querySelectorAll(".col")[b.dataset.i]; board.scrollTo({left:c.offsetLeft-board.firstElementChild.offsetLeft, behavior:"smooth"});
+      const top=$("#bStages").getBoundingClientRect().top; if(top<=parseFloat(getComputedStyle($("#bStages")).top)+1) window.scrollTo({top:scrollY+$("#board").getBoundingClientRect().top-top-$("#bStages").offsetHeight-8}); }));
+    // First time on a phone, open on the first stage that has someone in it.
+    if(!renderBoard.started && isPhone() && !$("#view-board").hidden){ const c=[...board.querySelectorAll(".col")].find(x=>x.querySelector(".bcard")); if(c){ renderBoard.started=true; board.scrollLeft=c.offsetLeft-board.firstElementChild.offsetLeft; } }
+    markStage();
     $("#bSub").textContent=rows.length+" open "+(rows.length===1?"lead":"leads")+" · "+(allEst?"~":"")+money(all)+" in the pipeline";
     wireBoard();
   }
@@ -1002,8 +1047,15 @@ main.wide{max-width:1400px}
     return '<div class="bcard'+(c?" "+c.level:"")+'" draggable="true" data-id="'+esc(l.id)+'">'+
       '<div class="l1"><span class="nm">'+esc(l.name||"No name")+(l.car?'<span> · '+esc(l.car)+'</span>':"")+'</span>'+(v?'<span class="val">'+(v.est?"~":"")+money(v.amount)+'</span>':"")+'</div>'+
       '<div class="meta">'+esc(meta)+'</div>'+
-      '<div class="acts"><button type="button" class="b" data-bact="move">Move</button><button type="button" class="b" data-bact="open">Open</button></div>'+
+      boardActs(l,'<button type="button" class="b" data-bact="move">Move</button>')+
     '</div>';
+  }
+  // On a phone the card gets Call and Text; tapping the card itself opens it.
+  const isPhone=()=>matchMedia("(max-width:700px)").matches;
+  function boardActs(l,main){
+    const ph=digits(l.phone);
+    if(!isPhone()) return '<div class="acts two">'+main+'<button type="button" class="b" data-bact="open">Open</button></div>';
+    return '<div class="acts">'+(ph?'<a class="b" href="tel:'+esc(ph)+'">Call</a><a class="b" href="'+esc(T.smsHref(ph,textFor(l)))+'">Text</a>':'<span class="b" aria-disabled="true">Call</span><span class="b" aria-disabled="true">Text</span>')+main+'</div>';
   }
   function owedCard(l){
     const days=M.daysBetween(l.jobDate,today());
@@ -1011,14 +1063,24 @@ main.wide{max-width:1400px}
     return '<div class="bcard'+(days>=7?" cold":days>=3?" warm":"")+'" data-id="'+esc(l.id)+'">'+
       '<div class="l1"><span class="nm">'+esc(l.name||"No name")+(l.car?'<span> · '+esc(l.car)+'</span>':"")+'</span><span class="val">'+money(l.revenue??l.quoted??0)+'</span></div>'+
       '<div class="meta">'+esc(meta)+'</div>'+
-      '<div class="acts"><button type="button" class="b go" data-bact="paid">Paid</button><button type="button" class="b" data-bact="open">Open</button></div>'+
+      boardActs(l,'<button type="button" class="b go" data-bact="paid">Paid</button>')+
     '</div>';
   }
+  // Light up the stage chip for the column on screen.
+  function markStage(){
+    const board=$("#board"), cols=board.querySelectorAll(".col"); if(!cols.length) return;
+    const w=cols[1]?cols[1].offsetLeft-cols[0].offsetLeft:1, i=Math.min(cols.length-1,Math.round(board.scrollLeft/w));
+    board.style.height = isPhone() ? (cols[i].offsetHeight+16)+"px" : "";
+    document.documentElement.style.setProperty("--toph",document.querySelector(".top").offsetHeight+"px");
+    $("#bStages").querySelectorAll("button").forEach((b,j)=>{ b.setAttribute("aria-current",String(j===i)); if(j===i&&isPhone()) b.scrollIntoView({inline:"nearest",block:"nearest"}); });
+  }
+  addEventListener("resize",()=>markStage());
+  $("#board").addEventListener("scroll",()=>{ clearTimeout(markStage.t); markStage.t=setTimeout(markStage,60); },{passive:true});
   function wireBoard(){
     const board=$("#board");
     board.querySelectorAll(".bcard").forEach(c=>{
       const id=c.dataset.id;
-      c.addEventListener("click",e=>{ const b=e.target.closest("[data-bact]"); if(b&&b.dataset.bact==="move") openMove(id); else if(b&&b.dataset.bact==="paid") markPaid(id,b); else openEdit(id); });
+      c.addEventListener("click",e=>{ if(e.target.closest("a,[aria-disabled]")) return; const b=e.target.closest("[data-bact]"); if(b&&b.dataset.bact==="move") openMove(id); else if(b&&b.dataset.bact==="paid") markPaid(id,b); else openEdit(id); });
       c.addEventListener("dragstart",e=>{ e.dataTransfer.setData("text/plain",id); e.dataTransfer.effectAllowed="move"; c.classList.add("dragging"); });
       c.addEventListener("dragend",()=>{ c.classList.remove("dragging"); board.querySelectorAll(".col.over").forEach(x=>x.classList.remove("over")); });
     });
