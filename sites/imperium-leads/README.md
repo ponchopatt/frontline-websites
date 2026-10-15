@@ -20,6 +20,16 @@ the home screen) shared by Angus and Ananth.
   there (see below).
 - **Reviews**: tap **Job done** on a job and the app walks you through asking for a Google review
   (see below). Today shows the review texts and nudges due today; Numbers has the last 30 days.
+- **Board**: every open lead in columns (New, Chasing, Quoted, Waiting, Booked) with a count and
+  what each column is worth: the booked price, else the quote, else the price sheet (shown with ~).
+  Drag a card to another column on a computer, or tap **Move** on a phone. Moving to Quoted,
+  Booked or Lost asks for the price, the day or the reason, as Answered does.
+- **Going cold**: an orange or red badge on any lead nobody has kept up with. New: 1 day with no
+  contact is orange, 2 red. Chasing and Quoted: 1 day past due orange, 3 red (a paused lead counts
+  from its last touch: 3 and 5). Waiting, snoozed and booked leads never go cold (`M.coldness`).
+- **Select** on Leads: tick several leads, then Texted, No answer, Not now, Move to New, Chasing
+  or Waiting, Lost or Not real for all of them at once. Each lead gets the same change one tap
+  would make. Quoted and Booked stay one at a time, since each needs its own price or day.
 - **No AI and no texting service.** Nothing needs an API key. Every text is sent by one of you
   from your own phone; the app only fills in the words. Leads are never deleted.
 
