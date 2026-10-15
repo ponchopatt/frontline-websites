@@ -780,6 +780,26 @@
     return typeof sheetPrice === "number" ? { amount: sheetPrice, est: true } : null;
   }
 
+  /*
+    This week's money against the weekly goal. Weeks run Monday to Sunday by job date. A booked
+    job counts at its price (else its quote): done once its day has come, else still booked.
+    Returns { weekOf, done, booked, total, goal, left, daysLeft, pct } (goal, left, pct are null
+    with no goal set).
+  */
+  function weekMoney(leads, today, goal) {
+    var mon = mondayOf(today), sun = addDays(mon, 6), done = 0, booked = 0;
+    (leads || []).forEach(function (l) {
+      if (!l || l.junk || !isBooked(l, today) || !isDay(l.jobDate) || l.jobDate < mon || l.jobDate > sun) return;
+      var v = Number(l.revenue != null && l.revenue !== "" ? l.revenue : l.quoted);
+      if (!isFinite(v) || v <= 0) return;
+      if (l.jobDate <= today) done += v; else booked += v;
+    });
+    var g = Number(goal) > 0 ? Number(goal) : null, total = done + booked;
+    return { weekOf: mon, done: done, booked: booked, total: total, goal: g,
+      left: g == null ? null : Math.max(0, g - total), daysLeft: daysBetween(today, sun),
+      pct: g == null ? null : Math.min(100, Math.round(total / g * 100)) };
+  }
+
   var api = {
     VERSION: VERSION, STAGES: STAGES, BINS: BINS, ALL_STAGES: ALL_STAGES, PEOPLE: PEOPLE, TAGS: TAGS, TIMELINES: TIMELINES,
     LOST_REASONS: LOST_REASONS, LOST_WORDS: LOST_WORDS, OLD_LOST: OLD_LOST, STEPS: STEPS, CHECK_IN_DAYS: CHECK_IN_DAYS, HOURS: HOURS,
@@ -795,7 +815,7 @@
     mondayOf: mondayOf, adSpend: adSpend, isBooked: isBooked, takings: takings, fromAds: fromAds, costPerBooked: costPerBooked,
     phoneKey: phoneKey, isOpen: isOpen, matchPhone: matchPhone, mergeEnquiry: mergeEnquiry,
     needsUpgrade: needsUpgrade, upgradeFields: upgradeFields, plan: plan,
-    coldness: coldness, dealValue: dealValue,
+    coldness: coldness, dealValue: dealValue, weekMoney: weekMoney,
   };
   root.ILModel = api;
 })(typeof window !== "undefined" ? window : globalThis);

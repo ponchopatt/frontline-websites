@@ -205,6 +205,17 @@ main.wide{max-width:1400px}
 @media (max-width:420px){.tiles{grid-template-columns:repeat(2,1fr)}}
 #bTotals{grid-template-columns:repeat(3,1fr)}
 @media (max-width:420px){#bTotals .tile b{font-size:17px}#bTotals .tile span{font-size:10px}}
+/* Weekly money goal on Today. */
+.goal .big{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.goal .big span{font-size:15px;color:var(--muted);font-weight:600}
+.goal .bar{display:flex;height:12px;border-radius:999px;background:var(--surface2);overflow:hidden}
+.goal .bar i{display:block;height:100%}
+.goal .bar .d{background:var(--good)}
+.goal .bar .k{background:var(--accent);opacity:.45}
+.goal .key{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--muted)}
+.goal .key b{color:var(--text);font-variant-numeric:tabular-nums}
+.goal .key .sw{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:0}
+.goal.hit{border-color:var(--good);background:var(--good-bg)}
 /* Phone: one board column at a time, a stage strip to jump between them, tabs at the bottom. */
 .stages{display:none}
 @media (max-width:700px){
@@ -275,6 +286,7 @@ main.wide{max-width:1400px}
       <div><h1 id="tHead">Today</h1><p class="help" id="tSub"></p></div>
       <div class="seg two" id="tView" data-value="mine"><button type="button" data-v="mine">Mine</button><button type="button" data-v="all">All</button></div>
     </div>
+    <div class="card goal" id="goal" hidden></div>
     <div class="card" id="friday" hidden></div>
     <p class="help later" id="tLater" hidden></p>
     <div id="tLists" class="sec">
@@ -415,7 +427,7 @@ main.wide{max-width:1400px}
   const SOURCES=["Meta ad","Google","Instagram","TikTok","Website","Referral","Repeat","Other"];
   const SERVICES=["Full detail","Interior","Exterior","Correction","Ceramic","Maintenance plan","Pre-sale","Not sure"];
   const OBJ=["Price","Timing","Checking with partner","Wants more info","Thinking about it","Other"];
-  let db=null, dl=null, leads=[], day=null, canWrite=true, who=null, unsubDay=null, reviewSettings={}, hoursSaved={};
+  let db=null, dl=null, leads=[], day=null, canWrite=true, who=null, unsubDay=null, reviewSettings={}, hoursSaved={}, goalSettings={};
   const H = () => M.hours(hoursSaved);
   const MOON = '<svg class="moon" viewBox="0 0 24 24" aria-label="Came in overnight" role="img"><path fill="currentColor" d="M21 14.5A8.5 8.5 0 0 1 9.5 3a8.5 8.5 0 1 0 11.5 11.5z"/></svg>';
 
@@ -598,6 +610,7 @@ main.wide{max-width:1400px}
     const t=today(), L=lists();
     $("#tHead").textContent="Today"+(who?", "+who:"");
     $("#tSub").textContent=new Date().toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"long",timeZone:"Australia/Sydney"})+" · "+(L.left?L.left+" left":"all done");
+    renderGoal(t);
     // Friday from 5:00pm: how the week's ending. Counts only; it moves nothing.
     const fri=M.fridayWrap(leads,{now:new Date(), hours:H()});
     $("#friday").hidden=!fri;
@@ -1337,6 +1350,42 @@ main.wide{max-width:1400px}
   $("#view-numbers").addEventListener("click",e=>{ const b=e.target.closest("[data-drill]"); if(b) openDrill(b.dataset.drill); });
   $("#view-numbers").addEventListener("keydown",e=>{ const b=e.target.closest("tr[data-drill]"); if(b&&(e.key==="Enter"||e.key===" ")){ e.preventDefault(); openDrill(b.dataset.drill); } });
 
+  // ---------- WEEKLY GOAL ----------
+  // This week's jobs against the money goal, both of you together (settings/goal).
+  function renderGoal(t){
+    const box=$("#goal"); if(!db){ box.hidden=true; return; }
+    const w=M.weekMoney(leads,t,goalSettings.weekly), days=w.daysLeft;
+    const left=days===0?"last day":days===1?"1 day left":days+" days left";
+    box.hidden=false;
+    box.classList.toggle("hit", w.goal!=null && w.total>=w.goal);
+    if(w.goal==null){
+      box.innerHTML='<div class="eyebrow"><span>This week</span><span>Both of you</span></div>'+
+        '<div class="big">'+money(w.total)+' <span>in jobs this week</span></div>'+
+        '<button type="button" class="btn secondary" id="goalBtn">Set a weekly money goal</button>';
+    } else {
+      const pc=n=>Math.min(100,n/w.goal*100).toFixed(1)+"%";
+      box.innerHTML='<div class="eyebrow"><span>This week\'s goal</span><button type="button" class="mini" id="goalBtn">Change</button></div>'+
+        '<div class="big">'+money(w.total)+' <span>of '+money(w.goal)+'</span></div>'+
+        '<div class="bar" role="img" aria-label="'+w.pct+'% of the goal"><i class="d" style="width:'+pc(w.done)+'"></i><i class="k" style="width:'+pc(w.booked)+'"></i></div>'+
+        '<div class="key"><span><i class="sw" style="background:var(--good)"></i>Done <b>'+money(w.done)+'</b></span>'+
+          '<span><i class="sw" style="background:var(--accent);opacity:.45"></i>Booked <b>'+money(w.booked)+'</b></span>'+
+          '<span>'+(w.left?'<b>'+money(w.left)+'</b> to go · '+left:'<b>Goal hit!</b> 🎉')+'</span></div>';
+    }
+    $("#goalBtn").addEventListener("click",openGoal);
+  }
+  function openGoal(){
+    const g=sheet('<div class="sheet-h"><div><h2>Weekly money goal</h2><p class="help">How much in jobs you want each week (Monday to Sunday), both of you together. Saved for both phones.</p></div><button class="x" id="closeSheet">Close</button></div>'+
+      '<label>Goal each week $<input id="gl-amt" type="number" inputmode="numeric" min="0" step="50" placeholder="3000" value="'+(Number(goalSettings.weekly)>0?Number(goalSettings.weekly):"")+'"></label>'+
+      '<button class="btn" id="gl-save">Save</button>');
+    g("#gl-save").addEventListener("click",async()=>{
+      if(!db){ toast("Not connected. Try again in a sec."); return; }
+      const n=num(g("#gl-amt").value); if(n==null||n<=0){ toast("Type the goal in dollars"); g("#gl-amt").focus(); return; }
+      const b=g("#gl-save"); b.disabled=true;
+      try{ await db.doc("settings/goal").set({weekly:n, updatedAt:new Date().toISOString(), by:who||""}); toast("Goal saved."); closeSheet(); }
+      catch(err){ b.disabled=false; writeFail(err); }
+    });
+  }
+
   // The weekly ad spend: one total a week, saved for both phones (spend/<Monday>).
   $("#spendBtn").addEventListener("click",()=>{
     const mon=M.mondayOf(today()), weeks=[0,1,2,3].map(n=>M.addDays(mon,-7*n));
@@ -1419,6 +1468,7 @@ main.wide{max-width:1400px}
       }
       $("#offline").hidden=true;
       db.doc("settings/reviews").onSnapshot(sn=>{ reviewSettings = sn.exists ? sn.data() : {}; renderAll(); }, ()=>{});
+      db.doc("settings/goal").onSnapshot(sn=>{ goalSettings = sn.exists ? sn.data() : {}; renderAll(); }, ()=>{});
       db.doc("settings/hours").onSnapshot(sn=>{ hoursSaved = sn.exists ? sn.data() : {}; renderAll(); }, ()=>{});
       db.collection("spend").onSnapshot(snap=>{ spendWeeks=snap.docs.map(x=>x.data()); renderAll(); }, ()=>{});
       db.collection("leads").orderBy("createdAt","desc").onSnapshot(snap=>{ leads=snap.docs.map(x=>migrate(Object.assign({id:x.id},x.data()))); renderAll(); upgradeOnLoad(); }, err=>{ $("#offline").hidden=false; });

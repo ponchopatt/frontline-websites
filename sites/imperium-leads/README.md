@@ -27,6 +27,9 @@ the home screen) shared by Angus and Ananth.
 - **On a phone** the tabs sit at the bottom and the Board shows one stage at a time: swipe, or tap
   a stage chip at the top (chips with a red edge have leads going cold). Each card has Call, Text
   and Move; tap the card to open it. It opens on the first stage with anyone in it.
+- **Weekly goal** on Today: this week's jobs (Monday to Sunday, by job day) against a money goal,
+  both of you together. Green is done, light blue is booked and still to come. Tap Change to set
+  the goal; it's saved for both phones (`settings/goal`, `M.weekMoney`).
 - **Going cold**: an orange or red badge on any lead nobody has kept up with. New: 1 day with no
   contact is orange, 2 red. Chasing and Quoted: 1 day past due orange, 3 red (a paused lead counts
   from its last touch: 3 and 5). Waiting, snoozed and booked leads never go cold (`M.coldness`).
