@@ -45,3 +45,20 @@ test("a lead's worth is the booked price, else the quote, else the price sheet a
   assert.deepEqual(plain(M.dealValue(lead({ quoted: null }), TODAY, 225)), { amount: 225, est: true });
   assert.equal(M.dealValue(lead({ quoted: "" }), TODAY, null), null);
 });
+
+test("the weekly goal counts this week's booked jobs by job day: done once the day comes, else booked", () => {
+  const job = (jobDate, o = {}) => lead({ stage: "Booked", status: "Booked", jobDate, revenue: 300, ...o });
+  const L = [
+    job("2026-10-12"), // Monday, done
+    job("2026-10-15", { revenue: null, quoted: 250 }), // today, done, counts the quote
+    job("2026-10-18"), // Sunday, still booked
+    job("2026-10-11"), // last week
+    job("2026-10-19"), // next week
+    job("2026-10-16", { junk: true }),
+    lead({ stage: "Quoted", quoted: 900, jobDate: "2026-10-16" }), // not booked
+  ];
+  assert.deepEqual(plain(M.weekMoney(L, TODAY, 3000)), { weekOf: "2026-10-12", done: 550, booked: 300, total: 850, goal: 3000, left: 2150, daysLeft: 3, pct: 28 });
+  assert.equal(M.weekMoney(L, TODAY, 500).left, 0);
+  assert.equal(M.weekMoney(L, TODAY, 500).pct, 100);
+  assert.equal(M.weekMoney(L, TODAY, "").goal, null);
+});
