@@ -740,6 +740,46 @@
     return { rows: rows, todo: rows.length };
   }
 
+  /*
+    Going cold: a lead being worked that nobody has kept up with. New counts from when it came in
+    (1 day orange, 2 red). Chasing and Quoted count from the day they fell due (1 day past orange,
+    3 red), so the planned gaps in a schedule never show as cold; one paused by a note has no due
+    day, so it counts from the last touch (3 orange, 5 red). Waiting, snoozed and booked leads
+    are never cold. Returns { level: "warm" | "cold", days, since } or null.
+  */
+  function coldness(l, today) {
+    if (!l || l.junk) return null;
+    var stage = stageOf(l, today);
+    if (stage !== "New" && stage !== "Chasing" && stage !== "Quoted") return null;
+    if (l.snoozeUntil && l.snoozeUntil > today) return null;
+    var t = lastTouch(l), from, warm, cold;
+    if (stage === "New") {
+      from = canberraDate(l.createdAt || l.date);
+      if (!isDay(from)) from = l.date;
+      warm = 1; cold = 2;
+    } else if (l.paused || !isDay(l.nextFollowUp)) {
+      from = t ? canberraDate(t.at) : canberraDate(l.createdAt || l.date);
+      warm = 3; cold = 5;
+    } else {
+      from = l.nextFollowUp;
+      warm = 1; cold = 3;
+    }
+    if (!isDay(from)) return null;
+    var days = daysBetween(from, today);
+    if (days < warm) return null;
+    return { level: days >= cold ? "cold" : "warm", days: days, since: stage === "New" ? "in" : from === l.nextFollowUp ? "due" : "touch" };
+  }
+  /*
+    What a lead is worth on the board: the booked price once booked, else the quote, else the
+    price sheet's "from" price for its service as an estimate. Returns { amount, est } or null.
+  */
+  function dealValue(l, today, sheetPrice) {
+    var stage = stageOf(l, today), n = function (v) { return v === "" || v == null || isNaN(Number(v)) ? null : Number(v); };
+    if (BOOKED.indexOf(stage) !== -1 && n(l.revenue) != null) return { amount: n(l.revenue), est: false };
+    if (n(l.quoted) != null) return { amount: n(l.quoted), est: false };
+    return typeof sheetPrice === "number" ? { amount: sheetPrice, est: true } : null;
+  }
+
   var api = {
     VERSION: VERSION, STAGES: STAGES, BINS: BINS, ALL_STAGES: ALL_STAGES, PEOPLE: PEOPLE, TAGS: TAGS, TIMELINES: TIMELINES,
     LOST_REASONS: LOST_REASONS, LOST_WORDS: LOST_WORDS, OLD_LOST: OLD_LOST, STEPS: STEPS, CHECK_IN_DAYS: CHECK_IN_DAYS, HOURS: HOURS,
@@ -755,6 +795,7 @@
     mondayOf: mondayOf, adSpend: adSpend, isBooked: isBooked, takings: takings, fromAds: fromAds, costPerBooked: costPerBooked,
     phoneKey: phoneKey, isOpen: isOpen, matchPhone: matchPhone, mergeEnquiry: mergeEnquiry,
     needsUpgrade: needsUpgrade, upgradeFields: upgradeFields, plan: plan,
+    coldness: coldness, dealValue: dealValue,
   };
   root.ILModel = api;
 })(typeof window !== "undefined" ? window : globalThis);

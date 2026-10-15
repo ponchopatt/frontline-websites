@@ -166,7 +166,45 @@ tr:last-child td{border-bottom:0}
 .rv-acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .rv-acts .btn{width:100%}
 .rules{margin:0;padding-left:18px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:2px}
+/* Going cold: orange a little overdue, red well overdue. */
+.tag.chill{background:var(--warn-bg);color:var(--warn)}
+.tag.chill.cold{background:var(--bad-bg);color:var(--bad)}
+/* Board: one column per stage, side by side; swipe across on a phone. */
+main.wide{max-width:1400px}
+.board-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.board-h .seg{flex:0 0 132px}
+.board-h .seg button{padding:8px 4px}
+.board{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-16px;padding:2px 16px 12px;align-items:flex-start}
+.col{flex:0 0 min(80vw,270px);scroll-snap-align:start;background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px;min-height:140px}
+.col.over{outline:2px dashed var(--accent);outline-offset:-2px}
+.col-h{display:flex;flex-direction:column;gap:2px;padding:2px 2px 4px}
+.col-h .t{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.col-h .t .n{background:var(--surface);border-radius:999px;padding:1px 8px;font-variant-numeric:tabular-nums;letter-spacing:0}
+.col-h .v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.col-h .c{font-size:12px;font-weight:600;color:var(--bad)}
+.bcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:9px 10px;display:flex;flex-direction:column;gap:3px;cursor:pointer;touch-action:pan-y}
+.bcard[draggable="true"]{cursor:grab}
+.bcard.dragging{opacity:.45}
+.bcard.warm{border-left:4px solid var(--warn)}
+.bcard.cold{border-left:4px solid var(--bad)}
+.bcard .l1{display:flex;align-items:center;gap:6px;min-width:0}
+.bcard .nm{flex:1;min-width:0;font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bcard .nm span{color:var(--muted);font-weight:500}
+.bcard .meta{font-size:12px;color:var(--muted);line-height:1.35}
+.bcard .val{font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}
+.bcard .acts{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:4px}
+.col .empty{padding:10px 4px;font-size:13px}
+.moves{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.moves .btn[aria-current="true"]{opacity:.45}
+/* Select several leads, then do one thing to all of them. */
+.lead.picked{border-color:var(--accent);background:var(--accent-bg)}
+.lead .pick{width:22px;height:22px;flex:0 0 22px;margin:0;padding:0;accent-color:var(--accent)}
+.bulkbar{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:6;background:var(--surface);border:1px solid var(--accent);border-radius:14px;box-shadow:var(--shadow);padding:10px;display:flex;flex-direction:column;gap:8px}
+.bulkbar .row{gap:6px}
+.bulkbar .b{flex:1 1 calc(33% - 6px);padding:0 6px}
 @media (max-width:420px){.tiles{grid-template-columns:repeat(2,1fr)}}
+#bTotals{grid-template-columns:repeat(3,1fr)}
+@media (max-width:420px){#bTotals .tile b{font-size:17px}#bTotals .tile span{font-size:10px}}
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}
 </style>
 
@@ -185,6 +223,7 @@ tr:last-child td{border-bottom:0}
       <button class="tab" role="tab" id="tab-today" aria-selected="true" data-tab="today">Today<span class="dot" id="dotToday" hidden></span></button>
       <button class="tab" role="tab" id="tab-add" aria-selected="false" data-tab="add">Add</button>
       <button class="tab" role="tab" id="tab-leads" aria-selected="false" data-tab="leads">Leads</button>
+      <button class="tab" role="tab" id="tab-board" aria-selected="false" data-tab="board">Board</button>
       <button class="tab" role="tab" id="tab-numbers" aria-selected="false" data-tab="numbers">Numbers</button>
     </div>
   </div>
@@ -281,9 +320,28 @@ tr:last-child td{border-bottom:0}
         <option value="">All</option><option value="chase">Being chased (new, chasing, quoted)</option><option>New</option><option>Chasing</option><option>Quoted</option><option>Booked</option><option>Done</option><option>Review asked</option><option>Waiting</option><option>Lost</option><option value="owed">Owes money</option><option value="junk">Not real</option>
       </select>
       <select id="fWho"><option value="">Both of us</option><option value="Angus">Angus's</option><option value="Ananth">Ananth's</option></select>
+      <button class="btn secondary small" id="selectBtn" type="button">Select</button>
     </div>
     <div class="list" id="list"></div>
+    <div class="bulkbar" id="bulkbar" hidden>
+      <div class="row" style="justify-content:space-between"><b id="bulkN">0 picked</b><span class="row"><button type="button" class="mini" id="bulkAll">Pick all shown</button><button type="button" class="mini" id="bulkNone">Clear</button></span></div>
+      <div class="row">
+        <button type="button" class="b" data-bulk="texted">Texted</button><button type="button" class="b" data-bulk="noanswer">No answer</button><button type="button" class="b" data-bulk="notnow">Not now</button>
+        <button type="button" class="b" data-bulk="move">Move to…</button><button type="button" class="b" data-bulk="junk">Not real</button><button type="button" class="b go" data-bulk="done">Finish</button>
+      </div>
+    </div>
     <button class="btn secondary" id="exportBtn" hidden>Download CSV for the spreadsheet</button>
+  </section>
+
+  <!-- BOARD -->
+  <section id="view-board" role="tabpanel">
+    <div class="board-h">
+      <div><h1>Board</h1><p class="help" id="bSub">Every open lead by stage. Drag a card to move it, or tap Move.</p></div>
+      <div class="seg two" id="bWho" data-value=""><button type="button" data-v="">Both</button><button type="button" data-v="mine">Mine</button></div>
+    </div>
+    <div class="tiles" id="bTotals"></div>
+    <div class="board" id="board"></div>
+    <p class="help">Worth: the booked price, else the quote, else the price sheet (shown with ~). Orange and red edges are leads going cold.</p>
   </section>
 
   <!-- NUMBERS -->
@@ -360,7 +418,8 @@ tr:last-child td{border-bottom:0}
   document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>showTab(t.dataset.tab)));
   function showTab(name){
     document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",String(t.dataset.tab===name)));
-    ["today","add","leads","numbers"].forEach(n=>{ $("#view-"+n).hidden = n!==name; });
+    ["today","add","leads","board","numbers"].forEach(n=>{ $("#view-"+n).hidden = n!==name; });
+    document.querySelector("main").classList.toggle("wide", name==="board");
     try{ localStorage.setItem("il-tab",name); }catch(e){}
     renderAll();
   }
@@ -437,6 +496,10 @@ tr:last-child td{border-bottom:0}
   // One tap changes the tag: Hot, Warm, Browsing, round again.
   // The payment text after a job (the link is left for you to paste), or the review ask once paid.
   function payText(l){ const ph=digits(l.phone); return ph?'<a class="btn secondary small" data-act="text" href="'+esc(T.smsHref(ph,textFor(l)))+'" style="text-align:center;text-decoration:none">'+(l.paid==="Yes"?"Review text":"Payment text")+'</a>':""; }
+  // Going cold: how many days it's been left (see M.coldness).
+  const coldOf = l => M.coldness(l,today());
+  const coldWords = c => c.days+(c.days===1?" day":" days")+(c.since==="in"?" no contact":c.since==="due"?" overdue":" untouched");
+  function coldTag(l){ const c=coldOf(l); return c?'<span class="tag chill'+(c.level==="cold"?" cold":"")+'" title="'+esc(coldWords(c))+'">'+esc(c.days+(c.days===1?" day":" days"))+'</span>':""; }
   function tagPill(l){ return '<button type="button" class="tag '+esc((l.score||"none").toLowerCase())+'" data-act="tag" aria-label="Tag: '+esc(l.score||"none")+'. Tap to change.">'+esc(l.score||"Tag")+'</button>'; }
   function leadCard(l, opts={}){
     const st=stage(l), t=today(), snoozed=l.snoozeUntil&&l.snoozeUntil>t;
@@ -446,8 +509,8 @@ tr:last-child td{border-bottom:0}
     const price=st==="New" ? null : (["Booked","Done","Review asked"].includes(st) && l.revenue!=null ? l.revenue : l.quoted);
     const meta=[l.repeatOf?"Repeat":"", l.junk?"Not real":"", l.service, M.TIMELINES[l.timeline], where, price!=null?money(price):"", l.owner].filter(Boolean).join(" · ");
     const note=shortNote(l);
-    return '<div class="lead'+(st==="New"?" new":"")+'" data-id="'+esc(l.id)+'">'+
-      '<div class="l1"><span class="nm">'+(night?MOON:"")+esc(l.name||"No name")+(l.car?'<span class="car"> · '+esc(l.car)+'</span>':"")+'</span>'+(opts.tag!==undefined?opts.tag:tagPill(l))+'</div>'+
+    return '<div class="lead'+(st==="New"?" new":"")+(opts.picked?" picked":"")+'" data-id="'+esc(l.id)+'">'+
+      '<div class="l1">'+(opts.pick?'<input type="checkbox" class="pick" aria-label="Pick '+esc(l.name||"this lead")+'"'+(opts.picked?" checked":"")+'>':"")+'<span class="nm">'+(night?MOON:"")+esc(l.name||"No name")+(l.car?'<span class="car"> · '+esc(l.car)+'</span>':"")+'</span>'+coldTag(l)+(opts.tag!==undefined?opts.tag:tagPill(l))+'</div>'+
       '<div class="meta">'+esc(meta)+'</div>'+
       (opts.extra||"")+
       (note?'<div class="note">'+esc(note)+'</div>':"")+
@@ -762,7 +825,7 @@ tr:last-child td{border-bottom:0}
       '<label>Or pick a day<input type="date" id="a-date" min="'+addDays(1)+'"></label>';
   }
   // Answered: one question. Each answer asks for the one thing it needs, then saves.
-  function openAnswered(id){
+  function openAnswered(id,first){
     const l=leads.find(x=>x.id===id); if(!l) return;
     const g=sheet(head(l,"They answered. What happened?")+
       '<div class="choice" id="a-pick"><button type="button" class="btn secondary" data-v="quoted">Quoted</button><button type="button" class="btn secondary" data-v="booked">Booked</button><button type="button" class="btn secondary" data-v="notnow">Not now</button><button type="button" class="btn secondary" data-v="lost">Lost</button></div>'+
@@ -771,7 +834,7 @@ tr:last-child td{border-bottom:0}
     const pick=v=>{
       g("#a-pick").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===v)));
       g("#a-pick").querySelectorAll("button").forEach(b=>b.classList.toggle("secondary",b.dataset.v!==v));
-      const sheetPrice=T.priceFor(l.service);
+      const sheetPrice=T.priceFor(l.service,l.car);
       if(v==="quoted"){
         more.innerHTML='<label>How much? $<input id="a-amount" type="number" inputmode="decimal" min="0" value="'+(l.quoted??sheetPrice??"")+'"></label><button class="btn" id="a-save">Save quote</button>';
         g("#a-save").addEventListener("click",()=>{ const amount=num(g("#a-amount").value); if(amount==null){ toast("Type the price"); return; } answer(id,"quoted",{amount}); });
@@ -789,6 +852,7 @@ tr:last-child td{border-bottom:0}
       const first=more.querySelector("input"); if(first && v!=="notnow") first.focus();
     };
     g("#a-pick").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>pick(b.dataset.v)));
+    if(first) pick(first);
   }
   async function answer(id,choice,data){
     const l=current(id); if(!l) return;
@@ -872,17 +936,158 @@ tr:last-child td{border-bottom:0}
 
   // ---------- LEADS LIST ----------
   // Every lead stays here, whatever its stage, newest first. A hundred at a time keeps it quick.
-  let listShown=100;
+  let listShown=100, shownIds=[];
   ["#q","#fStatus","#fWho"].forEach(sel=>$(sel).addEventListener(sel==="#q"?"input":"change",()=>{ listShown=100; renderList(); }));
   function renderList(){
     const q=$("#q").value.trim().toLowerCase(), fs=$("#fStatus").value, fw=$("#fWho").value;
     const match=l=>!fs || (fs==="chase"?["New","Chasing","Quoted"].includes(stage(l)):fs==="owed"?owes(l):fs==="junk"?!!l.junk:stage(l)===fs);
     const rows=leads.filter(l=>match(l) && (!fw||l.owner===fw) && (!q||[l.name,l.car,l.suburb,l.phone,l.email,l.service,l.notes].join(" ").toLowerCase().includes(q)));
-    const el=$("#list");
-    el.innerHTML = rows.length ? rows.slice(0,listShown).map(l=>leadCard(l)).join("")+(rows.length>listShown?'<button class="btn secondary" id="listMore" type="button">Show more ('+(rows.length-listShown)+' to go)</button>':"") : '<div class="empty">'+(leads.length?"Nothing matches.":"No leads yet. Add the first one.")+'</div>';
-    wire(el);
+    const el=$("#list"), shown=rows.slice(0,listShown);
+    shownIds=shown.map(l=>l.id);
+    const card=l=>picking ? leadCard(l,{pick:true, picked:picked.has(l.id), actions:""}) : leadCard(l);
+    el.innerHTML = rows.length ? shown.map(card).join("")+(rows.length>listShown?'<button class="btn secondary" id="listMore" type="button">Show more ('+(rows.length-listShown)+' to go)</button>':"") : '<div class="empty">'+(leads.length?"Nothing matches.":"No leads yet. Add the first one.")+'</div>';
+    if(picking){
+      // Picking: a tap anywhere on the card ticks it.
+      el.querySelectorAll(".lead").forEach(c=>c.addEventListener("click",e=>{
+        const id=c.dataset.id, box=c.querySelector(".pick");
+        if(e.target!==box) box.checked=!box.checked;
+        if(box.checked) picked.add(id); else picked.delete(id);
+        c.classList.toggle("picked",box.checked); syncBulk();
+      }));
+      el.querySelectorAll("[data-act='tag']").forEach(b=>b.disabled=true);
+    } else wire(el);
     const more=$("#listMore"); if(more) more.addEventListener("click",()=>{ listShown+=100; renderList(); });
   }
+
+  // ---------- BOARD ----------
+  // Every open lead, one column per stage, with what each column is worth. Coldest first.
+  const COLS=["New","Chasing","Quoted","Waiting","Booked"];
+  const worth = l => M.dealValue(l,today(),T.priceFor(l.service,l.car));
+  const coldRank = l => { const c=coldOf(l); return c ? (c.level==="cold"?2:1)*1000+c.days : 0; };
+  let bWho="";
+  seg($("#bWho"),v=>{ bWho=v; renderBoard(); });
+  function renderBoard(){
+    const t=today();
+    const rows=leads.filter(l=>!l.junk && COLS.includes(stage(l)) && (bWho!=="mine"||!who||l.owner===who));
+    let all=0, allEst=false;
+    $("#board").innerHTML=COLS.map(st=>{
+      const list=rows.filter(l=>stage(l)===st).sort((a,b)=>coldRank(b)-coldRank(a) || String(b.createdAt||"").localeCompare(String(a.createdAt||"")));
+      let sum=0, est=false, cold=0;
+      list.forEach(l=>{ const v=worth(l); if(v){ sum+=v.amount; est=est||v.est; } if(coldOf(l)) cold++; });
+      all+=sum; allEst=allEst||est;
+      return '<div class="col" data-col="'+st+'">'+
+        '<div class="col-h"><div class="t"><span>'+esc(st)+'</span><span class="n">'+list.length+'</span></div>'+
+          '<div class="v">'+(est?"~":"")+money(sum)+'</div>'+(cold?'<div class="c">'+cold+' going cold</div>':'')+'</div>'+
+        (list.length?list.map(boardCard).join(""):'<div class="empty">Nobody here.</div>')+
+      '</div>';
+    }).join("");
+    // Jobs done and not paid yet: the cash still to come in. Ticked Paid, they leave the board.
+    const owed=leads.filter(l=>!l.junk && owes(l) && (bWho!=="mine"||!who||l.owner===who)).sort((a,b)=>a.jobDate.localeCompare(b.jobDate));
+    const owedSum=owed.reduce((a,l)=>a+(Number(l.revenue??l.quoted)||0),0);
+    $("#board").insertAdjacentHTML("beforeend",'<div class="col" data-col="collect" data-nodrop>'+
+      '<div class="col-h"><div class="t"><span>To collect</span><span class="n">'+owed.length+'</span></div><div class="v">'+money(owedSum)+'</div><div class="c" style="color:var(--muted)">Done, not paid yet</div></div>'+
+      (owed.length?owed.map(owedCard).join(""):'<div class="empty">Nobody owes you.</div>')+'</div>');
+    const sumOf=st=>rows.filter(l=>stage(l)===st).reduce((a,l)=>{ const v=worth(l); return a+(v?v.amount:0); },0);
+    const quotedSum=rows.filter(l=>stage(l)==="Quoted").reduce((a,l)=>a+(Number(l.quoted)||0),0);
+    $("#bTotals").innerHTML='<div class="tile"><b>'+money(quotedSum)+'</b><span>Quoted</span></div>'+
+      '<div class="tile"><b>'+money(sumOf("Booked"))+'</b><span>Booked, coming up</span></div>'+
+      '<div class="tile '+(owedSum?"warn":"")+'"><b>'+money(owedSum)+'</b><span>To collect</span></div>';
+    $("#bSub").textContent=rows.length+" open "+(rows.length===1?"lead":"leads")+" · "+(allEst?"~":"")+money(all)+" in the pipeline";
+    wireBoard();
+  }
+  function boardCard(l){
+    const v=worth(l), c=coldOf(l), st=stage(l);
+    const when=st==="Booked"&&l.jobDate?"Job "+dayName(l.jobDate):st==="Waiting"&&l.nextFollowUp?"Check in "+dayName(l.nextFollowUp):"";
+    const meta=[l.service, when, c?coldWords(c):"", l.owner].filter(Boolean).join(" · ");
+    return '<div class="bcard'+(c?" "+c.level:"")+'" draggable="true" data-id="'+esc(l.id)+'">'+
+      '<div class="l1"><span class="nm">'+esc(l.name||"No name")+(l.car?'<span> · '+esc(l.car)+'</span>':"")+'</span>'+(v?'<span class="val">'+(v.est?"~":"")+money(v.amount)+'</span>':"")+'</div>'+
+      '<div class="meta">'+esc(meta)+'</div>'+
+      '<div class="acts"><button type="button" class="b" data-bact="move">Move</button><button type="button" class="b" data-bact="open">Open</button></div>'+
+    '</div>';
+  }
+  function owedCard(l){
+    const days=M.daysBetween(l.jobDate,today());
+    const meta=[l.service, "Job "+dayName(l.jobDate)+(days>0?" ("+days+(days===1?" day":" days")+" ago)":""), l.owner].filter(Boolean).join(" · ");
+    return '<div class="bcard'+(days>=7?" cold":days>=3?" warm":"")+'" data-id="'+esc(l.id)+'">'+
+      '<div class="l1"><span class="nm">'+esc(l.name||"No name")+(l.car?'<span> · '+esc(l.car)+'</span>':"")+'</span><span class="val">'+money(l.revenue??l.quoted??0)+'</span></div>'+
+      '<div class="meta">'+esc(meta)+'</div>'+
+      '<div class="acts"><button type="button" class="b go" data-bact="paid">Paid</button><button type="button" class="b" data-bact="open">Open</button></div>'+
+    '</div>';
+  }
+  function wireBoard(){
+    const board=$("#board");
+    board.querySelectorAll(".bcard").forEach(c=>{
+      const id=c.dataset.id;
+      c.addEventListener("click",e=>{ const b=e.target.closest("[data-bact]"); if(b&&b.dataset.bact==="move") openMove(id); else if(b&&b.dataset.bact==="paid") markPaid(id,b); else openEdit(id); });
+      c.addEventListener("dragstart",e=>{ e.dataTransfer.setData("text/plain",id); e.dataTransfer.effectAllowed="move"; c.classList.add("dragging"); });
+      c.addEventListener("dragend",()=>{ c.classList.remove("dragging"); board.querySelectorAll(".col.over").forEach(x=>x.classList.remove("over")); });
+    });
+    board.querySelectorAll(".col:not([data-nodrop])").forEach(col=>{
+      col.addEventListener("dragover",e=>{ e.preventDefault(); e.dataTransfer.dropEffect="move"; col.classList.add("over"); });
+      col.addEventListener("dragleave",e=>{ if(!col.contains(e.relatedTarget)) col.classList.remove("over"); });
+      col.addEventListener("drop",e=>{ e.preventDefault(); col.classList.remove("over"); const id=e.dataTransfer.getData("text/plain"); if(id) moveTo(id,col.dataset.col); });
+    });
+  }
+  // Moving to Quoted, Booked or Lost asks for the price, the day or the reason first, as Answered does.
+  function moveTo(id,target){
+    const l=current(id); if(!l) return;
+    if(stage(l)===target) return;
+    if(target==="Quoted") return openAnswered(id,"quoted");
+    if(target==="Booked") return openAnswered(id,"booked");
+    if(target==="Lost") return openAnswered(id,"lost");
+    document.querySelectorAll("#sheet button").forEach(b=>b.disabled=true);
+    save(id,M.setStage(l,target,today())).then(ok=>{ if(ok){ closeSheet(); toast("Moved to "+target+"."); } });
+  }
+  function openMove(id){
+    const l=current(id); if(!l) return;
+    const st=stage(l), targets=["New","Chasing","Quoted","Booked","Waiting","Lost"];
+    sheet(head(l,"Move to which stage? Now: "+st)+
+      '<div class="moves">'+targets.map(t=>'<button type="button" class="btn'+(t===st?"":" secondary")+'" data-to="'+t+'"'+(t===st?' aria-current="true" disabled':"")+'>'+esc(t)+'</button>').join("")+'</div>');
+    document.querySelectorAll("#sheet [data-to]").forEach(b=>b.addEventListener("click",()=>moveTo(id,b.dataset.to)));
+  }
+
+  // ---------- SELECT SEVERAL (Leads tab) ----------
+  // Pick leads, then log the same thing on each: the same steps one tap would take, one lead at a time.
+  let picking=false; const picked=new Set();
+  function syncBulk(){
+    $("#bulkbar").hidden=!picking;
+    $("#selectBtn").textContent=picking?"Cancel":"Select";
+    $("#bulkN").textContent=picked.size+" picked";
+    document.querySelectorAll("#bulkbar [data-bulk]").forEach(b=>{ if(b.dataset.bulk!=="done") b.disabled=!picked.size; });
+  }
+  function stopPicking(){ picking=false; picked.clear(); syncBulk(); renderList(); }
+  $("#selectBtn").addEventListener("click",()=>{ if(picking) stopPicking(); else { picking=true; syncBulk(); renderList(); } });
+  $("#bulkNone").addEventListener("click",()=>{ picked.clear(); syncBulk(); renderList(); });
+  $("#bulkAll").addEventListener("click",()=>{ shownIds.forEach(id=>picked.add(id)); syncBulk(); renderList(); });
+  async function bulk(label,make){
+    if(!db){ toast("Not connected. Try again in a sec."); return; }
+    const ids=[...picked]; let ok=0;
+    document.querySelectorAll("#bulkbar button, #sheet button").forEach(b=>b.disabled=true);
+    for(const id of ids){ const l=current(id); if(!l) continue; if(await save(id,make(l))) ok++; }
+    closeSheet(); toast(label+": "+ok+" of "+ids.length+" leads."); stopPicking();
+  }
+  document.querySelectorAll("#bulkbar [data-bulk]").forEach(b=>b.addEventListener("click",()=>{
+    const a=b.dataset.bulk, n=picked.size;
+    if(a==="done") return stopPicking();
+    if(a==="texted"||a==="noanswer"){
+      const now=new Date().toISOString();
+      return bulk(a==="texted"?"Logged as texted":"Logged as no answer", l=>M.touch(l,{at:now, by:who||"", type:a==="texted"?"text":"call", pickedUp:a==="noanswer"?"No":"", outcome:a==="texted"?"Texted":"No answer", note:""}));
+    }
+    if(a==="junk") return bulk("Marked not real", ()=>({junk:true}));
+    if(a==="notnow"){
+      const g=sheet('<div class="sheet-h"><div><h2>Not now</h2><p class="help">'+n+' leads. When should they come back?</p></div><button class="x" id="closeSheet">Close</button></div>'+datePicker());
+      document.querySelectorAll("#sheet [data-date]").forEach(x=>x.addEventListener("click",()=>bulk("Off the list till "+dayName(x.dataset.date), l=>M.snooze(l,x.dataset.date))));
+      g("#a-date").addEventListener("change",()=>{ const d=g("#a-date").value; if(d) bulk("Off the list till "+dayName(d), l=>M.snooze(l,d)); });
+      return;
+    }
+    if(a==="move"){
+      sheet('<div class="sheet-h"><div><h2>Move '+n+' leads</h2><p class="help">Quoted and Booked need a price or a day for each lead, so do those one at a time.</p></div><button class="x" id="closeSheet">Close</button></div>'+
+        '<div class="moves">'+["New","Chasing","Waiting"].map(t=>'<button type="button" class="btn secondary" data-to="'+t+'">'+t+'</button>').join("")+'</div>'+
+        '<p class="help">Or mark them all lost:</p><div class="chips">'+Object.entries(M.LOST_REASONS).map(([k,lab])=>'<button type="button" class="btn secondary" data-reason="'+k+'">Lost: '+esc(lab)+'</button>').join("")+'</div>');
+      document.querySelectorAll("#sheet [data-to]").forEach(x=>x.addEventListener("click",()=>bulk("Moved to "+x.dataset.to, l=>M.setStage(l,x.dataset.to,today()))));
+      document.querySelectorAll("#sheet [data-reason]").forEach(x=>x.addEventListener("click",()=>bulk("Marked lost", l=>({...M.setStage(l,"Lost",today()), lostReason:x.dataset.reason, lostWhy:M.LOST_WORDS[x.dataset.reason]}))));
+    }
+  }));
 
   // ---------- EDIT SHEET ----------
   function openEdit(id){
@@ -1004,6 +1209,7 @@ tr:last-child td{border-bottom:0}
     const bookedRows=booked.slice().sort(byJob);
     const paid=bookedRows.filter(l=>price(l)&&l.paid==="Yes"), unpaid=bookedRows.filter(l=>price(l)&&l.paid!=="Yes");
     const fromAds=live.filter(l=>M.fromAds(l)&&isBooked(l)).sort(byJob);
+    const quotedOpen=rows.filter(l=>stage(l)==="Quoted");
     drill={
       leads:{title:"Leads", items:rows.map(l=>({l, r:stage(l), ln:[l.service, l.source+(l.ad?" ("+l.ad+")":""), "Came in "+dayName(l.date||localDate(l.createdAt)), l.owner]}))},
       booked:{title:"Booked", items:bookedRows.map(l=>({l, r:price(l)?money(price(l)):"", ln:paidLine(l)}))},
@@ -1012,6 +1218,7 @@ tr:last-child td{border-bottom:0}
       bookedMoney:{title:"Booked $", sub:money(cash.booked)+" from "+jobs(bookedRows.filter(price).length), items:bookedRows.filter(price).map(l=>({l, r:money(price(l)), cls:l.paid==="Yes"?"good":"", ln:paidLine(l)}))},
       collected:{title:"Cash collected", sub:money(cash.collected)+" from "+jobs(paid.length), items:paid.map(l=>({l, r:money(price(l)), cls:"good", ln:paidLine(l)}))},
       toCollect:{title:"Still to collect", sub:money(cash.toCollect)+" from "+jobs(unpaid.length), items:unpaid.map(l=>({l, r:money(price(l)), cls:"warn", ln:[l.service, l.jobDate?(l.jobDate<t?"Job was "+dayName(l.jobDate):l.jobDate===t?"Job today":"Job "+dayName(l.jobDate)):"", l.owner]}))},
+      quotedOpen:{title:"Quoted, open", sub:"Quotes still waiting on a yes", items:quotedOpen.map(l=>({l, r:l.quoted!=null?money(l.quoted):"", ln:[l.service, l.quotedOn?"Quoted "+dayName(l.quotedOn):"", l.owner]}))},
       ads:{title:"Per booked job (ads)", sub:money(ads.spend)+" spent, "+ads.booked+" booked from ads (both of you)", items:fromAds.map(l=>({l, r:price(l)?money(price(l)):"", ln:[l.service, l.source+(l.ad?" ("+l.ad+")":""), l.jobDate?"Job "+dayName(l.jobDate):"", l.owner]}))},
     };
     const tile=(v,label,cls="",key="")=>key?'<button type="button" class="tile '+cls+'" data-drill="'+key+'"><b>'+v+'</b><span>'+label+'</span></button>':'<div class="tile '+cls+'"><b>'+v+'</b><span>'+label+'</span></div>';
@@ -1019,7 +1226,8 @@ tr:last-child td{border-bottom:0}
       tile(rows.length,"Leads","","leads")+tile(booked.length,"Booked","","booked")+tile(pct(booked.length,rows.length),"Close rate",closeRate>=.4?"good":closeRate>=.25?"warn":rows.length?"bad":"","close")+
       tile(fastRate==null?"–":Math.round(fastRate*100)+"%","Replied ≤5 min",fastRate==null?"":fastRate>=.8?"good":fastRate>=.5?"warn":"bad","replied")+
       tile(money(cash.booked),"Booked $","","bookedMoney")+tile(money(cash.collected),"Cash collected","good","collected")+tile(money(cash.toCollect),"Still to collect",cash.toCollect>0?"warn":"","toCollect")+
-      tile(ads.perBooked==null?"–":money(ads.perBooked),"Per booked job (ads)","","ads");
+      tile(ads.perBooked==null?"–":money(ads.perBooked),"Per booked job (ads)","","ads")+
+      tile(money(quotedOpen.reduce((a,l)=>a+(Number(l.quoted)||0),0)),"Quoted, open","","quotedOpen");
     const row=(label,v)=>'<tr><td>'+label+'</td><td class="n">'+v+'</td></tr>';
     $("#adSpend").innerHTML=row("Spent in this period",money(ads.spend))+row("Leads from ads",ads.leads)+row("Booked from ads",ads.booked)+row("Per booked job",ads.perBooked==null?"–":money(ads.perBooked));
     // More.
@@ -1124,7 +1332,7 @@ tr:last-child td{border-bottom:0}
   // ---------- BOOT ----------
   function renderAll(){
     const cur=document.querySelector('.tab[aria-selected="true"]').dataset.tab;
-    if(cur==="today") renderToday(); else if(cur==="leads") renderList(); else if(cur==="numbers") renderNumbers();
+    if(cur==="today") renderToday(); else if(cur==="leads") renderList(); else if(cur==="board") renderBoard(); else if(cur==="numbers") renderNumbers();
     // The count left, on the tab.
     const left=lists().left; $("#dotToday").hidden=!left; $("#dotToday").textContent=left;
   }

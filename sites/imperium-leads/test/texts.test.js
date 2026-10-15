@@ -13,7 +13,7 @@ test("every text is the agreed wording, filled in and signed by the owner", () =
   assert.equal(T.fill("first", l), "Hi Jo, Angus from Imperium Detailing. Got your request for the Kluger. I'll text your price shortly.");
   assert.equal(T.fill("missed", l), "Hi Jo, Angus from Imperium Detailing. Just tried to call about the full detail for your Kluger. What suburb are you in? I'll send your price straight back.");
   assert.equal(T.fill("day1", l), "Hi Jo, Angus here from Imperium. Still keen on getting the Kluger done? I've got a couple of spots this week and next. Just reply and I'll lock one in.");
-  assert.equal(T.fill("day3", l), "Hi Jo, quick one. Full detail on the Kluger is from $225 at your place. If the timing's off, tell me when suits and I'll pencil you in.");
+  assert.equal(T.fill("day3", l), "Hi Jo, quick one. Full detail on the Kluger is from $250 at your place. If the timing's off, tell me when suits and I'll pencil you in.");
   assert.equal(T.fill("day7", l), "Hi Jo, Angus from Imperium Detailing. No stress if the timing's off. If you still want the Kluger done, just reply here and I'll sort it.");
   assert.equal(T.fill("checkin", l), "Hi Jo, Angus from Imperium Detailing. Just checking in. If the Kluger is due for a clean, reply here and I'll sort a time.");
   assert.equal(T.fill("quote", jo({ service: "Interior" }), { price: 140, hours: 2, days: ["Tue", "Thu"] }), "Hi Jo, for the Kluger an interior detail is $140, at your place. Takes about 2 hours. I've got Tue or Thu free. Which suits?");
@@ -24,9 +24,12 @@ test("every text is the agreed wording, filled in and signed by the owner", () =
 });
 
 test("prices come only from the price sheet or the quote typed in; no price means 'I'll confirm the price'", () => {
-  assert.deepEqual(T.PRICES, { "Full detail": 225, Exterior: 110, Interior: 140, Correction: 397, Ceramic: 997, "Maintenance plan": null, "Pre-sale": null });
+  assert.deepEqual(JSON.parse(JSON.stringify(T.PRICES)), { "Full detail": [250, 280, 320], Exterior: [130, 140, 160], Interior: [170, 190, 220], Correction: [497, 597, 697], Ceramic: [997, 1097, 1197], "Maintenance plan": null, "Pre-sale": null });
+  // By size, as the website lists them; a car that doesn't say gets the hatch/sedan "from" price.
+  assert.deepEqual(["hatch/sedan", "suv/ute", "4x4/8-seater", "Kluger"].map((car) => T.priceFor("Full detail", car)), [250, 280, 320, 250]);
+  assert.deepEqual(["hatch/sedan", "suv/ute", "4x4/8-seater"].map((car) => T.priceFor("Correction", car)), [497, 597, 697]);
   assert.match(T.fill("day3", jo({ service: "Ceramic" })), /Ceramic coating on the Kluger is from \$997 at your place/);
-  assert.match(T.fill("day3", jo({ service: "Correction" })), /Paint correction on the Kluger is from \$397/);
+  assert.match(T.fill("day3", jo({ service: "Correction" })), /Paint correction on the Kluger is from \$497/);
   for (const service of ["Maintenance plan", "Pre-sale", "Not sure"]) {
     const t = T.fill("day3", jo({ service }));
     assert.match(t, /I'll confirm the price/, service);
@@ -34,7 +37,7 @@ test("prices come only from the price sheet or the quote typed in; no price mean
   }
   assert.match(T.fill("day3", jo({ stage: "Quoted", quoted: 260 })), /from \$260/); // their quote, not the sheet
   // Every text for every service and step: any dollar figure is on the sheet, or is their quote.
-  const allowed = new Set(Object.values(T.PRICES).filter(Boolean).map(String));
+  const allowed = new Set(Object.values(T.PRICES).filter(Boolean).flat().map(String));
   for (const service of Object.keys(T.PRICES).concat("Not sure")) {
     for (const key of Object.keys(T.TEMPLATES)) {
       if (key === "day3NoPrice") continue;

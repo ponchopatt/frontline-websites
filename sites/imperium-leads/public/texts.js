@@ -3,15 +3,17 @@
 
   Plain logic only, shared by the page and the tests (window.ILTexts; needs window.ILModel).
   Nothing here sends anything: the Text button opens the phone's messages app with the words
-  filled in, and a person sends it. Prices only ever come from PRICES below ("from" prices,
-  hatch/sedan), or from the quote someone typed in. A service with no price says
+  filled in, and a person sends it. Prices only ever come from PRICES below (the website's,
+  by car size: hatch or sedan, SUV or ute, 4x4 or 7-seater; a car whose size isn't known gets the
+  hatch/sedan "from" price), or from the quote someone typed in. A service with no price says
   "I'll confirm the price" instead.
 */
 (function (root) {
   "use strict";
   var M = root.ILModel;
 
-  var PRICES = { "Full detail": 225, Exterior: 110, Interior: 140, Correction: 397, Ceramic: 997, "Maintenance plan": null, "Pre-sale": null };
+  // [hatch or sedan, SUV or ute, 4x4 / 7-seater], from imperiumdetailing.com.au.
+  var PRICES = { "Full detail": [250, 280, 320], Exterior: [130, 140, 160], Interior: [170, 190, 220], Correction: [497, 597, 697], Ceramic: [997, 1097, 1197], "Maintenance plan": null, "Pre-sale": null };
   var NO_PRICE = "I'll confirm the price";
   // How each service reads in a sentence.
   var WORDS = {
@@ -35,15 +37,24 @@
     quote: "Quote", after: "After the job", review: "Review ask",
   };
 
-  function priceFor(service) {
+  // 0 hatch or sedan, 1 SUV or ute, 2 4x4, 4WD, van or 7/8-seater; -1 when the car doesn't say.
+  function sizeOf(car) {
+    var c = String(car || "").toLowerCase();
+    if (/4x4|4wd|van|[78][ -]?seat|people mover|landcruiser|patrol|prado/.test(c)) return 2;
+    if (/suv|ute|wagon/.test(c)) return 1;
+    if (/hatch|sedan|coupe/.test(c)) return 0;
+    return -1;
+  }
+  function priceFor(service, car) {
     var p = PRICES[service];
-    return typeof p === "number" ? p : null;
+    if (!p) return null;
+    return p[Math.max(0, sizeOf(car))];
   }
   // The quote someone typed in if there is one, else the price sheet's "from" price.
   function priceOf(key, l, o) {
     if (o.price != null && o.price !== "") return o.price;
     if (l && l.quoted != null && l.quoted !== "") return l.quoted;
-    return key === "quote" ? null : priceFor(l && l.service);
+    return key === "quote" ? null : priceFor(l && l.service, l && l.car);
   }
   function firstName(l) {
     return String((l && l.name) || "").trim().split(/\s+/)[0] || "there";
@@ -118,6 +129,6 @@
 
   root.ILTexts = {
     PRICES: PRICES, NO_PRICE: NO_PRICE, TEMPLATES: TEMPLATES, LABELS: LABELS,
-    priceFor: priceFor, firstName: firstName, words: words, fill: fill, which: which, message: message, smsHref: smsHref,
+    priceFor: priceFor, sizeOf: sizeOf, firstName: firstName, words: words, fill: fill, which: which, message: message, smsHref: smsHref,
   };
 })(typeof window !== "undefined" ? window : globalThis);
