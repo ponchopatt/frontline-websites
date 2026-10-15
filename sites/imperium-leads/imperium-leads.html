@@ -203,6 +203,8 @@ main.wide{max-width:1400px}
 .bulkbar .row{gap:6px}
 .bulkbar .b{flex:1 1 calc(33% - 6px);padding:0 6px}
 @media (max-width:420px){.tiles{grid-template-columns:repeat(2,1fr)}}
+#bTotals{grid-template-columns:repeat(3,1fr)}
+@media (max-width:420px){#bTotals .tile b{font-size:17px}#bTotals .tile span{font-size:10px}}
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}
 </style>
 
@@ -337,6 +339,7 @@ main.wide{max-width:1400px}
       <div><h1>Board</h1><p class="help" id="bSub">Every open lead by stage. Drag a card to move it, or tap Move.</p></div>
       <div class="seg two" id="bWho" data-value=""><button type="button" data-v="">Both</button><button type="button" data-v="mine">Mine</button></div>
     </div>
+    <div class="tiles" id="bTotals"></div>
     <div class="board" id="board"></div>
     <p class="help">Worth: the booked price, else the quote, else the price sheet (shown with ~). Orange and red edges are leads going cold.</p>
   </section>
@@ -831,7 +834,7 @@ main.wide{max-width:1400px}
     const pick=v=>{
       g("#a-pick").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===v)));
       g("#a-pick").querySelectorAll("button").forEach(b=>b.classList.toggle("secondary",b.dataset.v!==v));
-      const sheetPrice=T.priceFor(l.service);
+      const sheetPrice=T.priceFor(l.service,l.car);
       if(v==="quoted"){
         more.innerHTML='<label>How much? $<input id="a-amount" type="number" inputmode="decimal" min="0" value="'+(l.quoted??sheetPrice??"")+'"></label><button class="btn" id="a-save">Save quote</button>';
         g("#a-save").addEventListener("click",()=>{ const amount=num(g("#a-amount").value); if(amount==null){ toast("Type the price"); return; } answer(id,"quoted",{amount}); });
@@ -959,7 +962,7 @@ main.wide{max-width:1400px}
   // ---------- BOARD ----------
   // Every open lead, one column per stage, with what each column is worth. Coldest first.
   const COLS=["New","Chasing","Quoted","Waiting","Booked"];
-  const worth = l => M.dealValue(l,today(),T.priceFor(l.service));
+  const worth = l => M.dealValue(l,today(),T.priceFor(l.service,l.car));
   const coldRank = l => { const c=coldOf(l); return c ? (c.level==="cold"?2:1)*1000+c.days : 0; };
   let bWho="";
   seg($("#bWho"),v=>{ bWho=v; renderBoard(); });
@@ -978,6 +981,17 @@ main.wide{max-width:1400px}
         (list.length?list.map(boardCard).join(""):'<div class="empty">Nobody here.</div>')+
       '</div>';
     }).join("");
+    // Jobs done and not paid yet: the cash still to come in. Ticked Paid, they leave the board.
+    const owed=leads.filter(l=>!l.junk && owes(l) && (bWho!=="mine"||!who||l.owner===who)).sort((a,b)=>a.jobDate.localeCompare(b.jobDate));
+    const owedSum=owed.reduce((a,l)=>a+(Number(l.revenue??l.quoted)||0),0);
+    $("#board").insertAdjacentHTML("beforeend",'<div class="col" data-col="collect" data-nodrop>'+
+      '<div class="col-h"><div class="t"><span>To collect</span><span class="n">'+owed.length+'</span></div><div class="v">'+money(owedSum)+'</div><div class="c" style="color:var(--muted)">Done, not paid yet</div></div>'+
+      (owed.length?owed.map(owedCard).join(""):'<div class="empty">Nobody owes you.</div>')+'</div>');
+    const sumOf=st=>rows.filter(l=>stage(l)===st).reduce((a,l)=>{ const v=worth(l); return a+(v?v.amount:0); },0);
+    const quotedSum=rows.filter(l=>stage(l)==="Quoted").reduce((a,l)=>a+(Number(l.quoted)||0),0);
+    $("#bTotals").innerHTML='<div class="tile"><b>'+money(quotedSum)+'</b><span>Quoted</span></div>'+
+      '<div class="tile"><b>'+money(sumOf("Booked"))+'</b><span>Booked, coming up</span></div>'+
+      '<div class="tile '+(owedSum?"warn":"")+'"><b>'+money(owedSum)+'</b><span>To collect</span></div>';
     $("#bSub").textContent=rows.length+" open "+(rows.length===1?"lead":"leads")+" · "+(allEst?"~":"")+money(all)+" in the pipeline";
     wireBoard();
   }
@@ -991,15 +1005,24 @@ main.wide{max-width:1400px}
       '<div class="acts"><button type="button" class="b" data-bact="move">Move</button><button type="button" class="b" data-bact="open">Open</button></div>'+
     '</div>';
   }
+  function owedCard(l){
+    const days=M.daysBetween(l.jobDate,today());
+    const meta=[l.service, "Job "+dayName(l.jobDate)+(days>0?" ("+days+(days===1?" day":" days")+" ago)":""), l.owner].filter(Boolean).join(" · ");
+    return '<div class="bcard'+(days>=7?" cold":days>=3?" warm":"")+'" data-id="'+esc(l.id)+'">'+
+      '<div class="l1"><span class="nm">'+esc(l.name||"No name")+(l.car?'<span> · '+esc(l.car)+'</span>':"")+'</span><span class="val">'+money(l.revenue??l.quoted??0)+'</span></div>'+
+      '<div class="meta">'+esc(meta)+'</div>'+
+      '<div class="acts"><button type="button" class="b go" data-bact="paid">Paid</button><button type="button" class="b" data-bact="open">Open</button></div>'+
+    '</div>';
+  }
   function wireBoard(){
     const board=$("#board");
     board.querySelectorAll(".bcard").forEach(c=>{
       const id=c.dataset.id;
-      c.addEventListener("click",e=>{ const b=e.target.closest("[data-bact]"); if(b&&b.dataset.bact==="move") openMove(id); else openEdit(id); });
+      c.addEventListener("click",e=>{ const b=e.target.closest("[data-bact]"); if(b&&b.dataset.bact==="move") openMove(id); else if(b&&b.dataset.bact==="paid") markPaid(id,b); else openEdit(id); });
       c.addEventListener("dragstart",e=>{ e.dataTransfer.setData("text/plain",id); e.dataTransfer.effectAllowed="move"; c.classList.add("dragging"); });
       c.addEventListener("dragend",()=>{ c.classList.remove("dragging"); board.querySelectorAll(".col.over").forEach(x=>x.classList.remove("over")); });
     });
-    board.querySelectorAll(".col").forEach(col=>{
+    board.querySelectorAll(".col:not([data-nodrop])").forEach(col=>{
       col.addEventListener("dragover",e=>{ e.preventDefault(); e.dataTransfer.dropEffect="move"; col.classList.add("over"); });
       col.addEventListener("dragleave",e=>{ if(!col.contains(e.relatedTarget)) col.classList.remove("over"); });
       col.addEventListener("drop",e=>{ e.preventDefault(); col.classList.remove("over"); const id=e.dataTransfer.getData("text/plain"); if(id) moveTo(id,col.dataset.col); });
@@ -1186,6 +1209,7 @@ main.wide{max-width:1400px}
     const bookedRows=booked.slice().sort(byJob);
     const paid=bookedRows.filter(l=>price(l)&&l.paid==="Yes"), unpaid=bookedRows.filter(l=>price(l)&&l.paid!=="Yes");
     const fromAds=live.filter(l=>M.fromAds(l)&&isBooked(l)).sort(byJob);
+    const quotedOpen=rows.filter(l=>stage(l)==="Quoted");
     drill={
       leads:{title:"Leads", items:rows.map(l=>({l, r:stage(l), ln:[l.service, l.source+(l.ad?" ("+l.ad+")":""), "Came in "+dayName(l.date||localDate(l.createdAt)), l.owner]}))},
       booked:{title:"Booked", items:bookedRows.map(l=>({l, r:price(l)?money(price(l)):"", ln:paidLine(l)}))},
@@ -1194,6 +1218,7 @@ main.wide{max-width:1400px}
       bookedMoney:{title:"Booked $", sub:money(cash.booked)+" from "+jobs(bookedRows.filter(price).length), items:bookedRows.filter(price).map(l=>({l, r:money(price(l)), cls:l.paid==="Yes"?"good":"", ln:paidLine(l)}))},
       collected:{title:"Cash collected", sub:money(cash.collected)+" from "+jobs(paid.length), items:paid.map(l=>({l, r:money(price(l)), cls:"good", ln:paidLine(l)}))},
       toCollect:{title:"Still to collect", sub:money(cash.toCollect)+" from "+jobs(unpaid.length), items:unpaid.map(l=>({l, r:money(price(l)), cls:"warn", ln:[l.service, l.jobDate?(l.jobDate<t?"Job was "+dayName(l.jobDate):l.jobDate===t?"Job today":"Job "+dayName(l.jobDate)):"", l.owner]}))},
+      quotedOpen:{title:"Quoted, open", sub:"Quotes still waiting on a yes", items:quotedOpen.map(l=>({l, r:l.quoted!=null?money(l.quoted):"", ln:[l.service, l.quotedOn?"Quoted "+dayName(l.quotedOn):"", l.owner]}))},
       ads:{title:"Per booked job (ads)", sub:money(ads.spend)+" spent, "+ads.booked+" booked from ads (both of you)", items:fromAds.map(l=>({l, r:price(l)?money(price(l)):"", ln:[l.service, l.source+(l.ad?" ("+l.ad+")":""), l.jobDate?"Job "+dayName(l.jobDate):"", l.owner]}))},
     };
     const tile=(v,label,cls="",key="")=>key?'<button type="button" class="tile '+cls+'" data-drill="'+key+'"><b>'+v+'</b><span>'+label+'</span></button>':'<div class="tile '+cls+'"><b>'+v+'</b><span>'+label+'</span></div>';
@@ -1201,7 +1226,8 @@ main.wide{max-width:1400px}
       tile(rows.length,"Leads","","leads")+tile(booked.length,"Booked","","booked")+tile(pct(booked.length,rows.length),"Close rate",closeRate>=.4?"good":closeRate>=.25?"warn":rows.length?"bad":"","close")+
       tile(fastRate==null?"–":Math.round(fastRate*100)+"%","Replied ≤5 min",fastRate==null?"":fastRate>=.8?"good":fastRate>=.5?"warn":"bad","replied")+
       tile(money(cash.booked),"Booked $","","bookedMoney")+tile(money(cash.collected),"Cash collected","good","collected")+tile(money(cash.toCollect),"Still to collect",cash.toCollect>0?"warn":"","toCollect")+
-      tile(ads.perBooked==null?"–":money(ads.perBooked),"Per booked job (ads)","","ads");
+      tile(ads.perBooked==null?"–":money(ads.perBooked),"Per booked job (ads)","","ads")+
+      tile(money(quotedOpen.reduce((a,l)=>a+(Number(l.quoted)||0),0)),"Quoted, open","","quotedOpen");
     const row=(label,v)=>'<tr><td>'+label+'</td><td class="n">'+v+'</td></tr>';
     $("#adSpend").innerHTML=row("Spent in this period",money(ads.spend))+row("Leads from ads",ads.leads)+row("Booked from ads",ads.booked)+row("Per booked job",ads.perBooked==null?"–":money(ads.perBooked));
     // More.
