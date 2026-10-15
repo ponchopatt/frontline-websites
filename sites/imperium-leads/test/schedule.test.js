@@ -24,12 +24,18 @@ test("full schedule: day 0, 1, 3 and 7 from the first touch, then Waiting", () =
   assert.equal(l.status, "Contacted"); // the old field still reads right
 });
 
-test("a missed day doesn't pile up: the gaps still count from the first touch, never the same day twice", () => {
+test("a follow-up done late keeps the schedule's gaps, so nobody is chased two days running", () => {
   let l = texted(lead(), "2026-10-12");
   l = texted(l, "2026-10-16"); // day 1's text sent four days late
-  assert.deepEqual([l.touches, l.nextFollowUp], [2, "2026-10-17"]); // day 3 has passed: due the next day
-  l = texted(l, "2026-10-17");
-  assert.equal(l.nextFollowUp, "2026-10-19"); // day 7 from the first touch
+  assert.deepEqual([l.touches, l.nextFollowUp], [2, "2026-10-18"]); // day 3 has passed: still 2 days' gap
+  l = texted(l, "2026-10-18");
+  assert.equal(l.nextFollowUp, "2026-10-22"); // day 7 has passed too: still 4 days' gap
+  // On time, the days still count from the first touch.
+  let k = texted(lead(), "2026-10-12");
+  k = texted(k, "2026-10-13");
+  assert.equal(k.nextFollowUp, "2026-10-15");
+  k = texted(k, "2026-10-15");
+  assert.equal(k.nextFollowUp, "2026-10-19");
 });
 
 test("a call and a text on the same day are one touch", () => {

@@ -27,6 +27,12 @@ the home screen) shared by Angus and Ananth.
 - **On a phone** the tabs sit at the bottom and the Board shows one stage at a time: swipe, or tap
   a stage chip at the top (chips with a red edge have leads going cold). Each card has Call, Text
   and Move; tap the card to open it. It opens on the first stage with anyone in it.
+- **Coming up** on Today: the next 7 days, how many are due each day, and who (with which
+  follow-up it is). Tap a day to see the people (`M.upcoming`, `M.nextStep`).
+- **Board by due day**: Chasing, Quoted and Waiting are grouped Due now, Tomorrow, then by day,
+  newest enquiry first, and each card says which follow-up is next.
+- **Gaps stay put**: a follow-up done late still waits the schedule's gap before the next one
+  (2 days, then 4), so nobody gets chased two days running (`M.dueAfter`).
 - **Weekly goal** on Today: this week's jobs (Monday to Sunday, by job day) against a money goal,
   both of you together. Green is done, light blue is booked and still to come. Tap Change to set
   the goal; it's saved for both phones (`settings/goal`, `M.weekMoney`).
