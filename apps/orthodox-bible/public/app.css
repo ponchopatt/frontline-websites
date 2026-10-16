@@ -271,3 +271,24 @@ mark{background:var(--hl-y);color:inherit;border-radius:3px;padding:0 1px}
 .dot-c{width:14px;height:14px;border-radius:50%;flex:none;margin:0 4px}
 .memorial{border:1px solid var(--gold);background:var(--gold-soft);display:block}.memorial .label{color:var(--gold)}
 .field{display:block;width:100%;box-sizing:border-box;background:var(--surface2);border:0;border-radius:12px;padding:13px 14px;font:16px var(--sans);color:var(--text);color-scheme:inherit}.field:focus{outline:2px solid var(--accent)}
+
+/* calendar, Pascha and Bright Week */
+.cal-link{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;font-weight:600;color:var(--muted)}
+.cal-link span:last-child{display:flex;align-items:center;color:var(--text)}.cal-link .chev{width:16px;height:16px}
+.pascha{background:linear-gradient(135deg,#5a2a1e,#8a3a2a);color:#fff}.pascha .label{color:#f3cf8a}.pascha h3{font:600 28px/1.15 var(--serif);margin:4px 0}
+.cal-h{display:flex;align-items:center;justify-content:space-between;margin:18px 0 8px}.cal-h h2{font-size:19px;margin:0}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-grid.head span{text-align:center;font-size:11px;font-weight:700;color:var(--faint);padding:4px 0}
+.cal-grid button{all:unset;cursor:pointer;position:relative;aspect-ratio:1;border-radius:10px;display:grid;place-items:center;font-weight:600;font-size:14px;background:var(--surface)}
+.cal-grid button.strict{background:rgba(229,72,77,.55);color:#fff}.cal-grid button.oil{background:rgba(229,72,77,.3)}
+.cal-grid button.fish,.cal-grid button.dairy{background:rgba(141,184,227,.25)}
+.cal-grid button.today{outline:2px solid var(--text);outline-offset:-2px}
+.cal-grid .fd,.cal-key .fd{position:absolute;bottom:5px;left:50%;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:var(--gold)}
+.cal-grid .fd.sm{width:4px;height:4px;margin-left:-2px;opacity:.8}
+.cal-key{display:flex;flex-wrap:wrap;gap:6px 14px;margin:12px 2px 0;font-size:12px;color:var(--muted)}.cal-key span{display:flex;align-items:center;gap:6px}
+.cal-key .k{display:inline-block;width:12px;height:12px;border-radius:3px;position:relative}.cal-key .k.strict{background:rgba(229,72,77,.55)}.cal-key .k.oil{background:rgba(229,72,77,.3)}.cal-key .k.fish{background:rgba(141,184,227,.25)}
+.cal-key .k.fd{position:static;margin:0;width:8px;height:8px;border-radius:50%}
+.numdot.gold{background:var(--gold);color:#121212}
+.hello h1 small{display:block;font-size:15px;font-weight:500;color:var(--gold);margin-top:2px}
+/* Bright Week: everything turns gold */
+:root[data-bright]{--accent:#d9a441;--accent-soft:rgba(217,164,65,.18);--accent-ink:#1a1206}

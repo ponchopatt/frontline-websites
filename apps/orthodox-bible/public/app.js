@@ -6,6 +6,8 @@
 
 // ---------------------------------------------------------------- saved on this phone
 const KEY = "ob1";
+// Where the calendar functions live: this site, or the web address set in config.js for the phone apps.
+const API = (window.OB_API || "") + "api/";
 const blank = () => ({ settings: { tr: "lxx", cal: "new", size: 19, theme: "dark", writers: true, voice: "" },
   name: "", last: { b: "JHN", c: 1 }, hl: {}, hlAt: {}, bm: {}, notes: {}, noteAt: {}, plans: {}, saved: {}, read: {}, days: [],
   best: 0, rope: {}, ropeSize: 100, liked: {}, earned: {}, names: [] });
@@ -63,14 +65,27 @@ function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.ad
 function applyTheme() {
   document.documentElement.setAttribute("data-theme", S.settings.theme);
   document.documentElement.style.setProperty("--size", S.settings.size + "px");
+  if (brightWeek()) document.documentElement.setAttribute("data-bright", ""); else document.documentElement.removeAttribute("data-bright");
   const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", S.settings.theme === "light" ? "#f6f5f2" : "#121212");
 }
-applyTheme();
 const pad = (n) => String(n).padStart(2, "0");
 const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const today = () => ymd(new Date());
 const addDays = (s, n) => { const d = new Date(s + "T12:00:00"); d.setDate(d.getDate() + n); return ymd(d); };
 const longDate = (s) => new Date(s + "T12:00:00").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
+// Orthodox Pascha: the Julian-calendar date (Meeus), moved to the civil calendar (+13 days, right for 1900–2099).
+function pascha(y) {
+  const a = y % 4, b = y % 7, c = y % 19, d = (19 * c + 15) % 30, e = (2 * a + 4 * b - d + 34) % 7;
+  const n = d + e + 114;
+  return ymd(new Date(y, Math.floor(n / 31) - 1, (n % 31) + 1 + 13, 12));
+}
+const daysBetween = (a, b) => Math.round((new Date(b + "T12:00:00") - new Date(a + "T12:00:00")) / 864e5);
+// Days since this year's Pascha (negative before it).
+const paschaDay = (t = today()) => daysBetween(pascha(+t.slice(0, 4)), t);
+const brightWeek = () => { const n = paschaDay(); return n >= 0 && n <= 6; };
+const paschalSeason = () => { const n = paschaDay(); return n >= 0 && n < 39; };
+function nextPascha() { const t = today(); let p = pascha(+t.slice(0, 4)); if (p < t) p = pascha(+t.slice(0, 4) + 1); return { date: p, days: daysBetween(t, p) }; }
+applyTheme();
 const dayOfYear = () => { const n = new Date(); return Math.floor((n - new Date(n.getFullYear(), 0, 0)) / 864e5); };
 const ago = (t) => { const s = (Date.now() - t) / 1000; if (s < 3600) return Math.max(1, Math.round(s / 60)) + "m"; if (s < 86400) return Math.round(s / 3600) + "h"; if (s < 86400 * 7) return Math.round(s / 86400) + "d"; return Math.round(s / 86400 / 7) + "w"; };
 
@@ -297,7 +312,7 @@ $("#back").onclick = () => (history.length > 1 ? history.back() : (location.hash
 async function dayData(date) {
   const k = `day:${S.settings.cal}:${date}`;
   try {
-    const r = await fetch(`api/day?date=${date}&cal=${S.settings.cal}`);
+    const r = await fetch(`${API}day?date=${date}&cal=${S.settings.cal}`);
     if (!r.ok) throw new Error(r.status);
     const d = await r.json();
     try { localStorage.setItem(k, JSON.stringify(d)); } catch (e) { /* full */ }
@@ -334,7 +349,7 @@ const listWords = (a) => (a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") 
 async function renderToday() {
   setTop("", { hide: true });
   const t = today(); const h = new Date().getHours();
-  const hello = `${h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"}${S.name ? ", " + esc(S.name) : ""}`;
+  const hello = paschalSeason() ? `Christ is Risen!<small>Indeed He is Risen!</small>` : `${h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"}${S.name ? ", " + esc(S.name) : ""}`;
   view.innerHTML = `<div class="hello" style="padding-top:calc(16px + env(safe-area-inset-top,0px))"><h1>${hello}</h1><a class="streak-chip" href="#/you" aria-label="Your streak">${ICON.flame}${streak()}</a></div><div id="home"><div class="card empty">Loading…</div></div>`;
   const [d, vd, P, PR] = await Promise.all([dayData(t), votd().catch(() => null), plans(), prayers()]);
   const home = $("#home");
@@ -353,7 +368,8 @@ async function renderToday() {
     parts.push(`<div class="card day-card"><div class="label">${esc(longDate(t))}${d.cal === "old" ? ` · ${esc(new Date(d.churchDate + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long" }))} Old Calendar` : ""}</div>
       <div class="feast">${esc(d.titles[0] || d.feast || "")}</div>${d.saints.length ? `<p class="saints">${esc(d.saints.join(" · "))}</p>` : ""}
       <div class="row">${fast}${(d.feasts || []).map((f) => `<span class="pill feast">${esc(f)}</span>`).join("")}${d.tone ? `<span class="pill">Tone ${d.tone}</span>` : ""}</div>
-      ${d.fastLevel && d.abstain.length ? `<p class="small muted" style="margin:10px 0 0">No ${esc(listWords(d.abstain))} today. Follow the guidance of your priest.</p>` : ""}</div>`);
+      ${d.fastLevel && d.abstain.length ? `<p class="small muted" style="margin:10px 0 0">No ${esc(listWords(d.abstain))} today. Follow the guidance of your priest.</p>` : ""}
+      <a class="cal-link" href="#/calendar"><span>${paschalSeason() ? `Day ${paschaDay() + 1} of Pascha` : `Pascha in ${nextPascha().days} days`}</span><span>Fasting calendar ${ICON.chev}</span></a></div>`);
     const art = [["#2f4a5c", "book"], ["#7a2d3a", "cross"], ["#6b8f5e", "wave"], ["#8a6a2f", "halo"]];
     readings.forEach(({ r, i, ranges, done }) => {
       parts.push(`<a class="card guided" href="${readHash(wholeReading(ranges), { k: `${t}:${i}` })}"><div class="txt"><div class="kind">${esc(r.source)}${r.desc ? " · " + esc(r.desc) : ""}</div><h3>${esc(r.display.replace(/\./g, ":"))}</h3><div class="dur">${ICON.play}${minsFor(r.verses.length * 24)}<span data-meta="${i}"></span></div></div>
@@ -700,7 +716,8 @@ async function renderDiscover() {
     <div class="card help-card"><h3>What are you struggling with?</h3><p class="small muted">Scripture, the Fathers and a plan for it.</p><div id="dhelp"></div></div>
     <div class="quick" style="margin-top:14px">
       <a href="#/fathers">${ICON.father}The Fathers</a><a href="#/plans?topic=councils">${ICON.dome}The Councils</a>
-      <a href="#/prayers">${ICON.pray}Prayers</a><a href="#/rope">${ICON.beads}Jesus Prayer</a></div>
+      <a href="#/prayers">${ICON.pray}Prayers</a><a href="#/rope">${ICON.beads}Jesus Prayer</a>
+      <a href="#/calendar">${ICON.cross}Fasting calendar</a><a href="#/names">${ICON.heart}Prayer list</a></div>
     <div class="sec-h"><h2>Topics</h2><a href="#/plans">See all ${ICON.chev}</a></div>
     <div class="tiles">${P.topics.map((t) => `<a class="tile" href="#/plans?topic=${t.id}" style="background:${t.bg}">${esc(t.name)}</a>`).join("")}</div>
     <div class="sec-h"><h2>The Holy Fathers</h2><a href="#/fathers">See all ${ICON.chev}</a></div>
@@ -805,6 +822,60 @@ async function renderHelpTopic(id) {
   const more = () => { fathersList($("#hf"), entries); };
   fathersList($("#hf"), entries.slice(0, 8));
   if (entries.length > 8) { $("#hf").insertAdjacentHTML("afterend", `<button class="btn secondary wide" id="hmore" style="margin-top:8px">Show all ${entries.length}</button>`); $("#hmore").onclick = (e) => { e.target.remove(); more(); }; }
+}
+
+// ---------------------------------------------------------------- the fasting calendar
+const MONTHS = {};
+async function monthData(y, m) {
+  const k = `month:${S.settings.cal}:${y}-${m}`;
+  if (MONTHS[k]) return MONTHS[k];
+  try {
+    const r = await fetch(`${API}month?y=${y}&m=${m}&cal=${S.settings.cal}`);
+    if (!r.ok) throw new Error(r.status);
+    MONTHS[k] = await r.json();
+    try { localStorage.setItem(k, JSON.stringify(MONTHS[k])); } catch (e) { /* full */ }
+    return MONTHS[k];
+  } catch (e) { try { return JSON.parse(localStorage.getItem(k)); } catch (e2) { return null; } }
+}
+function fastKind(x) {
+  if (!x.fastLevel) return "";
+  const ex = x.fastException.toLowerCase();
+  return ex.includes("fish") ? "fish" : ex.includes("oil") ? "oil" : ex.includes("dairy") || ex.includes("cheese") ? "dairy" : "strict";
+}
+const FAST_NAME = { strict: "Strict fast", oil: "Fast · wine and oil allowed", fish: "Fast · fish, wine and oil allowed", dairy: "Fast · dairy allowed" };
+async function renderCalendar(q) {
+  setTop("Calendar", { back: true });
+  const t = today();
+  const [y, m] = (q.get("m") || t.slice(0, 7)).split("-").map(Number);
+  const key = (yy, mm) => `${yy}-${String(mm).padStart(2, "0")}`;
+  const prev = m === 1 ? key(y - 1, 12) : key(y, m - 1), next = m === 12 ? key(y + 1, 1) : key(y, m + 1);
+  const np = nextPascha(), pd = paschaDay();
+  const name = new Date(y, m - 1, 1).toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+  view.innerHTML = `<div class="card pascha">${paschalSeason()
+      ? `<div class="label">Day ${pd + 1} of Pascha</div><h3>Christ is Risen!</h3><div class="small">Indeed He is Risen!</div>`
+      : `<div class="label">Pascha ${np.date.slice(0, 4)}</div><h3>${np.days} ${np.days === 1 ? "day" : "days"} to go</h3><div class="small">${esc(longDate(np.date))}${np.days > 48 ? ` · Great Lent begins ${esc(new Date(addDays(np.date, -48) + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long" }))}` : ""}</div>`}</div>
+    <div class="cal-h"><a class="iconbtn" href="#/calendar?m=${prev}" aria-label="Last month">${ICON.left}</a><h2>${esc(name)}</h2><a class="iconbtn" href="#/calendar?m=${next}" aria-label="Next month">${ICON.right}</a></div>
+    <div class="cal-grid head">${["M", "T", "W", "T", "F", "S", "S"].map((d) => `<span>${d}</span>`).join("")}</div>
+    <div id="grid"><div class="empty small">Loading…</div></div>
+    <div class="cal-key"><span><i class="k strict"></i>Strict fast</span><span><i class="k oil"></i>Wine and oil</span><span><i class="k fish"></i>Fish allowed</span><span><i class="k fd"></i>Great feast</span></div>
+    <div id="feasts"></div>
+    <p class="small muted" style="margin:18px 4px">From orthocal.info, ${S.settings.cal === "old" ? "Old" : "New"} Calendar. Keep the fast as your priest guides you.</p>`;
+  const M = await monthData(y, m);
+  if (!M) { $("#grid").innerHTML = `<div class="card empty">Can't reach the Church calendar right now.</div>`; return; }
+  const lead = (new Date(y, m - 1, 1).getDay() + 6) % 7;
+  $("#grid").innerHTML = `<div class="cal-grid">${"<span></span>".repeat(lead)}${M.days.map((x) => {
+    const ds = key(y, m) + "-" + String(x.d).padStart(2, "0");
+    return `<button data-d="${x.d}" class="${fastKind(x)} ${ds === t ? "today" : ""}" aria-label="${x.d}: ${esc(x.title)}">${x.d}${x.feastLevel >= 6 ? '<i class="fd"></i>' : x.feastLevel >= 4 ? '<i class="fd sm"></i>' : ""}</button>`;
+  }).join("")}</div>`;
+  const big = M.days.filter((x) => x.feastLevel >= 4);
+  $("#feasts").innerHTML = big.length ? `<div class="sec-h"><h2>Feasts this month</h2></div><div class="list">${big.map((x) => `<button class="row-btn" data-d="${x.d}"><span class="numdot ${x.feastLevel >= 6 ? "gold" : ""}">${x.d}</span><span class="grow"><span class="t" style="white-space:normal">${esc(x.title)}</span></span>${ICON.chev}</button>`).join("")}</div>` : "";
+  view.querySelectorAll("[data-d]").forEach((b) => (b.onclick = () => {
+    const x = M.days[+b.dataset.d - 1], k = fastKind(x);
+    openSheet(`<div class="sheet-h"><h3>${esc(new Date(y, m - 1, x.d, 12).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" }))}</h3>${closeBtn}</div>
+      <div style="font:600 20px/1.3 var(--serif);margin-bottom:8px">${esc(x.title)}</div>
+      ${x.saints.length ? `<p class="small muted" style="margin:0 0 12px">${esc(x.saints.join(" · "))}</p>` : ""}
+      <div class="row">${k ? `<span class="pill fast">${esc(FAST_NAME[k])}</span>` : `<span class="pill">${esc(x.fast || "No fast")}${x.fastException ? " · " + esc(x.fastException) : ""}</span>`}${x.feastLevel >= 6 ? `<span class="pill feast">Great feast</span>` : ""}</div>`);
+  }));
 }
 
 // ---------------------------------------------------------------- the prayer list
@@ -1065,7 +1136,7 @@ async function route() {
   const [path, qs] = (location.hash.slice(1) || "/today").split("?");
   const q = new URLSearchParams(qs || "");
   const p = path.split("/").filter(Boolean);
-  const tab = { today: "today", bible: "bible", read: "bible", plans: "plans", plan: "plans", discover: "discover", fathers: "discover", father: "discover", prayers: "discover", prayer: "discover", rope: "discover", search: "discover", help: "discover", names: "you", you: "you", settings: "you", more: "you", mine: "you" }[p[0]] || "today";
+  const tab = { today: "today", bible: "bible", read: "bible", plans: "plans", plan: "plans", discover: "discover", fathers: "discover", father: "discover", prayers: "discover", prayer: "discover", rope: "discover", search: "discover", help: "discover", names: "you", calendar: "today", you: "you", settings: "you", more: "you", mine: "you" }[p[0]] || "today";
   document.querySelectorAll(".tabs a").forEach((a) => a.setAttribute("aria-current", a.dataset.tab === tab ? "page" : "false"));
   try {
     if (!BOOKS.length) await boot();
@@ -1081,6 +1152,7 @@ async function route() {
     else if (p[0] === "prayer") await renderPrayer(p[1]);
     else if (p[0] === "rope") renderRope();
     else if (p[0] === "names") renderNames();
+    else if (p[0] === "calendar") await renderCalendar(q);
     else if (p[0] === "help" && p[1]) await renderHelpTopic(p[1]);
     else if (p[0] === "help") await renderHelp(q);
     else if (p[0] === "search") await renderSearch(q.get("q") || "");
