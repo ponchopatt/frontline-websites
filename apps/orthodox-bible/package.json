@@ -1,0 +1,11 @@
+{
+  "name": "orthodox-bible",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "data": "python3 build/newadvent.py sources && python3 build/build.py sources",
+    "dev": "node dev.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": { "node": ">=20" }
+}
