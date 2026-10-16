@@ -1,6 +1,7 @@
 // A month of the Orthodox calendar from orthocal.info, cut down to what the calendar grid shows.
 // GET /api/month?y=2026&m=10&cal=new|old
 export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*"); // the phone apps call this from their own origin
   const y = Number(req.query.y), m = Number(req.query.m);
   const cal = req.query.cal === "old" ? "julian" : "gregorian";
   if (!(y >= 1900 && y <= 2100 && m >= 1 && m <= 12)) return res.status(400).json({ error: "y and m are needed" });

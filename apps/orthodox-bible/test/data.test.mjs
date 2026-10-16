@@ -45,3 +45,28 @@ test("Septuagint Psalm 50 is English Psalm 51, with its two title verses", () =>
   assert.equal(map.PSA["113"].at(-1)[0], 115);
   assert.equal(map.JER["33"], 26);
 });
+
+test("every struggle has Scripture, the Fathers, a 7-day plan, and a safety note for despair", () => {
+  const plans = new Set(data("plans.json").plans.map((p) => p.id));
+  const authors = data("fathers/authors.json");
+  for (const t of data("help/index.json")) {
+    const h = data(`help/${t.id}.json`);
+    assert.ok(h.verses.length >= 5, t.id);
+    assert.ok(h.quotes.length >= 15, `${t.id}: only ${h.quotes.length} passages`);
+    for (const q of h.quotes) assert.ok(["saint", "blessed", "western"].includes(authors[q.a].label), `${t.id}: ${q.a}`);
+    assert.ok(plans.has(h.plan), `${t.id}: no plan`);
+    for (const p of h.plans) assert.ok(plans.has(p), `${t.id}: no plan ${p}`);
+  }
+  assert.match(data("help/despair.json").safety, /13 11 14/);
+});
+
+test("the Greek lines up verse for verse with Brenton and the WEB", () => {
+  for (const [code, other] of [["GEN", "lxx"], ["PSA", "lxx"], ["JHN", "web"], ["ROM", "web"]]) {
+    const g = data(`bible/grc/${code}.json`), e = data(`bible/${other}/${code}.json`);
+    assert.equal(g.length, e.length, code);
+    assert.deepEqual(g[0][1].map((x) => x[0]), e[0][1].map((x) => x[0]), code);
+  }
+  const lex = data("lex/3.json");
+  assert.equal(lex["3056"][0].normalize("NFC"), "λόγος".normalize("NFC"));
+  assert.match(data("bible/grc/JHN.json")[0][1][0][1], /Λόγος@3056/);
+});

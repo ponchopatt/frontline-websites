@@ -455,9 +455,13 @@ async function renderReader(code, c, q) {
   // The Greek lines up verse for verse with Brenton (Old Testament) and the WEB (New Testament).
   let grk = null;
   if (S.settings.greek && BY[code].grc && (tr() === "lxx" || !BY[code].ot)) {
-    try { const g = await get(`bible/grc/${code}.json`); const gc = g.find((x) => x[0] === c); if (gc) grk = new Map(gc[1]); } catch (e) { grk = null; }
+    try {
+      const g = await get(`bible/grc/${code}.json`); const gc = g.find((x) => x[0] === c);
+      // Same verse numbers (with the 24a, 24b… parts of some chapters): pair them in order; else by number.
+      if (gc) grk = gc[1].length === verses.length && gc[1].every((x, i) => x[0] === verses[i][0]) ? gc[1].map((x) => x[1]) : new Map([...gc[1]].reverse());
+    } catch (e) { grk = null; }
   }
-  const greekHTML = (v) => { const t = grk && grk.get(v); if (!t) return "";
+  const greekHTML = (v, i) => { const t = grk && (Array.isArray(grk) ? grk[i] : grk.get(v)); if (!t) return "";
     return `<div class="grk" lang="grc">${esc(t).replace(/([^\s@,.;·:()\[\]«»]+)@(\d+)/gu, '<span class="w" data-s="$2">$1</span>')}</div>`; };
   const fathers = await fathersFor(code, eng.map((x) => x[0]));
   const has = (i) => { const [ec, ev] = eng[i]; return ev > 0 && fathers.some((e) => covers(e, ec, ev)); };
@@ -469,7 +473,7 @@ async function renderReader(code, c, q) {
   view.innerHTML = `<div class="reader">
     <div class="ch-title">${esc(chapLabel(code, c))}</div>
     <div class="ch-sub">${tr() === "lxx" && BY[code].ot ? "Septuagint · Brenton" : "World English Bible"}${grk ? " · Greek" : ""}${fathers.length ? ` · <span style="color:var(--accent)">●</span> ${fathers.length} from the Fathers` : ""}</div>
-    <div id="verses" class="${grk ? "parallel" : ""}">${verses.map(([v, t], i) => `<span class="verse${has(i) ? " has" : ""}${S.hl[keyOf(i)] ? " hl-" + S.hl[keyOf(i)] : ""}${dim && !inPassage(i) ? " dim" : ""}${!passage && i === vi ? " sel" : ""}" data-i="${i}"><sup>${v}</sup>${esc(t)}${S.notes[keyOf(i)] ? `<span class="note-mark">${ICON.note}</span>` : ""} </span>${greekHTML(v)}`).join("")}</div>
+    <div id="verses" class="${grk ? "parallel" : ""}">${verses.map(([v, t], i) => `<span class="verse${has(i) ? " has" : ""}${S.hl[keyOf(i)] ? " hl-" + S.hl[keyOf(i)] : ""}${dim && !inPassage(i) ? " dim" : ""}${!passage && i === vi ? " sel" : ""}" data-i="${i}"><sup>${v}</sup>${esc(t)}${S.notes[keyOf(i)] ? `<span class="note-mark">${ICON.note}</span>` : ""} </span>${greekHTML(v, i)}`).join("")}</div>
     ${fathers.length ? `<div class="ch-fathers"><button class="btn secondary wide" id="allF">${ICON.father} What the Fathers said on this ${code === "PSA" ? "psalm" : "chapter"}</button></div>` : ""}
     ${passage ? `<div class="passage-bar"><button class="btn red wide" id="doneP">${q.get("k") ? ICON.check + " Mark as read" : "Back to the plan"}</button></div>` : ""}
   </div>
