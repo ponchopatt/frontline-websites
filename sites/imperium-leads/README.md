@@ -36,7 +36,9 @@ the home screen) shared by Angus and Ananth.
 - **End of day** on Today: a quick form at night. Each of today's booked jobs is listed (add
   any other job with just the car), with ticks for job done, asked for a review, clips uploaded
   to the Drive and story posted. Saved to `nights/<day>_<person>`; known jobs are also marked done
-  and the review set to Asked. Numbers shows the last 7 days of forms.
+  and the review set to Asked. Each job also has Paid? (Cash, Card, Bank, Not yet), saved on
+  the lead as paid/paidHow so To collect stays right. "Running low on any products?" shows on
+  Today for both of you until someone taps Bought. Numbers shows the last 7 days of forms.
 - **Weekly goal** on Today: this week's jobs (Monday to Sunday, by job day) against a money goal,
   both of you together. Green is done, light blue is booked and still to come. Tap Change to set
   the goal; it's saved for both phones (`settings/goal`, `M.weekMoney`).
