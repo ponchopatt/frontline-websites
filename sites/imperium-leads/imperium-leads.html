@@ -774,6 +774,14 @@ main.wide{max-width:1400px}
         ...R.completePatch(null, owed ? new Date(t+"T12:00:00").toISOString() : now)
       };
       const b=g("#j-save"); b.disabled=true;
+      const hit=M.sameJob(leads,{name:doc.name, phone:doc.phone, jobDate:t});
+      if(hit && confirm((hit.name||"They")+" is already booked for "+dayName(hit.jobDate)+(hit.car?" ("+hit.car+")":"")+". Update that job instead of adding a second one?")){
+        let patch={paid:doc.paid};
+        if(doc.revenue!=null) patch.revenue=doc.revenue;
+        if(!owed && !R.isDone(hit)) patch={...patch, ...R.completePatch(hit,now)};
+        if(await save(hit.id,patch)){ toast(owed?"Added to payments due.":"Job updated. Now ask for a review."); closeSheet(); if(!owed) openReview(hit.id); } else b.disabled=false;
+        return;
+      }
       try{ const ref=await db.collection("leads").add(M.sync(doc,today())); toast(owed?"Added to payments due.":"Job saved. Now ask for a review."); closeSheet(); if(!owed) openReview(ref.id); }catch(err){ b.disabled=false; writeFail(err); }
     });
   }
@@ -1416,6 +1424,8 @@ main.wide{max-width:1400px}
   const PAID_HOW=["Cash","Card","Bank","Not yet"];
   // What the lead already says about payment, for the Paid buttons.
   const paidOf=l=>l.paid==="Yes" ? (PAID_HOW.includes(l.paidHow)?l.paidHow:"") : l.paid==="No" ? "Not yet" : "";
+  // A job on the night form from a lead: the price starts at what it was booked for.
+  const jobFrom=l=>({leadId:l.id, name:l.name||"", car:l.car||"", done:true, paid:paidOf(l), price:Number(l.revenue)>0?Number(l.revenue):null, quoted:Number(l.quoted)>0?Number(l.quoted):null});
   const NIGHT_TICKS=[["review","Asked them for a review"],["clips","Clips uploaded to the Drive"],["story","Story posted"]];
   const nightId=t=>t+"_"+(who||"team");
   function renderNightCard(t){
@@ -1429,8 +1439,8 @@ main.wide{max-width:1400px}
   function openNight(t){
     const saved=nights.find(n=>n.date===t && n.by===(who||"")), real=leads.filter(l=>!l.junk);
     const todays=real.filter(l=>l.jobDate===t && M.isBooked(l,t));
-    let jobs = saved ? saved.jobs.map(j=>({...j})) : todays.map(l=>({leadId:l.id, name:l.name||"", car:l.car||"", done:true, paid:paidOf(l)}));
-    todays.forEach(l=>{ if(!jobs.some(j=>j.leadId===l.id)) jobs.push({leadId:l.id, name:l.name||"", car:l.car||"", done:true, paid:paidOf(l)}); });
+    let jobs = saved ? saved.jobs.map(j=>({...j})) : todays.map(jobFrom);
+    todays.forEach(l=>{ if(!jobs.some(j=>j.leadId===l.id)) jobs.push(jobFrom(l)); });
     if(!jobs.length) jobs.push({car:"", done:true});
     const g=sheet('<div class="sheet-h"><div><h2>End of day</h2><p class="help">'+esc(dayName(t))+(who?" · "+esc(who):"")+'. Tick what you did on each job.</p></div><button class="x" id="closeSheet">Close</button></div>'+
       '<div id="nj-list" style="display:flex;flex-direction:column;gap:10px"></div>'+
@@ -1440,16 +1450,23 @@ main.wide{max-width:1400px}
     const read=()=>{ g("#nj-list").querySelectorAll(".nj").forEach((el,i)=>{ const j=jobs[i]; if(!j) return;
       const car=el.querySelector("[data-car]"); if(car) j.car=car.value.trim();
       el.querySelectorAll("[data-tick]").forEach(x=>{ j[x.dataset.tick]=x.checked; });
-      const p=el.querySelector('[data-paid] [aria-pressed="true"]'); j.paid=p?p.dataset.v:""; }); };
+      const p=el.querySelector('[data-paid] [aria-pressed="true"]'); j.paid=p?p.dataset.v:"";
+      const pr=el.querySelector("[data-price]"); j.price=pr?num(pr.value):null; }); };
+    // Booked jobs from the last week not on the form yet: an extra job is often one of these.
+    const others=()=>real.filter(l=>l.status==="Booked" && l.jobDate && l.jobDate<=t && l.jobDate>=addDays(-7) && !jobs.some(j=>j.leadId===l.id));
+    const pick=j=>{ const o={}; ["review","clips","story","paid"].forEach(k=>{ if(j[k]) o[k]=j[k]; }); if(j.price!=null) o.price=j.price; return o; };
     const draw=()=>{
       g("#nj-list").innerHTML=jobs.map((j,i)=>'<div class="nj">'+
         (j.leadId ? '<div class="nj-h"><div>'+esc(j.name||"Job")+(j.car?' <span>· '+esc(j.car)+'</span>':"")+'</div></div>'+
             '<label class="toggle"><span>Job done</span><input type="checkbox" data-tick="done"'+(j.done!==false?" checked":"")+'></label>'
           : '<div class="nj-h"><div>Job '+(i+1)+'</div>'+(jobs.length>1?'<button type="button" class="mini" data-rm="'+i+'">Remove</button>':"")+'</div>'+
+            (others().length?'<label>Who was it?<select data-who><option value="">Someone new (not in here)</option>'+others().map(l=>'<option value="'+esc(l.id)+'">'+esc((l.name||"No name")+(l.car?" · "+l.car:"")+" · "+dayName(l.jobDate))+'</option>').join("")+'</select></label>':"")+
             '<label>What car?<input data-car type="text" placeholder="e.g. white Ranger" value="'+esc(j.car||"")+'"></label>')+
+        '<label>How much did they pay? $<input data-price type="number" inputmode="numeric" min="0" placeholder="'+(j.quoted?esc(j.quoted):"250")+'" value="'+(j.price!=null&&j.price!==""?esc(j.price):"")+'"></label>'+
         '<div class="paid"><span>Paid?</span><div class="seg" data-paid>'+PAID_HOW.map(v=>'<button type="button" data-v="'+v+'" aria-pressed="'+(j.paid===v)+'">'+v+'</button>').join("")+'</div></div>'+
         NIGHT_TICKS.map(([k,label])=>'<label class="toggle"><span>'+label+'</span><input type="checkbox" data-tick="'+k+'"'+(j[k]?" checked":"")+'></label>').join("")+
       '</div>').join("");
+      g("#nj-list").querySelectorAll("[data-who]").forEach((sel,)=>sel.addEventListener("change",()=>{ read(); const i=[...g("#nj-list").children].indexOf(sel.closest(".nj")), l=leads.find(x=>x.id===sel.value); if(l) jobs[i]={...jobFrom(l), ...pick(jobs[i])}; draw(); }));
       g("#nj-list").querySelectorAll("[data-paid] button").forEach(b=>b.addEventListener("click",()=>{ b.parentNode.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); }));
       g("#nj-list").querySelectorAll("[data-rm]").forEach(b=>b.addEventListener("click",()=>{ read(); jobs.splice(Number(b.dataset.rm),1); draw(); }));
     };
@@ -1464,6 +1481,7 @@ main.wide{max-width:1400px}
       for(const j of keep.filter(j=>j.leadId && j.done!==false)){
         const l=leads.find(x=>x.id===j.leadId); if(!l) continue;
         let patch={clipsUploaded:j.clips?"Yes":"", storyPosted:j.story?"Yes":""};
+        if(j.price!=null) patch.revenue=j.price; // replaces the booked price, never adds to it
         if(j.paid==="Not yet") patch.paid="No";
         else if(j.paid) { patch.paid="Yes"; patch.paidHow=j.paid; }
         if(!R.isDone(l)) patch={...patch, ...R.completePatch(l,now)};
@@ -1471,7 +1489,16 @@ main.wide{max-width:1400px}
         if(j.review && (!st || st==="not_asked")) patch={...patch, ...R.patch({...l,...patch},"asked_in_person",now)};
         if(!await save(j.leadId,patch)){ b.disabled=false; return; }
       }
-      const doc={date:t, by:who||"", at:now, jobs:keep.map(j=>({leadId:j.leadId||"", name:j.name||"", car:j.car||"", done:j.done!==false, paid:j.paid||"", review:!!j.review, clips:!!j.clips, story:!!j.story})), low,
+      // Someone new: one job record, made once. Saving the form again finds it by its id.
+      for(const j of keep.filter(j=>!j.leadId && (j.car||j.price!=null))){
+        const rec={...M.newFields(""), stage:"Done", kind:"job", date:t, createdAt:now, owner:who||"", name:"", phone:"", source:"Other", ad:"", referredBy:"",
+          address:"", jobTime:"", access:"", service:"", car:j.car||"", suburb:"", replyMins:null, quoted:null, status:"Booked", nextFollowUp:"", lastContact:"", log:[],
+          objection:"", lostWhy:"", jobDate:t, revenue:j.price, paid:j.paid==="Not yet"?"No":j.paid?"Yes":"", paidHow:j.paid&&j.paid!=="Not yet"?j.paid:"", plan:"", upsellOffered:"", upsellTaken:"",
+          reviewAsked:"", reviewLeft:"", nextDue:"", notes:"Added on the End of day form.", booked:"Yes", clipsUploaded:j.clips?"Yes":"", storyPosted:j.story?"Yes":"", ...R.completePatch(null,now)};
+        if(j.review) Object.assign(rec, R.patch(rec,"asked_in_person",now));
+        try{ const ref=await db.collection("leads").add(M.sync(rec,t)); j.leadId=ref.id; j.made=true; }catch(err){ b.disabled=false; writeFail(err); return; }
+      }
+      const doc={date:t, by:who||"", at:now, jobs:keep.map(j=>({leadId:j.leadId||"", name:j.name||"", car:j.car||"", done:j.done!==false, paid:j.paid||"", price:j.price??null, review:!!j.review, clips:!!j.clips, story:!!j.story})), low,
         restocked: saved && saved.low===low ? !!saved.restocked : false};
       try{ await db.doc("nights/"+nightId(t)).set(doc); toast("Saved. Good work today!"); closeSheet(); }
       catch(err){ b.disabled=false; writeFail(err); }

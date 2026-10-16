@@ -73,3 +73,12 @@ test("coming up lists who's due on each of the next days, mine or everyone's", (
   assert.equal(M.nextStep(L[0], TODAY), "Follow-up 3 of 4");
   assert.equal(M.nextStep(lead({ stage: "Quoted", quoted: 300, touches: 0 }), TODAY), "Quote follow-up 1 of 3");
 });
+
+test("a job added by hand finds the booked lead it's already here as, so the money isn't counted twice", () => {
+  const booked = lead({ id: "s", name: "Shahmir Siraj", phone: "0412 345 678", stage: "Booked", status: "Booked", jobDate: "2026-10-09", revenue: 260 });
+  const L = [booked, lead({ id: "x", name: "Sam", stage: "Booked", status: "Booked", jobDate: "2026-10-09" })];
+  assert.equal(M.sameJob(L, { name: "Shahmir", jobDate: "2026-10-09" }).id, "s");
+  assert.equal(M.sameJob(L, { name: "", phone: "+61 412 345 678", jobDate: "2026-10-11" }).id, "s");
+  assert.equal(M.sameJob(L, { name: "Shahmir", jobDate: "2026-10-20" }), null); // a different week: a new job
+  assert.equal(M.sameJob(L, { name: "Jo", jobDate: "2026-10-09" }), null);
+});

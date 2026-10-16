@@ -39,6 +39,12 @@ the home screen) shared by Angus and Ananth.
   and the review set to Asked. Each job also has Paid? (Cash, Card, Bank, Not yet), saved on
   the lead as paid/paidHow so To collect stays right. "Running low on any products?" shows on
   Today for both of you until someone taps Bought. Numbers shows the last 7 days of forms.
+- **What they paid**: each job on the End of day form has "How much did they pay?", starting at
+  the booked price. It replaces the lead's price, never adds to it. An extra job asks "Who was
+  it?" (booked jobs from the last week, or Someone new); only Someone new makes a new job record,
+  and only once.
+- **No doubles**: "+ Add a job done today" checks for the same person already booked within 3
+  days (same phone or first name) and offers to update that job instead (`M.sameJob`).
 - **Weekly goal** on Today: this week's jobs (Monday to Sunday, by job day) against a money goal,
   both of you together. Green is done, light blue is booked and still to come. Tap Change to set
   the goal; it's saved for both phones (`settings/goal`, `M.weekMoney`).
