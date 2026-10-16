@@ -216,6 +216,19 @@ main.wide{max-width:1400px}
 .days button.zero b{color:var(--muted)}
 .grp{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:6px 2px 0}
 .grp.now{color:var(--bad)}
+/* End of day form. */
+.night{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.night b{font-size:15px}
+.nj{border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
+.nj-h{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700}
+.nj-h span{color:var(--muted);font-weight:500}
+.nj .toggle{font-size:15px;padding:12px}
+.nj .toggle input{width:26px;height:26px}
+.nj .paid{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--muted)}
+.nj .paid .seg button{padding:11px 4px;font-size:14px}
+.low{border-color:var(--warn);background:var(--warn-bg)}
+.low .lw{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.low .lw p{margin:0;font-size:14px;color:var(--text)}
 /* Weekly money goal on Today. */
 .goal .big{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
 .goal .big span{font-size:15px;color:var(--muted);font-weight:600}
@@ -298,6 +311,8 @@ main.wide{max-width:1400px}
       <div class="seg two" id="tView" data-value="mine"><button type="button" data-v="mine">Mine</button><button type="button" data-v="all">All</button></div>
     </div>
     <div class="card goal" id="goal" hidden></div>
+    <div class="card night" id="nightCard" hidden></div>
+    <div class="card low" id="lowCard" hidden></div>
     <div class="card" id="friday" hidden></div>
     <p class="help later" id="tLater" hidden></p>
     <div id="tLists" class="sec">
@@ -418,6 +433,10 @@ main.wide{max-width:1400px}
       <div style="overflow-x:auto"><table id="adSpend"></table></div>
       <button class="btn secondary" id="spendBtn" type="button">Add this week's ad spend</button>
       <p class="help">Once a week, type the total spent on ads (from Ads Manager). Saved for both phones. Counts both of you.</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow"><span>End of day forms</span><span>Last 7 days</span></div>
+      <div style="overflow-x:auto"><table id="nightsTable"></table></div>
     </div>
     <details class="card" id="more">
       <summary class="eyebrow" style="cursor:pointer"><span>More</span><span aria-hidden="true">▾</span></summary>
@@ -624,6 +643,8 @@ main.wide{max-width:1400px}
     $("#tHead").textContent="Today"+(who?", "+who:"");
     $("#tSub").textContent=new Date().toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"long",timeZone:"Australia/Sydney"})+" · "+(L.left?L.left+" left":"all done");
     renderGoal(t);
+    renderNightCard(t);
+    renderLow(t);
     // Friday from 5:00pm: how the week's ending. Counts only; it moves nothing.
     const fri=M.fridayWrap(leads,{now:new Date(), hours:H()});
     $("#friday").hidden=!fri;
@@ -1296,7 +1317,7 @@ main.wide{max-width:1400px}
 
   // ---------- NUMBERS ----------
   // Six figures up top, the rest under More. Leads marked not real are left out of all of it.
-  let spendWeeks=[];
+  let spendWeeks=[], nights=[];
   seg($("#period"),renderNumbers); seg($("#nWho"),renderNumbers);
   function inPeriodDay(d){
     const p=$("#period").dataset.value;
@@ -1306,6 +1327,7 @@ main.wide{max-width:1400px}
   }
   const inPeriod = l => inPeriodDay(l.date||localDate(l.createdAt));
   function renderNumbers(){
+    renderNights();
     const w=$("#nWho").dataset.value, t=today(), h=H();
     const live=leads.filter(l=>!l.junk && inPeriod(l)), rows=live.filter(l=>!w||l.owner===w);
     const isBooked=l=>M.isBooked(l,t);
@@ -1387,6 +1409,92 @@ main.wide{max-width:1400px}
   }
   $("#view-numbers").addEventListener("click",e=>{ const b=e.target.closest("[data-drill]"); if(b) openDrill(b.dataset.drill); });
   $("#view-numbers").addEventListener("keydown",e=>{ const b=e.target.closest("tr[data-drill]"); if(b&&(e.key==="Enter"||e.key===" ")){ e.preventDefault(); openDrill(b.dataset.drill); } });
+
+  // ---------- END OF DAY ----------
+  // A quick form at night: each job done today, and three ticks. Saved to nights/<day>_<person>;
+  // the jobs it knows about are also marked done, with the review asked, on the lead itself.
+  const PAID_HOW=["Cash","Card","Bank","Not yet"];
+  // What the lead already says about payment, for the Paid buttons.
+  const paidOf=l=>l.paid==="Yes" ? (PAID_HOW.includes(l.paidHow)?l.paidHow:"") : l.paid==="No" ? "Not yet" : "";
+  const NIGHT_TICKS=[["review","Asked them for a review"],["clips","Clips uploaded to the Drive"],["story","Story posted"]];
+  const nightId=t=>t+"_"+(who||"team");
+  function renderNightCard(t){
+    const box=$("#nightCard"); if(!db){ box.hidden=true; return; }
+    const mine=nights.find(n=>n.date===t && n.by===(who||""));
+    box.hidden=false;
+    box.innerHTML='<div><b>🌙 End of day</b><p class="help">'+(mine?"Done: "+mine.jobs.length+(mine.jobs.length===1?" job":" jobs")+". Tap to change.":"Jobs done, review, clips, story. Takes 30 seconds.")+'</p></div>'+
+      '<button type="button" class="btn small'+(mine?" secondary":"")+'" id="nightBtn">'+(mine?"Edit":"Fill in")+'</button>';
+    $("#nightBtn").addEventListener("click",()=>openNight(t));
+  }
+  function openNight(t){
+    const saved=nights.find(n=>n.date===t && n.by===(who||"")), real=leads.filter(l=>!l.junk);
+    const todays=real.filter(l=>l.jobDate===t && M.isBooked(l,t));
+    let jobs = saved ? saved.jobs.map(j=>({...j})) : todays.map(l=>({leadId:l.id, name:l.name||"", car:l.car||"", done:true, paid:paidOf(l)}));
+    todays.forEach(l=>{ if(!jobs.some(j=>j.leadId===l.id)) jobs.push({leadId:l.id, name:l.name||"", car:l.car||"", done:true, paid:paidOf(l)}); });
+    if(!jobs.length) jobs.push({car:"", done:true});
+    const g=sheet('<div class="sheet-h"><div><h2>End of day</h2><p class="help">'+esc(dayName(t))+(who?" · "+esc(who):"")+'. Tick what you did on each job.</p></div><button class="x" id="closeSheet">Close</button></div>'+
+      '<div id="nj-list" style="display:flex;flex-direction:column;gap:10px"></div>'+
+      '<button type="button" class="btn secondary" id="nj-add">+ Add another job</button>'+
+      '<label>Running low on any products?<textarea id="nj-low" placeholder="e.g. iron remover, microfibre towels">'+esc(saved&&saved.low||"")+'</textarea></label>'+
+      '<button type="button" class="btn" id="nj-save">Save</button>');
+    const read=()=>{ g("#nj-list").querySelectorAll(".nj").forEach((el,i)=>{ const j=jobs[i]; if(!j) return;
+      const car=el.querySelector("[data-car]"); if(car) j.car=car.value.trim();
+      el.querySelectorAll("[data-tick]").forEach(x=>{ j[x.dataset.tick]=x.checked; });
+      const p=el.querySelector('[data-paid] [aria-pressed="true"]'); j.paid=p?p.dataset.v:""; }); };
+    const draw=()=>{
+      g("#nj-list").innerHTML=jobs.map((j,i)=>'<div class="nj">'+
+        (j.leadId ? '<div class="nj-h"><div>'+esc(j.name||"Job")+(j.car?' <span>· '+esc(j.car)+'</span>':"")+'</div></div>'+
+            '<label class="toggle"><span>Job done</span><input type="checkbox" data-tick="done"'+(j.done!==false?" checked":"")+'></label>'
+          : '<div class="nj-h"><div>Job '+(i+1)+'</div>'+(jobs.length>1?'<button type="button" class="mini" data-rm="'+i+'">Remove</button>':"")+'</div>'+
+            '<label>What car?<input data-car type="text" placeholder="e.g. white Ranger" value="'+esc(j.car||"")+'"></label>')+
+        '<div class="paid"><span>Paid?</span><div class="seg" data-paid>'+PAID_HOW.map(v=>'<button type="button" data-v="'+v+'" aria-pressed="'+(j.paid===v)+'">'+v+'</button>').join("")+'</div></div>'+
+        NIGHT_TICKS.map(([k,label])=>'<label class="toggle"><span>'+label+'</span><input type="checkbox" data-tick="'+k+'"'+(j[k]?" checked":"")+'></label>').join("")+
+      '</div>').join("");
+      g("#nj-list").querySelectorAll("[data-paid] button").forEach(b=>b.addEventListener("click",()=>{ b.parentNode.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); }));
+      g("#nj-list").querySelectorAll("[data-rm]").forEach(b=>b.addEventListener("click",()=>{ read(); jobs.splice(Number(b.dataset.rm),1); draw(); }));
+    };
+    draw();
+    g("#nj-add").addEventListener("click",()=>{ read(); jobs.push({car:"", done:true}); draw(); g("#nj-list").lastElementChild.querySelector("[data-car]").focus(); });
+    g("#nj-save").addEventListener("click",async()=>{
+      if(!db){ toast("Not connected. Try again in a sec."); return; }
+      read();
+      const keep=jobs.filter(j=>j.leadId || j.car || j.paid || NIGHT_TICKS.some(([k])=>j[k])), low=g("#nj-low").value.trim();
+      const b=g("#nj-save"); b.disabled=true;
+      const now=new Date().toISOString();
+      for(const j of keep.filter(j=>j.leadId && j.done!==false)){
+        const l=leads.find(x=>x.id===j.leadId); if(!l) continue;
+        let patch={clipsUploaded:j.clips?"Yes":"", storyPosted:j.story?"Yes":""};
+        if(j.paid==="Not yet") patch.paid="No";
+        else if(j.paid) { patch.paid="Yes"; patch.paidHow=j.paid; }
+        if(!R.isDone(l)) patch={...patch, ...R.completePatch(l,now)};
+        const st=R.statusOf({...l,...patch});
+        if(j.review && (!st || st==="not_asked")) patch={...patch, ...R.patch({...l,...patch},"asked_in_person",now)};
+        if(!await save(j.leadId,patch)){ b.disabled=false; return; }
+      }
+      const doc={date:t, by:who||"", at:now, jobs:keep.map(j=>({leadId:j.leadId||"", name:j.name||"", car:j.car||"", done:j.done!==false, paid:j.paid||"", review:!!j.review, clips:!!j.clips, story:!!j.story})), low,
+        restocked: saved && saved.low===low ? !!saved.restocked : false};
+      try{ await db.doc("nights/"+nightId(t)).set(doc); toast("Saved. Good work today!"); closeSheet(); }
+      catch(err){ b.disabled=false; writeFail(err); }
+    });
+  }
+  // Products someone's running low on, from the night forms, until someone taps Bought.
+  function renderLow(t){
+    const box=$("#lowCard"), from=addDays(-14), list=nights.filter(n=>n.low && !n.restocked && n.date>=from).sort((a,b)=>b.date.localeCompare(a.date));
+    box.hidden=!list.length; if(!list.length) return;
+    box.innerHTML='<div class="eyebrow"><span>🧴 Running low</span></div>'+list.map(n=>'<div class="lw"><p><b>'+esc(n.low)+'</b><br><span class="help">'+esc((n.by||"Someone")+", "+dayName(n.date))+'</span></p><button type="button" class="btn small" data-low="'+esc(n.date+"_"+(n.by||"team"))+'">Bought</button></div>').join("");
+    box.querySelectorAll("[data-low]").forEach(b=>b.addEventListener("click",async()=>{
+      b.disabled=true;
+      try{ await db.doc("nights/"+b.dataset.low).update({restocked:true, restockedBy:who||"", restockedAt:new Date().toISOString()}); toast("Ticked off."); }
+      catch(err){ b.disabled=false; writeFail(err); }
+    }));
+  }
+  function renderNights(){
+    const t=today(), from=addDays(-6), rows=nights.filter(n=>n.date>=from && n.date<=t).sort((a,b)=>b.date.localeCompare(a.date)||String(a.by).localeCompare(String(b.by)));
+    const of=(n,k)=>{ const j=n.jobs||[]; return j.filter(x=>x[k]).length+"/"+j.length; };
+    $("#nightsTable").innerHTML=rows.length ? '<tr><th>Day</th><th class="n">Jobs</th><th class="n">Paid</th><th class="n">Review</th><th class="n">Clips</th><th class="n">Story</th></tr>'+
+      rows.map(n=>'<tr><td>'+esc(dayName(n.date))+(n.by?' · '+esc(n.by):"")+'</td><td class="n">'+(n.jobs||[]).length+'</td><td class="n">'+(n.jobs||[]).filter(x=>x.paid&&x.paid!=="Not yet").length+"/"+(n.jobs||[]).length+'</td><td class="n">'+of(n,"review")+'</td><td class="n">'+of(n,"clips")+'</td><td class="n">'+of(n,"story")+'</td></tr>').join("")
+      : '<tr><td class="help">None filled in this week yet.</td></tr>';
+  }
 
   // ---------- WEEKLY GOAL ----------
   // This week's jobs against the money goal, both of you together (settings/goal).
@@ -1506,6 +1614,7 @@ main.wide{max-width:1400px}
       }
       $("#offline").hidden=true;
       db.doc("settings/reviews").onSnapshot(sn=>{ reviewSettings = sn.exists ? sn.data() : {}; renderAll(); }, ()=>{});
+      db.collection("nights").onSnapshot(snap=>{ nights=snap.docs.map(x=>x.data()); renderAll(); }, ()=>{});
       db.doc("settings/goal").onSnapshot(sn=>{ goalSettings = sn.exists ? sn.data() : {}; renderAll(); }, ()=>{});
       db.doc("settings/hours").onSnapshot(sn=>{ hoursSaved = sn.exists ? sn.data() : {}; renderAll(); }, ()=>{});
       db.collection("spend").onSnapshot(snap=>{ spendWeeks=snap.docs.map(x=>x.data()); renderAll(); }, ()=>{});
