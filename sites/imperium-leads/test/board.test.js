@@ -62,3 +62,14 @@ test("the weekly goal counts this week's booked jobs by job day: done once the d
   assert.equal(M.weekMoney(L, TODAY, 500).pct, 100);
   assert.equal(M.weekMoney(L, TODAY, "").goal, null);
 });
+
+test("coming up lists who's due on each of the next days, mine or everyone's", () => {
+  const due = (d, o = {}) => lead({ stage: "Chasing", status: "Contacted", touches: 2, chaseFrom: "2026-10-13", nextFollowUp: d, owner: "Angus", ...o });
+  const L = [due("2026-10-15"), due("2026-10-16", { id: "a" }), due("2026-10-18", { id: "b", owner: "Ananth" }), due("2026-10-30"), due("2026-10-16", { junk: true })];
+  const mine = M.upcoming(L, TODAY, 7, { who: "Angus" }), all = M.upcoming(L, TODAY, 7, { all: true });
+  assert.deepEqual(plain(mine.map(d => d.leads.length)), [1, 0, 0, 0, 0, 0, 0]);
+  assert.equal(mine[0].day, "2026-10-16");
+  assert.deepEqual(plain(all.map(d => d.leads.length)), [1, 0, 1, 0, 0, 0, 0]);
+  assert.equal(M.nextStep(L[0], TODAY), "Follow-up 3 of 4");
+  assert.equal(M.nextStep(lead({ stage: "Quoted", quoted: 300, touches: 0 }), TODAY), "Quote follow-up 1 of 3");
+});

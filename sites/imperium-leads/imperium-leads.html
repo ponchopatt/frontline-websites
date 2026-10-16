@@ -205,6 +205,17 @@ main.wide{max-width:1400px}
 @media (max-width:420px){.tiles{grid-template-columns:repeat(2,1fr)}}
 #bTotals{grid-template-columns:repeat(3,1fr)}
 @media (max-width:420px){#bTotals .tile b{font-size:17px}#bTotals .tile span{font-size:10px}}
+/* Coming up on Today, and day groups on the Board. */
+.days{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.days::-webkit-scrollbar{display:none}
+.days button{flex:0 0 auto;min-width:64px;font:inherit;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:12px;padding:7px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px}
+.days button b{font-size:18px;font-variant-numeric:tabular-nums;line-height:1.1}
+.days button span{font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap}
+.days button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.days button[aria-pressed="true"] span{color:var(--accent-ink)}
+.days button.zero b{color:var(--muted)}
+.grp{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:6px 2px 0}
+.grp.now{color:var(--bad)}
 /* Weekly money goal on Today. */
 .goal .big{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
 .goal .big span{font-size:15px;color:var(--muted);font-weight:600}
@@ -296,6 +307,8 @@ main.wide{max-width:1400px}
     <div class="sec" id="s-due" hidden><div class="eyebrow"><span>Due today</span><span class="n"></span></div><div class="list"></div></div>
     <details class="sec" id="s-waiting" hidden><summary class="eyebrow"><span>Waiting (<span class="wn"></span>)</span><span aria-hidden="true">▾</span></summary><div class="list"></div></details>
     <div class="empty" id="tClear" hidden>All done. Nobody else to chase today.</div>
+    <div class="sec" id="s-soon"><div class="eyebrow"><span>Coming up</span><span class="n"></span></div>
+      <div class="days" id="soonDays"></div><div class="list" id="soonList"></div></div>
     </div>
     <div class="card">
       <div class="eyebrow"><span>Jobs today</span><span class="n" id="jobsCount">0</span></div>
@@ -632,6 +645,7 @@ main.wide{max-width:1400px}
     const w=$("#s-waiting"); w.hidden=!waitingLeads.length; w.querySelector(".wn").textContent=waitingLeads.length;
     if(w.open) renderWaiting(); else w.querySelector(".list").innerHTML="";
     $("#tClear").hidden=!!L.left;
+    renderSoon(t);
     const real=leads.filter(l=>!l.junk);
     const jobs=real.filter(l=>l.status==="Booked" && l.jobDate===t), tm=real.filter(l=>l.status==="Booked" && l.jobDate===addDays(1));
     $("#jobsCount").textContent=jobs.length; $("#jobsTmCount").textContent=tm.length;
@@ -658,6 +672,18 @@ main.wide{max-width:1400px}
     $("#reelsN").textContent=r; $("#reelsWho").textContent=who||"";
   }
   // Waiting stays folded; its cards are only drawn when it's opened.
+  // The next 7 days: how many are due each day, and who. Contacting early is fine: open the lead.
+  let soonDay="", soonPicked=false;
+  function renderSoon(t){
+    const days=M.upcoming(leads,t,7,{who, all:tView==="all"}), total=days.reduce((a,d)=>a+d.leads.length,0);
+    if(!soonPicked || !days.some(d=>d.day===soonDay)) soonDay=(days.find(d=>d.leads.length)||days[0]).day;
+    $("#s-soon .n").textContent=total;
+    $("#soonDays").innerHTML=days.map((d,i)=>'<button type="button" data-day="'+d.day+'" aria-pressed="'+(d.day===soonDay)+'"'+(d.leads.length?"":' class="zero"')+'><b>'+d.leads.length+'</b><span>'+(i===0?"Tomorrow":esc(dayName(d.day).replace(/,/,"").replace(/ \w+$/,"")))+'</span></button>').join("");
+    $("#soonDays").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{ soonDay=b.dataset.day; soonPicked=true; renderSoon(t); }));
+    const d=days.find(x=>x.day===soonDay);
+    $("#soonList").innerHTML=d.leads.length ? d.leads.map(l=>leadCard(l,{actions:"", extra:'<div class="sub" style="color:var(--text);font-weight:600">'+esc(M.nextStep(l,t))+' on '+esc(dayName(d.day))+'</div>'})).join("") : '<div class="empty">Nobody due '+(d.day===days[0].day?"tomorrow":"that day")+'.</div>';
+    wire($("#soonList"));
+  }
   function renderWaiting(){
     const box=$("#s-waiting .list");
     box.innerHTML=waitingLeads.map(l=>leadCard(l,{extra:'<div class="sub">Check in on '+esc(dayName(l.nextFollowUp))+'</div>'})).join("");
@@ -1022,14 +1048,17 @@ main.wide{max-width:1400px}
     const rows=leads.filter(l=>!l.junk && COLS.includes(stage(l)) && (bWho!=="mine"||!who||l.owner===who));
     let all=0, allEst=false;
     $("#board").innerHTML=COLS.map(st=>{
-      const list=rows.filter(l=>stage(l)===st).sort((a,b)=>coldRank(b)-coldRank(a) || String(b.createdAt||"").localeCompare(String(a.createdAt||"")));
+      const byDue=st==="Chasing"||st==="Quoted"||st==="Waiting";
+      const list=rows.filter(l=>stage(l)===st).sort(byDue
+        ? (a,b)=>dueKey(a,t).localeCompare(dueKey(b,t)) || String(b.createdAt||"").localeCompare(String(a.createdAt||""))
+        : (a,b)=>coldRank(b)-coldRank(a) || String(b.createdAt||"").localeCompare(String(a.createdAt||"")));
       let sum=0, est=false, cold=0;
       list.forEach(l=>{ const v=worth(l); if(v){ sum+=v.amount; est=est||v.est; } if(coldOf(l)) cold++; });
       all+=sum; allEst=allEst||est;
       return '<div class="col" data-col="'+st+'">'+
         '<div class="col-h"><div class="t"><span>'+esc(st)+'</span><span class="n">'+list.length+'</span></div>'+
           '<div class="v">'+(est?"~":"")+money(sum)+'</div>'+(cold?'<div class="c">'+cold+' going cold</div>':'')+'</div>'+
-        (list.length?list.map(boardCard).join(""):'<div class="empty">Nobody here.</div>')+
+        (list.length?(byDue?grouped(list,t):list.map(boardCard).join("")):'<div class="empty">Nobody here.</div>')+
       '</div>';
     }).join("");
     // Jobs done and not paid yet: the cash still to come in. Ticked Paid, they leave the board.
@@ -1053,10 +1082,19 @@ main.wide{max-width:1400px}
     $("#bSub").textContent=rows.length+" open "+(rows.length===1?"lead":"leads")+" · "+(allEst?"~":"")+money(all)+" in the pipeline";
     wireBoard();
   }
+  // When a chased lead is next due: today for anything due or overdue.
+  const dueKey=(l,t)=>!l.nextFollowUp||l.nextFollowUp<=t ? t : l.nextFollowUp;
+  function grouped(list,t){
+    let last="", out="";
+    list.forEach(l=>{ const k=dueKey(l,t);
+      if(k!==last){ last=k; const n=M.daysBetween(t,k); out+='<div class="grp'+(n===0?" now":"")+'">'+(n===0?"Due now":n===1?"Tomorrow":esc(dayName(k)))+'</div>'; }
+      out+=boardCard(l); });
+    return out;
+  }
   function boardCard(l){
     const v=worth(l), c=coldOf(l), st=stage(l);
     const when=st==="Booked"&&l.jobDate?"Job "+dayName(l.jobDate):st==="Waiting"&&l.nextFollowUp?"Check in "+dayName(l.nextFollowUp):"";
-    const meta=[l.service, when, c?coldWords(c):"", l.owner].filter(Boolean).join(" · ");
+    const meta=[l.service, when, st==="Waiting"?"":M.nextStep(l,today()), c?coldWords(c):"", l.owner].filter(Boolean).join(" · ");
     return '<div class="bcard'+(c?" "+c.level:"")+'" draggable="true" data-id="'+esc(l.id)+'">'+
       '<div class="l1"><span class="nm">'+esc(l.name||"No name")+(l.car?'<span> · '+esc(l.car)+'</span>':"")+'</span>'+(v?'<span class="val">'+(v.est?"~":"")+money(v.amount)+'</span>':"")+'</div>'+
       '<div class="meta">'+esc(meta)+'</div>'+

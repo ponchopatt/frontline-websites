@@ -292,11 +292,13 @@
   /* ------------------------------------------------------------ the schedule */
 
   // The day the next touch is due once `done` touches of the run are in, the last on `last`.
-  // Counted from the run's start; never sooner than the day after the last touch.
+  // Counted from the run's start, and never sooner after the last touch than the schedule's
+  // own gap: a follow-up done late still waits 2 days (then 4) before the next, not 1.
   function dueAfter(schedule, from, done, last) {
     var steps = STEPS[schedule] || STEPS.full;
     var at = from && done < steps.length ? addDays(from, steps[done]) : "";
-    return laterDay(at, last ? addDays(last, 1) : "");
+    var gap = done > 0 && done < steps.length ? Math.max(1, steps[done] - steps[done - 1]) : 1;
+    return laterDay(at, last ? addDays(last, gap) : "");
   }
   function minutesSince(fromIso, toIso) {
     var a = asDate(fromIso), b = asDate(toIso);
@@ -515,6 +517,34 @@
     out.left = out.callFirst.length + out.fresh.length + out.hot.length + out.due.length;
     return out;
   }
+  /*
+    Who's due on each of the next n days (not today): [{ day, leads }], one entry per day.
+    o is { who, all } as for Today. Leads in a day are newest enquiry first.
+  */
+  function upcoming(leads, today, n, o) {
+    o = o || {};
+    var days = [];
+    for (var i = 1; i <= n; i++) days.push({ day: addDays(today, i), leads: [] });
+    (leads || []).forEach(function (l) {
+      if (!l || l.junk || !isDay(l.nextFollowUp) || l.nextFollowUp <= today) return;
+      var stage = stageOf(l, today);
+      if (stage !== "Chasing" && stage !== "Quoted" && stage !== "Waiting") return;
+      if (!o.all && o.who && l.owner && l.owner !== o.who) return;
+      var i = daysBetween(today, l.nextFollowUp) - 1;
+      if (i >= 0 && i < n) days[i].leads.push(l);
+    });
+    days.forEach(function (d) { d.leads.sort(function (a, b) { return String(b.createdAt || b.date || "").localeCompare(String(a.createdAt || a.date || "")); }); });
+    return days;
+  }
+  // What the next touch is: "Follow-up 2 of 4", "Quote follow-up 1 of 3", "Check-in", or "".
+  function nextStep(l, today) {
+    var stage = stageOf(l, today);
+    if (stage === "Waiting") return "Check-in";
+    if (stage !== "Chasing" && stage !== "Quoted") return "";
+    var schedule = stage === "Quoted" ? "quoted" : scheduleFor(l), n = runLength(schedule);
+    return (stage === "Quoted" ? "Quote follow-up " : "Follow-up ") + Math.min((Number(l.touches) || 0) + 1, n) + " of " + n;
+  }
+
   // The day the quote was given, for leads quoted before quotedOn was kept.
   function quoteDay(l) {
     if (isDay(l.quotedOn)) return l.quotedOn;
@@ -815,7 +845,7 @@
     mondayOf: mondayOf, adSpend: adSpend, isBooked: isBooked, takings: takings, fromAds: fromAds, costPerBooked: costPerBooked,
     phoneKey: phoneKey, isOpen: isOpen, matchPhone: matchPhone, mergeEnquiry: mergeEnquiry,
     needsUpgrade: needsUpgrade, upgradeFields: upgradeFields, plan: plan,
-    coldness: coldness, dealValue: dealValue, weekMoney: weekMoney,
+    coldness: coldness, dealValue: dealValue, weekMoney: weekMoney, upcoming: upcoming, nextStep: nextStep,
   };
   root.ILModel = api;
 })(typeof window !== "undefined" ? window : globalThis);
