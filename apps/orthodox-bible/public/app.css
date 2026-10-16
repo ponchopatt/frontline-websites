@@ -269,3 +269,5 @@ mark{background:var(--hl-y);color:inherit;border-radius:3px;padding:0 1px}
 .help-verse .vtext{font:400 18px/1.5 var(--serif);margin-bottom:6px}
 .help-row{align-items:center;gap:10px}
 .dot-c{width:14px;height:14px;border-radius:50%;flex:none;margin:0 4px}
+.memorial{border:1px solid var(--gold);background:var(--gold-soft);display:block}.memorial .label{color:var(--gold)}
+.field{display:block;width:100%;box-sizing:border-box;background:var(--surface2);border:0;border-radius:12px;padding:13px 14px;font:16px var(--sans);color:var(--text);color-scheme:inherit}.field:focus{outline:2px solid var(--accent)}

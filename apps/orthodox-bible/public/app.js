@@ -8,7 +8,7 @@
 const KEY = "ob1";
 const blank = () => ({ settings: { tr: "lxx", cal: "new", size: 19, theme: "dark", writers: true, voice: "" },
   name: "", last: { b: "JHN", c: 1 }, hl: {}, hlAt: {}, bm: {}, notes: {}, noteAt: {}, plans: {}, saved: {}, read: {}, days: [],
-  best: 0, rope: {}, ropeSize: 100, liked: {}, earned: {} });
+  best: 0, rope: {}, ropeSize: 100, liked: {}, earned: {}, names: [] });
 let S;
 try { S = Object.assign(blank(), JSON.parse(localStorage.getItem(KEY) || "{}")); } catch (e) { S = blank(); }
 S.settings = Object.assign(blank().settings, S.settings);
@@ -345,6 +345,8 @@ async function renderToday() {
       <div class="vtext">${esc(vd.text)}</div>
       <div class="acts"><button data-v="like" aria-pressed="${liked}">${ICON.heart}<span>${liked ? "Saved" : "Save"}</span></button><button data-v="fathers">${ICON.father}<span>${vd.fathers.length ? vd.fathers.length + " Fathers" : "Fathers"}</span></button><button data-v="image">${ICON.image}<span>Image</span></button><button data-v="read">${ICON.book}<span>Read</span></button></div></div>`);
   }
+  const soon = memorialsSoon(1);
+  if (soon.length) parts.push(`<a class="card memorial" href="#/names"><div class="label">Remember</div>${soon.map((m) => `<div style="margin-top:4px"><b>${esc(m.p.name)}</b>: ${esc(m.what)} ${m.d === t ? "today" : "tomorrow"}</div>`).join("")}<p class="small muted" style="margin:8px 0 0">Memory eternal. Give rest, O Lord, to the soul of Thy servant.</p></a>`);
   const readings = d ? d.readings.map((r, i) => ({ r, i, ranges: readingRanges(r.verses), done: (S.read[t] || []).includes(`${t}:${i}`) })) : [];
   if (d) {
     const fast = d.fastLevel ? `<span class="pill fast">${esc(d.fast)}${d.fastException ? " · " + esc(d.fastException) : ""}</span>` : `<span class="pill">${esc(d.fast || "No fast")}</span>`;
@@ -668,7 +670,7 @@ async function renderPlanDay(id, d) {
   view.innerHTML = `<div class="row" style="gap:12px;margin:4px 0 16px;flex-wrap:nowrap">${coverHTML(p.cover, "thumb")}<div style="min-width:0"><div class="small muted">${esc(p.title)}</div><h2 style="margin-top:2px">${esc(day.title)}</h2></div></div>
     <div class="stack">${day.items.map(item).join("")}</div>
     <button class="btn ${isDone ? "secondary" : "red"} wide" id="done" style="margin-top:22px">${isDone ? "Done ✓ · Undo" : "Mark Day " + d + " Done"}</button>
-    <div class="row" style="justify-content:space-between;margin-top:14px"><button class="btn secondary small" id="pd" ${d <= 1 ? "disabled" : ""}>‹ Day ${d - 1}</button><button class="btn secondary small" id="nd" ${d >= p.days.length ? "disabled" : ""}>Day ${d + 1} ›</button></div>`;
+    <div class="row" style="justify-content:space-between;margin-top:14px"><button class="btn secondary small" id="pd" ${d <= 1 ? "disabled" : ""}>‹ Day ${d - 1}</button><button class="btn secondary small" id="nd" class="field" ${d >= p.days.length ? "disabled" : ""}>Day ${d + 1} ›</button></div>`;
   $("#done").onclick = () => {
     if (pr.done[d - 1]) delete pr.done[d - 1];
     else { pr.done[d - 1] = today(); markRead(`plan:${id}:${d}`); }
@@ -805,11 +807,84 @@ async function renderHelpTopic(id) {
   if (entries.length > 8) { $("#hf").insertAdjacentHTML("afterend", `<button class="btn secondary wide" id="hmore" style="margin-top:8px">Show all ${entries.length}</button>`); $("#hmore").onclick = (e) => { e.target.remove(); more(); }; }
 }
 
+// ---------------------------------------------------------------- the prayer list
+// The Church remembers the departed on the 3rd, 9th and 40th day (the day of death is the first) and every year.
+function memorials(p) {
+  if (p.kind !== "departed" || !p.died) return [];
+  const out = [[3, addDays(p.died, 2)], [9, addDays(p.died, 8)], [40, addDays(p.died, 39)]].map(([n, d]) => ({ d, what: `${n}${n === 3 ? "rd" : "th"} day` }));
+  const y0 = +p.died.slice(0, 4), md = p.died.slice(4);
+  for (let y = y0 + 1; y <= new Date().getFullYear() + 1; y++) out.push({ d: y + md, what: y - y0 === 1 ? "1 year" : `${y - y0} years` });
+  return out;
+}
+function memorialsSoon(days = 7) {
+  const t = today(), end = addDays(t, days), out = [];
+  for (const p of S.names) for (const m of memorials(p)) if (m.d >= t && m.d <= end) out.push({ ...m, p });
+  return out.sort((a, b) => (a.d < b.d ? -1 : 1));
+}
+const andWords = (a) => (a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]);
+const fullDate = (s) => new Date(s + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+const namesOf = (kind) => S.names.filter((p) => p.kind === kind).map((p) => p.name);
+function namesPrayerHTML() {
+  const living = namesOf("living"), dead = namesOf("departed");
+  if (!living.length && !dead.length) return `<p class="rubric">Add the people you pray for to your <a href="#/names" style="text-decoration:underline">prayer list</a>, and their names will appear here.</p>`;
+  return (living.length ? `<p>Remember, O Lord, Thy ${living.length > 1 ? "servants" : "servant"} ${esc(andWords(living))}. Grant ${living.length > 1 ? "them" : "them"} health and salvation, and keep them in Thy peace.</p>` : "") +
+    (dead.length ? `<p>Give rest, O Lord, to the ${dead.length > 1 ? "souls of Thy departed servants" : "soul of Thy departed servant"} ${esc(andWords(dead))}. Forgive them every sin, and make their memory eternal.</p>` : "") +
+    `<p class="rubric"><a href="#/names" style="text-decoration:underline">Edit your prayer list</a></p>`;
+}
+function memorialsICS(p) {
+  const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+  const ev = (d, sum, rule) => ["BEGIN:VEVENT", `UID:ob-${p.id}-${d}@orthodox-bible`, `DTSTAMP:${stamp}`, `DTSTART;VALUE=DATE:${d.replace(/-/g, "")}`, ...(rule ? [rule] : []), `SUMMARY:${sum}`, "BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${sum}`, "TRIGGER:-PT15H", "END:VALARM", "END:VEVENT"];
+  const t = today(), ms = memorials(p);
+  const lines = ms.slice(0, 3).filter((m) => m.d >= t).flatMap((m) => ev(m.d, `${m.what} for ${p.name}: memory eternal`));
+  lines.push(...ev(p.died.replace(/^\d{4}/, String(+p.died.slice(0, 4) + 1)), `Anniversary of ${p.name}: memory eternal`, "RRULE:FREQ=YEARLY"));
+  const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Orthodox Bible//EN", ...lines, "END:VCALENDAR"].join("\r\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar" })); a.download = "memorials.ics"; a.click();
+  toast("Open the file to add the days to your calendar");
+}
+function nameSheet(p) {
+  const n = p || { kind: "living", name: "", note: "", died: "" };
+  openSheet(`<div class="sheet-h"><h3>${p ? "Edit" : "Add a name"}</h3>${closeBtn}</div>
+    <div class="seg" style="padding:0 0 12px"><button data-k="living" aria-pressed="${n.kind === "living"}">Living</button><button data-k="departed" aria-pressed="${n.kind === "departed"}">Departed</button></div>
+    <label class="small muted" style="display:block">Name (a baptismal name if you know it)</label><input id="nn" class="field" value="${esc(n.name)}" maxlength="60" style="margin:6px 0 12px">
+    <label class="small muted" style="display:block">A note, if you like (e.g. "in hospital")</label><input id="nt" class="field" value="${esc(n.note || "")}" maxlength="80" style="margin:6px 0 12px">
+    <div id="dw" ${n.kind === "departed" ? "" : "hidden"}><label class="small muted" style="display:block">Date they fell asleep in the Lord</label><input id="nd" type="date" value="${esc(n.died || "")}" max="${today()}" style="margin:6px 0 12px"></div>
+    <div class="row"><button class="btn red" id="ns" style="flex:1">Save</button>${p ? `<button class="btn secondary" id="nx">Remove</button>` : ""}</div>`, (b) => {
+    let kind = n.kind;
+    b.querySelectorAll("[data-k]").forEach((x) => (x.onclick = () => { kind = x.dataset.k; b.querySelectorAll("[data-k]").forEach((y) => y.setAttribute("aria-pressed", y === x)); $("#dw", b).hidden = kind !== "departed"; }));
+    $("#ns", b).onclick = () => {
+      const name = $("#nn", b).value.trim(); if (!name) { $("#nn", b).focus(); return; }
+      const rec = { id: n.id || Date.now().toString(36), kind, name, note: $("#nt", b).value.trim(), died: kind === "departed" ? $("#nd", b).value : "" };
+      S.names = p ? S.names.map((x) => (x.id === p.id ? rec : x)) : [...S.names, rec]; save(); closeSheet(); renderNames();
+    };
+    if ($("#nx", b)) $("#nx", b).onclick = () => { if (confirm(`Remove ${n.name} from your list?`)) { S.names = S.names.filter((x) => x.id !== p.id); save(); closeSheet(); renderNames(); } };
+    setTimeout(() => $("#nn", b).focus(), 50);
+  });
+}
+function renderNames() {
+  setTop("Prayer list", { back: true, acts: `<button class="iconbtn round" id="addn" aria-label="Add a name"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>` });
+  $("#addn").onclick = () => nameSheet();
+  const soon = memorialsSoon(30);
+  const row = (p) => { const next = memorials(p).find((m) => m.d >= today());
+    return `<button class="row-btn" data-id="${esc(p.id)}"><span class="grow"><span class="t">${esc(p.name)}</span>${p.note || p.died ? `<span class="sub">${esc([p.note, p.died && `Fell asleep ${fullDate(p.died)}`, next && `${next.what}: ${longDate(next.d)}`].filter(Boolean).join(" · "))}</span>` : ""}</span>${ICON.chev}</button>`; };
+  const group = (kind, h, sub) => { const list = S.names.filter((p) => p.kind === kind);
+    return `<div class="sec-h"><h2>${h}</h2><span class="small muted">${sub}</span></div>${list.length ? `<div class="list">${list.map(row).join("")}</div>` : `<p class="small muted" style="margin:0 4px">No names yet.</p>`}`; };
+  view.innerHTML = `<p class="prose muted" style="margin:0 0 6px;font-size:17px">The people you pray for. Their names appear in Morning and Evening Prayers. Kept only on this phone.</p>
+    ${soon.length ? `<div class="card memorial" style="margin-top:12px"><div class="label">Coming up</div>${soon.map((m) => `<div style="margin-top:6px"><b>${esc(m.p.name)}</b> · ${esc(m.what)} · ${esc(m.d === today() ? "today" : longDate(m.d))}</div>`).join("")}<p class="small muted" style="margin:8px 0 0">Ask your priest about a memorial (panikhida) and bring kollyva if your parish does.</p></div>` : ""}
+    ${group("living", "For health and salvation", "the living")}
+    ${group("departed", "For repose", "the departed")}
+    <button class="btn red wide" id="addn2" style="margin-top:20px">Add a name</button>
+    ${S.names.some((p) => p.died) ? `<div class="sec-h"><h2>Calendar</h2></div><div class="list">${S.names.filter((p) => p.died).map((p) => `<button class="row-btn" data-ics="${esc(p.id)}"><span class="grow"><span class="t">Add ${esc(p.name)}'s memorial days</span><span class="sub">3rd, 9th and 40th day, and every year</span></span>${ICON.out}</button>`).join("")}</div>` : ""}`;
+  $("#addn2").onclick = () => nameSheet();
+  view.querySelectorAll("[data-id]").forEach((b) => (b.onclick = () => nameSheet(S.names.find((p) => p.id === b.dataset.id))));
+  view.querySelectorAll("[data-ics]").forEach((b) => (b.onclick = () => memorialsICS(S.names.find((p) => p.id === b.dataset.ics))));
+}
+
 // ---------------------------------------------------------------- prayers and the rope
 async function renderPrayers() {
   setTop("Prayers", { back: true });
   const PR = await prayers();
   view.innerHTML = `<div class="stack">${PR.map((p, i) => `<a class="card guided" href="#/prayer/${p.id}"><div class="txt"><div class="kind">${esc(p.kind)}</div><h3>${esc(p.title)}</h3><div class="dur">${ICON.play}${esc(p.mins)}</div></div>${thumbArt(PALETTE[(i + 3) % PALETTE.length], ["halo", "star", "wave", "flame", "cross"][i % 5])}</a>`).join("")}
+    <a class="card row help-row" href="#/names" style="flex-wrap:nowrap"><span class="grow"><b>Prayer list</b><span class="small muted" style="display:block">${S.names.length ? `${S.names.length} ${S.names.length === 1 ? "name" : "names"}` : "The living and the departed you pray for"}</span></span>${ICON.chev}</a>
     <a class="card guided" href="#/rope"><div class="txt"><div class="kind">The Jesus Prayer</div><h3>Pray with a prayer rope</h3><div class="dur">${ICON.play}${ropeTotal().toLocaleString()} prayed so far</div></div>${thumbArt("#3a2f4f", "halo", `<span style="position:relative;color:#fff">${ICON.beads.replace("<svg", '<svg style="width:40px;height:40px"')}</span>`)}</a></div>
     <p class="small muted" style="margin:18px 4px">English versions made for this app from the traditional texts. Pray as your parish and your priest guide you.</p>`;
 }
@@ -822,6 +897,7 @@ async function renderPrayer(id) {
     if (part.h) html.push(`<h3>${esc(part.h)}</h3>`);
     else if (part.p) html.push(`<p>${esc(part.p)}</p>`);
     else if (part.r) html.push(`<p class="rubric">${esc(part.r)}</p>`);
+    else if (part.names) html.push(namesPrayerHTML());
     else if (part.read) {
       const r = planRef(part.read); let vs = null;
       try {
@@ -917,6 +993,7 @@ async function renderYou() {
   view.innerHTML = `<div class="profile"><div class="av">${esc((S.name || "☩")[0].toUpperCase())}</div><div style="flex:1;min-width:0"><div class="big-title" style="margin:0;font-size:26px">${esc(S.name || "Welcome")}</div><button class="ghost" id="nm">${S.name ? "Change name" : "Add your name"}</button></div></div>
     <div class="stats"><div class="card"><div class="label">Reading streak</div><b>${streak()}${ICON.flame}</b><div class="small muted">Best: ${Math.max(S.best || 0, streak())}</div></div>
       <div class="card"><div class="label">Days reading this year</div><b>${daysThisYear()}</b><div class="small muted">${ropeTotal().toLocaleString()} Jesus Prayers</div></div></div>
+    <a class="card row help-row" href="#/names" style="flex-wrap:nowrap;margin-top:10px"><span class="grow"><b>Prayer list</b><span class="small muted" style="display:block">${S.names.length ? `${S.names.length} ${S.names.length === 1 ? "name" : "names"}` : "Add the people you pray for"}</span></span>${ICON.chev}</a>
     <div class="sec-h"><h2>Badges</h2><span class="small muted">${BADGES.filter((b) => b.got()).length} of ${BADGES.length}</span></div>
     <div class="scroller badges">${BADGES.slice().sort((a, b) => b.got() - a.got()).map(badgeHTML).join("")}</div>
     <div class="sec-h"><h2>Activity</h2></div>
@@ -988,7 +1065,7 @@ async function route() {
   const [path, qs] = (location.hash.slice(1) || "/today").split("?");
   const q = new URLSearchParams(qs || "");
   const p = path.split("/").filter(Boolean);
-  const tab = { today: "today", bible: "bible", read: "bible", plans: "plans", plan: "plans", discover: "discover", fathers: "discover", father: "discover", prayers: "discover", prayer: "discover", rope: "discover", search: "discover", help: "discover", you: "you", settings: "you", more: "you", mine: "you" }[p[0]] || "today";
+  const tab = { today: "today", bible: "bible", read: "bible", plans: "plans", plan: "plans", discover: "discover", fathers: "discover", father: "discover", prayers: "discover", prayer: "discover", rope: "discover", search: "discover", help: "discover", names: "you", you: "you", settings: "you", more: "you", mine: "you" }[p[0]] || "today";
   document.querySelectorAll(".tabs a").forEach((a) => a.setAttribute("aria-current", a.dataset.tab === tab ? "page" : "false"));
   try {
     if (!BOOKS.length) await boot();
@@ -1003,6 +1080,7 @@ async function route() {
     else if (p[0] === "prayers") await renderPrayers();
     else if (p[0] === "prayer") await renderPrayer(p[1]);
     else if (p[0] === "rope") renderRope();
+    else if (p[0] === "names") renderNames();
     else if (p[0] === "help" && p[1]) await renderHelpTopic(p[1]);
     else if (p[0] === "help") await renderHelp(q);
     else if (p[0] === "search") await renderSearch(q.get("q") || "");
