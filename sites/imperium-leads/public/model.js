@@ -545,6 +545,21 @@
     return (stage === "Quoted" ? "Quote follow-up " : "Follow-up ") + Math.min((Number(l.touches) || 0) + 1, n) + " of " + n;
   }
 
+  /*
+    A job someone's about to add by hand that's already here as a booked lead: same phone, or the
+    same first name, with a job day within 3 days. Returns that lead, or null. Adding it again
+    would count its money twice.
+  */
+  function sameJob(leads, o) {
+    var key = phoneKey(o.phone), first = String(o.name || "").toLowerCase().trim().split(/\s+/)[0];
+    return (leads || []).filter(function (l) {
+      if (!l || l.junk || l.status !== "Booked" || !isDay(l.jobDate) || !isDay(o.jobDate)) return false;
+      if (Math.abs(daysBetween(l.jobDate, o.jobDate)) > 3) return false;
+      var lf = String(l.name || "").toLowerCase().trim().split(/\s+/)[0];
+      return (key.length >= 6 && phoneKey(l.phone) === key) || (!!first && first === lf);
+    }).sort(function (a, b) { return Math.abs(daysBetween(a.jobDate, o.jobDate)) - Math.abs(daysBetween(b.jobDate, o.jobDate)); })[0] || null;
+  }
+
   // The day the quote was given, for leads quoted before quotedOn was kept.
   function quoteDay(l) {
     if (isDay(l.quotedOn)) return l.quotedOn;
@@ -845,7 +860,7 @@
     mondayOf: mondayOf, adSpend: adSpend, isBooked: isBooked, takings: takings, fromAds: fromAds, costPerBooked: costPerBooked,
     phoneKey: phoneKey, isOpen: isOpen, matchPhone: matchPhone, mergeEnquiry: mergeEnquiry,
     needsUpgrade: needsUpgrade, upgradeFields: upgradeFields, plan: plan,
-    coldness: coldness, dealValue: dealValue, weekMoney: weekMoney, upcoming: upcoming, nextStep: nextStep,
+    coldness: coldness, dealValue: dealValue, weekMoney: weekMoney, upcoming: upcoming, nextStep: nextStep, sameJob: sameJob,
   };
   root.ILModel = api;
 })(typeof window !== "undefined" ? window : globalThis);
