@@ -31,6 +31,16 @@ It is a web app that installs to the home screen ("Add to Home Screen") and work
   a daily reminder added to the phone's calendar; save the whole Bible for offline; backup and
   restore.
 
+**Look**: dark by default (light in Settings), a floating tab bar (Home, Bible, Plans, Discover,
+You), Geist for the interface and Source Serif for Scripture.
+
+**Extras**: *Verse of the day* with what the Fathers said about it; *Listen* (the phone's own voice
+reads the chapter and lights each verse); *verse images* to share in six styles; *Prayers*
+(morning, evening, meals, St Ephrem, before Communion, in English versions made for this app);
+the *Jesus Prayer* with a tap-to-count prayer rope of 33, 50 or 100 knots; *badges* for streaks,
+finished plans, the Psalter, the Councils and 1,000 Jesus Prayers; saved plans; and a *You* page
+with your streak, days read this year and everything you've highlighted, noted and saved.
+
 ## Put it live (Vercel)
 
 1. In Vercel, **Add New → Project**, import this GitHub repo.
