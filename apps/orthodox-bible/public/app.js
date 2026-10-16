@@ -8,7 +8,7 @@
 const KEY = "ob1";
 // Where the calendar functions live: this site, or the web address set in config.js for the phone apps.
 const API = (window.OB_API || "") + "api/";
-const blank = () => ({ settings: { tr: "lxx", cal: "new", size: 19, theme: "dark", writers: true, voice: "" },
+const blank = () => ({ settings: { tr: "lxx", cal: "new", size: 19, theme: "dark", writers: true, voice: "", greek: false },
   name: "", last: { b: "JHN", c: 1 }, hl: {}, hlAt: {}, bm: {}, notes: {}, noteAt: {}, plans: {}, saved: {}, read: {}, days: [],
   best: 0, rope: {}, ropeSize: 100, liked: {}, earned: {}, names: [] });
 let S;
@@ -452,6 +452,13 @@ async function renderReader(code, c, q) {
   if (!ch) { view.innerHTML = `<div class="empty">Chapter not found.</div>`; return; }
   const verses = ch[1];
   const eng = verses.map(([v], i) => toEng(code, c, v, i));
+  // The Greek lines up verse for verse with Brenton (Old Testament) and the WEB (New Testament).
+  let grk = null;
+  if (S.settings.greek && BY[code].grc && (tr() === "lxx" || !BY[code].ot)) {
+    try { const g = await get(`bible/grc/${code}.json`); const gc = g.find((x) => x[0] === c); if (gc) grk = new Map(gc[1]); } catch (e) { grk = null; }
+  }
+  const greekHTML = (v) => { const t = grk && grk.get(v); if (!t) return "";
+    return `<div class="grk" lang="grc">${esc(t).replace(/([^\s@,.;·:()\[\]«»]+)@(\d+)/gu, '<span class="w" data-s="$2">$1</span>')}</div>`; };
   const fathers = await fathersFor(code, eng.map((x) => x[0]));
   const has = (i) => { const [ec, ev] = eng[i]; return ev > 0 && fathers.some((e) => covers(e, ec, ev)); };
   const vi = q.get("i") != null ? +q.get("i") : q.get("v") ? verses.findIndex(([v]) => v === +q.get("v")) : -1;
@@ -461,14 +468,14 @@ async function renderReader(code, c, q) {
   const dim = passage && vi >= 0;
   view.innerHTML = `<div class="reader">
     <div class="ch-title">${esc(chapLabel(code, c))}</div>
-    <div class="ch-sub">${tr() === "lxx" && BY[code].ot ? "Septuagint · Brenton" : "World English Bible"}${fathers.length ? ` · <span style="color:var(--accent)">●</span> ${fathers.length} from the Fathers` : ""}</div>
-    <div id="verses">${verses.map(([v, t], i) => `<span class="verse${has(i) ? " has" : ""}${S.hl[keyOf(i)] ? " hl-" + S.hl[keyOf(i)] : ""}${dim && !inPassage(i) ? " dim" : ""}${!passage && i === vi ? " sel" : ""}" data-i="${i}"><sup>${v}</sup>${esc(t)}${S.notes[keyOf(i)] ? `<span class="note-mark">${ICON.note}</span>` : ""} </span>`).join("")}</div>
+    <div class="ch-sub">${tr() === "lxx" && BY[code].ot ? "Septuagint · Brenton" : "World English Bible"}${grk ? " · Greek" : ""}${fathers.length ? ` · <span style="color:var(--accent)">●</span> ${fathers.length} from the Fathers` : ""}</div>
+    <div id="verses" class="${grk ? "parallel" : ""}">${verses.map(([v, t], i) => `<span class="verse${has(i) ? " has" : ""}${S.hl[keyOf(i)] ? " hl-" + S.hl[keyOf(i)] : ""}${dim && !inPassage(i) ? " dim" : ""}${!passage && i === vi ? " sel" : ""}" data-i="${i}"><sup>${v}</sup>${esc(t)}${S.notes[keyOf(i)] ? `<span class="note-mark">${ICON.note}</span>` : ""} </span>${greekHTML(v)}`).join("")}</div>
     ${fathers.length ? `<div class="ch-fathers"><button class="btn secondary wide" id="allF">${ICON.father} What the Fathers said on this ${code === "PSA" ? "psalm" : "chapter"}</button></div>` : ""}
     ${passage ? `<div class="passage-bar"><button class="btn red wide" id="doneP">${q.get("k") ? ICON.check + " Mark as read" : "Back to the plan"}</button></div>` : ""}
   </div>
   <div class="float-nav"><button id="prev" aria-label="Previous chapter" ${c <= 1 && !prevBook(code) ? "disabled" : ""}>${ICON.left}</button><button class="play" id="play" aria-label="Listen to this chapter">${ICON.play}</button><button id="next" aria-label="Next chapter" ${c >= n && !nextBook(code) ? "disabled" : ""}>${ICON.right}</button></div>`;
   const box = $("#verses");
-  box.onclick = (e) => { const el = e.target.closest(".verse"); if (el) verseSheet(code, c, verses, +el.dataset.i, eng, fathers); };
+  box.onclick = (e) => { const w = e.target.closest(".w"); if (w) { wordSheet(w.textContent, w.dataset.s); return; } const el = e.target.closest(".verse"); if (el) verseSheet(code, c, verses, +el.dataset.i, eng, fathers); };
   if ($("#allF")) $("#allF").onclick = () => openSheet(`<div class="sheet-h"><h3>The Fathers on ${esc(chapLabel(code, c))}</h3>${closeBtn}</div><div id="fl"></div>`, (b) => fathersList($("#fl", b), fathers));
   const keep = q.get("plan") ? `?plan=${q.get("plan")}` : "";
   $("#prev").onclick = () => (location.hash = (c > 1 ? `#/read/${code}/${c - 1}` : `#/read/${prevBook(code)}/${chapters(prevBook(code))}`) + keep);
@@ -522,10 +529,22 @@ function stopSpeaking() {
 function textSheet() {
   openSheet(`<div class="sheet-h"><h3>Text and theme</h3>${closeBtn}</div>
     <div class="label" style="margin:6px 0 8px">Size</div><div class="seg">${[16, 18, 19, 21, 24].map((s) => `<button data-s="${s}" aria-pressed="${S.settings.size === s}" style="font-size:${s - 4}px;flex:1">Aa</button>`).join("")}</div>
+    <div class="label" style="margin:18px 0 8px">Greek</div><div class="seg">${[[false, "English only"], [true, "Greek side by side"]].map(([g, n]) => `<button data-g="${g}" aria-pressed="${S.settings.greek === g}" style="flex:1">${n}</button>`).join("")}</div>
+    <p class="small muted" style="margin:6px 2px 0">The Septuagint and the 1904 Patriarchal New Testament. Tap a New Testament word to see what it means.</p>
     <div class="label" style="margin:18px 0 8px">Theme</div><div class="seg">${["dark", "light"].map((t) => `<button data-t="${t}" aria-pressed="${S.settings.theme === t}" style="flex:1">${t === "dark" ? "Dark" : "Light"}</button>`).join("")}</div>`, (b) => {
     b.querySelectorAll("[data-s]").forEach((x) => (x.onclick = () => { S.settings.size = +x.dataset.s; save(); applyTheme(); b.querySelectorAll("[data-s]").forEach((y) => y.setAttribute("aria-pressed", y === x)); }));
+    b.querySelectorAll("[data-g]").forEach((x) => (x.onclick = () => { S.settings.greek = x.dataset.g === "true"; save(); closeSheet(); if (location.hash.startsWith("#/read")) route(); }));
     b.querySelectorAll("[data-t]").forEach((x) => (x.onclick = () => { S.settings.theme = x.dataset.t; save(); applyTheme(); b.querySelectorAll("[data-t]").forEach((y) => y.setAttribute("aria-pressed", y === x)); }));
   });
+}
+// What a Greek New Testament word means, from the STEP Bible lexicon.
+async function wordSheet(word, n) {
+  let x = null;
+  try { x = (await get(`lex/${Math.floor(+n / 1000)}.json`))[n]; } catch (e) { x = null; }
+  openSheet(`<div class="sheet-h"><h3 lang="grc" class="grk-word">${esc(word)}</h3>${closeBtn}</div>${x
+    ? `<div class="lemma"><b lang="grc">${esc(x[0])}</b> <span class="muted">${esc(x[1])}</span></div><div class="gloss">${esc(x[2])}</div><p class="small" style="line-height:1.55">${esc(x[3])}</p>`
+    : `<p class="muted">No meaning found for this word.</p>`}
+    <p class="small muted" style="margin-top:14px">Strong's G${esc(n)} · Lexicon from STEP Bible (Tyndale House), CC BY 4.0.</p>`);
 }
 function verseSheet(code, c, verses, i, eng, fathers) {
   document.querySelectorAll(".verse.sel").forEach((v) => v.classList.remove("sel"));

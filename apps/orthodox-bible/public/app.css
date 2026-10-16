@@ -292,3 +292,11 @@ mark{background:var(--hl-y);color:inherit;border-radius:3px;padding:0 1px}
 .hello h1 small{display:block;font-size:15px;font-weight:500;color:var(--gold);margin-top:2px}
 /* Bright Week: everything turns gold */
 :root[data-bright]{--accent:#d9a441;--accent-soft:rgba(217,164,65,.18);--accent-ink:#1a1206}
+
+/* Greek side by side */
+#verses.parallel .verse{display:block;margin-top:14px}
+.grk{font:400 calc(var(--size) - 1px)/1.7 "Noto Serif",var(--serif);color:var(--muted);padding:2px 0 2px 12px;border-left:2px solid var(--line);margin-top:4px}
+.grk .w{cursor:pointer;border-radius:4px}.grk .w:hover,.grk .w:active{background:var(--blue-soft);color:var(--text)}
+.grk-word{font-family:"Noto Serif",var(--serif)}
+.lemma{font:400 22px "Noto Serif",var(--serif)}.lemma .muted{font:italic 16px var(--serif)}
+.gloss{font-weight:700;font-size:17px;margin:4px 0 8px}
