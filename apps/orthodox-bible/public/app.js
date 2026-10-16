@@ -93,6 +93,7 @@ async function boot() {
 const plans = () => get("plans.json");
 const lib = () => get("library.json");
 const prayers = () => get("prayers.json");
+const helpIndex = () => get("help/index.json");
 const tr = () => S.settings.tr;
 const trName = (t = tr()) => (t === "lxx" ? "LXX" : "WEB");
 const chapters = (code, t = tr()) => BY[code]?.["ch_" + t] || 0;
@@ -361,6 +362,7 @@ async function renderToday() {
   const playDisc = (icon) => `<span style="position:relative;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.95);color:#111;display:grid;place-items:center">${icon.replace("<svg", '<svg style="width:20px;height:20px"')}</span>`;
   if (pr) parts.push(`<a class="card guided" href="#/prayer/${pr.id}"><div class="txt"><div class="kind">${esc(pr.kind)}</div><h3>${esc(pr.title)}</h3><div class="dur">${ICON.play}${esc(pr.mins)}</div></div>${thumbArt("#2b2433", "halo", playDisc(ICON.pray))}</a>`);
   parts.push(`<a class="card guided" href="#/rope"><div class="txt"><div class="kind">The Jesus Prayer</div><h3>Lord Jesus Christ, have mercy on me</h3><div class="dur">${ICON.play}${S.rope[t] ? `${S.rope[t]} today` : "Pray with a prayer rope"}</div></div>${thumbArt("#3a2f4f", "star", playDisc(ICON.beads))}</a>`);
+  parts.push(`<a class="card row help-row" href="#/help" style="flex-wrap:nowrap"><span class="grow"><b>Struggling with something?</b><span class="small muted" style="display:block">Lust, anger, worry, grief… see what the Fathers say</span></span>${ICON.chev}</a>`);
   const active = P.plans.filter((p) => S.plans[p.id]?.started && !S.plans[p.id]?.finished);
   if (active.length) parts.push(`<div class="sec-h"><h2>Your plans</h2><a href="#/plans?tab=mine">See all ${ICON.chev}</a></div><div class="list">${active.map((p) => { const n = nextDay(p); return planRowHTML(p, `Day ${n + 1}: ${p.days[n].title}`, `#/plan/${p.id}/${n + 1}`, "Continue"); }).join("")}</div>`);
   else parts.push(`<div class="sec-h"><h2>Need a place to begin?</h2><a href="#/plans">Plans ${ICON.chev}</a></div><div class="scroller">${P.featured.map((id) => P.plans.find((p) => p.id === id)).map((p) => `<a class="hero-card" href="#/plan/${p.id}">${coverHTML(p.cover, "hero")}<div class="cap">${esc(p.title)}</div></a>`).join("")}</div>`);
@@ -620,8 +622,9 @@ async function renderPlans(q) {
     body = list.length ? `<div class="list" style="margin-top:10px">${list.map((p) => planRowHTML(p, "Completed", null, "Again")).join("")}</div>` : empty("None Finished Yet", "Plans you finish will show here, with a badge for the big ones.");
   } else {
     body = `<div class="scroller" style="margin-top:14px">${P.featured.map((id) => P.plans.find((p) => p.id === id)).map((p) => `<a class="hero-card" href="#/plan/${p.id}">${coverHTML(p.cover, "hero")}<div class="cap">${esc(p.title)}</div></a>`).join("")}</div>
+      <a class="card row help-row" href="#/help" style="margin-top:18px;flex-wrap:nowrap"><span class="grow"><b>Struggling with something?</b><span class="small muted" style="display:block">Find a 7-day plan with the Fathers for it</span></span>${ICON.chev}</a>
       <div class="tiles" style="margin-top:18px">${P.topics.map((t) => `<a class="tile" href="#/plans?topic=${t.id}" style="background:${t.bg}">${esc(t.name)}</a>`).join("")}</div>
-      ${Object.entries(P.categories).map(([cat, name]) => `<div class="sec-h"><h2>${esc(name)}</h2></div><div class="list">${P.plans.filter((p) => p.cat === cat).map((p) => planRowHTML(p)).join("")}</div>`).join("")}`;
+      ${Object.entries(P.categories).filter(([cat]) => cat !== "help").map(([cat, name]) => `<div class="sec-h"><h2>${esc(name)}</h2></div><div class="list">${P.plans.filter((p) => p.cat === cat).map((p) => planRowHTML(p)).join("")}</div>`).join("")}`;
   }
   view.innerHTML = `<div class="big-title">Plans</div><div class="seg edge">${tabs.map(([k, n]) => `<button data-tab="${k}" aria-pressed="${!topic && plansTab === k}">${n}</button>`).join("")}</div>${body}`;
   view.querySelectorAll("[data-tab]").forEach((b) => (b.onclick = () => { plansTab = b.dataset.tab; if (topic) location.hash = "#/plans"; else renderPlans(new URLSearchParams()); }));
@@ -688,10 +691,11 @@ function planReadHash(r, numbering, id, d) {
 const COUNCIL_IDS = ["nicaea1", "constantinople1", "ephesus", "chalcedon", "constantinople2", "constantinople3", "nicaea2"];
 async function renderDiscover() {
   setTop("");
-  const [P, L, PR] = await Promise.all([plans(), lib(), prayers()]);
+  const [P, L, PR, H] = await Promise.all([plans(), lib(), prayers(), helpIndex()]);
   const saints = L.filter((a) => a.label === "saint");
   view.innerHTML = `<div class="big-title">Discover</div>
     <a href="#/search" style="display:block"><input type="search" placeholder="Search the Bible" readonly style="cursor:pointer;pointer-events:none" aria-label="Search the Bible"></a>
+    <div class="card help-card"><h3>What are you struggling with?</h3><p class="small muted">Scripture, the Fathers and a plan for it.</p><div id="dhelp"></div></div>
     <div class="quick" style="margin-top:14px">
       <a href="#/fathers">${ICON.father}The Fathers</a><a href="#/plans?topic=councils">${ICON.dome}The Councils</a>
       <a href="#/prayers">${ICON.pray}Prayers</a><a href="#/rope">${ICON.beads}Jesus Prayer</a></div>
@@ -705,6 +709,8 @@ async function renderDiscover() {
     <div class="list">${PR.map((p) => `<a class="row-btn" href="#/prayer/${p.id}"><span class="grow"><span class="t">${esc(p.title)}</span><span class="sub">${esc(p.kind)} · ${esc(p.mins)}</span></span>${ICON.chev}</a>`).join("")}</div>
     <div class="sec-h"><h2>Scripture with the Fathers</h2></div>
     <div class="list">${P.plans.filter((p) => p.cat === "scripture").map((p) => planRowHTML(p)).join("")}</div>`;
+  helpBox($("#dhelp"), H);
+  $("#dhelp").insertAdjacentHTML("beforeend", `<div class="tiles help-tiles" style="margin-top:12px">${H.slice(0, 10).map(helpTile).join("")}<a class="tile" href="#/help" style="background:var(--surface3)">See all</a></div>`);
 }
 async function renderFathers() {
   setTop("The Fathers", { back: true });
@@ -733,6 +739,70 @@ async function renderFather(id) {
     <div class="sec-h"><h2>Writings</h2><span class="small muted">on New Advent</span></div>
     <div class="list">${a.works.map((w) => `<a class="row-btn" href="${esc(w.u)}" target="_blank" rel="noopener" style="border-bottom:1px solid var(--line)"><span class="grow"><span class="t" style="white-space:normal">${esc(w.t)}</span></span>${ICON.out}</a>`).join("")}</div>
     <p class="small muted" style="margin-top:14px">These open the 19th-century English translations on newadvent.org.</p>`;
+}
+
+// ---------------------------------------------------------------- help for struggles
+const DANGER = /suicid|kill (my ?self|me)|end (it all|my life)|self.?harm|hurt(ing)? myself|want(ed)? to die|don.?t want to live/i;
+const LIFELINE = "If you are thinking of harming yourself, please call someone now: in Australia, Lifeline on 13 11 14, or your local emergency number. Tell your priest and someone you trust.";
+function helpFind(index, q) {
+  const skip = /^(struggl\w*|with|have|feel\w*|really|help|need|and|the|from|about|lot|very|keep|always)$/;
+  const words = (q.toLowerCase().match(/[a-z]+/g) || []).filter((w) => w.length > 2 && !skip.test(w));
+  return index.map((t) => {
+    let n = 0;
+    const terms = [...t.find, ...t.name.toLowerCase().split(/\W+/).filter((w) => w.length > 3)];
+    for (const w of words) for (const f of terms) { if (f === w) n += 3; else if (w.length > 3 && (f.startsWith(w) || w.startsWith(f))) n += 1; }
+    return [n, t];
+  }).filter((x) => x[0]).sort((a, b) => b[0] - a[0]).map((x) => x[1]);
+}
+const helpTile = (t) => `<a class="tile" href="#/help/${t.id}" style="background:${t.color}">${esc(t.name)}</a>`;
+const safetyHTML = (msg) => `<div class="card safety"><b>You matter to God, and to us.</b><p>${esc(msg)}</p><a class="btn red small" href="tel:131114">Call Lifeline 13 11 14</a></div>`;
+// A search box that shows the matching struggles as you type.
+function helpBox(box, index, q0 = "") {
+  box.innerHTML = `<input type="search" id="hq" placeholder="e.g. lust, anger, worry, grief" value="${esc(q0)}" aria-label="What are you struggling with?"><div id="hres" style="margin-top:10px"></div>`;
+  const draw = (q) => {
+    const hits = helpFind(index, q);
+    $("#hres", box).innerHTML = (DANGER.test(q) ? safetyHTML(LIFELINE) : "") + (q.trim()
+      ? hits.length ? `<div class="list">${hits.slice(0, 4).map((t) => `<a class="row-btn" href="#/help/${t.id}"><span class="dot-c" style="background:${t.color}"></span><span class="grow"><span class="t">${esc(t.name)}</span><span class="sub">Scripture, the Fathers and a 7-day plan</span></span>${ICON.chev}</a>`).join("")}</div>`
+        : `<p class="small muted" style="margin:4px">Nothing for that yet. Try one word, or pick one below. You can always talk to your priest.</p>`
+      : "");
+  };
+  const input = $("#hq", box); input.oninput = () => draw(input.value);
+  input.addEventListener("keydown", (e) => { if (e.key === "Enter") { const h = helpFind(index, input.value)[0]; if (h && !DANGER.test(input.value)) location.hash = `#/help/${h.id}`; } });
+  draw(q0);
+}
+async function renderHelp(q) {
+  setTop("Help for struggles", { back: true });
+  const index = await helpIndex();
+  view.innerHTML = `<p class="prose muted" style="margin:0 0 14px;font-size:17px">What are you struggling with? Find what Scripture and the Holy Fathers say, and a short plan to walk through it.</p>
+    <div id="hb"></div><div class="sec-h"><h2>Or choose one</h2></div><div class="tiles help-tiles">${index.map(helpTile).join("")}</div>
+    <p class="small muted" style="margin:22px 4px">This is not a replacement for confession or for your priest. Bring what you're carrying to them too.</p>`;
+  helpBox($("#hb"), index, q.get("q") || "");
+}
+async function renderHelpTopic(id) {
+  const [t, P] = await Promise.all([get(`help/${id}.json`).catch(() => null), plans()]);
+  if (!t) { location.replace("#/help"); return; }
+  setTop("", { back: true });
+  const plan = P.plans.find((p) => p.id === t.plan);
+  view.innerHTML = `<div class="help-hero" style="background:${t.color}"><div class="small">Help for struggles</div><h2>${esc(t.name)}</h2></div>
+    ${t.safety ? safetyHTML(t.safety) : ""}
+    <p class="prose" style="margin:16px 2px">${esc(t.about)}</p>
+    ${plan ? planRowHTML(plan, "7 days · one verse and one Father a day", `#/plan/${plan.id}`, S.plans[plan.id]?.started ? "Continue" : "Start") : ""}
+    ${t.link ? `<a class="btn secondary wide" style="margin-top:10px" href="${esc(t.link[0])}">${esc(t.link[1])}</a>` : ""}
+    <div class="sec-h"><h2>From Scripture</h2></div><div class="stack" id="hv"></div>
+    <div class="sec-h"><h2>What the Fathers say</h2><span class="small muted">${t.quotes.length}</span></div><div id="hf"></div>
+    ${t.plans.length ? `<div class="sec-h"><h2>More plans</h2></div><div class="list">${t.plans.map((x) => P.plans.find((p) => p.id === x)).filter(Boolean).map((p) => planRowHTML(p)).join("")}</div>` : ""}
+    <p class="small muted" style="margin:22px 4px">Passages chosen from 19th-century public-domain translations. Pray, and talk to your priest.</p>`;
+  const verses = await Promise.all(t.verses.map(async (ref) => {
+    const r = planRef(ref); if (!r) return "";
+    const vs = [];
+    for (let v = r.v; v <= r.v2 && vs.length < 6; v++) { const x = await verseText(r.code, r.c, v).catch(() => null); if (x) vs.push(x.text); }
+    return vs.length ? `<a class="card help-verse" href="${readHash(r)}"><div class="vtext">${esc(vs.join(" "))}${r.v2 - r.v >= 6 ? " …" : ""}</div><div class="small muted">${esc(refText(r))}</div></a>` : "";
+  }));
+  $("#hv").innerHTML = verses.join("");
+  const entries = t.quotes.map((x) => ({ ...x, ch: x.c, t: `${refText({ code: x.b, c: x.c, v: x.v[0], c2: x.c, v2: x.v[1] === 999 ? x.v[0] : x.v[1] })} · ${x.t}`, v: [x.v[0], x.v[0]] }));
+  const more = () => { fathersList($("#hf"), entries); };
+  fathersList($("#hf"), entries.slice(0, 8));
+  if (entries.length > 8) { $("#hf").insertAdjacentHTML("afterend", `<button class="btn secondary wide" id="hmore" style="margin-top:8px">Show all ${entries.length}</button>`); $("#hmore").onclick = (e) => { e.target.remove(); more(); }; }
 }
 
 // ---------------------------------------------------------------- prayers and the rope
@@ -918,7 +988,7 @@ async function route() {
   const [path, qs] = (location.hash.slice(1) || "/today").split("?");
   const q = new URLSearchParams(qs || "");
   const p = path.split("/").filter(Boolean);
-  const tab = { today: "today", bible: "bible", read: "bible", plans: "plans", plan: "plans", discover: "discover", fathers: "discover", father: "discover", prayers: "discover", prayer: "discover", rope: "discover", search: "discover", you: "you", settings: "you", more: "you", mine: "you" }[p[0]] || "today";
+  const tab = { today: "today", bible: "bible", read: "bible", plans: "plans", plan: "plans", discover: "discover", fathers: "discover", father: "discover", prayers: "discover", prayer: "discover", rope: "discover", search: "discover", help: "discover", you: "you", settings: "you", more: "you", mine: "you" }[p[0]] || "today";
   document.querySelectorAll(".tabs a").forEach((a) => a.setAttribute("aria-current", a.dataset.tab === tab ? "page" : "false"));
   try {
     if (!BOOKS.length) await boot();
@@ -933,6 +1003,8 @@ async function route() {
     else if (p[0] === "prayers") await renderPrayers();
     else if (p[0] === "prayer") await renderPrayer(p[1]);
     else if (p[0] === "rope") renderRope();
+    else if (p[0] === "help" && p[1]) await renderHelpTopic(p[1]);
+    else if (p[0] === "help") await renderHelp(q);
     else if (p[0] === "search") await renderSearch(q.get("q") || "");
     else if (p[0] === "you" || p[0] === "mine") await renderYou();
     else if (p[0] === "settings" || p[0] === "more") renderSettings();

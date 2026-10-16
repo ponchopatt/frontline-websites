@@ -259,3 +259,13 @@ canvas.preview{width:100%;border-radius:14px;display:block}
 mark{background:var(--hl-y);color:inherit;border-radius:3px;padding:0 1px}
 @media (min-width:760px){.hero-card{width:46%}}
 @media (prefers-reduced-motion:reduce){.toast,.verse{transition:none}}
+
+/* help for struggles */
+.help-card h3{margin:0 0 2px;font-size:18px}.help-card p{margin:0 0 12px}
+.help-tiles{grid-template-rows:repeat(2,46px);grid-auto-columns:140px}
+.help-hero{border-radius:18px;padding:28px 18px 18px;color:#fff;min-height:130px;display:flex;flex-direction:column;justify-content:flex-end}
+.help-hero h2{font:600 30px/1.1 var(--serif);margin:4px 0 0}.help-hero .small{opacity:.8;text-transform:uppercase;letter-spacing:.06em;font-weight:700;font-size:11px}
+.safety{border:1px solid var(--accent);background:var(--accent-soft);margin-top:12px}.safety p{margin:6px 0 12px}
+.help-verse .vtext{font:400 18px/1.5 var(--serif);margin-bottom:6px}
+.help-row{align-items:center;gap:10px}
+.dot-c{width:14px;height:14px;border-radius:50%;flex:none;margin:0 4px}
