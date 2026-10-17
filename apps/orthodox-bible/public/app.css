@@ -52,7 +52,7 @@ h2{font:700 22px/1.2 var(--sans);letter-spacing:-.015em;margin:0}
 h3{font:600 17px/1.3 var(--sans);margin:0}
 .sec-h{display:flex;justify-content:space-between;align-items:baseline;margin:28px 0 12px}
 .sec-h h2{font-size:21px}
-.sec-h a,.sec-h button{all:unset;cursor:pointer;font-size:14px;color:var(--text);display:inline-flex;align-items:center;gap:2px}
+.sec-h a,.sec-h button{all:unset;cursor:pointer;font-size:14px;color:var(--text);display:inline-flex;align-items:center;gap:2px;min-height:40px;margin:-10px 0}
 .sec-h svg{width:16px;height:16px}
 .muted{color:var(--muted)}
 .faint{color:var(--faint)}
@@ -104,7 +104,7 @@ input:focus,textarea:focus,select:focus{outline:2px solid var(--accent)}
 /* home */
 .hello{display:flex;align-items:center;justify-content:space-between;margin:6px 0 14px}
 .hello h1{font:700 23px/1.2 var(--sans);letter-spacing:-.02em;margin:0}
-.streak-chip{display:inline-flex;align-items:center;gap:3px;font-weight:600;font-size:15px}
+.streak-chip{display:inline-flex;align-items:center;gap:3px;font-weight:600;font-size:15px;min-height:44px;min-width:44px;justify-content:flex-end}
 .streak-chip svg{width:20px;height:20px}
 .votd .ref{font:700 16px/1.3 var(--sans);margin:2px 0 18px}
 .votd .vtext{font:400 21px/1.5 var(--serif);margin-bottom:18px}
@@ -114,7 +114,7 @@ input:focus,textarea:focus,select:focus{outline:2px solid var(--accent)}
 .guided{display:flex;gap:14px;align-items:stretch}
 .guided .txt{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:2px}
 .guided .kind{font-size:13px;color:var(--muted)}
-.guided h3{font-size:18px;font-weight:700;letter-spacing:-.01em}
+.guided h2,.guided h3{font-size:18px;font-weight:700;letter-spacing:-.01em;margin:0}
 .guided .dur{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-top:4px}
 .guided .dur svg{width:12px;height:12px;fill:currentColor;stroke:none}
 .guided .thumb{flex:0 0 110px;height:96px;border-radius:12px;position:relative;overflow:hidden;display:grid;place-items:center}
@@ -211,7 +211,7 @@ input:focus,textarea:focus,select:focus{outline:2px solid var(--accent)}
 .father .who b{font-size:15px}
 .father .work{font-size:13px;color:var(--muted);margin-top:2px}
 .father blockquote{margin:10px 0 6px;font:400 17px/1.6 var(--serif);white-space:pre-line}
-.ghost{all:unset;cursor:pointer;font-size:13px;font-weight:600;color:var(--accent);display:inline-flex;align-items:center;gap:4px;padding:6px 0;margin-right:14px}
+.ghost{all:unset;cursor:pointer;font-size:13px;font-weight:600;color:var(--accent);display:inline-flex;align-items:center;gap:4px;min-height:40px;padding:0 4px;margin:0 10px 0 -4px}
 .ghost svg{width:14px;height:14px}
 .filters{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
@@ -273,7 +273,7 @@ mark{background:var(--hl-y);color:inherit;border-radius:3px;padding:0 1px}
 .field{display:block;width:100%;box-sizing:border-box;background:var(--surface2);border:0;border-radius:12px;padding:13px 14px;font:16px var(--sans);color:var(--text);color-scheme:inherit}.field:focus{outline:2px solid var(--accent)}
 
 /* calendar, Pascha and Bright Week */
-.cal-link{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;font-weight:600;color:var(--muted)}
+.cal-link{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:2px;min-height:44px;border-top:1px solid var(--line);font-size:13px;font-weight:600;color:var(--muted)}
 .cal-link span:last-child{display:flex;align-items:center;color:var(--text)}.cal-link .chev{width:16px;height:16px}
 .pascha{background:linear-gradient(135deg,#5a2a1e,#8a3a2a);color:#fff}.pascha .label{color:#f3cf8a}.pascha h3{font:600 28px/1.15 var(--serif);margin:4px 0}
 .cal-h{display:flex;align-items:center;justify-content:space-between;margin:18px 0 8px}.cal-h h2{font-size:19px;margin:0}
@@ -309,3 +309,26 @@ mark{background:var(--hl-y);color:inherit;border-radius:3px;padding:0 1px}
 .wrow{all:unset;cursor:pointer;display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:12px;padding:7px 14px}
 .wrow .g{font:400 19px "Noto Serif",var(--serif);min-width:96px}
 .wrow .m{flex:1;display:flex;flex-direction:column;min-width:0}.wrow .m .small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* motion: pages fade in, sheets slide, things give a little when pressed */
+@keyframes view-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes from-r{from{opacity:0;transform:translateX(36px)}to{opacity:1;transform:none}}
+@keyframes from-l{from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:none}}
+#view.enter>:not(.float-nav){animation:view-in .24s cubic-bezier(.2,.8,.2,1)}
+#view.enter.from-r>.reader{animation-name:from-r}#view.enter.from-l>.reader{animation-name:from-l}
+@keyframes fade-in{from{opacity:0}}@keyframes sheet-up{from{transform:translateY(100%)}}
+.sheet:not([hidden]){animation:fade-in .2s ease}
+.sheet:not([hidden]) .sheet-in{animation:sheet-up .3s cubic-bezier(.2,.8,.2,1);transition:transform .22s cubic-bezier(.2,.8,.2,1)}
+.sheet.closing{opacity:0;transition:opacity .2s ease}.sheet.closing .sheet-in{transform:translateY(100%)!important;transition:transform .22s ease-in}
+.card,.btn,.row-btn,.tile,.hero-card,.quick a,.pill-btn,.iconbtn,.wrow,.cal-grid button,.tabs a,.badge,.person{transition:transform .14s ease,background-color .2s}
+:is(.card,.btn,.row-btn,.tile,.hero-card,.quick a,.pill-btn,.iconbtn,.wrow,.cal-grid button,.tabs a,.badge,.person):active{transform:scale(.97)}
+a.card:active,.row-btn:active{background-color:var(--surface2)}
+.toast{transform:translate(-50%,12px);transition:opacity .2s,transform .25s cubic-bezier(.2,.8,.2,1)}.toast.show{transform:translate(-50%,0)}
+@keyframes shimmer{to{background-position:-200% 0}}
+.skel{background:linear-gradient(90deg,var(--surface) 25%,var(--surface2) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.3s linear infinite;border-radius:18px}
+.continue .icon{width:40px;height:40px;border-radius:12px;background:var(--surface2);display:grid;place-items:center;flex:none}
+.continue .icon svg{width:20px;height:20px}
+.prayer .rubric a{display:inline-block;padding:10px 0}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+#verses{touch-action:pan-y pinch-zoom}html,body{overscroll-behavior-x:none}
+.help-row .grow{flex:1;min-width:0}

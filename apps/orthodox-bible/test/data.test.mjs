@@ -21,8 +21,8 @@ test("every reading in every plan points to a chapter that exists", () => {
 });
 
 test("every Father reading and work links to New Advent", () => {
-  for (const p of data("plans.json").plans) for (const d of p.days) for (const it of d.items)
-    if (it.father) assert.match(it.u, /^https:\/\/www\.newadvent\.org\/fathers\/\d+\.htm$/, `${p.id}: ${it.father}`);
+  for (const { id } of data("plans.json").plans) for (const d of data(`plans/${id}.json`).days) for (const it of d.items)
+    if (it.father) assert.match(it.u, /^https:\/\/www\.newadvent\.org\/fathers\/\d+\.htm$/, `${id}: ${it.father}`);
   for (const a of data("library.json")) for (const w of a.works) assert.match(w.u, /^https:\/\/www\.newadvent\.org\/fathers\/\d+\.htm$/);
 });
 
@@ -76,4 +76,19 @@ test("similar verses point to real books, best first", () => {
   assert.ok(x["3.16"].includes("ROM 5:8"));
   for (const r of x["3.16"]) assert.ok(books[r.split(" ")[0]], r);
   assert.ok(data("xref/DAG.json"), "Daniel filed under DAG");
+});
+
+test("the small files for a fast start match the full ones", () => {
+  const list = data("plans.json").plans;
+  for (const p of list) {
+    const full = data(`plans/${p.id}.json`);
+    assert.equal(full.days.length, p.days.length, p.id);
+    p.days.forEach((d, i) => assert.equal(d.title, full.days[i].title, `${p.id} day ${i + 1}`));
+  }
+  const idx = data("fathers/idx/JHN.json"), full = data("fathers/JHN/3.json");
+  assert.equal(idx[3].length, full.length);
+  assert.deepEqual(idx[3][0].slice(0, 2), full[0].v);
+  for (const v of data("votd.json")) assert.ok((v.lxx || v.web)[4].length > 10, v.r);
+  const psalm = data("votd.json").find((v) => v.r === "PSA 51:10");
+  assert.equal(psalm.lxx[1], 50, "Psalm 51 is Psalm 50 in the Septuagint");
 });

@@ -206,8 +206,13 @@ const readHash = (r, extra = {}) => {
 };
 
 // ---------------------------------------------------------------- the Fathers
+// Which verses the Fathers wrote on, per book: {chapter: [[from, to, 1 if not a saint], ...]}.
+const fIdx = (code) => (BY[code]?.fathers ? getOr(`fathers/idx/${code}.json`, {}) : Promise.resolve({}));
+const fShown = (x) => S.settings.writers || !x[2];
+const fCount = (idx, ch, v1, v2 = v1) => (idx[ch] || []).filter((x) => fShown(x) && x[0] <= v2 && v1 <= x[1]).length;
 async function fathersFor(code, engChapters) {
-  const lists = await Promise.all([...new Set(engChapters)].map((c) => getOr(`fathers/${code}/${c}.json`, []).then((l) => l.map((e) => ({ ...e, ch: c })))));
+  const idx = await fIdx(code);
+  const lists = await Promise.all([...new Set(engChapters)].filter((c) => idx[c]).map((c) => getOr(`fathers/${code}/${c}.json`, []).then((l) => l.map((e) => ({ ...e, ch: c })))));
   return lists.flat().filter((e) => S.settings.writers || !["writer", "document"].includes(AUTH[e.a]?.label));
 }
 const covers = (e, c, v) => e.ch === c && e.v[0] <= v && v <= e.v[1];
@@ -236,13 +241,35 @@ function fathersList(box, entries) {
 }
 
 // ---------------------------------------------------------------- sheets
+let sheetSeq = 0, sheetT = 0;
 function openSheet(html, onOpen, full = false) {
+  sheetSeq++; clearTimeout(sheetT); $("#sheet").classList.remove("closing"); $(".sheet-in").style.transform = "";
   $("#sheet").classList.toggle("full", full);
   $("#sheetBody").innerHTML = html; $("#sheet").hidden = false; $(".sheet-in").scrollTop = 0;
   $("#sheetBody").querySelectorAll("[data-x]").forEach((b) => (b.onclick = closeSheet));
   if (onOpen) onOpen($("#sheetBody"));
 }
-function closeSheet() { $("#sheet").hidden = true; $("#sheetBody").innerHTML = ""; document.querySelectorAll(".verse.sel").forEach((v) => v.classList.remove("sel")); }
+function closeSheet() {
+  document.querySelectorAll(".verse.sel").forEach((v) => v.classList.remove("sel"));
+  if ($("#sheet").hidden) return;
+  sheetSeq++; const seq = sheetSeq;
+  $("#sheet").classList.add("closing");
+  sheetT = setTimeout(() => { if (seq !== sheetSeq) return; $("#sheet").hidden = true; $("#sheet").classList.remove("closing"); $(".sheet-in").style.transform = ""; $("#sheetBody").innerHTML = ""; }, motion() ? 220 : 0);
+}
+const motion = () => !matchMedia("(prefers-reduced-motion: reduce)").matches;
+// Pull a sheet down from its top to close it.
+(() => {
+  const el = $(".sheet-in"); let y0 = null, dy = 0;
+  el.addEventListener("touchstart", (e) => { y0 = el.scrollTop <= 0 ? e.touches[0].clientY : null; dy = 0; }, { passive: true });
+  el.addEventListener("touchmove", (e) => {
+    if (y0 == null) return; dy = e.touches[0].clientY - y0;
+    if (dy > 0 && el.scrollTop <= 0) { e.preventDefault(); el.style.transition = "none"; el.style.transform = `translateY(${dy}px)`; } else if (dy < 0) y0 = null;
+  }, { passive: false });
+  el.addEventListener("touchend", () => {
+    if (y0 == null) return; y0 = null; el.style.transition = "";
+    if (dy > 110) closeSheet(); else el.style.transform = "";
+  });
+})();
 $("#sheet").addEventListener("click", (e) => { if (e.target.id === "sheet") closeSheet(); });
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#sheet").hidden) closeSheet(); });
 const closeBtn = `<button class="iconbtn round" data-x aria-label="Close">${ICON.x}</button>`;
@@ -311,11 +338,16 @@ $("#back").onclick = () => (history.length > 1 ? history.back() : (location.hash
 // ---------------------------------------------------------------- Home
 async function dayData(date) {
   const k = `day:${S.settings.cal}:${date}`;
+  try { const kept = JSON.parse(localStorage.getItem(k)); if (kept && kept.readings) return kept; } catch (e) { /* fetch it */ }
   try {
     const r = await fetch(`${API}day?date=${date}&cal=${S.settings.cal}`);
     if (!r.ok) throw new Error(r.status);
     const d = await r.json();
-    try { localStorage.setItem(k, JSON.stringify(d)); } catch (e) { /* full */ }
+    try {
+      localStorage.setItem(k, JSON.stringify(d));
+      const old = addDays(today(), -14);
+      Object.keys(localStorage).filter((x) => x.startsWith("day:") && x.slice(-10) < old).forEach((x) => localStorage.removeItem(x));
+    } catch (e) { /* full */ }
     return d;
   } catch (e) { try { return JSON.parse(localStorage.getItem(k)); } catch (e2) { return null; } }
 }
@@ -331,18 +363,13 @@ function readingRanges(verses) {
 }
 const wholeReading = (ranges) => { const a = ranges[0], z = ranges[ranges.length - 1]; return a.code === z.code && a.c === z.c2 ? { ...a, c2: z.c2, v2: z.v2 } : a; };
 // Verse of the day: one of these, by day of the year (English numbering).
-const VOTD = ["JHN 3:16", "PHP 4:13", "ROM 8:28", "MAT 11:28", "PSA 23:1", "ISA 40:31", "JHN 14:6", "MAT 5:8", "PSA 51:10", "JHN 1:14", "1JN 4:8", "LUK 18:13",
-  "PRO 3:5", "2CO 5:17", "GAL 2:20", "ROM 12:2", "MAT 6:33", "JHN 15:5", "HEB 11:1", "JAS 1:5", "1PE 5:7", "PSA 46:10", "ISA 9:6", "MAT 5:14", "JHN 11:25",
-  "ROM 5:8", "EPH 2:8", "COL 3:12", "1CO 13:4", "1CO 13:13", "PSA 119:105", "MAT 22:37", "JHN 13:34", "LUK 1:38", "MAT 16:24", "JHN 8:12", "JHN 20:29",
-  "2TI 1:7", "HEB 12:1", "REV 21:4", "PSA 34:8", "PSA 103:1", "MAT 7:7", "LUK 6:36", "JHN 6:35", "JHN 10:11", "ROM 8:38", "PHP 4:6", "1TH 5:17", "TIT 3:5",
-  "2PE 1:4", "JHN 17:3", "MAT 25:40", "LUK 23:42", "JHN 1:5", "WIS 3:1", "SIR 2:1", "MAT 5:9", "PSA 27:1", "ISA 53:5", "JHN 14:27", "ROM 6:4", "GAL 5:22", "1JN 1:9"];
 async function votd() {
-  const r = planRef(VOTD[dayOfYear() % VOTD.length]);
-  const v = await verseText(r.code, r.c, r.v);
-  if (!v) return null;
-  const [ec, ev] = toEng(v.code, v.c, v.v, v.i);
-  const f = await fathersFor(v.code, [ec]);
-  return { ...v, key: `${v.code}.${ec}.${ev}`, ref: `${shortChap(v.code, v.c)}:${v.v}`, fathers: f.filter((e) => covers(e, ec, ev)) };
+  const all = await get("votd.json");
+  const row = all[dayOfYear() % all.length];
+  const x = row[tr()] || row.lxx || row.web; if (!x) return null;
+  const [code, c, v, i, text] = x; const r = planRef(row.r);
+  const n = fCount(await fIdx(code), r.c, r.v);
+  return { code, c, v, i, text, ec: r.c, ev: r.v, n, key: `${code}.${r.c}.${r.v}`, ref: `${shortChap(code, c)}:${v}` };
 }
 const minsFor = (words) => { const m = Math.max(1, Math.round(words / 160)); return m <= 2 ? `${m}–${m + 1} min` : `${m} min`; };
 const listWords = (a) => (a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " or " + a[a.length - 1]);
@@ -350,18 +377,47 @@ async function renderToday() {
   setTop("", { hide: true });
   const t = today(); const h = new Date().getHours();
   const hello = paschalSeason() ? `Christ is Risen!<small>Indeed He is Risen!</small>` : `${h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"}${S.name ? ", " + esc(S.name) : ""}`;
-  view.innerHTML = `<div class="hello" style="padding-top:calc(16px + env(safe-area-inset-top,0px))"><h1>${hello}</h1><a class="streak-chip" href="#/you" aria-label="Your streak">${ICON.flame}${streak()}</a></div><div id="home"><div class="card empty">Loading…</div></div>`;
-  const [d, vd, P, PR] = await Promise.all([dayData(t), votd().catch(() => null), plans(), prayers()]);
+  view.innerHTML = `<div class="hello" style="padding-top:calc(16px + env(safe-area-inset-top,0px))"><h1>${hello}</h1><a class="streak-chip" href="#/you" aria-label="${streak()} day reading streak">${ICON.flame}${streak()}</a></div><div id="home"><div class="stack"><div class="card skel" style="height:190px"></div><div class="card skel" style="height:150px"></div></div></div>`;
+  const [vd, P, PR] = await Promise.all([votd().catch(() => null), plans(), prayers()]);
   const home = $("#home");
   const parts = [];
+  if (S.last.at && Date.now() - S.last.at < 7 * 864e5) parts.push(`<a class="card row help-row continue" href="#/read/${S.last.b}/${S.last.c}" style="flex-wrap:nowrap"><span class="icon">${ICON.book}</span><span class="grow"><span class="small muted" style="display:block">Continue reading</span><b>${esc(shortChap(S.last.b, S.last.c))}</b></span>${ICON.chev}</a>`);
   if (vd) {
     const liked = !!S.liked[vd.key];
     parts.push(`<div class="card votd"><div class="label">Verse of the day</div><div class="ref">${esc(vd.ref)} ${tr() === "lxx" && BY[vd.code].ot ? "LXX" : "WEB"}</div>
       <div class="vtext">${esc(vd.text)}</div>
-      <div class="acts"><button data-v="like" aria-pressed="${liked}">${ICON.heart}<span>${liked ? "Saved" : "Save"}</span></button><button data-v="fathers">${ICON.father}<span>${vd.fathers.length ? vd.fathers.length + " Fathers" : "Fathers"}</span></button><button data-v="image">${ICON.image}<span>Image</span></button><button data-v="read">${ICON.book}<span>Read</span></button></div></div>`);
+      <div class="acts"><button data-v="like" aria-pressed="${liked}">${ICON.heart}<span>${liked ? "Saved" : "Save"}</span></button><button data-v="fathers">${ICON.father}<span>${vd.n ? vd.n + " Fathers" : "Fathers"}</span></button><button data-v="image">${ICON.image}<span>Image</span></button><button data-v="read">${ICON.book}<span>Read</span></button></div></div>`);
   }
   const soon = memorialsSoon(1);
   if (soon.length) parts.push(`<a class="card memorial" href="#/names"><div class="label">Remember</div>${soon.map((m) => `<div style="margin-top:4px"><b>${esc(m.p.name)}</b>: ${esc(m.what)} ${m.d === t ? "today" : "tomorrow"}</div>`).join("")}<p class="small muted" style="margin:8px 0 0">Memory eternal. Give rest, O Lord, to the soul of Thy servant.</p></a>`);
+  parts.push(`<div class="stack" id="dayBox"><div class="card skel" style="height:170px"></div><div class="card skel" style="height:128px"></div></div>`);
+  const pr = h < 11 ? PR.find((p) => p.id === "morning") : h >= 18 ? PR.find((p) => p.id === "evening") : null;
+  const playDisc = (icon) => `<span style="position:relative;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.95);color:#111;display:grid;place-items:center">${icon.replace("<svg", '<svg style="width:20px;height:20px"')}</span>`;
+  if (pr) parts.push(`<a class="card guided" href="#/prayer/${pr.id}"><div class="txt"><div class="kind">${esc(pr.kind)}</div><h2>${esc(pr.title)}</h2><div class="dur">${ICON.play}${esc(pr.mins)}</div></div>${thumbArt("#2b2433", "halo", playDisc(ICON.pray))}</a>`);
+  parts.push(`<a class="card guided" href="#/rope"><div class="txt"><div class="kind">The Jesus Prayer</div><h2>Lord Jesus Christ, have mercy on me</h2><div class="dur">${ICON.play}${S.rope[t] ? `${S.rope[t]} today` : "Pray with a prayer rope"}</div></div>${thumbArt("#3a2f4f", "star", playDisc(ICON.beads))}</a>`);
+  parts.push(`<a class="card row help-row" href="#/help" style="flex-wrap:nowrap"><span class="grow"><b>Struggling with something?</b><span class="small muted" style="display:block">Lust, anger, worry, grief… see what the Fathers say</span></span>${ICON.chev}</a>`);
+  const active = P.plans.filter((p) => S.plans[p.id]?.started && !S.plans[p.id]?.finished);
+  if (active.length) parts.push(`<div class="sec-h"><h2>Your plans</h2><a href="#/plans?tab=mine">See all ${ICON.chev}</a></div><div class="list">${active.map((p) => { const n = nextDay(p); return planRowHTML(p, `Day ${n + 1}: ${p.days[n].title}`, `#/plan/${p.id}/${n + 1}`, "Continue"); }).join("")}</div>`);
+  else parts.push(`<div class="sec-h"><h2>Need a place to begin?</h2><a href="#/plans">Plans ${ICON.chev}</a></div><div class="scroller">${P.featured.map((id) => P.plans.find((p) => p.id === id)).map((p) => `<a class="hero-card" href="#/plan/${p.id}">${coverHTML(p.cover, "hero")}<div class="cap">${esc(p.title)}</div></a>`).join("")}</div>`);
+  parts.push(`<div class="sec-h"><h2>Badges</h2><a href="#/you">See all ${ICON.chev}</a></div><div class="scroller badges">${BADGES.slice().sort((a, b) => b.got() - a.got()).map(badgeHTML).join("")}</div>`);
+  home.innerHTML = `<div class="stack">${parts.join("")}</div>`;
+  dayData(t).then((d) => dayBox(d, t));
+  home.querySelectorAll("[data-badge]").forEach((b) => (b.onclick = () => (location.hash = "#/you")));
+  if (vd) {
+    const act = (k) => home.querySelector(`[data-v="${k}"]`);
+    act("like").onclick = () => {
+      if (S.liked[vd.key]) delete S.liked[vd.key]; else { S.liked[vd.key] = Date.now(); S.bm[vd.key] = S.bm[vd.key] || { at: Date.now(), ref: vd.ref, text: vd.text }; }
+      save(); act("like").setAttribute("aria-pressed", !!S.liked[vd.key]); act("like").querySelector("span").textContent = S.liked[vd.key] ? "Saved" : "Save";
+    };
+    act("fathers").onclick = async () => { const f = (await fathersFor(vd.code, [vd.ec])).filter((e) => covers(e, vd.ec, vd.ev)); openSheet(`<div class="sheet-h"><h3>The Fathers on ${esc(vd.ref)}</h3>${closeBtn}</div><div id="fl"></div>`, (b) => (f.length ? fathersList($("#fl", b), f) : ($("#fl", b).innerHTML = `<div class="empty">No comments on this verse yet.</div>`))); };
+    act("image").onclick = () => verseImage(vd.text, vd.ref);
+    act("read").onclick = () => (location.hash = `#/read/${vd.code}/${vd.c}?${vd.code === "PSA" && tr() === "lxx" ? "i=" + vd.i : "v=" + vd.v}`);
+  }
+}
+// The day's card and readings on Home, once the Church calendar has answered.
+function dayBox(d, t) {
+  const box = $("#dayBox"); if (!box) return;
+  const parts = [];
   const readings = d ? d.readings.map((r, i) => ({ r, i, ranges: readingRanges(r.verses), done: (S.read[t] || []).includes(`${t}:${i}`) })) : [];
   if (d) {
     const fast = d.fastLevel ? `<span class="pill fast">${esc(d.fast)}${d.fastException ? " · " + esc(d.fastException) : ""}</span>` : `<span class="pill">${esc(d.fast || "No fast")}</span>`;
@@ -372,36 +428,16 @@ async function renderToday() {
       <a class="cal-link" href="#/calendar"><span>${paschalSeason() ? `Day ${paschaDay() + 1} of Pascha` : `Pascha in ${nextPascha().days} days`}</span><span>Fasting calendar ${ICON.chev}</span></a></div>`);
     const art = [["#2f4a5c", "book"], ["#7a2d3a", "cross"], ["#6b8f5e", "wave"], ["#8a6a2f", "halo"]];
     readings.forEach(({ r, i, ranges, done }) => {
-      parts.push(`<a class="card guided" href="${readHash(wholeReading(ranges), { k: `${t}:${i}` })}"><div class="txt"><div class="kind">${esc(r.source)}${r.desc ? " · " + esc(r.desc) : ""}</div><h3>${esc(r.display.replace(/\./g, ":"))}</h3><div class="dur">${ICON.play}${minsFor(r.verses.length * 24)}<span data-meta="${i}"></span></div></div>
+      parts.push(`<a class="card guided" href="${readHash(wholeReading(ranges), { k: `${t}:${i}` })}"><div class="txt"><div class="kind">${esc(r.source)}${r.desc ? " · " + esc(r.desc) : ""}</div><h2>${esc(r.display.replace(/\./g, ":"))}</h2><div class="dur">${ICON.play}${minsFor(r.verses.length * 24)}<span data-meta="${i}"></span></div></div>
         ${thumbArt(art[i % 4][0], art[i % 4][1], done ? `<span class="done">${ICON.check}</span>` : "")}</a>`);
     });
   } else parts.push(`<div class="card empty">Can't reach the Church calendar right now.<br><br><button class="btn small" onclick="location.reload()">Try again</button></div>`);
-  const pr = h < 11 ? PR.find((p) => p.id === "morning") : h >= 18 ? PR.find((p) => p.id === "evening") : null;
-  const playDisc = (icon) => `<span style="position:relative;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.95);color:#111;display:grid;place-items:center">${icon.replace("<svg", '<svg style="width:20px;height:20px"')}</span>`;
-  if (pr) parts.push(`<a class="card guided" href="#/prayer/${pr.id}"><div class="txt"><div class="kind">${esc(pr.kind)}</div><h3>${esc(pr.title)}</h3><div class="dur">${ICON.play}${esc(pr.mins)}</div></div>${thumbArt("#2b2433", "halo", playDisc(ICON.pray))}</a>`);
-  parts.push(`<a class="card guided" href="#/rope"><div class="txt"><div class="kind">The Jesus Prayer</div><h3>Lord Jesus Christ, have mercy on me</h3><div class="dur">${ICON.play}${S.rope[t] ? `${S.rope[t]} today` : "Pray with a prayer rope"}</div></div>${thumbArt("#3a2f4f", "star", playDisc(ICON.beads))}</a>`);
-  parts.push(`<a class="card row help-row" href="#/help" style="flex-wrap:nowrap"><span class="grow"><b>Struggling with something?</b><span class="small muted" style="display:block">Lust, anger, worry, grief… see what the Fathers say</span></span>${ICON.chev}</a>`);
-  const active = P.plans.filter((p) => S.plans[p.id]?.started && !S.plans[p.id]?.finished);
-  if (active.length) parts.push(`<div class="sec-h"><h2>Your plans</h2><a href="#/plans?tab=mine">See all ${ICON.chev}</a></div><div class="list">${active.map((p) => { const n = nextDay(p); return planRowHTML(p, `Day ${n + 1}: ${p.days[n].title}`, `#/plan/${p.id}/${n + 1}`, "Continue"); }).join("")}</div>`);
-  else parts.push(`<div class="sec-h"><h2>Need a place to begin?</h2><a href="#/plans">Plans ${ICON.chev}</a></div><div class="scroller">${P.featured.map((id) => P.plans.find((p) => p.id === id)).map((p) => `<a class="hero-card" href="#/plan/${p.id}">${coverHTML(p.cover, "hero")}<div class="cap">${esc(p.title)}</div></a>`).join("")}</div>`);
-  parts.push(`<div class="sec-h"><h2>Badges</h2><a href="#/you">See all ${ICON.chev}</a></div><div class="scroller badges">${BADGES.slice().sort((a, b) => b.got() - a.got()).map(badgeHTML).join("")}</div>`);
-  home.innerHTML = `<div class="stack">${parts.join("")}</div>`;
-  home.querySelectorAll("[data-badge]").forEach((b) => (b.onclick = () => (location.hash = "#/you")));
-  if (vd) {
-    const act = (k) => home.querySelector(`[data-v="${k}"]`);
-    act("like").onclick = () => {
-      if (S.liked[vd.key]) delete S.liked[vd.key]; else { S.liked[vd.key] = Date.now(); S.bm[vd.key] = S.bm[vd.key] || { at: Date.now(), ref: vd.ref, text: vd.text }; }
-      save(); act("like").setAttribute("aria-pressed", !!S.liked[vd.key]); act("like").querySelector("span").textContent = S.liked[vd.key] ? "Saved" : "Save";
-    };
-    act("fathers").onclick = () => openSheet(`<div class="sheet-h"><h3>The Fathers on ${esc(vd.ref)}</h3>${closeBtn}</div><div id="fl"></div>`, (b) => (vd.fathers.length ? fathersList($("#fl", b), vd.fathers) : ($("#fl", b).innerHTML = `<div class="empty">No comments on this verse yet.</div>`)));
-    act("image").onclick = () => verseImage(vd.text, vd.ref);
-    act("read").onclick = () => (location.hash = `#/read/${vd.code}/${vd.c}?${vd.code === "PSA" && tr() === "lxx" ? "i=" + vd.i : "v=" + vd.v}`);
-  }
+  box.innerHTML = parts.join("");
   readings.forEach(async ({ ranges, i }) => {
-    const r = ranges[0]; const code = r.code === "DAN" ? "DAG" : r.code;
-    const list = await fathersFor(code, ranges.map((x) => x.c));
-    const n = list.filter((e) => ranges.some((x) => e.ch >= x.c && e.ch <= x.c2 && e.v[1] >= (e.ch === x.c ? x.v : 1) && e.v[0] <= (e.ch === x.c2 ? x.v2 : 999))).length;
-    const el = home.querySelector(`[data-meta="${i}"]`); if (el && n) el.textContent = ` · ${n} from the Fathers`;
+    const code = ranges[0].code === "DAN" ? "DAG" : ranges[0].code;
+    const idx = await fIdx(code); const seen = new Set();
+    for (const x of ranges) for (let ch = x.c; ch <= x.c2; ch++) (idx[ch] || []).forEach((e, k) => { if (fShown(e) && e[1] >= (ch === x.c ? x.v : 1) && e[0] <= (ch === x.c2 ? x.v2 : 999)) seen.add(ch + ":" + k); });
+    const el = box.querySelector(`[data-meta="${i}"]`); if (el && seen.size) el.textContent = ` · ${seen.size} from the Fathers`;
   });
 }
 
@@ -437,7 +473,7 @@ async function renderReader(code, c, q) {
   }
   const n = chapters(code);
   c = Math.min(Math.max(1, c), n);
-  S.last = { b: code, c }; save();
+  S.last = { b: code, c, at: Date.now() }; save();
   const passage = q.get("k") || q.get("plan");
   setTop(chapLabel(code, c), { back: !!passage, left: `<span class="reader-top"><button class="pill-btn" id="pick">${esc(shortChap(code, c))}</button><button class="pill-btn" id="trBtn">${trName()}</button></span>`,
     acts: `<button class="iconbtn" id="listen" aria-label="Listen">${ICON.speaker}</button><button class="iconbtn" id="goSearch" aria-label="Search">${ICON.search}</button><button class="iconbtn" id="aa" aria-label="Text and theme">${ICON.aa}</button>` });
@@ -463,8 +499,10 @@ async function renderReader(code, c, q) {
   }
   const greekHTML = (v, i) => { const t = grk && (Array.isArray(grk) ? grk[i] : grk.get(v)); if (!t) return "";
     return `<div class="grk" lang="grc">${esc(t).replace(/([^\s@,.;·:()\[\]«»]+)@(\d+)/gu, '<span class="w" data-s="$2">$1</span>')}</div>`; };
-  const fathers = await fathersFor(code, eng.map((x) => x[0]));
-  const has = (i) => { const [ec, ev] = eng[i]; return ev > 0 && fathers.some((e) => covers(e, ec, ev)); };
+  const idx = await fIdx(code);
+  const has = (i) => { const [ec, ev] = eng[i]; return ev > 0 && fCount(idx, ec, ev) > 0; };
+  const nF = [...new Set(eng.map((x) => x[0]))].reduce((n, ch) => n + (idx[ch] || []).filter(fShown).length, 0);
+  let fathersP = null; const loadFathers = () => (fathersP = fathersP || fathersFor(code, eng.map((x) => x[0])));
   const vi = q.get("i") != null ? +q.get("i") : q.get("v") ? verses.findIndex(([v]) => v === +q.get("v")) : -1;
   const ti = q.get("ti") != null ? +q.get("ti") : q.get("to") ? verses.findIndex(([v]) => v === +q.get("to")) : vi;
   const inPassage = (i) => vi < 0 || (i >= vi && i <= (ti < 0 ? verses.length - 1 : ti));
@@ -472,18 +510,25 @@ async function renderReader(code, c, q) {
   const dim = passage && vi >= 0;
   view.innerHTML = `<div class="reader">
     <div class="ch-title">${esc(chapLabel(code, c))}</div>
-    <div class="ch-sub">${tr() === "lxx" && BY[code].ot ? "Septuagint · Brenton" : "World English Bible"}${grk ? " · Greek" : ""}${fathers.length ? ` · <span style="color:var(--accent)">●</span> ${fathers.length} from the Fathers` : ""}</div>
+    <div class="ch-sub">${tr() === "lxx" && BY[code].ot ? "Septuagint · Brenton" : "World English Bible"}${grk ? " · Greek" : ""}${nF ? ` · <span style="color:var(--accent)">●</span> ${nF} from the Fathers` : ""}</div>
     <div id="verses" class="${grk ? "parallel" : ""}">${verses.map(([v, t], i) => `<span class="verse${has(i) ? " has" : ""}${S.hl[keyOf(i)] ? " hl-" + S.hl[keyOf(i)] : ""}${dim && !inPassage(i) ? " dim" : ""}${!passage && i === vi ? " sel" : ""}" data-i="${i}"><sup>${v}</sup>${esc(t)}${S.notes[keyOf(i)] ? `<span class="note-mark">${ICON.note}</span>` : ""} </span>${greekHTML(v, i)}`).join("")}</div>
-    ${fathers.length ? `<div class="ch-fathers"><button class="btn secondary wide" id="allF">${ICON.father} What the Fathers said on this ${code === "PSA" ? "psalm" : "chapter"}</button></div>` : ""}
+    ${nF ? `<div class="ch-fathers"><button class="btn secondary wide" id="allF">${ICON.father} What the Fathers said on this ${code === "PSA" ? "psalm" : "chapter"}</button></div>` : ""}
     ${passage ? `<div class="passage-bar"><button class="btn red wide" id="doneP">${q.get("k") ? ICON.check + " Mark as read" : "Back to the plan"}</button></div>` : ""}
   </div>
   <div class="float-nav"><button id="prev" aria-label="Previous chapter" ${c <= 1 && !prevBook(code) ? "disabled" : ""}>${ICON.left}</button><button class="play" id="play" aria-label="Listen to this chapter">${ICON.play}</button><button id="next" aria-label="Next chapter" ${c >= n && !nextBook(code) ? "disabled" : ""}>${ICON.right}</button></div>`;
   const box = $("#verses");
-  box.onclick = (e) => { const w = e.target.closest(".w"); if (w) { const gi = w.closest(".grk"), vi2 = gi && gi.previousElementSibling ? +gi.previousElementSibling.dataset.i : -1; wordSheet(w.textContent, w.dataset.s, vi2 >= 0 ? `${shortChap(code, c)}:${verses[vi2][0]}` : ""); return; } const el = e.target.closest(".verse"); if (el) verseSheet(code, c, verses, +el.dataset.i, eng, fathers); };
-  if ($("#allF")) $("#allF").onclick = () => openSheet(`<div class="sheet-h"><h3>The Fathers on ${esc(chapLabel(code, c))}</h3>${closeBtn}</div><div id="fl"></div>`, (b) => fathersList($("#fl", b), fathers));
+  box.onclick = (e) => { const w = e.target.closest(".w"); if (w) { const gi = w.closest(".grk"), vi2 = gi && gi.previousElementSibling ? +gi.previousElementSibling.dataset.i : -1; wordSheet(w.textContent, w.dataset.s, vi2 >= 0 ? `${shortChap(code, c)}:${verses[vi2][0]}` : ""); return; } const el = e.target.closest(".verse"); if (el) verseSheet(code, c, verses, +el.dataset.i, eng, loadFathers, idx); };
+  if ($("#allF")) $("#allF").onclick = async () => { const fathers = await loadFathers(); openSheet(`<div class="sheet-h"><h3>The Fathers on ${esc(chapLabel(code, c))}</h3>${closeBtn}</div><div id="fl"></div>`, (b) => fathersList($("#fl", b), fathers)); };
   const keep = q.get("plan") ? `?plan=${q.get("plan")}` : "";
-  $("#prev").onclick = () => (location.hash = (c > 1 ? `#/read/${code}/${c - 1}` : `#/read/${prevBook(code)}/${chapters(prevBook(code))}`) + keep);
-  $("#next").onclick = () => (location.hash = (c < n ? `#/read/${code}/${c + 1}` : `#/read/${nextBook(code)}/1`) + keep);
+  $("#prev").onclick = () => { slide = "from-l"; location.hash = (c > 1 ? `#/read/${code}/${c - 1}` : `#/read/${prevBook(code)}/${chapters(prevBook(code))}`) + keep; };
+  $("#next").onclick = () => { slide = "from-r"; location.hash = (c < n ? `#/read/${code}/${c + 1}` : `#/read/${nextBook(code)}/1`) + keep; };
+  let t0 = null;
+  box.addEventListener("touchstart", (e) => { const x = e.touches[0]; t0 = e.touches.length === 1 && x.clientX > 24 && x.clientX < innerWidth - 24 ? { x: x.clientX, y: x.clientY, at: Date.now() } : null; }, { passive: true });
+  box.addEventListener("touchend", (e) => {
+    if (!t0) return; const x = e.changedTouches[0], dx = x.clientX - t0.x, dy = x.clientY - t0.y, quick = Date.now() - t0.at < 700; t0 = null;
+    if (!quick || Math.abs(dx) < 70 || Math.abs(dy) > Math.abs(dx) * 0.6 || String(window.getSelection())) return;
+    const b = $(dx < 0 ? "#next" : "#prev"); if (b && !b.disabled) b.click();
+  });
   const toggle = () => (speaking ? stopSpeaking() : speak(verses, dim ? vi : 0, dim ? ti : -1));
   $("#play").onclick = toggle; $("#listen").onclick = toggle;
   if ($("#doneP")) $("#doneP").onclick = () => {
@@ -557,14 +602,14 @@ async function wordSheet(word, n, ref = "", onChange = null) {
     };
   });
 }
-function verseSheet(code, c, verses, i, eng, fathers) {
+function verseSheet(code, c, verses, i, eng, loadFathers, idx) {
   document.querySelectorAll(".verse.sel").forEach((v) => v.classList.remove("sel"));
   const el = document.querySelector(`.verse[data-i="${i}"]`); if (el) el.classList.add("sel");
   const [v, text] = verses[i];
   const [ec, ev] = eng[i];
   const key = `${code}.${ec}.${ev}`;
   const ref = `${shortChap(code, c)}:${v}`;
-  const mine = fathers.filter((e) => ev > 0 && covers(e, ec, ev));
+  const nMine = ev > 0 ? fCount(idx, ec, ev) : 0, nChapter = (idx[ec] || []).filter(fShown).length;
   const hlBtn = (k) => `<button data-hl="${k}" aria-pressed="${S.hl[key] === k}" style="background:var(--hl-${k})" aria-label="Highlight"></button>`;
   openSheet(`<div class="sheet-h"><div><h3>${esc(ref)}</h3><div class="vtext">${esc(text)}</div></div>${closeBtn}</div>
     <div class="swatches">${hlBtn("y")}${hlBtn("g")}${hlBtn("b")}${hlBtn("p")}<button data-hl="" aria-label="No highlight" style="background:var(--surface);display:grid;place-items:center">${ICON.x.replace("<svg", '<svg style="width:14px;height:14px"')}</button></div>
@@ -574,12 +619,13 @@ function verseSheet(code, c, verses, i, eng, fathers) {
       <button data-a="image">${ICON.image}<span>Image</span></button>
       <button data-a="copy">${ICON.copy}<span>Copy</span></button>
       <button data-a="share">${ICON.share}<span>Share</span></button></div>
-    <a class="btn red wide" id="study" href="#/verse/${code}/${ec}/${ev}" style="margin-top:12px">Study this verse: Greek, similar verses, the Fathers</a>
+    <a class="btn red wide" id="study" href="#/verse/${code}/${ec}/${ev}" style="margin-top:12px">Study this verse</a>
     <div class="swipe-hint">Swipe up for more</div>
     <div id="noteBox" ${S.notes[key] ? "" : "hidden"} style="margin-top:10px"><textarea id="noteText" rows="3" placeholder="Your note">${esc(S.notes[key] || "")}</textarea></div>
-    <div class="sec-h" style="margin-top:22px"><h2>What the Fathers said</h2><span class="muted small">${mine.length || ""}</span></div>
-    <div id="fl">${mine.length ? "" : `<div class="empty small">No comments from the Fathers on this verse yet.${fathers.length ? " Try the whole chapter." : ""}</div>`}</div>`, (b) => {
-    if (mine.length) fathersList($("#fl", b), mine);
+    <div class="sec-h" style="margin-top:22px"><h2>What the Fathers said</h2><span class="muted small">${nMine || ""}</span></div>
+    <div id="fl">${nMine ? `<div class="skel" style="height:120px"></div>` : `<div class="empty small">No comments from the Fathers on this verse yet.${nChapter ? " Try the whole chapter." : ""}</div>`}</div>`, (b) => {
+    const seq = sheetSeq;
+    if (nMine) loadFathers().then((f) => { if (seq === sheetSeq) fathersList($("#fl", b), f.filter((e) => covers(e, ec, ev))); });
     let y0 = null; const inner = b.closest(".sheet-in") || b;
     inner.ontouchstart = (e) => { y0 = inner.scrollTop <= 0 ? e.touches[0].clientY : null; };
     inner.ontouchend = (e) => { if (y0 != null && y0 - e.changedTouches[0].clientY > 70 && inner.scrollTop <= 0) location.hash = `#/verse/${code}/${ec}/${ev}`; y0 = null; };
@@ -620,7 +666,7 @@ async function renderVerse(code, ec, ev) {
   if (!vt) { location.replace(`#/read/${code}/${ec}`); return; }
   const ref = `${shortChap(vt.code, vt.c)}:${vt.v}`;
   setTop(ref, { back: true });
-  const [grk, xr, fathers, P] = await Promise.all([greekVerse(code, ec, ev), getOr(`xref/${code}.json`, {}), fathersFor(code, [ec]), plans()]);
+  const [grk, xr, fathers, P] = await Promise.all([greekVerse(code, ec, ev), (BY[code].xref ? getOr(`xref/${code}.json`, {}) : {}), fathersFor(code, [ec]), plans()]);
   const mine = fathers.filter((e) => covers(e, ec, ev));
   const words = grk ? [...grk.matchAll(/([^\s@,.;·:()\[\]«»]+)@(\d+)/gu)].map((m) => ({ w: m[1], n: m[2] })) : [];
   const lex = {}; await Promise.all([...new Set(words.map((w) => w.n))].map(async (n) => (lex[n] = await lexEntry(n))));
@@ -771,7 +817,7 @@ async function renderPlan(id) {
   view.querySelectorAll("[data-d]").forEach((b) => (b.onclick = () => (location.hash = `#/plan/${id}/${b.dataset.d}`)));
 }
 async function renderPlanDay(id, d) {
-  const P = await plans(); const p = P.plans.find((x) => x.id === id);
+  const p = await get(`plans/${id}.json`).catch(() => null);
   if (!p || !p.days[d - 1]) { location.replace(`#/plan/${id}`); return; }
   const day = p.days[d - 1];
   setTop(`Day ${d} of ${p.days.length}`, { back: true });
@@ -1059,9 +1105,9 @@ function renderNames() {
 async function renderPrayers() {
   setTop("Prayers", { back: true });
   const PR = await prayers();
-  view.innerHTML = `<div class="stack">${PR.map((p, i) => `<a class="card guided" href="#/prayer/${p.id}"><div class="txt"><div class="kind">${esc(p.kind)}</div><h3>${esc(p.title)}</h3><div class="dur">${ICON.play}${esc(p.mins)}</div></div>${thumbArt(PALETTE[(i + 3) % PALETTE.length], ["halo", "star", "wave", "flame", "cross"][i % 5])}</a>`).join("")}
+  view.innerHTML = `<div class="stack">${PR.map((p, i) => `<a class="card guided" href="#/prayer/${p.id}"><div class="txt"><div class="kind">${esc(p.kind)}</div><h2>${esc(p.title)}</h2><div class="dur">${ICON.play}${esc(p.mins)}</div></div>${thumbArt(PALETTE[(i + 3) % PALETTE.length], ["halo", "star", "wave", "flame", "cross"][i % 5])}</a>`).join("")}
     <a class="card row help-row" href="#/names" style="flex-wrap:nowrap"><span class="grow"><b>Prayer list</b><span class="small muted" style="display:block">${S.names.length ? `${S.names.length} ${S.names.length === 1 ? "name" : "names"}` : "The living and the departed you pray for"}</span></span>${ICON.chev}</a>
-    <a class="card guided" href="#/rope"><div class="txt"><div class="kind">The Jesus Prayer</div><h3>Pray with a prayer rope</h3><div class="dur">${ICON.play}${ropeTotal().toLocaleString()} prayed so far</div></div>${thumbArt("#3a2f4f", "halo", `<span style="position:relative;color:#fff">${ICON.beads.replace("<svg", '<svg style="width:40px;height:40px"')}</span>`)}</a></div>
+    <a class="card guided" href="#/rope"><div class="txt"><div class="kind">The Jesus Prayer</div><h2>Pray with a prayer rope</h2><div class="dur">${ICON.play}${ropeTotal().toLocaleString()} prayed so far</div></div>${thumbArt("#3a2f4f", "halo", `<span style="position:relative;color:#fff">${ICON.beads.replace("<svg", '<svg style="width:40px;height:40px"')}</span>`)}</a></div>
     <p class="small muted" style="margin:18px 4px">English versions made for this app from the traditional texts. Pray as your parish and your priest guide you.</p>`;
 }
 async function renderPrayer(id) {
@@ -1233,17 +1279,26 @@ function reminder(time) {
 async function saveOffline() {
   const b = $("#offline"); b.setAttribute("disabled", ""); const codes = order(); let n = 0;
   for (const code of codes) { try { await get(`bible/${tr()}/${code}.json`); } catch (e) { /* keep going */ } n++; $("#offMsg").textContent = `Saving… ${Math.round((100 * n) / codes.length)}%`; }
-  await Promise.all([plans(), lib(), prayers()]).catch(() => {});
+  await Promise.all([plans(), lib(), prayers(), get("votd.json"), helpIndex()]).catch(() => {});
+  await Promise.all((await plans()).plans.map((p) => getOr(`plans/${p.id}.json`, null)));
   $("#offMsg").textContent = "Saved. The Bible now works without internet."; b.removeAttribute("disabled");
 }
 
 // ---------------------------------------------------------------- routes
+const SCROLL = {}, STACK = []; let lastHash = "", slide = "";
 async function route() {
   closeSheet();
   if (!location.hash.startsWith("#/read")) stopSpeaking();
   const [path, qs] = (location.hash.slice(1) || "/today").split("?");
   const q = new URLSearchParams(qs || "");
-  const p = path.split("/").filter(Boolean);
+  const p = path.split("/").filter(Boolean).map((x) => { try { return decodeURIComponent(x); } catch (e) { return x; } });
+  // Going back to the page before: put it back where it was.
+  const h = location.hash || "#/today";
+  if (lastHash) SCROLL[lastHash] = window.scrollY;
+  const back = STACK.length > 1 && STACK[STACK.length - 2] === h;
+  if (back) STACK.pop(); else if (STACK[STACK.length - 1] !== h) STACK.push(h);
+  if (STACK.length > 50) STACK.shift();
+  lastHash = h;
   const tab = { today: "today", bible: "bible", read: "bible", plans: "plans", plan: "plans", discover: "discover", fathers: "discover", father: "discover", prayers: "discover", prayer: "discover", rope: "discover", search: "discover", help: "discover", names: "you", calendar: "today", verse: "bible", you: "you", settings: "you", more: "you", mine: "you" }[p[0]] || "today";
   document.querySelectorAll(".tabs a").forEach((a) => a.setAttribute("aria-current", a.dataset.tab === tab ? "page" : "false"));
   try {
@@ -1272,7 +1327,10 @@ async function route() {
     console.error(e);
     view.innerHTML = `<div class="card empty">Something went wrong loading this page. Check your connection and try again.<br><br><button class="btn small" onclick="location.reload()">Reload</button></div>`;
   }
-  if (p[0] !== "read") window.scrollTo(0, 0);
+  if (back && SCROLL[h] != null) { const y = SCROLL[h]; setTimeout(() => window.scrollTo(0, y), 40); }
+  else if (p[0] !== "read") window.scrollTo(0, 0);
+  if (motion()) { view.classList.remove("enter", "from-l", "from-r"); void view.offsetWidth; view.classList.add("enter"); if (slide) view.classList.add(slide); }
+  slide = "";
 }
 window.addEventListener("hashchange", route);
 route();
