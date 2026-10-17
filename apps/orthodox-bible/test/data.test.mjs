@@ -92,3 +92,38 @@ test("the small files for a fast start match the full ones", () => {
   const psalm = data("votd.json").find((v) => v.r === "PSA 51:10");
   assert.equal(psalm.lxx[1], 50, "Psalm 51 is Psalm 50 in the Septuagint");
 });
+
+test("the search files hold every verse of each Bible", () => {
+  for (const tr of ["lxx", "web"]) {
+    const lines = readFileSync(new URL(`../public/data/search/${tr}.txt`, import.meta.url), "utf8").trim().split("\n");
+    let n = 0;
+    for (const b of Object.values(books)) if (b["ch_" + tr]) for (const [, vs] of data(`bible/${tr}/${b.code}.json`)) n += vs.length;
+    assert.equal(lines.length, n, tr);
+    assert.match(lines.find((l) => l.startsWith("JHN\t3\t16\t")), /God so loved the world/);
+  }
+});
+
+test("every question about the faith has an answer, real verses and the Fathers", () => {
+  const plans = new Set(data("plans.json").plans.map((p) => p.id));
+  const authors = data("fathers/authors.json");
+  const index = data("faith/index.json");
+  assert.ok(index.length >= 90);
+  assert.equal(new Set(index.map((t) => t.id)).size, index.length, "question ids are unique");
+  for (const t of index) {
+    const f = data(`faith/${t.id}.json`);
+    assert.ok(f.about.length > 150, `${t.id}: answer too short`);
+    assert.ok(f.verses.length >= 4, t.id);
+    for (const ref of f.verses) {
+      const m = ref.match(/^(\w+) (\d+):(\d+)(?:-(\d+))?$/);
+      assert.ok(m, `${t.id}: bad reference ${ref}`);
+      const book = data(`bible/web/${m[1]}.json`), ch = book.find((c) => c[0] === +m[2]);
+      assert.ok(ch && ch[1].some(([v]) => v === +m[3]), `${t.id}: ${ref} isn't in the Bible`);
+    }
+    assert.ok(t.cat, `${t.id}: no section`);
+    if (f.quotes.length) assert.ok(f.quotes.length >= 10, `${t.id}: only ${f.quotes.length} passages`);
+    for (const q of f.quotes) assert.ok(["saint", "blessed", "western"].includes(authors[q.a].label), `${t.id}: ${q.a}`);
+    for (const p of f.plans) assert.ok(plans.has(p), `${t.id}: no plan ${p}`);
+    if (f.link) assert.match(f.link[0], /^#\/[a-z]+(\/[a-z-]+)?$/, t.id);
+    if (f.link && f.link[0].startsWith("#/faith/")) assert.ok(index.some((x) => `#/faith/${x.id}` === f.link[0]), `${t.id}: links to a missing question`);
+  }
+});

@@ -20,11 +20,13 @@ Writes public/data/:
   library.json               every Father on New Advent, with an introduction and links
   plans.json                 the reading plans
   help/<id>.json             help for struggles: Scripture, the Fathers and a plan for each
+  faith/<id>.json            questions about the faith: a short answer, Scripture and the Fathers
   bible/grc/<BOOK>.json      the Greek; New Testament words carry Strong's numbers (word@3056)
   lex/<n>.json               Greek word meanings, by thousands of Strong's numbers
   fathers/idx/<BOOK>.json    which verses the Fathers wrote on (for the red dots and counts)
   votd.json                  the verses of the day, with their text in both Bibles
   plans/<id>.json            each plan in full (plans.json keeps only titles and readings)
+  search/<tr>.txt            each Bible in one file for searching
   xref/<BOOK>.json           similar verses for each verse, best first
 
 Only public-domain translations of the Fathers are kept: the 19th-century Ante-Nicene and
@@ -118,6 +120,14 @@ for tr, books in texts.items():
     for code, chapters in books.items():
         write(f"bible/{tr}/{code}.json", chapters)
 write("books.json", {"books": books_meta, "sections": SECTIONS})
+
+# Search: the whole of each Bible in one plain file (book, chapter, verse, text on each line), so a
+# search is one download the phone keeps, not one per book.
+for tr in texts:
+    lines = [f"{code}\t{c}\t{v}\t{t}" for code, *_ in BOOKS if code in texts[tr] for c, vs in texts[tr][code] for v, t in vs]
+    os.makedirs(os.path.join(OUT, "search"), exist_ok=True)
+    with open(os.path.join(OUT, "search", f"{tr}.txt"), "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
 
 
 
@@ -342,8 +352,11 @@ print(f"Library: {len(lib)} Fathers and writings. Plans: {len(all_plans)}, {sum(
 import help as helpdata  # noqa: E402
 
 LABEL_ORDER = {"saint": 0, "western": 1, "blessed": 2}
-help_index, help_plans = [], []
-for t in helpdata.TOPICS:
+
+
+def fathers_on(t):
+    """The Fathers' best passages on a topic: comments on its verses first, then passages that
+    use its words most, saints first, at most four from any one Father."""
     pat = re.compile(r"\b(" + "|".join(re.escape(k) for k in t["keys"]) + r")\b", re.I)
     # The topic's own verses, so comments written on them come first.
     own = {}
@@ -376,6 +389,12 @@ for t in helpdata.TOPICS:
         quotes.append(q)
         if len(quotes) >= 28:
             break
+    return quotes
+
+
+help_index, help_plans = [], []
+for t in helpdata.TOPICS:
+    quotes = fathers_on(t)
     out = {k: t[k] for k in ("id", "name", "color", "about", "verses", "plans") if k in t}
     out.update({"safety": t.get("safety"), "link": t.get("link"), "quotes": quotes, "plan": "help-" + t["id"]})
     write(f"help/{t['id']}.json", out)
@@ -404,6 +423,19 @@ for t in helpdata.TOPICS:
                        "cover": {"bg": t["color"], "t": t["name"], "s": "7 days with the Fathers", "style": "serif", "motif": "halo"}})
     print(f"Help: {t['id']}: {len(quotes)} passages")
 write("help/index.json", help_index)
+
+# Questions about the faith: the same, without a plan.
+import faith  # noqa: E402
+faith_index = []
+CAT_NAME = {c[0]: c[1] for c in faith.CATEGORIES}
+for t in faith.TOPICS:
+    out = {k: t[k] for k in ("id", "name", "color", "about", "verses", "plans") if k in t}
+    # A few practical questions have no good passages in the Fathers; they leave that part out.
+    out.update({"link": t.get("link"), "safety": t.get("safety"), "quotes": fathers_on(t) if t.get("fathers", True) else []})
+    write(f"faith/{t['id']}.json", out)
+    faith_index.append({"id": t["id"], "name": t["name"], "color": t["color"], "find": t["find"], "cat": CAT_NAME[t["cat"]]})
+    print(f"Faith: {t['id']}: {len(out['quotes'])} passages")
+write("faith/index.json", faith_index)
 plans_json = json.load(open(os.path.join(OUT, "plans.json"), encoding="utf-8"))
 plans_json["plans"] += help_plans
 plans_json["categories"]["help"] = "Help for struggles"

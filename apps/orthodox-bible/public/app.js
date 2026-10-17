@@ -109,6 +109,7 @@ const plans = () => get("plans.json");
 const lib = () => get("library.json");
 const prayers = () => get("prayers.json");
 const helpIndex = () => get("help/index.json");
+const faithIndex = () => get("faith/index.json");
 const tr = () => S.settings.tr;
 const trName = (t = tr()) => (t === "lxx" ? "LXX" : "WEB");
 const chapters = (code, t = tr()) => BY[code]?.["ch_" + t] || 0;
@@ -860,15 +861,17 @@ function planReadHash(r, numbering, id, d) {
 const COUNCIL_IDS = ["nicaea1", "constantinople1", "ephesus", "chalcedon", "constantinople2", "constantinople3", "nicaea2"];
 async function renderDiscover() {
   setTop("");
-  const [P, L, PR, H] = await Promise.all([plans(), lib(), prayers(), helpIndex()]);
+  const [P, L, PR, H, F] = await Promise.all([plans(), lib(), prayers(), helpIndex(), faithIndex()]);
   const saints = L.filter((a) => a.label === "saint");
   view.innerHTML = `<div class="big-title">Discover</div>
-    <a href="#/search" style="display:block"><input type="search" placeholder="Search the Bible" readonly style="cursor:pointer;pointer-events:none" aria-label="Search the Bible"></a>
+    <a href="#/search" style="display:block"><input type="search" placeholder="Search the Bible or ask a question" readonly style="cursor:pointer;pointer-events:none" aria-label="Search the Bible"></a>
     <div class="card help-card"><h3>What are you struggling with?</h3><p class="small muted">Scripture, the Fathers and a plan for it.</p><div id="dhelp"></div></div>
     <div class="quick" style="margin-top:14px">
       <a href="#/fathers">${ICON.father}The Fathers</a><a href="#/plans?topic=councils">${ICON.dome}The Councils</a>
       <a href="#/prayers">${ICON.pray}Prayers</a><a href="#/rope">${ICON.beads}Jesus Prayer</a>
       <a href="#/calendar">${ICON.cross}Fasting calendar</a><a href="#/names">${ICON.heart}Prayer list</a></div>
+    <div class="sec-h"><h2>Questions about the faith</h2><a href="#/faith">See all ${ICON.chev}</a></div>
+    <div class="list">${["eucharist", "icons", "theotokos", "confession", "fasting", "salvation"].map((id) => F.find((t) => t.id === id)).filter(Boolean).map((t) => topicRow(t, "faith", false)).join("")}</div>
     <div class="sec-h"><h2>Topics</h2><a href="#/plans">See all ${ICON.chev}</a></div>
     <div class="tiles">${P.topics.map((t) => `<a class="tile" href="#/plans?topic=${t.id}" style="background:${t.bg}">${esc(t.name)}</a>`).join("")}</div>
     <div class="sec-h"><h2>The Holy Fathers</h2><a href="#/fathers">See all ${ICON.chev}</a></div>
@@ -914,30 +917,44 @@ async function renderFather(id) {
 // ---------------------------------------------------------------- help for struggles
 const DANGER = /suicid|kill (my ?self|me)|end (it all|my life)|self.?harm|hurt(ing)? myself|want(ed)? to die|don.?t want to live/i;
 const LIFELINE = "If you are thinking of harming yourself, please call someone now: in Australia, Lifeline on 13 11 14, or your local emergency number. Tell your priest and someone you trust.";
-function helpFind(index, q) {
-  const skip = /^(struggl\w*|with|have|feel\w*|really|help|need|and|the|from|about|lot|very|keep|always)$/;
-  const words = (q.toLowerCase().match(/[a-z]+/g) || []).filter((w) => w.length > 2 && !skip.test(w));
+// Words that don't say what a question is about.
+const STOP = /^(what|whats|why|how|who|whom|when|where|which|is|are|was|were|be|been|do|does|did|can|could|should|would|will|shall|may|might|must|the|an|of|to|in|on|at|for|from|with|about|and|or|but|not|it|its|this|that|these|those|me|my|we|us|our|you|your|they|them|their|he|him|his|she|her|orthodox|christian|christians|believe|believes|mean|means|meaning|tell|explain|really|have|has|had|need|feel|feeling|keep|always|lot|very|struggle|struggling|struggles|help|get|go|use|say|says|become|make|there|any|some)$/;
+const qWords = (q) => q.toLowerCase().replace(/[^a-z0-9' ]+/g, " ").split(" ").map((w) => w.replace(/^'+|'+$/g, "")).filter(Boolean);
+// The struggles or questions a search is about, best first: whole phrases count most, then words.
+function topicFind(index, q, min = 1, useNames = true) {
+  const all = qWords(q), line = " " + all.join(" ") + " ";
+  let words = all.filter((w) => w.length > 2 && !STOP.test(w));
+  if (!words.length) words = all.filter((w) => w.length > 2); // "orthodox?" on its own
   return index.map((t) => {
     let n = 0;
-    const terms = [...t.find, ...t.name.toLowerCase().split(/\W+/).filter((w) => w.length > 3)];
-    for (const w of words) for (const f of terms) { if (f === w) n += 3; else if (w.length > 3 && (f.startsWith(w) || w.startsWith(f))) n += 1; }
+    // A longer phrase is more specific: "church fathers" beats "the church".
+    for (const f of t.find) if (f.includes(" ") && line.includes(" " + f + " ")) { const k = f.split(" ").filter((w) => w.length > 2 && !STOP.test(w)).length || 1; n += 4 * k * k + 2; }
+    const terms = [...t.find.filter((f) => !f.includes(" ")), ...(useNames ? t.name.toLowerCase().split(/[^a-z]+/).filter((w) => w.length > 3 && !STOP.test(w)) : [])];
+    for (const w of words) for (const f of terms) { if (f === w) n += 3; else if (w.length > 3 && f.length > 3 && (f.startsWith(w) || w.startsWith(f))) n += 1; }
     return [n, t];
-  }).filter((x) => x[0]).sort((a, b) => b[0] - a[0]).map((x) => x[1]);
+  }).filter((x) => x[0] >= min).sort((a, b) => b[0] - a[0]).map((x) => x[1]);
 }
+const helpFind = (index, q) => topicFind(index, q);
+const KINDS = {
+  help: { title: "Help for struggles", sub: "Scripture, the Fathers and a 7-day plan", hint: "e.g. lust, anger, worry, grief", names: true },
+  faith: { title: "Questions about the faith", sub: "A short answer, Scripture and the Fathers", hint: "e.g. Eucharist, icons, why fast?", names: false },
+};
+const topicRow = (t, kind, sub = true) => `<a class="row-btn" href="#/${kind}/${t.id}"><span class="dot-c" style="background:${t.color}"></span><span class="grow"><span class="t" style="white-space:normal">${esc(t.name)}</span>${sub ? `<span class="sub">${KINDS[kind].sub}</span>` : ""}</span>${ICON.chev}</a>`;
 const helpTile = (t) => `<a class="tile" href="#/help/${t.id}" style="background:${t.color}">${esc(t.name)}</a>`;
 const safetyHTML = (msg) => `<div class="card safety"><b>You matter to God, and to us.</b><p>${esc(msg)}</p><a class="btn red small" href="tel:131114">Call Lifeline 13 11 14</a></div>`;
 // A search box that shows the matching struggles as you type.
-function helpBox(box, index, q0 = "") {
-  box.innerHTML = `<input type="search" id="hq" placeholder="e.g. lust, anger, worry, grief" value="${esc(q0)}" aria-label="What are you struggling with?"><div id="hres" style="margin-top:10px"></div>`;
+function helpBox(box, index, q0 = "", kind = "help") {
+  const K = KINDS[kind];
+  box.innerHTML = `<input type="search" class="hq" placeholder="${K.hint}" value="${esc(q0)}" aria-label="${K.title}"><div class="hres" style="margin-top:10px"></div>`;
   const draw = (q) => {
-    const hits = helpFind(index, q);
-    $("#hres", box).innerHTML = (DANGER.test(q) ? safetyHTML(LIFELINE) : "") + (q.trim()
-      ? hits.length ? `<div class="list">${hits.slice(0, 4).map((t) => `<a class="row-btn" href="#/help/${t.id}"><span class="dot-c" style="background:${t.color}"></span><span class="grow"><span class="t">${esc(t.name)}</span><span class="sub">Scripture, the Fathers and a 7-day plan</span></span>${ICON.chev}</a>`).join("")}</div>`
-        : `<p class="small muted" style="margin:4px">Nothing for that yet. Try one word, or pick one below. You can always talk to your priest.</p>`
+    const hits = topicFind(index, q, 1, K.names);
+    $(".hres", box).innerHTML = (DANGER.test(q) ? safetyHTML(LIFELINE) : "") + (q.trim()
+      ? hits.length ? `<div class="list">${hits.slice(0, 4).map((t) => topicRow(t, kind)).join("")}</div>`
+        : `<p class="small muted" style="margin:4px">Nothing for that yet. Try one word, or pick one below. You can always ask your priest.</p>`
       : "");
   };
-  const input = $("#hq", box); input.oninput = () => draw(input.value);
-  input.addEventListener("keydown", (e) => { if (e.key === "Enter") { const h = helpFind(index, input.value)[0]; if (h && !DANGER.test(input.value)) location.hash = `#/help/${h.id}`; } });
+  const input = $(".hq", box); input.oninput = () => draw(input.value);
+  input.addEventListener("keydown", (e) => { if (e.key === "Enter") { const h = topicFind(index, input.value, 1, K.names)[0]; if (h && !DANGER.test(input.value)) location.hash = `#/${kind}/${h.id}`; } });
   draw(q0);
 }
 async function renderHelp(q) {
@@ -948,20 +965,28 @@ async function renderHelp(q) {
     <p class="small muted" style="margin:22px 4px">This is not a replacement for confession or for your priest. Bring what you're carrying to them too.</p>`;
   helpBox($("#hb"), index, q.get("q") || "");
 }
-async function renderHelpTopic(id) {
-  const [t, P] = await Promise.all([get(`help/${id}.json`).catch(() => null), plans()]);
-  if (!t) { location.replace("#/help"); return; }
+async function renderFaith(q) {
+  setTop("Questions about the faith", { back: true });
+  const index = await faithIndex();
+  view.innerHTML = `<p class="prose muted" style="margin:0 0 14px;font-size:17px">${index.length} short, plain answers to common questions, with the Scriptures and what the Holy Fathers said.</p>
+    <div id="hb"></div>${[...new Set(index.map((t) => t.cat))].map((cat) => `<div class="sec-h"><h2>${esc(cat)}</h2></div><div class="list">${index.filter((t) => t.cat === cat).map((t) => topicRow(t, "faith", false)).join("")}</div>`).join("")}
+    <p class="small muted" style="margin:22px 4px">Short answers written for this app. To go deeper, ask your priest.</p>`;
+  helpBox($("#hb"), index, q.get("q") || "", "faith");
+}
+async function renderHelpTopic(id, kind = "help") {
+  const [t, P] = await Promise.all([get(`${kind}/${id}.json`).catch(() => null), plans()]);
+  if (!t) { location.replace(`#/${kind}`); return; }
   setTop("", { back: true });
   const plan = P.plans.find((p) => p.id === t.plan);
-  view.innerHTML = `<div class="help-hero" style="background:${t.color}"><div class="small">Help for struggles</div><h2>${esc(t.name)}</h2></div>
+  view.innerHTML = `<div class="help-hero ${kind}" style="background:${t.color}"><div class="small">${KINDS[kind].title}</div><h2>${esc(t.name)}</h2></div>
     ${t.safety ? safetyHTML(t.safety) : ""}
     <p class="prose" style="margin:16px 2px">${esc(t.about)}</p>
     ${plan ? planRowHTML(plan, "7 days · one verse and one Father a day", `#/plan/${plan.id}`, S.plans[plan.id]?.started ? "Continue" : "Start") : ""}
     ${t.link ? `<a class="btn secondary wide" style="margin-top:10px" href="${esc(t.link[0])}">${esc(t.link[1])}</a>` : ""}
     <div class="sec-h"><h2>From Scripture</h2></div><div class="stack" id="hv"></div>
-    <div class="sec-h"><h2>What the Fathers say</h2><span class="small muted">${t.quotes.length}</span></div><div id="hf"></div>
+    ${t.quotes.length ? `<div class="sec-h"><h2>What the Fathers say</h2><span class="small muted">${t.quotes.length}</span></div>` : ""}<div id="hf"></div>
     ${t.plans.length ? `<div class="sec-h"><h2>More plans</h2></div><div class="list">${t.plans.map((x) => P.plans.find((p) => p.id === x)).filter(Boolean).map((p) => planRowHTML(p)).join("")}</div>` : ""}
-    <p class="small muted" style="margin:22px 4px">Passages chosen from 19th-century public-domain translations. Pray, and talk to your priest.</p>`;
+    <p class="small muted" style="margin:22px 4px">${kind === "faith" ? "A short answer written for this app. To go deeper, ask your priest. " : ""}Passages chosen from 19th-century public-domain translations.${kind === "help" ? " Pray, and talk to your priest." : ""}</p>`;
   const verses = await Promise.all(t.verses.map(async (ref) => {
     const r = planRef(ref); if (!r) return "";
     const vs = [];
@@ -971,7 +996,7 @@ async function renderHelpTopic(id) {
   $("#hv").innerHTML = verses.join("");
   const entries = t.quotes.map((x) => ({ ...x, ch: x.c, t: `${refText({ code: x.b, c: x.c, v: x.v[0], c2: x.c, v2: x.v[1] === 999 ? x.v[0] : x.v[1] })} · ${x.t}`, v: [x.v[0], x.v[0]] }));
   const more = () => { fathersList($("#hf"), entries); };
-  fathersList($("#hf"), entries.slice(0, 8));
+  if (entries.length) fathersList($("#hf"), entries.slice(0, 8));
   if (entries.length > 8) { $("#hf").insertAdjacentHTML("afterend", `<button class="btn secondary wide" id="hmore" style="margin-top:8px">Show all ${entries.length}</button>`); $("#hmore").onclick = (e) => { e.target.remove(); more(); }; }
 }
 
@@ -1159,14 +1184,25 @@ function renderRope() {
 }
 
 // ---------------------------------------------------------------- search
+// The whole Bible in one file for searching: fetched once (the phone keeps it), then every search
+// is instant. Each line is book, chapter, verse and text.
+const SEARCH = {};
+function searchData() {
+  const t = tr();
+  if (!SEARCH[t]) SEARCH[t] = fetch(`data/search/${t}.txt`).then((r) => { if (!r.ok) throw new Error(r.status); return r.text(); })
+    .then((txt) => txt.split("\n").filter(Boolean).map((l) => { const a = l.indexOf("\t"), b = l.indexOf("\t", a + 1), c = l.indexOf("\t", b + 1); return [l.slice(0, a), +l.slice(a + 1, b), +l.slice(b + 1, c), l.slice(c + 1)]; }))
+    .catch((e) => { delete SEARCH[t]; throw e; });
+  return SEARCH[t];
+}
 async function renderSearch(q0) {
   setTop("Search", { back: true });
-  view.innerHTML = `<input type="search" id="q" placeholder="A word, or a verse like John 3:16" value="${esc(q0)}" aria-label="Search the Bible">
+  view.innerHTML = `<input type="search" id="q" placeholder="A word, a verse like John 3:16, or a question" value="${esc(q0)}" aria-label="Search the Bible">
     <p class="small muted" style="margin:10px 4px">Searching the ${tr() === "lxx" ? "Septuagint Bible" : "World English Bible"}.</p><div id="res"></div>`;
   const input = $("#q");
   const go = () => { const q = input.value.trim(); history.replaceState(null, "", "#/search?q=" + encodeURIComponent(q)); run(q); };
   input.addEventListener("keydown", (e) => { if (e.key === "Enter") go(); });
   let t; input.oninput = () => { clearTimeout(t); t = setTimeout(go, 350); };
+  searchData().catch(() => {}); // start getting it ready while they type
   if (q0) run(q0);
   setTimeout(() => input.focus(), 50);
 }
@@ -1181,19 +1217,39 @@ async function run(q) {
     return;
   }
   if (q.length < 3) { res.innerHTML = `<div class="empty small">Type at least 3 letters.</div>`; return; }
-  const words = q.toLowerCase().split(/\s+/).filter(Boolean);
-  const hits = []; const codes = order(); let done = 0;
-  res.innerHTML = `<div class="empty small">Searching… <span id="prog">0</span>%</div>`;
-  for (const code of codes) {
-    let book; try { book = await get(`bible/${tr()}/${code}.json`); } catch (e) { continue; }
-    if (id !== searchRun) return;
-    for (const [c, vs] of book) for (const [v, t] of vs) { const low = t.toLowerCase(); if (words.every((w) => low.includes(w))) hits.push([code, c, v, t]); }
-    done++; const p = $("#prog"); if (p) p.textContent = Math.round((100 * done) / codes.length);
-    if (hits.length >= 300) break;
-  }
+  // A question ("what is the Eucharist?") searches only the words that matter.
+  const all0 = qWords(q), key = all0.filter((w) => w.length > 1 && !STOP.test(w));
+  const isQ = /\?\s*$/.test(q) || STOP.test(all0[0] || "") && /^(what|why|how|who|when|where|is|are|do|does|did|can|should|will)$/.test(all0[0]);
+  let words = isQ && key.length ? key : all0;
+  const [H, F] = await Promise.all([helpIndex().catch(() => []), faithIndex().catch(() => [])]);
   if (id !== searchRun) return;
-  const re = new RegExp("(" + words.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")", "gi");
-  res.innerHTML = hits.length ? `<p class="small muted" style="margin:0 4px 8px">${hits.length >= 300 ? "First 300" : hits.length} ${hits.length === 1 ? "verse" : "verses"}</p><div class="list">${hits.map(([code, c, v, t]) => `<a class="row-btn search-res" href="#/read/${code}/${c}?v=${v}" style="border-bottom:1px solid var(--line)"><span class="grow"><span class="ref">${esc(shortChap(code, c))}:${v}</span><br>${esc(t).replace(re, "<mark>$1</mark>")}</span></a>`).join("")}</div>` : `<div class="empty">No verses found.</div>`;
+  const qs = topicFind(F, q, 3, false).slice(0, 3), hs = topicFind(H, q, 3, true).slice(0, 1);
+  const help = (DANGER.test(q) ? safetyHTML(LIFELINE) : "") +
+    (qs.length ? `<div class="sec-h" style="margin-top:4px"><h2 style="font-size:17px">Questions</h2></div><div class="list" style="margin-bottom:8px">${qs.map((t) => topicRow(t, "faith")).join("")}</div>` : "") +
+    (hs.length ? `<a class="card row help-row" href="#/help/${hs[0].id}" style="flex-wrap:nowrap;margin:8px 0 12px"><span class="dot-c" style="background:${hs[0].color}"></span><span class="grow"><span class="small muted" style="display:block">Struggling with this?</span><b>${esc(hs[0].name)}</b></span>${ICON.chev}</a>` : "") +
+    (isQ && !qs.length && !hs.length ? `<a class="card row help-row" href="#/faith" style="flex-wrap:nowrap;margin-bottom:12px"><span class="grow"><b>No answer for that question yet</b><span class="small muted" style="display:block">Browse all the questions, or ask your priest</span></span>${ICON.chev}</a>` : "") +
+    (qs.length || hs.length || isQ ? `<div class="sec-h" style="margin-top:8px"><h2 style="font-size:17px">Verses</h2></div>` : "");
+  let all = null;
+  const slow = setTimeout(() => { if (id === searchRun) res.innerHTML = help + `<div class="empty small"><div class="skel" style="height:64px;margin-bottom:8px"></div>Getting the Bible ready for searching. This happens only once.</div>`; }, 150);
+  try { all = await searchData(); } catch (e) { clearTimeout(slow); if (id === searchRun) res.innerHTML = help + `<div class="card empty">Can't search right now. Check your connection.</div>`; return; }
+  clearTimeout(slow);
+  if (id !== searchRun) return;
+  // Each word matches from the start of a word: "anger" finds angered, not stranger.
+  const esc2 = (w) => "\\b" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const tests = words.map((w) => new RegExp(esc2(w), "i"));
+  let hits = all.filter((x) => tests.every((r) => r.test(x[3])));
+  // Nothing with every word? Try just the words that matter.
+  if (!hits.length && key.length && key.length < words.length) { words = key; const t2 = key.map((w) => new RegExp("\\b" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i")); hits = all.filter((x) => t2.every((r) => r.test(x[3]))); }
+  const re = new RegExp("(" + words.map(esc2).join("|") + ")", "gi");
+  const row = ([code, c, v, t]) => `<a class="row-btn search-res" href="#/read/${code}/${c}?v=${v}" style="border-bottom:1px solid var(--line)"><span class="grow"><span class="ref">${esc(shortChap(code, c))}:${v}</span><br>${esc(t).replace(re, "<mark>$1</mark>")}</span></a>`;
+  let shown = 0;
+  const more = () => {
+    const next = hits.slice(shown, shown + 100); shown += next.length;
+    $("#hits").insertAdjacentHTML("beforeend", next.map(row).join(""));
+    const m = $("#more"); if (m) m.hidden = shown >= hits.length;
+  };
+  res.innerHTML = help + (hits.length ? `<p class="small muted" style="margin:0 4px 8px">${hits.length.toLocaleString()} ${hits.length === 1 ? "verse" : "verses"}</p><div class="list" id="hits"></div><button class="btn secondary wide" id="more" style="margin-top:12px">Show more</button>` : `<div class="empty">${qs.length || hs.length ? "No verses use these exact words. Open the answer above for the Scriptures on it." : "No verses found."}</div>`);
+  if (hits.length) { more(); $("#more").onclick = more; }
 }
 
 // ---------------------------------------------------------------- You
@@ -1279,7 +1335,8 @@ function reminder(time) {
 async function saveOffline() {
   const b = $("#offline"); b.setAttribute("disabled", ""); const codes = order(); let n = 0;
   for (const code of codes) { try { await get(`bible/${tr()}/${code}.json`); } catch (e) { /* keep going */ } n++; $("#offMsg").textContent = `Saving… ${Math.round((100 * n) / codes.length)}%`; }
-  await Promise.all([plans(), lib(), prayers(), get("votd.json"), helpIndex()]).catch(() => {});
+  await Promise.all([plans(), lib(), prayers(), get("votd.json"), helpIndex(), faithIndex(), searchData()]).catch(() => {});
+  await Promise.all([...(await faithIndex()).map((t) => getOr(`faith/${t.id}.json`, null)), ...(await helpIndex()).map((t) => getOr(`help/${t.id}.json`, null))]);
   await Promise.all((await plans()).plans.map((p) => getOr(`plans/${p.id}.json`, null)));
   $("#offMsg").textContent = "Saved. The Bible now works without internet."; b.removeAttribute("disabled");
 }
@@ -1299,7 +1356,7 @@ async function route() {
   if (back) STACK.pop(); else if (STACK[STACK.length - 1] !== h) STACK.push(h);
   if (STACK.length > 50) STACK.shift();
   lastHash = h;
-  const tab = { today: "today", bible: "bible", read: "bible", plans: "plans", plan: "plans", discover: "discover", fathers: "discover", father: "discover", prayers: "discover", prayer: "discover", rope: "discover", search: "discover", help: "discover", names: "you", calendar: "today", verse: "bible", you: "you", settings: "you", more: "you", mine: "you" }[p[0]] || "today";
+  const tab = { today: "today", bible: "bible", read: "bible", plans: "plans", plan: "plans", discover: "discover", fathers: "discover", father: "discover", prayers: "discover", prayer: "discover", rope: "discover", search: "discover", help: "discover", faith: "discover", names: "you", calendar: "today", verse: "bible", you: "you", settings: "you", more: "you", mine: "you" }[p[0]] || "today";
   document.querySelectorAll(".tabs a").forEach((a) => a.setAttribute("aria-current", a.dataset.tab === tab ? "page" : "false"));
   try {
     if (!BOOKS.length) await boot();
@@ -1318,6 +1375,8 @@ async function route() {
     else if (p[0] === "calendar") await renderCalendar(q);
     else if (p[0] === "verse") await renderVerse(p[1], +p[2], +p[3]);
     else if (p[0] === "help" && p[1]) await renderHelpTopic(p[1]);
+    else if (p[0] === "faith" && p[1]) await renderHelpTopic(p[1], "faith");
+    else if (p[0] === "faith") await renderFaith(q);
     else if (p[0] === "help") await renderHelp(q);
     else if (p[0] === "search") await renderSearch(q.get("q") || "");
     else if (p[0] === "you" || p[0] === "mine") await renderYou();
