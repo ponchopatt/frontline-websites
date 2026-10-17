@@ -25,6 +25,7 @@ Writes public/data/:
   fathers/idx/<BOOK>.json    which verses the Fathers wrote on (for the red dots and counts)
   votd.json                  the verses of the day, with their text in both Bibles
   plans/<id>.json            each plan in full (plans.json keeps only titles and readings)
+  search/<tr>.txt            each Bible in one file for searching
   xref/<BOOK>.json           similar verses for each verse, best first
 
 Only public-domain translations of the Fathers are kept: the 19th-century Ante-Nicene and
@@ -118,6 +119,14 @@ for tr, books in texts.items():
     for code, chapters in books.items():
         write(f"bible/{tr}/{code}.json", chapters)
 write("books.json", {"books": books_meta, "sections": SECTIONS})
+
+# Search: the whole of each Bible in one plain file (book, chapter, verse, text on each line), so a
+# search is one download the phone keeps, not one per book.
+for tr in texts:
+    lines = [f"{code}\t{c}\t{v}\t{t}" for code, *_ in BOOKS if code in texts[tr] for c, vs in texts[tr][code] for v, t in vs]
+    os.makedirs(os.path.join(OUT, "search"), exist_ok=True)
+    with open(os.path.join(OUT, "search", f"{tr}.txt"), "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
 
 
 

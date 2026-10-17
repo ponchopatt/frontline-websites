@@ -48,6 +48,8 @@ It is a web app that installs to the home screen ("Add to Home Screen") and work
 - **Greek side by side** (Aa → Greek): the Septuagint under Brenton, and the 1904 Patriarchal
   text (the Greek Church's own) under the New Testament. Tap a New Testament word for its meaning.
 
+**Search** is instant after the first time: each Bible is one file the phone keeps, and words match from their start (*anger* finds *angered*, not *stranger*).
+
 **Feel**: swipe left or right to turn the chapter, pull a sheet down to close it, and Back takes
 you to the same place on the page you came from. Home has *Continue reading* and shows straight
 away while the Church calendar loads; each day's calendar is kept on the phone once fetched.

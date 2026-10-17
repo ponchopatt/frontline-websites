@@ -1159,6 +1159,16 @@ function renderRope() {
 }
 
 // ---------------------------------------------------------------- search
+// The whole Bible in one file for searching: fetched once (the phone keeps it), then every search
+// is instant. Each line is book, chapter, verse and text.
+const SEARCH = {};
+function searchData() {
+  const t = tr();
+  if (!SEARCH[t]) SEARCH[t] = fetch(`data/search/${t}.txt`).then((r) => { if (!r.ok) throw new Error(r.status); return r.text(); })
+    .then((txt) => txt.split("\n").filter(Boolean).map((l) => { const a = l.indexOf("\t"), b = l.indexOf("\t", a + 1), c = l.indexOf("\t", b + 1); return [l.slice(0, a), +l.slice(a + 1, b), +l.slice(b + 1, c), l.slice(c + 1)]; }))
+    .catch((e) => { delete SEARCH[t]; throw e; });
+  return SEARCH[t];
+}
 async function renderSearch(q0) {
   setTop("Search", { back: true });
   view.innerHTML = `<input type="search" id="q" placeholder="A word, or a verse like John 3:16" value="${esc(q0)}" aria-label="Search the Bible">
@@ -1167,6 +1177,7 @@ async function renderSearch(q0) {
   const go = () => { const q = input.value.trim(); history.replaceState(null, "", "#/search?q=" + encodeURIComponent(q)); run(q); };
   input.addEventListener("keydown", (e) => { if (e.key === "Enter") go(); });
   let t; input.oninput = () => { clearTimeout(t); t = setTimeout(go, 350); };
+  searchData().catch(() => {}); // start getting it ready while they type
   if (q0) run(q0);
   setTimeout(() => input.focus(), 50);
 }
@@ -1182,18 +1193,28 @@ async function run(q) {
   }
   if (q.length < 3) { res.innerHTML = `<div class="empty small">Type at least 3 letters.</div>`; return; }
   const words = q.toLowerCase().split(/\s+/).filter(Boolean);
-  const hits = []; const codes = order(); let done = 0;
-  res.innerHTML = `<div class="empty small">Searching… <span id="prog">0</span>%</div>`;
-  for (const code of codes) {
-    let book; try { book = await get(`bible/${tr()}/${code}.json`); } catch (e) { continue; }
-    if (id !== searchRun) return;
-    for (const [c, vs] of book) for (const [v, t] of vs) { const low = t.toLowerCase(); if (words.every((w) => low.includes(w))) hits.push([code, c, v, t]); }
-    done++; const p = $("#prog"); if (p) p.textContent = Math.round((100 * done) / codes.length);
-    if (hits.length >= 300) break;
-  }
+  const ql = q.trim().toLowerCase();
+  const topic = (await helpIndex().catch(() => [])).find((t) => t.find.includes(ql) || t.name.toLowerCase() === ql);
+  const help = topic ? `<a class="card row help-row" href="#/help/${topic.id}" style="flex-wrap:nowrap;margin-bottom:12px"><span class="dot-c" style="background:${topic.color}"></span><span class="grow"><span class="small muted" style="display:block">Struggling with this?</span><b>${esc(topic.name)}</b></span>${ICON.chev}</a>` : "";
+  let all = null;
+  const slow = setTimeout(() => { if (id === searchRun) res.innerHTML = help + `<div class="empty small"><div class="skel" style="height:64px;margin-bottom:8px"></div>Getting the Bible ready for searching. This happens only once.</div>`; }, 150);
+  try { all = await searchData(); } catch (e) { clearTimeout(slow); if (id === searchRun) res.innerHTML = help + `<div class="card empty">Can't search right now. Check your connection.</div>`; return; }
+  clearTimeout(slow);
   if (id !== searchRun) return;
-  const re = new RegExp("(" + words.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")", "gi");
-  res.innerHTML = hits.length ? `<p class="small muted" style="margin:0 4px 8px">${hits.length >= 300 ? "First 300" : hits.length} ${hits.length === 1 ? "verse" : "verses"}</p><div class="list">${hits.map(([code, c, v, t]) => `<a class="row-btn search-res" href="#/read/${code}/${c}?v=${v}" style="border-bottom:1px solid var(--line)"><span class="grow"><span class="ref">${esc(shortChap(code, c))}:${v}</span><br>${esc(t).replace(re, "<mark>$1</mark>")}</span></a>`).join("")}</div>` : `<div class="empty">No verses found.</div>`;
+  // Each word matches from the start of a word: "anger" finds angered, not stranger.
+  const pat = words.map((w) => "\\b" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const tests = pat.map((w) => new RegExp(w, "i"));
+  const hits = all.filter((x) => tests.every((r) => r.test(x[3])));
+  const re = new RegExp("(" + pat.join("|") + ")", "gi");
+  const row = ([code, c, v, t]) => `<a class="row-btn search-res" href="#/read/${code}/${c}?v=${v}" style="border-bottom:1px solid var(--line)"><span class="grow"><span class="ref">${esc(shortChap(code, c))}:${v}</span><br>${esc(t).replace(re, "<mark>$1</mark>")}</span></a>`;
+  let shown = 0;
+  const more = () => {
+    const next = hits.slice(shown, shown + 100); shown += next.length;
+    $("#hits").insertAdjacentHTML("beforeend", next.map(row).join(""));
+    const m = $("#more"); if (m) m.hidden = shown >= hits.length;
+  };
+  res.innerHTML = help + (hits.length ? `<p class="small muted" style="margin:0 4px 8px">${hits.length.toLocaleString()} ${hits.length === 1 ? "verse" : "verses"}</p><div class="list" id="hits"></div><button class="btn secondary wide" id="more" style="margin-top:12px">Show more</button>` : `<div class="empty">No verses found.</div>`);
+  if (hits.length) { more(); $("#more").onclick = more; }
 }
 
 // ---------------------------------------------------------------- You
@@ -1279,7 +1300,7 @@ function reminder(time) {
 async function saveOffline() {
   const b = $("#offline"); b.setAttribute("disabled", ""); const codes = order(); let n = 0;
   for (const code of codes) { try { await get(`bible/${tr()}/${code}.json`); } catch (e) { /* keep going */ } n++; $("#offMsg").textContent = `Saving… ${Math.round((100 * n) / codes.length)}%`; }
-  await Promise.all([plans(), lib(), prayers(), get("votd.json"), helpIndex()]).catch(() => {});
+  await Promise.all([plans(), lib(), prayers(), get("votd.json"), helpIndex(), searchData()]).catch(() => {});
   await Promise.all((await plans()).plans.map((p) => getOr(`plans/${p.id}.json`, null)));
   $("#offMsg").textContent = "Saved. The Bible now works without internet."; b.removeAttribute("disabled");
 }

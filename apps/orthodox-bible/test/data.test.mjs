@@ -92,3 +92,13 @@ test("the small files for a fast start match the full ones", () => {
   const psalm = data("votd.json").find((v) => v.r === "PSA 51:10");
   assert.equal(psalm.lxx[1], 50, "Psalm 51 is Psalm 50 in the Septuagint");
 });
+
+test("the search files hold every verse of each Bible", () => {
+  for (const tr of ["lxx", "web"]) {
+    const lines = readFileSync(new URL(`../public/data/search/${tr}.txt`, import.meta.url), "utf8").trim().split("\n");
+    let n = 0;
+    for (const b of Object.values(books)) if (b["ch_" + tr]) for (const [, vs] of data(`bible/${tr}/${b.code}.json`)) n += vs.length;
+    assert.equal(lines.length, n, tr);
+    assert.match(lines.find((l) => l.startsWith("JHN\t3\t16\t")), /God so loved the world/);
+  }
+});
