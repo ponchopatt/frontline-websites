@@ -923,10 +923,12 @@ const qWords = (q) => q.toLowerCase().replace(/[^a-z0-9' ]+/g, " ").split(" ").m
 // The struggles or questions a search is about, best first: whole phrases count most, then words.
 function topicFind(index, q, min = 1, useNames = true) {
   const all = qWords(q), line = " " + all.join(" ") + " ";
-  const words = all.filter((w) => w.length > 2 && !STOP.test(w));
+  let words = all.filter((w) => w.length > 2 && !STOP.test(w));
+  if (!words.length) words = all.filter((w) => w.length > 2); // "orthodox?" on its own
   return index.map((t) => {
     let n = 0;
-    for (const f of t.find) if (f.includes(" ") && line.includes(" " + f + " ")) n += 5;
+    // A longer phrase is more specific: "church fathers" beats "the church".
+    for (const f of t.find) if (f.includes(" ") && line.includes(" " + f + " ")) { const k = f.split(" ").filter((w) => w.length > 2 && !STOP.test(w)).length || 1; n += 4 * k * k + 2; }
     const terms = [...t.find.filter((f) => !f.includes(" ")), ...(useNames ? t.name.toLowerCase().split(/[^a-z]+/).filter((w) => w.length > 3 && !STOP.test(w)) : [])];
     for (const w of words) for (const f of terms) { if (f === w) n += 3; else if (w.length > 3 && f.length > 3 && (f.startsWith(w) || w.startsWith(f))) n += 1; }
     return [n, t];
@@ -966,8 +968,8 @@ async function renderHelp(q) {
 async function renderFaith(q) {
   setTop("Questions about the faith", { back: true });
   const index = await faithIndex();
-  view.innerHTML = `<p class="prose muted" style="margin:0 0 14px;font-size:17px">Short, plain answers to common questions, with the Scriptures and what the Holy Fathers said.</p>
-    <div id="hb"></div><div class="sec-h"><h2>All questions</h2><span class="small muted">${index.length}</span></div><div class="list">${index.map((t) => topicRow(t, "faith", false)).join("")}</div>
+  view.innerHTML = `<p class="prose muted" style="margin:0 0 14px;font-size:17px">${index.length} short, plain answers to common questions, with the Scriptures and what the Holy Fathers said.</p>
+    <div id="hb"></div>${[...new Set(index.map((t) => t.cat))].map((cat) => `<div class="sec-h"><h2>${esc(cat)}</h2></div><div class="list">${index.filter((t) => t.cat === cat).map((t) => topicRow(t, "faith", false)).join("")}</div>`).join("")}
     <p class="small muted" style="margin:22px 4px">Short answers written for this app. To go deeper, ask your priest.</p>`;
   helpBox($("#hb"), index, q.get("q") || "", "faith");
 }
@@ -982,7 +984,7 @@ async function renderHelpTopic(id, kind = "help") {
     ${plan ? planRowHTML(plan, "7 days · one verse and one Father a day", `#/plan/${plan.id}`, S.plans[plan.id]?.started ? "Continue" : "Start") : ""}
     ${t.link ? `<a class="btn secondary wide" style="margin-top:10px" href="${esc(t.link[0])}">${esc(t.link[1])}</a>` : ""}
     <div class="sec-h"><h2>From Scripture</h2></div><div class="stack" id="hv"></div>
-    <div class="sec-h"><h2>What the Fathers say</h2><span class="small muted">${t.quotes.length}</span></div><div id="hf"></div>
+    ${t.quotes.length ? `<div class="sec-h"><h2>What the Fathers say</h2><span class="small muted">${t.quotes.length}</span></div>` : ""}<div id="hf"></div>
     ${t.plans.length ? `<div class="sec-h"><h2>More plans</h2></div><div class="list">${t.plans.map((x) => P.plans.find((p) => p.id === x)).filter(Boolean).map((p) => planRowHTML(p)).join("")}</div>` : ""}
     <p class="small muted" style="margin:22px 4px">${kind === "faith" ? "A short answer written for this app. To go deeper, ask your priest. " : ""}Passages chosen from 19th-century public-domain translations.${kind === "help" ? " Pray, and talk to your priest." : ""}</p>`;
   const verses = await Promise.all(t.verses.map(async (ref) => {
@@ -994,7 +996,7 @@ async function renderHelpTopic(id, kind = "help") {
   $("#hv").innerHTML = verses.join("");
   const entries = t.quotes.map((x) => ({ ...x, ch: x.c, t: `${refText({ code: x.b, c: x.c, v: x.v[0], c2: x.c, v2: x.v[1] === 999 ? x.v[0] : x.v[1] })} · ${x.t}`, v: [x.v[0], x.v[0]] }));
   const more = () => { fathersList($("#hf"), entries); };
-  fathersList($("#hf"), entries.slice(0, 8));
+  if (entries.length) fathersList($("#hf"), entries.slice(0, 8));
   if (entries.length > 8) { $("#hf").insertAdjacentHTML("afterend", `<button class="btn secondary wide" id="hmore" style="margin-top:8px">Show all ${entries.length}</button>`); $("#hmore").onclick = (e) => { e.target.remove(); more(); }; }
 }
 
@@ -1225,7 +1227,8 @@ async function run(q) {
   const help = (DANGER.test(q) ? safetyHTML(LIFELINE) : "") +
     (qs.length ? `<div class="sec-h" style="margin-top:4px"><h2 style="font-size:17px">Questions</h2></div><div class="list" style="margin-bottom:8px">${qs.map((t) => topicRow(t, "faith")).join("")}</div>` : "") +
     (hs.length ? `<a class="card row help-row" href="#/help/${hs[0].id}" style="flex-wrap:nowrap;margin:8px 0 12px"><span class="dot-c" style="background:${hs[0].color}"></span><span class="grow"><span class="small muted" style="display:block">Struggling with this?</span><b>${esc(hs[0].name)}</b></span>${ICON.chev}</a>` : "") +
-    (qs.length || hs.length ? `<div class="sec-h" style="margin-top:8px"><h2 style="font-size:17px">Verses</h2></div>` : "");
+    (isQ && !qs.length && !hs.length ? `<a class="card row help-row" href="#/faith" style="flex-wrap:nowrap;margin-bottom:12px"><span class="grow"><b>No answer for that question yet</b><span class="small muted" style="display:block">Browse all the questions, or ask your priest</span></span>${ICON.chev}</a>` : "") +
+    (qs.length || hs.length || isQ ? `<div class="sec-h" style="margin-top:8px"><h2 style="font-size:17px">Verses</h2></div>` : "");
   let all = null;
   const slow = setTimeout(() => { if (id === searchRun) res.innerHTML = help + `<div class="empty small"><div class="skel" style="height:64px;margin-bottom:8px"></div>Getting the Bible ready for searching. This happens only once.</div>`; }, 150);
   try { all = await searchData(); } catch (e) { clearTimeout(slow); if (id === searchRun) res.innerHTML = help + `<div class="card empty">Can't search right now. Check your connection.</div>`; return; }

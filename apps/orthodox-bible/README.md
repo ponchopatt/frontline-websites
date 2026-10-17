@@ -39,7 +39,7 @@ It is a web app that installs to the home screen ("Add to Home Screen") and work
   more, 19 in all) and get a short word on it, the Scriptures to read, what the Fathers said
   (passages picked from the public-domain data, saints first) and a 7-day plan. Typing about
   self-harm, or opening *Despair*, shows Lifeline (13 11 14) straight away.
-- **Questions about the faith**: 33 short, plain answers, such as what the Eucharist is, why
+- **Questions about the faith**: 97 short, plain answers in 9 sections, such as what the Eucharist is, why
   icons, why fast, who the Theotokos is, how we are saved, and why Pascha's date differs. Each
   has the Scriptures behind it and what the Fathers said. Search understands questions: *what is
   the Eucharist?* opens the answer, then shows any verses.

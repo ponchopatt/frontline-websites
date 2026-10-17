@@ -427,11 +427,13 @@ write("help/index.json", help_index)
 # Questions about the faith: the same, without a plan.
 import faith  # noqa: E402
 faith_index = []
+CAT_NAME = {c[0]: c[1] for c in faith.CATEGORIES}
 for t in faith.TOPICS:
     out = {k: t[k] for k in ("id", "name", "color", "about", "verses", "plans") if k in t}
-    out.update({"link": t.get("link"), "quotes": fathers_on(t)})
+    # A few practical questions have no good passages in the Fathers; they leave that part out.
+    out.update({"link": t.get("link"), "safety": t.get("safety"), "quotes": fathers_on(t) if t.get("fathers", True) else []})
     write(f"faith/{t['id']}.json", out)
-    faith_index.append({"id": t["id"], "name": t["name"], "color": t["color"], "find": t["find"]})
+    faith_index.append({"id": t["id"], "name": t["name"], "color": t["color"], "find": t["find"], "cat": CAT_NAME[t["cat"]]})
     print(f"Faith: {t['id']}: {len(out['quotes'])} passages")
 write("faith/index.json", faith_index)
 plans_json = json.load(open(os.path.join(OUT, "plans.json"), encoding="utf-8"))
