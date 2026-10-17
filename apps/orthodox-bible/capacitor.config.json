@@ -1,0 +1,8 @@
+{
+  "appId": "org.orthodoxbible.app",
+  "appName": "Orthodox Bible",
+  "webDir": "public",
+  "backgroundColor": "#121212",
+  "android": { "backgroundColor": "#121212" },
+  "ios": { "backgroundColor": "#121212", "contentInset": "never" }
+}

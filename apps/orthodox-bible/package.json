@@ -5,7 +5,17 @@
   "scripts": {
     "data": "python3 build/newadvent.py sources && python3 build/build.py sources",
     "dev": "node dev.mjs",
-    "test": "node --test test/*.test.mjs"
+    "test": "node --test test/*.test.mjs",
+    "android": "cap add android 2>/dev/null; cap sync android && cap open android",
+    "ios": "cap add ios 2>/dev/null; cap sync ios && cap open ios"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/ios": "^8.0.0"
+  }
 }

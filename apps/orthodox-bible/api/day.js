@@ -4,6 +4,7 @@
 // what the app shows (no saints' stories, no Bible text: the app has its own), and caches a day
 // at the edge so each date is asked for once.
 export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*"); // the phone apps call this from their own origin
   const date = String(req.query.date || "");
   const cal = req.query.cal === "old" ? "julian" : "gregorian";
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return res.status(400).json({ error: "date must be YYYY-MM-DD" });

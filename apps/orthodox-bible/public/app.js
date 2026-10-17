@@ -6,9 +6,11 @@
 
 // ---------------------------------------------------------------- saved on this phone
 const KEY = "ob1";
-const blank = () => ({ settings: { tr: "lxx", cal: "new", size: 19, theme: "dark", writers: true, voice: "" },
+// Where the calendar functions live: this site, or the web address set in config.js for the phone apps.
+const API = (window.OB_API || "") + "api/";
+const blank = () => ({ words: {}, settings: { tr: "lxx", cal: "new", size: 19, theme: "dark", writers: true, voice: "", greek: false },
   name: "", last: { b: "JHN", c: 1 }, hl: {}, hlAt: {}, bm: {}, notes: {}, noteAt: {}, plans: {}, saved: {}, read: {}, days: [],
-  best: 0, rope: {}, ropeSize: 100, liked: {}, earned: {} });
+  best: 0, rope: {}, ropeSize: 100, liked: {}, earned: {}, names: [] });
 let S;
 try { S = Object.assign(blank(), JSON.parse(localStorage.getItem(KEY) || "{}")); } catch (e) { S = blank(); }
 S.settings = Object.assign(blank().settings, S.settings);
@@ -63,14 +65,27 @@ function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.ad
 function applyTheme() {
   document.documentElement.setAttribute("data-theme", S.settings.theme);
   document.documentElement.style.setProperty("--size", S.settings.size + "px");
+  if (brightWeek()) document.documentElement.setAttribute("data-bright", ""); else document.documentElement.removeAttribute("data-bright");
   const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", S.settings.theme === "light" ? "#f6f5f2" : "#121212");
 }
-applyTheme();
 const pad = (n) => String(n).padStart(2, "0");
 const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const today = () => ymd(new Date());
 const addDays = (s, n) => { const d = new Date(s + "T12:00:00"); d.setDate(d.getDate() + n); return ymd(d); };
 const longDate = (s) => new Date(s + "T12:00:00").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
+// Orthodox Pascha: the Julian-calendar date (Meeus), moved to the civil calendar (+13 days, right for 1900–2099).
+function pascha(y) {
+  const a = y % 4, b = y % 7, c = y % 19, d = (19 * c + 15) % 30, e = (2 * a + 4 * b - d + 34) % 7;
+  const n = d + e + 114;
+  return ymd(new Date(y, Math.floor(n / 31) - 1, (n % 31) + 1 + 13, 12));
+}
+const daysBetween = (a, b) => Math.round((new Date(b + "T12:00:00") - new Date(a + "T12:00:00")) / 864e5);
+// Days since this year's Pascha (negative before it).
+const paschaDay = (t = today()) => daysBetween(pascha(+t.slice(0, 4)), t);
+const brightWeek = () => { const n = paschaDay(); return n >= 0 && n <= 6; };
+const paschalSeason = () => { const n = paschaDay(); return n >= 0 && n < 39; };
+function nextPascha() { const t = today(); let p = pascha(+t.slice(0, 4)); if (p < t) p = pascha(+t.slice(0, 4) + 1); return { date: p, days: daysBetween(t, p) }; }
+applyTheme();
 const dayOfYear = () => { const n = new Date(); return Math.floor((n - new Date(n.getFullYear(), 0, 0)) / 864e5); };
 const ago = (t) => { const s = (Date.now() - t) / 1000; if (s < 3600) return Math.max(1, Math.round(s / 60)) + "m"; if (s < 86400) return Math.round(s / 3600) + "h"; if (s < 86400 * 7) return Math.round(s / 86400) + "d"; return Math.round(s / 86400 / 7) + "w"; };
 
@@ -93,6 +108,7 @@ async function boot() {
 const plans = () => get("plans.json");
 const lib = () => get("library.json");
 const prayers = () => get("prayers.json");
+const helpIndex = () => get("help/index.json");
 const tr = () => S.settings.tr;
 const trName = (t = tr()) => (t === "lxx" ? "LXX" : "WEB");
 const chapters = (code, t = tr()) => BY[code]?.["ch_" + t] || 0;
@@ -115,15 +131,15 @@ function toEng(code, c, v, verseIndex) {
   return [c, v];
 }
 // [code, chapter, verse, verseIndex|undefined] in the reader's numbering, for an English reference.
-function fromEng(code, c, v) {
+function fromEng(code, c, v, t = tr()) {
   if (code === "DAN") code = "DAG";
   if (code === "EST") code = "ESG";
-  if (code === "PSA" && tr() === "lxx") {
+  if (code === "PSA" && t === "lxx") {
     const hit = PSI[c + ":" + v];
     if (hit) return [code, hit[0], null, hit[1]];
     return [code, c > 9 && c < 148 ? c - 1 : c, v];
   }
-  if (code === "JER" && tr() === "lxx") return [code, JER_BACK()[c] || c, v];
+  if (code === "JER" && t === "lxx") return [code, JER_BACK()[c] || c, v];
   if (code === "DAG" && c === 3 && v >= 24 && v <= 30) return [code, 3, v + 67];
   return [code, c, v];
 }
@@ -296,7 +312,7 @@ $("#back").onclick = () => (history.length > 1 ? history.back() : (location.hash
 async function dayData(date) {
   const k = `day:${S.settings.cal}:${date}`;
   try {
-    const r = await fetch(`api/day?date=${date}&cal=${S.settings.cal}`);
+    const r = await fetch(`${API}day?date=${date}&cal=${S.settings.cal}`);
     if (!r.ok) throw new Error(r.status);
     const d = await r.json();
     try { localStorage.setItem(k, JSON.stringify(d)); } catch (e) { /* full */ }
@@ -333,7 +349,7 @@ const listWords = (a) => (a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") 
 async function renderToday() {
   setTop("", { hide: true });
   const t = today(); const h = new Date().getHours();
-  const hello = `${h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"}${S.name ? ", " + esc(S.name) : ""}`;
+  const hello = paschalSeason() ? `Christ is Risen!<small>Indeed He is Risen!</small>` : `${h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"}${S.name ? ", " + esc(S.name) : ""}`;
   view.innerHTML = `<div class="hello" style="padding-top:calc(16px + env(safe-area-inset-top,0px))"><h1>${hello}</h1><a class="streak-chip" href="#/you" aria-label="Your streak">${ICON.flame}${streak()}</a></div><div id="home"><div class="card empty">Loading…</div></div>`;
   const [d, vd, P, PR] = await Promise.all([dayData(t), votd().catch(() => null), plans(), prayers()]);
   const home = $("#home");
@@ -344,13 +360,16 @@ async function renderToday() {
       <div class="vtext">${esc(vd.text)}</div>
       <div class="acts"><button data-v="like" aria-pressed="${liked}">${ICON.heart}<span>${liked ? "Saved" : "Save"}</span></button><button data-v="fathers">${ICON.father}<span>${vd.fathers.length ? vd.fathers.length + " Fathers" : "Fathers"}</span></button><button data-v="image">${ICON.image}<span>Image</span></button><button data-v="read">${ICON.book}<span>Read</span></button></div></div>`);
   }
+  const soon = memorialsSoon(1);
+  if (soon.length) parts.push(`<a class="card memorial" href="#/names"><div class="label">Remember</div>${soon.map((m) => `<div style="margin-top:4px"><b>${esc(m.p.name)}</b>: ${esc(m.what)} ${m.d === t ? "today" : "tomorrow"}</div>`).join("")}<p class="small muted" style="margin:8px 0 0">Memory eternal. Give rest, O Lord, to the soul of Thy servant.</p></a>`);
   const readings = d ? d.readings.map((r, i) => ({ r, i, ranges: readingRanges(r.verses), done: (S.read[t] || []).includes(`${t}:${i}`) })) : [];
   if (d) {
     const fast = d.fastLevel ? `<span class="pill fast">${esc(d.fast)}${d.fastException ? " · " + esc(d.fastException) : ""}</span>` : `<span class="pill">${esc(d.fast || "No fast")}</span>`;
     parts.push(`<div class="card day-card"><div class="label">${esc(longDate(t))}${d.cal === "old" ? ` · ${esc(new Date(d.churchDate + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long" }))} Old Calendar` : ""}</div>
       <div class="feast">${esc(d.titles[0] || d.feast || "")}</div>${d.saints.length ? `<p class="saints">${esc(d.saints.join(" · "))}</p>` : ""}
       <div class="row">${fast}${(d.feasts || []).map((f) => `<span class="pill feast">${esc(f)}</span>`).join("")}${d.tone ? `<span class="pill">Tone ${d.tone}</span>` : ""}</div>
-      ${d.fastLevel && d.abstain.length ? `<p class="small muted" style="margin:10px 0 0">No ${esc(listWords(d.abstain))} today. Follow the guidance of your priest.</p>` : ""}</div>`);
+      ${d.fastLevel && d.abstain.length ? `<p class="small muted" style="margin:10px 0 0">No ${esc(listWords(d.abstain))} today. Follow the guidance of your priest.</p>` : ""}
+      <a class="cal-link" href="#/calendar"><span>${paschalSeason() ? `Day ${paschaDay() + 1} of Pascha` : `Pascha in ${nextPascha().days} days`}</span><span>Fasting calendar ${ICON.chev}</span></a></div>`);
     const art = [["#2f4a5c", "book"], ["#7a2d3a", "cross"], ["#6b8f5e", "wave"], ["#8a6a2f", "halo"]];
     readings.forEach(({ r, i, ranges, done }) => {
       parts.push(`<a class="card guided" href="${readHash(wholeReading(ranges), { k: `${t}:${i}` })}"><div class="txt"><div class="kind">${esc(r.source)}${r.desc ? " · " + esc(r.desc) : ""}</div><h3>${esc(r.display.replace(/\./g, ":"))}</h3><div class="dur">${ICON.play}${minsFor(r.verses.length * 24)}<span data-meta="${i}"></span></div></div>
@@ -361,6 +380,7 @@ async function renderToday() {
   const playDisc = (icon) => `<span style="position:relative;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.95);color:#111;display:grid;place-items:center">${icon.replace("<svg", '<svg style="width:20px;height:20px"')}</span>`;
   if (pr) parts.push(`<a class="card guided" href="#/prayer/${pr.id}"><div class="txt"><div class="kind">${esc(pr.kind)}</div><h3>${esc(pr.title)}</h3><div class="dur">${ICON.play}${esc(pr.mins)}</div></div>${thumbArt("#2b2433", "halo", playDisc(ICON.pray))}</a>`);
   parts.push(`<a class="card guided" href="#/rope"><div class="txt"><div class="kind">The Jesus Prayer</div><h3>Lord Jesus Christ, have mercy on me</h3><div class="dur">${ICON.play}${S.rope[t] ? `${S.rope[t]} today` : "Pray with a prayer rope"}</div></div>${thumbArt("#3a2f4f", "star", playDisc(ICON.beads))}</a>`);
+  parts.push(`<a class="card row help-row" href="#/help" style="flex-wrap:nowrap"><span class="grow"><b>Struggling with something?</b><span class="small muted" style="display:block">Lust, anger, worry, grief… see what the Fathers say</span></span>${ICON.chev}</a>`);
   const active = P.plans.filter((p) => S.plans[p.id]?.started && !S.plans[p.id]?.finished);
   if (active.length) parts.push(`<div class="sec-h"><h2>Your plans</h2><a href="#/plans?tab=mine">See all ${ICON.chev}</a></div><div class="list">${active.map((p) => { const n = nextDay(p); return planRowHTML(p, `Day ${n + 1}: ${p.days[n].title}`, `#/plan/${p.id}/${n + 1}`, "Continue"); }).join("")}</div>`);
   else parts.push(`<div class="sec-h"><h2>Need a place to begin?</h2><a href="#/plans">Plans ${ICON.chev}</a></div><div class="scroller">${P.featured.map((id) => P.plans.find((p) => p.id === id)).map((p) => `<a class="hero-card" href="#/plan/${p.id}">${coverHTML(p.cover, "hero")}<div class="cap">${esc(p.title)}</div></a>`).join("")}</div>`);
@@ -432,6 +452,17 @@ async function renderReader(code, c, q) {
   if (!ch) { view.innerHTML = `<div class="empty">Chapter not found.</div>`; return; }
   const verses = ch[1];
   const eng = verses.map(([v], i) => toEng(code, c, v, i));
+  // The Greek lines up verse for verse with Brenton (Old Testament) and the WEB (New Testament).
+  let grk = null;
+  if (S.settings.greek && BY[code].grc && (tr() === "lxx" || !BY[code].ot)) {
+    try {
+      const g = await get(`bible/grc/${code}.json`); const gc = g.find((x) => x[0] === c);
+      // Same verse numbers (with the 24a, 24b… parts of some chapters): pair them in order; else by number.
+      if (gc) grk = gc[1].length === verses.length && gc[1].every((x, i) => x[0] === verses[i][0]) ? gc[1].map((x) => x[1]) : new Map([...gc[1]].reverse());
+    } catch (e) { grk = null; }
+  }
+  const greekHTML = (v, i) => { const t = grk && (Array.isArray(grk) ? grk[i] : grk.get(v)); if (!t) return "";
+    return `<div class="grk" lang="grc">${esc(t).replace(/([^\s@,.;·:()\[\]«»]+)@(\d+)/gu, '<span class="w" data-s="$2">$1</span>')}</div>`; };
   const fathers = await fathersFor(code, eng.map((x) => x[0]));
   const has = (i) => { const [ec, ev] = eng[i]; return ev > 0 && fathers.some((e) => covers(e, ec, ev)); };
   const vi = q.get("i") != null ? +q.get("i") : q.get("v") ? verses.findIndex(([v]) => v === +q.get("v")) : -1;
@@ -441,14 +472,14 @@ async function renderReader(code, c, q) {
   const dim = passage && vi >= 0;
   view.innerHTML = `<div class="reader">
     <div class="ch-title">${esc(chapLabel(code, c))}</div>
-    <div class="ch-sub">${tr() === "lxx" && BY[code].ot ? "Septuagint · Brenton" : "World English Bible"}${fathers.length ? ` · <span style="color:var(--accent)">●</span> ${fathers.length} from the Fathers` : ""}</div>
-    <div id="verses">${verses.map(([v, t], i) => `<span class="verse${has(i) ? " has" : ""}${S.hl[keyOf(i)] ? " hl-" + S.hl[keyOf(i)] : ""}${dim && !inPassage(i) ? " dim" : ""}${!passage && i === vi ? " sel" : ""}" data-i="${i}"><sup>${v}</sup>${esc(t)}${S.notes[keyOf(i)] ? `<span class="note-mark">${ICON.note}</span>` : ""} </span>`).join("")}</div>
+    <div class="ch-sub">${tr() === "lxx" && BY[code].ot ? "Septuagint · Brenton" : "World English Bible"}${grk ? " · Greek" : ""}${fathers.length ? ` · <span style="color:var(--accent)">●</span> ${fathers.length} from the Fathers` : ""}</div>
+    <div id="verses" class="${grk ? "parallel" : ""}">${verses.map(([v, t], i) => `<span class="verse${has(i) ? " has" : ""}${S.hl[keyOf(i)] ? " hl-" + S.hl[keyOf(i)] : ""}${dim && !inPassage(i) ? " dim" : ""}${!passage && i === vi ? " sel" : ""}" data-i="${i}"><sup>${v}</sup>${esc(t)}${S.notes[keyOf(i)] ? `<span class="note-mark">${ICON.note}</span>` : ""} </span>${greekHTML(v, i)}`).join("")}</div>
     ${fathers.length ? `<div class="ch-fathers"><button class="btn secondary wide" id="allF">${ICON.father} What the Fathers said on this ${code === "PSA" ? "psalm" : "chapter"}</button></div>` : ""}
     ${passage ? `<div class="passage-bar"><button class="btn red wide" id="doneP">${q.get("k") ? ICON.check + " Mark as read" : "Back to the plan"}</button></div>` : ""}
   </div>
   <div class="float-nav"><button id="prev" aria-label="Previous chapter" ${c <= 1 && !prevBook(code) ? "disabled" : ""}>${ICON.left}</button><button class="play" id="play" aria-label="Listen to this chapter">${ICON.play}</button><button id="next" aria-label="Next chapter" ${c >= n && !nextBook(code) ? "disabled" : ""}>${ICON.right}</button></div>`;
   const box = $("#verses");
-  box.onclick = (e) => { const el = e.target.closest(".verse"); if (el) verseSheet(code, c, verses, +el.dataset.i, eng, fathers); };
+  box.onclick = (e) => { const w = e.target.closest(".w"); if (w) { const gi = w.closest(".grk"), vi2 = gi && gi.previousElementSibling ? +gi.previousElementSibling.dataset.i : -1; wordSheet(w.textContent, w.dataset.s, vi2 >= 0 ? `${shortChap(code, c)}:${verses[vi2][0]}` : ""); return; } const el = e.target.closest(".verse"); if (el) verseSheet(code, c, verses, +el.dataset.i, eng, fathers); };
   if ($("#allF")) $("#allF").onclick = () => openSheet(`<div class="sheet-h"><h3>The Fathers on ${esc(chapLabel(code, c))}</h3>${closeBtn}</div><div id="fl"></div>`, (b) => fathersList($("#fl", b), fathers));
   const keep = q.get("plan") ? `?plan=${q.get("plan")}` : "";
   $("#prev").onclick = () => (location.hash = (c > 1 ? `#/read/${code}/${c - 1}` : `#/read/${prevBook(code)}/${chapters(prevBook(code))}`) + keep);
@@ -502,9 +533,28 @@ function stopSpeaking() {
 function textSheet() {
   openSheet(`<div class="sheet-h"><h3>Text and theme</h3>${closeBtn}</div>
     <div class="label" style="margin:6px 0 8px">Size</div><div class="seg">${[16, 18, 19, 21, 24].map((s) => `<button data-s="${s}" aria-pressed="${S.settings.size === s}" style="font-size:${s - 4}px;flex:1">Aa</button>`).join("")}</div>
+    <div class="label" style="margin:18px 0 8px">Greek</div><div class="seg">${[[false, "English only"], [true, "Greek side by side"]].map(([g, n]) => `<button data-g="${g}" aria-pressed="${S.settings.greek === g}" style="flex:1">${n}</button>`).join("")}</div>
+    <p class="small muted" style="margin:6px 2px 0">The Septuagint and the 1904 Patriarchal New Testament. Tap a New Testament word to see what it means.</p>
     <div class="label" style="margin:18px 0 8px">Theme</div><div class="seg">${["dark", "light"].map((t) => `<button data-t="${t}" aria-pressed="${S.settings.theme === t}" style="flex:1">${t === "dark" ? "Dark" : "Light"}</button>`).join("")}</div>`, (b) => {
     b.querySelectorAll("[data-s]").forEach((x) => (x.onclick = () => { S.settings.size = +x.dataset.s; save(); applyTheme(); b.querySelectorAll("[data-s]").forEach((y) => y.setAttribute("aria-pressed", y === x)); }));
+    b.querySelectorAll("[data-g]").forEach((x) => (x.onclick = () => { S.settings.greek = x.dataset.g === "true"; save(); closeSheet(); if (location.hash.startsWith("#/read")) route(); }));
     b.querySelectorAll("[data-t]").forEach((x) => (x.onclick = () => { S.settings.theme = x.dataset.t; save(); applyTheme(); b.querySelectorAll("[data-t]").forEach((y) => y.setAttribute("aria-pressed", y === x)); }));
+  });
+}
+// What a Greek New Testament word means, from the STEP Bible lexicon.
+async function wordSheet(word, n, ref = "", onChange = null) {
+  let x = null;
+  try { x = (await get(`lex/${Math.floor(+n / 1000)}.json`))[n]; } catch (e) { x = null; }
+  openSheet(`<div class="sheet-h"><h3 lang="grc" class="grk-word">${esc(word)}</h3>${closeBtn}</div>${x
+    ? `<div class="lemma"><b lang="grc">${esc(x[0])}</b> <span class="muted">${esc(x[1])}</span></div><div class="gloss">${esc(x[2])}</div><p class="small" style="line-height:1.55">${esc(x[3])}</p>`
+    : `<p class="muted">No meaning found for this word.</p>`}
+    ${x ? `<button class="btn ${S.words[n] ? "secondary" : "red"} wide" id="sw" style="margin-top:14px">${S.words[n] ? "Saved ✓ · Remove" : "Save this word"}</button>` : ""}
+    <p class="small muted" style="margin-top:14px">Strong's G${esc(n)} · Lexicon from STEP Bible (Tyndale House), CC BY 4.0.</p>`, (b) => {
+    if (!$("#sw", b)) return;
+    $("#sw", b).onclick = () => {
+      if (S.words[n]) delete S.words[n]; else S.words[n] = { w: word, lemma: x[0], tr: x[1], gloss: x[2], ref, at: Date.now() };
+      save(); toast(S.words[n] ? "Word saved" : "Removed"); closeSheet(); if (onChange) onChange();
+    };
   });
 }
 function verseSheet(code, c, verses, i, eng, fathers) {
@@ -524,10 +574,15 @@ function verseSheet(code, c, verses, i, eng, fathers) {
       <button data-a="image">${ICON.image}<span>Image</span></button>
       <button data-a="copy">${ICON.copy}<span>Copy</span></button>
       <button data-a="share">${ICON.share}<span>Share</span></button></div>
+    <a class="btn red wide" id="study" href="#/verse/${code}/${ec}/${ev}" style="margin-top:12px">Study this verse: Greek, similar verses, the Fathers</a>
+    <div class="swipe-hint">Swipe up for more</div>
     <div id="noteBox" ${S.notes[key] ? "" : "hidden"} style="margin-top:10px"><textarea id="noteText" rows="3" placeholder="Your note">${esc(S.notes[key] || "")}</textarea></div>
     <div class="sec-h" style="margin-top:22px"><h2>What the Fathers said</h2><span class="muted small">${mine.length || ""}</span></div>
     <div id="fl">${mine.length ? "" : `<div class="empty small">No comments from the Fathers on this verse yet.${fathers.length ? " Try the whole chapter." : ""}</div>`}</div>`, (b) => {
     if (mine.length) fathersList($("#fl", b), mine);
+    let y0 = null; const inner = b.closest(".sheet-in") || b;
+    inner.ontouchstart = (e) => { y0 = inner.scrollTop <= 0 ? e.touches[0].clientY : null; };
+    inner.ontouchend = (e) => { if (y0 != null && y0 - e.changedTouches[0].clientY > 70 && inner.scrollTop <= 0) location.hash = `#/verse/${code}/${ec}/${ev}`; y0 = null; };
     b.querySelectorAll("[data-hl]").forEach((x) => (x.onclick = () => {
       if (x.dataset.hl) { S.hl[key] = x.dataset.hl; S.hlAt[key] = Date.now(); } else { delete S.hl[key]; delete S.hlAt[key]; }
       save(); b.querySelectorAll("[data-hl]").forEach((y) => y.setAttribute("aria-pressed", y === x && !!x.dataset.hl));
@@ -542,6 +597,76 @@ function verseSheet(code, c, verses, i, eng, fathers) {
     act("copy").onclick = () => navigator.clipboard?.writeText(plain).then(() => toast("Copied"), () => toast("Couldn't copy"));
     act("share").onclick = () => { if (navigator.share) navigator.share({ text: plain }).catch(() => {}); else navigator.clipboard?.writeText(plain).then(() => toast("Copied to share")); };
   });
+}
+
+// ---------------------------------------------------------------- verse study
+// One verse, opened up: the Greek word by word, similar verses, the Fathers, and what you saved.
+const lexEntry = async (n) => { try { return (await get(`lex/${Math.floor(+n / 1000)}.json`))[n] || null; } catch (e) { return null; } };
+async function greekVerse(code, ec, ev) {
+  if (!BY[code] || !BY[code].grc) return null;
+  const [, c, v, idx] = fromEng(code, ec, ev, BY[code].ot ? "lxx" : "web");
+  try {
+    const ch = (await get(`bible/grc/${code}.json`)).find((x) => x[0] === c); if (!ch) return null;
+    const row = idx != null ? ch[1][idx] : ch[1].find((x) => x[0] === v);
+    return row ? row[1] : null;
+  } catch (e) { return null; }
+}
+let studyTab = "study";
+async function renderVerse(code, ec, ev) {
+  if (code === "DAN") code = "DAG";
+  if (!BY[code]) { location.replace("#/today"); return; }
+  const key = `${code}.${ec}.${ev}`;
+  const vt = await verseText(code, ec, ev).catch(() => null);
+  if (!vt) { location.replace(`#/read/${code}/${ec}`); return; }
+  const ref = `${shortChap(vt.code, vt.c)}:${vt.v}`;
+  setTop(ref, { back: true });
+  const [grk, xr, fathers, P] = await Promise.all([greekVerse(code, ec, ev), getOr(`xref/${code}.json`, {}), fathersFor(code, [ec]), plans()]);
+  const mine = fathers.filter((e) => covers(e, ec, ev));
+  const words = grk ? [...grk.matchAll(/([^\s@,.;·:()\[\]«»]+)@(\d+)/gu)].map((m) => ({ w: m[1], n: m[2] })) : [];
+  const lex = {}; await Promise.all([...new Set(words.map((w) => w.n))].map(async (n) => (lex[n] = await lexEntry(n))));
+  const refs = xr[`${ec}.${ev}`] || [];
+  const inPlans = P.plans.filter((p) => p.days.some((d) => d.items.some((it) => { if (!it.read || it.n === "lxx") return false; const r = planRef(it.read); return r && r.code === code && ec >= r.c && ec <= r.c2 && (!r.v || ((ec > r.c || ev >= r.v) && (ec < r.c2 || ev <= r.v2))); }))).slice(0, 6);
+  const draw = async () => {
+    const savedWords = Object.entries(S.words).filter(([, w]) => w.ref === ref);
+    const head = `<div class="study-h"><div class="vtext">${esc(vt.text)}</div>${grk ? `<div class="grk" lang="grc">${esc(grk.replace(/@\d+/g, ""))}</div>` : ""}
+      <div class="small muted" style="margin-top:8px">${esc(ref)} · ${tr() === "lxx" && BY[code].ot ? "Septuagint" : "WEB"}${grk ? " · Greek" : ""}</div>
+      <div class="row" style="margin-top:12px;gap:8px"><button class="btn small ${S.bm[key] ? "secondary" : "red"}" id="sv">${ICON.bookmark} ${S.bm[key] ? "Saved" : "Save verse"}</button><a class="btn small secondary" href="#/read/${vt.code}/${vt.c}?${vt.code === "PSA" && tr() === "lxx" ? "i=" + vt.i : "v=" + vt.v}">${ICON.book} Read chapter</a></div></div>
+      <div class="seg" style="margin:16px 0 4px"><button data-st="study" aria-pressed="${studyTab === "study"}" style="flex:1">Study</button><button data-st="saved" aria-pressed="${studyTab === "saved"}" style="flex:1">Saved</button></div>`;
+    let body = "";
+    if (studyTab === "study") {
+      body += words.length ? `<div class="sec-h"><h2>Word by word</h2><span class="small muted">tap for more</span></div>
+        <div class="words">${words.map((w, i) => { const x = lex[w.n]; return `<button class="wrow" data-wi="${i}"><span class="g" lang="grc">${esc(w.w)}</span><span class="m"><b>${esc(x ? x[2] : "")}</b><span class="small muted">${esc(x ? x[0] + " · " + x[1] : "")}</span></span>${S.words[w.n] ? `<span class="pill feast">Saved</span>` : ""}</button>`; }).join("")}</div>`
+        : grk ? `<div class="sec-h"><h2>The Greek</h2></div><p class="small muted" style="margin:0 2px">Word meanings are for the New Testament. The Septuagint's Greek is shown above.</p>` : "";
+      body += `<div class="sec-h"><h2>Similar verses</h2><span class="small muted">${refs.length || ""}</span></div><div class="stack" id="xr">${refs.length ? "" : `<p class="small muted" style="margin:0 2px">None for this verse yet.</p>`}</div>`;
+      body += `<div class="sec-h"><h2>What the Fathers said</h2><span class="small muted">${mine.length || ""}</span></div><div id="fl">${mine.length ? "" : `<p class="small muted" style="margin:0 2px">No comments from the Fathers on this verse yet.</p>`}</div>`;
+      if (inPlans.length) body += `<div class="sec-h"><h2>In these plans</h2></div><div class="list">${inPlans.map((p) => planRowHTML(p)).join("")}</div>`;
+      body += `<p class="small muted" style="margin:20px 4px">Similar verses from OpenBible.info (CC BY). Greek meanings from STEP Bible (CC BY 4.0).</p>`;
+    } else {
+      body += `<div class="stack" style="margin-top:12px">
+        <div class="card"><div class="label">This verse</div><div style="margin-top:6px">${S.bm[key] ? "✓ Saved to your verses" : "Not saved"}${S.hl[key] ? " · Highlighted" : ""}</div></div>
+        <div class="card"><div class="label">Your note</div><textarea id="sn" rows="4" placeholder="Write what this verse says to you" style="margin-top:8px">${esc(S.notes[key] || "")}</textarea></div></div>
+        <div class="sec-h"><h2>Words you saved here</h2></div>${savedWords.length ? `<div class="list">${savedWords.map(([n, w]) => `<button class="row-btn" data-sw="${n}"><span class="grow"><span class="t" lang="grc">${esc(w.lemma)}</span><span class="sub">${esc(w.gloss)} · ${esc(w.tr)}</span></span>${ICON.chev}</button>`).join("")}</div>` : `<p class="small muted" style="margin:0 2px">Tap a Greek word and press Save to keep it.</p>`}
+        <a class="btn secondary wide" href="#/you" style="margin-top:16px">Everything you've saved</a>`;
+    }
+    view.innerHTML = head + body;
+    $("#sv").onclick = () => { if (S.bm[key]) delete S.bm[key]; else S.bm[key] = { at: Date.now(), ref, text: vt.text }; save(); toast(S.bm[key] ? "Saved to your verses" : "Removed"); draw(); };
+    view.querySelectorAll("[data-st]").forEach((b) => (b.onclick = () => { studyTab = b.dataset.st; draw(); }));
+    view.querySelectorAll("[data-wi]").forEach((b) => (b.onclick = () => { const w = words[+b.dataset.wi]; wordSheet(w.w, w.n, ref, draw); }));
+    view.querySelectorAll("[data-sw]").forEach((b) => (b.onclick = () => wordSheet(S.words[b.dataset.sw].w, b.dataset.sw, ref, draw)));
+    if ($("#sn")) $("#sn").oninput = (e) => { const t = e.target.value.trim(); if (t) { S.notes[key] = t; S.noteAt[key] = Date.now(); } else { delete S.notes[key]; delete S.noteAt[key]; } save(); };
+    if (studyTab === "study") {
+      if (mine.length) fathersList($("#fl"), mine);
+      if (refs.length) {
+        const cards = await Promise.all(refs.map(async (s) => {
+          const r = planRef(s); if (!r) return "";
+          const t = await verseText(r.code, r.c, r.v).catch(() => null); if (!t) return "";
+          return `<a class="card help-verse" href="#/verse/${r.code}/${r.c}/${r.v}"><div class="small muted" style="margin-bottom:4px"><b style="color:var(--text)">${esc(refText(r))}</b></div><div class="vtext" style="font-size:17px">${esc(t.text)}${r.v2 !== r.v || r.c2 !== r.c ? " …" : ""}</div></a>`;
+        }));
+        if ($("#xr")) $("#xr").innerHTML = cards.join("") || `<p class="small muted" style="margin:0 2px">None for this verse yet.</p>`;
+      }
+    }
+  };
+  await draw();
 }
 
 // ---------------------------------------------------------------- verse images
@@ -620,8 +745,9 @@ async function renderPlans(q) {
     body = list.length ? `<div class="list" style="margin-top:10px">${list.map((p) => planRowHTML(p, "Completed", null, "Again")).join("")}</div>` : empty("None Finished Yet", "Plans you finish will show here, with a badge for the big ones.");
   } else {
     body = `<div class="scroller" style="margin-top:14px">${P.featured.map((id) => P.plans.find((p) => p.id === id)).map((p) => `<a class="hero-card" href="#/plan/${p.id}">${coverHTML(p.cover, "hero")}<div class="cap">${esc(p.title)}</div></a>`).join("")}</div>
+      <a class="card row help-row" href="#/help" style="margin-top:18px;flex-wrap:nowrap"><span class="grow"><b>Struggling with something?</b><span class="small muted" style="display:block">Find a 7-day plan with the Fathers for it</span></span>${ICON.chev}</a>
       <div class="tiles" style="margin-top:18px">${P.topics.map((t) => `<a class="tile" href="#/plans?topic=${t.id}" style="background:${t.bg}">${esc(t.name)}</a>`).join("")}</div>
-      ${Object.entries(P.categories).map(([cat, name]) => `<div class="sec-h"><h2>${esc(name)}</h2></div><div class="list">${P.plans.filter((p) => p.cat === cat).map((p) => planRowHTML(p)).join("")}</div>`).join("")}`;
+      ${Object.entries(P.categories).filter(([cat]) => cat !== "help").map(([cat, name]) => `<div class="sec-h"><h2>${esc(name)}</h2></div><div class="list">${P.plans.filter((p) => p.cat === cat).map((p) => planRowHTML(p)).join("")}</div>`).join("")}`;
   }
   view.innerHTML = `<div class="big-title">Plans</div><div class="seg edge">${tabs.map(([k, n]) => `<button data-tab="${k}" aria-pressed="${!topic && plansTab === k}">${n}</button>`).join("")}</div>${body}`;
   view.querySelectorAll("[data-tab]").forEach((b) => (b.onclick = () => { plansTab = b.dataset.tab; if (topic) location.hash = "#/plans"; else renderPlans(new URLSearchParams()); }));
@@ -665,7 +791,7 @@ async function renderPlanDay(id, d) {
   view.innerHTML = `<div class="row" style="gap:12px;margin:4px 0 16px;flex-wrap:nowrap">${coverHTML(p.cover, "thumb")}<div style="min-width:0"><div class="small muted">${esc(p.title)}</div><h2 style="margin-top:2px">${esc(day.title)}</h2></div></div>
     <div class="stack">${day.items.map(item).join("")}</div>
     <button class="btn ${isDone ? "secondary" : "red"} wide" id="done" style="margin-top:22px">${isDone ? "Done ✓ · Undo" : "Mark Day " + d + " Done"}</button>
-    <div class="row" style="justify-content:space-between;margin-top:14px"><button class="btn secondary small" id="pd" ${d <= 1 ? "disabled" : ""}>‹ Day ${d - 1}</button><button class="btn secondary small" id="nd" ${d >= p.days.length ? "disabled" : ""}>Day ${d + 1} ›</button></div>`;
+    <div class="row" style="justify-content:space-between;margin-top:14px"><button class="btn secondary small" id="pd" ${d <= 1 ? "disabled" : ""}>‹ Day ${d - 1}</button><button class="btn secondary small" id="nd" class="field" ${d >= p.days.length ? "disabled" : ""}>Day ${d + 1} ›</button></div>`;
   $("#done").onclick = () => {
     if (pr.done[d - 1]) delete pr.done[d - 1];
     else { pr.done[d - 1] = today(); markRead(`plan:${id}:${d}`); }
@@ -688,13 +814,15 @@ function planReadHash(r, numbering, id, d) {
 const COUNCIL_IDS = ["nicaea1", "constantinople1", "ephesus", "chalcedon", "constantinople2", "constantinople3", "nicaea2"];
 async function renderDiscover() {
   setTop("");
-  const [P, L, PR] = await Promise.all([plans(), lib(), prayers()]);
+  const [P, L, PR, H] = await Promise.all([plans(), lib(), prayers(), helpIndex()]);
   const saints = L.filter((a) => a.label === "saint");
   view.innerHTML = `<div class="big-title">Discover</div>
     <a href="#/search" style="display:block"><input type="search" placeholder="Search the Bible" readonly style="cursor:pointer;pointer-events:none" aria-label="Search the Bible"></a>
+    <div class="card help-card"><h3>What are you struggling with?</h3><p class="small muted">Scripture, the Fathers and a plan for it.</p><div id="dhelp"></div></div>
     <div class="quick" style="margin-top:14px">
       <a href="#/fathers">${ICON.father}The Fathers</a><a href="#/plans?topic=councils">${ICON.dome}The Councils</a>
-      <a href="#/prayers">${ICON.pray}Prayers</a><a href="#/rope">${ICON.beads}Jesus Prayer</a></div>
+      <a href="#/prayers">${ICON.pray}Prayers</a><a href="#/rope">${ICON.beads}Jesus Prayer</a>
+      <a href="#/calendar">${ICON.cross}Fasting calendar</a><a href="#/names">${ICON.heart}Prayer list</a></div>
     <div class="sec-h"><h2>Topics</h2><a href="#/plans">See all ${ICON.chev}</a></div>
     <div class="tiles">${P.topics.map((t) => `<a class="tile" href="#/plans?topic=${t.id}" style="background:${t.bg}">${esc(t.name)}</a>`).join("")}</div>
     <div class="sec-h"><h2>The Holy Fathers</h2><a href="#/fathers">See all ${ICON.chev}</a></div>
@@ -705,6 +833,8 @@ async function renderDiscover() {
     <div class="list">${PR.map((p) => `<a class="row-btn" href="#/prayer/${p.id}"><span class="grow"><span class="t">${esc(p.title)}</span><span class="sub">${esc(p.kind)} · ${esc(p.mins)}</span></span>${ICON.chev}</a>`).join("")}</div>
     <div class="sec-h"><h2>Scripture with the Fathers</h2></div>
     <div class="list">${P.plans.filter((p) => p.cat === "scripture").map((p) => planRowHTML(p)).join("")}</div>`;
+  helpBox($("#dhelp"), H);
+  $("#dhelp").insertAdjacentHTML("beforeend", `<div class="tiles help-tiles" style="margin-top:12px">${H.slice(0, 10).map(helpTile).join("")}<a class="tile" href="#/help" style="background:var(--surface3)">See all</a></div>`);
 }
 async function renderFathers() {
   setTop("The Fathers", { back: true });
@@ -735,11 +865,202 @@ async function renderFather(id) {
     <p class="small muted" style="margin-top:14px">These open the 19th-century English translations on newadvent.org.</p>`;
 }
 
+// ---------------------------------------------------------------- help for struggles
+const DANGER = /suicid|kill (my ?self|me)|end (it all|my life)|self.?harm|hurt(ing)? myself|want(ed)? to die|don.?t want to live/i;
+const LIFELINE = "If you are thinking of harming yourself, please call someone now: in Australia, Lifeline on 13 11 14, or your local emergency number. Tell your priest and someone you trust.";
+function helpFind(index, q) {
+  const skip = /^(struggl\w*|with|have|feel\w*|really|help|need|and|the|from|about|lot|very|keep|always)$/;
+  const words = (q.toLowerCase().match(/[a-z]+/g) || []).filter((w) => w.length > 2 && !skip.test(w));
+  return index.map((t) => {
+    let n = 0;
+    const terms = [...t.find, ...t.name.toLowerCase().split(/\W+/).filter((w) => w.length > 3)];
+    for (const w of words) for (const f of terms) { if (f === w) n += 3; else if (w.length > 3 && (f.startsWith(w) || w.startsWith(f))) n += 1; }
+    return [n, t];
+  }).filter((x) => x[0]).sort((a, b) => b[0] - a[0]).map((x) => x[1]);
+}
+const helpTile = (t) => `<a class="tile" href="#/help/${t.id}" style="background:${t.color}">${esc(t.name)}</a>`;
+const safetyHTML = (msg) => `<div class="card safety"><b>You matter to God, and to us.</b><p>${esc(msg)}</p><a class="btn red small" href="tel:131114">Call Lifeline 13 11 14</a></div>`;
+// A search box that shows the matching struggles as you type.
+function helpBox(box, index, q0 = "") {
+  box.innerHTML = `<input type="search" id="hq" placeholder="e.g. lust, anger, worry, grief" value="${esc(q0)}" aria-label="What are you struggling with?"><div id="hres" style="margin-top:10px"></div>`;
+  const draw = (q) => {
+    const hits = helpFind(index, q);
+    $("#hres", box).innerHTML = (DANGER.test(q) ? safetyHTML(LIFELINE) : "") + (q.trim()
+      ? hits.length ? `<div class="list">${hits.slice(0, 4).map((t) => `<a class="row-btn" href="#/help/${t.id}"><span class="dot-c" style="background:${t.color}"></span><span class="grow"><span class="t">${esc(t.name)}</span><span class="sub">Scripture, the Fathers and a 7-day plan</span></span>${ICON.chev}</a>`).join("")}</div>`
+        : `<p class="small muted" style="margin:4px">Nothing for that yet. Try one word, or pick one below. You can always talk to your priest.</p>`
+      : "");
+  };
+  const input = $("#hq", box); input.oninput = () => draw(input.value);
+  input.addEventListener("keydown", (e) => { if (e.key === "Enter") { const h = helpFind(index, input.value)[0]; if (h && !DANGER.test(input.value)) location.hash = `#/help/${h.id}`; } });
+  draw(q0);
+}
+async function renderHelp(q) {
+  setTop("Help for struggles", { back: true });
+  const index = await helpIndex();
+  view.innerHTML = `<p class="prose muted" style="margin:0 0 14px;font-size:17px">What are you struggling with? Find what Scripture and the Holy Fathers say, and a short plan to walk through it.</p>
+    <div id="hb"></div><div class="sec-h"><h2>Or choose one</h2></div><div class="tiles help-tiles">${index.map(helpTile).join("")}</div>
+    <p class="small muted" style="margin:22px 4px">This is not a replacement for confession or for your priest. Bring what you're carrying to them too.</p>`;
+  helpBox($("#hb"), index, q.get("q") || "");
+}
+async function renderHelpTopic(id) {
+  const [t, P] = await Promise.all([get(`help/${id}.json`).catch(() => null), plans()]);
+  if (!t) { location.replace("#/help"); return; }
+  setTop("", { back: true });
+  const plan = P.plans.find((p) => p.id === t.plan);
+  view.innerHTML = `<div class="help-hero" style="background:${t.color}"><div class="small">Help for struggles</div><h2>${esc(t.name)}</h2></div>
+    ${t.safety ? safetyHTML(t.safety) : ""}
+    <p class="prose" style="margin:16px 2px">${esc(t.about)}</p>
+    ${plan ? planRowHTML(plan, "7 days · one verse and one Father a day", `#/plan/${plan.id}`, S.plans[plan.id]?.started ? "Continue" : "Start") : ""}
+    ${t.link ? `<a class="btn secondary wide" style="margin-top:10px" href="${esc(t.link[0])}">${esc(t.link[1])}</a>` : ""}
+    <div class="sec-h"><h2>From Scripture</h2></div><div class="stack" id="hv"></div>
+    <div class="sec-h"><h2>What the Fathers say</h2><span class="small muted">${t.quotes.length}</span></div><div id="hf"></div>
+    ${t.plans.length ? `<div class="sec-h"><h2>More plans</h2></div><div class="list">${t.plans.map((x) => P.plans.find((p) => p.id === x)).filter(Boolean).map((p) => planRowHTML(p)).join("")}</div>` : ""}
+    <p class="small muted" style="margin:22px 4px">Passages chosen from 19th-century public-domain translations. Pray, and talk to your priest.</p>`;
+  const verses = await Promise.all(t.verses.map(async (ref) => {
+    const r = planRef(ref); if (!r) return "";
+    const vs = [];
+    for (let v = r.v; v <= r.v2 && vs.length < 6; v++) { const x = await verseText(r.code, r.c, v).catch(() => null); if (x) vs.push(x.text); }
+    return vs.length ? `<a class="card help-verse" href="${readHash(r)}"><div class="vtext">${esc(vs.join(" "))}${r.v2 - r.v >= 6 ? " …" : ""}</div><div class="small muted">${esc(refText(r))}</div></a>` : "";
+  }));
+  $("#hv").innerHTML = verses.join("");
+  const entries = t.quotes.map((x) => ({ ...x, ch: x.c, t: `${refText({ code: x.b, c: x.c, v: x.v[0], c2: x.c, v2: x.v[1] === 999 ? x.v[0] : x.v[1] })} · ${x.t}`, v: [x.v[0], x.v[0]] }));
+  const more = () => { fathersList($("#hf"), entries); };
+  fathersList($("#hf"), entries.slice(0, 8));
+  if (entries.length > 8) { $("#hf").insertAdjacentHTML("afterend", `<button class="btn secondary wide" id="hmore" style="margin-top:8px">Show all ${entries.length}</button>`); $("#hmore").onclick = (e) => { e.target.remove(); more(); }; }
+}
+
+// ---------------------------------------------------------------- the fasting calendar
+const MONTHS = {};
+async function monthData(y, m) {
+  const k = `month:${S.settings.cal}:${y}-${m}`;
+  if (MONTHS[k]) return MONTHS[k];
+  try {
+    const r = await fetch(`${API}month?y=${y}&m=${m}&cal=${S.settings.cal}`);
+    if (!r.ok) throw new Error(r.status);
+    MONTHS[k] = await r.json();
+    try { localStorage.setItem(k, JSON.stringify(MONTHS[k])); } catch (e) { /* full */ }
+    return MONTHS[k];
+  } catch (e) { try { return JSON.parse(localStorage.getItem(k)); } catch (e2) { return null; } }
+}
+function fastKind(x) {
+  if (!x.fastLevel) return "";
+  const ex = x.fastException.toLowerCase();
+  return ex.includes("fish") ? "fish" : ex.includes("oil") ? "oil" : ex.includes("dairy") || ex.includes("cheese") ? "dairy" : "strict";
+}
+const FAST_NAME = { strict: "Strict fast", oil: "Fast · wine and oil allowed", fish: "Fast · fish, wine and oil allowed", dairy: "Fast · dairy allowed" };
+async function renderCalendar(q) {
+  setTop("Calendar", { back: true });
+  const t = today();
+  const [y, m] = (q.get("m") || t.slice(0, 7)).split("-").map(Number);
+  const key = (yy, mm) => `${yy}-${String(mm).padStart(2, "0")}`;
+  const prev = m === 1 ? key(y - 1, 12) : key(y, m - 1), next = m === 12 ? key(y + 1, 1) : key(y, m + 1);
+  const np = nextPascha(), pd = paschaDay();
+  const name = new Date(y, m - 1, 1).toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+  view.innerHTML = `<div class="card pascha">${paschalSeason()
+      ? `<div class="label">Day ${pd + 1} of Pascha</div><h3>Christ is Risen!</h3><div class="small">Indeed He is Risen!</div>`
+      : `<div class="label">Pascha ${np.date.slice(0, 4)}</div><h3>${np.days} ${np.days === 1 ? "day" : "days"} to go</h3><div class="small">${esc(longDate(np.date))}${np.days > 48 ? ` · Great Lent begins ${esc(new Date(addDays(np.date, -48) + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long" }))}` : ""}</div>`}</div>
+    <div class="cal-h"><a class="iconbtn" href="#/calendar?m=${prev}" aria-label="Last month">${ICON.left}</a><h2>${esc(name)}</h2><a class="iconbtn" href="#/calendar?m=${next}" aria-label="Next month">${ICON.right}</a></div>
+    <div class="cal-grid head">${["M", "T", "W", "T", "F", "S", "S"].map((d) => `<span>${d}</span>`).join("")}</div>
+    <div id="grid"><div class="empty small">Loading…</div></div>
+    <div class="cal-key"><span><i class="k strict"></i>Strict fast</span><span><i class="k oil"></i>Wine and oil</span><span><i class="k fish"></i>Fish allowed</span><span><i class="k fd"></i>Great feast</span></div>
+    <div id="feasts"></div>
+    <p class="small muted" style="margin:18px 4px">From orthocal.info, ${S.settings.cal === "old" ? "Old" : "New"} Calendar. Keep the fast as your priest guides you.</p>`;
+  const M = await monthData(y, m);
+  if (!M) { $("#grid").innerHTML = `<div class="card empty">Can't reach the Church calendar right now.</div>`; return; }
+  const lead = (new Date(y, m - 1, 1).getDay() + 6) % 7;
+  $("#grid").innerHTML = `<div class="cal-grid">${"<span></span>".repeat(lead)}${M.days.map((x) => {
+    const ds = key(y, m) + "-" + String(x.d).padStart(2, "0");
+    return `<button data-d="${x.d}" class="${fastKind(x)} ${ds === t ? "today" : ""}" aria-label="${x.d}: ${esc(x.title)}">${x.d}${x.feastLevel >= 6 ? '<i class="fd"></i>' : x.feastLevel >= 4 ? '<i class="fd sm"></i>' : ""}</button>`;
+  }).join("")}</div>`;
+  const big = M.days.filter((x) => x.feastLevel >= 4);
+  $("#feasts").innerHTML = big.length ? `<div class="sec-h"><h2>Feasts this month</h2></div><div class="list">${big.map((x) => `<button class="row-btn" data-d="${x.d}"><span class="numdot ${x.feastLevel >= 6 ? "gold" : ""}">${x.d}</span><span class="grow"><span class="t" style="white-space:normal">${esc(x.title)}</span></span>${ICON.chev}</button>`).join("")}</div>` : "";
+  view.querySelectorAll("[data-d]").forEach((b) => (b.onclick = () => {
+    const x = M.days[+b.dataset.d - 1], k = fastKind(x);
+    openSheet(`<div class="sheet-h"><h3>${esc(new Date(y, m - 1, x.d, 12).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" }))}</h3>${closeBtn}</div>
+      <div style="font:600 20px/1.3 var(--serif);margin-bottom:8px">${esc(x.title)}</div>
+      ${x.saints.length ? `<p class="small muted" style="margin:0 0 12px">${esc(x.saints.join(" · "))}</p>` : ""}
+      <div class="row">${k ? `<span class="pill fast">${esc(FAST_NAME[k])}</span>` : `<span class="pill">${esc(x.fast || "No fast")}${x.fastException ? " · " + esc(x.fastException) : ""}</span>`}${x.feastLevel >= 6 ? `<span class="pill feast">Great feast</span>` : ""}</div>`);
+  }));
+}
+
+// ---------------------------------------------------------------- the prayer list
+// The Church remembers the departed on the 3rd, 9th and 40th day (the day of death is the first) and every year.
+function memorials(p) {
+  if (p.kind !== "departed" || !p.died) return [];
+  const out = [[3, addDays(p.died, 2)], [9, addDays(p.died, 8)], [40, addDays(p.died, 39)]].map(([n, d]) => ({ d, what: `${n}${n === 3 ? "rd" : "th"} day` }));
+  const y0 = +p.died.slice(0, 4), md = p.died.slice(4);
+  for (let y = y0 + 1; y <= new Date().getFullYear() + 1; y++) out.push({ d: y + md, what: y - y0 === 1 ? "1 year" : `${y - y0} years` });
+  return out;
+}
+function memorialsSoon(days = 7) {
+  const t = today(), end = addDays(t, days), out = [];
+  for (const p of S.names) for (const m of memorials(p)) if (m.d >= t && m.d <= end) out.push({ ...m, p });
+  return out.sort((a, b) => (a.d < b.d ? -1 : 1));
+}
+const andWords = (a) => (a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]);
+const fullDate = (s) => new Date(s + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+const namesOf = (kind) => S.names.filter((p) => p.kind === kind).map((p) => p.name);
+function namesPrayerHTML() {
+  const living = namesOf("living"), dead = namesOf("departed");
+  if (!living.length && !dead.length) return `<p class="rubric">Add the people you pray for to your <a href="#/names" style="text-decoration:underline">prayer list</a>, and their names will appear here.</p>`;
+  return (living.length ? `<p>Remember, O Lord, Thy ${living.length > 1 ? "servants" : "servant"} ${esc(andWords(living))}. Grant ${living.length > 1 ? "them" : "them"} health and salvation, and keep them in Thy peace.</p>` : "") +
+    (dead.length ? `<p>Give rest, O Lord, to the ${dead.length > 1 ? "souls of Thy departed servants" : "soul of Thy departed servant"} ${esc(andWords(dead))}. Forgive them every sin, and make their memory eternal.</p>` : "") +
+    `<p class="rubric"><a href="#/names" style="text-decoration:underline">Edit your prayer list</a></p>`;
+}
+function memorialsICS(p) {
+  const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+  const ev = (d, sum, rule) => ["BEGIN:VEVENT", `UID:ob-${p.id}-${d}@orthodox-bible`, `DTSTAMP:${stamp}`, `DTSTART;VALUE=DATE:${d.replace(/-/g, "")}`, ...(rule ? [rule] : []), `SUMMARY:${sum}`, "BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${sum}`, "TRIGGER:-PT15H", "END:VALARM", "END:VEVENT"];
+  const t = today(), ms = memorials(p);
+  const lines = ms.slice(0, 3).filter((m) => m.d >= t).flatMap((m) => ev(m.d, `${m.what} for ${p.name}: memory eternal`));
+  lines.push(...ev(p.died.replace(/^\d{4}/, String(+p.died.slice(0, 4) + 1)), `Anniversary of ${p.name}: memory eternal`, "RRULE:FREQ=YEARLY"));
+  const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Orthodox Bible//EN", ...lines, "END:VCALENDAR"].join("\r\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar" })); a.download = "memorials.ics"; a.click();
+  toast("Open the file to add the days to your calendar");
+}
+function nameSheet(p) {
+  const n = p || { kind: "living", name: "", note: "", died: "" };
+  openSheet(`<div class="sheet-h"><h3>${p ? "Edit" : "Add a name"}</h3>${closeBtn}</div>
+    <div class="seg" style="padding:0 0 12px"><button data-k="living" aria-pressed="${n.kind === "living"}">Living</button><button data-k="departed" aria-pressed="${n.kind === "departed"}">Departed</button></div>
+    <label class="small muted" style="display:block">Name (a baptismal name if you know it)</label><input id="nn" class="field" value="${esc(n.name)}" maxlength="60" style="margin:6px 0 12px">
+    <label class="small muted" style="display:block">A note, if you like (e.g. "in hospital")</label><input id="nt" class="field" value="${esc(n.note || "")}" maxlength="80" style="margin:6px 0 12px">
+    <div id="dw" ${n.kind === "departed" ? "" : "hidden"}><label class="small muted" style="display:block">Date they fell asleep in the Lord</label><input id="nd" type="date" value="${esc(n.died || "")}" max="${today()}" style="margin:6px 0 12px"></div>
+    <div class="row"><button class="btn red" id="ns" style="flex:1">Save</button>${p ? `<button class="btn secondary" id="nx">Remove</button>` : ""}</div>`, (b) => {
+    let kind = n.kind;
+    b.querySelectorAll("[data-k]").forEach((x) => (x.onclick = () => { kind = x.dataset.k; b.querySelectorAll("[data-k]").forEach((y) => y.setAttribute("aria-pressed", y === x)); $("#dw", b).hidden = kind !== "departed"; }));
+    $("#ns", b).onclick = () => {
+      const name = $("#nn", b).value.trim(); if (!name) { $("#nn", b).focus(); return; }
+      const rec = { id: n.id || Date.now().toString(36), kind, name, note: $("#nt", b).value.trim(), died: kind === "departed" ? $("#nd", b).value : "" };
+      S.names = p ? S.names.map((x) => (x.id === p.id ? rec : x)) : [...S.names, rec]; save(); closeSheet(); renderNames();
+    };
+    if ($("#nx", b)) $("#nx", b).onclick = () => { if (confirm(`Remove ${n.name} from your list?`)) { S.names = S.names.filter((x) => x.id !== p.id); save(); closeSheet(); renderNames(); } };
+    setTimeout(() => $("#nn", b).focus(), 50);
+  });
+}
+function renderNames() {
+  setTop("Prayer list", { back: true, acts: `<button class="iconbtn round" id="addn" aria-label="Add a name"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>` });
+  $("#addn").onclick = () => nameSheet();
+  const soon = memorialsSoon(30);
+  const row = (p) => { const next = memorials(p).find((m) => m.d >= today());
+    return `<button class="row-btn" data-id="${esc(p.id)}"><span class="grow"><span class="t">${esc(p.name)}</span>${p.note || p.died ? `<span class="sub">${esc([p.note, p.died && `Fell asleep ${fullDate(p.died)}`, next && `${next.what}: ${longDate(next.d)}`].filter(Boolean).join(" · "))}</span>` : ""}</span>${ICON.chev}</button>`; };
+  const group = (kind, h, sub) => { const list = S.names.filter((p) => p.kind === kind);
+    return `<div class="sec-h"><h2>${h}</h2><span class="small muted">${sub}</span></div>${list.length ? `<div class="list">${list.map(row).join("")}</div>` : `<p class="small muted" style="margin:0 4px">No names yet.</p>`}`; };
+  view.innerHTML = `<p class="prose muted" style="margin:0 0 6px;font-size:17px">The people you pray for. Their names appear in Morning and Evening Prayers. Kept only on this phone.</p>
+    ${soon.length ? `<div class="card memorial" style="margin-top:12px"><div class="label">Coming up</div>${soon.map((m) => `<div style="margin-top:6px"><b>${esc(m.p.name)}</b> · ${esc(m.what)} · ${esc(m.d === today() ? "today" : longDate(m.d))}</div>`).join("")}<p class="small muted" style="margin:8px 0 0">Ask your priest about a memorial (panikhida) and bring kollyva if your parish does.</p></div>` : ""}
+    ${group("living", "For health and salvation", "the living")}
+    ${group("departed", "For repose", "the departed")}
+    <button class="btn red wide" id="addn2" style="margin-top:20px">Add a name</button>
+    ${S.names.some((p) => p.died) ? `<div class="sec-h"><h2>Calendar</h2></div><div class="list">${S.names.filter((p) => p.died).map((p) => `<button class="row-btn" data-ics="${esc(p.id)}"><span class="grow"><span class="t">Add ${esc(p.name)}'s memorial days</span><span class="sub">3rd, 9th and 40th day, and every year</span></span>${ICON.out}</button>`).join("")}</div>` : ""}`;
+  $("#addn2").onclick = () => nameSheet();
+  view.querySelectorAll("[data-id]").forEach((b) => (b.onclick = () => nameSheet(S.names.find((p) => p.id === b.dataset.id))));
+  view.querySelectorAll("[data-ics]").forEach((b) => (b.onclick = () => memorialsICS(S.names.find((p) => p.id === b.dataset.ics))));
+}
+
 // ---------------------------------------------------------------- prayers and the rope
 async function renderPrayers() {
   setTop("Prayers", { back: true });
   const PR = await prayers();
   view.innerHTML = `<div class="stack">${PR.map((p, i) => `<a class="card guided" href="#/prayer/${p.id}"><div class="txt"><div class="kind">${esc(p.kind)}</div><h3>${esc(p.title)}</h3><div class="dur">${ICON.play}${esc(p.mins)}</div></div>${thumbArt(PALETTE[(i + 3) % PALETTE.length], ["halo", "star", "wave", "flame", "cross"][i % 5])}</a>`).join("")}
+    <a class="card row help-row" href="#/names" style="flex-wrap:nowrap"><span class="grow"><b>Prayer list</b><span class="small muted" style="display:block">${S.names.length ? `${S.names.length} ${S.names.length === 1 ? "name" : "names"}` : "The living and the departed you pray for"}</span></span>${ICON.chev}</a>
     <a class="card guided" href="#/rope"><div class="txt"><div class="kind">The Jesus Prayer</div><h3>Pray with a prayer rope</h3><div class="dur">${ICON.play}${ropeTotal().toLocaleString()} prayed so far</div></div>${thumbArt("#3a2f4f", "halo", `<span style="position:relative;color:#fff">${ICON.beads.replace("<svg", '<svg style="width:40px;height:40px"')}</span>`)}</a></div>
     <p class="small muted" style="margin:18px 4px">English versions made for this app from the traditional texts. Pray as your parish and your priest guide you.</p>`;
 }
@@ -752,6 +1073,7 @@ async function renderPrayer(id) {
     if (part.h) html.push(`<h3>${esc(part.h)}</h3>`);
     else if (part.p) html.push(`<p>${esc(part.p)}</p>`);
     else if (part.r) html.push(`<p class="rubric">${esc(part.r)}</p>`);
+    else if (part.names) html.push(namesPrayerHTML());
     else if (part.read) {
       const r = planRef(part.read); let vs = null;
       try {
@@ -839,25 +1161,29 @@ async function renderYou() {
   Object.entries(S.noteAt).forEach(([k, at]) => S.notes[k] && feed.push({ kind: "notes", at, k, verb: "wrote a note on", sub: S.notes[k] }));
   Object.entries(S.bm).forEach(([k, b]) => feed.push({ kind: "bm", at: b.at, k, verb: "saved", sub: b.text }));
   Object.entries(S.plans).forEach(([id, pr]) => { const p = P.plans.find((x) => x.id === id); if (!p) return; Object.entries(pr.done || {}).forEach(([d, date]) => feed.push({ kind: "plans", at: new Date(date + "T20:00:00").getTime(), plan: p, d: +d + 1, verb: `finished day ${+d + 1} of` })); });
+  Object.entries(S.words).forEach(([n, w]) => feed.push({ kind: "words", at: w.at, n, w }));
   feed.sort((a, b) => b.at - a.at);
   const label = (k) => { const [code, c, v] = k.split("."); const pos = fromEng(code, +c, +v); const vn = pos[2] || (pos[3] != null ? pos[3] + 1 : ""); return { text: `${shortChap(pos[0], pos[1])}${vn ? ":" + vn : ""}`, href: `#/read/${pos[0]}/${pos[1]}?${pos[3] != null ? "i=" + pos[3] : "v=" + pos[2]}` }; };
   const icon = { hl: ICON.pen, notes: ICON.note, bm: ICON.bookmark, plans: ICON.check };
   const list = feed.filter((f) => youTab === "all" || f.kind === youTab);
-  const tabs = [["all", "All"], ["hl", "Highlights"], ["notes", "Notes"], ["bm", "Saved"], ["plans", "Plans"]];
+  const tabs = [["all", "All"], ["hl", "Highlights"], ["notes", "Notes"], ["bm", "Saved"], ["words", "Greek words"], ["plans", "Plans"]];
   view.innerHTML = `<div class="profile"><div class="av">${esc((S.name || "☩")[0].toUpperCase())}</div><div style="flex:1;min-width:0"><div class="big-title" style="margin:0;font-size:26px">${esc(S.name || "Welcome")}</div><button class="ghost" id="nm">${S.name ? "Change name" : "Add your name"}</button></div></div>
     <div class="stats"><div class="card"><div class="label">Reading streak</div><b>${streak()}${ICON.flame}</b><div class="small muted">Best: ${Math.max(S.best || 0, streak())}</div></div>
       <div class="card"><div class="label">Days reading this year</div><b>${daysThisYear()}</b><div class="small muted">${ropeTotal().toLocaleString()} Jesus Prayers</div></div></div>
+    <a class="card row help-row" href="#/names" style="flex-wrap:nowrap;margin-top:10px"><span class="grow"><b>Prayer list</b><span class="small muted" style="display:block">${S.names.length ? `${S.names.length} ${S.names.length === 1 ? "name" : "names"}` : "Add the people you pray for"}</span></span>${ICON.chev}</a>
     <div class="sec-h"><h2>Badges</h2><span class="small muted">${BADGES.filter((b) => b.got()).length} of ${BADGES.length}</span></div>
     <div class="scroller badges">${BADGES.slice().sort((a, b) => b.got() - a.got()).map(badgeHTML).join("")}</div>
     <div class="sec-h"><h2>Activity</h2></div>
     <div class="filters">${tabs.map(([k, n]) => `<button data-yt="${k}" aria-pressed="${youTab === k}">${n}</button>`).join("")}</div>
     <div class="list feed">${list.length ? list.slice(0, 80).map((f) => {
+      if (f.kind === "words") return `<button class="row-btn" data-word="${f.n}"><span class="ic" lang="grc" style="font-family:'Noto Serif',serif">α</span><span class="grow"><span class="t">You saved <span lang="grc">${esc(f.w.lemma)}</span>: ${esc(f.w.gloss)}</span>${f.w.ref ? `<span class="sub">${esc(f.w.ref)}</span>` : ""}</span><span class="small muted">${ago(f.at)}</span></button>`;
       if (f.kind === "plans") return `<a class="row-btn" href="#/plan/${f.plan.id}/${f.d}"><span class="ic">${icon.plans}</span><span class="grow"><span class="t" style="white-space:normal">You ${esc(f.verb)} ${esc(f.plan.title)}</span></span><span class="small muted">${ago(f.at)}</span></a>`;
       const l = label(f.k);
       return `<a class="row-btn" href="${l.href}"><span class="ic">${icon[f.kind]}</span><span class="grow"><span class="t">You ${esc(f.verb)} ${esc(l.text)}</span>${f.sub ? `<span class="sub" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(f.sub)}</span>` : ""}</span><span class="small muted">${ago(f.at)}</span></a>`;
     }).join("") : `<div class="empty">Highlights, notes, saved verses and plan days will show here.</div>`}</div>`;
   $("#nm").onclick = () => { const n = prompt("Your name (only kept on this phone)", S.name || ""); if (n !== null) { S.name = n.trim().slice(0, 40); save(); renderYou(); } };
   view.querySelectorAll("[data-yt]").forEach((b) => (b.onclick = () => { youTab = b.dataset.yt; renderYou(); }));
+  view.querySelectorAll("[data-word]").forEach((b) => (b.onclick = () => { const w = S.words[b.dataset.word]; wordSheet(w.w, b.dataset.word, w.ref, renderYou); }));
 }
 function renderSettings() {
   setTop("Settings", { back: true });
@@ -918,7 +1244,7 @@ async function route() {
   const [path, qs] = (location.hash.slice(1) || "/today").split("?");
   const q = new URLSearchParams(qs || "");
   const p = path.split("/").filter(Boolean);
-  const tab = { today: "today", bible: "bible", read: "bible", plans: "plans", plan: "plans", discover: "discover", fathers: "discover", father: "discover", prayers: "discover", prayer: "discover", rope: "discover", search: "discover", you: "you", settings: "you", more: "you", mine: "you" }[p[0]] || "today";
+  const tab = { today: "today", bible: "bible", read: "bible", plans: "plans", plan: "plans", discover: "discover", fathers: "discover", father: "discover", prayers: "discover", prayer: "discover", rope: "discover", search: "discover", help: "discover", names: "you", calendar: "today", verse: "bible", you: "you", settings: "you", more: "you", mine: "you" }[p[0]] || "today";
   document.querySelectorAll(".tabs a").forEach((a) => a.setAttribute("aria-current", a.dataset.tab === tab ? "page" : "false"));
   try {
     if (!BOOKS.length) await boot();
@@ -933,6 +1259,11 @@ async function route() {
     else if (p[0] === "prayers") await renderPrayers();
     else if (p[0] === "prayer") await renderPrayer(p[1]);
     else if (p[0] === "rope") renderRope();
+    else if (p[0] === "names") renderNames();
+    else if (p[0] === "calendar") await renderCalendar(q);
+    else if (p[0] === "verse") await renderVerse(p[1], +p[2], +p[3]);
+    else if (p[0] === "help" && p[1]) await renderHelpTopic(p[1]);
+    else if (p[0] === "help") await renderHelp(q);
     else if (p[0] === "search") await renderSearch(q.get("q") || "");
     else if (p[0] === "you" || p[0] === "mine") await renderYou();
     else if (p[0] === "settings" || p[0] === "more") renderSettings();

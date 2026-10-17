@@ -259,3 +259,53 @@ canvas.preview{width:100%;border-radius:14px;display:block}
 mark{background:var(--hl-y);color:inherit;border-radius:3px;padding:0 1px}
 @media (min-width:760px){.hero-card{width:46%}}
 @media (prefers-reduced-motion:reduce){.toast,.verse{transition:none}}
+
+/* help for struggles */
+.help-card h3{margin:0 0 2px;font-size:18px}.help-card p{margin:0 0 12px}
+.help-tiles{grid-template-rows:repeat(2,46px);grid-auto-columns:140px}
+.help-hero{border-radius:18px;padding:28px 18px 18px;color:#fff;min-height:130px;display:flex;flex-direction:column;justify-content:flex-end}
+.help-hero h2{font:600 30px/1.1 var(--serif);margin:4px 0 0}.help-hero .small{opacity:.8;text-transform:uppercase;letter-spacing:.06em;font-weight:700;font-size:11px}
+.safety{border:1px solid var(--accent);background:var(--accent-soft);margin-top:12px}.safety p{margin:6px 0 12px}
+.help-verse .vtext{font:400 18px/1.5 var(--serif);margin-bottom:6px}
+.help-row{align-items:center;gap:10px}
+.dot-c{width:14px;height:14px;border-radius:50%;flex:none;margin:0 4px}
+.memorial{border:1px solid var(--gold);background:var(--gold-soft);display:block}.memorial .label{color:var(--gold)}
+.field{display:block;width:100%;box-sizing:border-box;background:var(--surface2);border:0;border-radius:12px;padding:13px 14px;font:16px var(--sans);color:var(--text);color-scheme:inherit}.field:focus{outline:2px solid var(--accent)}
+
+/* calendar, Pascha and Bright Week */
+.cal-link{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;font-weight:600;color:var(--muted)}
+.cal-link span:last-child{display:flex;align-items:center;color:var(--text)}.cal-link .chev{width:16px;height:16px}
+.pascha{background:linear-gradient(135deg,#5a2a1e,#8a3a2a);color:#fff}.pascha .label{color:#f3cf8a}.pascha h3{font:600 28px/1.15 var(--serif);margin:4px 0}
+.cal-h{display:flex;align-items:center;justify-content:space-between;margin:18px 0 8px}.cal-h h2{font-size:19px;margin:0}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-grid.head span{text-align:center;font-size:11px;font-weight:700;color:var(--faint);padding:4px 0}
+.cal-grid button{all:unset;cursor:pointer;position:relative;aspect-ratio:1;border-radius:10px;display:grid;place-items:center;font-weight:600;font-size:14px;background:var(--surface)}
+.cal-grid button.strict{background:rgba(229,72,77,.55);color:#fff}.cal-grid button.oil{background:rgba(229,72,77,.3)}
+.cal-grid button.fish,.cal-grid button.dairy{background:rgba(141,184,227,.25)}
+.cal-grid button.today{outline:2px solid var(--text);outline-offset:-2px}
+.cal-grid .fd,.cal-key .fd{position:absolute;bottom:5px;left:50%;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:var(--gold)}
+.cal-grid .fd.sm{width:4px;height:4px;margin-left:-2px;opacity:.8}
+.cal-key{display:flex;flex-wrap:wrap;gap:6px 14px;margin:12px 2px 0;font-size:12px;color:var(--muted)}.cal-key span{display:flex;align-items:center;gap:6px}
+.cal-key .k{display:inline-block;width:12px;height:12px;border-radius:3px;position:relative}.cal-key .k.strict{background:rgba(229,72,77,.55)}.cal-key .k.oil{background:rgba(229,72,77,.3)}.cal-key .k.fish{background:rgba(141,184,227,.25)}
+.cal-key .k.fd{position:static;margin:0;width:8px;height:8px;border-radius:50%}
+.numdot.gold{background:var(--gold);color:#121212}
+.hello h1 small{display:block;font-size:15px;font-weight:500;color:var(--gold);margin-top:2px}
+/* Bright Week: everything turns gold */
+:root[data-bright]{--accent:#d9a441;--accent-soft:rgba(217,164,65,.18);--accent-ink:#1a1206}
+
+/* Greek side by side */
+#verses.parallel .verse{display:block;margin-top:14px}
+.grk{font:400 calc(var(--size) - 1px)/1.7 "Noto Serif",var(--serif);color:var(--muted);padding:2px 0 2px 12px;border-left:2px solid var(--line);margin-top:4px}
+.grk .w{cursor:pointer;border-radius:4px}.grk .w:hover,.grk .w:active{background:var(--blue-soft);color:var(--text)}
+.grk-word{font-family:"Noto Serif",var(--serif)}
+.lemma{font:400 22px "Noto Serif",var(--serif)}.lemma .muted{font:italic 16px var(--serif)}
+.gloss{font-weight:700;font-size:17px;margin:4px 0 8px}
+
+/* verse study */
+.study-h .vtext{font:400 calc(var(--size) + 2px)/1.6 var(--serif)}
+.study-h .grk{margin-top:10px}
+.swipe-hint{text-align:center;font-size:12px;color:var(--faint);margin-top:8px}
+.words{display:flex;flex-direction:column;gap:6px}
+.wrow{all:unset;cursor:pointer;display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:12px;padding:7px 14px}
+.wrow .g{font:400 19px "Noto Serif",var(--serif);min-width:96px}
+.wrow .m{flex:1;display:flex;flex-direction:column;min-width:0}.wrow .m .small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
