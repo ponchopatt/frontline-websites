@@ -39,6 +39,9 @@ It is a web app that installs to the home screen ("Add to Home Screen") and work
   more, 19 in all) and get a short word on it, the Scriptures to read, what the Fathers said
   (passages picked from the public-domain data, saints first) and a 7-day plan. Typing about
   self-harm, or opening *Despair*, shows Lifeline (13 11 14) straight away.
+- **Grow in virtue**: 11 plans for growing in self-control, patience, humility, love, trust in God,
+  hope, inner peace, thankfulness, courage, honesty and guarding your thoughts, each with the
+  Fathers' passages, and linked from the struggles they answer (lust → self-control).
 - **Questions about the faith**: 97 short, plain answers in 9 sections, such as what the Eucharist is, why
   icons, why fast, who the Theotokos is, how we are saved, and why Pascha's date differs. Each
   has the Scriptures behind it and what the Fathers said. Search understands questions: *what is
@@ -52,7 +55,9 @@ It is a web app that installs to the home screen ("Add to Home Screen") and work
 - **Greek side by side** (Aa → Greek): the Septuagint under Brenton, and the 1904 Patriarchal
   text (the Greek Church's own) under the New Testament. Tap a New Testament word for its meaning.
 
-**Search** is instant after the first time: each Bible is one file the phone keeps, and words match from their start (*anger* finds *angered*, not *stranger*).
+**Search** puts the teaching first: search *lust*, *anger*, *self-control* or *the Eucharist* and you
+get a short word on it, a 7-day plan, three passages from the Fathers, related plans and questions,
+and the key verses; every verse with the word is a tap away underneath. It is instant after the first time: each Bible is one file the phone keeps, and words match from their start (*anger* finds *angered*, not *stranger*).
 
 **Feel**: swipe left or right to turn the chapter, pull a sheet down to close it, and Back takes
 you to the same place on the page you came from. Home has *Continue reading* and shows straight

@@ -332,3 +332,14 @@ a.card:active,.row-btn:active{background-color:var(--surface2)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 #verses{touch-action:pan-y pinch-zoom}html,body{overscroll-behavior-x:none}
 .help-row .grow{flex:1;min-width:0}
+
+/* search: the teaching first */
+.topic-hit{border-radius:20px;padding:20px 18px 18px;color:#fff;margin:4px 0 6px}
+.topic-hit .kind{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.85}
+.topic-hit h2{font:600 28px/1.15 var(--serif);margin:6px 0 8px}
+.topic-hit p{margin:0 0 14px;font:400 16px/1.5 var(--serif);opacity:.95}
+.topic-hit .btn{background:#fff;color:#141414}
+.topic-hit .btn.ghost-light{background:rgba(255,255,255,.18);color:#fff}
+.qcard{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:8px;background:var(--surface);border-radius:18px;padding:16px;width:100%}
+.qcard .who{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.qcard .qtext{font:400 17px/1.55 var(--serif)}
