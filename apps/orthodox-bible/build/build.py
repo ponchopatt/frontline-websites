@@ -392,13 +392,15 @@ def fathers_on(t):
     return quotes
 
 
+import virtues  # noqa: E402
 help_index, help_plans = [], []
-for t in helpdata.TOPICS:
+for t in [*helpdata.TOPICS, *({**v, "group": "virtue"} for v in virtues.TOPICS)]:
+    virtue = t.get("group") == "virtue"
     quotes = fathers_on(t)
-    out = {k: t[k] for k in ("id", "name", "color", "about", "verses", "plans") if k in t}
-    out.update({"safety": t.get("safety"), "link": t.get("link"), "quotes": quotes, "plan": "help-" + t["id"]})
+    out = {k: t[k] for k in ("id", "name", "color", "about", "verses", "plans", "keys") if k in t}
+    out.update({"safety": t.get("safety"), "link": t.get("link"), "quotes": quotes, "plan": "help-" + t["id"], "group": t.get("group", "struggle")})
     write(f"help/{t['id']}.json", out)
-    help_index.append({"id": t["id"], "name": t["name"], "color": t["color"], "find": t["find"]})
+    help_index.append({"id": t["id"], "name": t["name"], "color": t["color"], "find": t["find"], "group": t.get("group", "struggle")})
     # A 7-day plan: one verse a day with a short word from a Father.
     days, used = [], set()
     for i, ref in enumerate(t["verses"][:7]):
@@ -417,8 +419,9 @@ for t in helpdata.TOPICS:
         if t.get("safety") and i == 0:
             items.append({"text": t["safety"]})
         days.append({"title": f"Day {i + 1}", "items": items})
-    help_plans.append({"id": "help-" + t["id"], "cat": "help", "title": t["name"],
-                       "about": f"Seven days of Scripture and the Fathers for anyone struggling with {t['name'].lower()}.",
+    help_plans.append({"id": "help-" + t["id"], "cat": "virtue" if virtue else "help", "title": t["name"],
+                       "about": f"Seven days of Scripture and the Fathers on growing in {t['name'].lower()}." if virtue
+                       else f"Seven days of Scripture and the Fathers for anyone struggling with {t['name'].lower()}.",
                        "days": days,
                        "cover": {"bg": t["color"], "t": t["name"], "s": "7 days with the Fathers", "style": "serif", "motif": "halo"}})
     print(f"Help: {t['id']}: {len(quotes)} passages")
@@ -429,7 +432,7 @@ import faith  # noqa: E402
 faith_index = []
 CAT_NAME = {c[0]: c[1] for c in faith.CATEGORIES}
 for t in faith.TOPICS:
-    out = {k: t[k] for k in ("id", "name", "color", "about", "verses", "plans") if k in t}
+    out = {k: t[k] for k in ("id", "name", "color", "about", "verses", "plans", "keys") if k in t}
     # A few practical questions have no good passages in the Fathers; they leave that part out.
     out.update({"link": t.get("link"), "safety": t.get("safety"), "quotes": fathers_on(t) if t.get("fathers", True) else []})
     write(f"faith/{t['id']}.json", out)
@@ -439,6 +442,7 @@ write("faith/index.json", faith_index)
 plans_json = json.load(open(os.path.join(OUT, "plans.json"), encoding="utf-8"))
 plans_json["plans"] += help_plans
 plans_json["categories"]["help"] = "Help for struggles"
+plans_json["categories"]["virtue"] = "Grow in virtue"
 write("plans.json", plans_json)
 
 # ---------------------------------------------------------------- similar verses
