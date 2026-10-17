@@ -3,3 +3,5 @@ node_modules/
 __pycache__/
 android/
 ios/
+# The data build scripts live here (the top-level .gitignore skips build/ folders).
+!build/
