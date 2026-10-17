@@ -21,6 +21,10 @@ It is a web app that installs to the home screen ("Add to Home Screen") and work
   a saint" for writers like Origen and Tertullian). About 31,000 passages from 46 Fathers.
   Highlights, notes, save, copy and share are on the same sheet. Notes are stored by verse, not by
   translation, so they stay put when switching Bibles.
+- **Study a verse**: tap a verse, then *Study this verse* (or swipe up). It shows the verse in
+  English and Greek, the Greek word by word with each word's meaning (tap for the full entry,
+  and save words you want to keep), up to ten similar verses, what the Fathers said, and the plans
+  that read it. The *Saved* tab has your note and saved words for that verse.
 - **Plans**: 19 plans, 272 days: the Four Gospels with the Fathers, the Psalter by kathisma, Acts,
   Romans and Hebrews with St John Chrysostom, the Seven Ecumenical Councils (one plan each, plus an
   overview), Meet the Fathers, the Apostolic Fathers, On the Incarnation, the Life of St Antony,
@@ -75,6 +79,7 @@ To try it on a computer: `node dev.mjs`, then open http://localhost:8790.
 | Greek Old Testament | Brenton's Greek Septuagint, eBible.org | Public domain |
 | Greek New Testament | 1904 Patriarchal Text with Strong's numbers, eBible.org | Public domain |
 | Greek word meanings | STEP Bible's brief Greek lexicon (Tyndale House) | CC BY 4.0, credited on each word |
+| Similar verses | OpenBible.info cross references | CC BY |
 | Help for struggles, prayer list words | Written for this app | |
 | Plans, introductions, labels | Written for this app | |
 
@@ -94,6 +99,7 @@ curl -LO https://ebible.org/Scriptures/eng-web_usfm.zip && unzip eng-web_usfm.zi
 curl -LO https://ebible.org/Scriptures/grcbrent_usfm.zip && unzip grcbrent_usfm.zip -d grcbrent
 curl -LO https://ebible.org/Scriptures/grcbyz_usfm.zip && unzip grcbyz_usfm.zip -d grcbyz
 git clone --depth 1 https://github.com/STEPBible/STEPBible-Data.git step
+curl -LO https://a.openbible.info/data/cross-references.zip && unzip cross-references.zip -d xref
 git clone --depth 1 https://github.com/HistoricalChristianFaith/Commentaries-Database.git cdb
 cd .. && npm run data && npm test
 ```

@@ -8,7 +8,7 @@
 const KEY = "ob1";
 // Where the calendar functions live: this site, or the web address set in config.js for the phone apps.
 const API = (window.OB_API || "") + "api/";
-const blank = () => ({ settings: { tr: "lxx", cal: "new", size: 19, theme: "dark", writers: true, voice: "", greek: false },
+const blank = () => ({ words: {}, settings: { tr: "lxx", cal: "new", size: 19, theme: "dark", writers: true, voice: "", greek: false },
   name: "", last: { b: "JHN", c: 1 }, hl: {}, hlAt: {}, bm: {}, notes: {}, noteAt: {}, plans: {}, saved: {}, read: {}, days: [],
   best: 0, rope: {}, ropeSize: 100, liked: {}, earned: {}, names: [] });
 let S;
@@ -131,15 +131,15 @@ function toEng(code, c, v, verseIndex) {
   return [c, v];
 }
 // [code, chapter, verse, verseIndex|undefined] in the reader's numbering, for an English reference.
-function fromEng(code, c, v) {
+function fromEng(code, c, v, t = tr()) {
   if (code === "DAN") code = "DAG";
   if (code === "EST") code = "ESG";
-  if (code === "PSA" && tr() === "lxx") {
+  if (code === "PSA" && t === "lxx") {
     const hit = PSI[c + ":" + v];
     if (hit) return [code, hit[0], null, hit[1]];
     return [code, c > 9 && c < 148 ? c - 1 : c, v];
   }
-  if (code === "JER" && tr() === "lxx") return [code, JER_BACK()[c] || c, v];
+  if (code === "JER" && t === "lxx") return [code, JER_BACK()[c] || c, v];
   if (code === "DAG" && c === 3 && v >= 24 && v <= 30) return [code, 3, v + 67];
   return [code, c, v];
 }
@@ -479,7 +479,7 @@ async function renderReader(code, c, q) {
   </div>
   <div class="float-nav"><button id="prev" aria-label="Previous chapter" ${c <= 1 && !prevBook(code) ? "disabled" : ""}>${ICON.left}</button><button class="play" id="play" aria-label="Listen to this chapter">${ICON.play}</button><button id="next" aria-label="Next chapter" ${c >= n && !nextBook(code) ? "disabled" : ""}>${ICON.right}</button></div>`;
   const box = $("#verses");
-  box.onclick = (e) => { const w = e.target.closest(".w"); if (w) { wordSheet(w.textContent, w.dataset.s); return; } const el = e.target.closest(".verse"); if (el) verseSheet(code, c, verses, +el.dataset.i, eng, fathers); };
+  box.onclick = (e) => { const w = e.target.closest(".w"); if (w) { const gi = w.closest(".grk"), vi2 = gi && gi.previousElementSibling ? +gi.previousElementSibling.dataset.i : -1; wordSheet(w.textContent, w.dataset.s, vi2 >= 0 ? `${shortChap(code, c)}:${verses[vi2][0]}` : ""); return; } const el = e.target.closest(".verse"); if (el) verseSheet(code, c, verses, +el.dataset.i, eng, fathers); };
   if ($("#allF")) $("#allF").onclick = () => openSheet(`<div class="sheet-h"><h3>The Fathers on ${esc(chapLabel(code, c))}</h3>${closeBtn}</div><div id="fl"></div>`, (b) => fathersList($("#fl", b), fathers));
   const keep = q.get("plan") ? `?plan=${q.get("plan")}` : "";
   $("#prev").onclick = () => (location.hash = (c > 1 ? `#/read/${code}/${c - 1}` : `#/read/${prevBook(code)}/${chapters(prevBook(code))}`) + keep);
@@ -542,13 +542,20 @@ function textSheet() {
   });
 }
 // What a Greek New Testament word means, from the STEP Bible lexicon.
-async function wordSheet(word, n) {
+async function wordSheet(word, n, ref = "", onChange = null) {
   let x = null;
   try { x = (await get(`lex/${Math.floor(+n / 1000)}.json`))[n]; } catch (e) { x = null; }
   openSheet(`<div class="sheet-h"><h3 lang="grc" class="grk-word">${esc(word)}</h3>${closeBtn}</div>${x
     ? `<div class="lemma"><b lang="grc">${esc(x[0])}</b> <span class="muted">${esc(x[1])}</span></div><div class="gloss">${esc(x[2])}</div><p class="small" style="line-height:1.55">${esc(x[3])}</p>`
     : `<p class="muted">No meaning found for this word.</p>`}
-    <p class="small muted" style="margin-top:14px">Strong's G${esc(n)} · Lexicon from STEP Bible (Tyndale House), CC BY 4.0.</p>`);
+    ${x ? `<button class="btn ${S.words[n] ? "secondary" : "red"} wide" id="sw" style="margin-top:14px">${S.words[n] ? "Saved ✓ · Remove" : "Save this word"}</button>` : ""}
+    <p class="small muted" style="margin-top:14px">Strong's G${esc(n)} · Lexicon from STEP Bible (Tyndale House), CC BY 4.0.</p>`, (b) => {
+    if (!$("#sw", b)) return;
+    $("#sw", b).onclick = () => {
+      if (S.words[n]) delete S.words[n]; else S.words[n] = { w: word, lemma: x[0], tr: x[1], gloss: x[2], ref, at: Date.now() };
+      save(); toast(S.words[n] ? "Word saved" : "Removed"); closeSheet(); if (onChange) onChange();
+    };
+  });
 }
 function verseSheet(code, c, verses, i, eng, fathers) {
   document.querySelectorAll(".verse.sel").forEach((v) => v.classList.remove("sel"));
@@ -567,10 +574,15 @@ function verseSheet(code, c, verses, i, eng, fathers) {
       <button data-a="image">${ICON.image}<span>Image</span></button>
       <button data-a="copy">${ICON.copy}<span>Copy</span></button>
       <button data-a="share">${ICON.share}<span>Share</span></button></div>
+    <a class="btn red wide" id="study" href="#/verse/${code}/${ec}/${ev}" style="margin-top:12px">Study this verse: Greek, similar verses, the Fathers</a>
+    <div class="swipe-hint">Swipe up for more</div>
     <div id="noteBox" ${S.notes[key] ? "" : "hidden"} style="margin-top:10px"><textarea id="noteText" rows="3" placeholder="Your note">${esc(S.notes[key] || "")}</textarea></div>
     <div class="sec-h" style="margin-top:22px"><h2>What the Fathers said</h2><span class="muted small">${mine.length || ""}</span></div>
     <div id="fl">${mine.length ? "" : `<div class="empty small">No comments from the Fathers on this verse yet.${fathers.length ? " Try the whole chapter." : ""}</div>`}</div>`, (b) => {
     if (mine.length) fathersList($("#fl", b), mine);
+    let y0 = null; const inner = b.closest(".sheet-in") || b;
+    inner.ontouchstart = (e) => { y0 = inner.scrollTop <= 0 ? e.touches[0].clientY : null; };
+    inner.ontouchend = (e) => { if (y0 != null && y0 - e.changedTouches[0].clientY > 70 && inner.scrollTop <= 0) location.hash = `#/verse/${code}/${ec}/${ev}`; y0 = null; };
     b.querySelectorAll("[data-hl]").forEach((x) => (x.onclick = () => {
       if (x.dataset.hl) { S.hl[key] = x.dataset.hl; S.hlAt[key] = Date.now(); } else { delete S.hl[key]; delete S.hlAt[key]; }
       save(); b.querySelectorAll("[data-hl]").forEach((y) => y.setAttribute("aria-pressed", y === x && !!x.dataset.hl));
@@ -585,6 +597,76 @@ function verseSheet(code, c, verses, i, eng, fathers) {
     act("copy").onclick = () => navigator.clipboard?.writeText(plain).then(() => toast("Copied"), () => toast("Couldn't copy"));
     act("share").onclick = () => { if (navigator.share) navigator.share({ text: plain }).catch(() => {}); else navigator.clipboard?.writeText(plain).then(() => toast("Copied to share")); };
   });
+}
+
+// ---------------------------------------------------------------- verse study
+// One verse, opened up: the Greek word by word, similar verses, the Fathers, and what you saved.
+const lexEntry = async (n) => { try { return (await get(`lex/${Math.floor(+n / 1000)}.json`))[n] || null; } catch (e) { return null; } };
+async function greekVerse(code, ec, ev) {
+  if (!BY[code] || !BY[code].grc) return null;
+  const [, c, v, idx] = fromEng(code, ec, ev, BY[code].ot ? "lxx" : "web");
+  try {
+    const ch = (await get(`bible/grc/${code}.json`)).find((x) => x[0] === c); if (!ch) return null;
+    const row = idx != null ? ch[1][idx] : ch[1].find((x) => x[0] === v);
+    return row ? row[1] : null;
+  } catch (e) { return null; }
+}
+let studyTab = "study";
+async function renderVerse(code, ec, ev) {
+  if (code === "DAN") code = "DAG";
+  if (!BY[code]) { location.replace("#/today"); return; }
+  const key = `${code}.${ec}.${ev}`;
+  const vt = await verseText(code, ec, ev).catch(() => null);
+  if (!vt) { location.replace(`#/read/${code}/${ec}`); return; }
+  const ref = `${shortChap(vt.code, vt.c)}:${vt.v}`;
+  setTop(ref, { back: true });
+  const [grk, xr, fathers, P] = await Promise.all([greekVerse(code, ec, ev), getOr(`xref/${code}.json`, {}), fathersFor(code, [ec]), plans()]);
+  const mine = fathers.filter((e) => covers(e, ec, ev));
+  const words = grk ? [...grk.matchAll(/([^\s@,.;·:()\[\]«»]+)@(\d+)/gu)].map((m) => ({ w: m[1], n: m[2] })) : [];
+  const lex = {}; await Promise.all([...new Set(words.map((w) => w.n))].map(async (n) => (lex[n] = await lexEntry(n))));
+  const refs = xr[`${ec}.${ev}`] || [];
+  const inPlans = P.plans.filter((p) => p.days.some((d) => d.items.some((it) => { if (!it.read || it.n === "lxx") return false; const r = planRef(it.read); return r && r.code === code && ec >= r.c && ec <= r.c2 && (!r.v || ((ec > r.c || ev >= r.v) && (ec < r.c2 || ev <= r.v2))); }))).slice(0, 6);
+  const draw = async () => {
+    const savedWords = Object.entries(S.words).filter(([, w]) => w.ref === ref);
+    const head = `<div class="study-h"><div class="vtext">${esc(vt.text)}</div>${grk ? `<div class="grk" lang="grc">${esc(grk.replace(/@\d+/g, ""))}</div>` : ""}
+      <div class="small muted" style="margin-top:8px">${esc(ref)} · ${tr() === "lxx" && BY[code].ot ? "Septuagint" : "WEB"}${grk ? " · Greek" : ""}</div>
+      <div class="row" style="margin-top:12px;gap:8px"><button class="btn small ${S.bm[key] ? "secondary" : "red"}" id="sv">${ICON.bookmark} ${S.bm[key] ? "Saved" : "Save verse"}</button><a class="btn small secondary" href="#/read/${vt.code}/${vt.c}?${vt.code === "PSA" && tr() === "lxx" ? "i=" + vt.i : "v=" + vt.v}">${ICON.book} Read chapter</a></div></div>
+      <div class="seg" style="margin:16px 0 4px"><button data-st="study" aria-pressed="${studyTab === "study"}" style="flex:1">Study</button><button data-st="saved" aria-pressed="${studyTab === "saved"}" style="flex:1">Saved</button></div>`;
+    let body = "";
+    if (studyTab === "study") {
+      body += words.length ? `<div class="sec-h"><h2>Word by word</h2><span class="small muted">tap for more</span></div>
+        <div class="words">${words.map((w, i) => { const x = lex[w.n]; return `<button class="wrow" data-wi="${i}"><span class="g" lang="grc">${esc(w.w)}</span><span class="m"><b>${esc(x ? x[2] : "")}</b><span class="small muted">${esc(x ? x[0] + " · " + x[1] : "")}</span></span>${S.words[w.n] ? `<span class="pill feast">Saved</span>` : ""}</button>`; }).join("")}</div>`
+        : grk ? `<div class="sec-h"><h2>The Greek</h2></div><p class="small muted" style="margin:0 2px">Word meanings are for the New Testament. The Septuagint's Greek is shown above.</p>` : "";
+      body += `<div class="sec-h"><h2>Similar verses</h2><span class="small muted">${refs.length || ""}</span></div><div class="stack" id="xr">${refs.length ? "" : `<p class="small muted" style="margin:0 2px">None for this verse yet.</p>`}</div>`;
+      body += `<div class="sec-h"><h2>What the Fathers said</h2><span class="small muted">${mine.length || ""}</span></div><div id="fl">${mine.length ? "" : `<p class="small muted" style="margin:0 2px">No comments from the Fathers on this verse yet.</p>`}</div>`;
+      if (inPlans.length) body += `<div class="sec-h"><h2>In these plans</h2></div><div class="list">${inPlans.map((p) => planRowHTML(p)).join("")}</div>`;
+      body += `<p class="small muted" style="margin:20px 4px">Similar verses from OpenBible.info (CC BY). Greek meanings from STEP Bible (CC BY 4.0).</p>`;
+    } else {
+      body += `<div class="stack" style="margin-top:12px">
+        <div class="card"><div class="label">This verse</div><div style="margin-top:6px">${S.bm[key] ? "✓ Saved to your verses" : "Not saved"}${S.hl[key] ? " · Highlighted" : ""}</div></div>
+        <div class="card"><div class="label">Your note</div><textarea id="sn" rows="4" placeholder="Write what this verse says to you" style="margin-top:8px">${esc(S.notes[key] || "")}</textarea></div></div>
+        <div class="sec-h"><h2>Words you saved here</h2></div>${savedWords.length ? `<div class="list">${savedWords.map(([n, w]) => `<button class="row-btn" data-sw="${n}"><span class="grow"><span class="t" lang="grc">${esc(w.lemma)}</span><span class="sub">${esc(w.gloss)} · ${esc(w.tr)}</span></span>${ICON.chev}</button>`).join("")}</div>` : `<p class="small muted" style="margin:0 2px">Tap a Greek word and press Save to keep it.</p>`}
+        <a class="btn secondary wide" href="#/you" style="margin-top:16px">Everything you've saved</a>`;
+    }
+    view.innerHTML = head + body;
+    $("#sv").onclick = () => { if (S.bm[key]) delete S.bm[key]; else S.bm[key] = { at: Date.now(), ref, text: vt.text }; save(); toast(S.bm[key] ? "Saved to your verses" : "Removed"); draw(); };
+    view.querySelectorAll("[data-st]").forEach((b) => (b.onclick = () => { studyTab = b.dataset.st; draw(); }));
+    view.querySelectorAll("[data-wi]").forEach((b) => (b.onclick = () => { const w = words[+b.dataset.wi]; wordSheet(w.w, w.n, ref, draw); }));
+    view.querySelectorAll("[data-sw]").forEach((b) => (b.onclick = () => wordSheet(S.words[b.dataset.sw].w, b.dataset.sw, ref, draw)));
+    if ($("#sn")) $("#sn").oninput = (e) => { const t = e.target.value.trim(); if (t) { S.notes[key] = t; S.noteAt[key] = Date.now(); } else { delete S.notes[key]; delete S.noteAt[key]; } save(); };
+    if (studyTab === "study") {
+      if (mine.length) fathersList($("#fl"), mine);
+      if (refs.length) {
+        const cards = await Promise.all(refs.map(async (s) => {
+          const r = planRef(s); if (!r) return "";
+          const t = await verseText(r.code, r.c, r.v).catch(() => null); if (!t) return "";
+          return `<a class="card help-verse" href="#/verse/${r.code}/${r.c}/${r.v}"><div class="small muted" style="margin-bottom:4px"><b style="color:var(--text)">${esc(refText(r))}</b></div><div class="vtext" style="font-size:17px">${esc(t.text)}${r.v2 !== r.v || r.c2 !== r.c ? " …" : ""}</div></a>`;
+        }));
+        if ($("#xr")) $("#xr").innerHTML = cards.join("") || `<p class="small muted" style="margin:0 2px">None for this verse yet.</p>`;
+      }
+    }
+  };
+  await draw();
 }
 
 // ---------------------------------------------------------------- verse images
@@ -1079,11 +1161,12 @@ async function renderYou() {
   Object.entries(S.noteAt).forEach(([k, at]) => S.notes[k] && feed.push({ kind: "notes", at, k, verb: "wrote a note on", sub: S.notes[k] }));
   Object.entries(S.bm).forEach(([k, b]) => feed.push({ kind: "bm", at: b.at, k, verb: "saved", sub: b.text }));
   Object.entries(S.plans).forEach(([id, pr]) => { const p = P.plans.find((x) => x.id === id); if (!p) return; Object.entries(pr.done || {}).forEach(([d, date]) => feed.push({ kind: "plans", at: new Date(date + "T20:00:00").getTime(), plan: p, d: +d + 1, verb: `finished day ${+d + 1} of` })); });
+  Object.entries(S.words).forEach(([n, w]) => feed.push({ kind: "words", at: w.at, n, w }));
   feed.sort((a, b) => b.at - a.at);
   const label = (k) => { const [code, c, v] = k.split("."); const pos = fromEng(code, +c, +v); const vn = pos[2] || (pos[3] != null ? pos[3] + 1 : ""); return { text: `${shortChap(pos[0], pos[1])}${vn ? ":" + vn : ""}`, href: `#/read/${pos[0]}/${pos[1]}?${pos[3] != null ? "i=" + pos[3] : "v=" + pos[2]}` }; };
   const icon = { hl: ICON.pen, notes: ICON.note, bm: ICON.bookmark, plans: ICON.check };
   const list = feed.filter((f) => youTab === "all" || f.kind === youTab);
-  const tabs = [["all", "All"], ["hl", "Highlights"], ["notes", "Notes"], ["bm", "Saved"], ["plans", "Plans"]];
+  const tabs = [["all", "All"], ["hl", "Highlights"], ["notes", "Notes"], ["bm", "Saved"], ["words", "Greek words"], ["plans", "Plans"]];
   view.innerHTML = `<div class="profile"><div class="av">${esc((S.name || "☩")[0].toUpperCase())}</div><div style="flex:1;min-width:0"><div class="big-title" style="margin:0;font-size:26px">${esc(S.name || "Welcome")}</div><button class="ghost" id="nm">${S.name ? "Change name" : "Add your name"}</button></div></div>
     <div class="stats"><div class="card"><div class="label">Reading streak</div><b>${streak()}${ICON.flame}</b><div class="small muted">Best: ${Math.max(S.best || 0, streak())}</div></div>
       <div class="card"><div class="label">Days reading this year</div><b>${daysThisYear()}</b><div class="small muted">${ropeTotal().toLocaleString()} Jesus Prayers</div></div></div>
@@ -1093,12 +1176,14 @@ async function renderYou() {
     <div class="sec-h"><h2>Activity</h2></div>
     <div class="filters">${tabs.map(([k, n]) => `<button data-yt="${k}" aria-pressed="${youTab === k}">${n}</button>`).join("")}</div>
     <div class="list feed">${list.length ? list.slice(0, 80).map((f) => {
+      if (f.kind === "words") return `<button class="row-btn" data-word="${f.n}"><span class="ic" lang="grc" style="font-family:'Noto Serif',serif">α</span><span class="grow"><span class="t">You saved <span lang="grc">${esc(f.w.lemma)}</span>: ${esc(f.w.gloss)}</span>${f.w.ref ? `<span class="sub">${esc(f.w.ref)}</span>` : ""}</span><span class="small muted">${ago(f.at)}</span></button>`;
       if (f.kind === "plans") return `<a class="row-btn" href="#/plan/${f.plan.id}/${f.d}"><span class="ic">${icon.plans}</span><span class="grow"><span class="t" style="white-space:normal">You ${esc(f.verb)} ${esc(f.plan.title)}</span></span><span class="small muted">${ago(f.at)}</span></a>`;
       const l = label(f.k);
       return `<a class="row-btn" href="${l.href}"><span class="ic">${icon[f.kind]}</span><span class="grow"><span class="t">You ${esc(f.verb)} ${esc(l.text)}</span>${f.sub ? `<span class="sub" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(f.sub)}</span>` : ""}</span><span class="small muted">${ago(f.at)}</span></a>`;
     }).join("") : `<div class="empty">Highlights, notes, saved verses and plan days will show here.</div>`}</div>`;
   $("#nm").onclick = () => { const n = prompt("Your name (only kept on this phone)", S.name || ""); if (n !== null) { S.name = n.trim().slice(0, 40); save(); renderYou(); } };
   view.querySelectorAll("[data-yt]").forEach((b) => (b.onclick = () => { youTab = b.dataset.yt; renderYou(); }));
+  view.querySelectorAll("[data-word]").forEach((b) => (b.onclick = () => { const w = S.words[b.dataset.word]; wordSheet(w.w, b.dataset.word, w.ref, renderYou); }));
 }
 function renderSettings() {
   setTop("Settings", { back: true });
@@ -1159,7 +1244,7 @@ async function route() {
   const [path, qs] = (location.hash.slice(1) || "/today").split("?");
   const q = new URLSearchParams(qs || "");
   const p = path.split("/").filter(Boolean);
-  const tab = { today: "today", bible: "bible", read: "bible", plans: "plans", plan: "plans", discover: "discover", fathers: "discover", father: "discover", prayers: "discover", prayer: "discover", rope: "discover", search: "discover", help: "discover", names: "you", calendar: "today", you: "you", settings: "you", more: "you", mine: "you" }[p[0]] || "today";
+  const tab = { today: "today", bible: "bible", read: "bible", plans: "plans", plan: "plans", discover: "discover", fathers: "discover", father: "discover", prayers: "discover", prayer: "discover", rope: "discover", search: "discover", help: "discover", names: "you", calendar: "today", verse: "bible", you: "you", settings: "you", more: "you", mine: "you" }[p[0]] || "today";
   document.querySelectorAll(".tabs a").forEach((a) => a.setAttribute("aria-current", a.dataset.tab === tab ? "page" : "false"));
   try {
     if (!BOOKS.length) await boot();
@@ -1176,6 +1261,7 @@ async function route() {
     else if (p[0] === "rope") renderRope();
     else if (p[0] === "names") renderNames();
     else if (p[0] === "calendar") await renderCalendar(q);
+    else if (p[0] === "verse") await renderVerse(p[1], +p[2], +p[3]);
     else if (p[0] === "help" && p[1]) await renderHelpTopic(p[1]);
     else if (p[0] === "help") await renderHelp(q);
     else if (p[0] === "search") await renderSearch(q.get("q") || "");

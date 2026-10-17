@@ -70,3 +70,10 @@ test("the Greek lines up verse for verse with Brenton and the WEB", () => {
   assert.equal(lex["3056"][0].normalize("NFC"), "λόγος".normalize("NFC"));
   assert.match(data("bible/grc/JHN.json")[0][1][0][1], /Λόγος@3056/);
 });
+
+test("similar verses point to real books, best first", () => {
+  const x = data("xref/JHN.json");
+  assert.ok(x["3.16"].includes("ROM 5:8"));
+  for (const r of x["3.16"]) assert.ok(books[r.split(" ")[0]], r);
+  assert.ok(data("xref/DAG.json"), "Daniel filed under DAG");
+});
