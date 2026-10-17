@@ -39,6 +39,10 @@ It is a web app that installs to the home screen ("Add to Home Screen") and work
   more, 19 in all) and get a short word on it, the Scriptures to read, what the Fathers said
   (passages picked from the public-domain data, saints first) and a 7-day plan. Typing about
   self-harm, or opening *Despair*, shows Lifeline (13 11 14) straight away.
+- **Questions about the faith**: 33 short, plain answers, such as what the Eucharist is, why
+  icons, why fast, who the Theotokos is, how we are saved, and why Pascha's date differs. Each
+  has the Scriptures behind it and what the Fathers said. Search understands questions: *what is
+  the Eucharist?* opens the answer, then shows any verses.
 - **Fasting calendar**: a month at a glance, coloured by the fast (strict, wine and oil, fish),
   with the great feasts marked; tap a day for its saints. A Pascha countdown; in Bright Week the
   app turns gold, and until Ascension the greeting is *Christ is Risen! Indeed He is Risen!*
@@ -86,7 +90,7 @@ To try it on a computer: `node dev.mjs`, then open http://localhost:8790.
 | Greek New Testament | 1904 Patriarchal Text with Strong's numbers, eBible.org | Public domain |
 | Greek word meanings | STEP Bible's brief Greek lexicon (Tyndale House) | CC BY 4.0, credited on each word |
 | Similar verses | OpenBible.info cross references | CC BY |
-| Help for struggles, prayer list words | Written for this app | |
+| Help for struggles, questions about the faith, prayer list words | Written for this app | |
 | Plans, introductions, labels | Written for this app | |
 
 **The Fathers filter** (`build/fathers.py`): the source database mixes public-domain 19th-century

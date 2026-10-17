@@ -20,6 +20,7 @@ Writes public/data/:
   library.json               every Father on New Advent, with an introduction and links
   plans.json                 the reading plans
   help/<id>.json             help for struggles: Scripture, the Fathers and a plan for each
+  faith/<id>.json            questions about the faith: a short answer, Scripture and the Fathers
   bible/grc/<BOOK>.json      the Greek; New Testament words carry Strong's numbers (word@3056)
   lex/<n>.json               Greek word meanings, by thousands of Strong's numbers
   fathers/idx/<BOOK>.json    which verses the Fathers wrote on (for the red dots and counts)
@@ -351,8 +352,11 @@ print(f"Library: {len(lib)} Fathers and writings. Plans: {len(all_plans)}, {sum(
 import help as helpdata  # noqa: E402
 
 LABEL_ORDER = {"saint": 0, "western": 1, "blessed": 2}
-help_index, help_plans = [], []
-for t in helpdata.TOPICS:
+
+
+def fathers_on(t):
+    """The Fathers' best passages on a topic: comments on its verses first, then passages that
+    use its words most, saints first, at most four from any one Father."""
     pat = re.compile(r"\b(" + "|".join(re.escape(k) for k in t["keys"]) + r")\b", re.I)
     # The topic's own verses, so comments written on them come first.
     own = {}
@@ -385,6 +389,12 @@ for t in helpdata.TOPICS:
         quotes.append(q)
         if len(quotes) >= 28:
             break
+    return quotes
+
+
+help_index, help_plans = [], []
+for t in helpdata.TOPICS:
+    quotes = fathers_on(t)
     out = {k: t[k] for k in ("id", "name", "color", "about", "verses", "plans") if k in t}
     out.update({"safety": t.get("safety"), "link": t.get("link"), "quotes": quotes, "plan": "help-" + t["id"]})
     write(f"help/{t['id']}.json", out)
@@ -413,6 +423,17 @@ for t in helpdata.TOPICS:
                        "cover": {"bg": t["color"], "t": t["name"], "s": "7 days with the Fathers", "style": "serif", "motif": "halo"}})
     print(f"Help: {t['id']}: {len(quotes)} passages")
 write("help/index.json", help_index)
+
+# Questions about the faith: the same, without a plan.
+import faith  # noqa: E402
+faith_index = []
+for t in faith.TOPICS:
+    out = {k: t[k] for k in ("id", "name", "color", "about", "verses", "plans") if k in t}
+    out.update({"link": t.get("link"), "quotes": fathers_on(t)})
+    write(f"faith/{t['id']}.json", out)
+    faith_index.append({"id": t["id"], "name": t["name"], "color": t["color"], "find": t["find"]})
+    print(f"Faith: {t['id']}: {len(out['quotes'])} passages")
+write("faith/index.json", faith_index)
 plans_json = json.load(open(os.path.join(OUT, "plans.json"), encoding="utf-8"))
 plans_json["plans"] += help_plans
 plans_json["categories"]["help"] = "Help for struggles"

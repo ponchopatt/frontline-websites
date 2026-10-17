@@ -1,6 +1,6 @@
 // Offline: the app itself is kept up to date on each visit; Bible, Fathers and calendar data are
 // kept once fetched, so anything read before works without internet.
-const SHELL = "ob-shell-v4", DATA = "ob-data-6e54481e5c";
+const SHELL = "ob-shell-v4", DATA = "ob-data-520fca194c";
 const FILES = ["./", "index.html", "app.css", "config.js", "app.js", "manifest.webmanifest", "icon.svg", "icon-192.png"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(SHELL).then((c) => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => ![SHELL, DATA].includes(k)).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
