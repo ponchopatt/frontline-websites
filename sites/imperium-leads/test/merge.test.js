@@ -16,34 +16,39 @@ test("the same phone number goes on the lead that's still open, however it's wri
   assert.deepEqual([p.enquiries.length, p.enquiries[0].source, p.enquiries[0].notes, p.againAt, p.nextFollowUp], [1, "Meta ad", "Dog hair", at(TODAY, "09:00"), TODAY]);
   assert.deepEqual([p.car, p.email, p.service], ["Kluger", "jo@x.com", "Ceramic"]); // gaps filled
   const after = M.sync({ ...leads[0], ...p }, TODAY);
-  assert.equal(after.stage, "Chasing"); // its schedule carries on
-  assert.equal(M.place(after, TODAY, new Date(at(TODAY, "09:05")), H), "fresh"); // shows as new again
+  assert.equal(after.stage, "Chasing"); // its touches carry on
+  const T = M.todayList([after, lead("other", { phone: "0400 999 999", stage: "Chasing", touches: 1, nextFollowUp: TODAY, score: "Hot" })], { now: new Date(at(TODAY, "09:05")), hours: H, all: true, since: TODAY });
+  assert.equal(T.show[0].id, "open"); // at the top of Today, as a new lead
   // Once someone texts, it's back to its place in the schedule.
   const texted = M.sync({ ...after, ...M.touch(after, { at: at(TODAY, "09:10"), type: "text" }) }, TODAY);
   assert.deepEqual([M.againPending(texted), texted.touches], [false, 3]);
 });
 
-test("Waiting or Lost within 30 days: back to New with a fresh schedule", () => {
-  for (const stage of ["Waiting", "Lost"]) {
-    const l = lead("x", { stage, status: stage === "Lost" ? "Lost" : "Contacted", touches: 4, chaseFrom: "2026-09-01", date: stage === "Lost" ? "2026-09-20" : "2026-08-01" });
+test("Waiting (no reply or lost): back to New with four fresh touches", () => {
+  for (const waitReason of ["no_reply", "lost"]) {
+    const l = lead("x", { stage: "Waiting", waitReason, status: waitReason === "lost" ? "Lost" : "Contacted", touches: 4, chaseFrom: "2026-09-01", date: "2026-08-01" });
     const m = M.matchPhone([l], "0400111222", TODAY);
-    assert.equal(m.merge.id, "x", stage);
+    assert.equal(m.merge.id, "x", waitReason);
     const after = M.sync({ ...l, ...M.mergeEnquiry(l, fresh, at(TODAY)) }, TODAY);
-    assert.deepEqual([after.stage, after.status, after.touches, after.chaseFrom], ["New", "New", 0, ""], stage);
+    assert.deepEqual([after.stage, after.status, after.touches, after.chaseFrom, after.waitReason], ["New", "New", 0, "", ""], waitReason);
   }
+  // An old lead not upgraded yet (stage Lost) too.
+  const old = lead("y", { stage: "Lost", status: "Lost", modelVersion: 3 });
+  assert.equal(M.sync({ ...old, ...M.mergeEnquiry(old, fresh, at(TODAY)) }, TODAY).stage, "New");
 });
 
 test("a booking or job from the last 30 days takes the enquiry; older ones make a new lead marked Repeat", () => {
   const booked = lead("b", { stage: "Booked", status: "Booked", date: "2026-10-02", jobDate: "2026-10-20" });
   assert.equal(M.matchPhone([booked], "0400 111 222", TODAY).merge.id, "b");
   const after = M.sync({ ...booked, ...M.mergeEnquiry(booked, fresh, at(TODAY)) }, TODAY);
-  assert.deepEqual([after.stage, M.place(after, TODAY, new Date(at(TODAY, "11:00")), H)], ["Booked", "fresh"]);
+  assert.deepEqual([after.stage, after.enquiries.length, M.againPending(after)], ["Booked", 1, true]);
   // A job that's done, even last week: a new lead marked Repeat, so the old job and its takings stay.
   const doneLastWeek = lead("done", { stage: "Done", status: "Booked", date: "2026-10-01", jobDate: "2026-10-03", completedAt: at("2026-10-03"), revenue: 225, paid: "Yes" });
   assert.deepEqual(M.matchPhone([doneLastWeek], "0400 111 222", TODAY), { repeatOf: "done" });
   const oldJob = lead("old", { stage: "Done", status: "Booked", date: "2026-08-01", createdAt: at("2026-08-01"), jobDate: "2026-08-05", completedAt: at("2026-08-05") });
-  const oldLost = lead("lost", { stage: "Lost", status: "Lost", date: "2026-07-01", createdAt: at("2026-07-01") });
-  assert.deepEqual(M.matchPhone([oldLost, oldJob], "0400 111 222", TODAY), { repeatOf: "old" }); // the newest
+  const oldLost = lead("lost", { stage: "Waiting", waitReason: "lost", status: "Lost", date: "2026-07-01", createdAt: at("2026-07-01") });
+  assert.deepEqual(M.matchPhone([oldLost], "0400 111 222", TODAY).merge.id, "lost"); // waiting: still open
+  assert.deepEqual(M.matchPhone([oldJob], "0400 111 222", TODAY), { repeatOf: "old" });
   assert.deepEqual(M.matchPhone([oldJob], "0499 999 999", TODAY), {});
   // A lead marked Not real is never matched.
   assert.deepEqual(M.matchPhone([lead("fake", { stage: "Chasing", junk: true })], "0400 111 222", TODAY), {});
@@ -74,8 +79,8 @@ test("money: booked, cash collected and still to collect", () => {
     lead("paid", { stage: "Done", completedAt: at("2026-10-03"), revenue: 225, paid: "Yes" }),
     lead("owes", { stage: "Done", completedAt: at("2026-10-03"), revenue: 140, paid: "No" }),
     lead("soon", { stage: "Booked", jobDate: "2026-10-20", revenue: 397 }),
-    lead("quoted", { stage: "Quoted", quoted: 997 }), // not booked: not counted
-    lead("lost", { stage: "Lost", revenue: 500, paid: "Yes" }),
+    lead("quoted", { stage: "Chasing", quoted: 997 }), // not booked: not counted
+    lead("lost", { stage: "Waiting", waitReason: "lost", revenue: 500, paid: "Yes" }),
     lead("noprice", { stage: "Booked", jobDate: "2026-10-20", revenue: null }),
   ];
   assert.deepEqual(M.takings(leads, TODAY), { booked: 762, collected: 225, toCollect: 537 });

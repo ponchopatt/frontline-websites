@@ -6,6 +6,11 @@
   live updates come from Supabase Realtime. It also puts a PIN screen in front of the page; the
   PIN is checked by /api/unlock, which hands back a session that stays on the phone.
 
+  On a preview deploy (config.js says preview: true) the real list is read as normal, but every
+  save stays on this phone (in localStorage) and is shown on top of the real list. Nothing is
+  written to the database, so a preview can be tried with the real leads without changing them.
+  A bar at the top says so, with a button to throw the preview's changes away.
+
   Loaded after vendor/supabase.js and config.js, before the page's own script.
 */
 (function () {
@@ -13,6 +18,7 @@
 
   var cfg = window.LEADS_CONFIG || {};
   var AUTH_KEY = "imperium-leads-auth";
+  var PREVIEW = !!cfg.preview;
   var sb = null;
   if (cfg.url && cfg.anonKey && window.supabase && window.supabase.createClient) {
     sb = window.supabase.createClient(cfg.url, cfg.anonKey, {
@@ -170,6 +176,63 @@
     return Date.now().toString(36) + Math.random().toString(36).slice(2);
   }
 
+  /* -------------------------------------------- preview: saves stay on this phone */
+
+  var OVERLAY_KEY = "il-preview-overlay";
+  var overlay = {};
+  if (PREVIEW) {
+    try { overlay = JSON.parse(localStorage.getItem(OVERLAY_KEY) || "{}") || {}; } catch (e) { overlay = {}; }
+  }
+  // { hit, data } for a document the preview has saved (data null when it was deleted).
+  function overlaid(collection, id) {
+    var c = overlay[collection];
+    return c && Object.prototype.hasOwnProperty.call(c, id) ? { hit: true, data: c[id] } : { hit: false, data: null };
+  }
+  function applyOverlay(collection, map) {
+    var c = overlay[collection];
+    if (!c) return map;
+    Object.keys(c).forEach(function (id) {
+      if (c[id] === null) map.delete(id);
+      else map.set(id, c[id]);
+    });
+    return map;
+  }
+  function putOverlay(collection, id, data) {
+    overlay[collection] = overlay[collection] || {};
+    overlay[collection][id] = data;
+    try {
+      localStorage.setItem(OVERLAY_KEY, JSON.stringify(overlay));
+    } catch (e) {
+      throw fail("quota_exceeded", "This phone's preview storage is full");
+    }
+  }
+  function overlayCount() {
+    var n = 0;
+    Object.keys(overlay).forEach(function (c) { n += Object.keys(overlay[c]).length; });
+    return n;
+  }
+  if (PREVIEW) {
+    var bar = document.createElement("style");
+    bar.textContent =
+      "#il-preview{background:#7A3E00;color:#fff;font:600 13px/1.35 Montserrat,system-ui,sans-serif;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}" +
+      "#il-preview button{font:inherit;font-weight:700;background:#fff;color:#7A3E00;border:0;border-radius:999px;padding:0 14px;min-height:36px;cursor:pointer;flex:0 0 auto}";
+    document.head.appendChild(bar);
+    onReady(function () {
+      var el = document.createElement("div");
+      el.id = "il-preview";
+      el.innerHTML = '<span>PREVIEW. Real leads, but changes stay on this phone only. <span id="il-preview-n"></span></span><button type="button">Reset</button>';
+      document.body.insertBefore(el, document.body.firstChild);
+      var n = function () { var c = overlayCount(); document.getElementById("il-preview-n").textContent = c ? "(" + c + " changed)" : ""; };
+      n();
+      setInterval(n, 2000);
+      el.querySelector("button").addEventListener("click", function () {
+        if (!confirm("Throw away the changes made in this preview? The real list was never changed.")) return;
+        try { localStorage.removeItem(OVERLAY_KEY); } catch (e) {}
+        location.reload();
+      });
+    });
+  }
+
   // What's known of each collection someone is listening to: collection -> Map(id -> data).
   var known = {};
   var listeners = [];
@@ -274,9 +337,19 @@
           return r.data.length === 1000 ? page(from + 1000) : out;
         });
     }
-    return page(0);
+    return page(0).then(function (rows) {
+      if (!PREVIEW || !overlay[collection]) return rows;
+      var map = applyOverlay(collection, new Map(rows.map(function (r) { return [r.id, r.data]; })));
+      var list = [];
+      map.forEach(function (data, id) { list.push({ id: id, data: data }); });
+      return list;
+    });
   }
   function fetchDoc(collection, id) {
+    if (PREVIEW) {
+      var o = overlaid(collection, id);
+      if (o.hit) return Promise.resolve(o.data);
+    }
     return sb
       .from("docs")
       .select("data")
@@ -337,6 +410,7 @@
         if (!row || !row.collection) return;
         markChanged(row.collection);
         if (!known[row.collection]) return;
+        if (PREVIEW && overlaid(row.collection, row.id).hit) return;
         put(row.collection, row.id, p.eventType === "DELETE" ? null : row.data);
         emitCollection(row.collection);
       })
@@ -393,6 +467,12 @@
       },
       set: function (data) {
         var value = clone(data) || {};
+        if (PREVIEW) {
+          return Promise.resolve().then(function () {
+            putOverlay(p.collection, p.id, value);
+            saved(p.collection, p.id, value);
+          });
+        }
         return sb
           .from("docs")
           .upsert({ collection: p.collection, id: p.id, data: value, updated_at: new Date().toISOString() })
@@ -402,12 +482,28 @@
           });
       },
       update: function (patch) {
+        if (PREVIEW) {
+          // As the database does it: the patch merged over what's there (one level deep).
+          var known0 = known[p.collection] && known[p.collection].get(p.id);
+          var base = known0 ? Promise.resolve(known0) : fetchDoc(p.collection, p.id);
+          return base.then(function (data) {
+            var next = Object.assign({}, data || {}, clone(patch) || {});
+            putOverlay(p.collection, p.id, next);
+            saved(p.collection, p.id, next);
+          });
+        }
         return sb.rpc("docs_merge", { p_collection: p.collection, p_id: p.id, p_patch: clone(patch) || {} }).then(function (r) {
           if (r.error) throw asError(r.error);
           return fetchDoc(p.collection, p.id).then(function (data) { saved(p.collection, p.id, data); });
         });
       },
       delete: function () {
+        if (PREVIEW) {
+          return Promise.resolve().then(function () {
+            putOverlay(p.collection, p.id, null);
+            saved(p.collection, p.id, null);
+          });
+        }
         return sb
           .from("docs")
           .delete()
@@ -485,9 +581,41 @@
     },
   };
 
+  /* ------------------------------------------------------------------ the app's own /api */
+
+  // call("/api/deposit", { method, body }) with this phone's sign-in, so only the team can use it.
+  // Answers the JSON; a refusal throws an error with .code (the server's error) and .status.
+  var api = {
+    call: function (path, opts) {
+      opts = opts || {};
+      return signedIn
+        .then(function (ok) {
+          if (!ok || !sb) throw fail("unavailable", "Not signed in");
+          return sb.auth.getSession();
+        })
+        .then(function (r) {
+          var token = r && r.data && r.data.session && r.data.session.access_token;
+          return fetch(path, {
+            method: opts.method || "GET",
+            headers: Object.assign({ "Content-Type": "application/json" }, token ? { Authorization: "Bearer " + token } : {}),
+            body: opts.body ? JSON.stringify(opts.body) : undefined,
+          });
+        })
+        .then(function (res) {
+          return res.json().catch(function () { return {}; }).then(function (body) {
+            if (res.ok) return body;
+            var e = fail(body.error || "http_" + res.status, body.error);
+            e.status = res.status;
+            throw e;
+          });
+        });
+    },
+  };
+
   window.claude = {
     use: function (name) {
       if (name === "db") return signedIn.then(function (ok) { return ok ? db : null; });
+      if (name === "api") return Promise.resolve(api);
       if (name === "downloads") return Promise.resolve(downloads);
       return Promise.resolve(null);
     },

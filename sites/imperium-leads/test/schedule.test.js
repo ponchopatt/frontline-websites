@@ -7,115 +7,81 @@ const at = (d, hm = "10:00") => new Date(`${d}T${hm}:00+11:00`).toISOString();
 const H = M.hours();
 const lead = (p = {}) => M.sync({ id: p.id || "x", date: "2026-10-12", createdAt: at("2026-10-12", "09:00"), owner: "Angus", name: "Jo", phone: "0400 111 222", status: "New", nextFollowUp: "2026-10-12", log: [], ...M.newFields(p.timeline || ""), ...p }, "2026-10-12");
 const apply = (l, patch) => M.sync({ ...l, ...patch }, "2026-10-12");
-const texted = (l, d, hm = "10:00", by = "Angus") => apply(l, M.touch(l, { at: at(d, hm), by, type: "text", outcome: "Texted" }));
-const noAnswer = (l, d, hm = "10:00") => apply(l, M.touch(l, { at: at(d, hm), by: "Angus", type: "call", pickedUp: "No", outcome: "No answer" }));
+const done = (l, d, hm = "10:00", by = "Angus") => apply(l, M.touch(l, { at: at(d, hm), by, type: "text", outcome: "Texted" }));
+const pick = (o, keys) => keys.split(" ").map((k) => o[k]);
 
-test("full schedule: day 0, 1, 3 and 7 from the first touch, then Waiting", () => {
+test("four touches: straight away, the next day, day 3 and day 7, then Waiting (No reply)", () => {
   let l = lead({ timeline: "asap" });
-  l = texted(l, "2026-10-12");
-  assert.deepEqual([l.stage, l.status, l.touches, l.nextFollowUp, l.chaseFrom], ["Chasing", "Contacted", 1, "2026-10-13", "2026-10-12"]); // Texted on a new lead: tomorrow
-  assert.equal(M.progress(l, "2026-10-12"), "1 of 4");
-  l = texted(l, "2026-10-13");
-  assert.deepEqual([l.touches, l.nextFollowUp], [2, "2026-10-15"]);
-  l = texted(l, "2026-10-15");
-  assert.deepEqual([l.touches, l.nextFollowUp], [3, "2026-10-19"]);
-  l = texted(l, "2026-10-19");
-  assert.deepEqual([l.stage, l.touches, l.nextFollowUp], ["Waiting", 4, "2026-11-18"]); // check-in in 30 days
+  assert.equal(M.touchLabel(l, "2026-10-12"), "Touch 1 of 4");
+  l = done(l, "2026-10-12");
+  assert.deepEqual(pick(l, "stage status touches nextFollowUp chaseFrom"), ["Chasing", "Contacted", 1, "2026-10-13", "2026-10-12"]);
+  assert.equal(M.touchLabel(l, "2026-10-12"), "Touch 2 of 4");
+  l = done(l, "2026-10-13");
+  assert.deepEqual(pick(l, "touches nextFollowUp"), [2, "2026-10-15"]);
+  l = done(l, "2026-10-15");
+  assert.deepEqual(pick(l, "touches nextFollowUp"), [3, "2026-10-19"]);
+  assert.equal(M.touchLabel(l, "2026-10-15"), "Touch 4 of 4");
+  l = done(l, "2026-10-19");
+  assert.deepEqual(pick(l, "stage waitReason touches nextFollowUp waitedHow"), ["Waiting", "no_reply", 4, "", "touch4"]);
   assert.equal(l.status, "Contacted"); // the old field still reads right
+  assert.equal(M.touchLabel(l, "2026-10-19"), "");
+  // Just browsing gets the same four.
+  let b = done(lead({ timeline: "just_browsing" }), "2026-10-12");
+  assert.deepEqual(pick(b, "stage touches nextFollowUp"), ["Chasing", 1, "2026-10-13"]);
 });
 
-test("a follow-up done late keeps the schedule's gaps, so nobody is chased two days running", () => {
-  let l = texted(lead(), "2026-10-12");
-  l = texted(l, "2026-10-16"); // day 1's text sent four days late
-  assert.deepEqual([l.touches, l.nextFollowUp], [2, "2026-10-18"]); // day 3 has passed: still 2 days' gap
-  l = texted(l, "2026-10-18");
+test("a touch done late keeps the planned gaps, so nobody is texted two days running", () => {
+  let l = done(lead(), "2026-10-12");
+  l = done(l, "2026-10-16"); // touch 2 sent four days late
+  assert.deepEqual(pick(l, "touches nextFollowUp"), [2, "2026-10-18"]); // day 3 has passed: still 2 days' gap
+  l = done(l, "2026-10-18");
   assert.equal(l.nextFollowUp, "2026-10-22"); // day 7 has passed too: still 4 days' gap
-  // On time, the days still count from the first touch.
-  let k = texted(lead(), "2026-10-12");
-  k = texted(k, "2026-10-13");
-  assert.equal(k.nextFollowUp, "2026-10-15");
-  k = texted(k, "2026-10-15");
-  assert.equal(k.nextFollowUp, "2026-10-19");
 });
 
-test("a call and a text on the same day are one touch", () => {
-  let l = noAnswer(lead(), "2026-10-12", "09:01");
-  l = texted(l, "2026-10-12", "09:03");
-  assert.deepEqual([l.touches, l.nextFollowUp, l.log.length], [1, "2026-10-13", 2]);
-  l = texted(l, "2026-10-13", "08:00");
-  l = noAnswer(l, "2026-10-13", "18:00");
-  assert.deepEqual([l.touches, l.nextFollowUp], [2, "2026-10-15"]);
-  assert.equal(M.touchDays(l.log), 2);
-  // 11:30pm and 00:30am are different Canberra days.
-  assert.equal(M.touchDays([{ at: at("2026-10-12", "23:30") }, { at: at("2026-10-13", "00:30") }]), 2);
-  // A note is never a touch.
-  assert.equal(M.touchDays([{ at: at("2026-10-12"), type: "note" }]), 0);
+test("✓ Done twice on the same day is logged but counts once", () => {
+  let l = done(lead(), "2026-10-12", "09:05");
+  l = done(l, "2026-10-12", "15:00");
+  assert.deepEqual(pick(l, "touches nextFollowUp"), [1, "2026-10-13"]);
+  assert.equal(l.log.length, 2);
 });
 
-test("just browsing: day 0 and day 3 only, then Waiting", () => {
-  let l = lead({ timeline: "just_browsing" });
-  assert.deepEqual([l.score, l.schedule], ["Browsing", "browsing"]);
-  l = texted(l, "2026-10-12");
-  assert.deepEqual([l.touches, l.nextFollowUp, M.progress(l, "2026-10-12")], [1, "2026-10-15", "1 of 2"]);
-  l = texted(l, "2026-10-15");
-  assert.deepEqual([l.stage, l.nextFollowUp], ["Waiting", "2026-11-14"]);
+test("✓ Done on a booking, a done job or a lead waiting only logs it", () => {
+  for (const p of [{ stage: "Booked", jobDate: "2026-10-20" }, { stage: "Done", completedAt: at("2026-10-10") }, { stage: "Waiting", waitReason: "lost" }]) {
+    const l = lead(p), after = done(l, "2026-10-12");
+    assert.deepEqual([after.stage, after.touches, after.log.length], [l.stage, l.touches, 1], p.stage);
+  }
 });
 
-test("quoted: day 2, 5 and 9 after the quote, then Waiting (still Quoted underneath)", () => {
-  let l = texted(lead(), "2026-10-12");
-  l = apply(l, M.answer(l, "quoted", { amount: 397 }, at("2026-10-13"), "Ananth"));
-  assert.deepEqual([l.stage, l.status, l.quoted, l.quotedOn, l.nextFollowUp, M.progress(l, "2026-10-13")], ["Quoted", "Quoted", 397, "2026-10-13", "2026-10-15", "0 of 3"]);
-  l = texted(l, "2026-10-13", "16:00"); // the quote text, same day: not a chase
-  assert.deepEqual([l.touches, l.nextFollowUp], [0, "2026-10-15"]);
-  l = texted(l, "2026-10-15");
-  assert.deepEqual([l.touches, l.nextFollowUp], [1, "2026-10-18"]);
-  l = texted(l, "2026-10-18");
-  assert.equal(l.nextFollowUp, "2026-10-22");
-  l = texted(l, "2026-10-22");
-  assert.deepEqual([l.stage, l.status, l.nextFollowUp], ["Waiting", "Quoted", "2026-11-21"]);
+test("the first reply time is kept from the first touch", () => {
+  const l = done(lead({ createdAt: at("2026-10-12", "09:00") }), "2026-10-12", "09:04");
+  assert.equal(l.replyMins, 4);
+  assert.equal(done(l, "2026-10-13").replyMins, 4);
 });
 
-test("Waiting: a check-in every 30 days, then back to Waiting", () => {
-  let l = lead({ stage: "Waiting", status: "Contacted", nextFollowUp: "2026-11-11" });
-  assert.equal(M.place(l, "2026-11-10", new Date(at("2026-11-10")), H), "waiting");
-  assert.equal(M.place(l, "2026-11-11", new Date(at("2026-11-11")), H), "due");
-  l = texted(l, "2026-11-11");
-  assert.deepEqual([l.stage, l.nextFollowUp], ["Waiting", "2026-12-11"]);
-  assert.equal(M.place(l, "2026-11-12", new Date(at("2026-11-12")), H), "waiting");
+test("Booked: the day and the price; the touches stop", () => {
+  const l = done(lead(), "2026-10-12");
+  const b = apply(l, M.book(l, { date: "2026-10-20", price: 280 }, at("2026-10-13"), "Angus"));
+  assert.deepEqual(pick(b, "stage status booked jobDate revenue nextFollowUp"), ["Booked", "Booked", "Yes", "2026-10-20", 280, ""]);
+  assert.equal(b.log[b.log.length - 1].outcome, "Booked");
+  // Once the day has passed, it's Done by itself.
+  assert.equal(M.stageOf(b, "2026-10-21"), "Done");
 });
 
-test("Answered asks one question, and each answer saves what it needs", () => {
-  const base = texted(lead(), "2026-10-12");
-  const booked = apply(base, M.answer({ ...base, quoted: 225 }, "booked", { date: "2026-10-20", price: 225 }, at("2026-10-13"), "Angus"));
-  assert.deepEqual([booked.stage, booked.status, booked.booked, booked.jobDate, booked.revenue, booked.nextFollowUp], ["Booked", "Booked", "Yes", "2026-10-20", 225, ""]);
-  const lost = apply(base, M.answer(base, "lost", { reason: "went_elsewhere" }, at("2026-10-13")));
-  assert.deepEqual([lost.stage, lost.status, lost.lostReason, lost.lostWhy, lost.nextFollowUp], ["Lost", "Lost", "went_elsewhere", "Went elsewhere", ""]);
-  const later = apply(base, M.answer(base, "notnow", { date: "2026-11-02" }, at("2026-10-13")));
-  assert.deepEqual([later.stage, later.snoozeUntil, later.nextFollowUp], ["Chasing", "2026-11-02", "2026-11-02"]);
-  for (const l of [booked, lost, later]) assert.deepEqual(l.log.at(-1).pickedUp, "Yes");
-  // A new lead that answers and says not now has been talked to: its schedule starts.
-  const fresh = apply(lead(), M.answer(lead(), "notnow", { date: "2026-10-30" }, at("2026-10-12", "09:02")));
-  assert.deepEqual([fresh.stage, fresh.touches, fresh.nextFollowUp, fresh.replyMins], ["Chasing", 1, "2026-10-30", 2]);
-});
-
-test("Not now: off Today until the day, then the schedule carries on with the same gaps", () => {
-  let l = texted(texted(lead(), "2026-10-12"), "2026-10-13"); // 2 of 4, next due the 15th
-  l = apply(l, M.snooze(l, "2026-10-25"));
-  assert.deepEqual([l.snoozeUntil, l.nextFollowUp], ["2026-10-25", "2026-10-25"]);
-  assert.equal(M.place(l, "2026-10-15", new Date(at("2026-10-15")), H), "");
-  assert.equal(M.place(l, "2026-10-25", new Date(at("2026-10-25")), H), "due");
-  l = texted(l, "2026-10-25");
-  assert.deepEqual([l.touches, l.nextFollowUp, l.snoozeUntil], [3, "2026-10-29", ""]); // day 3 → day 7 is 4 days on
-});
-
-test("a note pauses the schedule: back the next day it's due, at the soonest tomorrow", () => {
-  let l = texted(lead(), "2026-10-12"); // due the 13th
-  l = apply(l, M.note(l, "Said call after payday", at("2026-10-12", "15:00"), "Angus"));
-  assert.deepEqual([l.paused, l.nextFollowUp, l.touches], [true, "2026-10-13", 1]);
-  l = texted(l, "2026-10-13");
-  assert.deepEqual([l.paused, l.touches, l.nextFollowUp], [false, 2, "2026-10-15"]);
-  const fresh = apply(lead(), M.note(lead(), "Rang the shop", at("2026-10-12")));
-  assert.equal(fresh.paused, false); // nothing running to pause yet
+test("a stage picked by hand: Waiting needs a reason, and Not real is junk", () => {
+  const l = done(lead(), "2026-10-12");
+  const lost = apply(l, M.setStage(l, "Waiting", "2026-10-13", "lost", at("2026-10-13")));
+  assert.deepEqual(pick(lost, "stage waitReason status booked lostReason junk"), ["Waiting", "lost", "Lost", "No", "other", false]);
+  const fake = apply(l, M.setStage(l, "Waiting", "2026-10-13", "not_real"));
+  assert.deepEqual(pick(fake, "stage waitReason junk"), ["Waiting", "not_real", true]);
+  // Back to Chasing: the touches carry on (or start again after a lead's had all four), due today.
+  const back = apply(fake, M.setStage(fake, "Chasing", "2026-10-14"));
+  assert.deepEqual(pick(back, "stage waitReason junk touches nextFollowUp"), ["Chasing", "", false, 1, "2026-10-14"]);
+  const mid = apply(done(l, "2026-10-13"), M.setStage(done(l, "2026-10-13"), "Chasing", "2026-10-14"));
+  assert.deepEqual(pick(mid, "touches chaseFrom nextFollowUp"), [2, "2026-10-12", "2026-10-14"]);
+  const fresh = apply(l, M.setStage(l, "New", "2026-10-14"));
+  assert.deepEqual(pick(fresh, "stage touches chaseFrom"), ["New", 0, ""]);
+  // A tag only moves it on Today.
+  assert.deepEqual(M.retag(l, "Hot"), { score: "Hot", scoreBy: "human" });
 });
 
 test("call hours: 8:00am to 7:00pm by default, and a setting", () => {
@@ -129,163 +95,106 @@ test("call hours: 8:00am to 7:00pm by default, and a setting", () => {
   assert.equal(M.inHours(at("2026-10-12", "07:59"), H), false);
 });
 
-test("a lead at 9:30pm: no call until 8:00am, the moon, and its 5-minute clock starts at 8:00am", () => {
-  const l = lead({ createdAt: at("2026-10-12", "21:30"), date: "2026-10-12" });
+test("the reply timer: green under 5 minutes, orange 5 to 15, red over 15", () => {
+  const l = lead({ createdAt: at("2026-10-12", "11:00") });
+  const lvl = (hm) => M.replyTimer(l, new Date(at("2026-10-12", hm)), H);
+  assert.deepEqual([lvl("11:00").level, lvl("11:04").level, lvl("11:05").level, lvl("11:15").level, lvl("11:16").level], ["green", "green", "orange", "orange", "red"]);
+  assert.equal(lvl("11:16").mins, 16);
+});
+
+test("a lead at 9:30pm (or 6am, weekends too): the timer doesn't start until 8:00am", () => {
+  const l = lead({ createdAt: at("2026-10-17", "21:30"), date: "2026-10-17" }); // a Saturday
   assert.equal(M.isOvernight(l, H), true);
-  assert.equal(M.clockStart(l.createdAt, H).toISOString(), at("2026-10-13", "08:00"));
-  assert.equal(M.place(l, "2026-10-12", new Date(at("2026-10-12", "21:31")), H), "later");
-  assert.equal(M.place(l, "2026-10-13", new Date(at("2026-10-13", "07:59")), H), "later");
-  assert.equal(M.place(l, "2026-10-13", new Date(at("2026-10-13", "08:00")), H), "callFirst");
-  // Called at 8:04am: 4 minutes on the adjusted clock (634 since it came in).
-  const called = apply(l, M.touch(l, { at: at("2026-10-13", "08:04"), by: "Angus", type: "call", pickedUp: "No" }));
-  assert.equal(called.replyMins, 634);
-  assert.equal(M.replyMinutes(called, H), 4);
-  // Before call hours the same morning: the clock starts at 8:00am that day.
+  const night = M.replyTimer(l, new Date(at("2026-10-17", "23:00")), H);
+  assert.equal(night.level, "wait");
+  assert.equal(night.startsAt.toISOString(), at("2026-10-18", "08:00"));
+  assert.deepEqual(M.replyTimer(l, new Date(at("2026-10-18", "08:03")), H), { mins: 3, level: "green" });
   assert.equal(M.clockStart(at("2026-10-13", "05:10"), H).toISOString(), at("2026-10-13", "08:00"));
-  // In call hours: straight away.
-  const day = lead({ createdAt: at("2026-10-12", "11:00") });
-  assert.equal(M.isOvernight(day, H), false);
-  assert.equal(M.place(day, "2026-10-12", new Date(at("2026-10-12", "11:01")), H), "fresh");
-  assert.equal(M.replyMinutes({ ...day, replyMins: 7 }, H), 7);
+  // Not on Today overnight; counted as "later".
+  const L = M.todayList([l], { now: new Date(at("2026-10-17", "23:00")), hours: H, all: true });
+  assert.deepEqual([L.show.length, L.later], [0, 1]);
+  const morning = M.todayList([l], { now: new Date(at("2026-10-18", "08:00")), hours: H, all: true });
+  assert.equal(morning.show.length, 1);
+  // Replied at 8:04am: 4 minutes on the adjusted clock (634 since it came in).
+  const replied = apply(l, M.touch(l, { at: at("2026-10-18", "08:04"), by: "Angus", type: "text" }));
+  assert.equal(replied.replyMins, 634);
+  assert.equal(M.replyMinutes(replied, H), 4);
   // Winter time too (+10:00): 8:00am is 22:00 UTC the day before.
   assert.equal(M.clockStart("2026-06-10T11:30:00Z", H).toISOString(), "2026-06-10T22:00:00.000Z");
 });
 
-test("Today: five lists in order, sorted Quoted, Hot, Warm, Browsing, oldest first", () => {
-  const now = new Date(at("2026-10-14", "10:00"));
-  const L = (id, p) => ({ ...lead({ id, name: id, ...p }), id });
-  const leads = [
-    L("night", { createdAt: at("2026-10-13", "22:00"), date: "2026-10-13" }),
-    L("new-warm", { createdAt: at("2026-10-14", "09:00"), score: "Warm" }),
-    L("new-hot", { createdAt: at("2026-10-14", "09:30"), score: "Hot" }),
-    L("quoted", { stage: "Quoted", quotedOn: "2026-10-12", nextFollowUp: "2026-10-14", score: "Browsing", createdAt: at("2026-10-01") }),
-    L("hot-old", { stage: "Chasing", nextFollowUp: "2026-10-10", score: "Hot", createdAt: at("2026-10-02") }),
-    L("hot-new", { stage: "Chasing", nextFollowUp: "2026-10-14", score: "Hot", createdAt: at("2026-10-09") }),
-    L("warm", { stage: "Chasing", nextFollowUp: "2026-10-14", score: "Warm", createdAt: at("2026-10-05") }),
-    L("browse", { stage: "Chasing", nextFollowUp: "2026-10-13", score: "Browsing", createdAt: at("2026-10-03") }),
-    L("checkin", { stage: "Waiting", nextFollowUp: "2026-10-14", score: "Hot", createdAt: at("2026-09-01") }),
-    L("later", { stage: "Chasing", nextFollowUp: "2026-10-15", score: "Hot" }),
-    L("waiting", { stage: "Waiting", nextFollowUp: "2026-11-01" }),
-    L("snoozed", { stage: "Chasing", nextFollowUp: "2026-10-20", snoozeUntil: "2026-10-20" }),
-    L("booked", { stage: "Booked", jobDate: "2026-10-20", nextFollowUp: "" }),
-    L("lost", { stage: "Lost", nextFollowUp: "" }),
-    L("junk", { createdAt: at("2026-10-14", "09:10"), junk: true }),
+const TODAY = "2026-10-20";
+const NOW = new Date(at(TODAY, "10:00"));
+const SINCE = "2026-10-15";
+const chasing = (id, o = {}) => lead({ id, stage: "Chasing", touches: 1, chaseFrom: "2026-10-19", lastTouchOn: "2026-10-19", nextFollowUp: TODAY, date: "2026-10-19", createdAt: at("2026-10-19", "09:00"), ...o });
+
+test("Today: only touches due today or overdue; new leads first, then Hot, then Warm, then the rest, oldest first", () => {
+  const L = [
+    chasing("warm-old", { score: "Warm", createdAt: at("2026-10-16") }),
+    chasing("rest", {}),
+    chasing("hot-new", { score: "Hot", createdAt: at("2026-10-19", "12:00") }),
+    chasing("hot-old", { score: "Hot", createdAt: at("2026-10-18") }),
+    chasing("browsing", { score: "Browsing", createdAt: at("2026-10-17") }),
+    chasing("yesterday", { nextFollowUp: "2026-10-19" }), // overdue a day: still on
+    chasing("tomorrow", { nextFollowUp: "2026-10-21" }), // not due
+    lead({ id: "new-2", createdAt: at(TODAY, "09:30"), date: TODAY }),
+    lead({ id: "new-1", createdAt: at(TODAY, "08:30"), date: TODAY }),
+    lead({ id: "booked", stage: "Booked", jobDate: "2026-10-22" }),
+    lead({ id: "waiting", stage: "Waiting" }),
+    chasing("fake", { junk: true }),
   ];
-  const t = M.todayLists(leads, { now, hours: H, all: true });
-  const ids = (k) => t[k].map((l) => l.id);
-  assert.deepEqual(ids("callFirst"), ["night"]);
-  assert.deepEqual(ids("fresh"), ["new-hot", "new-warm"]);
-  assert.deepEqual(ids("hot"), ["quoted", "hot-old", "hot-new"]);
-  assert.deepEqual(ids("due"), ["checkin", "warm", "browse"]);
-  assert.deepEqual(ids("waiting"), ["waiting"]);
-  assert.equal(t.left, 9);
-  // As things are logged the list shrinks.
-  const after = leads.map((l) => (l.id === "warm" ? texted(l, "2026-10-14") : l));
-  assert.equal(M.todayLists(after, { now, hours: H, all: true }).left, 8);
+  const T = M.todayList(L, { now: NOW, hours: H, all: true, since: SINCE });
+  assert.deepEqual(T.show.map((l) => l.id), ["new-1", "new-2", "hot-old", "hot-new", "warm-old", "browsing", "rest", "yesterday"]);
+  assert.equal(T.extra.length, 0);
 });
 
-test("Today shows my leads, plus anyone's left untouched 24 hours past due", () => {
-  const now = new Date(at("2026-10-14", "10:00"));
-  const leads = [
-    { ...lead({ id: "mine", owner: "Angus", createdAt: at("2026-10-14", "09:00") }), id: "mine" },
-    { ...lead({ id: "theirs", owner: "Ananth", createdAt: at("2026-10-14", "09:00") }), id: "theirs" },
-    { ...lead({ id: "theirs-stale", owner: "Ananth", createdAt: at("2026-10-13", "09:30") }), id: "theirs-stale" },
-    { ...lead({ id: "chase-stale", owner: "Ananth", stage: "Chasing", nextFollowUp: "2026-10-13" }), id: "chase-stale" },
-    { ...lead({ id: "chase-today", owner: "Ananth", stage: "Chasing", nextFollowUp: "2026-10-14" }), id: "chase-today" },
+test("Today shows at most 10; the rest roll to tomorrow", () => {
+  const L = Array.from({ length: 13 }, (_, i) => chasing("c" + i, { createdAt: at("2026-10-19", `09:${String(10 + i)}`) }));
+  const T = M.todayList(L, { now: NOW, hours: H, all: true, since: SINCE });
+  assert.deepEqual([T.show.length, T.extra.length], [10, 3]);
+  assert.deepEqual(T.extra.map((l) => l.id), ["c10", "c11", "c12"]); // the newest wait
+  const rolled = L.map((l) => (T.extra.includes(l) ? apply(l, M.rollPatch(TODAY)) : l));
+  assert.deepEqual(M.rollPatch(TODAY), { nextFollowUp: "2026-10-21", rolledOn: TODAY });
+  const again = M.todayList(rolled, { now: NOW, hours: H, all: true, since: SINCE });
+  assert.deepEqual([again.show.length, again.extra.length, again.rolled], [10, 0, 3]);
+  // Tomorrow they're due, not overdue, so they're never moved to Waiting for it.
+  const next = M.todayList(rolled.filter((l) => l.rolledOn), { now: new Date(at("2026-10-21")), hours: H, all: true, since: SINCE });
+  assert.equal(next.show.length, 3);
+});
+
+test("a touch 2 days overdue moves the lead to Waiting by itself; leads already that late at go-live are the backlog", () => {
+  const twoDays = chasing("late", { nextFollowUp: "2026-10-18" });
+  const oneDay = chasing("ok", { nextFollowUp: "2026-10-19" });
+  const oldNew = lead({ id: "old-new", createdAt: at("2026-10-17", "10:00"), date: "2026-10-17" });
+  const backlog = chasing("backlog", { nextFollowUp: "2026-10-10", date: "2026-10-01", createdAt: at("2026-10-01") });
+  assert.deepEqual([twoDays, oneDay, oldNew, backlog].map((l) => M.shouldAutoWait(l, TODAY, H, SINCE)), [true, false, true, false]);
+  assert.deepEqual([twoDays, oneDay, oldNew, backlog].map((l) => M.isBacklog(l, TODAY, H, SINCE)), [false, false, false, true]);
+  // Due the day before go-live (one day late then): it's not backlog, so it moves by itself.
+  assert.equal(M.shouldAutoWait(chasing("edge", { nextFollowUp: "2026-10-14" }), "2026-10-16", H, SINCE), true);
+  assert.equal(M.isBacklog(chasing("edge", { nextFollowUp: "2026-10-13" }), "2026-10-16", H, SINCE), true);
+  // Not before the go-live day is known.
+  assert.equal(M.shouldAutoWait(twoDays, TODAY, H, ""), false);
+  const T = M.todayList([twoDays, oneDay, oldNew, backlog], { now: NOW, hours: H, all: true, since: SINCE });
+  assert.deepEqual([T.show.map((l) => l.id), T.backlog], [["ok"], 1]);
+  const moved = apply(twoDays, M.autoWaitPatch(at(TODAY)));
+  assert.deepEqual(pick(moved, "stage waitReason waitedHow nextFollowUp"), ["Waiting", "no_reply", "auto", ""]);
+});
+
+test("Today shows my leads, with a toggle for both", () => {
+  const L = [chasing("mine", { owner: "Angus" }), chasing("theirs", { owner: "Ananth" }), chasing("nobody", { owner: "" })];
+  assert.deepEqual(M.todayList(L, { now: NOW, hours: H, who: "Angus", since: SINCE }).show.map((l) => l.id), ["mine", "nobody"]);
+  assert.equal(M.todayList(L, { now: NOW, hours: H, who: "Angus", all: true, since: SINCE }).show.length, 3);
+});
+
+test("the backlog clear: Chasing leads that came in before the day picked, then Waiting (No reply)", () => {
+  const L = [
+    chasing("a", { date: "2026-10-01", createdAt: at("2026-10-01") }),
+    chasing("b", { date: "2026-09-20", createdAt: at("2026-09-20") }),
+    chasing("c", { date: "2026-10-12", createdAt: at("2026-10-12") }),
+    lead({ id: "n", date: "2026-10-01" }),
+    chasing("j", { date: "2026-10-01", junk: true }),
   ];
-  const mine = M.todayLists(leads, { now, hours: H, who: "Angus" });
-  const all = (t) => [...t.callFirst, ...t.fresh, ...t.hot, ...t.due].map((l) => l.id).sort();
-  assert.deepEqual(all(mine), ["chase-stale", "mine", "theirs-stale"]);
-  assert.deepEqual(all(M.todayLists(leads, { now, hours: H, who: "Angus", all: true })), ["chase-stale", "chase-today", "mine", "theirs", "theirs-stale"]);
-});
-
-test("Friday from 5:00pm: counts only", () => {
-  const leads = [
-    lead({ id: "a" }),
-    { ...lead({ stage: "Waiting", status: "Quoted", quotedOn: "2026-09-28", nextFollowUp: "2026-11-01" }), id: "q" },
-    { ...lead({ stage: "Quoted", quotedOn: "2026-10-12", nextFollowUp: "2026-10-14" }), id: "q2" },
-  ];
-  assert.equal(M.fridayWrap(leads, { now: new Date(at("2026-10-16", "16:59")), hours: H }), null);
-  assert.equal(M.fridayWrap(leads, { now: new Date(at("2026-10-15", "18:00")), hours: H }), null); // Thursday
-  const w = M.fridayWrap(leads, { now: new Date(at("2026-10-16", "17:00")), hours: H });
-  assert.deepEqual(w, { callFirst: 0, fresh: 1, hot: 1, due: 0, waiting: 1, quotedQuiet: 1, stillNew: 1 });
-});
-
-test("the upgrade puts every older lead in its place, and past its last touch means Waiting", () => {
-  const today = "2026-10-12";
-  const old = (p) => ({ modelVersion: 2, owner: "Angus", date: "2026-10-01", createdAt: at("2026-10-01"), name: "X", log: [], ...p });
-  const f = (p) => M.upgradeFields(old(p), today);
-  const log = (...days) => days.map((d) => ({ at: at(d), by: "Angus", type: "text" }));
-  // Texted once yesterday: due today (day 1).
-  assert.deepEqual(pick(f({ status: "Contacted", stage: "Chasing", log: log("2026-10-11") }), "stage touches nextFollowUp chaseFrom"), ["Chasing", 1, "2026-10-12", "2026-10-11"]);
-  // Texted on the 7th and 8th: day 3 is the 10th, missed, so due today.
-  assert.deepEqual(pick(f({ status: "Contacted", stage: "Chasing", log: log("2026-10-07", "2026-10-08") }), "stage touches nextFollowUp"), ["Chasing", 2, "2026-10-12"]);
-  // Texted once 10 days ago: past day 7, so Waiting, first check-in 30 days from today.
-  assert.deepEqual(pick(f({ status: "Contacted", stage: "Chasing", log: log("2026-10-02") }), "stage nextFollowUp"), ["Waiting", "2026-11-11"]);
-  // Four touches: Waiting.
-  assert.equal(f({ status: "Contacted", log: log("2026-10-08", "2026-10-09", "2026-10-10", "2026-10-11") }).stage, "Waiting");
-  // A chase date someone picked is kept.
-  assert.deepEqual(pick(f({ status: "Contacted", stage: "Chasing", nextFollowUp: "2026-10-20", log: log("2026-10-02") }), "stage nextFollowUp"), ["Chasing", "2026-10-20"]);
-  // Quoted on the 9th: chases on the 11th, 14th and 18th.
-  const q = f({ status: "Quoted", stage: "Quoted", quoted: 300, log: [{ at: at("2026-10-09"), type: "call", outcome: "Quote given" }] });
-  assert.deepEqual(pick(q, "stage quotedOn nextFollowUp touches"), ["Quoted", "2026-10-09", "2026-10-12", 0]);
-  // Quoted a fortnight ago: Waiting.
-  assert.equal(f({ status: "Quoted", stage: "Quoted", log: [{ at: at("2026-09-27"), type: "call", outcome: "Quote given" }] }).stage, "Waiting");
-  // New stays New; bookings and lost leads keep their dates.
-  assert.equal(f({ status: "New" }).stage, "New");
-  assert.equal(f({ status: "Booked", jobDate: "2026-10-20" }).nextFollowUp, undefined);
-  assert.deepEqual(pick(f({ status: "Lost", lostWhy: "Too expensive" }), "stage lostReason"), ["Lost", "price"]);
-  assert.equal(f({ stage: "Cold", status: "Contacted" }).stage, "Waiting"); // Cold is now called Waiting
-  // Email out of the notes, for Open.
-  assert.equal(f({ notes: "When: ASAP · Email: jo@x.com · Dog hair" }).email, "jo@x.com");
-});
-
-test("the upgrade never removes a lead, keeps what it changed, and runs once", () => {
-  const today = "2026-10-12";
-  const leads = [
-    { id: "a", modelVersion: 2, owner: "Angus", status: "Contacted", stage: "Chasing", nextFollowUp: "2026-10-03", createdAt: at("2026-10-01"), log: [{ at: at("2026-10-02"), by: "Angus", type: "text" }] },
-    { id: "b", status: "New", createdAt: at("2026-10-02"), owner: "" },
-    { id: "c", status: "New", createdAt: at("2026-10-03") },
-    { id: "bad", createdAt: 42, log: "not a list", nextFollowUp: { odd: true } },
-    null,
-  ];
-  const p = M.plan(leads, today);
-  assert.equal(p.todo, 4);
-  const row = (id) => p.rows.find((r) => r.id === id);
-  assert.deepEqual(row("a").patch.v3Was, { stage: "Chasing", nextFollowUp: "2026-10-03", schedule: "", touches: "" });
-  assert.equal(row("a").patch.stage, "Waiting");
-  assert.deepEqual([row("b").patch.owner, row("c").patch.owner], ["Angus", "Ananth"]); // shared out in turn, oldest first
-  const after = leads.filter(Boolean).map((l) => ({ ...l, ...(row(l.id) ? row(l.id).patch : {}) }));
-  assert.equal(after.length, 4);
-  assert.equal(M.plan(after, today).todo, 0);
-  // Anything odd still lands somewhere on Today or off it, never an error.
-  assert.doesNotThrow(() => M.todayLists([...after, null, { junk: false }, { log: 5 }], { now: new Date(at(today)), hours: H, all: true }));
-});
-
-function pick(o, keys) {
-  return keys.split(" ").map((k) => o[k]);
-}
-
-test("changing a tag never parks a lead in Waiting, so tapping round to the right tag undoes it", () => {
-  let l = texted(texted(lead({ timeline: "within_1_2_weeks" }), "2026-10-12"), "2026-10-13"); // Warm, 2 of 4
-  const browsing = apply(l, M.retag(l, "Browsing", "2026-10-14"));
-  assert.deepEqual([browsing.stage, browsing.schedule, browsing.nextFollowUp], ["Chasing", "browsing", "2026-10-14"]); // one more, then Waiting
-  const hot = apply(browsing, M.retag(browsing, "Hot", "2026-10-14"));
-  assert.deepEqual([hot.stage, hot.schedule, hot.nextFollowUp], ["Chasing", "full", "2026-10-15"]); // back on day 3
-  const done = texted(browsing, "2026-10-14");
-  assert.equal(done.stage, "Waiting");
-});
-
-test("a lead logged while the upgrade runs keeps what was logged when the upgrade is worked out again", () => {
-  const today = "2026-10-04";
-  const v2 = { id: "x", modelVersion: 2, owner: "Angus", status: "Contacted", stage: "Chasing", touches: 1, createdAt: at("2026-10-01"), date: "2026-10-01", nextFollowUp: "2026-10-04", log: [{ at: at("2026-10-03"), by: "Angus", type: "text" }] };
-  // Texted today before the upgrade reached it: the page works it out from the upgraded lead
-  // (and saves the new fields with it), so the schedule counts from the first touch.
-  const view = { ...v2, ...M.upgradeFields(v2, today) };
-  const f = { ...view, ...M.touch(view, { at: at(today), by: "Angus", type: "text" }) };
-  assert.deepEqual([f.stage, f.touches, f.lastTouchOn, f.chaseFrom, f.nextFollowUp, f.modelVersion], ["Chasing", 2, today, "2026-10-03", "2026-10-06", 3]);
-  assert.equal(M.plan([f], today).todo, 0); // nothing left for the upgrade to change
-  // Not now and Not real set before the upgrade are kept too.
-  const snoozed = M.upgradeFields({ ...v2, ...M.snooze(v2, "2026-10-20"), junk: true }, today);
-  assert.deepEqual([snoozed.snoozeUntil, snoozed.nextFollowUp, snoozed.junk], ["2026-10-20", "2026-10-20", true]);
+  assert.deepEqual(M.backlogLeads(L, "2026-10-12", TODAY).map((l) => l.id), ["b", "a"]);
+  const moved = apply(L[0], M.backlogPatch(at(TODAY)));
+  assert.deepEqual(pick(moved, "stage waitReason waitedHow"), ["Waiting", "no_reply", "backlog"]);
 });

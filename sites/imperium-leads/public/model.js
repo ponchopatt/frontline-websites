@@ -1,51 +1,69 @@
 /*
-  The lead model: stages, call hours, the follow-up schedule, Today's lists and the upgrade of
-  older leads. Plain logic only (no page, no database), so the page, the server and the tests
-  share it. The page loads it as window.ILModel; the server imports it through lib/model.js.
+  The lead model: five stages, call hours, the four-touch follow-up, Today's list, the numbers and
+  the upgrade of older leads. Plain logic only (no page, no database), so the page, the server and
+  the tests share it. The page loads it as window.ILModel; the server imports it through lib/model.js.
 
-  A lead's follow-up fields (nothing older is removed; status, nextFollowUp, quoted, log and the
-  rest keep their meaning, and status is kept in step with stage):
+  Stages: New → Chasing → Booked → Done, and Waiting (with a reason: no reply, lost or not real).
 
-    stage        New, Chasing, Quoted, Booked, Done, Review asked, or a side bin: Waiting, Lost
-    schedule     full (day 0, 1, 3, 7), browsing (day 0, 3) or quoted (day 2, 5, 9 after the quote)
-    chaseFrom    the day the schedule counts from (the first touch, or the quote)
-    touches      touches done in this run of the schedule (a day with any call or text is one)
-    lastTouchOn  the day of the last touch
-    quotedOn     the day the quote was given
-    nextFollowUp the day it's next due (a Waiting lead's next monthly check-in)
-    snoozeUntil  "Not now": off Today until this day
-    paused       a note was added, so the schedule waits for you to pick the next step
-    timeline     asap, within_1_2_weeks, just_browsing, or "" when we don't know
-    score        Hot, Warm or Browsing; scoreBy says who set it (timeline or human)
-    lostReason   price, timing, went_elsewhere, no_reply or other (Lost only)
-    junk         "Not real": a test or fake lead, kept out of Today and the Numbers
-    email, formId           from the form, shown only when the lead is opened
-    enquiries, againAt      the same person enquiring again (merged into this lead)
-    repeatOf     a new lead from someone who's been a lead before: that lead's id
-    modelVersion 3 once a lead has these fields; v3Was keeps what the upgrade changed
+  A lead's fields (nothing older is removed; status and booked are kept in step with stage, so
+  older exports still read right):
+
+    stage          New, Chasing, Booked, Done or Waiting
+    waitReason     no_reply, lost or not_real (Waiting only). Not real is also junk: true, which
+                   keeps a lead off Today and out of every number
+    old_status     the status it had before the move to five stages (New, Chasing, Quoted, Booked,
+                   Done, Review asked, Waiting, Lost or Not real)
+    touches        touches done, 0 to 4: touch 1 straight away, 2 the next day, 3 on day 3, 4 on day 7
+    chaseFrom      the day of touch 1
+    lastTouchOn    the day of the last touch
+    nextFollowUp   the day the next touch is due
+    quoted         the quote in dollars, if one was given
+    reviewAsked    "Yes" once the review is asked (a tick on Done jobs)
+    paid           "Yes" once paid. A Done job that isn't paid owes money (the other tick)
+    offeredCeramic, offeredPlan   "Yes" once offered (ticks on Booked and Done jobs)
+    planSince      the day the lead went on a maintenance plan
+    fromAd         which ad, for leads added from now on: "ad" (the name is in ad), "none" or "referral"
+    rolledOn       the day it was rolled to tomorrow because Today was full
+    jobDate, jobTime, address, revenue, priceRange   the booking: day, time ("09:30"), where, and
+                   the price (a range like "250–300" is kept in priceRange, with its low end in revenue)
+    log            calls, texts and notes, each with when (at) and who (by). A call note has
+                   type "note", the chips picked (chips) and the words typed (note)
+    depositPaid    "Yes" once the $50 Stripe deposit is paid (depositPaidAt, depositAmount,
+                   depositSessionId); depositUrl, depositLinkAt, depositDate, depositTime: the last link made
+    onMyWayAt, onMyWayBy   when the "On my way" text was sent, and who sent it
+    waitedAt, waitedHow   when it went to Waiting, and how: touch4, auto, backlog or hand
+    timeline, score, email, formId, enquiries, againAt, repeatOf, lostReason: as before
+    modelVersion   4 once a lead has these fields; v4Was keeps what the upgrade changed
 */
 (function (root) {
   "use strict";
 
-  var VERSION = 3;
-  var STAGES = ["New", "Chasing", "Quoted", "Booked", "Done", "Review asked"];
-  var BINS = ["Waiting", "Lost"];
-  var ALL_STAGES = STAGES.concat(BINS);
-  var BOOKED = ["Booked", "Done", "Review asked"];
+  var VERSION = 4;
+  var STAGES = ["New", "Chasing", "Booked", "Done", "Waiting"];
+  var BOOKED = ["Booked", "Done"];
   var PEOPLE = ["Angus", "Ananth"];
   var TAGS = ["Hot", "Warm", "Browsing"];
   var TIMELINES = { asap: "ASAP", within_1_2_weeks: "1 to 2 weeks", just_browsing: "Just browsing" };
   var SCORE_OF = { asap: "Hot", within_1_2_weeks: "Warm", just_browsing: "Browsing" };
+  var WAIT_REASONS = { no_reply: "No reply", lost: "Lost", not_real: "Not real" };
+  // Why a lost lead was lost (kept on the lead as lostReason, for the Numbers).
   var LOST_REASONS = { price: "Price", timing: "Timing", went_elsewhere: "Went elsewhere", no_reply: "No reply", other: "Other" };
-  // The old "Why lost?" answers and the new reasons, both ways.
   var OLD_LOST = { "Too expensive": "price", Timing: "timing", "Went elsewhere": "went_elsewhere", "No reply": "no_reply", Other: "other" };
   var LOST_WORDS = { price: "Too expensive", timing: "Timing", went_elsewhere: "Went elsewhere", no_reply: "No reply", other: "Other" };
-  // A review text has gone out (or they said no): the last stage.
-  var REVIEW_ASKED = ["text_sent", "nudged", "reviewed", "declined"];
-  // Follow-up days. full and browsing count from the first touch (day 0); quoted from the quote.
-  var STEPS = { full: [0, 1, 3, 7], browsing: [0, 3], quoted: [2, 5, 9] };
-  var CHECK_IN_DAYS = 30;
+  // The review steps that mean it's been asked.
+  var REVIEW_ASKED = ["asked_in_person", "text_sent", "nudged", "reviewed", "declined"];
+  // Touch days, counted from touch 1 (day 0).
+  var STEPS = [0, 1, 3, 7];
+  var TOUCHES = STEPS.length;
+  // A touch this many days overdue moves the lead to Waiting by itself.
+  var OVERDUE_DAYS = 2;
+  // The most Today shows at once.
+  var TODAY_MAX = 10;
   var HOURS = { start: 8 * 60, end: 19 * 60 };
+  // Things people often say on a call: quick-tap chips on a note.
+  var NOTE_CHIPS = ["Price", "Timing", "Pet hair", "Stains", "Smell", "Scratches / swirls", "Wants ceramic info", "Selling the car",
+    "Needs to check with partner", "Work ute", "Garage / no garage", "Water or power issue"];
+  var DEPOSIT = 50;
   var DAY_MS = 864e5;
 
   /* ------------------------------------------------------------ Canberra time */
@@ -110,6 +128,9 @@
     }
     return new Date(t);
   }
+  function dayOf(l) {
+    return l.date || canberraDate(l.createdAt);
+  }
 
   /* ------------------------------------------------------------ call hours */
 
@@ -134,8 +155,8 @@
     var m = canberraMinutes(at);
     return m >= h.start && m < h.end;
   }
-  // When the 5-minute reply clock starts for something that arrived `at`: straight away in call
-  // hours, else at the next start of call hours.
+  // When the reply clock starts for something that arrived `at`: straight away in call hours,
+  // else at the next start of call hours (every day, weekends too).
   function clockStart(at, h) {
     var d = asDate(at);
     if (!d) return null;
@@ -215,95 +236,113 @@
 
   /* ------------------------------------------------------------ stages */
 
-  // The stage a lead is at, from the fields older versions of the app kept.
-  function legacyStage(l, today) {
-    if (l.status === "Lost") return "Lost";
-    var finished = !!l.completedAt || l.kind === "job" || (l.status === "Booked" && !!l.jobDate && !!today && l.jobDate < today);
-    if (finished) return REVIEW_ASKED.indexOf(l.reviewStatus) !== -1 || l.reviewAsked === "Yes" ? "Review asked" : "Done";
-    if (l.status === "Booked") return "Booked";
-    if (l.status === "Quoted") return "Quoted";
-    if (l.status === "Contacted" || logOf(l).some(isTouch)) return "Chasing";
-    return "New";
+  // The job's day has passed, or it was marked done.
+  function isFinished(l, today) {
+    return !!l.completedAt || l.kind === "job" || (isDay(l.jobDate) && !!today && l.jobDate < today);
   }
-  // A booking moves on by itself: Done once the job's done, Review asked once the text's gone.
-  function bookedStage(l, stored, today) {
-    var finished = !!l.completedAt || l.kind === "job" || (!!l.jobDate && !!today && l.jobDate < today);
-    var asked = REVIEW_ASKED.indexOf(l.reviewStatus) !== -1 || l.reviewAsked === "Yes";
-    var s = finished ? (asked ? "Review asked" : "Done") : "Booked";
-    return BOOKED.indexOf(stored) > BOOKED.indexOf(s) ? stored : s;
+  // The stage a lead had in the app before five stages (version 3), from whatever it has.
+  var V3_STAGES = ["New", "Chasing", "Quoted", "Booked", "Done", "Review asked", "Waiting", "Lost"];
+  var V3_ASKED = ["text_sent", "nudged", "reviewed", "declined"];
+  function v3Stage(l, today) {
+    var s = l.stage === "Cold" ? "Waiting" : l.stage;
+    if (V3_STAGES.indexOf(s) === -1) {
+      if (l.status === "Lost") return "Lost";
+      if (l.status === "Booked" || l.kind === "job" || l.completedAt) s = "Booked";
+      else if (l.status === "Quoted") return "Quoted";
+      else return l.status === "Contacted" || logOf(l).some(isTouch) ? "Chasing" : "New";
+    }
+    if (s !== "Booked" && s !== "Done" && s !== "Review asked") return s;
+    var asked = V3_ASKED.indexOf(l.reviewStatus) !== -1 || l.reviewAsked === "Yes";
+    var b = isFinished(l, today) ? (asked ? "Review asked" : "Done") : "Booked";
+    var order = ["Booked", "Done", "Review asked"];
+    return order.indexOf(s) > order.indexOf(b) ? s : b;
   }
+  var FROM_V3 = { New: "New", Chasing: "Chasing", Quoted: "Chasing", Booked: "Booked", Done: "Done", "Review asked": "Done", Waiting: "Waiting", Lost: "Waiting" };
+  // A booking moves on to Done by itself once its day has passed.
   function stageOf(l, today) {
     if (!l) return "New";
-    var s = l.stage === "Cold" ? "Waiting" : l.stage;
-    if (ALL_STAGES.indexOf(s) === -1) s = legacyStage(l, today);
-    if (BOOKED.indexOf(s) !== -1) return bookedStage(l, s, today);
+    var s = STAGES.indexOf(l.stage) !== -1 ? l.stage : FROM_V3[v3Stage(l, today)] || "New";
+    if (s === "Booked" && isFinished(l, today)) return "Done";
     return s;
   }
-  // The old status field, kept in step so older screens and exports still read right.
-  function statusFor(stage, old) {
+  function waitReasonOf(l) {
+    if (l.junk) return "not_real";
+    if (WAIT_REASONS[l.waitReason]) return l.waitReason;
+    return l.stage === "Lost" || l.status === "Lost" ? "lost" : "no_reply";
+  }
+  // The old status field, kept in step so older exports still read right.
+  function statusFor(stage, reason) {
     if (stage === "New") return "New";
-    if (stage === "Chasing") return "Contacted";
-    if (stage === "Quoted") return "Quoted";
-    if (stage === "Waiting") return old === "Quoted" ? "Quoted" : "Contacted";
-    if (stage === "Lost") return "Lost";
-    return "Booked";
+    if (stage === "Booked" || stage === "Done") return "Booked";
+    if (stage === "Waiting" && reason === "lost") return "Lost";
+    return "Contacted";
   }
-  function scheduleFor(l) {
-    if (stageOf(l) === "Quoted") return "quoted";
-    return l && l.score === "Browsing" ? "browsing" : "full";
+  function isBooked(l, today) {
+    return BOOKED.indexOf(stageOf(l, today)) !== -1;
   }
-  function runLength(schedule) {
-    return (STEPS[schedule] || STEPS.full).length;
+  // A Done job that isn't paid (and a job today marked not paid).
+  function owesMoney(l, today) {
+    if (!l || l.junk || l.paid === "Yes") return false;
+    var s = stageOf(l, today);
+    return s === "Done" || (s === "Booked" && l.paid === "No" && isDay(l.jobDate) && !!today && l.jobDate <= today);
+  }
+  // The Review asked tick.
+  function reviewAsked(l) {
+    if (l.reviewAsked === "Yes") return true;
+    return l.reviewAsked !== "No" && REVIEW_ASKED.indexOf(l.reviewStatus) !== -1;
   }
 
   /*
     Every save goes through here: stage, status and booked agree, and a booking moves on to Done
-    by itself. Missing follow-up fields get their empty values. Nothing else is changed.
+    by itself. Missing fields get their empty values. Nothing else is changed.
   */
   function sync(l, today) {
     var out = {};
     Object.keys(l || {}).forEach(function (k) { out[k] = l[k]; });
     var stage = stageOf(out, today);
     out.stage = stage;
-    out.status = statusFor(stage, out.status);
+    if (stage === "Waiting") out.waitReason = waitReasonOf(out);
+    out.status = statusFor(stage, out.waitReason);
     out.booked = out.status === "Booked" ? "Yes" : out.status === "Lost" ? "No" : "Pending";
-    if (stage === "Lost" && !LOST_REASONS[out.lostReason]) out.lostReason = OLD_LOST[out.lostWhy] || "other";
+    if (stage === "Waiting" && out.waitReason === "lost" && !LOST_REASONS[out.lostReason]) out.lostReason = OLD_LOST[out.lostWhy] || "other";
     if (typeof out.touches !== "number" || isNaN(out.touches)) out.touches = 0;
-    if (!STEPS[out.schedule]) out.schedule = scheduleFor(out);
-    ["chaseFrom", "lastTouchOn", "quotedOn", "snoozeUntil", "timeline", "score", "scoreBy", "lostReason", "email", "formId", "againAt", "repeatOf"].forEach(function (k) {
+    ["waitReason", "old_status", "chaseFrom", "lastTouchOn", "quotedOn", "timeline", "score", "scoreBy", "lostReason", "email", "formId", "againAt", "repeatOf",
+      "fromAd", "offeredCeramic", "offeredPlan", "planSince", "rolledOn"].forEach(function (k) {
       if (out[k] == null) out[k] = "";
     });
-    ["paused", "doNotText", "junk"].forEach(function (k) { out[k] = !!out[k]; });
+    ["doNotText", "junk"].forEach(function (k) { out[k] = !!out[k]; });
     if (!Array.isArray(out.log)) out.log = [];
     if (!Array.isArray(out.enquiries)) out.enquiries = [];
     return out;
   }
 
-  // The follow-up fields a brand-new lead starts with.
+  // The fields a brand-new lead starts with.
   function newFields(timeline) {
     var score = scoreOf(timeline);
     return {
-      stage: "New", schedule: score === "Browsing" ? "browsing" : "full", chaseFrom: "", touches: 0, lastTouchOn: "", quotedOn: "",
-      snoozeUntil: "", paused: false, timeline: timeline || "", score: score, scoreBy: score ? "timeline" : "", lostReason: "",
-      doNotText: false, junk: false, email: "", formId: "", enquiries: [], againAt: "", repeatOf: "", modelVersion: VERSION,
+      stage: "New", waitReason: "", old_status: "", touches: 0, chaseFrom: "", lastTouchOn: "", quotedOn: "",
+      timeline: timeline || "", score: score, scoreBy: score ? "timeline" : "", lostReason: "",
+      doNotText: false, junk: false, email: "", formId: "", enquiries: [], againAt: "", repeatOf: "",
+      fromAd: "", offeredCeramic: "", offeredPlan: "", planSince: "", rolledOn: "", modelVersion: VERSION,
     };
   }
 
-  /* ------------------------------------------------------------ the schedule */
+  /* ------------------------------------------------------------ the four touches */
 
-  // The day the next touch is due once `done` touches of the run are in, the last on `last`.
-  // Counted from the run's start, and never sooner after the last touch than the schedule's
-  // own gap: a follow-up done late still waits 2 days (then 4) before the next, not 1.
-  function dueAfter(schedule, from, done, last) {
-    var steps = STEPS[schedule] || STEPS.full;
-    var at = from && done < steps.length ? addDays(from, steps[done]) : "";
-    var gap = done > 0 && done < steps.length ? Math.max(1, steps[done] - steps[done - 1]) : 1;
+  // The day touch `done + 1` is due, once `done` touches are in, the last on `last`. Counted from
+  // touch 1, and never sooner after the last touch than the planned gap: a touch done late still
+  // waits 2 days (then 4) before the next, not 1.
+  function dueAfter(from, done, last) {
+    if (done >= TOUCHES) return "";
+    var at = from ? addDays(from, STEPS[done]) : "";
+    var gap = done > 0 ? Math.max(1, STEPS[done] - STEPS[done - 1]) : 0;
     return laterDay(at, last ? addDays(last, gap) : "");
   }
   function minutesSince(fromIso, toIso) {
     var a = asDate(fromIso), b = asDate(toIso);
     return a && b ? Math.max(0, Math.round((b - a) / 6e4)) : null;
   }
+  // Minutes from when a new lead came in to the first reply (undefined once there's been one).
   function firstReply(l, at) {
     return l.replyMins == null && !logOf(l).some(isTouch) && stageOf(l) === "New" ? minutesSince(l.createdAt, at) : undefined;
   }
@@ -316,124 +355,138 @@
   }
 
   /*
-    Texted, No answer or a call: the fields to save. entry is the log entry ({at, by, type, ...}).
-    A New lead starts its schedule today. The next due day is set from the schedule; after the
-    last touch the lead waits, with a check-in every 30 days. A second touch on the same day
-    doesn't count again.
+    ✓ Done: this touch was sent. entry is the log entry ({at, by, type, ...}). The first touch
+    starts the four; each one sets the day the next is due. After touch 4 with no booking, the
+    lead goes to Waiting (No reply). A second touch on the same day is logged but doesn't count
+    again. On a Booked, Done or Waiting lead it's only logged.
   */
   function touch(l, entry) {
     var T = canberraDate(entry.at);
-    var stage = stageOf(l);
-    var p = { log: logOf(l).concat([entry]), lastContact: entry.at, paused: false };
+    var stage = stageOf(l, T);
+    var p = { log: logOf(l).concat([entry]), lastContact: entry.at };
     var reply = firstReply(l, entry.at);
     if (reply !== undefined) p.replyMins = reply;
-    if (BOOKED.indexOf(stage) !== -1 || stage === "Lost") return p;
-    if (stage === "Waiting") return assign(p, { nextFollowUp: addDays(T, CHECK_IN_DAYS), snoozeUntil: "", lastTouchOn: T });
-    var schedule = stage === "Quoted" ? "quoted" : scheduleFor(l);
+    if (stage !== "New" && stage !== "Chasing") return p;
     var starting = stage === "New";
-    var from = starting ? T : l.chaseFrom || l.quotedOn || T;
-    var done = starting ? 1 : (Number(l.touches) || 0) + (l.lastTouchOn === T ? 0 : 1);
-    assign(p, { stage: starting ? "Chasing" : stage, schedule: schedule, chaseFrom: from, touches: done, lastTouchOn: T, snoozeUntil: "" });
-    if (done >= runLength(schedule)) return assign(p, { stage: "Waiting", nextFollowUp: addDays(T, CHECK_IN_DAYS) });
-    p.nextFollowUp = dueAfter(schedule, from, done, T);
+    var from = starting ? T : l.chaseFrom || T;
+    var done = starting ? 1 : Math.min(TOUCHES, Math.max(1, (Number(l.touches) || 0) + (l.lastTouchOn === T ? 0 : 1)));
+    assign(p, { stage: "Chasing", chaseFrom: from, touches: done, lastTouchOn: T, rolledOn: "" });
+    if (done >= TOUCHES) return assign(p, { stage: "Waiting", waitReason: "no_reply", nextFollowUp: "", waitedAt: entry.at, waitedHow: "touch4" });
+    p.nextFollowUp = dueAfter(from, done, T);
     return p;
   }
 
-  /*
-    "Not now": off Today until `date`. A lead being chased picks up its schedule from that day,
-    with the same gaps between touches as before.
-  */
-  function snooze(l, date) {
-    var stage = stageOf(l);
-    var p = { snoozeUntil: date, nextFollowUp: date, paused: false };
-    if (stage === "Chasing" || stage === "Quoted") {
-      var schedule = stage === "Quoted" ? "quoted" : scheduleFor(l);
-      var steps = STEPS[schedule], done = Number(l.touches) || 0;
-      if (done < steps.length) p.chaseFrom = addDays(date, -steps[done]);
-    }
-    return p;
+  // A price as typed: "250" → { price: 250, range: "" }; "250-300", "$250 to $300" →
+  // { price: 250, range: "250–300" } (the low end counts as the price until the job's done).
+  function parsePrice(v) {
+    if (typeof v === "number") return isFinite(v) ? { price: v, range: "" } : { price: null, range: "" };
+    var nums = String(v == null ? "" : v).replace(/,/g, "").match(/\d+(\.\d+)?/g) || [];
+    if (!nums.length) return { price: null, range: "" };
+    var a = Number(nums[0]), b = nums.length > 1 ? Number(nums[1]) : a;
+    if (b === a) return { price: a, range: "" };
+    var lo = Math.min(a, b), hi = Math.max(a, b);
+    return { price: lo, range: lo + "–" + hi };
   }
-
+  // "09:30" → "9:30am" ("" when it isn't a time).
+  function timeLabel(t) {
+    var m = toMinutes(t, -1);
+    return m < 0 ? "" : clock(m);
+  }
   /*
-    Answered: one question. choice is quoted ({amount}), booked ({date, price}), notnow ({date})
-    or lost ({reason}). The call is logged and the lead moves on; the old schedule stops.
+    Booked: the day, and the time, address and price when known (data: { date, time, address,
+    price }, price as typed, a range is fine). The touches stop.
   */
-  var OUTCOMES = { quoted: "Quote given", booked: "Booked", notnow: "Not now", lost: "Lost" };
-  function answer(l, choice, data, at, by) {
+  function book(l, data, at, by) {
     data = data || {};
-    var T = canberraDate(at);
-    var entry = { at: at, by: by || "", type: "call", pickedUp: "Yes", outcome: OUTCOMES[choice] || "Answered", note: "" };
-    var p = { log: logOf(l).concat([entry]), lastContact: at, paused: false, snoozeUntil: "" };
+    var pr = data.price == null || data.price === "" ? null : parsePrice(data.price);
+    var p = {
+      stage: "Booked", waitReason: "", jobDate: data.date || "",
+      revenue: pr && pr.price != null ? pr.price : (l.revenue == null ? null : l.revenue),
+      nextFollowUp: "", rolledOn: "", log: logOf(l).concat([{ at: at, by: by || "", type: "note", outcome: "Booked", note: "" }]),
+    };
+    if (pr && pr.price != null) p.priceRange = pr.range;
+    if (data.time != null) p.jobTime = String(data.time);
+    if (data.address != null) p.address = String(data.address).trim();
+    if (l.completedAt) p.completedAt = null;
+    if (l.junk) p.junk = false;
     var reply = firstReply(l, at);
     if (reply !== undefined) p.replyMins = reply;
-    if (choice === "quoted") {
-      return assign(p, { stage: "Quoted", status: "Quoted", quoted: data.amount == null ? l.quoted == null ? null : l.quoted : data.amount,
-        quotedOn: T, schedule: "quoted", chaseFrom: T, touches: 0, lastTouchOn: T, nextFollowUp: addDays(T, STEPS.quoted[0]) });
-    }
-    if (choice === "booked") {
-      return assign(p, { stage: "Booked", status: "Booked", jobDate: data.date || "", revenue: data.price == null ? null : data.price, nextFollowUp: "" });
-    }
-    if (choice === "lost") {
-      var reason = LOST_REASONS[data.reason] ? data.reason : "other";
-      return assign(p, { stage: "Lost", status: "Lost", lostReason: reason, lostWhy: LOST_WORDS[reason], nextFollowUp: "" });
-    }
-    // Not now: a new lead has been talked to, so its schedule starts today, then waits.
-    if (stageOf(l) === "New") assign(p, { stage: "Chasing", schedule: scheduleFor(l), chaseFrom: T, touches: 1, lastTouchOn: T });
-    return assign(p, snooze(merged(l, p), data.date || addDays(T, 1)));
-  }
-
-  // A note pauses a schedule that's running: the lead comes back the next day it's due (at the
-  // soonest tomorrow) marked Paused, so you pick what's next.
-  function note(l, text, at, by) {
-    var T = canberraDate(at);
-    var p = { log: logOf(l).concat([{ at: at, by: by || "", type: "note", note: String(text || "").trim() }]) };
-    var stage = stageOf(l);
-    if (stage === "Chasing" || stage === "Quoted") {
-      p.paused = true;
-      p.pausedAt = at;
-      p.nextFollowUp = laterDay(l.nextFollowUp, addDays(T, 1));
-    }
     return p;
   }
 
-  // A stage picked by hand in Open (to fix something): the schedule starts again from today.
-  function setStage(l, stage, today) {
-    var p = { stage: stage, paused: false, snoozeUntil: "" };
-    if (stage === "New") assign(p, { chaseFrom: "", touches: 0, nextFollowUp: today });
-    else if (stage === "Chasing") assign(p, { schedule: scheduleFor(merged(l, { stage: "Chasing" })), chaseFrom: today, touches: 1, lastTouchOn: today, nextFollowUp: addDays(today, 1) });
-    else if (stage === "Quoted") assign(p, { schedule: "quoted", quotedOn: today, chaseFrom: today, touches: 0, lastTouchOn: today, nextFollowUp: addDays(today, STEPS.quoted[0]) });
-    else if (stage === "Waiting") p.nextFollowUp = addDays(today, CHECK_IN_DAYS);
-    else p.nextFollowUp = "";
-    if (stage === "Lost" && !LOST_REASONS[l.lostReason]) assign(p, { lostReason: "other", lostWhy: LOST_WORDS.other });
+  // A call note: the chips picked and the words typed, kept in the history with when and who.
+  // It changes nothing else.
+  function note(l, text, at, by, chips) {
+    var picked = [];
+    (Array.isArray(chips) ? chips : []).forEach(function (c) { if (NOTE_CHIPS.indexOf(c) !== -1 && picked.indexOf(c) === -1) picked.push(c); });
+    return { log: logOf(l).concat([{ at: at, by: by || "", type: "note", note: String(text || "").trim(), chips: picked }]) };
+  }
+  // The call notes on a lead, newest first: [{ at, by, chips, text }]. Things the app logs by
+  // itself (Booked, Deposit paid) and empty notes are left out.
+  function callNotes(l) {
+    return logOf(l).filter(function (e) {
+      return e.type === "note" && !e.outcome && (String(e.note || "").trim() || (Array.isArray(e.chips) && e.chips.length));
+    }).map(function (e) {
+      return { at: e.at, by: e.by || "", chips: Array.isArray(e.chips) ? e.chips.slice() : [], text: String(e.note || "").trim() };
+    }).sort(function (a, b) { return String(b.at || "").localeCompare(String(a.at || "")); });
+  }
+  // One short line for a note: "Pet hair, wants Saturday".
+  function noteLine(n) {
+    return n ? n.chips.concat(n.text ? [n.text] : []).join(", ") : "";
+  }
+  // How often each chip was picked, most first: [{ chip, times, leads }]. keep(note, lead) says
+  // which notes count (a period, a person). Leads marked not real are left out.
+  function chipCounts(leads, keep) {
+    var o = {};
+    NOTE_CHIPS.forEach(function (c) { o[c] = { chip: c, times: 0, leads: 0 }; });
+    (leads || []).forEach(function (l) {
+      if (!l || l.junk) return;
+      var seen = {};
+      callNotes(l).forEach(function (n) {
+        if (keep && !keep(n, l)) return;
+        n.chips.forEach(function (c) {
+          if (!o[c]) return;
+          o[c].times++;
+          if (!seen[c]) { seen[c] = true; o[c].leads++; }
+        });
+      });
+    });
+    return NOTE_CHIPS.map(function (c) { return o[c]; }).sort(function (a, b) { return b.times - a.times || NOTE_CHIPS.indexOf(a.chip) - NOTE_CHIPS.indexOf(b.chip); });
+  }
+
+  /*
+    A stage picked by hand in the … menu. Booked goes through book() (it needs a day); Done is
+    marked done by the page (reviews.js). Waiting needs a reason: no_reply, lost or not_real.
+  */
+  function setStage(l, stage, today, reason, at) {
+    var p = { stage: stage, rolledOn: "" };
+    if (stage !== "Waiting") {
+      p.waitReason = "";
+      if (l.junk) p.junk = false;
+    }
+    if (stage === "New") assign(p, { touches: 0, chaseFrom: "", lastTouchOn: "", nextFollowUp: "" });
+    else if (stage === "Chasing") {
+      var t = Number(l.touches) || 0, mid = stageOf(l, today) === "Chasing" && t >= 1 && t < TOUCHES;
+      assign(p, { touches: mid ? t : 1, chaseFrom: mid && l.chaseFrom ? l.chaseFrom : today, nextFollowUp: today });
+    } else if (stage === "Waiting") {
+      var r = WAIT_REASONS[reason] ? reason : "no_reply";
+      assign(p, { waitReason: r, junk: r === "not_real", nextFollowUp: "", waitedAt: at || "", waitedHow: "hand" });
+      if (r === "lost" && !LOST_REASONS[l.lostReason]) assign(p, { lostReason: "other", lostWhy: LOST_WORDS.other });
+    } else p.nextFollowUp = "";
     return p;
   }
 
-  // A tag changed by hand. A lead being chased moves to that tag's schedule straight away (it's
-  // never parked in Waiting by a tag change, so tapping round to the right tag undoes it).
-  function retag(l, tag, today) {
-    var p = { score: TAGS.indexOf(tag) !== -1 ? tag : "", scoreBy: "human" };
+  // A tag picked by hand. It only changes where the lead sits on Today.
+  function retag(l, tag) {
+    return { score: TAGS.indexOf(tag) !== -1 ? tag : "", scoreBy: "human" };
+  }
+
+  // "Touch 2 of 4" for the next touch, or "" when the lead isn't being chased.
+  function touchLabel(l, today) {
     var stage = stageOf(l, today);
-    var next = merged(l, p);
-    if (stage === "New") p.schedule = scheduleFor(next);
-    if (stage !== "Chasing") return p;
-    var schedule = scheduleFor(next), done = Number(l.touches) || 0;
-    p.schedule = schedule;
-    if (l.snoozeUntil && l.snoozeUntil > today) return p;
-    // Already past that schedule's last touch: one more, the next day; that touch moves it to Waiting.
-    if (done >= runLength(schedule)) p.nextFollowUp = laterDay(today, addDays(l.lastTouchOn || today, 1));
-    else p.nextFollowUp = dueAfter(schedule, l.chaseFrom || today, done, l.lastTouchOn || "");
-    return p;
-  }
-  function nextTag(tag) {
-    return TAGS[(TAGS.indexOf(tag) + 1) % TAGS.length];
-  }
-
-  // "2 of 4" (or "" when the lead isn't being chased).
-  function progress(l, today) {
-    var stage = stageOf(l, today);
-    if (stage !== "Chasing" && stage !== "Quoted") return "";
-    var schedule = stage === "Quoted" ? "quoted" : scheduleFor(l);
-    return Math.min(Number(l.touches) || 0, runLength(schedule)) + " of " + runLength(schedule);
+    if (stage === "New") return "Touch 1 of " + TOUCHES;
+    if (stage !== "Chasing") return "";
+    return "Touch " + Math.min((Number(l.touches) || 0) + 1, TOUCHES) + " of " + TOUCHES;
   }
 
   /* ------------------------------------------------------------ reply times */
@@ -455,42 +508,66 @@
     if (!made || !c) return raw;
     return Math.max(0, Math.round(raw - (c - made) / 6e4));
   }
+  /*
+    The timer on a new lead: { mins, level } with level green (under 5 minutes), orange (5 to 15)
+    or red (over 15), counted from when its clock started. A lead in overnight has level "wait"
+    and startsAt (8:00am) until then.
+  */
+  function replyTimer(l, now, h) {
+    var c = clockStart(arrivedAt(l), h);
+    if (!c) return null;
+    if (c > now) return { mins: 0, level: "wait", startsAt: c };
+    var m = Math.floor((now - c) / 6e4);
+    return { mins: m, level: m < 5 ? "green" : m <= 15 ? "orange" : "red" };
+  }
 
   /* ------------------------------------------------------------ Today */
 
-  // Which part of Today a lead belongs in, or "" when it isn't on Today.
-  // "later" is a lead that came in out of hours, before call hours start.
-  function place(l, today, now, h) {
-    if (!l || l.junk) return "";
-    if (l.snoozeUntil && l.snoozeUntil > today) return "";
+  function isFresh(l, stage) {
+    return stage === "New" || (stage === "Chasing" && againPending(l));
+  }
+  // The day a lead's next touch fell due: the day its reply clock started for a new lead, else
+  // nextFollowUp. "" when it isn't being chased.
+  function dueDay(l, today, h) {
     var stage = stageOf(l, today);
-    if (stage === "New" || againPending(l)) {
-      var c = clockStart(arrivedAt(l), h);
-      if (c && c > now) return "later";
-      return isOvernight(l, h) ? "callFirst" : "fresh";
+    if (isFresh(l, stage)) {
+      var c = clockStart(arrivedAt(l), h || hours());
+      return c ? canberraDate(c) : today;
     }
-    if (stage !== "Chasing" && stage !== "Quoted" && stage !== "Waiting") return "";
-    var due = !l.nextFollowUp || l.nextFollowUp <= today;
-    if (stage === "Waiting") return due ? "due" : "waiting";
-    if (!due) return "";
-    return l.score === "Hot" || stage === "Quoted" ? "hot" : "due";
+    if (stage === "Chasing") return isDay(l.nextFollowUp) ? l.nextFollowUp : today;
+    return "";
   }
-  // When it fell due: the reply clock for a new lead, else the start of call hours on its day.
-  function dueAt(l, today, now, h) {
+  // Already 2 or more days overdue on the day this version went live (`since`): left for the
+  // one-time backlog clear in Settings, so it's never moved without the "still keen?" text.
+  function isBacklog(l, today, h, since) {
+    if (!since || !l || l.junk) return false;
     var stage = stageOf(l, today);
-    if (stage === "New" || againPending(l)) return clockStart(arrivedAt(l), h);
-    return isDay(l.nextFollowUp) ? canberraAt(l.nextFollowUp, h.start) : now;
+    if (stage !== "Chasing" || againPending(l)) return false;
+    var d = dueDay(l, today, h);
+    return !!d && daysBetween(d, since) >= OVERDUE_DAYS;
   }
-  // Nobody has touched it for 24 hours past when it fell due: it shows on both lists.
-  function stale(l, today, now, h) {
-    var at = dueAt(l, today, now, h);
-    return !!at && now - at >= DAY_MS;
+  // A touch 2 or more days overdue: the lead moves to Waiting (No reply) instead of piling up.
+  // Not a lead that was already that late when this version went live (see isBacklog).
+  function shouldAutoWait(l, today, h, since) {
+    if (!since || !l || l.junk) return false;
+    var stage = stageOf(l, today);
+    if (stage !== "New" && stage !== "Chasing") return false;
+    var d = dueDay(l, today, h);
+    if (!d || daysBetween(d, today) < OVERDUE_DAYS) return false;
+    return daysBetween(d, since) < OVERDUE_DAYS;
   }
-  // Quoted first, then Hot, Warm, Browsing; the oldest first within each.
+  function autoWaitPatch(at) {
+    return { stage: "Waiting", waitReason: "no_reply", nextFollowUp: "", waitedAt: at, waitedHow: "auto" };
+  }
+  // Today was full: this one's touch moves to tomorrow.
+  function rollPatch(today) {
+    return { nextFollowUp: addDays(today, 1), rolledOn: today };
+  }
+  // Brand-new first, then Hot, then Warm, then the rest; the oldest first within each.
   function rank(l, today) {
-    if (stageOf(l, today) === "Quoted") return 0;
+    if (isFresh(l, stageOf(l, today))) return 0;
     var i = TAGS.indexOf(l.score);
-    return i === -1 ? 4 : i + 1;
+    return i === 0 ? 1 : i === 1 ? 2 : 3;
   }
   function byRank(today) {
     return function (a, b) {
@@ -498,51 +575,87 @@
     };
   }
   /*
-    Today's lists: { callFirst, fresh, hot, due, waiting, later, left }. o is { now, hours, who, all }.
-    Without `all`, only `who`'s leads, plus leads with no owner and anyone's left 24 hours past due.
+    Today's one list: the leads with a touch due today or overdue, in order, at most 10.
+    o is { now, hours, who, all, since, max }. Without `all`, only `who`'s leads (and any with no
+    owner). Returns { show, extra, later, backlog, rolled }: extra is the rest of the list (to
+    roll to tomorrow), later counts new leads that came in overnight (their clock starts at 8:00am),
+    backlog the old overdue leads left for the backlog clear, rolled those already rolled today.
   */
-  function todayLists(leads, o) {
-    var now = o.now || new Date(), h = o.hours || hours(), today = canberraDate(now);
-    var out = { callFirst: [], fresh: [], hot: [], due: [], waiting: [], later: 0 };
+  function todayList(leads, o) {
+    o = o || {};
+    var now = o.now || new Date(), h = o.hours || hours(), today = canberraDate(now), max = o.max || TODAY_MAX;
+    var due = [], later = 0, backlog = 0, rolled = 0;
     (leads || []).forEach(function (l) {
       try {
-        var k = place(l, today, now, h);
-        if (!k) return;
-        if (k === "later") { out.later++; return; }
-        if (!o.all && o.who && l.owner && l.owner !== o.who && !stale(l, today, now, h)) return;
-        out[k].push(l);
+        if (!l || l.junk) return;
+        if (!o.all && o.who && l.owner && l.owner !== o.who) return;
+        var stage = stageOf(l, today);
+        if (stage !== "New" && stage !== "Chasing") return;
+        if (shouldAutoWait(l, today, h, o.since)) return;
+        if (isFresh(l, stage)) {
+          var c = clockStart(arrivedAt(l), h);
+          if (c && c > now) later++;
+          else due.push(l);
+          return;
+        }
+        if (isBacklog(l, today, h, o.since)) { backlog++; return; }
+        if (l.rolledOn === today && isDay(l.nextFollowUp) && l.nextFollowUp > today) { rolled++; return; }
+        if (dueDay(l, today, h) <= today) due.push(l);
       } catch (e) { /* a lead that can't be read is left off Today, never the app */ }
     });
-    ["callFirst", "fresh", "hot", "due", "waiting"].forEach(function (k) { out[k].sort(byRank(today)); });
-    out.left = out.callFirst.length + out.fresh.length + out.hot.length + out.due.length;
-    return out;
+    due.sort(byRank(today));
+    return { show: due.slice(0, max), extra: due.slice(max), later: later, backlog: backlog, rolled: rolled };
+  }
+  // The Chasing leads that came in before `before`, for the one-time backlog clear. Oldest first.
+  function backlogLeads(leads, before, today) {
+    return (leads || []).filter(function (l) {
+      return l && !l.junk && stageOf(l, today) === "Chasing" && isDay(dayOf(l)) && dayOf(l) < before;
+    }).sort(function (a, b) { return String(a.createdAt || a.date || "").localeCompare(String(b.createdAt || b.date || "")); });
+  }
+  function backlogPatch(at) {
+    return { stage: "Waiting", waitReason: "no_reply", nextFollowUp: "", rolledOn: "", waitedAt: at, waitedHow: "backlog" };
+  }
+
+  // Today's jobs: booked (or done) for today, in time order (no time last). o is { who, all }.
+  function todaysJobs(leads, today, o) {
+    o = o || {};
+    return (leads || []).filter(function (l) {
+      return l && !l.junk && l.jobDate === today && isBooked(l, today) && (o.all || !o.who || !l.owner || l.owner === o.who);
+    }).sort(function (a, b) {
+      var ta = toMinutes(a.jobTime, 9999), tb = toMinutes(b.jobTime, 9999);
+      return ta - tb || String(a.name || "").localeCompare(String(b.name || ""));
+    });
+  }
+  // "On my way" was sent: when, and who.
+  function onMyWay(l, at, by) {
+    return { onMyWayAt: at, onMyWayBy: by || "", log: logOf(l).concat([{ at: at, by: by || "", type: "text", outcome: "On my way", note: "" }]) };
+  }
+  // A deposit link was made for the lead (s: { id, url, expiresAt }, for: { date, time }).
+  function depositLink(l, s, at, by, forDay) {
+    forDay = forDay || {};
+    return {
+      depositSessionId: s.id, depositUrl: s.url, depositExpiresAt: s.expiresAt || "", depositLinkAt: at,
+      depositDate: forDay.date || "", depositTime: forDay.time || "",
+      log: logOf(l).concat([{ at: at, by: by || "", type: "note", outcome: "Deposit link", note: "" }]),
+    };
   }
   /*
-    Who's due on each of the next n days (not today): [{ day, leads }], one entry per day.
-    o is { who, all } as for Today. Leads in a day are newest enquiry first.
+    The $50 deposit was paid (d: { at, sessionId, amount, date, time }): the lead shows "Deposit
+    paid ✓", and one not booked yet moves to Booked, taking the day and time the link was made
+    for when it has none of its own.
   */
-  function upcoming(leads, today, n, o) {
-    o = o || {};
-    var days = [];
-    for (var i = 1; i <= n; i++) days.push({ day: addDays(today, i), leads: [] });
-    (leads || []).forEach(function (l) {
-      if (!l || l.junk || !isDay(l.nextFollowUp) || l.nextFollowUp <= today) return;
-      var stage = stageOf(l, today);
-      if (stage !== "Chasing" && stage !== "Quoted" && stage !== "Waiting") return;
-      if (!o.all && o.who && l.owner && l.owner !== o.who) return;
-      var i = daysBetween(today, l.nextFollowUp) - 1;
-      if (i >= 0 && i < n) days[i].leads.push(l);
-    });
-    days.forEach(function (d) { d.leads.sort(function (a, b) { return String(b.createdAt || b.date || "").localeCompare(String(a.createdAt || a.date || "")); }); });
-    return days;
-  }
-  // What the next touch is: "Follow-up 2 of 4", "Quote follow-up 1 of 3", "Check-in", or "".
-  function nextStep(l, today) {
+  function depositPaid(l, d, today) {
+    var amount = d.amount == null ? DEPOSIT : d.amount;
+    var p = { depositPaid: "Yes", depositPaidAt: d.at, depositAmount: amount, depositSessionId: d.sessionId || l.depositSessionId || "" };
     var stage = stageOf(l, today);
-    if (stage === "Waiting") return "Check-in";
-    if (stage !== "Chasing" && stage !== "Quoted") return "";
-    var schedule = stage === "Quoted" ? "quoted" : scheduleFor(l), n = runLength(schedule);
-    return (stage === "Quoted" ? "Quote follow-up " : "Follow-up ") + Math.min((Number(l.touches) || 0) + 1, n) + " of " + n;
+    if (stage !== "Booked" && stage !== "Done") {
+      assign(p, { stage: "Booked", waitReason: "", nextFollowUp: "", rolledOn: "" });
+      if (l.junk) p.junk = false;
+    }
+    if (!isDay(l.jobDate) && isDay(d.date)) p.jobDate = d.date;
+    if (!l.jobTime && d.time) p.jobTime = d.time;
+    p.log = logOf(l).concat([{ at: d.at, by: "Stripe", type: "note", outcome: "Deposit paid", note: "$" + amount + " deposit paid" }]);
+    return p;
   }
 
   /*
@@ -553,37 +666,14 @@
   function sameJob(leads, o) {
     var key = phoneKey(o.phone), first = String(o.name || "").toLowerCase().trim().split(/\s+/)[0];
     return (leads || []).filter(function (l) {
-      if (!l || l.junk || l.status !== "Booked" || !isDay(l.jobDate) || !isDay(o.jobDate)) return false;
+      if (!l || l.junk || !isBooked(l) || !isDay(l.jobDate) || !isDay(o.jobDate)) return false;
       if (Math.abs(daysBetween(l.jobDate, o.jobDate)) > 3) return false;
       var lf = String(l.name || "").toLowerCase().trim().split(/\s+/)[0];
       return (key.length >= 6 && phoneKey(l.phone) === key) || (!!first && first === lf);
     }).sort(function (a, b) { return Math.abs(daysBetween(a.jobDate, o.jobDate)) - Math.abs(daysBetween(b.jobDate, o.jobDate)); })[0] || null;
   }
 
-  // The day the quote was given, for leads quoted before quotedOn was kept.
-  function quoteDay(l) {
-    if (isDay(l.quotedOn)) return l.quotedOn;
-    var log = logOf(l);
-    for (var i = log.length - 1; i >= 0; i--) if (log[i].outcome === "Quote given") return canberraDate(log[i].at);
-    return "";
-  }
-  // Friday from 5:00pm: how things stand. Counts only; it moves nothing.
-  function fridayWrap(leads, o) {
-    var now = o.now || new Date();
-    if (weekday(now) !== "Fri" || canberraMinutes(now) < 17 * 60) return null;
-    var today = canberraDate(now), all = todayLists(leads, { now: now, hours: o.hours, all: true });
-    var live = (leads || []).filter(function (l) { return l && !l.junk; });
-    var quiet = live.filter(function (l) {
-      var s = stageOf(l, today), q = quoteDay(l);
-      return (s === "Quoted" || (s === "Waiting" && l.status === "Quoted")) && q && daysBetween(q, today) >= 14 && !(lastTouch(l) && lastTouch(l).pickedUp === "Yes" && canberraDate(lastTouch(l).at) > q);
-    }).length;
-    return {
-      callFirst: all.callFirst.length, fresh: all.fresh.length, hot: all.hot.length, due: all.due.length, waiting: all.waiting.length,
-      quotedQuiet: quiet, stillNew: live.filter(function (l) { return stageOf(l, today) === "New"; }).length,
-    };
-  }
-
-  /* ------------------------------------------------------------ ad spend */
+  /* ------------------------------------------------------------ the numbers */
 
   // The Monday of the week a day is in (weeks run Monday to Sunday).
   function mondayOf(date) {
@@ -607,9 +697,6 @@
       if (n > 0) total += n;
     });
     return total;
-  }
-  function isBooked(l, today) {
-    return BOOKED.indexOf(stageOf(l, today)) !== -1;
   }
   /*
     The money from booked jobs: { booked, collected, toCollect } in dollars. Booked is the price
@@ -640,189 +727,29 @@
     var booked = from.filter(function (l) { return isBooked(l, today); }).length;
     return { spend: spend, leads: from.length, booked: booked, perBooked: booked && spend ? spend / booked : null };
   }
-
-  /* ------------------------------------------------------------ the same person again */
-
-  function phoneKey(phone) {
-    var d = String(phone == null ? "" : phone).replace(/\D/g, "");
-    if (d.indexOf("61") === 0 && d.length === 11) d = "0" + d.slice(2);
-    return d;
+  // Which ad a lead came from, as the By ad table shows it.
+  function adLabel(l) {
+    if (l.ad && String(l.ad).trim()) return String(l.ad).trim();
+    if (l.fromAd === "none") return "Not from an ad";
+    if (l.fromAd === "referral") return "Referral / repeat";
+    return "Unknown";
   }
-  function isOpen(l, today) {
-    var s = stageOf(l, today);
-    return s === "New" || s === "Chasing" || s === "Quoted" || s === "Waiting";
-  }
-  /*
-    A new enquiry from a phone number that's already a lead. Returns { merge: lead } when it
-    should go on that lead (it's still open, or came in within 30 days and its job isn't done
-    yet), { repeatOf: id } otherwise (a new lead marked Repeat: someone from longer ago, or a
-    customer whose job is done, so the old job and its takings stay as they were), or {} when
-    the number is new.
-  */
-  function matchPhone(leads, phone, today) {
-    var key = phoneKey(phone);
-    if (key.length < 6) return {};
-    var same = (leads || []).filter(function (l) { return l && !l.junk && phoneKey(l.phone) === key; })
-      .sort(function (a, b) { return String(b.createdAt || b.date || "").localeCompare(String(a.createdAt || a.date || "")); });
-    if (!same.length) return {};
-    var hit = same.filter(function (l) {
-      var d = l.date || canberraDate(l.createdAt);
-      var s = stageOf(l, today);
-      return isOpen(l, today) || (s !== "Done" && s !== "Review asked" && isDay(d) && daysBetween(d, today) <= 30);
-    })[0];
-    return hit ? { merge: hit } : { repeatOf: same[0].id };
-  }
-  /*
-    The fields to save when `fresh` (a lead as built for saving) is merged into `l`: the enquiry
-    is added to its list, empty fields are filled, and the lead comes back to New on Today. A
-    lead that was Waiting or Lost starts its schedule again.
-  */
-  function mergeEnquiry(l, fresh, at) {
-    var p = {
-      enquiries: (Array.isArray(l.enquiries) ? l.enquiries : []).concat([{
-        at: at, source: fresh.source || "", ad: fresh.ad || "", service: fresh.service || "", car: fresh.car || "", notes: fresh.notes || "",
-      }]),
-      againAt: at, snoozeUntil: "", paused: false,
-    };
-    ["name", "car", "suburb", "email", "formId", "timeline"].forEach(function (k) { if (!l[k] && fresh[k]) p[k] = fresh[k]; });
-    if ((!l.service || l.service === "Not sure") && fresh.service && fresh.service !== "Not sure") p.service = fresh.service;
-    if (!l.score && fresh.score) { p.score = fresh.score; p.scoreBy = fresh.scoreBy; }
-    var stage = stageOf(l);
-    if (stage === "Waiting" || stage === "Lost") {
-      assign(p, { stage: "New", schedule: scheduleFor(merged(l, p)), chaseFrom: "", touches: 0, lastTouchOn: "", nextFollowUp: canberraDate(at) });
-    } else if (stage !== "New" && BOOKED.indexOf(stage) === -1) {
-      p.nextFollowUp = canberraDate(at);
-    }
-    return p;
-  }
-
-  /* ------------------------------------------------------------ the upgrade (older leads) */
-
-  function hasOwner(l) {
-    return PEOPLE.indexOf(l.owner) !== -1;
-  }
-  function needsUpgrade(l) {
-    return (Number(l.modelVersion) || 0) < VERSION || !hasOwner(l);
-  }
-  // Who a lead with no owner goes to: whoever logged it last, else the two of you in turn.
-  function lastLoggedBy(l) {
-    var log = logOf(l);
-    for (var i = log.length - 1; i >= 0; i--) if (PEOPLE.indexOf(log[i].by) !== -1) return log[i].by;
-    return "";
-  }
-  /*
-    The follow-up fields for a lead saved by an older version of the app: its stage from what it
-    has, and its place in the schedule from its touches. A lead past its last touch goes to
-    Waiting, with its first check-in 30 days from today (no catch-up texts). A lead already due is
-    due today, not earlier, so nothing starts the day late. A future chase date someone picked is kept.
-  */
-  function upgradeFields(l, today) {
-    var stage = l.stage === "Cold" ? "Waiting" : (Number(l.modelVersion) || 0) >= 2 && ALL_STAGES.indexOf(l.stage) !== -1 ? l.stage : legacyStage(l, today);
-    if (BOOKED.indexOf(stage) !== -1) stage = bookedStage(l, stage, today);
-    var timeline = l.timeline || timelineFromNotes(l.notes);
-    var score = l.score || scoreOf(timeline);
-    var days = touchDayList(l.log), last = days[days.length - 1] || "";
-    var picked = isDay(l.nextFollowUp) && l.nextFollowUp > today ? l.nextFollowUp : "";
-    var f = {
-      stage: stage, timeline: timeline, score: score, scoreBy: l.scoreBy || (score ? "timeline" : ""),
-      schedule: score === "Browsing" ? "browsing" : "full", chaseFrom: "", touches: 0, lastTouchOn: last, quotedOn: isDay(l.quotedOn) ? l.quotedOn : "",
-      snoozeUntil: isDay(l.snoozeUntil) && l.snoozeUntil > today ? l.snoozeUntil : "", paused: false,
-      lostReason: stage === "Lost" ? (LOST_REASONS[l.lostReason] ? l.lostReason : OLD_LOST[l.lostWhy] || "other") : l.lostReason || "",
-      doNotText: !!l.doNotText, junk: !!l.junk, email: l.email || emailFromNotes(l.notes), formId: l.formId || "",
-      enquiries: Array.isArray(l.enquiries) ? l.enquiries : [], againAt: l.againAt || "", repeatOf: l.repeatOf || "", modelVersion: VERSION,
-    };
-    var wait = function () { f.stage = "Waiting"; f.nextFollowUp = laterDay(picked, addDays(today, CHECK_IN_DAYS)); };
-    if (stage === "Chasing") {
-      var steps = STEPS[f.schedule];
-      var from = days[0] || canberraDate(l.lastContact) || (isDay(l.date) ? l.date : today);
-      var done = Math.min(Math.max(days.filter(function (d) { return d >= from; }).length, 1), steps.length);
-      f.chaseFrom = from; f.touches = done; f.lastTouchOn = last || from;
-      if (done >= steps.length || (!picked && today > addDays(from, steps[steps.length - 1]))) wait();
-      else if (picked) { f.nextFollowUp = picked; f.chaseFrom = addDays(picked, -steps[done]); }
-      else f.nextFollowUp = laterDay(dueAfter(f.schedule, from, done, f.lastTouchOn), today);
-    } else if (stage === "Quoted") {
-      var q = quoteDay(l) || canberraDate(l.lastContact) || (isDay(l.date) ? l.date : today);
-      var after = Math.min(days.filter(function (d) { return d > q; }).length, STEPS.quoted.length);
-      f.schedule = "quoted"; f.quotedOn = q; f.chaseFrom = q; f.touches = after; f.lastTouchOn = laterDay(q, last);
-      if (after >= STEPS.quoted.length || (!picked && today > addDays(q, STEPS.quoted[STEPS.quoted.length - 1]))) wait();
-      else if (picked) { f.nextFollowUp = picked; f.chaseFrom = addDays(picked, -STEPS.quoted[after]); }
-      else f.nextFollowUp = laterDay(dueAfter("quoted", q, after, f.lastTouchOn), today);
-    } else if (stage === "Waiting") {
-      f.touches = Math.min(days.length, STEPS.full.length);
-      f.nextFollowUp = picked || addDays(today, CHECK_IN_DAYS);
-    }
-    return f;
-  }
-  /*
-    What the upgrade does to each lead that needs it: { rows: [{ id, name, from, to, patch }], todo }.
-    The patch only adds fields, except nextFollowUp and the Phase 1 fields, whose earlier values
-    are kept in v3Was. A lead that can't be read is left as it is.
-  */
-  function plan(leads, today) {
-    var oldest = (leads || []).filter(function (l) { return l && typeof l === "object"; }).slice()
-      .sort(function (a, b) { return String(a.createdAt || a.date || "").localeCompare(String(b.createdAt || b.date || "")); });
-    var turn = 0, rows = [];
-    oldest.forEach(function (l) {
-      try {
-        if (!needsUpgrade(l)) return;
-        var patch = {};
-        if ((Number(l.modelVersion) || 0) < VERSION) {
-          patch = upgradeFields(l, today);
-          var was = {};
-          ["stage", "nextFollowUp", "touches", "schedule"].forEach(function (k) {
-            if (k in patch && patch[k] !== l[k]) was[k] = l[k] == null ? "" : l[k];
-          });
-          if (Object.keys(was).length) patch.v3Was = was;
-        }
-        if (!hasOwner(l)) {
-          var owner = lastLoggedBy(l) || PEOPLE[turn++ % 2];
-          patch.owner = owner;
-          patch.ownerWas = l.owner || "";
-        }
-        rows.push({ id: l.id, name: l.name || "No name", from: l.status || "New", to: patch.stage || stageOf(l, today), patch: patch });
-      } catch (e) { /* left as it is */ }
+  // The By ad table: [{ ad, leads, booked, money, rate }], most leads first, Unknown last.
+  function byAd(leads, today) {
+    var groups = {};
+    (leads || []).forEach(function (l) {
+      if (!l || l.junk) return;
+      var k = adLabel(l), g = groups[k] || (groups[k] = { ad: k, leads: 0, booked: 0, money: 0, items: [] });
+      g.leads++;
+      g.items.push(l);
+      if (isBooked(l, today)) {
+        g.booked++;
+        var n = Number(l.revenue);
+        if (isFinite(n) && n > 0) g.money += n;
+      }
     });
-    return { rows: rows, todo: rows.length };
-  }
-
-  /*
-    Going cold: a lead being worked that nobody has kept up with. New counts from when it came in
-    (1 day orange, 2 red). Chasing and Quoted count from the day they fell due (1 day past orange,
-    3 red), so the planned gaps in a schedule never show as cold; one paused by a note has no due
-    day, so it counts from the last touch (3 orange, 5 red). Waiting, snoozed and booked leads
-    are never cold. Returns { level: "warm" | "cold", days, since } or null.
-  */
-  function coldness(l, today) {
-    if (!l || l.junk) return null;
-    var stage = stageOf(l, today);
-    if (stage !== "New" && stage !== "Chasing" && stage !== "Quoted") return null;
-    if (l.snoozeUntil && l.snoozeUntil > today) return null;
-    var t = lastTouch(l), from, warm, cold;
-    if (stage === "New") {
-      from = canberraDate(l.createdAt || l.date);
-      if (!isDay(from)) from = l.date;
-      warm = 1; cold = 2;
-    } else if (l.paused || !isDay(l.nextFollowUp)) {
-      from = t ? canberraDate(t.at) : canberraDate(l.createdAt || l.date);
-      warm = 3; cold = 5;
-    } else {
-      from = l.nextFollowUp;
-      warm = 1; cold = 3;
-    }
-    if (!isDay(from)) return null;
-    var days = daysBetween(from, today);
-    if (days < warm) return null;
-    return { level: days >= cold ? "cold" : "warm", days: days, since: stage === "New" ? "in" : from === l.nextFollowUp ? "due" : "touch" };
-  }
-  /*
-    What a lead is worth on the board: the booked price once booked, else the quote, else the
-    price sheet's "from" price for its service as an estimate. Returns { amount, est } or null.
-  */
-  function dealValue(l, today, sheetPrice) {
-    var stage = stageOf(l, today), n = function (v) { return v === "" || v == null || isNaN(Number(v)) ? null : Number(v); };
-    if (BOOKED.indexOf(stage) !== -1 && n(l.revenue) != null) return { amount: n(l.revenue), est: false };
-    if (n(l.quoted) != null) return { amount: n(l.quoted), est: false };
-    return typeof sheetPrice === "number" ? { amount: sheetPrice, est: true } : null;
+    return Object.keys(groups).map(function (k) { var g = groups[k]; g.rate = g.leads ? g.booked / g.leads : 0; return g; })
+      .sort(function (a, b) { return (a.ad === "Unknown") - (b.ad === "Unknown") || b.leads - a.leads || a.ad.localeCompare(b.ad); });
   }
 
   /*
@@ -844,23 +771,223 @@
       left: g == null ? null : Math.max(0, g - total), daysLeft: daysBetween(today, sun),
       pct: g == null ? null : Math.min(100, Math.round(total / g * 100)) };
   }
+  /*
+    This week (Monday to Sunday): the money against the goal, jobs done, ceramics sold, new
+    maintenance plans, new leads replied to within 5 minutes, and the upsell ticks on this week's
+    jobs. o is { goal, hours, now }. Each count keeps its leads (in .items) for the run-down.
+  */
+  function weekStats(leads, today, o) {
+    o = o || {};
+    var h = o.hours || hours(), now = o.now || new Date();
+    var mon = mondayOf(today), sun = addDays(mon, 6);
+    var inWeek = function (d) { return isDay(d) && d >= mon && d <= sun; };
+    var live = (leads || []).filter(function (l) { return l && !l.junk; });
+    var jobs = live.filter(function (l) { return isBooked(l, today) && inWeek(l.jobDate); });
+    var done = jobs.filter(function (l) { return stageOf(l, today) === "Done"; });
+    var ceramics = jobs.filter(function (l) { return l.service === "Ceramic"; });
+    var plans = live.filter(function (l) {
+      if (l.plan === "Yes" && isDay(l.planSince)) return inWeek(l.planSince);
+      return isBooked(l, today) && l.service === "Maintenance plan" && inWeek(l.jobDate);
+    });
+    // New leads this week whose clock has run 5 minutes or that have been replied to.
+    var fresh = live.filter(function (l) {
+      if (l.kind === "job" || !inWeek(dayOf(l))) return false;
+      if (replyMinutes(l, h) != null) return true;
+      var c = clockStart(l.createdAt, h);
+      return !!c && now - c >= 5 * 6e4;
+    });
+    var fast = fresh.filter(function (l) { var m = replyMinutes(l, h); return m != null && m <= 5; });
+    var ceramicOffered = jobs.filter(function (l) { return l.offeredCeramic === "Yes"; });
+    var planOffered = jobs.filter(function (l) { return l.offeredPlan === "Yes"; });
+    return {
+      weekOf: mon, money: weekMoney(live, today, o.goal),
+      jobsDone: { n: done.length, items: done }, ceramics: { n: ceramics.length, items: ceramics }, plans: { n: plans.length, items: plans },
+      replied: { fast: fast.length, of: fresh.length, items: fresh },
+      upsell: { jobs: jobs.length, items: jobs, ceramic: ceramicOffered.length, plan: planOffered.length },
+    };
+  }
+
+  /* ------------------------------------------------------------ the same person again */
+
+  function phoneKey(phone) {
+    var d = String(phone == null ? "" : phone).replace(/\D/g, "");
+    if (d.indexOf("61") === 0 && d.length === 11) d = "0" + d.slice(2);
+    return d;
+  }
+  function isOpen(l, today) {
+    var s = stageOf(l, today);
+    return s === "New" || s === "Chasing" || s === "Waiting";
+  }
+  /*
+    A new enquiry from a phone number that's already a lead. Returns { merge: lead } when it
+    should go on that lead (it's still open, or came in within 30 days and its job isn't done
+    yet), { repeatOf: id } otherwise (a new lead marked Repeat: someone from longer ago, or a
+    customer whose job is done, so the old job and its takings stay as they were), or {} when
+    the number is new.
+  */
+  function matchPhone(leads, phone, today) {
+    var key = phoneKey(phone);
+    if (key.length < 6) return {};
+    var same = (leads || []).filter(function (l) { return l && !l.junk && phoneKey(l.phone) === key; })
+      .sort(function (a, b) { return String(b.createdAt || b.date || "").localeCompare(String(a.createdAt || a.date || "")); });
+    if (!same.length) return {};
+    var hit = same.filter(function (l) {
+      var d = dayOf(l);
+      return isOpen(l, today) || (stageOf(l, today) !== "Done" && isDay(d) && daysBetween(d, today) <= 30);
+    })[0];
+    return hit ? { merge: hit } : { repeatOf: same[0].id };
+  }
+  /*
+    The fields to save when `fresh` (a lead as built for saving) is merged into `l`: the enquiry
+    is added to its list, empty fields are filled, and the lead comes back to the top of Today.
+    A lead that was Waiting starts its four touches again.
+  */
+  function mergeEnquiry(l, fresh, at) {
+    var p = {
+      enquiries: (Array.isArray(l.enquiries) ? l.enquiries : []).concat([{
+        at: at, source: fresh.source || "", ad: fresh.ad || "", service: fresh.service || "", car: fresh.car || "", notes: fresh.notes || "",
+      }]),
+      againAt: at, rolledOn: "",
+    };
+    ["name", "car", "suburb", "email", "formId", "timeline", "ad", "fromAd"].forEach(function (k) { if (!l[k] && fresh[k]) p[k] = fresh[k]; });
+    if ((!l.service || l.service === "Not sure") && fresh.service && fresh.service !== "Not sure") p.service = fresh.service;
+    if (!l.score && fresh.score) { p.score = fresh.score; p.scoreBy = fresh.scoreBy; }
+    var stage = stageOf(l);
+    if (stage === "Waiting") {
+      assign(p, { stage: "New", waitReason: "", chaseFrom: "", touches: 0, lastTouchOn: "", nextFollowUp: canberraDate(at) });
+    } else if (stage === "Chasing") {
+      p.nextFollowUp = canberraDate(at);
+    }
+    return p;
+  }
+
+  /* ------------------------------------------------------------ the upgrade (older leads) */
+
+  function hasOwner(l) {
+    return PEOPLE.indexOf(l.owner) !== -1;
+  }
+  function needsUpgrade(l) {
+    return (Number(l.modelVersion) || 0) < VERSION || !hasOwner(l);
+  }
+  // Who a lead with no owner goes to: whoever logged it last, else the two of you in turn.
+  function lastLoggedBy(l) {
+    var log = logOf(l);
+    for (var i = log.length - 1; i >= 0; i--) if (PEOPLE.indexOf(log[i].by) !== -1) return log[i].by;
+    return "";
+  }
+  /*
+    The five-stage fields for a lead saved by an older version of the app. Its old status is kept
+    in old_status. Quoted becomes Chasing (the quote stays in quoted, and counted as a touch);
+    Review asked becomes Done with the Review asked tick; Lost and Not real become Waiting with
+    that reason (Not real stays junk, out of every number); Waiting is Waiting (No reply). Done
+    jobs that aren't paid show the Owes money tick from paid, which isn't changed. Only fields are
+    added or set: nothing is removed.
+  */
+  function upgradeFields(l, today) {
+    var was = v3Stage(l, today);
+    var stage = FROM_V3[was] || "New";
+    var f = { old_status: l.old_status || (l.junk ? "Not real" : was), modelVersion: VERSION };
+    if (l.junk) { stage = "Waiting"; f.waitReason = "not_real"; }
+    else if (stage === "Waiting") f.waitReason = was === "Lost" ? "lost" : WAIT_REASONS[l.waitReason] ? l.waitReason : "no_reply";
+    else f.waitReason = "";
+    f.stage = stage;
+    if (was === "Review asked" && l.reviewAsked !== "Yes") f.reviewAsked = "Yes";
+    if (stage === "Waiting" && f.waitReason === "lost" && !LOST_REASONS[l.lostReason]) f.lostReason = OLD_LOST[l.lostWhy] || "other";
+    if (stage === "Chasing") {
+      var t = (Number(l.touches) || 0) + (was === "Quoted" ? 1 : 0);
+      f.touches = Math.min(TOUCHES - 1, Math.max(1, t));
+      if (!isDay(l.chaseFrom)) f.chaseFrom = (isDay(l.quotedOn) && l.quotedOn) || touchDayList(l.log)[0] || canberraDate(l.lastContact) || (isDay(l.date) ? l.date : today);
+      if (!isDay(l.nextFollowUp)) f.nextFollowUp = today;
+    }
+    // Leads from before version 3 also get what that version added.
+    if (l.timeline == null) f.timeline = timelineFromNotes(l.notes);
+    if (l.score == null) { f.score = scoreOf(f.timeline || l.timeline); f.scoreBy = f.score ? "timeline" : ""; }
+    if (l.email == null) f.email = emailFromNotes(l.notes);
+    ["formId", "againAt", "repeatOf", "fromAd", "offeredCeramic", "offeredPlan", "planSince", "rolledOn", "lastTouchOn", "quotedOn"].forEach(function (k) { if (l[k] == null) f[k] = ""; });
+    if (!Array.isArray(l.enquiries)) f.enquiries = [];
+    if (typeof l.junk !== "boolean") f.junk = !!l.junk;
+    return f;
+  }
+  /*
+    What the upgrade does to each lead that needs it: { rows: [{ id, name, from, to, patch }], todo }.
+    The earlier value of every field the patch changes is kept in v4Was. A lead that can't be read
+    is left as it is.
+  */
+  function plan(leads, today) {
+    var oldest = (leads || []).filter(function (l) { return l && typeof l === "object"; }).slice()
+      .sort(function (a, b) { return String(a.createdAt || a.date || "").localeCompare(String(b.createdAt || b.date || "")); });
+    var turn = 0, rows = [];
+    oldest.forEach(function (l) {
+      try {
+        if (!needsUpgrade(l)) return;
+        var patch = {};
+        if ((Number(l.modelVersion) || 0) < VERSION) {
+          patch = upgradeFields(l, today);
+          var was = {};
+          Object.keys(patch).forEach(function (k) {
+            if (k !== "modelVersion" && k in l && JSON.stringify(patch[k]) !== JSON.stringify(l[k])) was[k] = l[k] == null ? "" : l[k];
+          });
+          was.modelVersion = l.modelVersion == null ? "" : l.modelVersion;
+          patch.v4Was = was;
+        }
+        if (!hasOwner(l)) {
+          var owner = lastLoggedBy(l) || PEOPLE[turn++ % 2];
+          patch.owner = owner;
+          patch.ownerWas = l.owner || "";
+        }
+        rows.push({ id: l.id, name: l.name || "No name", from: patch.old_status || stageOf(l, today), to: patch.stage || stageOf(l, today), patch: patch });
+      } catch (e) { /* left as it is */ }
+    });
+    return { rows: rows, todo: rows.length };
+  }
+
+  /*
+    Going cold, for the Board: a lead being worked that nobody has kept up with. New counts from
+    when it came in (1 day orange, 2 red); Chasing from the day its touch fell due (1 day past
+    orange, 2 red, when it moves to Waiting by itself). Returns { level: "warm" | "cold", days, since } or null.
+  */
+  function coldness(l, today) {
+    if (!l || l.junk) return null;
+    var stage = stageOf(l, today), from;
+    if (stage === "New") from = isDay(canberraDate(l.createdAt)) ? canberraDate(l.createdAt) : l.date;
+    else if (stage === "Chasing") from = isDay(l.nextFollowUp) ? l.nextFollowUp : "";
+    else return null;
+    if (!isDay(from)) return null;
+    var days = daysBetween(from, today);
+    if (days < 1) return null;
+    return { level: days >= 2 ? "cold" : "warm", days: days, since: stage === "New" ? "in" : "due" };
+  }
+  /*
+    What a lead is worth on the board: the booked price once booked, else the quote, else the
+    price sheet's "from" price for its service as an estimate. Returns { amount, est } or null.
+  */
+  function dealValue(l, today, sheetPrice) {
+    var stage = stageOf(l, today), n = function (v) { return v === "" || v == null || isNaN(Number(v)) ? null : Number(v); };
+    if (BOOKED.indexOf(stage) !== -1 && n(l.revenue) != null) return { amount: n(l.revenue), est: false };
+    if (n(l.quoted) != null) return { amount: n(l.quoted), est: false };
+    return typeof sheetPrice === "number" ? { amount: sheetPrice, est: true } : null;
+  }
 
   var api = {
-    VERSION: VERSION, STAGES: STAGES, BINS: BINS, ALL_STAGES: ALL_STAGES, PEOPLE: PEOPLE, TAGS: TAGS, TIMELINES: TIMELINES,
-    LOST_REASONS: LOST_REASONS, LOST_WORDS: LOST_WORDS, OLD_LOST: OLD_LOST, STEPS: STEPS, CHECK_IN_DAYS: CHECK_IN_DAYS, HOURS: HOURS,
-    canberraDate: canberraDate, canberraMinutes: canberraMinutes, canberraAt: canberraAt, weekday: weekday, addDays: addDays, daysBetween: daysBetween,
+    VERSION: VERSION, STAGES: STAGES, PEOPLE: PEOPLE, TAGS: TAGS, TIMELINES: TIMELINES, WAIT_REASONS: WAIT_REASONS,
+    LOST_REASONS: LOST_REASONS, LOST_WORDS: LOST_WORDS, OLD_LOST: OLD_LOST, STEPS: STEPS, TOUCHES: TOUCHES, OVERDUE_DAYS: OVERDUE_DAYS,
+    TODAY_MAX: TODAY_MAX, HOURS: HOURS, NOTE_CHIPS: NOTE_CHIPS, DEPOSIT: DEPOSIT,
+    canberraDate: canberraDate, canberraMinutes: canberraMinutes, canberraAt: canberraAt, weekday: weekday, addDays: addDays, daysBetween: daysBetween, isDay: isDay,
     hours: hours, clock: clock, inHours: inHours, clockStart: clockStart,
     timelineOf: timelineOf, timelineFromNotes: timelineFromNotes, emailFromNotes: emailFromNotes, scoreOf: scoreOf, plainNotes: plainNotes,
     isTouch: isTouch, touchDays: touchDays, touchDayList: touchDayList, lastTouch: lastTouch, againPending: againPending,
-    legacyStage: legacyStage, stageOf: stageOf, statusFor: statusFor, scheduleFor: scheduleFor, runLength: runLength,
-    sync: sync, newFields: newFields, dueAfter: dueAfter, touch: touch, snooze: snooze, answer: answer, note: note,
-    setStage: setStage, retag: retag, nextTag: nextTag, progress: progress,
-    arrivedAt: arrivedAt, isOvernight: isOvernight, replyMinutes: replyMinutes,
-    place: place, stale: stale, rank: rank, todayLists: todayLists, quoteDay: quoteDay, fridayWrap: fridayWrap,
-    mondayOf: mondayOf, adSpend: adSpend, isBooked: isBooked, takings: takings, fromAds: fromAds, costPerBooked: costPerBooked,
+    v3Stage: v3Stage, stageOf: stageOf, waitReasonOf: waitReasonOf, statusFor: statusFor, isBooked: isBooked, owesMoney: owesMoney, reviewAsked: reviewAsked,
+    sync: sync, newFields: newFields, dueAfter: dueAfter, touch: touch, book: book, parsePrice: parsePrice, timeLabel: timeLabel,
+    note: note, callNotes: callNotes, noteLine: noteLine, chipCounts: chipCounts, setStage: setStage, retag: retag, touchLabel: touchLabel,
+    todaysJobs: todaysJobs, onMyWay: onMyWay, depositLink: depositLink, depositPaid: depositPaid,
+    arrivedAt: arrivedAt, isOvernight: isOvernight, replyMinutes: replyMinutes, replyTimer: replyTimer,
+    dueDay: dueDay, isBacklog: isBacklog, shouldAutoWait: shouldAutoWait, autoWaitPatch: autoWaitPatch, rollPatch: rollPatch,
+    rank: rank, todayList: todayList, backlogLeads: backlogLeads, backlogPatch: backlogPatch, sameJob: sameJob,
+    mondayOf: mondayOf, adSpend: adSpend, takings: takings, fromAds: fromAds, costPerBooked: costPerBooked, adLabel: adLabel, byAd: byAd,
+    weekMoney: weekMoney, weekStats: weekStats,
     phoneKey: phoneKey, isOpen: isOpen, matchPhone: matchPhone, mergeEnquiry: mergeEnquiry,
     needsUpgrade: needsUpgrade, upgradeFields: upgradeFields, plan: plan,
-    coldness: coldness, dealValue: dealValue, weekMoney: weekMoney, upcoming: upcoming, nextStep: nextStep, sameJob: sameJob,
+    coldness: coldness, dealValue: dealValue,
   };
   root.ILModel = api;
 })(typeof window !== "undefined" ? window : globalThis);

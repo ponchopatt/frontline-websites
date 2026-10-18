@@ -1,59 +1,25 @@
 # Imperium Leads
 
-The lead tracker for Imperium Detailing: Today, Add, Leads and Numbers. A phone app (add it to
-the home screen) shared by Angus and Ananth.
+The lead tracker for Imperium Detailing: Today, Add, Leads, Board and Numbers. A phone app (add
+it to the home screen) shared by Angus and Ananth. Built for one-handed use on a phone: big
+buttons, one list to work through, everything rare behind a "…" menu.
 
-- **The page** is `imperium-leads.html`. Adding a lead or booking asks for the essentials only
-  (service, car, suburb, and for a booking the date and price). **Today** is the one list to work
-  through (below), with Jobs today, **Payments due** (jobs done and not paid, oldest first, with a
-  Paid button and "Add someone who owes you"), "Add a job done today" for work that never came in
-  as a lead, the review texts and the reels counter underneath. How it stores things all lives
-  in `public/claude-shim.js`, so the page only changes when what it shows does.
+- **The page** is `imperium-leads.html`. How it stores things all lives in
+  `public/claude-shim.js`; the rules (stages, touches, Today, the numbers) are in `public/model.js`
+  and the words of every text are in `public/texts.js`.
 - **Storage** is one Supabase table of JSON documents (`supabase/schema.sql`). The shim gives the
   page the `claude.use("db")` API it was written for (doc/collection, get/set/update/delete,
   onSnapshot) on top of it, with live updates between the two phones.
+- **Previews never change real leads.** Any build that isn't the live site (a Vercel preview, or a
+  build on a computer) is a preview: it reads the real list, but every save stays on that phone
+  (localStorage) and is shown on top of the real list. A bar at the top says PREVIEW, with Reset
+  to throw the changes away (`config.js` → `preview`, set in `build.mjs` from `VERCEL_ENV`).
 - **Sign-in** is a 4-digit team PIN, asked once per phone. `/api/unlock` checks it and signs the
   phone in as the one shared login (`team@imperiumdetailing.com.au`). Five wrong PINs in a row
   lock it for 15 minutes, then longer.
 - **New enquiries** arrive at `POST /api/lead` from the website's booking and fleet forms and
   from Make.com (Facebook instant forms). The same phone number goes on the lead that's already
   there (see below).
-- **Reviews**: tap **Job done** on a job and the app walks you through asking for a Google review
-  (see below). Today shows the review texts and nudges due today; Numbers has the last 30 days.
-- **Board**: every open lead in columns (New, Chasing, Quoted, Waiting, Booked) with a count and
-  what each column is worth: the booked price, else the quote, else the price sheet (shown with ~).
-  Drag a card to another column on a computer, or tap **Move** on a phone. Moving to Quoted,
-  Booked or Lost asks for the price, the day or the reason, as Answered does.
-- **On a phone** the tabs sit at the bottom and the Board shows one stage at a time: swipe, or tap
-  a stage chip at the top (chips with a red edge have leads going cold). Each card has Call, Text
-  and Move; tap the card to open it. It opens on the first stage with anyone in it.
-- **Coming up** on Today: the next 7 days, how many are due each day, and who (with which
-  follow-up it is). Tap a day to see the people (`M.upcoming`, `M.nextStep`).
-- **Board by due day**: Chasing, Quoted and Waiting are grouped Due now, Tomorrow, then by day,
-  newest enquiry first, and each card says which follow-up is next.
-- **Gaps stay put**: a follow-up done late still waits the schedule's gap before the next one
-  (2 days, then 4), so nobody gets chased two days running (`M.dueAfter`).
-- **End of day** on Today: a quick form at night. Each of today's booked jobs is listed (add
-  any other job with just the car), with ticks for job done, asked for a review, clips uploaded
-  to the Drive and story posted. Saved to `nights/<day>_<person>`; known jobs are also marked done
-  and the review set to Asked. Each job also has Paid? (Cash, Card, Bank, Not yet), saved on
-  the lead as paid/paidHow so To collect stays right. "Running low on any products?" shows on
-  Today for both of you until someone taps Bought. Numbers shows the last 7 days of forms.
-- **What they paid**: each job on the End of day form has "How much did they pay?", starting at
-  the booked price. It replaces the lead's price, never adds to it. An extra job asks "Who was
-  it?" (booked jobs from the last week, or Someone new); only Someone new makes a new job record,
-  and only once.
-- **No doubles**: "+ Add a job done today" checks for the same person already booked within 3
-  days (same phone or first name) and offers to update that job instead (`M.sameJob`).
-- **Weekly goal** on Today: this week's jobs (Monday to Sunday, by job day) against a money goal,
-  both of you together. Green is done, light blue is booked and still to come. Tap Change to set
-  the goal; it's saved for both phones (`settings/goal`, `M.weekMoney`).
-- **Going cold**: an orange or red badge on any lead nobody has kept up with. New: 1 day with no
-  contact is orange, 2 red. Chasing and Quoted: 1 day past due orange, 3 red (a paused lead counts
-  from its last touch: 3 and 5). Waiting, snoozed and booked leads never go cold (`M.coldness`).
-- **Select** on Leads: tick several leads, then Texted, No answer, Not now, Move to New, Chasing
-  or Waiting, Lost or Not real for all of them at once. Each lead gets the same change one tap
-  would make. Quoted and Booked stay one at a time, since each needs its own price or day.
 - **No AI and no texting service.** Nothing needs an API key. Every text is sent by one of you
   from your own phone; the app only fills in the words. Leads are never deleted.
 
@@ -65,11 +31,14 @@ the home screen) shared by Angus and Ananth.
 | `public/claude-shim.js` | The storage layer and the PIN screen. |
 | `public/reviews.js` | The review steps, the texts, what's due and the 30-day counts (plain script, shared with the tests). |
 | `public/texts.js` | The texts and the price sheet (plain script, shared with the tests). |
-| `public/model.js` | The lead model: stages, call hours, the schedule, Today's lists and the upgrade (plain script, shared with the server and the tests through `lib/model.js`). |
+| `public/model.js` | The lead model: the five stages, call hours, the four touches, Today's list, the numbers and the upgrade (plain script, shared with the server and the tests through `lib/model.js`). |
 | `public/sw.js`, `public/manifest.json`, icons | Home-screen app; opens with no signal (the list needs one). |
 | `api/unlock.js` | PIN check and sign-in. |
 | `api/lead.js` | New enquiries in. |
-| `lib/` | Lead mapping, the shared model for the server, Supabase helpers. |
+| `api/deposit.js` | Makes the $50 Stripe deposit link, and says whether one's paid (team only). |
+| `api/stripe-webhook.js` | Stripe tells it a deposit is paid: the lead shows Deposit paid and moves to Booked. |
+| `public/deposit.html` | The "Deposit paid" page customers land on after paying. |
+| `lib/` | Lead mapping, the shared model for the server, Supabase and Stripe helpers. |
 | `supabase/schema.sql` | The table, its team-only rule, live updates. |
 | `build.mjs` | Makes `public/index.html` (the page plus the phone-app tags), copies supabase-js, writes `public/config.js`. |
 
@@ -124,9 +93,9 @@ Headers: `Content-Type: application/json` and `x-lead-secret: <LEAD_SECRET>`.
   picks that service; anything else is Not sure.
 - `when`, `email`, `notes` and `form` also go into the lead's notes.
 - **The same phone number** (however it's written) goes on the lead that's already there when
-  that lead is still open (New, Chasing, Quoted, Waiting) or came in within the last 30 days and
+  that lead is still open (New, Chasing, Waiting) or came in within the last 30 days and
   its job isn't done yet: the enquiry is added to its list, empty fields are filled in, and it
-  shows under New on Today marked "Enquired again" (a Waiting or Lost lead starts its schedule
+  shows at the top of Today marked "Enquired again" (a Waiting lead starts its four touches
   again). Someone from longer ago, or a customer whose job is done, gets a new lead marked Repeat
   (`repeatOf` is the old lead), so the old job and its takings stay as they were. The Add tab
   does the same. Leads marked Not real are never matched. Only the changed fields are written,
@@ -164,152 +133,164 @@ Scenario: **Facebook Lead Ads → Watch New Leads**, then **HTTP → Make a requ
 
 The `{{1.…}}` names depend on the questions in the instant form; pick them from Make's list.
 
-## Follow-ups and call hours
+## Five stages
 
-**Call hours** are 8:00am to 7:00pm every day, Canberra time (**Call hours** on Today changes
-them; `settings/hours`). A lead that comes in outside them isn't shown until they start;
-then it's first on the list with a moon, and its 5-minute reply clock starts then too. The
-Numbers tab counts reply times from that adjusted start (`replyMins` itself is still saved
-counting from when the lead came in).
+**New → Chasing → Booked → Done**, and **Waiting** (with a reason: No reply, Lost or Not real).
+Not real leads (`junk: true`) stay in the app but are kept off Today and out of every number.
 
-**The schedule**, counted from the first touch. A call and a text on the same day are one touch.
+**The upgrade** from the old twelve statuses runs by itself the first time the app opens: it
+saves a copy of every lead to `backups/` first, then merges the new fields into each lead. Each
+lead's old status is kept in `old_status`, and every field it changed is kept in `v4Was`.
 
-| Lead | Touches | Then |
-|---|---|---|
-| Hot, Warm or no tag | day 0, 1, 3, 7 | Waiting |
-| Just browsing | day 0, 3 | Waiting |
-| Quoted | day 2, 5, 9 after the quote | Waiting |
+| Old | New |
+|---|---|
+| New | New |
+| Chasing, Quoted | Chasing (the quote stays in `quoted`, and counts as a touch) |
+| Booked | Booked |
+| Done, Review asked, Owes money | Done, with two ticks: Review asked and Owes money |
+| Waiting, Lost, Not real | Waiting, reason No reply, Lost or Not real |
 
-Logging Texted, No answer or a call sets the next due day. A missed day doesn't pile up: the lead
-just shows as due today. **Waiting** (it was going to be called Cold) keeps the lead: it comes
-up once every 30 days for a check-in text, then waits again. **Not now** takes a lead off the
-list until a day you pick, then its schedule carries on with the same gaps. **Answered** stops
-the schedule and asks one question (quoted, booked, not now or lost). A note on a lead being
-chased pauses it: it comes back the next day it's due, at the soonest tomorrow, marked Paused.
+## The four touches
 
-Each lead keeps: `stage`, `schedule`, `chaseFrom`, `touches`, `lastTouchOn`, `quotedOn`,
-`nextFollowUp`, `snoozeUntil`, `paused`, `timeline`, `score`, `lostReason`, `junk`, and
-`modelVersion: 3` (`public/model.js` describes each). Nothing older is removed; `status` is kept
-in step with the stage.
+Touch 1 straight away, touch 2 the next day, touch 3 on day 3, touch 4 on day 7 (counted from
+touch 1). A touch done late still waits the planned gap before the next (2 days, then 4), so
+nobody is texted two days running. After touch 4 with no booking, the lead moves to Waiting (No
+reply) by itself.
 
-**The upgrade** runs by itself when the app opens and a lead needs it: it saves a copy of every
-lead to `backups/` first, then merges the new fields into each lead. Leads already past their
-last touch go to Waiting with their first check-in 30 days on (no catch-up texts are sent or
-queued). Each lead's changes are worked out again just before it's written, and anything done
-to a lead before the upgrade reaches it is worked out from its upgraded fields, so nothing
-logged in the meantime is undone. What it changed is kept on each lead in `v3Was`. It never deletes a lead, and a lead
-it can't read is left as it is.
+**Call hours** are 8:00am to 7:00pm every day, weekends too (Settings; `settings/hours`). A lead
+that comes in outside them doesn't start its timer until 8:00am.
 
-## Today
+## Today: "Do these now"
 
-One list, in this order. Each section only shows when it has someone in it, and the whole list
-shrinks as you log things. The count left is on the tab.
+One list: only leads with a touch due today or overdue. Brand-new leads first, then Hot, then
+Warm, then the rest, oldest first in each. At most 10; the rest roll to tomorrow (the note says
+"+3 tomorrow"). When the list is empty: **All done for today**.
 
-1. **Call first**: leads that came in out of call hours (the moon), from the start of call hours.
-2. **New**: not called or texted yet.
-3. **Hot, due today**: tagged Hot, or Quoted.
-4. **Due today**: everything else due, including Waiting leads due their monthly check-in.
-5. **Waiting (17)**: folded shut; tap to open.
-
-Inside each: Quoted, then Hot, Warm, Browsing; oldest first. Today shows your own leads; **All**
-shows both of you. A lead nobody has touched for 24 hours past when it was due shows on both
-lists, marked with whose it is. Close the day, the "Today so far" tiles and the "Leads to log"
-list are gone.
+- **Reply timer** on new leads, from when they came in: green under 5 minutes, orange 5 to 15,
+  red over 15. Overnight leads say "Starts 8:00am".
+- **2 days overdue**: a lead whose touch is 2 or more days overdue moves to Waiting (No reply) by
+  itself instead of piling up.
+- **The old backlog**: leads that were already 2 or more days overdue on the day this version
+  went live (`settings/simple.since`) aren't moved by themselves and aren't on the list. A banner
+  links to **Clear old backlog** instead.
+- **Mine or Both**: each of you sees your own leads by default (Today, Leads and Board). The
+  toggle is remembered on the phone. Numbers is both of you unless you pick one.
+- **End of day** and **Running low** stay at the bottom of Today.
 
 ## The lead card
 
-Closed, a lead shows only its name and car, then service · timeline · stage and touches ("Chasing
-2 of 4") · the quote · the owner, its tag (Hot, Warm or Browsing) and one short note. Email,
-form ID and the full notes are behind **Open**. About twice as many fit on a screen as before.
-
-Eight buttons, nothing else:
+Name · car · price (or quote, or "from" the price sheet) on the first line; service · how long
+since it came in · which touch is next ("Touch 2 of 4") on the second. Three buttons:
 
 | Button | Does |
 |---|---|
-| Call | rings them |
-| Text | opens the phone's messages app with the right text filled in (`public/texts.js`) |
-| Copy | copies the phone number |
-| Open | everything else: email, form ID, notes, history, add a note, edit |
-| Texted | logs a text; the schedule sets the next day |
-| No answer | logs the call, then offers the missed-call text, one tap |
-| Answered | one question: Quoted (how much), Booked (which day; the price is filled from the quote), Not now (which day) or Lost (why) |
-| Not now | pick a day; it's off Today till then |
+| TEXT | opens the messages app (`sms:`, works on iPhone) to their number with the right touch's words filled in |
+| CALL | rings them (`tel:`) |
+| ✓ DONE | logs that this touch was sent and books in the next one. On a booking it's **✓ Job done** |
 
-After a quote, the quote text is ready to send, with the hours and two days to fill in.
+Booked jobs have two ticks: **Offered ceramic** and **Offered maint. plan**. Done jobs also have
+**Review asked** and **Owes money** (ticked when it isn't paid; unticking marks it paid).
 
-**Texts.** Nothing is sent by the app: every text is sent by one of you from your own phone.
-`public/texts.js` holds the wording and the price sheet ("from" prices, hatch/sedan): Full detail
-$225, Exterior $110, Interior $140, Paint correction $397, Ceramic $997. Maintenance plan and
-Pre-sale have no price, so their texts say "I'll confirm the price". A quote you typed in is
-used instead of the sheet. The Text button picks: the first text for a new lead (the missed-call
-text if the call today wasn't answered), then the day 1, day 3 and day 7 texts (browsing: day 3),
-the quote text on the day of the quote then the same three, a check-in for Waiting leads, and
-after a job the payment text ([link] left for you to paste), then the review ask once it's paid.
+**…** opens the rest: change status (Booked asks the day and price; Waiting asks the reason),
+the tag (Hot, Warm, Browsing), add a note, the full notes and history, Edit details, and Review
+steps for done jobs.
 
-## Tags, Not real, the Numbers and Friday
+## Texts
 
-**Tags** come from the timeline answer: ASAP is Hot, 1 to 2 weeks is Warm, Just browsing is
-Browsing. One tap on the tag changes it (Hot, Warm, Browsing, round again); a lead being chased
-moves to that tag's schedule straight away (Browsing: day 0 and 3).
+`public/texts.js` holds the words. [name], [car] and [owner] fill in by themselves; [day] is
+left for you to change before sending. No emojis.
 
-**The Leads tab** keeps every lead, whatever its stage (nothing is archived or deleted): filter
-by stage, owner, "Owes money" or "Not real", and search by name, car, suburb, phone or email. It
-shows a hundred at a time, with **Show more** for the rest.
+1. "Hey [name], it's [owner] from Imperium Detailing. Got your request for the [car]. Full details start from $250 and we come to you. I've got [day] or [day] free. Which suits?"
+2. "Hey [name], just checking you got my message about the [car]. Happy to sort a price and lock in a time. What day suits?"
+3. "Hey [name], still keen on getting the [car] done? I've got spots this week if you want one."
+4. "Hey [name], last one from me. If you'd still like the [car] detailed, just reply and I'll sort a time. If not, no worries at all."
 
-**Not real** (in Open) is for test and fake leads: the lead stays on the Leads tab, marked Not
-real, but is left off Today and out of the Numbers. "It's real after all" undoes it.
+Waiting leads get the "still keen?" text. After a job: the payment text, then the review ask
+once it's paid. All five can be changed in **Settings → Messages** (`settings/templates`); a
+blank one goes back to the original.
 
-**Numbers** shows: Leads, Booked, Close rate, Replied within 5 minutes (from the start of call
-hours for overnight leads), the money (**Booked $**: the price of every booked job, done or not;
-**Cash collected**: the ones ticked Paid; **Still to collect**: the rest), and Cost per booked
-job from ads: the total
-ad spend in the period divided by the leads from ads (source Meta ad, or with an ad's name) that
-booked. **Add this week's ad spend** takes one total a week from Ads Manager and saves it for both
-phones (`spend/<Monday>`); per-ad figures are left to Ads Manager. A week counts in a period by
-its Monday. Ad figures count both of you. **More** has the rest: average job, per
-lead, still open, touches per lead, on a plan, upsells, lost reasons, reviews asked vs left, the
-last 30 days of reviews, by source, by service, and who's due for their next service. The
-period filters and the person filter are as before.
+## Add
 
-**Tap any figure** on Numbers (or a row in By source, By service or Lost reasons) for the
-run-down: who's in it, with their price, paid or not, job day, owner and so on. Tap a name to
-open that lead.
+Four things are needed: name, phone, car and **Which ad?** (the ad names from Settings, plus Not
+from an ad and Referral / repeat). Everything else (service, suburb, when, quoted or booked,
+notes) is folded under **More details**. Below the form: "+ Job already done" and "+ Someone owes
+you" for work that never came in as a lead.
 
-**Friday from 5:00pm** Today shows a wrap-up for both of you: how many are in each section, how
-many quoted leads have had no reply for 14 days or more, and how many are still New. It moves
-nothing.
+## Call notes
+
+**Notes** on every card opens quick-tap chips for what people say (Price, Timing, Pet hair,
+Stains, Smell, Scratches / swirls, Wants ceramic info, Selling the car, Needs to check with
+partner, Work ute, Garage / no garage, Water or power issue) and a box for anything else. Each note
+is saved in the lead's history with the date, time and who wrote it. The newest shows as one
+line on the card ("Pet hair, wants Saturday"); the … menu has them all. Numbers has **What people
+say**: how often each chip was used in the period, and on how many leads (`M.chipCounts`).
+
+## Booked jobs
+
+Moving a lead to Booked asks for the day, time, address and price (a range like 250-300 is fine:
+it's kept in `priceRange`, and its low end counts as the price until the End of day form says
+what they paid). **Today's jobs** sit at the top of Today, in time order, each address a
+tap-to-open Google Maps link. A booking for today has **On my way**: it opens messages with
+"Hey [name], it's Ananth from Imperium Detailing. On our way now, see you soon!" and logs the
+time it was sent (`onMyWayAt`, `onMyWayBy`).
+
+## The $50 deposit (Stripe)
+
+**Send $50 deposit** is on Chasing and Booked leads. Pick the day and time, tap **Make deposit
+link**: `/api/deposit` makes a Stripe Checkout link for $50 AUD with the lead's name, car and job
+day in the description, then **Open messages** has the text ready ("Hey [name], to lock in [day]
+at [time] for the [car], here's the $50 deposit link: [link]. It comes off the final price and is
+fully refundable with 24 hours' notice."). Stripe keeps each link open for 24 hours.
+
+When they pay, Stripe calls `/api/stripe-webhook`: the lead shows **Deposit paid ✓** and moves to
+Booked (taking the day and time the link was made for, if it had none). The phone also checks
+open links itself about once a minute, so a preview (which Stripe can't reach, and which never
+writes to the real list) shows it too, kept on that phone only.
+
+Set up in Vercel → the leads project → Settings → Environment Variables (never in the code):
+
+| Name | Value | Where from |
+|---|---|---|
+| `STRIPE_SECRET_KEY` | `sk_test_…` to test, later `sk_live_…` | Stripe → Developers → API keys → Secret key |
+| `STRIPE_WEBHOOK_SECRET` | `whsec_…` | Stripe → Developers → Webhooks → your endpoint → Signing secret |
+
+The webhook endpoint is `https://frontline-websites-6mjg.vercel.app/api/stripe-webhook`, event
+`checkout.session.completed` (add `checkout.session.async_payment_succeeded` too). Only the live
+site writes from the webhook. Test cards: 4242 4242 4242 4242, any future date, any CVC.
+
+## Settings (the ⚙ at the top)
+
+Clear old backlog, Messages (the four touches, still keen, deposit and on my way), Ad names, Weekly target (default $5,000), Call hours, Review texts,
+and Backup (download every lead as CSV or JSON). All saved for both phones.
+
+**Clear old backlog**: pick a day; it lists every Chasing lead that came in before it, with a
+Text button each (their name and car filled in) and **Copy message** for the words. Then **Move
+all to Waiting** asks you to confirm, and moves them to Waiting (No reply).
+
+## Numbers
+
+**This week** (Monday to Sunday, both of you): money from this week's jobs against the target
+(a progress bar), jobs done, ceramics sold, new maintenance plans, the share of new leads replied
+to within 5 minutes, and the share of this week's jobs offered a ceramic and a plan.
+
+Then, for the period and person picked: Leads, Booked, Close rate, Replied within 5 minutes,
+Booked $, Cash collected, Still to collect, Ad spend, Cost per booked job, Quotes out. **By ad**:
+leads, booked, booked $ and close rate for each ad (leads from before the ad was kept show as
+Unknown). Ad spend (one total a week), the End of day forms, and **More** (lost reasons, reviews,
+by source, by service, next service due) are as before. Tap any figure or row to see who's in it.
 
 ## Reviews
 
-Tap **Job done** on a job card (Jobs today), or **Job done: ask for a review** when you
-open a booked job. That sets `completedAt` and `reviewStatus: "not_asked"`, and the Review card
-walks through it:
-
-| Status | The card says | Buttons |
-|---|---|---|
-| `not_asked` | At handover, walk them round the car, then say this (the in-person script) | Asked in person, Skip |
-| `asked_in_person` | Not paid yet: tick Paid first. Once paid, the review ask ("Thanks [name], payment received…") | Copy text, Text sent |
-| `text_sent` | Before 3 days: when to nudge. From 3 days: the one nudge text | Copy text, Nudged, They reviewed, Declined |
-| `nudged` | Leave it now. Never a second nudge | They reviewed, Declined |
-| `reviewed` | Reply within 24 hours (reply template) | Copy text |
-| `declined`, `skip` | Nothing more to do | |
-
-Each step stamps its time on the lead: `reviewAskedAt`, `reviewTextSentAt`, `reviewNudgedAt`,
-`reviewLeftAt`. `reviewNotes` is a short note. The older `reviewAsked` / `reviewLeft` Yes/No fields
-are kept in step for the Numbers tab. A wrong tap can be fixed with **Review status** in the lead's
-edit sheet. Leads are JSON documents, so no database change was needed.
-
-**Make a review text** (in the Reviews card on Today) is for anyone who's paid, lead or not: type
-their name and it writes the review ask with the link, ready to copy and paste into a text.
-
-**Review settings** (Today, in the Reviews card) holds the review link, who the nudge and reply
-texts are signed by and the business name. Both phones share them (`settings/reviews`); empty ones fall
-back to `https://g.page/r/CSwRG2iKFelCEAE/review`, Angus and Imperium Detailing.
+**Review steps** (in the … menu of a done job) walks through asking for a Google review:
+in-person script, the text once they've paid, one nudge after 3 days, then leave it. Each step
+stamps its time on the lead (`reviewAskedAt`, `reviewTextSentAt`, `reviewNudgedAt`,
+`reviewLeftAt`). Ticking Review asked on the card counts as asked in person. Review settings are
+in Settings (`settings/reviews`).
 
 ## Develop
 
 ```
 npm install
-npm test          # lead mapping, the schedule, call hours, Today's lists, duplicates, the texts, the review steps
-node build.mjs    # needs SUPABASE_URL and SUPABASE_ANON_KEY to point at a project
+npm test          # stages, the four touches, Today, the upgrade, duplicates, the texts, the numbers, reviews
+node build.mjs    # needs SUPABASE_URL and SUPABASE_ANON_KEY to point at a project; a preview unless VERCEL_ENV=production
 ```

@@ -85,13 +85,12 @@ test("a lead is saved exactly as the app's Add tab saves one", () => {
     reviewLeftAt: null,
     reviewNotes: "",
     stage: "New",
-    schedule: "full",
-    chaseFrom: "",
+    waitReason: "",
+    old_status: "",
     touches: 0,
+    chaseFrom: "",
     lastTouchOn: "",
     quotedOn: "",
-    snoozeUntil: "",
-    paused: false,
     timeline: "asap",
     score: "Hot",
     scoreBy: "timeline",
@@ -103,8 +102,16 @@ test("a lead is saved exactly as the app's Add tab saves one", () => {
     enquiries: [],
     againAt: "",
     repeatOf: "",
-    modelVersion: 3,
+    fromAd: "ad",
+    offeredCeramic: "",
+    offeredPlan: "",
+    planSince: "",
+    rolledOn: "",
+    modelVersion: 4,
   });
+  // A website form with no ad: "Not from an ad"; a Meta lead with no ad name: Unknown.
+  assert.equal(buildLead({ name: "Jo", source: "website" }, now).fromAd, "none");
+  assert.equal(buildLead({ name: "Jo", source: "Meta ad" }, now).fromAd, "");
 });
 
 test("a lead's timeline, score and owner come from the form", () => {
@@ -113,7 +120,7 @@ test("a lead's timeline, score and owner come from the form", () => {
   assert.equal(b({ when: "within_1_2_weeks" }).score, "Warm");
   assert.equal(b({ when: "Within 1 to 2 weeks" }).timeline, "within_1_2_weeks");
   const browsing = b({ when: "just_browsing" });
-  assert.deepEqual([browsing.timeline, browsing.score, browsing.schedule], ["just_browsing", "Browsing", "browsing"]);
+  assert.deepEqual([browsing.timeline, browsing.score, browsing.touches], ["just_browsing", "Browsing", 0]);
   assert.deepEqual([b({}).timeline, b({}).score, b({}).scoreBy], ["", "", ""]);
   assert.equal(b({ timeline: "asap", when: "just_browsing" }).timeline, "asap"); // an explicit timeline wins
   assert.equal(b({ owner: "ananth" }).owner, "Ananth");
