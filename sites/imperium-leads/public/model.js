@@ -24,6 +24,13 @@
     planSince      the day the lead went on a maintenance plan
     fromAd         which ad, for leads added from now on: "ad" (the name is in ad), "none" or "referral"
     rolledOn       the day it was rolled to tomorrow because Today was full
+    jobDate, jobTime, address, revenue, priceRange   the booking: day, time ("09:30"), where, and
+                   the price (a range like "250–300" is kept in priceRange, with its low end in revenue)
+    log            calls, texts and notes, each with when (at) and who (by). A call note has
+                   type "note", the chips picked (chips) and the words typed (note)
+    depositPaid    "Yes" once the $50 Stripe deposit is paid (depositPaidAt, depositAmount,
+                   depositSessionId); depositUrl, depositLinkAt, depositDate, depositTime: the last link made
+    onMyWayAt, onMyWayBy   when the "On my way" text was sent, and who sent it
     waitedAt, waitedHow   when it went to Waiting, and how: touch4, auto, backlog or hand
     timeline, score, email, formId, enquiries, againAt, repeatOf, lostReason: as before
     modelVersion   4 once a lead has these fields; v4Was keeps what the upgrade changed
@@ -53,6 +60,10 @@
   // The most Today shows at once.
   var TODAY_MAX = 10;
   var HOURS = { start: 8 * 60, end: 19 * 60 };
+  // Things people often say on a call: quick-tap chips on a note.
+  var NOTE_CHIPS = ["Price", "Timing", "Pet hair", "Stains", "Smell", "Scratches / swirls", "Wants ceramic info", "Selling the car",
+    "Needs to check with partner", "Work ute", "Garage / no garage", "Water or power issue"];
+  var DEPOSIT = 50;
   var DAY_MS = 864e5;
 
   /* ------------------------------------------------------------ Canberra time */
@@ -365,13 +376,37 @@
     return p;
   }
 
-  // Booked: the day and the price. The touches stop.
+  // A price as typed: "250" → { price: 250, range: "" }; "250-300", "$250 to $300" →
+  // { price: 250, range: "250–300" } (the low end counts as the price until the job's done).
+  function parsePrice(v) {
+    if (typeof v === "number") return isFinite(v) ? { price: v, range: "" } : { price: null, range: "" };
+    var nums = String(v == null ? "" : v).replace(/,/g, "").match(/\d+(\.\d+)?/g) || [];
+    if (!nums.length) return { price: null, range: "" };
+    var a = Number(nums[0]), b = nums.length > 1 ? Number(nums[1]) : a;
+    if (b === a) return { price: a, range: "" };
+    var lo = Math.min(a, b), hi = Math.max(a, b);
+    return { price: lo, range: lo + "–" + hi };
+  }
+  // "09:30" → "9:30am" ("" when it isn't a time).
+  function timeLabel(t) {
+    var m = toMinutes(t, -1);
+    return m < 0 ? "" : clock(m);
+  }
+  /*
+    Booked: the day, and the time, address and price when known (data: { date, time, address,
+    price }, price as typed, a range is fine). The touches stop.
+  */
   function book(l, data, at, by) {
     data = data || {};
+    var pr = data.price == null || data.price === "" ? null : parsePrice(data.price);
     var p = {
-      stage: "Booked", waitReason: "", jobDate: data.date || "", revenue: data.price == null ? (l.revenue == null ? null : l.revenue) : data.price,
+      stage: "Booked", waitReason: "", jobDate: data.date || "",
+      revenue: pr && pr.price != null ? pr.price : (l.revenue == null ? null : l.revenue),
       nextFollowUp: "", rolledOn: "", log: logOf(l).concat([{ at: at, by: by || "", type: "note", outcome: "Booked", note: "" }]),
     };
+    if (pr && pr.price != null) p.priceRange = pr.range;
+    if (data.time != null) p.jobTime = String(data.time);
+    if (data.address != null) p.address = String(data.address).trim();
     if (l.completedAt) p.completedAt = null;
     if (l.junk) p.junk = false;
     var reply = firstReply(l, at);
@@ -379,9 +414,44 @@
     return p;
   }
 
-  // A note, kept in the history. It changes nothing else.
-  function note(l, text, at, by) {
-    return { log: logOf(l).concat([{ at: at, by: by || "", type: "note", note: String(text || "").trim() }]) };
+  // A call note: the chips picked and the words typed, kept in the history with when and who.
+  // It changes nothing else.
+  function note(l, text, at, by, chips) {
+    var picked = [];
+    (Array.isArray(chips) ? chips : []).forEach(function (c) { if (NOTE_CHIPS.indexOf(c) !== -1 && picked.indexOf(c) === -1) picked.push(c); });
+    return { log: logOf(l).concat([{ at: at, by: by || "", type: "note", note: String(text || "").trim(), chips: picked }]) };
+  }
+  // The call notes on a lead, newest first: [{ at, by, chips, text }]. Things the app logs by
+  // itself (Booked, Deposit paid) and empty notes are left out.
+  function callNotes(l) {
+    return logOf(l).filter(function (e) {
+      return e.type === "note" && !e.outcome && (String(e.note || "").trim() || (Array.isArray(e.chips) && e.chips.length));
+    }).map(function (e) {
+      return { at: e.at, by: e.by || "", chips: Array.isArray(e.chips) ? e.chips.slice() : [], text: String(e.note || "").trim() };
+    }).sort(function (a, b) { return String(b.at || "").localeCompare(String(a.at || "")); });
+  }
+  // One short line for a note: "Pet hair, wants Saturday".
+  function noteLine(n) {
+    return n ? n.chips.concat(n.text ? [n.text] : []).join(", ") : "";
+  }
+  // How often each chip was picked, most first: [{ chip, times, leads }]. keep(note, lead) says
+  // which notes count (a period, a person). Leads marked not real are left out.
+  function chipCounts(leads, keep) {
+    var o = {};
+    NOTE_CHIPS.forEach(function (c) { o[c] = { chip: c, times: 0, leads: 0 }; });
+    (leads || []).forEach(function (l) {
+      if (!l || l.junk) return;
+      var seen = {};
+      callNotes(l).forEach(function (n) {
+        if (keep && !keep(n, l)) return;
+        n.chips.forEach(function (c) {
+          if (!o[c]) return;
+          o[c].times++;
+          if (!seen[c]) { seen[c] = true; o[c].leads++; }
+        });
+      });
+    });
+    return NOTE_CHIPS.map(function (c) { return o[c]; }).sort(function (a, b) { return b.times - a.times || NOTE_CHIPS.indexOf(a.chip) - NOTE_CHIPS.indexOf(b.chip); });
   }
 
   /*
@@ -544,6 +614,48 @@
   }
   function backlogPatch(at) {
     return { stage: "Waiting", waitReason: "no_reply", nextFollowUp: "", rolledOn: "", waitedAt: at, waitedHow: "backlog" };
+  }
+
+  // Today's jobs: booked (or done) for today, in time order (no time last). o is { who, all }.
+  function todaysJobs(leads, today, o) {
+    o = o || {};
+    return (leads || []).filter(function (l) {
+      return l && !l.junk && l.jobDate === today && isBooked(l, today) && (o.all || !o.who || !l.owner || l.owner === o.who);
+    }).sort(function (a, b) {
+      var ta = toMinutes(a.jobTime, 9999), tb = toMinutes(b.jobTime, 9999);
+      return ta - tb || String(a.name || "").localeCompare(String(b.name || ""));
+    });
+  }
+  // "On my way" was sent: when, and who.
+  function onMyWay(l, at, by) {
+    return { onMyWayAt: at, onMyWayBy: by || "", log: logOf(l).concat([{ at: at, by: by || "", type: "text", outcome: "On my way", note: "" }]) };
+  }
+  // A deposit link was made for the lead (s: { id, url, expiresAt }, for: { date, time }).
+  function depositLink(l, s, at, by, forDay) {
+    forDay = forDay || {};
+    return {
+      depositSessionId: s.id, depositUrl: s.url, depositExpiresAt: s.expiresAt || "", depositLinkAt: at,
+      depositDate: forDay.date || "", depositTime: forDay.time || "",
+      log: logOf(l).concat([{ at: at, by: by || "", type: "note", outcome: "Deposit link", note: "" }]),
+    };
+  }
+  /*
+    The $50 deposit was paid (d: { at, sessionId, amount, date, time }): the lead shows "Deposit
+    paid ✓", and one not booked yet moves to Booked, taking the day and time the link was made
+    for when it has none of its own.
+  */
+  function depositPaid(l, d, today) {
+    var amount = d.amount == null ? DEPOSIT : d.amount;
+    var p = { depositPaid: "Yes", depositPaidAt: d.at, depositAmount: amount, depositSessionId: d.sessionId || l.depositSessionId || "" };
+    var stage = stageOf(l, today);
+    if (stage !== "Booked" && stage !== "Done") {
+      assign(p, { stage: "Booked", waitReason: "", nextFollowUp: "", rolledOn: "" });
+      if (l.junk) p.junk = false;
+    }
+    if (!isDay(l.jobDate) && isDay(d.date)) p.jobDate = d.date;
+    if (!l.jobTime && d.time) p.jobTime = d.time;
+    p.log = logOf(l).concat([{ at: d.at, by: "Stripe", type: "note", outcome: "Deposit paid", note: "$" + amount + " deposit paid" }]);
+    return p;
   }
 
   /*
@@ -859,13 +971,15 @@
   var api = {
     VERSION: VERSION, STAGES: STAGES, PEOPLE: PEOPLE, TAGS: TAGS, TIMELINES: TIMELINES, WAIT_REASONS: WAIT_REASONS,
     LOST_REASONS: LOST_REASONS, LOST_WORDS: LOST_WORDS, OLD_LOST: OLD_LOST, STEPS: STEPS, TOUCHES: TOUCHES, OVERDUE_DAYS: OVERDUE_DAYS,
-    TODAY_MAX: TODAY_MAX, HOURS: HOURS,
+    TODAY_MAX: TODAY_MAX, HOURS: HOURS, NOTE_CHIPS: NOTE_CHIPS, DEPOSIT: DEPOSIT,
     canberraDate: canberraDate, canberraMinutes: canberraMinutes, canberraAt: canberraAt, weekday: weekday, addDays: addDays, daysBetween: daysBetween, isDay: isDay,
     hours: hours, clock: clock, inHours: inHours, clockStart: clockStart,
     timelineOf: timelineOf, timelineFromNotes: timelineFromNotes, emailFromNotes: emailFromNotes, scoreOf: scoreOf, plainNotes: plainNotes,
     isTouch: isTouch, touchDays: touchDays, touchDayList: touchDayList, lastTouch: lastTouch, againPending: againPending,
     v3Stage: v3Stage, stageOf: stageOf, waitReasonOf: waitReasonOf, statusFor: statusFor, isBooked: isBooked, owesMoney: owesMoney, reviewAsked: reviewAsked,
-    sync: sync, newFields: newFields, dueAfter: dueAfter, touch: touch, book: book, note: note, setStage: setStage, retag: retag, touchLabel: touchLabel,
+    sync: sync, newFields: newFields, dueAfter: dueAfter, touch: touch, book: book, parsePrice: parsePrice, timeLabel: timeLabel,
+    note: note, callNotes: callNotes, noteLine: noteLine, chipCounts: chipCounts, setStage: setStage, retag: retag, touchLabel: touchLabel,
+    todaysJobs: todaysJobs, onMyWay: onMyWay, depositLink: depositLink, depositPaid: depositPaid,
     arrivedAt: arrivedAt, isOvernight: isOvernight, replyMinutes: replyMinutes, replyTimer: replyTimer,
     dueDay: dueDay, isBacklog: isBacklog, shouldAutoWait: shouldAutoWait, autoWaitPatch: autoWaitPatch, rollPatch: rollPatch,
     rank: rank, todayList: todayList, backlogLeads: backlogLeads, backlogPatch: backlogPatch, sameJob: sameJob,

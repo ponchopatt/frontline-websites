@@ -20,7 +20,7 @@
     "Full detail": "full detail", Interior: "interior detail", Exterior: "exterior detail", Correction: "paint correction",
     Ceramic: "ceramic coating", "Maintenance plan": "maintenance plan", "Pre-sale": "pre-sale detail", "Not sure": "detail",
   };
-  // The four touches and the backlog text are the defaults: each can be changed in Settings
+  // The four touches, the backlog, deposit and on-my-way texts are the defaults: each can be changed in Settings
   // (settings/templates), and the page passes the saved words in as o.templates.
   var TEMPLATES = {
     touch1: "Hey [name], it's [owner] from Imperium Detailing. Got your request for the [car]. Full details start from $250 and we come to you. I've got [day] or [day] free. Which suits?",
@@ -28,14 +28,16 @@
     touch3: "Hey [name], still keen on getting the [car] done? I've got spots this week if you want one.",
     touch4: "Hey [name], last one from me. If you'd still like the [car] detailed, just reply and I'll sort a time. If not, no worries at all.",
     backlog: "Hey [name], it's Angus from Imperium Detailing. Just checking in on the detail for your [car]. Still keen? I've got spots this week if you want to lock one in.",
+    deposit: "Hey [name], to lock in [day] at [time] for the [car], here's the $50 deposit link: [link]. It comes off the final price and is fully refundable with 24 hours' notice.",
+    onmyway: "Hey [name], it's Ananth from Imperium Detailing. On our way now, see you soon!",
     after: "Hi [name], [owner] from Imperium Detailing. Hope the [car] is looking good! Here's the link for payment: [link]. Any questions, just message me.",
     review: "Thanks [name], payment received. If you've got a minute, a Google review would mean a lot to us: [review link]",
   };
   // The ones that can be changed in Settings, in order.
-  var EDITABLE = ["touch1", "touch2", "touch3", "touch4", "backlog"];
+  var EDITABLE = ["touch1", "touch2", "touch3", "touch4", "backlog", "deposit", "onmyway"];
   var LABELS = {
     touch1: "Touch 1 (straight away)", touch2: "Touch 2 (next day)", touch3: "Touch 3 (day 3)", touch4: "Touch 4 (day 7)",
-    backlog: "Backlog: still keen?", after: "After the job", review: "Review ask",
+    backlog: "Backlog: still keen?", deposit: "Deposit link", onmyway: "On my way", after: "After the job", review: "Review ask",
   };
 
   // 0 hatch or sedan, 1 SUV or ute, 2 4x4, 4WD, van or 7/8-seater; -1 when the car doesn't say.
@@ -75,8 +77,8 @@
 
   /*
     The words for `key`, filled in for lead `l`. o: { owner, price, hours, days: [a, b],
-    reviewLink, templates }. [name], [car] and [owner] come from the lead; anything not known
-    ([day], [link]) is left in brackets for the person to fill in before sending.
+    reviewLink, templates, day, time, link }. [name], [car] and [owner] come from the lead; anything
+    not known ([day], [time], [link]) is left in brackets for the person to fill in before sending.
   */
   function fill(key, l, o) {
     o = o || {};
@@ -95,7 +97,10 @@
       .split("[Service]").join(capital(service))
       .split("[price]").join(price == null ? "[price]" : amount(price))
       .split("[hours]").join(o.hours ? String(o.hours) : "[hours]")
-      .split("[review link]").join(o.reviewLink || "[review link]");
+      .split("[review link]").join(o.reviewLink || "[review link]")
+      .split("[link]").join(o.link || "[link]")
+      .split("[day]").join(o.day || "[day]")
+      .split("[time]").join(o.time || "[time]");
   }
 
   /*

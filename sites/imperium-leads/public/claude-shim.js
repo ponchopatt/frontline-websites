@@ -581,9 +581,41 @@
     },
   };
 
+  /* ------------------------------------------------------------------ the app's own /api */
+
+  // call("/api/deposit", { method, body }) with this phone's sign-in, so only the team can use it.
+  // Answers the JSON; a refusal throws an error with .code (the server's error) and .status.
+  var api = {
+    call: function (path, opts) {
+      opts = opts || {};
+      return signedIn
+        .then(function (ok) {
+          if (!ok || !sb) throw fail("unavailable", "Not signed in");
+          return sb.auth.getSession();
+        })
+        .then(function (r) {
+          var token = r && r.data && r.data.session && r.data.session.access_token;
+          return fetch(path, {
+            method: opts.method || "GET",
+            headers: Object.assign({ "Content-Type": "application/json" }, token ? { Authorization: "Bearer " + token } : {}),
+            body: opts.body ? JSON.stringify(opts.body) : undefined,
+          });
+        })
+        .then(function (res) {
+          return res.json().catch(function () { return {}; }).then(function (body) {
+            if (res.ok) return body;
+            var e = fail(body.error || "http_" + res.status, body.error);
+            e.status = res.status;
+            throw e;
+          });
+        });
+    },
+  };
+
   window.claude = {
     use: function (name) {
       if (name === "db") return signedIn.then(function (ok) { return ok ? db : null; });
+      if (name === "api") return Promise.resolve(api);
       if (name === "downloads") return Promise.resolve(downloads);
       return Promise.resolve(null);
     },

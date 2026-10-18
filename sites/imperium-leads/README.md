@@ -35,7 +35,10 @@ buttons, one list to work through, everything rare behind a "…" menu.
 | `public/sw.js`, `public/manifest.json`, icons | Home-screen app; opens with no signal (the list needs one). |
 | `api/unlock.js` | PIN check and sign-in. |
 | `api/lead.js` | New enquiries in. |
-| `lib/` | Lead mapping, the shared model for the server, Supabase helpers. |
+| `api/deposit.js` | Makes the $50 Stripe deposit link, and says whether one's paid (team only). |
+| `api/stripe-webhook.js` | Stripe tells it a deposit is paid: the lead shows Deposit paid and moves to Booked. |
+| `public/deposit.html` | The "Deposit paid" page customers land on after paying. |
+| `lib/` | Lead mapping, the shared model for the server, Supabase and Stripe helpers. |
 | `supabase/schema.sql` | The table, its team-only rule, live updates. |
 | `build.mjs` | Makes `public/index.html` (the page plus the phone-app tags), copies supabase-js, writes `public/config.js`. |
 
@@ -213,9 +216,51 @@ from an ad and Referral / repeat). Everything else (service, suburb, when, quote
 notes) is folded under **More details**. Below the form: "+ Job already done" and "+ Someone owes
 you" for work that never came in as a lead.
 
+## Call notes
+
+**Notes** on every card opens quick-tap chips for what people say (Price, Timing, Pet hair,
+Stains, Smell, Scratches / swirls, Wants ceramic info, Selling the car, Needs to check with
+partner, Work ute, Garage / no garage, Water or power issue) and a box for anything else. Each note
+is saved in the lead's history with the date, time and who wrote it. The newest shows as one
+line on the card ("Pet hair, wants Saturday"); the … menu has them all. Numbers has **What people
+say**: how often each chip was used in the period, and on how many leads (`M.chipCounts`).
+
+## Booked jobs
+
+Moving a lead to Booked asks for the day, time, address and price (a range like 250-300 is fine:
+it's kept in `priceRange`, and its low end counts as the price until the End of day form says
+what they paid). **Today's jobs** sit at the top of Today, in time order, each address a
+tap-to-open Google Maps link. A booking for today has **On my way**: it opens messages with
+"Hey [name], it's Ananth from Imperium Detailing. On our way now, see you soon!" and logs the
+time it was sent (`onMyWayAt`, `onMyWayBy`).
+
+## The $50 deposit (Stripe)
+
+**Send $50 deposit** is on Chasing and Booked leads. Pick the day and time, tap **Make deposit
+link**: `/api/deposit` makes a Stripe Checkout link for $50 AUD with the lead's name, car and job
+day in the description, then **Open messages** has the text ready ("Hey [name], to lock in [day]
+at [time] for the [car], here's the $50 deposit link: [link]. It comes off the final price and is
+fully refundable with 24 hours' notice."). Stripe keeps each link open for 24 hours.
+
+When they pay, Stripe calls `/api/stripe-webhook`: the lead shows **Deposit paid ✓** and moves to
+Booked (taking the day and time the link was made for, if it had none). The phone also checks
+open links itself about once a minute, so a preview (which Stripe can't reach, and which never
+writes to the real list) shows it too, kept on that phone only.
+
+Set up in Vercel → the leads project → Settings → Environment Variables (never in the code):
+
+| Name | Value | Where from |
+|---|---|---|
+| `STRIPE_SECRET_KEY` | `sk_test_…` to test, later `sk_live_…` | Stripe → Developers → API keys → Secret key |
+| `STRIPE_WEBHOOK_SECRET` | `whsec_…` | Stripe → Developers → Webhooks → your endpoint → Signing secret |
+
+The webhook endpoint is `https://frontline-websites-6mjg.vercel.app/api/stripe-webhook`, event
+`checkout.session.completed` (add `checkout.session.async_payment_succeeded` too). Only the live
+site writes from the webhook. Test cards: 4242 4242 4242 4242, any future date, any CVC.
+
 ## Settings (the ⚙ at the top)
 
-Clear old backlog, Messages, Ad names, Weekly target (default $5,000), Call hours, Review texts,
+Clear old backlog, Messages (the four touches, still keen, deposit and on my way), Ad names, Weekly target (default $5,000), Call hours, Review texts,
 and Backup (download every lead as CSV or JSON). All saved for both phones.
 
 **Clear old backlog**: pick a day; it lists every Chasing lead that came in before it, with a

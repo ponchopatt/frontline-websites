@@ -21,7 +21,7 @@ test("the four touches and the backlog text are the agreed words, with name, car
   assert.equal(T.fill("review", l, { reviewLink: "https://g.page/r/x/review" }), "Thanks Jo, payment received. If you've got a minute, a Google review would mean a lot to us: https://g.page/r/x/review");
   // No emojis in any of them.
   for (const key of Object.keys(T.TEMPLATES)) assert.doesNotMatch(T.TEMPLATES[key], /\p{Extended_Pictographic}/u, key);
-  assert.deepEqual([...T.EDITABLE], ["touch1", "touch2", "touch3", "touch4", "backlog"]);
+  assert.deepEqual([...T.EDITABLE], ["touch1", "touch2", "touch3", "touch4", "backlog", "deposit", "onmyway"]);
 });
 
 test("words saved in Settings are used instead, filled in the same way; blank falls back to the default", () => {

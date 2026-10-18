@@ -91,7 +91,23 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .timer.orange{background:var(--warn-bg);color:var(--warn)}
 .timer.red{background:var(--bad-bg);color:var(--bad)}
 .timer.wait{background:var(--surface2);color:var(--muted)}
-.do3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:2px}
+.do4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:2px}
+.do4 .b{font-size:14px;letter-spacing:.02em}
+.b.two{white-space:normal;line-height:1.1;font-size:13px;text-align:center}
+.do2{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:6px}
+.b.alt{background:var(--good-bg);color:var(--good);border-color:transparent;text-transform:none;letter-spacing:0}
+.lead .lastnote{font-size:13.5px;line-height:1.35;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--surface2);border-radius:8px;padding:6px 10px}
+.lead .addr{display:flex;align-items:center;gap:6px;min-height:40px;padding:4px 0;font-size:14px;font-weight:600;color:var(--accent);text-decoration:none;line-height:1.3;overflow-wrap:anywhere}
+.lead .addr svg{flex:0 0 18px;width:18px;height:18px}
+.lead .when{font-weight:700;color:var(--text);font-size:14.5px}
+.paidtag{background:var(--good-bg);color:var(--good);font-weight:700;padding:2px 8px;border-radius:999px;font-size:12.5px;white-space:nowrap}
+.chipgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.chipgrid button{min-height:48px;font:inherit;font-size:14px;font-weight:600;border-radius:12px;border:1px solid var(--line);background:var(--surface2);color:var(--text);padding:6px 8px;line-height:1.2;cursor:pointer}
+.chipgrid button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.chipgrid button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sec-h{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:2px 2px -4px}
+.sec-h h2{font-size:17px}
+.sec-h .n{background:var(--surface2);border-radius:999px;padding:1px 9px;font-size:12px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
 .b{font:inherit;font-size:15px;font-weight:700;letter-spacing:.04em;min-height:48px;padding:0 4px;border-radius:12px;border:1px solid var(--line);background:var(--surface2);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;white-space:nowrap;text-transform:uppercase}
 .b.go{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .b[aria-disabled="true"]{opacity:.4;cursor:default}
@@ -292,9 +308,11 @@ main.wide{max-width:1400px}
   <!-- TODAY: one list, "Do these now" -->
   <section id="view-today" role="tabpanel">
     <div class="today-h">
-      <div><h1>Do these now</h1><p class="help" id="tSub"></p></div>
+      <div><h1>Today</h1><p class="help" id="tSub"></p></div>
       <div class="seg two" data-viewseg><button type="button" data-v="mine">Mine</button><button type="button" data-v="both">Both</button></div>
     </div>
+    <div id="tJobs" class="list" hidden></div>
+    <div class="sec-h"><h2>Do these now</h2><span class="n" id="tN"></span></div>
     <div class="list" id="tList"></div>
     <div class="allDone" id="tClear" hidden>All done for today</div>
     <p class="tomorrow" id="tMore" hidden></p>
@@ -329,7 +347,9 @@ main.wide{max-width:1400px}
             <div class="seg three" id="f-stage" data-value="New"><button type="button" data-v="New">New lead</button><button type="button" data-v="Quoted">Quoted</button><button type="button" data-v="Booked">Booked</button></div>
           </label>
           <label id="dateWrap" hidden>Booked for<input id="f-jobDate" type="date"></label>
-          <label id="priceWrap" hidden>Price $<input id="f-price" type="number" inputmode="numeric" min="0" placeholder="250"></label>
+          <label id="timeWrap" hidden>Time<input id="f-jobTime" type="time"></label>
+          <label id="addrWrap" class="full" hidden>Address<input id="f-address" placeholder="12 Example St, Gungahlin" autocomplete="street-address"></label>
+          <label id="priceWrap" class="full" hidden>Price $ (or a range, like 250-300)<input id="f-price" inputmode="text" placeholder="250"></label>
           <label class="full">Notes<textarea id="f-notes" placeholder="Dog hair. Wants a weekend."></textarea></label>
         </div>
       </details>
@@ -370,6 +390,10 @@ main.wide{max-width:1400px}
     <div class="tiles" id="tiles"></div>
     <p class="help" style="margin-top:-6px">Tap a number to see who's in it.</p>
     <div class="card">
+      <div class="eyebrow"><span>What people say</span><span>From call notes</span></div>
+      <div class="tbl"><table id="chipTable"></table></div>
+    </div>
+    <div class="card">
       <div class="eyebrow"><span>By ad</span></div>
       <div class="tbl"><table id="byAd"></table></div>
     </div>
@@ -406,7 +430,7 @@ main.wide{max-width:1400px}
   const OBJ=["Price","Timing","Checking with partner","Wants more info","Thinking about it","Other"];
   // The two choices under the ad names in "Which ad?".
   const NONE="__none", REF="__ref";
-  let db=null, dl=null, leads=[], loaded=false, canWrite=true, who=null;
+  let db=null, dl=null, api=null, leads=[], loaded=false, canWrite=true, who=null;
   // Shared settings, one doc each: reviews, goal, hours, templates (the texts), ads (names), simple (the day this version went live).
   let reviewSettings={}, hoursSaved={}, goalSettings={}, templates={}, adsSaved=null, simple=null, spendWeeks=[], nights=[];
   const H = () => M.hours(hoursSaved);
@@ -488,7 +512,7 @@ main.wide{max-width:1400px}
 
   // ---------- ADD ----------
   seg($("#f-service")); seg($("#f-timeline"));
-  const stageChanged=v=>{ $("#dateWrap").hidden = v!=="Booked"; $("#priceWrap").hidden = v==="New"; $("#saveBtn").textContent = v==="Booked" ? "Save booking" : "Save lead"; };
+  const stageChanged=v=>{ ["#dateWrap","#timeWrap","#addrWrap"].forEach(x=>{ $(x).hidden = v!=="Booked"; }); $("#priceWrap").hidden = v==="New"; $("#saveBtn").textContent = v==="Booked" ? "Save booking" : "Save lead"; };
   seg($("#f-stage"), stageChanged);
   $("#addForm").addEventListener("submit", async e=>{
     e.preventDefault();
@@ -496,7 +520,7 @@ main.wide{max-width:1400px}
     const name=$("#f-name").value.trim(), phone=$("#f-phone").value.trim(), car=$("#f-car").value.trim(), adv=$("#f-ad").value;
     const missing=[!name&&"name",!phone&&"phone",!car&&"car",!adv&&"which ad"].filter(Boolean);
     if(missing.length){ toast("Add their "+missing.join(", ")); const first={name:"#f-name",phone:"#f-phone",car:"#f-car","which ad":"#f-ad"}[missing[0]]; $(first).focus(); return; }
-    const st=$("#f-stage").dataset.value||"New", price=num($("#f-price").value), jobDate=$("#f-jobDate").value;
+    const st=$("#f-stage").dataset.value||"New", priceText=$("#f-price").value.trim(), price=M.parsePrice(priceText).price, jobDate=$("#f-jobDate").value;
     if(st==="Booked" && !jobDate){ $("#f-more").open=true; toast("Pick the day they're booked for"); return; }
     const now=new Date().toISOString();
     const doc={
@@ -510,7 +534,7 @@ main.wide{max-width:1400px}
     };
     // Quoted already: that talk was touch 1. Booked already: straight to Booked. (Neither counts as a reply time.)
     const talked=l=>st==="Quoted" ? {...M.touch(l,{at:now, by:who||"", type:"call", pickedUp:"Yes", outcome:"Quote given", note:""}), quoted:price, quotedOn:today()}
-      : st==="Booked" ? M.book(l,{date:jobDate, price},now,who) : {};
+      : st==="Booked" ? M.book(l,{date:jobDate, time:$("#f-jobTime").value, address:$("#f-address").value, price:priceText},now,who) : {};
     if(st!=="New"){ Object.assign(doc, talked(doc)); doc.replyMins=null; }
     const btn=$("#saveBtn"); btn.disabled=true;
     const resetForm=()=>{ $("#addForm").reset(); fillAdSelect(); setSeg($("#f-service"),""); setSeg($("#f-timeline"),""); setSeg($("#f-stage"),"New"); stageChanged("New"); $("#f-more").open=false; };
@@ -538,11 +562,13 @@ main.wide{max-width:1400px}
   }
 
   // ---------- THE LEAD CARD ----------
-  // Name, car, service, price (or quote), how long since it came in, and which touch is next.
-  // Then TEXT, CALL and ✓ DONE. Everything else is behind the … button.
+  // Name, car, service, price (or quote), how long since it came in, and which touch is next;
+  // the latest call note. Then TEXT, CALL, NOTES and ✓ DONE, and on bookings On my way and the
+  // deposit. Everything else is behind the … button.
   function textFor(l){ return T.message(l,{today:today(), owner:l.owner||who||"", reviewLink:R.settings(reviewSettings).reviewLink, templates}).text; }
   function priceTag(l){
     const st=stage(l), n=v=>v===""||v==null||isNaN(Number(v))?null:Number(v);
+    if((st==="Booked"||st==="Done") && l.priceRange) return '<span class="pr">$'+esc(l.priceRange)+'</span>';
     if((st==="Booked"||st==="Done") && n(l.revenue)!=null) return '<span class="pr">'+money(n(l.revenue))+'</span>';
     if(n(l.quoted)!=null) return '<span class="pr">'+money(n(l.quoted))+' quote</span>';
     const s=T.priceFor(l.service,l.car); return s?'<span class="pr est">from '+money(s)+'</span>':"";
@@ -570,7 +596,7 @@ main.wide{max-width:1400px}
       const dot='<span aria-hidden="true">·</span>';
       return '<span class="nx">'+M.touchLabel(l,t)+'</span>'+(late?dot+'<span class="late">'+late+(late===1?" day late":" days late")+'</span>':d&&d>t?dot+'<span>'+esc(d===addDays(1)?"tomorrow":dayName(d))+'</span>':"");
     }
-    if(st==="Booked") return '<span class="nx">'+(l.jobDate?"Job "+esc(l.jobDate===t?"today":dayName(l.jobDate)):"Booked")+'</span>';
+    if(st==="Booked") return '<span class="nx">'+(l.jobDate?"Job "+esc(l.jobDate===t?"today":dayName(l.jobDate))+(l.jobTime?" "+esc(M.timeLabel(l.jobTime)):""):"Booked")+'</span>';
     if(st==="Done") return '<span class="nx">Done</span>';
     return '<span class="nx">Waiting · '+esc(M.WAIT_REASONS[M.waitReasonOf(l)])+'</span>';
   }
@@ -582,24 +608,36 @@ main.wide{max-width:1400px}
       tk("ceramic","Offered ceramic",l.offeredCeramic==="Yes")+tk("plan","Offered maint. plan",l.offeredPlan==="Yes")+
     '</div>';
   }
+  const PIN='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>';
+  const mapsHref = a => "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(a);
   function buttons(l){
-    const ph=digits(l.phone), st=stage(l);
-    const off=lab=>'<a class="b" role="button" aria-disabled="true" data-act="nophone">'+lab+'</a>';
-    const third = st==="Booked" ? '<button type="button" class="b go" data-act="jobdone">✓ Job done</button>' : '<button type="button" class="b go" data-act="done">✓ Done</button>';
-    return '<div class="do3">'+
+    const ph=digits(l.phone), st=stage(l), t=today();
+    const off=(lab,cls="")=>'<a class="b'+cls+'" role="button" aria-disabled="true" data-act="nophone">'+lab+'</a>';
+    const last = st==="Booked" ? '<button type="button" class="b go two" data-act="jobdone">✓ Job done</button>' : '<button type="button" class="b go" data-act="done">✓ Done</button>';
+    // On my way: a booking for today. The deposit: chasing or booked, not paid yet.
+    const omw = st==="Booked" && l.jobDate===t
+      ? (ph?'<a class="b alt" data-act="omw" href="'+esc(T.smsHref(ph,T.fill("onmyway",l,{templates})))+'">'+(l.onMyWayAt?"On my way (sent "+esc(M.clock(M.canberraMinutes(l.onMyWayAt)))+")":"On my way")+'</a>':off("On my way"," alt")) : "";
+    const dep = (st==="Chasing"||st==="Booked") && l.depositPaid!=="Yes" ? '<button type="button" class="b alt" data-act="deposit">'+(l.depositSessionId?"Deposit link again":"Send $50 deposit")+'</button>' : "";
+    return '<div class="do4">'+
       (ph?'<a class="b" data-act="text" href="'+esc(T.smsHref(ph,textFor(l)))+'">Text</a><a class="b" data-act="call" href="tel:'+esc(ph)+'">Call</a>':off("Text")+off("Call"))+
-      third+'</div>';
+      '<button type="button" class="b" data-act="notes">Notes</button>'+last+'</div>'+
+      (omw||dep?'<div class="do2">'+omw+dep+'</div>':"");
   }
   function leadCard(l, opts={}){
     const st=stage(l), c=opts.board?M.coldness(l,today()):null;
     const showOwner = opts.owner || !mineOnly();
     const fresh = st==="New" || (st==="Chasing" && M.againPending(l));
-    const meta=(fresh?timerChip(l):"")+[l.service?'<span>'+esc(l.service)+'</span>':"", '<span>'+esc(ago(l))+'</span>', nextBit(l),
+    const job = opts.job && l.jobTime ? '<span class="when">'+esc(M.timeLabel(l.jobTime))+'</span>' : "";
+    const meta=(fresh?timerChip(l):"")+[job, l.service?'<span>'+esc(l.service)+'</span>':"", opts.job?"":'<span>'+esc(ago(l))+'</span>', opts.job&&st==="Booked"?"":nextBit(l),
+      l.depositPaid==="Yes"?'<span class="paidtag">Deposit paid ✓</span>':"",
       l.repeatOf?'<span>Repeat</span>':"", showOwner&&l.owner?'<span>'+esc(l.owner)+'</span>':""].filter(Boolean).join('<span aria-hidden="true">·</span>');
+    const n=M.callNotes(l)[0];
+    const addr = l.address && (st==="Booked" || opts.job) ? '<a class="addr" href="'+esc(mapsHref(l.address))+'" target="_blank" rel="noopener">'+PIN+'<span>'+esc(l.address)+'</span></a>' : "";
     return '<div class="lead st-'+st+(c?" "+c.level:"")+'" data-id="'+esc(l.id)+'"'+(opts.drag?' draggable="true"':"")+'>'+
       '<div class="l1"><span class="nm">'+esc(l.name||"No name")+(l.car?'<span class="car"> · '+esc(l.car)+'</span>':"")+'</span>'+priceTag(l)+
         '<button type="button" class="more" data-act="more" aria-label="More for '+esc(l.name||"this lead")+'">…</button></div>'+
-      '<div class="meta">'+meta+'</div>'+
+      '<div class="meta">'+meta+'</div>'+addr+
+      (n?'<div class="lastnote" title="Latest note">'+esc(M.noteLine(n))+'</div>':"")+
       ticks(l)+buttons(l)+
     '</div>';
   }
@@ -609,11 +647,14 @@ main.wide{max-width:1400px}
       const id=card.dataset.id, a=b.dataset.act;
       e.stopPropagation();
       if(a==="text"||a==="call"){ noteReply(id); return; } // the link opens the messages app or the phone
+      if(a==="omw"){ const l=current(id); if(l&&db) save(id,M.onMyWay(l,new Date().toISOString(),who)); return; } // and the link opens messages
       if(a==="nophone"){ e.preventDefault(); toast("No phone number. Add one: … then Edit details."); return; }
       if(a==="done") doneTouch(id,b); else if(a==="jobdone") jobDone(id,b); else if(a==="more") openMenu(id);
+      else if(a==="notes") openNotes(id); else if(a==="deposit") openDeposit(id);
     }));
     el.querySelectorAll("[data-tick]").forEach(cb=>cb.addEventListener("change",()=>setTick(cb)));
     el.querySelectorAll(".lead").forEach(c=>c.addEventListener("click",e=>{ if(e.target.closest("button,a,input,label")) return; openMenu(c.dataset.id); }));
+    el.querySelectorAll(".addr").forEach(a=>a.addEventListener("click",e=>e.stopPropagation()));
   }
   function copyText(t,msg){
     if(!t) return;
@@ -667,11 +708,97 @@ main.wide{max-width:1400px}
     if(!await save(id,p)){ cb.checked=!on; cb.closest(".tick").classList.toggle("on",!on); }
   }
 
+  // ---------- CALL NOTES ----------
+  // "Mon 19 Oct 10:05am", Canberra time.
+  const when = iso => iso ? dayName(localDate(iso))+" "+M.clock(M.canberraMinutes(iso)) : "";
+  function noteHistory(notes){
+    return notes.length ? '<div class="eyebrow"><span>Call notes</span><span class="n">'+notes.length+'</span></div><div class="log">'+
+      notes.map(n=>'<div><span>'+esc(when(n.at))+(n.by?' '+esc(n.by):"")+'</span><div>'+esc(M.noteLine(n))+'</div></div>').join("")+'</div>' : "";
+  }
+  // Tap what they said (any number of chips), add anything else, save. Kept with the time and who.
+  function openNotes(id){
+    const l=current(id); if(!l) return;
+    const g=sheet(head(l,[l.car,l.service].filter(Boolean).join(" · ")||"Call notes")+
+      '<div class="eyebrow">What did they say?</div>'+
+      '<div class="chipgrid" id="n-chips">'+M.NOTE_CHIPS.map(c=>'<button type="button" data-chip="'+esc(c)+'" aria-pressed="false">'+esc(c)+'</button>').join("")+'</div>'+
+      '<label>Anything else<textarea id="n-text" maxlength="500" rows="2" placeholder="e.g. wants Saturday"></textarea></label>'+
+      '<button class="btn" id="n-save" type="button"'+(canWrite?"":" disabled")+'>Save note</button>'+
+      noteHistory(M.callNotes(l)));
+    g("#n-chips").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true"))));
+    g("#n-save").addEventListener("click",async()=>{
+      const chips=[...g("#n-chips").querySelectorAll('[aria-pressed="true"]')].map(b=>b.dataset.chip), text=g("#n-text").value.trim();
+      if(!chips.length && !text){ toast("Tap what they said, or type a note"); return; }
+      const b=g("#n-save"); b.disabled=true;
+      if(await save(id,M.note(current(id)||l,text,new Date().toISOString(),who,chips))){ closeSheet(); toast("Note saved."); } else b.disabled=false;
+    });
+  }
+
+  // ---------- THE $50 DEPOSIT (Stripe) ----------
+  // Pick the day and time, make the link, then one tap opens messages with the text ready.
+  const longDay = d => new Date(d+"T12:00:00").toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"short"});
+  function openDeposit(id){
+    const l=current(id); if(!l) return;
+    const ph=digits(l.phone);
+    const g=sheet(head(l,"Send the $"+M.DEPOSIT+" deposit link")+
+      '<div class="grid"><label>Day<input id="d-day" type="date" value="'+esc(l.jobDate||l.depositDate||"")+'"></label><label>Time<input id="d-time" type="time" value="'+esc(l.jobTime||l.depositTime||"")+'"></label></div>'+
+      '<p class="help">They go in the text and on the Stripe page. Leave them blank to type them into the text yourself.</p>'+
+      '<button class="btn" id="d-make" type="button">Make deposit link</button>'+
+      '<div id="d-out" style="display:flex;flex-direction:column;gap:10px"></div>');
+    g("#d-make").addEventListener("click",async()=>{
+      if(!api){ toast("Not connected. Try again in a sec."); return; }
+      const date=g("#d-day").value, time=g("#d-time").value, b=g("#d-make");
+      b.disabled=true; b.textContent="Making the link…";
+      let r;
+      try{ r=await api.call("/api/deposit",{method:"POST", body:{leadId:id, date, time, name:l.name||"", car:l.car||""}}); }
+      catch(e){
+        b.disabled=false; b.textContent="Make deposit link";
+        toast(e.code==="not_set_up"?"Stripe isn't set up yet (STRIPE_SECRET_KEY in Vercel).":e.status===401?"Sign in again, then try.":"Couldn't make the link: "+(e.message||"try again"));
+        return;
+      }
+      b.hidden=true;
+      await save(id,M.depositLink(current(id)||l,{id:r.id, url:r.url, expiresAt:r.expiresAt},new Date().toISOString(),who,{date, time}));
+      const text=T.fill("deposit",l,{templates, day:date?longDay(date):"", time:M.timeLabel(time), link:r.url});
+      g("#d-out").innerHTML=(r.test?'<div class="banner">Stripe test mode: pay with card 4242 4242 4242 4242, any future date, any CVC. No real money moves.</div>':"")+
+        '<p class="say">'+esc(text)+'</p>'+
+        (ph?'<a class="btn" id="d-send" href="'+esc(T.smsHref(ph,text))+'">Open messages</a>':"")+
+        '<button class="btn secondary" id="d-copy" type="button">Copy text</button>'+
+        '<p class="help">The link works for 24 hours. Once they pay, this lead shows Deposit paid ✓ and moves to Booked by itself.</p>';
+      g("#d-copy").addEventListener("click",()=>copyText(text,"Copied. Paste it into a text."));
+      const send=g("#d-send"); if(send) send.addEventListener("click",()=>setTimeout(closeSheet,400));
+    });
+  }
+  // Paid yet? Each open deposit link is checked now and then (at most once a minute), so the lead
+  // flips to Deposit paid even if Stripe's message to the server hasn't arrived (or, on a preview,
+  // can't). The same change the webhook makes; saving it twice changes nothing.
+  const checkedAt=new Map();
+  async function checkDeposits(){
+    if(!api||!db||!loaded||!canWrite) return;
+    const now=Date.now();
+    for(const l of leads){
+      if(!l.depositSessionId || l.depositPaid==="Yes") continue;
+      const made=Date.parse(l.depositLinkAt||""); if(!made || now-made>26*36e5) continue;
+      if(now-(checkedAt.get(l.id)||0)<60000) continue;
+      checkedAt.set(l.id,now);
+      try{
+        const d=await api.call("/api/deposit?id="+encodeURIComponent(l.depositSessionId));
+        const cur=current(l.id);
+        if(d.paid && cur && cur.depositPaid!=="Yes" && await save(l.id,M.depositPaid(cur,{at:new Date().toISOString(), sessionId:l.depositSessionId, amount:d.amount, date:d.jobDate, time:d.jobTime},today())))
+          toast((l.name||"They")+" paid the deposit. Booked.");
+      }catch(e){ /* tried again next time */ }
+    }
+  }
+  document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible"){ checkedAt.clear(); checkDeposits(); } });
+
   // ---------- TODAY: one list ----------
   const todayOpts = () => ({now:new Date(), hours:H(), who, all:!mineOnly(), since:since()});
   function renderToday(){
     const L=M.todayList(leads,todayOpts());
     $("#tSub").textContent=new Date().toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"long",timeZone:"Australia/Sydney"})+(mineOnly()?" · "+who+"'s":" · Both of you");
+    const jobs=M.todaysJobs(leads,today(),{who, all:!mineOnly()});
+    $("#tJobs").hidden=!jobs.length;
+    $("#tJobs").innerHTML='<div class="sec-h"><h2>Today\'s jobs</h2><span class="n">'+jobs.length+'</span></div>'+jobs.map(l=>leadCard(l,{job:true})).join("");
+    wire($("#tJobs"));
+    $("#tN").textContent=L.show.length||"";
     $("#tList").innerHTML=L.show.map(l=>leadCard(l)).join("");
     wire($("#tList"));
     $("#tClear").hidden=!loaded || L.show.length>0;
@@ -717,8 +844,8 @@ main.wide{max-width:1400px}
   function closeSheet(){ const s=$("#sheet"); if(s) s.remove(); }
   const what=e=>e.type==="note"?(e.outcome||"Note"):e.type==="call"?(e.pickedUp==="Yes"?"Call":e.pickedUp==="No"?"Call, no answer":"Call"):"Text";
   function history(l){
-    const log=(l.log||[]).filter(e=>e&&e.at);
-    return log.length?'<div class="eyebrow">History</div><div class="log">'+log.slice().reverse().map(e=>'<div><span>'+esc(dayName(localDate(e.at)))+' '+esc(e.by||"")+'</span><div>'+esc(what(e))+(e.outcome&&e.type!=="note"?' · '+esc(e.outcome):"")+(e.note?' — '+esc(e.note):"")+'</div></div>').join("")+'</div>':"";
+    const log=(l.log||[]).filter(e=>e&&e.at&&!(e.type==="note"&&!e.outcome));
+    return log.length?'<div class="eyebrow">Calls, texts and changes</div><div class="log">'+log.slice().reverse().map(e=>'<div><span>'+esc(when(e.at))+' '+esc(e.by||"")+'</span><div>'+esc(what(e))+(e.outcome&&e.type!=="note"?' · '+esc(e.outcome):"")+(e.note?' — '+esc(e.note):"")+'</div></div>').join("")+'</div>':"";
   }
   // Change status, tag, notes, details. `pick` opens straight on a status (from the Board).
   function openMenu(id,pick){
@@ -731,8 +858,11 @@ main.wide{max-width:1400px}
       '<div id="m-more"></div>'+
       '<div class="eyebrow"><span>Tag (sets the order on Today)</span></div>'+
       '<div class="seg three" id="m-tag" data-value="'+esc(l.score||"")+'">'+M.TAGS.map(t=>'<button type="button" data-v="'+t+'">'+t+'</button>').join("")+'</div>'+
-      '<div class="row nowrap"><input id="m-note" maxlength="300" placeholder="Add a note"><button class="btn small" id="m-addNote" type="button">Add</button></div>'+
-      (l.notes?'<div class="eyebrow">Notes</div><p class="fullnote">'+esc(l.notes)+'</p>':"")+
+      '<button class="btn secondary" id="m-addNote" type="button">Add a call note</button>'+
+      noteHistory(M.callNotes(l))+
+      (l.notes?'<div class="eyebrow">From the form</div><p class="fullnote">'+esc(l.notes)+'</p>':"")+
+      (l.depositPaid==="Yes"?'<p class="help"><span class="paidtag">Deposit paid ✓</span> $'+esc(l.depositAmount||M.DEPOSIT)+' on '+esc(when(l.depositPaidAt))+'</p>':"")+
+      (l.onMyWayAt?'<p class="help">On my way sent '+esc(when(l.onMyWayAt))+(l.onMyWayBy?" by "+esc(l.onMyWayBy):"")+'</p>':"")+
       history(l)+
       ((l.enquiries||[]).length?'<div class="eyebrow">Enquired again</div><div class="log">'+(l.enquiries||[]).slice().reverse().map(e=>'<div><span>'+esc(dayName(localDate(e.at)))+'</span><div>'+esc([e.source+(e.ad?" ("+e.ad+")":""),e.service,e.car,e.notes].filter(Boolean).join(" · "))+'</div></div>').join("")+'</div>':"")+
       '<div class="row"><button class="btn secondary" id="m-edit" type="button">Edit details</button>'+(st==="Done"?'<button class="btn secondary" id="m-review" type="button">Review steps</button>':"")+'</div>'+
@@ -746,8 +876,11 @@ main.wide{max-width:1400px}
       more.innerHTML="";
       if(s==="Booked"){
         const sp=T.priceFor(l.service,l.car);
-        more.innerHTML='<div class="grid"><label>Booked for<input id="m-job" type="date" value="'+esc(l.jobDate||"")+'"></label><label>Price $<input id="m-price" type="number" inputmode="decimal" min="0" value="'+esc(l.revenue??l.quoted??sp??"")+'"></label></div><button class="btn" id="m-book" type="button">Save booking</button>';
-        g("#m-book").addEventListener("click",()=>{ const date=g("#m-job").value; if(!date){ toast("Pick the day they're booked for"); return; } go(M.book(l,{date, price:num(g("#m-price").value)},new Date().toISOString(),who),"Booked. Legend."); });
+        more.innerHTML='<div class="grid"><label>Day<input id="m-job" type="date" value="'+esc(l.jobDate||l.depositDate||"")+'"></label><label>Time<input id="m-time" type="time" value="'+esc(l.jobTime||l.depositTime||"")+'"></label>'+
+          '<label class="full">Address<input id="m-addr" value="'+esc(l.address||"")+'" placeholder="12 Example St, Gungahlin" autocomplete="street-address"></label>'+
+          '<label class="full">Price $ (or a range, like 250-300)<input id="m-price" inputmode="text" value="'+esc(l.priceRange||l.revenue||l.quoted||sp||"")+'"></label></div><button class="btn" id="m-book" type="button">Save booking</button>';
+        g("#m-book").addEventListener("click",()=>{ const date=g("#m-job").value; if(!date){ toast("Pick the day they're booked for"); g("#m-job").focus(); return; }
+          go(M.book(l,{date, time:g("#m-time").value, address:g("#m-addr").value, price:g("#m-price").value},new Date().toISOString(),who),"Booked. Legend."); });
       } else if(s==="Waiting"){
         more.innerHTML='<p class="help">Why is it waiting?</p><div class="chips">'+Object.entries(M.WAIT_REASONS).map(([k,lab])=>'<button type="button" class="btn secondary" data-reason="'+k+'">'+esc(lab)+'</button>').join("")+'</div>'+
           '<p class="help">Not real keeps it here but out of Today and every number.</p>';
@@ -761,10 +894,7 @@ main.wide{max-width:1400px}
     g("#m-stage").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>pickStage(b.dataset.v)));
     if(pick) pickStage(pick);
     seg(g("#m-tag"),v=>save(id,M.retag(l,v)).then(ok=>{ if(ok) toast("Tagged "+v+"."); }));
-    g("#m-addNote").addEventListener("click",async()=>{
-      const text=g("#m-note").value.trim(); if(!text){ g("#m-note").focus(); return; }
-      go(M.note(l,text,new Date().toISOString(),who),"Note added.");
-    });
+    g("#m-addNote").addEventListener("click",()=>openNotes(id));
     g("#m-edit").addEventListener("click",()=>openEdit(id));
     const rv=g("#m-review"); if(rv) rv.addEventListener("click",()=>openReview(id));
     const rep=g("#m-repeat"); if(rep) rep.addEventListener("click",()=>openMenu(l.repeatOf));
@@ -796,7 +926,9 @@ main.wide{max-width:1400px}
       '<hr class="divider"><div class="eyebrow">The job</div>'+
       '<div class="grid">'+
         '<label>Job day<input id="e-jobDate" type="date" value="'+esc(l.jobDate)+'"></label>'+
-        '<label>Price $<input id="e-revenue" type="number" inputmode="decimal" value="'+esc(l.revenue??"")+'"></label>'+
+        '<label>Time<input id="e-jobTime" type="time" value="'+esc(l.jobTime||"")+'"></label>'+
+        '<label class="full">Address<input id="e-address" value="'+esc(l.address||"")+'" autocomplete="street-address"></label>'+
+        '<label class="full">Price $ (or a range, like 250-300)<input id="e-revenue" inputmode="text" value="'+esc(l.priceRange||l.revenue||"")+'"></label>'+
         '<label>Paid?'+yn("paid",l.paid)+'</label>'+
         '<label>On a maintenance plan?'+yn("plan",l.plan)+'</label>'+
         '<label>Upsell taken?'+yn("upsellTaken",l.upsellTaken)+'</label>'+
@@ -812,7 +944,7 @@ main.wide{max-width:1400px}
       const upd={ owner:g("#e-owner").value, name:g("#e-name").value.trim(), phone:g("#e-phone").value.trim(), email:g("#e-email").value.trim(), date:g("#e-date").value,
         referredBy:g("#e-ref").value.trim(), service:g("#e-service").value, car:g("#e-car").value.trim(), suburb:g("#e-suburb").value.trim(),
         quoted:num(g("#e-quoted").value), objection:g("#e-obj").value,
-        jobDate:g("#e-jobDate").value, revenue:num(g("#e-revenue").value), paid:sv("paid"), plan:sv("plan"), upsellTaken:sv("upsellTaken"),
+        jobDate:g("#e-jobDate").value, jobTime:g("#e-jobTime").value, address:g("#e-address").value.trim(), revenue:M.parsePrice(g("#e-revenue").value).price, priceRange:M.parsePrice(g("#e-revenue").value).range, paid:sv("paid"), plan:sv("plan"), upsellTaken:sv("upsellTaken"),
         nextDue:g("#e-nextDue").value, notes:g("#e-notes").value.trim() };
       if(adv!==adValue(l) && adv) Object.assign(upd, adv===NONE||adv===REF ? {ad:"", fromAd:adFields(adv).fromAd} : {ad:adv, fromAd:"ad"});
       if(upd.plan==="Yes" && l.plan!=="Yes") upd.planSince=today();
@@ -1004,6 +1136,12 @@ main.wide{max-width:1400px}
     $("#byAd").innerHTML = ga.length ? '<tr><th>Ad</th><th class="n">Leads</th><th class="n">Booked</th><th class="n">Booked $</th><th class="n">Close</th></tr>'+
       ga.map(g=>'<tr data-drill="'+esc("ad:"+g.ad)+'" tabindex="0"><td class="ad">'+esc(g.ad)+'</td><td class="n">'+g.leads+'</td><td class="n">'+g.booked+'</td><td class="n">'+money(g.money)+'</td><td class="n">'+pct(g.booked,g.leads)+'</td></tr>').join("")
       : '<tr><td class="empty">No leads in this period yet.</td></tr>';
+    // Call note chips: how often each was picked, in this period.
+    const cc=M.chipCounts(leads.filter(l=>!w||l.owner===w), n=>inPeriodDay(localDate(n.at))), ccMax=Math.max(1,...cc.map(c=>c.times));
+    cc.forEach(c=>{ drill["chip:"+c.chip]={title:c.chip, sub:c.times+" times, "+c.leads+(c.leads===1?" lead":" leads"), items:leads.filter(l=>(!w||l.owner===w) && M.callNotes(l).some(n=>n.chips.includes(c.chip) && inPeriodDay(localDate(n.at)))).map(l=>({l, r:stage(l), ln:[M.noteLine(M.callNotes(l).find(n=>n.chips.includes(c.chip))), l.owner]}))}; });
+    $("#chipTable").innerHTML = cc.some(c=>c.times) ? '<tr><th>They said</th><th class="n">Times</th><th class="n">Leads</th></tr>'+
+      cc.map(c=>'<tr'+(c.times?' data-drill="'+esc("chip:"+c.chip)+'" tabindex="0"':"")+'><td>'+esc(c.chip)+'<div class="bar"><i style="width:'+Math.round(100*c.times/ccMax)+'%"></i></div></td><td class="n">'+c.times+'</td><td class="n">'+c.leads+'</td></tr>').join("")
+      : '<tr><td class="empty">No call notes in this period yet. Tap Notes on a lead to add one.</td></tr>';
     const row=(label,v)=>'<tr><td>'+label+'</td><td class="n">'+v+'</td></tr>';
     $("#adSpend").innerHTML=row("Spent in this period",money(ads.spend))+row("Leads from ads",ads.leads)+row("Booked from ads",ads.booked)+row("Per booked job",ads.perBooked==null?"–":money(ads.perBooked));
     // More.
@@ -1056,7 +1194,7 @@ main.wide{max-width:1400px}
     const set=R.settings(reviewSettings), h=H(), hm=n=>String(Math.floor(n/60)).padStart(2,"0")+":"+String(n%60).padStart(2,"0");
     const g=sheet('<div class="sheet-h"><div><h2>Settings</h2><p class="help">Saved for both phones.</p></div><button class="x" id="closeSheet" type="button">Close</button></div>'+
       '<div class="set-sec"><div class="eyebrow">Clear old backlog</div><p class="help">Old Chasing leads: send one "still keen?" text, then move them all to Waiting.</p><button class="btn" id="s-backlog" type="button">Clear old backlog</button></div>'+
-      '<div class="set-sec"><div class="eyebrow">Messages</div><p class="help">[name], [car] and [owner] fill in by themselves. [day] is left for you to change before you send.</p>'+
+      '<div class="set-sec"><div class="eyebrow">Messages</div><p class="help">[name], [car] and [owner] fill in by themselves. [day] and [time] fill in when the job has them, else they are left for you to change before you send. [link] is the deposit link. No emojis.</p>'+
         T.EDITABLE.map(k=>'<label>'+esc(T.LABELS[k])+'<textarea data-tpl="'+k+'" rows="4">'+esc(templates[k]&&String(templates[k]).trim()?templates[k]:T.TEMPLATES[k])+'</textarea></label>').join("")+
         '<div class="row"><button class="btn" id="s-tplSave" type="button">Save messages</button><button class="btn secondary" id="s-tplReset" type="button">Back to the originals</button></div></div>'+
       '<div class="set-sec"><div class="eyebrow">Ad names</div><p class="help">One per line. These are the choices in "Which ad?" on the Add tab, as well as Not from an ad and Referral / repeat.</p>'+
@@ -1122,7 +1260,7 @@ main.wide{max-width:1400px}
   // ---------- EXPORT ----------
   async function exportCsv(){
     if(!dl) return;
-    const cols=["date","owner","name","phone","source","ad","fromAd","referredBy","service","car","suburb","stage","waitReason","old_status","status","touches","nextFollowUp","replyMins","quoted","objection","lostReason","lastContact","jobDate","jobTime","address","access","revenue","paid","plan","planSince","offeredCeramic","offeredPlan","upsellOffered","upsellTaken","reviewAsked","reviewLeft","reviewStatus","nextDue","notes","completedAt","timeline","score","junk"];
+    const cols=["date","owner","name","phone","source","ad","fromAd","referredBy","service","car","suburb","stage","waitReason","old_status","status","touches","nextFollowUp","replyMins","quoted","objection","lostReason","lastContact","jobDate","jobTime","address","access","revenue","priceRange","depositPaid","depositPaidAt","onMyWayAt","paid","plan","planSince","offeredCeramic","offeredPlan","upsellOffered","upsellTaken","reviewAsked","reviewLeft","reviewStatus","nextDue","notes","completedAt","timeline","score","junk"];
     const q=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
     const csv=[cols.join(",")].concat(leads.slice().sort((a,b)=>(a.date||"").localeCompare(b.date||"")).map(l=>cols.map(c=>q(c==="stage"?stage(l):l[c])).join(","))).join("\n");
     try{ await dl.save({filename:"imperium-leads-"+today()+".csv", data:csv}); }catch(e){ if(e&&e.code!=="cancelled") toast("Couldn't download"); }
@@ -1391,7 +1529,7 @@ main.wide{max-width:1400px}
   renderAll();
   try{ const t=localStorage.getItem("il-tab"); if(t && $("#view-"+t)) showTab(t); else showTab("today"); }catch(e){ showTab("today"); }
   // The timers on new leads tick over; Today redraws each half minute (not while a sheet is open).
-  setInterval(()=>{ if(!$("#sheet") && !$("#view-today").hidden) renderToday(); housekeeping(); },30000);
+  setInterval(()=>{ if(!$("#sheet") && !$("#view-today").hidden) renderToday(); housekeeping(); checkDeposits(); },30000);
 
   let dbTries=0;
   function connect(){
@@ -1412,11 +1550,12 @@ main.wide{max-width:1400px}
       doc("settings/simple",v=>{ simple=v||{}; });
       db.collection("nights").onSnapshot(snap=>{ nights=snap.docs.map(x=>x.data()); renderAll(); }, ()=>{});
       db.collection("spend").onSnapshot(snap=>{ spendWeeks=snap.docs.map(x=>x.data()); renderAll(); }, ()=>{});
-      db.collection("leads").orderBy("createdAt","desc").onSnapshot(snap=>{ leads=snap.docs.map(x=>migrate(Object.assign({id:x.id},x.data()))); loaded=true; renderAll(); upgradeOnLoad(); housekeeping(); }, ()=>{ $("#offline").hidden=false; });
+      db.collection("leads").orderBy("createdAt","desc").onSnapshot(snap=>{ leads=snap.docs.map(x=>migrate(Object.assign({id:x.id},x.data()))); loaded=true; renderAll(); upgradeOnLoad(); housekeeping(); checkDeposits(); }, ()=>{ $("#offline").hidden=false; });
     });
   }
   connect();
   $("#retryBtn").addEventListener("click",()=>{ location.reload(); });
   use("downloads").then(d=>{ dl=d; });
+  use("api").then(a=>{ api=a; checkDeposits(); });
 })();
 </script>
