@@ -64,6 +64,8 @@ export function buildLead(input, now = new Date()) {
     .filter(Boolean)
     .join(" · ");
   const timeline = mapTimeline(input.timeline ?? input.when);
+  const source = mapSource(input.source);
+  const ad = adName(input.source);
   return {
     date,
     createdAt: now.toISOString(),
@@ -72,8 +74,8 @@ export function buildLead(input, now = new Date()) {
     phone: clip(input.phone, 40),
     suburb: clip(input.suburb, 120),
     car: clip(input.vehicle, 200),
-    source: mapSource(input.source),
-    ad: adName(input.source),
+    source,
+    ad,
     service: mapService(input.service),
     status: "New",
     nextFollowUp: date,
@@ -109,5 +111,8 @@ export function buildLead(input, now = new Date()) {
     ...M.newFields(timeline),
     email: clip(input.email, 200),
     formId: clip(input.formId ?? input.form_id ?? input.leadgen_id, 120),
+    // Which ad, for the By ad table: a named ad, or "none" for the website's own forms. A Meta
+    // lead with no ad name stays "" (shown as Unknown).
+    fromAd: ad ? "ad" : source === "Meta ad" ? "" : "none",
   };
 }

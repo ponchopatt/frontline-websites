@@ -34,6 +34,9 @@ copyFileSync(join(here, "node_modules/@supabase/supabase-js/dist/umd/supabase.js
 const url = process.env.SUPABASE_URL ?? "";
 const anonKey = process.env.SUPABASE_ANON_KEY ?? "";
 if (!url || !anonKey) console.warn("SUPABASE_URL or SUPABASE_ANON_KEY is not set: the page will say it can't reach the list.");
-writeFileSync(join(pub, "config.js"), `window.LEADS_CONFIG = ${JSON.stringify({ url, anonKey })};\n`);
+// Anything but the live site (a Vercel preview, or a build on a computer) is a preview: it reads
+// the real list but keeps every save on the phone, so trying a change never touches real leads.
+const preview = process.env.VERCEL_ENV !== "production";
+writeFileSync(join(pub, "config.js"), `window.LEADS_CONFIG = ${JSON.stringify({ url, anonKey, preview })};\n`);
 
-console.log("Built public/: index.html, vendor/supabase.js, config.js");
+console.log("Built public/: index.html, vendor/supabase.js, config.js" + (preview ? " (preview: saves stay on the phone)" : ""));
