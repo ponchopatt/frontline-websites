@@ -749,7 +749,8 @@ main.wide{max-width:1400px}
       const date=g("#d-day").value, time=g("#d-time").value, b=g("#d-make");
       b.disabled=true; b.textContent="Making the link…";
       let r;
-      try{ r=await api.call("/api/deposit",{method:"POST", body:{leadId:id, date, time, name:l.name||"", car:l.car||""}}); }
+      const previous = l.depositPaid!=="Yes" ? (l.depositSessionId||"") : "";
+      try{ r=await api.call("/api/deposit",{method:"POST", body:{leadId:id, date, time, name:l.name||"", car:l.car||"", previous}}); }
       catch(e){
         b.disabled=false; b.textContent="Make deposit link";
         toast(e.code==="not_set_up"?"Stripe isn't set up yet (STRIPE_SECRET_KEY in Vercel).":e.status===401?"Sign in again, then try.":"Couldn't make the link: "+(e.message||"try again"));
@@ -762,7 +763,7 @@ main.wide{max-width:1400px}
         '<p class="say">'+esc(text)+'</p>'+
         (ph?'<a class="btn" id="d-send" href="'+esc(T.smsHref(ph,text))+'">Open messages</a>':"")+
         '<button class="btn secondary" id="d-copy" type="button">Copy text</button>'+
-        '<p class="help">The link works for 24 hours. Once they pay, this lead shows Deposit paid ✓ and moves to Booked by itself.</p>';
+        '<p class="help">'+(r.expiresAt?"This link works for 24 hours. ":"The link can be paid once. Making a new one for this lead turns this one off. ")+'Once they pay, this lead shows Deposit paid ✓ and moves to Booked by itself.</p>';
       g("#d-copy").addEventListener("click",()=>copyText(text,"Copied. Paste it into a text."));
       const send=g("#d-send"); if(send) send.addEventListener("click",()=>setTimeout(closeSheet,400));
     });
@@ -776,13 +777,14 @@ main.wide{max-width:1400px}
     const now=Date.now();
     for(const l of leads){
       if(!l.depositSessionId || l.depositPaid==="Yes") continue;
-      const made=Date.parse(l.depositLinkAt||""); if(!made || now-made>26*36e5) continue;
-      if(now-(checkedAt.get(l.id)||0)<60000) continue;
+      // Links stay open until paid: checked each minute for a day, then every 10 minutes for 3 weeks.
+      const made=Date.parse(l.depositLinkAt||""); if(!made || now-made>21*864e5) continue;
+      if(now-(checkedAt.get(l.id)||0)<(now-made<864e5?60000:600000)) continue;
       checkedAt.set(l.id,now);
       try{
         const d=await api.call("/api/deposit?id="+encodeURIComponent(l.depositSessionId));
         const cur=current(l.id);
-        if(d.paid && cur && cur.depositPaid!=="Yes" && await save(l.id,M.depositPaid(cur,{at:new Date().toISOString(), sessionId:l.depositSessionId, amount:d.amount, date:d.jobDate, time:d.jobTime},today())))
+        if(d.paid && cur && cur.depositPaid!=="Yes" && await save(l.id,M.depositPaid(cur,{at:new Date().toISOString(), sessionId:d.checkoutId||"", linkId:l.depositSessionId, amount:d.amount, date:d.jobDate||cur.depositDate, time:d.jobTime||cur.depositTime},today())))
           toast((l.name||"They")+" paid the deposit. Booked.");
       }catch(e){ /* tried again next time */ }
     }
