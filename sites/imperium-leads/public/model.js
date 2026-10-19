@@ -28,8 +28,9 @@
                    the price (a range like "250–300" is kept in priceRange, with its low end in revenue)
     log            calls, texts and notes, each with when (at) and who (by). A call note has
                    type "note", the chips picked (chips) and the words typed (note)
-    depositPaid    "Yes" once the $50 Stripe deposit is paid (depositPaidAt, depositAmount,
-                   depositSessionId); depositUrl, depositLinkAt, depositDate, depositTime: the last link made
+    depositPaid    "Yes" once the $50 Stripe deposit is paid (depositPaidAt, depositAmount, and
+                   depositCheckoutId, the payment). depositSessionId (the link's id: plink_…, or cs_…
+                   for older links), depositUrl, depositLinkAt, depositDate, depositTime: the last link made
     onMyWayAt, onMyWayBy   when the "On my way" text was sent, and who sent it
     waitedAt, waitedHow   when it went to Waiting, and how: touch4, auto, backlog or hand
     timeline, score, email, formId, enquiries, againAt, repeatOf, lostReason: as before
@@ -640,13 +641,14 @@
     };
   }
   /*
-    The $50 deposit was paid (d: { at, sessionId, amount, date, time }): the lead shows "Deposit
+    The $50 deposit was paid (d: { at, sessionId, linkId, amount, date, time }; sessionId is the
+    payment's Checkout Session, linkId its Payment Link): the lead shows "Deposit
     paid ✓", and one not booked yet moves to Booked, taking the day and time the link was made
     for when it has none of its own.
   */
   function depositPaid(l, d, today) {
     var amount = d.amount == null ? DEPOSIT : d.amount;
-    var p = { depositPaid: "Yes", depositPaidAt: d.at, depositAmount: amount, depositSessionId: d.sessionId || l.depositSessionId || "" };
+    var p = { depositPaid: "Yes", depositPaidAt: d.at, depositAmount: amount, depositSessionId: l.depositSessionId || d.linkId || d.sessionId || "", depositCheckoutId: d.sessionId || "" };
     var stage = stageOf(l, today);
     if (stage !== "Booked" && stage !== "Done") {
       assign(p, { stage: "Booked", waitReason: "", nextFollowUp: "", rolledOn: "" });

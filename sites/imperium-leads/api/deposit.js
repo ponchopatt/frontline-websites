@@ -7,9 +7,10 @@ import { isTeam } from "../lib/team.js";
 /*
   The $50 deposit, for the team only (the phone sends its sign-in).
 
-  POST /api/deposit {leadId, date, time, name, car} — makes a Stripe Checkout link for the lead,
-  with its name, car and job day in the description. Answers {id, url, expiresAt, test}.
-  GET  /api/deposit?id=cs_… — whether that link has been paid: {paid, status, amount, ...}.
+  POST /api/deposit {leadId, date, time, name, car, previous} — makes a short Stripe Payment Link
+  for the lead, with its name, car and job day on it, and turns off `previous` (the lead's last
+  unpaid link). Answers {id, url, expiresAt, test}.
+  GET  /api/deposit?id=plink_… (or cs_…) — whether that link has been paid: {paid, checkoutId, amount, ...}.
 
   Nothing is saved here: the phone keeps the link on the lead, and /api/stripe-webhook marks it
   paid. The key comes from STRIPE_SECRET_KEY in Vercel's settings.
@@ -33,7 +34,8 @@ export async function POST(request) {
   const date = M.isDay(body.date) ? body.date : M.isDay(lead.jobDate) ? lead.jobDate : "";
   const time = /^\d{1,2}:\d{2}$/.test(String(body.time || "")) ? body.time : lead.jobTime || "";
   try {
-    const s = await createDeposit({ leadId, name: lead.name || clip(body.name), car: lead.car || clip(body.car), date, time, returnTo: new URL(request.url).origin });
+    const previous = /^plink_[A-Za-z0-9]+$/.test(String(body.previous || "")) ? body.previous : "";
+    const s = await createDeposit({ leadId, name: lead.name || clip(body.name), car: lead.car || clip(body.car), date, time, previous, returnTo: new URL(request.url).origin });
     return json({ ...s, test: isTestKey(stripeKey()) });
   } catch (e) {
     return json({ error: e.message || "Stripe said no" }, 502);

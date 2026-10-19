@@ -237,10 +237,14 @@ time it was sent (`onMyWayAt`, `onMyWayBy`).
 ## The $50 deposit (Stripe)
 
 **Send $50 deposit** is on Chasing and Booked leads. Pick the day and time, tap **Make deposit
-link**: `/api/deposit` makes a Stripe Checkout link for $50 AUD with the lead's name, car and job
-day in the description, then **Open messages** has the text ready ("Hey [name], to lock in [day]
-at [time] for the [car], here's the $50 deposit link: [link]. It comes off the final price and is
-fully refundable with 24 hours' notice."). Stripe keeps each link open for 24 hours.
+link**: `/api/deposit` makes a short Stripe Payment Link (`https://book.stripe.com/…`, with a Book
+button) for $50 AUD, with the lead's name, car and job day on the payment and on the page, then
+**Open messages** has the text ready ("Hey [name], to lock in [day] at [time] for the [car], here's
+the $50 deposit link: [link]. It comes off the final price and is fully refundable with 24 hours'
+notice."). Each link can be paid once and stays open until it is; making a new link for the same
+lead turns the old one off. Every link uses one shared $50 price (lookup key
+`imperium_leads_deposit_50`, made the first time), so Stripe's product list holds one Deposit. If
+Stripe ever won't make a Payment Link, a (much longer) Checkout link is made instead.
 
 When they pay, Stripe calls `/api/stripe-webhook`: the lead shows **Deposit paid ✓** and moves to
 Booked (taking the day and time the link was made for, if it had none). The phone also checks

@@ -6,37 +6,47 @@ import { createDeposit, depositUpdate, describe, form, getDeposit, isTestKey, ve
 
 const at = (d, hm = "10:00") => new Date(`${d}T${hm}:00+11:00`).toISOString();
 
-// A pretend Stripe: records each call and answers with `reply`.
+// A pretend Stripe: records each call and answers with `reply` (or reply(call) → [status, body]).
 function fakeStripe(reply) {
   const calls = [];
   const real = globalThis.fetch;
   globalThis.fetch = async (url, init = {}) => {
-    calls.push({ url, method: init.method, auth: init.headers && init.headers.Authorization, body: init.body ? new URLSearchParams(init.body) : null });
-    return { ok: true, json: async () => reply };
+    const c = { url, method: init.method, auth: init.headers && init.headers.Authorization, body: init.body ? new URLSearchParams(init.body) : null };
+    calls.push(c);
+    const [status, body] = typeof reply === "function" ? reply(c) : [200, reply];
+    return { ok: status < 300, status, json: async () => body };
   };
   return { calls, restore: () => { globalThis.fetch = real; } };
 }
+const API = "https://api.stripe.com/v1";
 
-test("the deposit link: $50 AUD, the lead's name, car and job day in the description, the key from the setting", async () => {
+test("the deposit link is a short Payment Link: $50 AUD, the lead's name, car and job day on it, paid once", async () => {
   process.env.STRIPE_SECRET_KEY = "sk_test_example";
-  const s = fakeStripe({ id: "cs_test_abc", url: "https://checkout.stripe.com/c/pay/cs_test_abc", expires_at: 1792200000 });
+  const s = fakeStripe((c) => {
+    if (c.url.startsWith(API + "/prices?")) return [200, { data: [{ id: "price_deposit" }] }];
+    if (c.url === API + "/payment_links") return [200, { id: "plink_new", url: "https://book.stripe.com/test_cN25nr0iZ7bUa7meUY" }];
+    return [200, {}];
+  });
   try {
-    const out = await createDeposit({ leadId: "lead-1", name: "Jo Smith", car: "Kluger", date: "2026-10-24", time: "09:30", returnTo: "https://example.vercel.app" });
-    assert.deepEqual(out, { id: "cs_test_abc", url: "https://checkout.stripe.com/c/pay/cs_test_abc", expiresAt: new Date(1792200000 * 1000).toISOString() });
-    const c = s.calls[0], b = c.body;
-    assert.equal(c.url, "https://api.stripe.com/v1/checkout/sessions");
-    assert.equal(c.method, "POST");
+    const out = await createDeposit({ leadId: "lead-1", name: "Jo Smith", car: "Kluger", date: "2026-10-24", time: "09:30", returnTo: "https://example.vercel.app", previous: "plink_old" });
+    assert.deepEqual(out, { id: "plink_new", url: "https://book.stripe.com/test_cN25nr0iZ7bUa7meUY", expiresAt: "" });
+    assert.equal(s.calls[0].url, API + "/prices?active=true&limit=1&lookup_keys%5B%5D=imperium_leads_deposit_50");
+    const c = s.calls[1], b = c.body;
+    assert.equal(c.url, API + "/payment_links");
     assert.equal(c.auth, "Bearer sk_test_example");
-    assert.equal(b.get("mode"), "payment");
-    assert.equal(b.get("line_items[0][price_data][currency]"), "aud");
-    assert.equal(b.get("line_items[0][price_data][unit_amount]"), "5000");
+    assert.equal(b.get("line_items[0][price]"), "price_deposit");
     assert.equal(b.get("line_items[0][quantity]"), "1");
-    assert.equal(b.get("line_items[0][price_data][product_data][description]"), "Jo Smith, Kluger, Sat 24 Oct 9:30am");
+    assert.equal(b.get("submit_type"), "book");
+    assert.equal(b.get("payment_intent_data[description]"), "Deposit: Jo Smith, Kluger, Sat 24 Oct 9:30am");
+    assert.match(b.get("custom_text[submit][message]"), /^Jo Smith, Kluger, Sat 24 Oct 9:30am\. The \$50 comes off the final price/);
     assert.equal(b.get("metadata[leadId]"), "lead-1");
     assert.equal(b.get("metadata[app]"), "imperium-leads");
     assert.equal(b.get("metadata[jobDate]"), "2026-10-24");
-    assert.equal(b.get("client_reference_id"), "lead-1");
-    assert.equal(b.get("success_url"), "https://example.vercel.app/deposit.html?paid=1");
+    assert.equal(b.get("restrictions[completed_sessions][limit]"), "1");
+    assert.equal(b.get("after_completion[redirect][url]"), "https://example.vercel.app/deposit.html?paid=1");
+    // The lead's last unpaid link is turned off.
+    assert.equal(s.calls[2].url, API + "/payment_links/plink_old");
+    assert.equal(s.calls[2].body.get("active"), "false");
   } finally {
     s.restore();
   }
@@ -45,13 +55,37 @@ test("the deposit link: $50 AUD, the lead's name, car and job day in the descrip
   assert.equal(form({ a: { b: 1, c: "" }, d: [{ e: "x" }] }).toString(), "a%5Bb%5D=1&d%5B0%5D%5Be%5D=x");
 });
 
+test("the $50 price is made once and shared; if a Payment Link can't be made, a Checkout link is", async () => {
+  process.env.STRIPE_SECRET_KEY = "sk_test_example";
+  const s = fakeStripe((c) => {
+    if (c.url.startsWith(API + "/prices?")) return [200, { data: [] }];
+    if (c.url === API + "/prices") return [200, { id: "price_made" }];
+    if (c.url === API + "/payment_links") return [400, { error: { message: "Not allowed here" } }];
+    if (c.url === API + "/checkout/sessions") return [200, { id: "cs_test_abc", url: "https://checkout.stripe.com/c/pay/cs_test_abc", expires_at: 1792200000 }];
+    return [200, {}];
+  });
+  try {
+    const out = await createDeposit({ leadId: "lead-1", name: "Jo", car: "Kluger", date: "2026-10-24", returnTo: "https://x.app" });
+    const made = s.calls.find((c) => c.url === API + "/prices");
+    assert.deepEqual([made.body.get("lookup_key"), made.body.get("unit_amount"), made.body.get("currency"), made.body.get("product_data[name]")], ["imperium_leads_deposit_50", "5000", "aud", "Deposit, Imperium Detailing"]);
+    assert.equal(out.id, "cs_test_abc"); // the longer link, so a deposit can still be sent
+    const cs = s.calls.find((c) => c.url === API + "/checkout/sessions").body;
+    assert.deepEqual([cs.get("line_items[0][price_data][unit_amount]"), cs.get("line_items[0][price_data][currency]"), cs.get("metadata[leadId]")], ["5000", "aud", "lead-1"]);
+  } finally {
+    s.restore();
+  }
+});
+
 test("checking a link: paid or not; only real link ids are asked for", async () => {
   process.env.STRIPE_SECRET_KEY = "sk_test_example";
-  const s = fakeStripe({ id: "cs_test_abc", payment_status: "paid", status: "complete", amount_total: 5000, metadata: { leadId: "lead-1", app: "imperium-leads", jobDate: "2026-10-24", jobTime: "09:30" } });
+  const paidSession = { id: "cs_test_abc", payment_status: "paid", status: "complete", amount_total: 5000, payment_link: "plink_new", metadata: { leadId: "lead-1", app: "imperium-leads", jobDate: "2026-10-24", jobTime: "09:30" } };
+  const s = fakeStripe((c) => c.url.includes("payment_link=") ? [200, { data: [{ id: "cs_test_open", payment_status: "unpaid", metadata: {} }, paidSession] }] : [200, paidSession]);
   try {
-    const d = await getDeposit("cs_test_abc");
-    assert.deepEqual([d.paid, d.amount, d.leadId, d.jobDate], [true, 50, "lead-1", "2026-10-24"]);
-    assert.equal(s.calls[0].url, "https://api.stripe.com/v1/checkout/sessions/cs_test_abc");
+    const d = await getDeposit("plink_new");
+    assert.deepEqual([d.paid, d.checkoutId, d.amount, d.leadId, d.jobDate], [true, "cs_test_abc", 50, "lead-1", "2026-10-24"]);
+    assert.equal(s.calls[0].url, API + "/checkout/sessions?limit=10&payment_link=plink_new");
+    const old = await getDeposit("cs_test_abc"); // a long link from before still works
+    assert.deepEqual([old.paid, s.calls[1].url], [true, API + "/checkout/sessions/cs_test_abc"]);
     await assert.rejects(getDeposit("../customers"), /Not a deposit link/);
   } finally {
     s.restore();
@@ -84,4 +118,9 @@ test("a paid deposit marks the lead paid and moves it to Booked, once; anything 
   assert.equal(depositUpdate(event({ metadata: { leadId: "lead-1", app: "something-else" } }), lead, now), null);
   assert.equal(depositUpdate({ ...event(), type: "payment_intent.created" }, lead, now), null);
   assert.equal(depositUpdate(event(), null, now), null);
+  // From a Payment Link: the lead keeps the link's id, and the same payment again changes nothing.
+  const linked = { ...lead, depositSessionId: "plink_new" };
+  const viaLink = depositUpdate(event({ payment_link: "plink_new" }), linked, now);
+  assert.deepEqual([viaLink.depositPaid, viaLink.depositSessionId, viaLink.depositCheckoutId, viaLink.stage], ["Yes", "plink_new", "cs_test_abc", "Booked"]);
+  assert.equal(depositUpdate(event({ payment_link: "plink_new" }), viaLink, now), null);
 });

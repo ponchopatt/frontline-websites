@@ -1,5 +1,5 @@
 import { json } from "../lib/http.js";
-import { depositUpdate, verifySignature } from "../lib/stripe.js";
+import { depositUpdate, getPaymentLink, verifySignature } from "../lib/stripe.js";
 import { adminClient, readDoc, writeDoc } from "../lib/supabase.js";
 
 /*
@@ -21,6 +21,11 @@ export async function POST(request) {
     return json({ error: "Bad JSON" }, 400);
   }
   const s = (event.data && event.data.object) || {};
+  // A payment from a Payment Link carries the link's metadata; if it ever doesn't, ask Stripe.
+  if (!(s.metadata && s.metadata.leadId) && /^plink_/.test(String(s.payment_link || ""))) {
+    const link = await getPaymentLink(s.payment_link).catch(() => null);
+    if (link && link.metadata) s.metadata = { ...link.metadata, ...(s.metadata || {}) };
+  }
   const leadId = (s.metadata && s.metadata.leadId) || s.client_reference_id;
   if (!leadId) return json({ received: true });
   if (process.env.VERCEL_ENV !== "production") return json({ received: true, preview: true });
