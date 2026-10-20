@@ -100,6 +100,16 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .lead .addr{display:flex;align-items:center;gap:6px;min-height:40px;padding:4px 0;font-size:14px;font-weight:600;color:var(--accent);text-decoration:none;line-height:1.3;overflow-wrap:anywhere}
 .lead .addr svg{flex:0 0 18px;width:18px;height:18px}
 .lead .when{font-weight:700;color:var(--text);font-size:14.5px}
+.fctag{font-weight:700;padding:2px 8px;border-radius:999px;font-size:12.5px;white-space:nowrap;background:var(--surface2);color:var(--muted)}
+.fctag.fc-5{background:var(--good-bg);color:var(--good)}
+.fctag.fc-30{background:var(--warn-bg);color:var(--warn)}
+.fctag.fc-30plus,.fctag.fc-nextday{background:var(--bad-bg);color:var(--bad)}
+.fcpick{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.fcpick button{min-height:60px;font:inherit;font-size:16px;font-weight:700;border-radius:14px;border:1px solid var(--line);background:var(--surface2);color:var(--text);cursor:pointer;padding:6px}
+.fcpick button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.fcpick button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.speed{display:flex;flex-direction:column;gap:2px}
+.speed .rd-row{padding:8px 2px}
 .paidtag{background:var(--good-bg);color:var(--good);font-weight:700;padding:2px 8px;border-radius:999px;font-size:12.5px;white-space:nowrap}
 .chipgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
 .chipgrid button{min-height:48px;font:inherit;font-size:14px;font-weight:600;border-radius:12px;border:1px solid var(--line);background:var(--surface2);color:var(--text);padding:6px 8px;line-height:1.2;cursor:pointer}
@@ -549,9 +559,11 @@ main.wide{max-width:1400px}
     }
     if(match.repeatOf) doc.repeatOf=match.repeatOf;
     try{
-      await db.collection("leads").add(M.sync(doc,today()));
+      const ref=await db.collection("leads").add(M.sync(doc,today()));
       resetForm();
-      toast(st==="Booked" ? "Booked. Legend." : st==="Quoted" ? "Saved. Touch 2 is tomorrow." : "Saved. It's on Today: text them now.");
+      const said=st==="Booked" ? "Booked. Legend." : st==="Quoted" ? "Saved. Touch 2 is tomorrow." : "Saved. It's on Today: text them now.";
+      if(st!=="New" && ref && ref.id) setTimeout(()=>{ if(leads.some(x=>x.id===ref.id)) askFirstContact(ref.id,said); else toast(said); },300);
+      else toast(said);
     }catch(err){ writeFail(err); }
     btn.disabled=false;
   });
@@ -630,6 +642,7 @@ main.wide{max-width:1400px}
     const job = opts.job && l.jobTime ? '<span class="when">'+esc(M.timeLabel(l.jobTime))+'</span>' : "";
     const meta=(fresh?timerChip(l):"")+[job, l.service?'<span>'+esc(l.service)+'</span>':"", opts.job?"":'<span>'+esc(ago(l))+'</span>', opts.job&&st==="Booked"?"":nextBit(l),
       l.depositPaid==="Yes"?'<span class="paidtag">Deposit paid ✓</span>':"",
+      M.FIRST_CONTACT[l.firstContact]?'<span class="fctag fc-'+esc(l.firstContact)+'" title="First contact: '+esc(M.FIRST_CONTACT[l.firstContact])+'">'+esc(FC_TAG[l.firstContact])+'</span>':"",
       l.repeatOf?'<span>Repeat</span>':"", showOwner&&l.owner?'<span>'+esc(l.owner)+'</span>':""].filter(Boolean).join('<span aria-hidden="true">·</span>');
     const n=M.callNotes(l)[0];
     const addr = l.address && (st==="Booked" || opts.job) ? '<a class="addr" href="'+esc(mapsHref(l.address))+'" target="_blank" rel="noopener">'+PIN+'<span>'+esc(l.address)+'</span></a>' : "";
@@ -680,6 +693,7 @@ main.wide{max-width:1400px}
     if(btn) btn.disabled=true;
     if(!await save(id,M.touch(l,entry))){ if(btn) btn.disabled=false; return; }
     const a=leads.find(x=>x.id===id)||{}, s2=stage(a);
+    if(st==="New"){ askFirstContact(id,"Done. "+M.touchLabel(a,today())+" is "+whenWord(a.nextFollowUp)+"."); return; }
     if(st!=="New" && st!=="Chasing") toast("Logged.");
     else if(s2==="Waiting") toast("That was touch 4. Moved to Waiting (no reply).");
     else if(st==="Chasing" && (Number(a.touches)||0)===before) toast("Already done today. "+M.touchLabel(a,today())+" is "+whenWord(a.nextFollowUp)+".");
@@ -707,6 +721,31 @@ main.wide{max-width:1400px}
     cb.closest(".tick").classList.toggle("on",on);
     if(!await save(id,p)){ cb.checked=!on; cb.closest(".tick").classList.toggle("on",!on); }
   }
+
+  // ---------- FIRST CONTACT (how fast the first reply really was) ----------
+  // Calls and texts often happen before they're logged here, so this is picked by hand. It wins
+  // over the app's own reply time in the Numbers.
+  const FC_TAG={"5":"⚡ 5 min","30":"5–30 min","30plus":"30 min+","nextday":"Next day"};
+  const fcButtons = cur => '<div class="fcpick">'+M.FIRST_CONTACT_KEYS.map(k=>'<button type="button" data-fc="'+k+'" aria-pressed="'+(cur===k)+'">'+esc(M.FIRST_CONTACT[k])+'</button>').join("")+'</div>';
+  async function setFirstContact(id,key){
+    const l=current(id); if(!l||!db) return false;
+    const clear = l.firstContact===key;
+    if(!await save(id,M.setFirstContact(clear?"":key,new Date().toISOString(),who))) return false;
+    toast(clear?"First contact cleared.":"First contact: "+M.FIRST_CONTACT[key]+".");
+    return true;
+  }
+  // One tap sets it (tap the same one again to clear it). `lead` is what to say above it.
+  function openFirstContact(id,lead){
+    const l=current(id); if(!l) return;
+    const g=sheet(head(l,lead||"First contact")+
+      '<div class="eyebrow">How fast did you first call or text them?</div>'+fcButtons(l.firstContact)+
+      '<button class="btn secondary" id="fc-skip" type="button">'+(lead?"Skip for now":"Close")+'</button>'+
+      '<p class="help">Used for "Replied ≤5 min" in Numbers. You can change it any time in the lead\'s … menu.</p>');
+    document.querySelectorAll("#sheet [data-fc]").forEach(b=>b.addEventListener("click",async()=>{ if(await setFirstContact(id,b.dataset.fc)) closeSheet(); }));
+    g("#fc-skip").addEventListener("click",closeSheet);
+  }
+  // Straight after a lead's first touch is logged, ask (once it's set, never again).
+  const askFirstContact=(id,said)=>{ const l=current(id); if(l && !M.FIRST_CONTACT[l.firstContact]) openFirstContact(id,said); };
 
   // ---------- CALL NOTES ----------
   // "Mon 19 Oct 10:05am", Canberra time.
@@ -858,6 +897,8 @@ main.wide{max-width:1400px}
       '<div class="eyebrow"><span>Change status</span><span>Now: '+esc(st==="Waiting"?"Waiting ("+M.WAIT_REASONS[M.waitReasonOf(l)]+")":st)+'</span></div>'+
       '<div class="seg three" id="m-stage">'+M.STAGES.map(s=>'<button type="button" data-v="'+s+'" aria-pressed="'+(s===st)+'">'+s+'</button>').join("")+'</div>'+
       '<div id="m-more"></div>'+
+      '<div class="eyebrow"><span>First contact</span><span>'+(M.FIRST_CONTACT[l.firstContact]&&l.firstContactBy?esc("Set by "+l.firstContactBy):"How fast was the first reply?")+'</span></div>'+
+      '<div id="m-fc">'+fcButtons(l.firstContact)+'</div>'+
       '<div class="eyebrow"><span>Tag (sets the order on Today)</span></div>'+
       '<div class="seg three" id="m-tag" data-value="'+esc(l.score||"")+'">'+M.TAGS.map(t=>'<button type="button" data-v="'+t+'">'+t+'</button>').join("")+'</div>'+
       '<button class="btn secondary" id="m-addNote" type="button">Add a call note</button>'+
@@ -872,7 +913,7 @@ main.wide{max-width:1400px}
       (l.repeatOf?'<p class="help">A repeat: this person was a lead before. <button type="button" class="mini" id="m-repeat">Open the old lead</button></p>':""));
     const more=g("#m-more");
     const busyAll=on=>document.querySelectorAll("#sheet button").forEach(b=>b.disabled=on);
-    const go=async(patch,msg)=>{ busyAll(true); if(await save(id,patch)){ closeSheet(); toast(msg); } else busyAll(false); };
+    const go=async(patch,msg)=>{ busyAll(true); if(await save(id,patch)){ closeSheet(); toast(msg); return true; } busyAll(false); return false; };
     const pickStage=s=>{
       g("#m-stage").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===s)));
       more.innerHTML="";
@@ -882,7 +923,9 @@ main.wide{max-width:1400px}
           '<label class="full">Address<input id="m-addr" value="'+esc(l.address||"")+'" placeholder="12 Example St, Gungahlin" autocomplete="street-address"></label>'+
           '<label class="full">Price $ (or a range, like 250-300)<input id="m-price" inputmode="text" value="'+esc(l.priceRange||l.revenue||l.quoted||sp||"")+'"></label></div><button class="btn" id="m-book" type="button">Save booking</button>';
         g("#m-book").addEventListener("click",()=>{ const date=g("#m-job").value; if(!date){ toast("Pick the day they're booked for"); g("#m-job").focus(); return; }
-          go(M.book(l,{date, time:g("#m-time").value, address:g("#m-addr").value, price:g("#m-price").value},new Date().toISOString(),who),"Booked. Legend."); });
+          const untouched=!(l.log||[]).some(M.isTouch);
+          go(M.book(l,{date, time:g("#m-time").value, address:g("#m-addr").value, price:g("#m-price").value},new Date().toISOString(),who),"Booked. Legend.")
+            .then(ok=>{ if(ok && untouched) askFirstContact(id,"Booked. Legend."); }); });
       } else if(s==="Waiting"){
         more.innerHTML='<p class="help">Why is it waiting?</p><div class="chips">'+Object.entries(M.WAIT_REASONS).map(([k,lab])=>'<button type="button" class="btn secondary" data-reason="'+k+'">'+esc(lab)+'</button>').join("")+'</div>'+
           '<p class="help">Not real keeps it here but out of Today and every number.</p>';
@@ -896,6 +939,11 @@ main.wide{max-width:1400px}
     g("#m-stage").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>pickStage(b.dataset.v)));
     if(pick) pickStage(pick);
     seg(g("#m-tag"),v=>save(id,M.retag(l,v)).then(ok=>{ if(ok) toast("Tagged "+v+"."); }));
+    g("#m-fc").querySelectorAll("[data-fc]").forEach(b=>b.addEventListener("click",async()=>{
+      if(!await setFirstContact(id,b.dataset.fc)) return;
+      const now=(current(id)||{}).firstContact||"";
+      g("#m-fc").querySelectorAll("[data-fc]").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.fc===now)));
+    }));
     g("#m-addNote").addEventListener("click",()=>openNotes(id));
     g("#m-edit").addEventListener("click",()=>openEdit(id));
     const rv=g("#m-review"); if(rv) rv.addEventListener("click",()=>openReview(id));
@@ -1083,7 +1131,8 @@ main.wide{max-width:1400px}
     drill.wJobs={title:"Jobs done this week", items:w.jobsDone.items.map(l=>({l, r:price(l)?money(price(l)):"", ln:jl(l)}))};
     drill.wCeramic={title:"Ceramics this week", sub:"Jobs booked as Ceramic", items:w.ceramics.items.map(l=>({l, r:price(l)?money(price(l)):"", ln:jl(l)}))};
     drill.wPlans={title:"New maintenance plans", sub:"Put on a plan this week, or booked as one", items:w.plans.items.map(l=>({l, r:"", ln:jl(l)}))};
-    drill.wReplied={title:"Replied within 5 min", sub:w.replied.fast+" of "+w.replied.of+" new leads this week, from 8am for overnight ones", items:w.replied.items.map(l=>{ const r=M.replyMinutes(l,h); return {l, r:r==null?"No reply":mins(r), cls:r!=null&&r<=5?"good":"bad", ln:[l.service, "Came in "+dayName(l.date||localDate(l.createdAt)), l.owner]}; })};
+    drill.wReplied={title:"Replied within 5 min", sub:w.replied.fast+" of "+w.replied.of+" new leads this week", items:w.replied.items.map(l=>speedItem(l,h))};
+    w.replied.buckets.forEach(b=>{ drill["wSpeed:"+b.key]={title:b.label, sub:b.n+" of "+w.replied.of+" new leads this week", items:b.items.map(l=>speedItem(l,h))}; });
     drill.wUpsell={title:"Upsells offered this week", sub:"Ticks on this week's jobs", items:w.upsell.items.map(l=>({l, r:[l.offeredCeramic==="Yes"?"Ceramic":"", l.offeredPlan==="Yes"?"Plan":""].filter(Boolean).join(" + ")||"Not offered", cls:l.offeredCeramic==="Yes"||l.offeredPlan==="Yes"?"good":"", ln:jl(l)}))};
     const rep=w.replied.of?Math.round(100*w.replied.fast/w.replied.of):null;
     $("#week").classList.toggle("hit", m.total>=m.goal);
@@ -1095,7 +1144,15 @@ main.wide{max-width:1400px}
       '<div class="tiles">'+tile(w.jobsDone.n,"Jobs done","","wJobs")+tile(w.ceramics.n,"Ceramics sold","","wCeramic")+tile(w.plans.n,"New plans","","wPlans")+
         tile(rep==null?"–":rep+"%","Replied ≤5 min",rep==null?"":rep>=80?"good":rep>=50?"warn":"bad","wReplied")+
         tile(pct(w.upsell.ceramic,w.upsell.jobs),"Offered ceramic","","wUpsell")+tile(pct(w.upsell.plan,w.upsell.jobs),"Offered plan","","wUpsell")+'</div>'+
+      '<div class="eyebrow"><span>How fast we first reply</span><span>'+w.replied.of+' new '+(w.replied.of===1?"lead":"leads")+'</span></div>'+
+      (w.replied.of?'<div class="tbl"><table>'+w.replied.buckets.map(b=>'<tr data-drill="'+esc("wSpeed:"+b.key)+'" tabindex="0"><td>'+(b.key==="none"?esc(b.label):'<span class="fctag fc-'+esc(b.key)+'">'+esc(b.label)+'</span>')+'<div class="bar"><i style="width:'+b.pct+'%"></i></div></td><td class="n">'+b.pct+'%</td><td class="n">'+b.n+'</td></tr>').join("")+'</table></div>':'<p class="help">No new leads this week yet.</p>')+
       '<p class="help">Money is this week\'s jobs by job day. Target and ad names are in Settings (⚙).</p>';
+  }
+  // A lead in a reply-speed run-down: its bucket, and whether it was picked by hand or the app's time.
+  function speedItem(l,h){
+    const sp=M.replySpeed(l,h);
+    return {l, r:sp?M.FIRST_CONTACT[sp.bucket]:"Not known yet", cls:sp?(sp.bucket==="5"?"good":sp.bucket==="30"?"warn":"bad"):"",
+      ln:[sp?(sp.manual?"Picked"+(l.firstContactBy?" by "+l.firstContactBy:""):"App's time: "+mins(sp.mins)):"", l.service, "Came in "+dayName(l.date||localDate(l.createdAt)), l.owner]};
   }
   function renderNumbers(){
     renderWeek();
@@ -1105,7 +1162,8 @@ main.wide{max-width:1400px}
     const isBooked=l=>M.isBooked(l,t);
     const booked=rows.filter(isBooked), cash=M.takings(rows,t), rev=cash.booked;
     // Counted from the start of call hours for a lead that came in overnight.
-    const replied=rows.filter(l=>M.replyMinutes(l,h)!=null), fast=replied.filter(l=>M.replyMinutes(l,h)<=5).length;
+    // First contact picked by hand wins; else the app's own time (from 8am for overnight leads).
+    const replied=rows.filter(l=>M.replySpeed(l,h)), fast=replied.filter(l=>M.repliedFast(l,h)).length;
     const closeRate=rows.length?booked.length/rows.length:0, fastRate=replied.length?fast/replied.length:null;
     // Ads: the weekly spend (both phones) against what each ad booked (both of you).
     const ads=M.costPerBooked(live, M.adSpend(spendWeeks, inPeriodDay), t);
@@ -1119,7 +1177,7 @@ main.wide{max-width:1400px}
       leads:{title:"Leads", items:rows.map(l=>({l, r:stage(l), ln:[l.service, M.adLabel(l), "Came in "+dayName(l.date||localDate(l.createdAt)), l.owner]}))},
       booked:{title:"Booked", items:bookedRows.map(l=>({l, r:price(l)?money(price(l)):"", ln:paidLine(l)}))},
       close:{title:"Close rate", sub:booked.length+" of "+rows.length+" booked", items:rows.slice().sort((a,b)=>(isBooked(b)?1:0)-(isBooked(a)?1:0)).map(l=>({l, r:isBooked(l)?"Booked":stage(l), cls:isBooked(l)?"good":"", ln:[l.service, l.source, l.owner]}))},
-      replied:{title:"Replied within 5 minutes", sub:fast+" of "+replied.length+" fast, counted from 8am for overnight leads", items:replied.slice().sort((a,b)=>M.replyMinutes(a,h)-M.replyMinutes(b,h)).map(l=>{ const m=M.replyMinutes(l,h); return {l, r:mins(m), cls:m<=5?"good":"bad", ln:[l.service, "Came in "+dayName(l.date||localDate(l.createdAt)), l.owner]}; })},
+      replied:{title:"Replied within 5 minutes", sub:fast+" of "+replied.length+" fast. First contact where it's been picked, else the app's time", items:replied.slice().sort((a,b)=>M.FIRST_CONTACT_KEYS.indexOf(M.replySpeed(a,h).bucket)-M.FIRST_CONTACT_KEYS.indexOf(M.replySpeed(b,h).bucket)).map(l=>speedItem(l,h))},
       bookedMoney:{title:"Booked $", sub:money(cash.booked)+" from "+jobs(bookedRows.filter(price).length), items:bookedRows.filter(price).map(l=>({l, r:money(price(l)), cls:l.paid==="Yes"?"good":"", ln:paidLine(l)}))},
       collected:{title:"Cash collected", sub:money(cash.collected)+" from "+jobs(paid.length), items:paid.map(l=>({l, r:money(price(l)), cls:"good", ln:paidLine(l)}))},
       toCollect:{title:"Still to collect", sub:money(cash.toCollect)+" from "+jobs(unpaid.length), items:unpaid.map(l=>({l, r:money(price(l)), cls:"warn", ln:[l.service, l.jobDate?(l.jobDate<t?"Job was "+dayName(l.jobDate):l.jobDate===t?"Job today":"Job "+dayName(l.jobDate)):"", l.owner]}))},
@@ -1262,7 +1320,7 @@ main.wide{max-width:1400px}
   // ---------- EXPORT ----------
   async function exportCsv(){
     if(!dl) return;
-    const cols=["date","owner","name","phone","source","ad","fromAd","referredBy","service","car","suburb","stage","waitReason","old_status","status","touches","nextFollowUp","replyMins","quoted","objection","lostReason","lastContact","jobDate","jobTime","address","access","revenue","priceRange","depositPaid","depositPaidAt","onMyWayAt","paid","plan","planSince","offeredCeramic","offeredPlan","upsellOffered","upsellTaken","reviewAsked","reviewLeft","reviewStatus","nextDue","notes","completedAt","timeline","score","junk"];
+    const cols=["date","owner","name","phone","source","ad","fromAd","referredBy","service","car","suburb","stage","waitReason","old_status","status","touches","nextFollowUp","replyMins","quoted","objection","lostReason","lastContact","jobDate","jobTime","address","access","revenue","priceRange","depositPaid","depositPaidAt","onMyWayAt","firstContact","firstContactBy","paid","plan","planSince","offeredCeramic","offeredPlan","upsellOffered","upsellTaken","reviewAsked","reviewLeft","reviewStatus","nextDue","notes","completedAt","timeline","score","junk"];
     const q=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
     const csv=[cols.join(",")].concat(leads.slice().sort((a,b)=>(a.date||"").localeCompare(b.date||"")).map(l=>cols.map(c=>q(c==="stage"?stage(l):l[c])).join(","))).join("\n");
     try{ await dl.save({filename:"imperium-leads-"+today()+".csv", data:csv}); }catch(e){ if(e&&e.code!=="cancelled") toast("Couldn't download"); }

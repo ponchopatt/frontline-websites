@@ -93,3 +93,39 @@ test("the deposit and on-my-way texts: the agreed words, filled in, no emojis, a
   // Touch 1's "[day] or [day]" is still left for you.
   assert.match(T.fill("touch1", l), /\[day\] or \[day\]/);
 });
+
+test("first contact picked by hand wins over the app's own reply time; without it, the app's time is used", () => {
+  const H = M.hours();
+  const base = { createdAt: at(TODAY, "10:00"), date: TODAY };
+  // App only: 3 min fast; 12 min; 2 hours; replied the next day.
+  assert.deepEqual(M.replySpeed(lead({ ...base, replyMins: 3 }), H), { bucket: "5", mins: 3, manual: false });
+  assert.equal(M.replySpeed(lead({ ...base, replyMins: 12 }), H).bucket, "30");
+  assert.equal(M.replySpeed(lead({ ...base, replyMins: 120 }), H).bucket, "30plus");
+  assert.equal(M.replySpeed(lead({ ...base, replyMins: 23 * 60 }), H).bucket, "nextday");
+  assert.equal(M.replySpeed(lead(base), H), null); // nothing known
+  // Logged later in the app (2 hours), but really called within 5 minutes: the pick wins.
+  const late = lead({ ...base, replyMins: 120, ...M.setFirstContact("5", at(TODAY, "12:00"), "Angus") });
+  assert.deepEqual(M.replySpeed(late, H), { bucket: "5", mins: null, manual: true });
+  assert.equal(M.repliedFast(late, H), true);
+  assert.deepEqual([late.firstContact, late.firstContactBy, late.firstContactAt], ["5", "Angus", at(TODAY, "12:00")]);
+  // Changeable, and clearable.
+  assert.equal(M.replySpeed({ ...late, ...M.setFirstContact("nextday", at(TODAY), "Angus") }, H).bucket, "nextday");
+  assert.equal(M.replySpeed({ ...late, ...M.setFirstContact("", at(TODAY), "Angus") }, H).bucket, "30plus"); // back to the app's time
+  assert.deepEqual(Object.keys(M.FIRST_CONTACT), ["5", "30", "30plus", "nextday"]);
+});
+
+test("this week: replied within 5 minutes and the share in each first-contact bucket", () => {
+  const H = M.hours(), now = new Date(at(TODAY, "18:00"));
+  const L = [
+    lead({ id: "a", createdAt: at(TODAY, "09:00"), replyMins: 2 }), // app: 5
+    lead({ id: "b", createdAt: at(TODAY, "09:10"), replyMins: 90, firstContact: "5" }), // picked: 5 (logged later)
+    lead({ id: "c", createdAt: at(TODAY, "09:20"), firstContact: "30" }),
+    lead({ id: "d", createdAt: at(TODAY, "09:30"), firstContact: "nextday" }),
+    lead({ id: "e", createdAt: at(TODAY, "09:40") }), // not known yet
+    lead({ id: "f", createdAt: at(TODAY, "09:50"), firstContact: "5", junk: true }), // not real: left out
+  ];
+  const w = M.weekStats(L, TODAY, { hours: H, now });
+  assert.deepEqual([w.replied.fast, w.replied.of], [2, 5]);
+  assert.deepEqual(w.replied.buckets.map((b) => [b.key, b.n, b.pct]), [["5", 2, 40], ["30", 1, 20], ["30plus", 0, 0], ["nextday", 1, 20], ["none", 1, 20]]);
+  assert.equal(w.replied.buckets[4].label, "Not known yet");
+});
