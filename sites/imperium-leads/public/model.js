@@ -32,6 +32,10 @@
                    depositCheckoutId, the payment). depositSessionId (the link's id: plink_…, or cs_…
                    for older links), depositUrl, depositLinkAt, depositDate, depositTime: the last link made
     onMyWayAt, onMyWayBy   when the "On my way" text was sent, and who sent it
+    firstContact   how fast the first reply really was, picked by hand: "5" (within 5 min), "30"
+                   (5 to 30 min), "30plus" or "nextday" (firstContactAt, firstContactBy: when and
+                   who). Calls and texts are often logged in the app later, so this wins over the
+                   app's own reply time (replyMins) in the Numbers
     waitedAt, waitedHow   when it went to Waiting, and how: touch4, auto, backlog or hand
     timeline, score, email, formId, enquiries, againAt, repeatOf, lostReason: as before
     modelVersion   4 once a lead has these fields; v4Was keeps what the upgrade changed
@@ -65,6 +69,9 @@
   var NOTE_CHIPS = ["Price", "Timing", "Pet hair", "Stains", "Smell", "Scratches / swirls", "Wants ceramic info", "Selling the car",
     "Needs to check with partner", "Work ute", "Garage / no garage", "Water or power issue"];
   var DEPOSIT = 50;
+  // First contact, picked by hand on a lead.
+  var FIRST_CONTACT = { "5": "Within 5 min", "30": "5–30 min", "30plus": "30 min+", nextday: "Next day" };
+  var FIRST_CONTACT_KEYS = ["5", "30", "30plus", "nextday"];
   var DAY_MS = 864e5;
 
   /* ------------------------------------------------------------ Canberra time */
@@ -509,6 +516,33 @@
     if (!made || !c) return raw;
     return Math.max(0, Math.round(raw - (c - made) / 6e4));
   }
+  // First contact picked (or changed) by hand; an unknown key clears it.
+  function setFirstContact(key, at, by) {
+    if (!FIRST_CONTACT[key]) return { firstContact: "", firstContactAt: "", firstContactBy: "" };
+    return { firstContact: key, firstContactAt: at, firstContactBy: by || "" };
+  }
+  /*
+    How fast the first reply was: { bucket, mins, manual }, bucket one of "5", "30", "30plus",
+    "nextday". The First contact picked by hand when there is one; else worked out from the app's
+    own reply time (from 8:00am for a lead in overnight; next day when the reply came on a later
+    day than the clock started). null when neither is known.
+  */
+  function replySpeed(l, h) {
+    if (!l) return null;
+    if (FIRST_CONTACT[l.firstContact]) return { bucket: l.firstContact, mins: null, manual: true };
+    h = h || hours();
+    var m = replyMinutes(l, h);
+    if (m == null) return null;
+    var c = clockStart(l.createdAt, h), at = c ? new Date(c.getTime() + m * 6e4) : null;
+    var bucket = m <= 5 ? "5" : m <= 30 ? "30" : at && canberraDate(at) > canberraDate(c) ? "nextday" : "30plus";
+    return { bucket: bucket, mins: m, manual: false };
+  }
+  // Replied within 5 minutes (the "Replied ≤5 min" number).
+  function repliedFast(l, h) {
+    var sp = replySpeed(l, h);
+    return !!sp && sp.bucket === "5";
+  }
+
   /*
     The timer on a new lead: { mins, level } with level green (under 5 minutes), orange (5 to 15)
     or red (over 15), counted from when its clock started. A lead in overnight has level "wait"
@@ -791,20 +825,27 @@
       if (l.plan === "Yes" && isDay(l.planSince)) return inWeek(l.planSince);
       return isBooked(l, today) && l.service === "Maintenance plan" && inWeek(l.jobDate);
     });
-    // New leads this week whose clock has run 5 minutes or that have been replied to.
+    // New leads this week whose clock has run 5 minutes or that have been replied to, and how fast
+    // each was (First contact when it's been picked, else the app's own time).
     var fresh = live.filter(function (l) {
       if (l.kind === "job" || !inWeek(dayOf(l))) return false;
-      if (replyMinutes(l, h) != null) return true;
+      if (replySpeed(l, h)) return true;
       var c = clockStart(l.createdAt, h);
       return !!c && now - c >= 5 * 6e4;
     });
-    var fast = fresh.filter(function (l) { var m = replyMinutes(l, h); return m != null && m <= 5; });
+    var fast = fresh.filter(function (l) { return repliedFast(l, h); });
+    var byBucket = {};
+    FIRST_CONTACT_KEYS.concat("none").forEach(function (k) { byBucket[k] = []; });
+    fresh.forEach(function (l) { var sp = replySpeed(l, h); byBucket[sp ? sp.bucket : "none"].push(l); });
+    var buckets = FIRST_CONTACT_KEYS.concat("none").map(function (k) {
+      return { key: k, label: FIRST_CONTACT[k] || "Not known yet", n: byBucket[k].length, pct: fresh.length ? Math.round(100 * byBucket[k].length / fresh.length) : 0, items: byBucket[k] };
+    });
     var ceramicOffered = jobs.filter(function (l) { return l.offeredCeramic === "Yes"; });
     var planOffered = jobs.filter(function (l) { return l.offeredPlan === "Yes"; });
     return {
       weekOf: mon, money: weekMoney(live, today, o.goal),
       jobsDone: { n: done.length, items: done }, ceramics: { n: ceramics.length, items: ceramics }, plans: { n: plans.length, items: plans },
-      replied: { fast: fast.length, of: fresh.length, items: fresh },
+      replied: { fast: fast.length, of: fresh.length, items: fresh, buckets: buckets },
       upsell: { jobs: jobs.length, items: jobs, ceramic: ceramicOffered.length, plan: planOffered.length },
     };
   }
@@ -973,7 +1014,7 @@
   var api = {
     VERSION: VERSION, STAGES: STAGES, PEOPLE: PEOPLE, TAGS: TAGS, TIMELINES: TIMELINES, WAIT_REASONS: WAIT_REASONS,
     LOST_REASONS: LOST_REASONS, LOST_WORDS: LOST_WORDS, OLD_LOST: OLD_LOST, STEPS: STEPS, TOUCHES: TOUCHES, OVERDUE_DAYS: OVERDUE_DAYS,
-    TODAY_MAX: TODAY_MAX, HOURS: HOURS, NOTE_CHIPS: NOTE_CHIPS, DEPOSIT: DEPOSIT,
+    TODAY_MAX: TODAY_MAX, HOURS: HOURS, NOTE_CHIPS: NOTE_CHIPS, DEPOSIT: DEPOSIT, FIRST_CONTACT: FIRST_CONTACT, FIRST_CONTACT_KEYS: FIRST_CONTACT_KEYS,
     canberraDate: canberraDate, canberraMinutes: canberraMinutes, canberraAt: canberraAt, weekday: weekday, addDays: addDays, daysBetween: daysBetween, isDay: isDay,
     hours: hours, clock: clock, inHours: inHours, clockStart: clockStart,
     timelineOf: timelineOf, timelineFromNotes: timelineFromNotes, emailFromNotes: emailFromNotes, scoreOf: scoreOf, plainNotes: plainNotes,
@@ -983,6 +1024,7 @@
     note: note, callNotes: callNotes, noteLine: noteLine, chipCounts: chipCounts, setStage: setStage, retag: retag, touchLabel: touchLabel,
     todaysJobs: todaysJobs, onMyWay: onMyWay, depositLink: depositLink, depositPaid: depositPaid,
     arrivedAt: arrivedAt, isOvernight: isOvernight, replyMinutes: replyMinutes, replyTimer: replyTimer,
+    setFirstContact: setFirstContact, replySpeed: replySpeed, repliedFast: repliedFast,
     dueDay: dueDay, isBacklog: isBacklog, shouldAutoWait: shouldAutoWait, autoWaitPatch: autoWaitPatch, rollPatch: rollPatch,
     rank: rank, todayList: todayList, backlogLeads: backlogLeads, backlogPatch: backlogPatch, sameJob: sameJob,
     mondayOf: mondayOf, adSpend: adSpend, takings: takings, fromAds: fromAds, costPerBooked: costPerBooked, adLabel: adLabel, byAd: byAd,

@@ -216,6 +216,19 @@ from an ad and Referral / repeat). Everything else (service, suburb, when, quote
 notes) is folded under **More details**. Below the form: "+ Job already done" and "+ Someone owes
 you" for work that never came in as a lead.
 
+## First contact (how fast we really replied)
+
+Calls and texts often happen before they're logged here, so each lead has a **First contact**
+picker in its … menu: Within 5 min, 5–30 min, 30 min+, Next day (tap one to set or change it,
+the same one again to clear it). It pops up by itself the moment a lead's first touch is logged
+(✓ Done on touch 1, booking a lead nobody has touched, or adding one already quoted or booked).
+It's saved as `firstContact`, with who and when (`firstContactBy`, `firstContactAt`), and shows
+on the card as a small tag ("⚡ 5 min"). Nothing is filled in for older leads.
+
+"Replied ≤5 min" in Numbers uses First contact where it's been picked, else the app's own reply
+time as before (`M.replySpeed`, `M.repliedFast`). This week shows the share of new leads in each
+bucket, plus "Not known yet"; tap a row to see who.
+
 ## Call notes
 
 **Notes** on every card opens quick-tap chips for what people say (Price, Timing, Pet hair,
