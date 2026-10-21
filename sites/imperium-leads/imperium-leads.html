@@ -4,7 +4,7 @@
 :root{
   --bg:#F3F5F8;--surface:#FFFFFF;--surface2:#E9EDF2;--line:#D6DCE4;
   --text:#121721;--muted:#5C6675;--accent:#1F5FD6;--accent-ink:#FFFFFF;
-  --good:#1E9E5A;--warn:#D98A0B;--bad:#D6453D;--good-bg:#E4F5EB;--warn-bg:#FBF0DA;--bad-bg:#FBE4E2;--accent-bg:#E4ECFB;
+  --good:#1E9E5A;--warn:#D98A0B;--bad:#D6453D;--good-bg:#E4F5EB;--warn-bg:#FBF0DA;--bad-bg:#FBE4E2;--accent-bg:#E4ECFB;--pink:#B8336F;--pink-bg:#FBE3EF;--warn-ink:#8A5300;
   --shadow:0 1px 2px rgba(18,23,33,.06),0 8px 24px rgba(18,23,33,.06);
 }
 @media (prefers-color-scheme: dark){
@@ -12,7 +12,7 @@
     color-scheme:dark;
     --bg:#0B0E12;--surface:#141920;--surface2:#1C232C;--line:#2A3340;
     --text:#E8ECF1;--muted:#8B95A5;--accent:#3E7BF0;--accent-ink:#FFFFFF;
-    --good:#34C776;--warn:#F0A429;--bad:#EF5F58;--good-bg:#12291C;--warn-bg:#2B2210;--bad-bg:#2E1614;--accent-bg:#152546;
+    --good:#34C776;--warn:#F0A429;--bad:#EF5F58;--good-bg:#12291C;--warn-bg:#2B2210;--bad-bg:#2E1614;--accent-bg:#152546;--pink:#F06AA8;--pink-bg:#33172A;--warn-ink:#F0A429;
     --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
   }
 }
@@ -20,7 +20,7 @@
   color-scheme:dark;
   --bg:#0B0E12;--surface:#141920;--surface2:#1C232C;--line:#2A3340;
   --text:#E8ECF1;--muted:#8B95A5;--accent:#3E7BF0;--accent-ink:#FFFFFF;
-  --good:#34C776;--warn:#F0A429;--bad:#EF5F58;--good-bg:#12291C;--warn-bg:#2B2210;--bad-bg:#2E1614;--accent-bg:#152546;
+  --good:#34C776;--warn:#F0A429;--bad:#EF5F58;--good-bg:#12291C;--warn-bg:#2B2210;--bad-bg:#2E1614;--accent-bg:#152546;--pink:#F06AA8;--pink-bg:#33172A;--warn-ink:#F0A429;
   --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
 }
 *{box-sizing:border-box}
@@ -258,6 +258,121 @@ main.wide{max-width:1400px}
 .goal .key b{color:var(--text);font-variant-numeric:tabular-nums}
 .goal .key .sw{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:0}
 .goal.hit{border-color:var(--good)}
+/* Calendar: its own top bar (menu, search, logo, bell), the week strip, then the jobs by day. */
+.calbar{display:none;align-items:center;gap:6px}
+body.cal .brand{display:none}
+body.cal .calbar{display:flex}
+.calbar .logo{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-width:0}
+.calbar .logo img{width:30px;height:30px;border-radius:8px;display:block}
+.calbar .logo b{font-weight:700;letter-spacing:.32em;font-size:13px;white-space:nowrap}
+.ic{position:relative;flex:0 0 44px;width:44px;height:44px;border:0;border-radius:999px;background:var(--surface2);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.ic svg{width:22px;height:22px}
+.ic:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ic .dot{position:absolute;top:4px;right:4px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--bad);color:#fff;font-size:11px;font-weight:700;line-height:18px;text-align:center}
+.cal-h{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.vsw{display:flex;background:var(--surface2);border-radius:12px;padding:3px;gap:2px}
+.vsw button{font:inherit;font-size:13px;font-weight:700;border:0;background:none;color:var(--muted);padding:0 8px;min-height:42px;min-width:44px;border-radius:9px;cursor:pointer}
+.vsw button[aria-pressed="true"]{background:var(--surface);color:var(--text);box-shadow:var(--shadow)}
+.vsw button:focus-visible{outline:2px solid var(--accent)}
+.cal-f{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.monthpick{position:relative;display:block;flex:0 1 auto;min-width:0;margin-right:auto}
+.monthpick select{appearance:none;-webkit-appearance:none;background:none;border:0;font-size:18px;font-weight:700;padding:0 26px 0 0;min-height:44px;width:auto;max-width:100%;color:var(--text);cursor:pointer}
+.monthpick::after{content:"▾";position:absolute;right:6px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted)}
+.chipsel{appearance:none;-webkit-appearance:none;width:auto;min-height:40px;font-size:14px;font-weight:700;padding:0 28px 0 14px;border-radius:999px;background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235C6675'/%3E%3C/svg%3E") no-repeat right 12px center;border:1px solid var(--line);color:var(--text);max-width:48%}
+.chipsel.on{border-color:var(--accent);color:var(--accent);background-color:var(--accent-bg)}
+.cal-f .mini{min-height:40px}
+.cal-search{display:flex;gap:8px;align-items:center}
+.cal-search input{flex:1}
+.strip{display:grid;grid-template-columns:36px repeat(7,minmax(0,1fr)) 36px;align-items:center;gap:2px;position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--toph,64px));z-index:4;background:var(--bg);margin-inline:-16px;padding:6px 12px;border-bottom:1px solid var(--line);touch-action:pan-y}
+.strip .arr{border:0;background:none;color:var(--muted);font:inherit;font-size:22px;font-weight:700;min-height:48px;cursor:pointer;border-radius:10px}
+.strip .d{border:0;background:none;color:var(--text);font:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0;min-height:60px;cursor:pointer;border-radius:12px}
+.strip .d .w{font-size:11px;font-weight:700;color:var(--muted)}
+.strip .d .n{width:34px;height:34px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;border:2px solid transparent}
+.strip .d.today .n{border-color:var(--accent);color:var(--accent)}
+.strip .d[aria-pressed="true"] .n{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.strip .d i{width:6px;height:6px;border-radius:3px;background:transparent}
+.strip .d.busy i{background:var(--accent)}
+.strip .d:focus-visible,.strip .arr:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.dh{display:flex;align-items:baseline;gap:8px;margin:8px 2px -2px;scroll-margin-top:calc(env(safe-area-inset-top,0px) + var(--toph,64px) + 84px)}
+.dh b{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.dh span{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.dh em{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:2px 8px}
+.dh.sel span{color:var(--text)}
+/* A job, filled with its status colour; an event in its own colour. */
+.jc{display:flex;flex-direction:column;gap:3px;border-radius:16px;padding:12px 12px 10px 14px;cursor:pointer;border:1px solid transparent;min-width:0;text-align:left}
+.jc:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.jc .jc1{display:flex;align-items:flex-start;gap:6px;min-width:0}
+.jc .jt{flex:1;min-width:0;font-size:15.5px;font-weight:700;line-height:1.3;overflow-wrap:anywhere}
+.jc .jt svg{width:16px;height:16px;vertical-align:-2px;margin-right:4px}
+.jc .pin{flex:0 0 40px;width:40px;height:40px;margin:-9px -2px -9px -8px;display:flex;align-items:center;justify-content:center;color:inherit;border-radius:8px}
+.jc .pin svg{width:18px;height:18px}
+.jc .js{flex:0 0 auto;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;white-space:nowrap;background:rgba(255,255,255,.7)}
+.jc .jn{font-size:14.5px;font-weight:600}
+.jc .jtm{font-size:14px;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
+.jc .jc3{display:flex;align-items:center;gap:8px;min-height:40px;margin-bottom:-2px}
+.jc .jc3 .jtm{flex:1;min-width:0}
+.jc .jcrew{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.av{width:32px;height:32px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex:0 0 32px;letter-spacing:0;border:2px solid var(--surface)}
+.kit{font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px;background:var(--surface);color:var(--text);border:1px solid var(--line)}
+.asg{width:40px;height:40px;border-radius:999px;border:1.5px dashed currentColor;background:none;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;flex:0 0 40px}
+.asg svg{width:18px;height:18px}
+.asg:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.jc.s-scheduled{background:var(--accent-bg);border-color:color-mix(in srgb,var(--accent) 25%,transparent)}
+.jc.s-scheduled .js{color:var(--accent)}
+.jc.s-in-progress{background:var(--warn-bg);border-color:color-mix(in srgb,var(--warn) 30%,transparent)}
+.jc.s-in-progress .js{color:var(--warn-ink)}
+.jc.s-completed{background:var(--good-bg);border-color:color-mix(in srgb,var(--good) 25%,transparent)}
+.jc.s-completed .js{color:var(--good)}
+.jc.s-cancelled{background:var(--surface2);color:var(--muted)}
+.jc.s-cancelled .jt{text-decoration:line-through;text-decoration-thickness:1px}
+.jc.s-cancelled .js{color:var(--muted)}
+.jc.e-meeting{background:var(--pink-bg);border-color:color-mix(in srgb,var(--pink) 25%,transparent)}
+.jc.e-meeting .js{color:var(--pink)}
+.jc.e-timeoff{background:var(--surface2)}
+.jc.e-timeoff .js{color:var(--muted)}
+.jc.e-other{background:var(--surface);border-color:var(--line)}
+.jc.e-other .js{color:var(--muted);background:var(--surface2)}
+:root[data-theme="dark"] .jc .js{background:rgba(0,0,0,.25)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .jc .js{background:rgba(0,0,0,.25)}}
+.jtags{display:flex;flex-wrap:wrap;gap:6px}
+.jtag{font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 8px;border-radius:999px;background:var(--surface);color:var(--text);border:1px solid var(--line)}
+.jtag.warn{background:var(--warn-bg);color:var(--warn-ink);border-color:transparent}
+.jtag.bad{background:var(--bad-bg);color:var(--bad);border-color:transparent}
+.ghl-log{display:flex;flex-direction:column}
+.ghl-log details{border-bottom:1px solid var(--line);padding:8px 2px}
+.ghl-log summary{cursor:pointer;list-style:none;display:flex;flex-direction:column;gap:2px;min-height:44px;justify-content:center}
+.ghl-log summary::-webkit-details-marker{display:none}
+.ghl-log summary b{font-size:14px;font-weight:600;overflow-wrap:anywhere}
+.ghl-log summary span{font-size:12.5px;color:var(--muted)}
+.ghl-log .bad b{color:var(--bad)}
+.ghl-log pre{margin:6px 0 0;background:var(--surface2);border-radius:10px;padding:10px;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:320px;overflow:auto}
+.fab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:7;font:inherit;font-weight:700;font-size:15px;letter-spacing:.08em;border:0;border-radius:999px;background:var(--accent);color:var(--accent-ink);min-height:52px;padding:0 26px;box-shadow:0 6px 20px rgba(31,95,214,.35);cursor:pointer;display:flex;align-items:center;gap:6px}
+.fab:focus-visible{outline:3px solid var(--text);outline-offset:2px}
+body.cal main{padding-bottom:110px}
+body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+.pickgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.pickgrid button{min-height:72px;font:inherit;font-size:17px;font-weight:700;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--text);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.pickgrid button span{font-size:12.5px;font-weight:600;color:var(--muted)}
+.found{display:flex;flex-direction:column;flex-shrink:0;border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.found button{display:flex;flex-direction:column;align-items:flex-start;gap:1px;font:inherit;text-align:left;border:0;border-bottom:1px solid var(--line);background:none;color:var(--text);padding:10px 12px;min-height:52px;cursor:pointer}
+.found button:last-child{border-bottom:0}
+.found button b{font-weight:700}
+.found button span{font-size:12.5px;color:var(--muted)}
+.linked{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--accent-bg);color:var(--accent);border-radius:12px;padding:8px 8px 8px 12px;font-weight:700;font-size:14px}
+.addon{display:grid;grid-template-columns:minmax(0,1fr) 96px;gap:8px;align-items:center}
+.addon .toggle{min-height:48px}
+.cal-sk{display:flex;flex-direction:column;gap:10px}
+.sk{border-radius:16px;background:var(--surface2);position:relative;overflow:hidden}
+.sk::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:translateX(-100%);animation:sk 1.2s infinite}
+@keyframes sk{to{transform:translateX(100%)}}
+@media (prefers-reduced-motion:reduce){.sk::after{animation:none}}
+.lengths{display:grid;grid-template-columns:minmax(0,1fr) 84px 92px;gap:6px 8px;align-items:center;font-size:14px;font-weight:600}
+.lengths input[type=number]{min-height:44px;padding:8px}
+.lengths .toggle{min-height:44px;padding:6px 10px;font-size:13px}
+@media (min-width:701px){
+  body.cal main{max-width:760px}
+  .strip{margin-inline:0;border-radius:14px;border:1px solid var(--line)}
+}
 /* Phone: tabs at the bottom, one board column at a time, a stage strip to jump between them. */
 .stages{display:none}
 @media (max-width:700px){
@@ -267,6 +382,10 @@ main.wide{max-width:1400px}
   .top-in{padding-bottom:10px}
   main{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
   .toast{bottom:calc(80px + env(safe-area-inset-bottom,0px))}
+  .fab{bottom:calc(80px + env(safe-area-inset-bottom,0px))}
+  body.cal main{padding-bottom:calc(160px + env(safe-area-inset-bottom,0px))}
+  body.cal .toast{bottom:calc(144px + env(safe-area-inset-bottom,0px))}
+  .tab{letter-spacing:0}
   .board-h h1{font-size:18px}
   #bTotals{gap:6px}
   #bTotals .tile{padding:8px}
@@ -302,8 +421,15 @@ main.wide{max-width:1400px}
 <header class="top">
   <div class="top-in">
     <div class="brand"><b>IMPERIUM <span>LEADS</span></b><button class="gear" id="gearBtn" type="button" aria-label="Settings" title="Settings">⚙</button><button class="who" id="whoBtn" type="button" title="Switch person">…</button></div>
+    <div class="calbar">
+      <button class="ic" id="calMenu" type="button" aria-label="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <button class="ic" id="calSearchBtn" type="button" aria-label="Search jobs"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M16 16l4.5 4.5"/></svg></button>
+      <div class="logo"><img src="/icon-192.png" alt=""><b>IMPERIUM</b></div>
+      <button class="ic" id="calBell" type="button" aria-label="Needs attention"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M10 20.5a2.2 2.2 0 0 0 4 0"/></svg><span class="dot" id="bellDot" hidden></span></button>
+    </div>
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" id="tab-today" aria-selected="true" data-tab="today">Today<span class="dot" id="dotToday" hidden></span></button>
+      <button class="tab" role="tab" id="tab-cal" aria-selected="false" data-tab="cal">Calendar</button>
       <button class="tab" role="tab" id="tab-add" aria-selected="false" data-tab="add">Add</button>
       <button class="tab" role="tab" id="tab-leads" aria-selected="false" data-tab="leads">Leads</button>
       <button class="tab" role="tab" id="tab-board" aria-selected="false" data-tab="board">Board</button>
@@ -330,6 +456,23 @@ main.wide{max-width:1400px}
     <div class="banner" id="tBacklog" hidden></div>
     <div class="card night" id="nightCard" hidden></div>
     <div class="card low" id="lowCard" hidden></div>
+  </section>
+
+  <!-- CALENDAR: jobs and events, the week strip on top -->
+  <section id="view-cal" role="tabpanel">
+    <div class="cal-h">
+      <h1>Calendar</h1>
+      <div class="vsw" id="calViews" aria-label="View"><button type="button" data-cv="agenda" aria-pressed="true">Agenda</button><button type="button" data-cv="day" aria-pressed="false">Day</button><button type="button" data-cv="week" aria-pressed="false">Week</button><button type="button" data-cv="month" aria-pressed="false">Month</button></div>
+    </div>
+    <div class="cal-search" id="calSearch" hidden><input id="cq" type="search" placeholder="Job number, name, car, suburb" aria-label="Search jobs"><button class="x" id="cqClose" type="button">Close</button></div>
+    <div class="cal-f">
+      <label class="monthpick"><select id="calMonth" aria-label="Month"></select></label>
+      <button type="button" class="mini" id="calToday">Today</button>
+      <select id="calWho" class="chipsel" aria-label="Who"></select>
+      <select id="calSvc" class="chipsel" aria-label="Service"></select>
+    </div>
+    <div class="strip" id="calStrip" aria-label="Week"></div>
+    <div class="list" id="calList"></div>
   </section>
 
   <!-- ADD: four fields, the rest folded away -->
@@ -430,12 +573,13 @@ main.wide{max-width:1400px}
   </section>
 </main>
 
+<button class="fab" id="calAdd" type="button" hidden><span aria-hidden="true">+</span> ADD</button>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (function(){
   const $=s=>document.querySelector(s);
-  const SOURCES=["Meta ad","Google","Instagram","TikTok","Website","Referral","Repeat","Other"];
+  const SOURCES=["Meta ad","Google","Instagram","TikTok","Website","Referral","Repeat","GHL booking","Other"];
   const SERVICES=["Full detail","Interior","Exterior","Correction","Ceramic","Maintenance plan","Pre-sale","Not sure"];
   const OBJ=["Price","Timing","Checking with partner","Wants more info","Thinking about it","Other"];
   // The two choices under the ad names in "Which ad?".
@@ -497,8 +641,9 @@ main.wide{max-width:1400px}
   document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>showTab(t.dataset.tab)));
   function showTab(name){
     document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",String(t.dataset.tab===name)));
-    ["today","add","leads","board","numbers"].forEach(n=>{ $("#view-"+n).hidden = n!==name; });
+    ["today","cal","add","leads","board","numbers"].forEach(n=>{ $("#view-"+n).hidden = n!==name; });
     document.querySelector("main").classList.toggle("wide", name==="board");
+    document.body.classList.toggle("cal", name==="cal"); $("#calAdd").hidden = name!=="cal";
     try{ localStorage.setItem("il-tab",name); }catch(e){}
     renderAll();
   }
@@ -840,7 +985,7 @@ main.wide{max-width:1400px}
     $("#tJobs").innerHTML='<div class="sec-h"><h2>Today\'s jobs</h2><span class="n">'+jobs.length+'</span></div>'+jobs.map(l=>leadCard(l,{job:true})).join("");
     wire($("#tJobs"));
     $("#tN").textContent=L.show.length||"";
-    $("#tList").innerHTML=L.show.map(l=>leadCard(l)).join("");
+    $("#tList").innerHTML=loaded?L.show.map(l=>leadCard(l)).join(""):skel(3,150);
     wire($("#tList"));
     $("#tClear").hidden=!loaded || L.show.length>0;
     const more=L.extra.length+L.rolled;
@@ -869,6 +1014,7 @@ main.wide{max-width:1400px}
     const t=today(), h=H(), at=new Date().toISOString(), go=(l,patch)=>{ busy.add(l.id); save(l.id,patch).finally(()=>busy.delete(l.id)); };
     leads.forEach(l=>{ if(!busy.has(l.id) && M.shouldAutoWait(l,t,h,simple.since)) go(l,M.autoWaitPatch(at)); });
     if(who && view==="mine") M.todayList(leads,{now:new Date(), hours:h, who, since:simple.since}).extra.forEach(l=>{ if(!busy.has(l.id) && stage(l)==="Chasing" && !M.againPending(l)) go(l,M.rollPatch(t)); });
+    syncJobs();
   }
 
   // ---------- THE … MENU ----------
@@ -891,7 +1037,7 @@ main.wide{max-width:1400px}
   // Change status, tag, notes, details. `pick` opens straight on a status (from the Board).
   function openMenu(id,pick){
     const l=current(id); if(!l) return;
-    const st=stage(l);
+    const st=stage(l), job=J.currentJob(allJobs,id);
     const g=sheet(head(l,[l.car,l.service,l.phone].filter(Boolean).join(" · "))+
       (canWrite?"":'<div class="banner">View only. Ask for edit access.</div>')+
       '<div class="eyebrow"><span>Change status</span><span>Now: '+esc(st==="Waiting"?"Waiting ("+M.WAIT_REASONS[M.waitReasonOf(l)]+")":st)+'</span></div>'+
@@ -908,7 +1054,7 @@ main.wide{max-width:1400px}
       (l.onMyWayAt?'<p class="help">On my way sent '+esc(when(l.onMyWayAt))+(l.onMyWayBy?" by "+esc(l.onMyWayBy):"")+'</p>':"")+
       history(l)+
       ((l.enquiries||[]).length?'<div class="eyebrow">Enquired again</div><div class="log">'+(l.enquiries||[]).slice().reverse().map(e=>'<div><span>'+esc(dayName(localDate(e.at)))+'</span><div>'+esc([e.source+(e.ad?" ("+e.ad+")":""),e.service,e.car,e.notes].filter(Boolean).join(" · "))+'</div></div>').join("")+'</div>':"")+
-      '<div class="row"><button class="btn secondary" id="m-edit" type="button">Edit details</button>'+(st==="Done"?'<button class="btn secondary" id="m-review" type="button">Review steps</button>':"")+'</div>'+
+      '<div class="row"><button class="btn secondary" id="m-edit" type="button">Edit details</button>'+(job?'<button class="btn secondary" id="m-job" type="button">Job '+esc(job.number)+'</button>':"")+(st==="Done"?'<button class="btn secondary" id="m-review" type="button">Review steps</button>':"")+'</div>'+
       (l.old_status&&l.old_status!==st?'<p class="help">Before the update this was: '+esc(l.old_status)+'.</p>':"")+
       (l.repeatOf?'<p class="help">A repeat: this person was a lead before. <button type="button" class="mini" id="m-repeat">Open the old lead</button></p>':""));
     const more=g("#m-more");
@@ -946,6 +1092,7 @@ main.wide{max-width:1400px}
     }));
     g("#m-addNote").addEventListener("click",()=>openNotes(id));
     g("#m-edit").addEventListener("click",()=>openEdit(id));
+    const mj=g("#m-job"); if(mj) mj.addEventListener("click",()=>openJobForm(job.id));
     const rv=g("#m-review"); if(rv) rv.addEventListener("click",()=>openReview(id));
     const rep=g("#m-repeat"); if(rep) rep.addEventListener("click",()=>openMenu(l.repeatOf));
   }
@@ -1010,11 +1157,16 @@ main.wide{max-width:1400px}
   function clean(o){ const c={...o}; delete c.id; return M.sync(c,today()); }
   // Save only what changed, merged into the lead, so the other phone's changes aren't lost.
   // A lead the upgrade hasn't reached yet gets its new fields saved along with the change.
-  async function save(id,patch){
+  // A change to the booking (day, time, price, status) is passed on to the lead's job, unless it
+  // came from the job (o.fromJob).
+  const BOOKING_KEYS=["stage","jobDate","jobTime","revenue","priceRange","completedAt","junk"];
+  async function save(id,patch,o={}){
     const l=leads.find(x=>x.id===id); if(!l||!db) return false;
     const next=clean({...current(id),...patch,updatedAt:new Date().toISOString()}), diff={};
     Object.keys(next).forEach(k=>{ if(JSON.stringify(next[k])!==JSON.stringify(l[k])) diff[k]=next[k]; });
-    try{ await db.doc("leads/"+id).update(diff); Object.assign(l,diff); return true; }catch(err){ writeFail(err); return false; }
+    try{ await db.doc("leads/"+id).update(diff); Object.assign(l,diff); }catch(err){ writeFail(err); return false; }
+    if(!o.fromJob && BOOKING_KEYS.some(k=>k in diff)) leadToJob(id);
+    return true;
   }
   // A lead as the buttons see it: one the upgrade hasn't reached yet gets its new fields first.
   function current(id){
@@ -1031,7 +1183,7 @@ main.wide{max-width:1400px}
     const match=l=>!fs || (fs==="owed"?owes(l):fs==="junk"?!!l.junk:fs==="lost"?stage(l)==="Waiting"&&M.waitReasonOf(l)==="lost":stage(l)===fs && (fs!=="Waiting"||!l.junk));
     const rows=leads.filter(l=>match(l) && isMine(l) && (!q||[l.name,l.car,l.suburb,l.phone,l.email,l.service,l.notes,l.ad].join(" ").toLowerCase().includes(q)));
     const el=$("#list"), shown=rows.slice(0,listShown);
-    el.innerHTML = rows.length ? shown.map(l=>leadCard(l,{owner:true})).join("")+(rows.length>listShown?'<button class="btn secondary" id="listMore" type="button">Show more ('+(rows.length-listShown)+' to go)</button>':"") : '<div class="empty">'+(leads.length?"Nothing matches.":"No leads yet. Add the first one.")+'</div>';
+    el.innerHTML = !loaded ? skel(4,150) : rows.length ? shown.map(l=>leadCard(l,{owner:true})).join("")+(rows.length>listShown?'<button class="btn secondary" id="listMore" type="button">Show more ('+(rows.length-listShown)+' to go)</button>':"") : '<div class="empty">'+(leads.length?"Nothing matches.":"No leads yet. Add the first one.")+'</div>';
     wire(el);
     const more=$("#listMore"); if(more) more.addEventListener("click",()=>{ listShown+=100; renderList(); });
   }
@@ -1059,7 +1211,7 @@ main.wide{max-width:1400px}
       return '<div class="col" data-col="'+st+'">'+
         '<div class="col-h"><div class="t"><span>'+esc(st)+'</span><span class="n">'+list.length+'</span></div>'+
           '<div class="v">'+(est?"~":"")+money(sum)+'</div>'+(cold?'<div class="c">'+cold+' going cold</div>':'')+'</div>'+
-        (list.length?shown.map(card).join("")+(list.length>shown.length?'<p class="help">+'+(list.length-shown.length)+' more on the Leads tab</p>':""):'<div class="empty">Nobody here.</div>')+
+        (list.length?shown.map(card).join("")+(list.length>shown.length?'<p class="help">+'+(list.length-shown.length)+' more on the Leads tab</p>':""):loaded?'<div class="empty">Nobody here.</div>':skel(2,120))+
       '</div>';
     }).join("");
     const owed=leads.filter(l=>owes(l) && isMine(l)).sort((a,b)=>String(a.jobDate||"").localeCompare(String(b.jobDate||"")));
@@ -1254,6 +1406,7 @@ main.wide{max-width:1400px}
     const set=R.settings(reviewSettings), h=H(), hm=n=>String(Math.floor(n/60)).padStart(2,"0")+":"+String(n%60).padStart(2,"0");
     const g=sheet('<div class="sheet-h"><div><h2>Settings</h2><p class="help">Saved for both phones.</p></div><button class="x" id="closeSheet" type="button">Close</button></div>'+
       '<div class="set-sec"><div class="eyebrow">Clear old backlog</div><p class="help">Old Chasing leads: send one "still keen?" text, then move them all to Waiting.</p><button class="btn" id="s-backlog" type="button">Clear old backlog</button></div>'+
+      calSettingsHtml()+
       '<div class="set-sec"><div class="eyebrow">Messages</div><p class="help">[name], [car] and [owner] fill in by themselves. [day] and [time] fill in when the job has them, else they are left for you to change before you send. [link] is the deposit link. No emojis.</p>'+
         T.EDITABLE.map(k=>'<label>'+esc(T.LABELS[k])+'<textarea data-tpl="'+k+'" rows="4">'+esc(templates[k]&&String(templates[k]).trim()?templates[k]:T.TEMPLATES[k])+'</textarea></label>').join("")+
         '<div class="row"><button class="btn" id="s-tplSave" type="button">Save messages</button><button class="btn secondary" id="s-tplReset" type="button">Back to the originals</button></div></div>'+
@@ -1265,18 +1418,37 @@ main.wide{max-width:1400px}
       '<div class="set-sec"><div class="eyebrow">Review texts</div>'+
         '<label>Google review link<input id="rs-link" inputmode="url" value="'+esc(set.reviewLink)+'"></label><label>Texts signed by<input id="rs-sender" value="'+esc(set.senderName)+'"></label><label>Business name<input id="rs-biz" value="'+esc(set.businessName)+'"></label>'+
         '<button class="btn" id="rs-save" type="button">Save review settings</button></div>'+
-      '<div class="set-sec"><div class="eyebrow">Backup</div><p class="help">Every lead, saved to this phone.</p><div class="row"><button class="btn secondary" id="s-csv" type="button">Download CSV</button><button class="btn secondary" id="s-json" type="button">Download JSON</button></div></div>');
+      '<div class="set-sec"><div class="eyebrow">GHL bookings</div><p class="help">GoHighLevel sends each booking here. The key on the end is GHL_WEBHOOK_SECRET from Vercel.</p>'+
+        '<p class="say">'+esc((window.LEADS_CONFIG||{}).preview?"https://frontline-websites-6mjg.vercel.app":location.origin)+'/api/ghl-webhook?key=YOUR_KEY</p>'+
+        '<button class="btn secondary" id="s-ghl" type="button">Show what GHL sent</button><div class="ghl-log" id="s-ghlLog"></div></div>'+
+      '<div class="set-sec"><div class="eyebrow">Backup</div><p class="help">Every lead, saved to this phone. The JSON has the jobs and events too.</p><div class="row"><button class="btn secondary" id="s-csv" type="button">Download CSV</button><button class="btn secondary" id="s-json" type="button">Download JSON</button></div></div>');
     const put=async(path,data,btn,msg)=>{ if(!db){ toast("Not connected. Try again in a sec."); return false; } btn.disabled=true; try{ await db.doc(path).set({...data, updatedAt:new Date().toISOString(), by:who||""}); toast(msg||"Saved."); btn.disabled=false; return true; }catch(err){ btn.disabled=false; writeFail(err); return false; } };
     document.querySelectorAll("#sheet [data-tpl]").forEach(t=>{ const fit=()=>{ t.style.height="auto"; t.style.height=(t.scrollHeight+2)+"px"; }; fit(); t.addEventListener("input",fit); });
     g("#s-backlog").addEventListener("click",openBacklog);
+    wireCalSettings(g,put);
     g("#s-tplSave").addEventListener("click",()=>{ const o={}; document.querySelectorAll("#sheet [data-tpl]").forEach(t=>{ const v=t.value.trim(); o[t.dataset.tpl]=v===T.TEMPLATES[t.dataset.tpl]?"":v; }); put("settings/templates",o,g("#s-tplSave"),"Messages saved."); });
     g("#s-tplReset").addEventListener("click",()=>{ if(!confirm("Put all five messages back to the originals?")) return; document.querySelectorAll("#sheet [data-tpl]").forEach(t=>{ t.value=T.TEMPLATES[t.dataset.tpl]; }); const o={}; T.EDITABLE.forEach(k=>o[k]=""); put("settings/templates",o,g("#s-tplReset"),"Back to the originals."); });
     g("#s-adsSave").addEventListener("click",()=>{ const names=[...new Set(g("#s-ads").value.split("\n").map(s=>s.trim()).filter(Boolean))]; put("settings/ads",{names},g("#s-adsSave"),"Ad names saved."); });
     g("#s-goalSave").addEventListener("click",()=>{ const n=num(g("#s-goal").value); if(n==null||n<=0){ toast("Type the target in dollars"); return; } put("settings/goal",{weekly:n},g("#s-goalSave"),"Target saved."); });
     g("#h-save").addEventListener("click",()=>{ const start=g("#h-start").value, end=g("#h-end").value; if(!start||!end||end<=start){ toast("The end needs to be after the start"); return; } put("settings/hours",{start,end},g("#h-save"),"Call hours saved."); });
     g("#rs-save").addEventListener("click",()=>put("settings/reviews",{reviewLink:g("#rs-link").value.trim(), senderName:g("#rs-sender").value.trim(), businessName:g("#rs-biz").value.trim()},g("#rs-save"),"Review settings saved."));
+    g("#s-ghl").addEventListener("click",()=>showGhlLog(g("#s-ghlLog"),g("#s-ghl")));
     g("#s-csv").addEventListener("click",exportCsv);
     g("#s-json").addEventListener("click",exportJson);
+  }
+
+  // The last 40 things GHL sent: when, what happened, and (tap one) exactly what came in.
+  async function showGhlLog(box,btn){
+    if(!api){ toast("Not connected. Try again in a sec."); return; }
+    btn.disabled=true; btn.textContent="Loading…";
+    let r;
+    try{ r=await api.call("/api/ghl-webhook?log=1"); }
+    catch(e){ btn.disabled=false; btn.textContent="Show what GHL sent"; toast(e.status===401?"Sign in again, then try.":"Couldn't load the log."); return; }
+    btn.hidden=true;
+    const pretty=t=>{ try{ return JSON.stringify(JSON.parse(t),null,2); }catch(e){ return String(t||""); } };
+    box.innerHTML=(r.entries||[]).length ? r.entries.map(x=>'<details class="'+(x.ok?"":"bad")+'"><summary><b>'+esc(x.result||"")+'</b><span>'+esc(when(x.at)+(x.appointmentId?" · "+x.appointmentId:""))+'</span></summary>'+
+        (x.done&&x.done.length?'<p class="help">Saved: '+esc(x.done.join(", "))+'</p>':"")+(x.body?'<pre>'+esc(pretty(x.body))+'</pre>':"")+'</details>').join("")
+      : '<p class="help">Nothing from GHL yet.</p>';
   }
 
   // ---------- CLEAR OLD BACKLOG (once) ----------
@@ -1327,8 +1499,9 @@ main.wide{max-width:1400px}
   }
   async function exportJson(){
     if(!dl) return;
-    const data=JSON.stringify({savedAt:new Date().toISOString(), leads:leads.map(l=>{ const d={...l}; delete d.id; return {id:l.id, data:d}; }), nights, spend:spendWeeks,
-      settings:{reviews:reviewSettings, goal:goalSettings, hours:hoursSaved, templates, ads:adsSaved, simple}},null,1);
+    const rows=list=>list.map(x=>{ const d={...x}; delete d.id; return {id:x.id, data:d}; });
+    const data=JSON.stringify({savedAt:new Date().toISOString(), leads:rows(leads), jobs:rows(allJobs), events:rows(allEvents), nights, spend:spendWeeks,
+      settings:{reviews:reviewSettings, goal:goalSettings, hours:hoursSaved, templates, ads:adsSaved, simple, calendar:calSaved}},null,1);
     try{ await dl.save({filename:"imperium-backup-"+today()+".json", data:new Blob([data],{type:"application/json"})}); }catch(e){ if(e&&e.code!=="cancelled") toast("Couldn't download"); }
   }
 
@@ -1348,7 +1521,7 @@ main.wide{max-width:1400px}
         '<label>Suburb<input id="j-suburb" placeholder="Gungahlin"></label>'+
         '<label>Job date<input id="j-date" type="date" value="'+today()+'" max="'+today()+'"></label>'+
       '</div>'+
-      '<label>Where from?<div class="seg" id="j-source" data-value="">'+SOURCES.map(v=>'<button type="button" data-v="'+esc(v)+'">'+esc(v)+'</button>').join("")+'</div></label>'+
+      '<label>Where from?<div class="seg" id="j-source" data-value="">'+SOURCES.filter(v=>v!=="GHL booking").map(v=>'<button type="button" data-v="'+esc(v)+'">'+esc(v)+'</button>').join("")+'</div></label>'+
       '<div class="grid">'+(owed?"":tg("paid","Paid"))+tg("offeredCeramic","Offered ceramic")+tg("offeredPlan","Offered maint. plan")+tg("plan","On a plan")+'</div>'+
       '<button class="btn" id="j-save" type="button"'+(owed?"":" disabled")+'>'+(owed?"Add to owes money":"Save job")+'</button>');
     const s=$("#sheet");
@@ -1543,6 +1716,501 @@ main.wide{max-width:1400px}
     });
   });
 
+  // ---------- CALENDAR (jobs and events; the plain logic is in /jobs.js) ----------
+  // A job is linked to its lead: the customer (name, phone, car, address) stays on the lead and is
+  // read from there. Settings (crew, kits, lengths, add-ons) are in settings/calendar.
+  const J=window.ILJobs;
+  let allJobs=[], allEvents=[], calSaved=null, jobsLoaded=false, eventsLoaded=false;
+  const CAL=()=>J.settings(calSaved);
+  const leadOf=id=>leads.find(x=>x.id===id)||null;
+  const jobById=id=>allJobs.find(x=>x.id===id)||null;
+  const liveEvents=()=>allEvents.filter(e=>!e.deleted);
+  const OPEN_JOB=["Scheduled","In Progress"];
+  const slug=s=>String(s||"").toLowerCase().replace(/[^a-z]+/g,"-");
+  const jobName=j=>(j.number?j.number+" - ":"")+J.title(j,leadOf(j.leadId));
+  // Which week and filters: the filters are remembered on this phone.
+  let calDay=today(), calWho="", calSvc="", calQ="";
+  try{ calWho=localStorage.getItem("il-cal-who")||""; calSvc=localStorage.getItem("il-cal-svc")||""; }catch(e){}
+  const ASSIGN='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19 8v6M16 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  const PLANE='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>';
+  const AV_COLORS=["#1F5FD6","#0E8A7E","#7A4CC2","#C2571A","#B8336F","#3D7A1F","#5C6675"];
+  function avatar(name){
+    const i=CAL().crew.indexOf(name); let h=0;
+    if(i<0) for(const ch of String(name)) h=(h*31+ch.charCodeAt(0))>>>0;
+    return '<span class="av" style="background:'+AV_COLORS[(i>=0?i:h)%AV_COLORS.length]+'" title="'+esc(name)+'">'+esc(J.initials(name))+'</span>';
+  }
+  const dParts=d=>{ const x=new Date(d+"T12:00:00Z"); return {n:x.getUTCDate(), wd:x.toLocaleDateString("en-AU",{weekday:"short",timeZone:"UTC"}), mon:x.toLocaleDateString("en-AU",{month:"short",timeZone:"UTC"})}; };
+  const monthName=ym=>new Date(ym+"-01T12:00:00Z").toLocaleDateString("en-AU",{month:"long",year:"numeric",timeZone:"UTC"});
+  const skel=(n,h)=>'<div class="cal-sk" aria-label="Loading">'+Array.from({length:n},()=>'<div class="sk" style="height:'+h+'px"></div>').join("")+'</div>';
+  const keepJob=j=>!calWho || (calWho==="__none" ? !(j.crew||[]).length && !j.kit : (j.crew||[]).includes(calWho) || j.kit===calWho);
+  const keepEvent=e=>!calWho || (calWho!=="__none" && (!(e.who||[]).length || e.who.includes(calWho)));
+
+  function jobCard(j){
+    const l=leadOf(j.leadId)||{}, st=J.STATUSES.includes(j.status)?j.status:"Scheduled";
+    return '<div class="jc s-'+slug(st)+'" data-job="'+esc(j.id)+'" role="button" tabindex="0">'+
+      '<div class="jc1"><b class="jt">'+esc(jobName(j))+'</b>'+
+        (l.address?'<a class="pin" href="'+esc(mapsHref(l.address))+'" target="_blank" rel="noopener" aria-label="Open '+esc(l.address)+' in Google Maps">'+PIN+'</a>':"")+
+        '<span class="js">'+esc(st)+'</span></div>'+
+      '<div class="jn">'+esc(l.name||"No name")+'</div>'+
+      (j.source==="ghl"||j.checkService||j.ghlFlag?'<div class="jtags">'+(j.source==="ghl"?'<span class="jtag">From GHL</span>':"")+(j.checkService?'<span class="jtag warn">Check service</span>':"")+(j.ghlFlag?'<span class="jtag bad">'+esc(j.ghlFlag)+'</span>':"")+'</div>':"")+
+      '<div class="jc3"><span class="jtm">'+esc(J.timeLabel(j))+'</span><span class="jcrew">'+(j.crew||[]).map(avatar).join("")+(j.kit?'<span class="kit">'+esc(j.kit)+'</span>':"")+
+        '<button type="button" class="asg" data-asg="'+esc(j.id)+'" aria-label="Assign crew to job '+esc(j.number||"")+'">'+ASSIGN+'</button></span></div>'+
+    '</div>';
+  }
+  function eventCard(e){
+    const type=J.EVENT_TYPES[e.type]?e.type:"other";
+    return '<div class="jc e-'+type+'" data-ev="'+esc(e.id)+'" role="button" tabindex="0">'+
+      '<div class="jc1"><b class="jt">'+(type==="timeoff"?PLANE:"")+esc(e.title||J.EVENT_TYPES[type])+'</b><span class="js">'+esc(J.EVENT_TYPES[type])+'</span></div>'+
+      '<div class="jn">'+esc((e.who||[]).length?e.who.join(", "):"Everyone")+'</div>'+
+      '<div class="jtm">'+esc(J.timeLabel(e))+'</div>'+
+    '</div>';
+  }
+  function renderCal(){
+    document.documentElement.style.setProperty("--toph",document.querySelector(".top").offsetHeight+"px");
+    const cfg=CAL(), t=today();
+    // The month picker: 6 months back to a year ahead (and the week shown, if it's further).
+    const ms=$("#calMonth");
+    if(document.activeElement!==ms){
+      const [y,m]=t.split("-").map(Number), list=[];
+      for(let i=-6;i<=12;i++){ const d=new Date(Date.UTC(y,m-1+i,1)); list.push(d.toISOString().slice(0,7)); }
+      const cur=calDay.slice(0,7); if(!list.includes(cur)) list.push(cur); list.sort();
+      ms.innerHTML=list.map(ym=>'<option value="'+ym+'"'+(ym===cur?" selected":"")+'>'+esc(monthName(ym))+'</option>').join("");
+    }
+    const names=cfg.crew.concat(cfg.kits);
+    if(calWho && calWho!=="__none" && !names.includes(calWho)) calWho="";
+    if(calSvc && !J.SERVICES.includes(calSvc)) calSvc="";
+    const ws=$("#calWho"), ss=$("#calSvc");
+    if(document.activeElement!==ws) ws.innerHTML='<option value="">All</option>'+names.map(n=>'<option'+(n===calWho?" selected":"")+'>'+esc(n)+'</option>').join("")+'<option value="__none"'+(calWho==="__none"?" selected":"")+'>No crew yet</option>';
+    if(document.activeElement!==ss) ss.innerHTML='<option value="">All services</option>'+J.SERVICES.map(n=>'<option'+(n===calSvc?" selected":"")+'>'+esc(n)+'</option>').join("");
+    ws.classList.toggle("on",!!calWho); ss.classList.toggle("on",!!calSvc);
+    // The week strip: today circled, a dot under each day with a job.
+    const days=J.weekDays(calDay), busy=J.busyDays(allJobs.filter(keepJob),{service:calSvc});
+    $("#calStrip").innerHTML='<button type="button" class="arr" data-wk="-1" aria-label="Last week">‹</button>'+days.map(d=>{ const p=dParts(d);
+      return '<button type="button" class="d'+(d===t?" today":"")+(busy[d]?" busy":"")+'" data-day="'+d+'" aria-pressed="'+(d===calDay)+'" aria-label="'+esc(p.wd+" "+p.n+" "+p.mon+(busy[d]?", has jobs":""))+'"><span class="w">'+esc(p.wd.charAt(0))+'</span><span class="n">'+p.n+'</span><i></i></button>'; }).join("")+
+      '<button type="button" class="arr" data-wk="1" aria-label="Next week">›</button>';
+    const a=attention(); $("#bellDot").hidden=!a.n; $("#bellDot").textContent=a.n>9?"9+":a.n;
+    const el=$("#calList");
+    if(!loaded||!jobsLoaded){ el.innerHTML=skel(3,118); return; }
+    let groups, noDate=[];
+    if(calQ){
+      const q=calQ.toLowerCase(), js=allJobs.filter(j=>J.matches(j,leadOf(j.leadId),q)), es=liveEvents().filter(e=>[e.title,J.EVENT_TYPES[e.type],(e.who||[]).join(" ")].join(" ").toLowerCase().includes(q));
+      noDate=js.filter(j=>!M.isDay(j.date));
+      groups=J.agenda(js,es,"2000-01-01",40000);
+    } else groups=J.agenda(allJobs,liveEvents(),days[0],7,{service:calSvc, keep:keepJob, keepEvent});
+    const html=(noDate.length?'<div class="dh"><b>–</b><span>No date yet</span></div>'+noDate.map(jobCard).join(""):"")+
+      groups.map(g=>{ const p=dParts(g.day);
+        return '<div class="dh'+(g.day===calDay&&!calQ?" sel":"")+'" id="dh-'+g.day+'"><b>'+p.n+'</b><span>'+esc(p.wd+" "+p.mon)+(calQ&&g.day.slice(0,4)!==t.slice(0,4)?" "+g.day.slice(0,4):"")+'</span>'+(g.day===t?'<em>Today</em>':"")+'</div>'+
+          g.items.map(it=>it.kind==="job"?jobCard(it.x):eventCard(it.x)).join(""); }).join("");
+    el.innerHTML=(calQ?'<p class="help">'+(noDate.length+groups.reduce((n,g)=>n+g.items.length,0))+' found</p>':"")+
+      (html||'<div class="empty">'+(calQ?"No jobs match.":"Nothing booked this week"+(calWho||calSvc?" for this filter":"")+". Tap + ADD to book a job.")+'</div>')+
+      (calQ?"":'<button type="button" class="btn secondary" data-wk="1">Next week ›</button>');
+  }
+  // Tap a day: it's picked (+ ADD books on it) and the list goes to it. Swipe the strip for the next week.
+  function shiftWeek(n){ calDay=M.addDays(calDay,7*n); renderCal(); window.scrollTo({top:0}); }
+  function pickDay(d){
+    calDay=d; renderCal();
+    const h=document.getElementById("dh-"+d);
+    if(h) h.scrollIntoView({block:"start",behavior:"smooth"}); else toast("Nothing on "+dayName(d)+". Tap + ADD to book it.");
+  }
+  (()=>{
+    const st=$("#calStrip"); let x0=null, y0=0, swiped=0;
+    st.addEventListener("touchstart",e=>{ const p=e.touches[0]; x0=p.clientX; y0=p.clientY; },{passive:true});
+    st.addEventListener("touchend",e=>{ if(x0==null) return; const p=e.changedTouches[0], dx=p.clientX-x0, dy=p.clientY-y0; x0=null;
+      if(Math.abs(dx)>40 && Math.abs(dx)>Math.abs(dy)*1.5){ swiped=Date.now(); shiftWeek(dx<0?1:-1); } },{passive:true});
+    st.addEventListener("click",e=>{ if(Date.now()-swiped<500) return; const w=e.target.closest("[data-wk]"), d=e.target.closest("[data-day]"); if(w) shiftWeek(Number(w.dataset.wk)); else if(d) pickDay(d.dataset.day); });
+  })();
+  $("#calList").addEventListener("click",e=>{
+    if(e.target.closest(".pin")) return; // the link opens Maps
+    const w=e.target.closest("[data-wk]"); if(w){ shiftWeek(1); return; }
+    const as=e.target.closest("[data-asg]"); if(as){ openAssign(as.dataset.asg); return; }
+    const jc=e.target.closest("[data-job]"); if(jc){ openJobForm(jc.dataset.job); return; }
+    const ev=e.target.closest("[data-ev]"); if(ev) openEventForm(ev.dataset.ev);
+  });
+  $("#calList").addEventListener("keydown",e=>{ if((e.key==="Enter"||e.key===" ") && e.target.matches(".jc")){ e.preventDefault(); e.target.click(); } });
+  $("#calMonth").addEventListener("change",e=>{ const ym=e.target.value; calDay=ym===today().slice(0,7)?today():ym+"-01"; e.target.blur(); renderCal(); window.scrollTo({top:0}); });
+  $("#calToday").addEventListener("click",()=>{ calDay=today(); renderCal(); window.scrollTo({top:0}); });
+  $("#calWho").addEventListener("change",e=>{ calWho=e.target.value; try{ localStorage.setItem("il-cal-who",calWho); }catch(x){} e.target.blur(); renderCal(); });
+  $("#calSvc").addEventListener("change",e=>{ calSvc=e.target.value; try{ localStorage.setItem("il-cal-svc",calSvc); }catch(x){} e.target.blur(); renderCal(); });
+  $("#calViews").addEventListener("click",e=>{ const b=e.target.closest("[data-cv]"); if(b && b.dataset.cv!=="agenda") toast(b.textContent+" view is coming in the next update."); });
+  $("#calSearchBtn").addEventListener("click",()=>{ if(!$("#view-cal").hidden){ $("#calSearch").hidden=false; $("#cq").focus(); } });
+  $("#cq").addEventListener("input",()=>{ calQ=$("#cq").value.trim(); renderCal(); });
+  $("#cqClose").addEventListener("click",()=>{ calQ=""; $("#cq").value=""; $("#calSearch").hidden=true; renderCal(); });
+  $("#calBell").addEventListener("click",openBell);
+  $("#calMenu").addEventListener("click",openCalMenu);
+  $("#calAdd").addEventListener("click",openAddChooser);
+
+  // The bell: open jobs with no day, and jobs in the next 7 days with no crew or no time.
+  function attention(){
+    const t=today(), soon=M.addDays(t,7), open=allJobs.filter(j=>OPEN_JOB.includes(j.status||"Scheduled"));
+    const upcoming=open.filter(j=>M.isDay(j.date) && j.date>=t && j.date<=soon);
+    const noDate=open.filter(j=>!M.isDay(j.date)), noCrew=upcoming.filter(j=>!(j.crew||[]).length), noTime=upcoming.filter(j=>!j.allDay && J.toMin(j.start)==null);
+    return {noDate, noCrew, noTime, n:new Set([...noDate,...noCrew,...noTime]).size};
+  }
+  function openBell(){
+    const a=attention(), why=new Map();
+    [[a.noDate,"No date yet"],[a.noCrew,"No crew yet"],[a.noTime,"No time set"]].forEach(([list,w])=>list.forEach(j=>why.set(j,(why.get(j)||[]).concat(w))));
+    const row=(j,w)=>'<button type="button" class="rd-row" data-job="'+esc(j.id)+'"><span class="rd-name">'+esc(jobName(j))+'</span><span class="r warn">'+esc(w.join(", "))+'</span><span class="ln">'+esc([(leadOf(j.leadId)||{}).name, M.isDay(j.date)?dayName(j.date):"", J.timeLabel(j)].filter(Boolean).join(" · "))+'</span></button>';
+    sheet('<div class="sheet-h"><div><h2>Needs attention</h2><p class="help">Jobs in the next 7 days, and bookings with no day yet.</p></div><button class="x" id="closeSheet" type="button">Close</button></div>'+
+      (why.size?'<div class="rd">'+[...why].map(([j,w])=>row(j,w)).join("")+'</div>':'<div class="allDone">All sorted</div>'));
+    document.querySelectorAll("#sheet [data-job]").forEach(b=>b.addEventListener("click",()=>openJobForm(b.dataset.job)));
+  }
+  function openCalMenu(){
+    const g=sheet('<div class="sheet-h"><div><h2>Menu</h2><p class="help">'+esc(who?"On this phone: "+who:"")+'</p></div><button class="x" id="closeSheet" type="button">Close</button></div>'+
+      '<div class="pickgrid">'+[["today","Today"],["leads","Leads"],["board","Board"],["numbers","Numbers"]].map(([k,v])=>'<button type="button" data-go="'+k+'">'+v+'</button>').join("")+'</div>'+
+      '<button class="btn secondary" id="mn-crew" type="button">Crew earnings (coming soon)</button>'+
+      '<div class="row"><button class="btn secondary" id="mn-set" type="button">Settings</button><button class="btn secondary" id="mn-who" type="button">Switch person</button></div>');
+    document.querySelectorAll("#sheet [data-go]").forEach(b=>b.addEventListener("click",()=>{ closeSheet(); showTab(b.dataset.go); window.scrollTo({top:0}); }));
+    g("#mn-crew").addEventListener("click",()=>toast("Crew earnings come in a later update."));
+    g("#mn-set").addEventListener("click",openSettings);
+    g("#mn-who").addEventListener("click",()=>{ closeSheet(); $("#whoBtn").click(); });
+  }
+  function openAddChooser(){
+    const g=sheet('<div class="sheet-h"><div><h2>Add</h2><p class="help">On '+esc(dayName(calDay))+'. You can change the day.</p></div><button class="x" id="closeSheet" type="button">Close</button></div>'+
+      '<div class="pickgrid"><button type="button" id="ad-job">Job<span>A booking for a customer</span></button><button type="button" id="ad-ev">Event<span>Meeting, time off, other</span></button></div>');
+    g("#ad-job").addEventListener("click",()=>openJobForm(null,{date:calDay}));
+    g("#ad-ev").addEventListener("click",()=>openEventForm(null,{date:calDay}));
+  }
+  const jobHead=(j,sub)=>'<div class="sheet-h"><div><h2>'+esc(jobName(j))+'</h2><p class="help">'+esc(sub)+'</p></div><button class="x" id="closeSheet" type="button">Close</button></div>';
+
+  // ---------- SAVING JOBS (and keeping the lead in step) ----------
+  // Only what changed. The lead's booking (day, time, price) follows the job, unless the change
+  // came from the lead (o.fromLead).
+  async function saveJob(id,patch,o={}){
+    const j=jobById(id); if(!j||!db) return false;
+    const diff={};
+    Object.keys(patch).forEach(k=>{ if(k!=="id" && JSON.stringify(patch[k])!==JSON.stringify(j[k])) diff[k]=patch[k]; });
+    if(!Object.keys(diff).length) return true;
+    diff.updatedAt=new Date().toISOString();
+    try{ await db.doc("jobs/"+id).update(diff); }catch(err){ writeFail(err); return false; }
+    const now={...j,...diff}; Object.assign(j,diff);
+    if(!o.fromLead) await jobToLead(now);
+    return true;
+  }
+  async function jobToLead(j){
+    const l=current(j.leadId), cur=J.currentJob(allJobs,j.leadId);
+    if(!l || (cur && cur.id!==j.id)) return; // an older job: the lead is on to the next one
+    const p=J.leadPatch(j,l);
+    if(Object.keys(p).length) await save(l.id,p,{fromJob:true});
+  }
+  // The lead's booking changed (here, the menu, Edit details, a deposit, ✓ Job done): its job follows.
+  function leadToJob(id){
+    const l=current(id), j=J.currentJob(allJobs,id); if(!l||!j) return;
+    const st=stage(l), p={};
+    if(st==="Booked"){
+      if(j.status==="Completed") return; // booked again: housekeeping makes the new job
+      if(j.status==="Cancelled") p.status="Scheduled";
+      Object.assign(p,J.jobPatch(l,j,CAL()));
+    } else if(st==="Done"){
+      if(j.status==="Cancelled") return;
+      if(j.status!=="Completed") p.status="Completed";
+      if(l.revenue!=null && l.revenue!=="" && Number(l.revenue)!==Number(j.finalPrice)) p.finalPrice=Number(l.revenue);
+      if(M.isDay(l.jobDate) && l.jobDate!==j.date) p.date=l.jobDate;
+    } else if(OPEN_JOB.includes(j.status||"Scheduled")) p.status="Cancelled";
+    if(Object.keys(p).length) saveJob(j.id,p,{fromLead:true});
+  }
+  /*
+    Jobs for booked leads. The first time (once, for both phones): a backup of every lead, then a
+    job for each booked lead and each done one with a job day, so the calendar has the history.
+    After that, a job for each new booking. Nothing on a lead is changed. Two jobs given the same
+    number (both phones at once) are sorted out the same way on both.
+  */
+  const makingJobs=new Set(), pendingLeads=new Set(), renumbering=new Set();
+  async function syncJobs(){
+    if(!db||!canWrite||!loaded||!jobsLoaded||calSaved===null||!upgraded||syncJobs.migrating) return;
+    const at=new Date().toISOString(), cfg=CAL(), t=today();
+    if(!calSaved.jobsMigratedAt){
+      syncJobs.migrating=true;
+      try{
+        if(!(window.LEADS_CONFIG||{}).preview)
+          await db.doc("backups/leads-"+at.replace(/[:.]/g,"-")).set({savedAt:at, reason:"before the job calendar (a job for each booked or done lead)", count:leads.length, leads:leads.map(l=>{ const d={...l}; delete d.id; return {id:l.id, data:d}; })});
+        for(const x of J.toMake(leads,allJobs,cfg,t,at,true)) await db.doc("jobs/"+x.id).set({...x.job, createdBy:"Calendar setup"});
+        await db.doc("settings/calendar").set({...calSaved, jobsMigratedAt:at, jobsMigratedBy:who||""});
+      }catch(e){ /* tried again next time; the jobs already made are kept */ }
+      syncJobs.migrating=false;
+      return;
+    }
+    if(makingJobs.size) return;
+    J.toMake(leads.filter(l=>!pendingLeads.has(l.id)),allJobs,cfg,t,at,false).forEach(x=>{
+      makingJobs.add(x.id);
+      db.doc("jobs/"+x.id).set({...x.job, createdBy:who||""}).catch(()=>{}).finally(()=>makingJobs.delete(x.id));
+    });
+    J.renumber(allJobs.map(j=>({id:j.id, job:j}))).forEach(r=>{
+      if(renumbering.has(r.id)) return;
+      renumbering.add(r.id); saveJob(r.id,{number:r.number},{fromLead:true}).finally(()=>renumbering.delete(r.id));
+    });
+  }
+
+  // ---------- ASSIGN CREW (from a card; each tap saves) ----------
+  function openAssign(id){
+    const j=jobById(id); if(!j) return;
+    const cfg=CAL();
+    const g=sheet(jobHead(j,"Tap to add or take off. It saves straight away.")+
+      '<div class="eyebrow">Crew</div><div class="chipgrid" id="as-crew"></div>'+
+      '<div class="eyebrow">Kit or van</div><div class="seg three" id="as-kit"></div>'+
+      '<button class="btn secondary" id="as-done" type="button">Done</button>');
+    const draw=()=>{ const cur=jobById(id)||j;
+      g("#as-crew").innerHTML=cfg.crew.map(n=>'<button type="button" data-crew="'+esc(n)+'" aria-pressed="'+(cur.crew||[]).includes(n)+'">'+esc(n)+'</button>').join("");
+      g("#as-kit").innerHTML=[""].concat(cfg.kits).map(k=>'<button type="button" data-kit="'+esc(k)+'" aria-pressed="'+((cur.kit||"")===k)+'">'+esc(k||"No kit")+'</button>').join(""); };
+    draw();
+    g("#as-crew").addEventListener("click",async e=>{
+      const b=e.target.closest("[data-crew]"); if(!b||!canWrite) return;
+      const cur=jobById(id)||j, n=b.dataset.crew, on=!(cur.crew||[]).includes(n);
+      const list=on?(cur.crew||[]).concat(n):(cur.crew||[]).filter(x=>x!==n);
+      b.setAttribute("aria-pressed",String(on));
+      if(await saveJob(id,{crew:cfg.crew.filter(x=>list.includes(x)).concat(list.filter(x=>!cfg.crew.includes(x)))})) toast(n+(on?" is on it.":" is off it.")); else draw();
+    });
+    g("#as-kit").addEventListener("click",async e=>{
+      const b=e.target.closest("[data-kit]"); if(!b||!canWrite) return;
+      g("#as-kit").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+      if(await saveJob(id,{kit:b.dataset.kit})) toast(b.dataset.kit?b.dataset.kit+" it is.":"No kit."); else draw();
+    });
+    g("#as-done").addEventListener("click",closeSheet);
+  }
+
+  // ---------- A JOB (new, or change one) ----------
+  // The customer is a lead: find one, or type a new customer and a lead is made for them.
+  function openJobForm(id,preset={}){
+    const cfg=CAL(), old=id?jobById(id):null; if(id&&!old) return;
+    const j=old?{...old}:J.blank({date:preset.date||"", service:"Full Detail"});
+    let linked=old?old.leadId:"";
+    const lead0=linked?leadOf(linked)||{}:{};
+    const ADD=cfg.addOns.concat((j.addOns||[]).filter(a=>!cfg.addOns.some(c=>c.name===a.name)).map(a=>({name:a.name, price:null})));
+    const has=n=>(j.addOns||[]).find(a=>a.name===n);
+    const dep=old&&lead0.id ? (lead0.depositPaid==="Yes"
+        ? '<p class="help"><span class="paidtag">Deposit paid ✓</span> $'+esc(lead0.depositAmount||M.DEPOSIT)+(lead0.depositPaidAt?' on '+esc(when(lead0.depositPaidAt)):"")+'</p>'
+        : '<div class="row nowrap"><span class="help" style="flex:1">No deposit yet.</span><button class="btn small secondary" id="jf-dep" type="button">Send $'+M.DEPOSIT+' deposit</button></div>') : "";
+    const g=sheet((old?jobHead(old,(old.status||"Scheduled")+(old.source==="ghl"?" · From GHL"+(old.ghlCalendar?" ("+old.ghlCalendar+")":""):"")+(old.createdAt?" · added "+dayName(localDate(old.createdAt)):"")):'<div class="sheet-h"><div><h2>New job</h2><p class="help">Find the lead, or type a new customer.</p></div><button class="x" id="closeSheet" type="button">Close</button></div>')+
+      (canWrite?"":'<div class="banner">View only. Ask for edit access.</div>')+
+      '<div class="eyebrow">Customer</div>'+
+      (old?"":'<label>Find a lead<input id="jf-find" type="search" placeholder="Name, phone or car" autocomplete="off"></label><div class="found" id="jf-found" hidden></div>')+
+      '<div id="jf-linked"></div>'+
+      '<div class="grid">'+
+        '<label>Name<input id="jf-name" value="'+esc(lead0.name||"")+'" placeholder="Jo"></label>'+
+        '<label>Phone<input id="jf-phone" inputmode="tel" value="'+esc(lead0.phone||"")+'" placeholder="0400 000 000"></label>'+
+        '<label>Car<input id="jf-car" value="'+esc(lead0.car||"")+'" placeholder="Mazda CX-5"></label>'+
+        '<label>Suburb<input id="jf-suburb" value="'+esc(lead0.suburb||"")+'" placeholder="Gungahlin"></label>'+
+        '<label class="full">Address<input id="jf-address" value="'+esc(lead0.address||"")+'" placeholder="12 Example St, Gungahlin" autocomplete="street-address"></label>'+
+        '<label class="full" id="jf-adWrap"'+(linked?" hidden":"")+'>Which ad?<select id="jf-ad">'+adOptions("")+'</select></label>'+
+      '</div>'+
+      '<div class="eyebrow">The job</div>'+
+      (old&&(old.checkService||old.ghlFlag)?'<div class="banner">'+(old.checkService?"GHL didn't say which service. Pick it below.":"")+(old.checkService&&old.ghlFlag?"<br>":"")+(old.ghlFlag?esc(old.ghlFlag)+" (from GHL).":"")+'</div>':"")+
+      '<label>Service<div class="seg three" id="jf-svc" data-value="'+esc(j.service)+'">'+J.SERVICES.map(v=>'<button type="button" data-v="'+esc(v)+'">'+esc(v)+'</button>').join("")+'</div></label>'+
+      (ADD.length?'<div class="eyebrow"><span>Add-ons</span><span>$ each</span></div>'+ADD.map((a,i)=>{ const on=has(a.name);
+        return '<div class="addon"><label class="toggle"><span>'+esc(a.name)+'</span><input type="checkbox" data-addon="'+i+'"'+(on?" checked":"")+'></label><input type="number" inputmode="decimal" min="0" data-addonp="'+i+'" value="'+esc(on&&on.price!=null?on.price:a.price!=null?a.price:"")+'" placeholder="$" aria-label="'+esc(a.name)+' price"></div>'; }).join(""):"")+
+      '<div class="grid">'+
+        '<label class="full">Price $ (or a range, like 280-350)<input id="jf-price" inputmode="text" value="'+esc(j.price||"")+'" placeholder="280"></label>'+
+        '<label class="full" id="jf-finalWrap">Final price $<input id="jf-final" type="number" inputmode="decimal" min="0" value="'+esc(j.finalPrice??"")+'"></label>'+
+      '</div>'+
+      '<div class="eyebrow">When</div>'+
+      '<div class="grid">'+
+        '<label class="full">Day (leave blank if not set yet)<input id="jf-date" type="date" value="'+esc(j.date||"")+'"></label>'+
+        '<label class="toggle full"><span>All day</span><input type="checkbox" id="jf-allday"'+(j.allDay?" checked":"")+'></label>'+
+        '<label id="jf-sw">Start<input id="jf-start" type="time" value="'+esc(j.start||"")+'"></label>'+
+        '<label id="jf-ew">End<input id="jf-end" type="time" value="'+esc(j.end||"")+'"></label>'+
+      '</div><p class="help" id="jf-len"></p>'+
+      '<div class="eyebrow">Crew</div><div class="chipgrid" id="jf-crew">'+cfg.crew.concat((j.crew||[]).filter(n=>!cfg.crew.includes(n))).map(n=>'<button type="button" data-crew="'+esc(n)+'" aria-pressed="'+(j.crew||[]).includes(n)+'">'+esc(n)+'</button>').join("")+'</div>'+
+      '<div class="eyebrow">Kit or van</div><div class="seg three" id="jf-kit" data-value="'+esc(j.kit||"")+'">'+[""].concat(cfg.kits).map(k=>'<button type="button" data-v="'+esc(k)+'">'+esc(k||"No kit")+'</button>').join("")+'</div>'+
+      (dep?'<div class="eyebrow">Deposit</div>'+dep:"")+
+      '<label>Notes<textarea id="jf-notes" rows="2" placeholder="Gate code, dog in the yard">'+esc(j.notes||"")+'</textarea></label>'+
+      '<div class="eyebrow">Status</div><div class="seg two" id="jf-status" data-value="'+esc(j.status||"Scheduled")+'">'+J.STATUSES.map(v=>'<button type="button" data-v="'+v+'">'+v+'</button>').join("")+'</div>'+
+      '<button class="btn" id="jf-save" type="button"'+(canWrite?"":" disabled")+'>'+(old?"Save job":"Add job")+'</button>'+
+      (old&&lead0.id?'<button class="btn secondary" id="jf-lead" type="button">Open the lead</button>':""));
+    const svc=()=>g("#jf-svc").dataset.value||"Other";
+    let endTouched=!!(old && old.end && old.end!==J.endFor(old.start,old.service,cfg)), allDayTouched=!!old;
+    const autoEnd=()=>{ if(endTouched) return; const st=g("#jf-start").value; g("#jf-end").value=st?J.endFor(st,svc(),cfg):""; };
+    const showTimes=()=>{ const ad=g("#jf-allday").checked; g("#jf-sw").hidden=ad; g("#jf-ew").hidden=ad; };
+    const lenHelp=()=>{ const v=svc(), len=J.lengthOf(v,cfg); g("#jf-len").textContent=v+(len.allDay?" is all day":" is "+(len.minutes/60)+" hours")+" by default (Settings)."; };
+    let svcTouched=false;
+    const svcChanged=()=>{ svcTouched=true; if(!allDayTouched){ g("#jf-allday").checked=J.lengthOf(svc(),cfg).allDay; showTimes(); } autoEnd(); lenHelp(); };
+    const statusChanged=()=>{ g("#jf-finalWrap").hidden=g("#jf-status").dataset.value!=="Completed"; };
+    seg(g("#jf-svc"),svcChanged); seg(g("#jf-kit")); seg(g("#jf-status"),statusChanged);
+    if(!old) g("#jf-allday").checked=J.lengthOf(j.service,cfg).allDay;
+    showTimes(); lenHelp(); statusChanged();
+    g("#jf-allday").addEventListener("change",()=>{ allDayTouched=true; showTimes(); });
+    g("#jf-start").addEventListener("input",autoEnd); g("#jf-start").addEventListener("change",autoEnd);
+    g("#jf-end").addEventListener("input",()=>{ endTouched=true; });
+    g("#jf-crew").addEventListener("click",e=>{ const b=e.target.closest("[data-crew]"); if(b) b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true")); });
+    const depB=g("#jf-dep"); if(depB) depB.addEventListener("click",()=>openDeposit(linked));
+    const leadB=g("#jf-lead"); if(leadB) leadB.addEventListener("click",()=>openMenu(linked));
+    // Linking a lead: its details fill in; one that already has a job open opens that job instead.
+    const showLinked=()=>{
+      const l=linked&&leadOf(linked);
+      g("#jf-linked").innerHTML=l&&!old?'<div class="linked"><span>Linked to '+esc(l.name||"this lead")+'\'s lead</span><button type="button" class="mini" id="jf-unlink" style="min-height:40px">Not them</button></div>':"";
+      g("#jf-adWrap").hidden=!!linked;
+      const un=g("#jf-unlink"); if(un) un.addEventListener("click",()=>{ linked=""; showLinked(); g("#jf-find").focus(); });
+    };
+    const link=l=>{
+      const cur=J.currentJob(allJobs,l.id);
+      if(cur && OPEN_JOB.includes(cur.status||"Scheduled")){ toast((l.name||"They")+" already has job "+cur.number+"."); openJobForm(cur.id); return; }
+      linked=l.id;
+      [["name","jf-name"],["phone","jf-phone"],["car","jf-car"],["suburb","jf-suburb"],["address","jf-address"]].forEach(([k,i])=>{ g("#"+i).value=l[k]||""; });
+      const sv=J.serviceFromLead(l.service); if(sv!=="Other"){ setSeg(g("#jf-svc"),sv); svcChanged(); }
+      if(!g("#jf-price").value){ const p=l.priceRange?l.priceRange.replace("–","-"):l.revenue!=null&&l.revenue!==""?l.revenue:l.quoted!=null&&l.quoted!==""?l.quoted:""; g("#jf-price").value=p; }
+      if(M.isDay(l.jobDate)) g("#jf-date").value=l.jobDate;
+      if(l.jobTime){ g("#jf-start").value=l.jobTime; autoEnd(); }
+      g("#jf-find").value=""; g("#jf-found").hidden=true; showLinked();
+    };
+    const find=g("#jf-find");
+    if(find) find.addEventListener("input",()=>{
+      const q=find.value.trim().toLowerCase(), box=g("#jf-found");
+      const hits=q.length<2?[]:leads.filter(l=>!l.junk && [l.name,l.phone,digits(l.phone),l.car,l.suburb].join(" ").toLowerCase().includes(q)).slice(0,6);
+      box.hidden=!hits.length;
+      box.innerHTML=hits.map(l=>'<button type="button" data-lead="'+esc(l.id)+'"><b>'+esc((l.name||"No name")+(l.car?" · "+l.car:""))+'</b><span>'+esc([stage(l), l.phone, l.suburb].filter(Boolean).join(" · "))+'</span></button>').join("");
+      box.querySelectorAll("[data-lead]").forEach(b=>b.addEventListener("click",()=>{ const l=leadOf(b.dataset.lead); if(l) link(l); }));
+    });
+    showLinked();
+    const read=()=>{
+      const status=g("#jf-status").dataset.value||"Scheduled", allDay=g("#jf-allday").checked;
+      const addOns=[...document.querySelectorAll("#sheet [data-addon]")].filter(c=>c.checked).map(c=>({name:ADD[c.dataset.addon].name, price:num(document.querySelector('#sheet [data-addonp="'+c.dataset.addon+'"]').value)}));
+      return {service:svc(), addOns, price:g("#jf-price").value.trim(), finalPrice:status==="Completed"?num(g("#jf-final").value):(old?old.finalPrice??null:null),
+        date:g("#jf-date").value, allDay, start:allDay?"":g("#jf-start").value, end:allDay?"":g("#jf-end").value,
+        crew:[...g("#jf-crew").querySelectorAll('[aria-pressed="true"]')].map(b=>b.dataset.crew), kit:g("#jf-kit").dataset.value||"", notes:g("#jf-notes").value.trim(), status};
+    };
+    g("#jf-save").addEventListener("click",async()=>{
+      if(!db){ toast("Not connected. Try again in a sec."); return; }
+      const f=read(), cust={name:g("#jf-name").value.trim(), phone:g("#jf-phone").value.trim(), car:g("#jf-car").value.trim(), suburb:g("#jf-suburb").value.trim(), address:g("#jf-address").value.trim()};
+      const adv=g("#jf-ad").value;
+      const missing=[!cust.name&&"name", !linked&&!cust.phone&&"phone", !linked&&!cust.car&&"car", !linked&&!adv&&"which ad"].filter(Boolean);
+      if(missing.length){ toast("Add their "+missing.join(", ")); return; }
+      if(!f.allDay && f.start && f.end && J.toMin(f.end)<=J.toMin(f.start)){ toast("The end needs to be after the start"); return; }
+      const b=g("#jf-save"); b.disabled=true;
+      const now=new Date().toISOString(), time=f.allDay?"":f.start;
+      const custPatch=l=>{ const p={}; Object.keys(cust).forEach(k=>{ if(cust[k]!==(l[k]||"") && (cust[k]||k==="address"||k==="suburb")) p[k]=cust[k]; }); const sv=J.serviceToLead(f.service); if(f.service!=="Other" && l.service!==sv) p.service=sv; return p; };
+      try{
+        if(old){
+          // Changing a job: the job, then the customer on the lead, then the lead's status.
+          const prev=old.status||"Scheduled";
+          if(!await saveJob(id,{...f, ...(old.checkService&&svcTouched?{checkService:false}:{})})){ b.disabled=false; return; }
+          const l=current(linked);
+          if(l){
+            const cp=custPatch(l); if(Object.keys(cp).length) await save(linked,cp,{fromJob:true});
+            const isCur=(J.currentJob(allJobs,linked)||{}).id===id, l2=current(linked);
+            if(isCur && f.status!==prev){
+              if(f.status==="Completed" && stage(l2)!=="Done") await save(linked,{...R.completePatch(l2,now), ...M.setStage(l2,"Done",today()), jobDate:f.date&&f.date<=today()?f.date:today()},{fromJob:true});
+              else if(f.status==="Cancelled" && stage(l2)==="Booked"){ if(confirm("Job cancelled. Move "+(l2.name||"this lead")+" back to Chasing?\n\nCancel keeps them as Booked.")) await save(linked,M.setStage(l2,"Chasing",today()),{fromJob:true}); }
+              else if(OPEN_JOB.includes(f.status) && !OPEN_JOB.includes(prev) && stage(l2)!=="Booked") await save(linked,M.book(l2,{date:f.date, time, address:cust.address},now,who),{fromJob:true});
+            }
+          }
+          closeSheet(); toast("Job "+old.number+" saved."); return;
+        }
+        // A new job. The same phone as a lead already here: that lead (as on the Add tab).
+        if(!linked){
+          const m=M.matchPhone(leads,cust.phone,today());
+          if(m.merge){ const l=leadOf(m.merge.id)||m.merge, cur=J.currentJob(allJobs,l.id);
+            if(cur && OPEN_JOB.includes(cur.status||"Scheduled")){ b.disabled=false; toast((l.name||"They")+" already has job "+cur.number+"."); openJobForm(cur.id); return; }
+            linked=l.id; toast("Same phone as "+(l.name||"a lead")+": added to that lead."); }
+          else preset.repeatOf=m.repeatOf||"";
+        }
+        const number=J.nextNumber(allJobs), cur=linked?J.currentJob(allJobs,linked):null;
+        let lid=linked, ref=null;
+        if(!lid){ ref=db.collection("leads").doc(); lid=ref.id; }
+        pendingLeads.add(lid);
+        const jid=cur?J.leadJobId(lid,true,f.date||now.slice(0,10)):J.leadJobId(lid);
+        const job=J.blank({...f, number, leadId:lid, createdAt:now, createdBy:who||"", updatedAt:now});
+        await db.doc("jobs/"+jid).set(job);
+        if(!jobById(jid)) allJobs.push({id:jid, ...job});
+        if(ref){
+          // A new customer: a lead, booked, as if added on the Add tab.
+          const doc={
+            ...M.newFields(""), date:today(), createdAt:now, owner:who||"", name:cust.name, phone:cust.phone, ...adFields(adv), referredBy:"",
+            address:cust.address, jobTime:"", access:"", service:J.serviceToLead(f.service), car:cust.car, suburb:cust.suburb,
+            replyMins:null, quoted:null, status:"New", nextFollowUp:today(), lastContact:"", log:[], objection:"", lostWhy:"", jobDate:"", revenue:null,
+            paid:"", plan:"", upsellOffered:"", upsellTaken:"", reviewAsked:"", reviewLeft:"", nextDue:"", notes:"",
+            completedAt:null, reviewStatus:null, reviewAskedAt:null, reviewTextSentAt:null, reviewNudgedAt:null, reviewLeftAt:null, reviewNotes:"", booked:"Pending",
+          };
+          if(preset.repeatOf) doc.repeatOf=preset.repeatOf;
+          Object.assign(doc,M.book(doc,{date:f.date, time, address:cust.address, price:f.price},now,who)); doc.replyMins=null;
+          if(f.status==="Completed") Object.assign(doc,R.completePatch(null,now),M.setStage(doc,"Done",today()));
+          Object.assign(doc,J.leadPatch(job,doc));
+          await ref.set(M.sync(doc,today()));
+        } else {
+          const l=current(lid);
+          let p=custPatch(l);
+          if(f.status==="Completed"){ if(stage(l)!=="Done") p={...p, ...R.completePatch(l,now), ...M.setStage(l,"Done",today())}; }
+          else if(stage(l)!=="Booked") p={...p, ...M.book(l,{date:f.date, time, address:cust.address, price:f.price},now,who)};
+          p={...p, ...J.leadPatch(job,{...l,...p})};
+          await save(lid,p,{fromJob:true});
+        }
+        pendingLeads.delete(lid);
+        closeSheet(); toast("Job "+number+" added."+(f.date?"":" No day yet: it's under the bell."));
+        if(M.isDay(f.date) && !$("#view-cal").hidden){ calDay=f.date; renderCal(); }
+      }catch(err){ b.disabled=false; pendingLeads.clear(); writeFail(err); }
+    });
+  }
+
+  // ---------- AN EVENT (not a job) ----------
+  function openEventForm(id,preset={}){
+    const cfg=CAL(), old=id?allEvents.find(e=>e.id===id):null; if(id&&!old) return;
+    const e=old?{...old}:{type:"meeting", title:"", date:preset.date||today(), start:"", end:"", allDay:false, who:[], notes:""};
+    const g=sheet('<div class="sheet-h"><div><h2>'+(old?"Event":"New event")+'</h2><p class="help">Not a job: a team meeting, time off, anything else.</p></div><button class="x" id="closeSheet" type="button">Close</button></div>'+
+      '<label>Type<div class="seg three" id="ef-type" data-value="'+esc(J.EVENT_TYPES[e.type]?e.type:"other")+'">'+Object.keys(J.EVENT_TYPES).map(k=>'<button type="button" data-v="'+k+'">'+esc(J.EVENT_TYPES[k])+'</button>').join("")+'</div></label>'+
+      '<label>Title<input id="ef-title" value="'+esc(e.title||"")+'" placeholder="'+esc(J.EVENT_TYPES[e.type]||"Other")+'"></label>'+
+      '<div class="grid">'+
+        '<label class="full">Day<input id="ef-date" type="date" value="'+esc(e.date||"")+'"></label>'+
+        '<label class="toggle full"><span>All day</span><input type="checkbox" id="ef-allday"'+(e.allDay?" checked":"")+'></label>'+
+        '<label id="ef-sw">Start<input id="ef-start" type="time" value="'+esc(e.start||"")+'"></label>'+
+        '<label id="ef-ew">End<input id="ef-end" type="time" value="'+esc(e.end||"")+'"></label>'+
+      '</div>'+
+      '<div class="eyebrow"><span>Who it\'s for</span><span>None picked: everyone</span></div>'+
+      '<div class="chipgrid" id="ef-who">'+cfg.crew.concat((e.who||[]).filter(n=>!cfg.crew.includes(n))).map(n=>'<button type="button" data-who="'+esc(n)+'" aria-pressed="'+(e.who||[]).includes(n)+'">'+esc(n)+'</button>').join("")+'</div>'+
+      '<label>Notes<textarea id="ef-notes" rows="2">'+esc(e.notes||"")+'</textarea></label>'+
+      '<button class="btn" id="ef-save" type="button"'+(canWrite?"":" disabled")+'>'+(old?"Save event":"Add event")+'</button>'+
+      (old?'<button class="btn secondary" id="ef-del" type="button">Remove this event</button>':""));
+    let allDayTouched=!!old;
+    const showTimes=()=>{ const ad=g("#ef-allday").checked; g("#ef-sw").hidden=ad; g("#ef-ew").hidden=ad; };
+    seg(g("#ef-type"),v=>{ g("#ef-title").placeholder=J.EVENT_TYPES[v]; if(!allDayTouched){ g("#ef-allday").checked=v==="timeoff"; showTimes(); } });
+    showTimes();
+    g("#ef-allday").addEventListener("change",()=>{ allDayTouched=true; showTimes(); });
+    g("#ef-who").addEventListener("click",ev=>{ const b=ev.target.closest("[data-who]"); if(b) b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true")); });
+    g("#ef-save").addEventListener("click",async()=>{
+      if(!db){ toast("Not connected. Try again in a sec."); return; }
+      const allDay=g("#ef-allday").checked;
+      const doc={type:g("#ef-type").dataset.value||"other", title:g("#ef-title").value.trim(), date:g("#ef-date").value, allDay, start:allDay?"":g("#ef-start").value, end:allDay?"":g("#ef-end").value,
+        who:[...g("#ef-who").querySelectorAll('[aria-pressed="true"]')].map(b=>b.dataset.who), notes:g("#ef-notes").value.trim(), updatedAt:new Date().toISOString(), updatedBy:who||""};
+      if(!M.isDay(doc.date)){ toast("Pick the day"); return; }
+      if(doc.start && doc.end && J.toMin(doc.end)<=J.toMin(doc.start)){ toast("The end needs to be after the start"); return; }
+      const b=g("#ef-save"); b.disabled=true;
+      try{
+        if(old) await db.doc("events/"+id).update(doc);
+        else await db.collection("events").add({...doc, createdAt:doc.updatedAt, createdBy:who||""});
+        closeSheet(); toast(old?"Event saved.":"Event added.");
+        if(!$("#view-cal").hidden){ calDay=doc.date; renderCal(); }
+      }catch(err){ b.disabled=false; writeFail(err); }
+    });
+    const del=g("#ef-del");
+    if(del) del.addEventListener("click",async()=>{
+      if(!confirm("Remove this event from the calendar?")) return;
+      try{ await db.doc("events/"+id).update({deleted:true, deletedAt:new Date().toISOString(), deletedBy:who||""}); closeSheet(); toast("Event removed."); }catch(err){ writeFail(err); }
+    });
+  }
+
+  // ---------- CALENDAR SETTINGS (in Settings) ----------
+  function calSettingsHtml(){
+    const c=CAL();
+    return '<div class="set-sec"><div class="eyebrow">Calendar</div>'+
+      '<label>Crew (one per line)<textarea id="c-crew" rows="5">'+esc(c.crew.join("\n"))+'</textarea></label>'+
+      '<label>Kits and vans (one per line)<textarea id="c-kits" rows="2">'+esc(c.kits.join("\n"))+'</textarea></label>'+
+      '<div class="eyebrow"><span>Default job length</span><span>Hours</span></div>'+
+      '<div class="lengths">'+J.SERVICES.map(sv=>{ const v=c.lengths[sv], ad=v==="allday";
+        return '<span>'+esc(sv)+'</span><input type="number" inputmode="decimal" min="0.5" max="14" step="0.5" data-len="'+esc(sv)+'" value="'+(ad?"":v)+'" aria-label="'+esc(sv)+' hours"'+(ad?" disabled":"")+'><label class="toggle"><span>All day</span><input type="checkbox" data-lenall="'+esc(sv)+'"'+(ad?" checked":"")+'></label>'; }).join("")+'</div>'+
+      '<p class="help">Each job can be changed on its own too.</p>'+
+      '<label>Add-ons (one per line: name, price)<textarea id="c-addons" rows="3">'+esc(c.addOns.map(a=>a.name+(a.price!=null?", "+a.price:"")).join("\n"))+'</textarea></label>'+
+      '<p class="help">Leave the price off (like Travel fee) to type it on each job.</p>'+
+      '<button class="btn" id="c-save" type="button">Save calendar settings</button></div>';
+  }
+  function wireCalSettings(g,put){
+    document.querySelectorAll("#sheet [data-lenall]").forEach(cb=>cb.addEventListener("change",()=>{ const i=document.querySelector('#sheet [data-len="'+cb.dataset.lenall+'"]'); i.disabled=cb.checked; if(!cb.checked && !i.value) i.value=J.DEFAULTS.lengths[cb.dataset.lenall]==="allday"?8:J.DEFAULTS.lengths[cb.dataset.lenall]; }));
+    g("#c-save").addEventListener("click",()=>{
+      const lines=sel=>[...new Set(g(sel).value.split("\n").map(x=>x.trim()).filter(Boolean))];
+      const crew=lines("#c-crew"), kits=lines("#c-kits");
+      if(!crew.length){ toast("Add at least one person"); return; }
+      const lengths={};
+      J.SERVICES.forEach(sv=>{ const all=document.querySelector('#sheet [data-lenall="'+sv+'"]').checked, v=num(document.querySelector('#sheet [data-len="'+sv+'"]').value); lengths[sv]=all?"allday":v>0&&v<=14?v:J.DEFAULTS.lengths[sv]; });
+      const addOns=lines("#c-addons").map(x=>{ const m=/^(.*?)(?:\s*,\s*\$?\s*(\d+(?:\.\d+)?))?\s*$/.exec(x); return {name:m[1].trim(), price:m[2]!=null?Number(m[2]):null}; }).filter(a=>a.name);
+      put("settings/calendar",{...(calSaved||{}), crew, kits, lengths, addOns},g("#c-save"),"Calendar settings saved.");
+    });
+  }
+
   // ---------- UPGRADE (older leads move to five stages, by themselves) ----------
   // Runs once, when a lead needs it: saves a backup of every lead first, then merges only the new
   // fields into each lead (the old status is kept in old_status). Nothing is removed.
@@ -1574,7 +2242,7 @@ main.wide{max-width:1400px}
   // ---------- BOOT ----------
   function renderAll(){
     const cur=document.querySelector('.tab[aria-selected="true"]').dataset.tab;
-    if(cur==="today") renderToday(); else if(cur==="leads") renderList(); else if(cur==="board") renderBoard(); else if(cur==="numbers") renderNumbers(); else if(cur==="add") fillAdSelect();
+    if(cur==="today") renderToday(); else if(cur==="cal") renderCal(); else if(cur==="leads") renderList(); else if(cur==="board") renderBoard(); else if(cur==="numbers") renderNumbers(); else if(cur==="add") fillAdSelect();
     // How many to do now, on the tab.
     const n=loaded?M.todayList(leads,todayOpts()).show.length:0; $("#dotToday").hidden=!n; $("#dotToday").textContent=n;
   }
@@ -1608,6 +2276,9 @@ main.wide{max-width:1400px}
       doc("settings/templates",v=>{ templates=v||{}; });
       doc("settings/ads",v=>{ adsSaved=v; });
       doc("settings/simple",v=>{ simple=v||{}; });
+      doc("settings/calendar",v=>{ calSaved=v||{}; });
+      db.collection("jobs").onSnapshot(snap=>{ allJobs=snap.docs.map(x=>Object.assign({id:x.id},x.data())); jobsLoaded=true; renderAll(); syncJobs(); }, ()=>{});
+      db.collection("events").onSnapshot(snap=>{ allEvents=snap.docs.map(x=>Object.assign({id:x.id},x.data())); eventsLoaded=true; renderAll(); }, ()=>{});
       db.collection("nights").onSnapshot(snap=>{ nights=snap.docs.map(x=>x.data()); renderAll(); }, ()=>{});
       db.collection("spend").onSnapshot(snap=>{ spendWeeks=snap.docs.map(x=>x.data()); renderAll(); }, ()=>{});
       db.collection("leads").orderBy("createdAt","desc").onSnapshot(snap=>{ leads=snap.docs.map(x=>migrate(Object.assign({id:x.id},x.data()))); loaded=true; renderAll(); upgradeOnLoad(); housekeeping(); checkDeposits(); }, ()=>{ $("#offline").hidden=false; });

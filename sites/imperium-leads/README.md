@@ -31,11 +31,13 @@ buttons, one list to work through, everything rare behind a "…" menu.
 | `public/claude-shim.js` | The storage layer and the PIN screen. |
 | `public/reviews.js` | The review steps, the texts, what's due and the 30-day counts (plain script, shared with the tests). |
 | `public/texts.js` | The texts and the price sheet (plain script, shared with the tests). |
+| `public/jobs.js` | The calendar's logic: jobs and events, numbers, lengths, prices, the agenda (plain script, shared with the tests). |
 | `public/model.js` | The lead model: the five stages, call hours, the four touches, Today's list, the numbers and the upgrade (plain script, shared with the server and the tests through `lib/model.js`). |
 | `public/sw.js`, `public/manifest.json`, icons | Home-screen app; opens with no signal (the list needs one). |
 | `api/unlock.js` | PIN check and sign-in. |
 | `api/lead.js` | New enquiries in. |
 | `api/deposit.js` | Makes the $50 Stripe deposit link, and says whether one's paid (team only). |
+| `api/ghl-webhook.js` | GoHighLevel bookings in: the lead booked, its job made, moved or cancelled (the rules are in `lib/ghl.js`). |
 | `api/stripe-webhook.js` | Stripe tells it a deposit is paid: the lead shows Deposit paid and moves to Booked. |
 | `public/deposit.html` | The "Deposit paid" page customers land on after paying. |
 | `lib/` | Lead mapping, the shared model for the server, Supabase and Stripe helpers. |
@@ -247,6 +249,63 @@ tap-to-open Google Maps link. A booking for today has **On my way**: it opens me
 "Hey [name], it's Ananth from Imperium Detailing. On our way now, see you soon!" and logs the
 time it was sent (`onMyWayAt`, `onMyWayBy`).
 
+## Calendar (jobs and events)
+
+The **Calendar** tab has its own top bar: the menu (the other tabs, Settings, Switch person),
+search (job number, name, phone, car, suburb), the logo, and the bell (open jobs with no day, and
+jobs in the next 7 days with no crew or no time). Under it: Agenda | Day | Week | Month (Day,
+Week and Month come next), the month, a crew filter and a service filter (remembered on the
+phone), and a week strip, Sunday to Saturday: today circled, a dot under each day with a job.
+Swipe the strip (or tap ‹ ›) to change week. The list is that week's jobs and events by day,
+each a card in its status colour (Scheduled blue, In Progress yellow, Completed green, Cancelled
+grey; Team Meeting pink, Time Off grey with a plane): "1001 - Full Detail - Mazda CX-5", a map pin
+when there's an address (tap for Google Maps), the customer, the time, the status, the crew's
+initials and the assign-crew button (each tap saves). **+ ADD** makes a job or an event, on the
+day picked in the strip.
+
+A **job** (collection `jobs`) is linked to its lead: the customer's name, phone, car, address and
+suburb stay on the lead, and editing them on a job changes the lead. A job has its number (1001
+up), service, add-ons, price (or a range) and final price, day, start and end or all day, crew,
+kit, notes and status. Its end time comes from the service's default length (Settings: Full
+Detail 3.5 hrs, Interior 2, Exterior 1.5, Maintenance Plan 2.5, Paint Correction and Ceramic
+Coating all day). New customers on **+ ADD** get a lead too (Which ad? as on Add; the same phone
+goes on the lead that's there).
+
+The lead and its job stay in step: a lead booked anywhere gets a job (the same id from either
+phone, `lead-<lead id>`); moving the job moves the lead's day, time and price; a lead moved off
+Booked cancels its job; ✓ Job done completes it; cancelling the job asks whether to move the lead
+back to Chasing. The first time the new version opens it backs up every lead, then makes a job
+for each booked lead and each done one with a job day (`settings/calendar` → `jobsMigratedAt`);
+no lead is changed. **Events** (collection `events`): Team Meeting, Time Off or Other, a day, a
+time or all day, and who it's for (none picked: everyone). Removing one marks it `deleted`.
+
+## GoHighLevel bookings: `POST /api/ghl-webhook`
+
+GHL sends each booking, and each change to one, to
+`https://frontline-websites-6mjg.vercel.app/api/ghl-webhook?key=<GHL_WEBHOOK_SECRET>` (the key can
+also go in an `x-ghl-secret` header). Anything without the key is turned away (401).
+
+- **A new booking**: the lead is found by phone (written +61 first, so 0400 111 222 and
+  +61400111222 match), then by email. Found: it's Booked for the appointment's day and time, and
+  its job is made (or, if it's already booked here, its job takes the appointment). Not found: a
+  new lead, source "GHL booking", Booked, with its job. Someone whose job is done gets a new lead
+  marked as a repeat, so the old job stays as it was. The job keeps GHL's appointment ID
+  (`ghlAppointmentId`), so the same booking is never added twice, and shows **From GHL**.
+- **Service** comes from the calendar's name, else the appointment's title ("Ceramic Coating",
+  "Interior Detail"…). If neither says, it's Other and the job shows **Check service** until
+  someone picks one on the job.
+- **The same appointment again**: a new time moves the job (and the lead's day and time);
+  cancelled cancels the job and moves the lead back to Chasing; no-show flags the job
+  **No-show**; showed leaves it as it is.
+- Every request is logged (collection `ghl_log`: when, what came in, what happened), kept for
+  60 days. Settings → **GHL bookings** → Show what GHL sent.
+- Only the live site writes. A preview, or `&dry=1` on the end, answers what it would do and
+  changes nothing. A GET with the key answers `{"ok":true,"ready":true}`.
+
+Set up: Vercel → Settings → Environment Variables → `GHL_WEBHOOK_SECRET` = any long random
+string, then redeploy. In GHL: Automation → Workflows → new workflow, triggers **Appointment
+Status** and **Customer Booked Appointment**, action **Webhook**, method POST, the URL above.
+
 ## The $50 deposit (Stripe)
 
 **Send $50 deposit** is on Chasing and Booked leads. Pick the day and time, tap **Make deposit
@@ -277,8 +336,8 @@ site writes from the webhook. Test cards: 4242 4242 4242 4242, any future date, 
 
 ## Settings (the ⚙ at the top)
 
-Clear old backlog, Messages (the four touches, still keen, deposit and on my way), Ad names, Weekly target (default $5,000), Call hours, Review texts,
-and Backup (download every lead as CSV or JSON). All saved for both phones.
+Clear old backlog, Calendar (crew, kits and vans, default job lengths, add-ons), Messages (the four touches, still keen, deposit and on my way), Ad names, Weekly target (default $5,000), Call hours, Review texts,
+and Backup (download every lead as CSV, or everything, jobs and events too, as JSON). All saved for both phones.
 
 **Clear old backlog**: pick a day; it lists every Chasing lead that came in before it, with a
 Text button each (their name and car filled in) and **Copy message** for the words. Then **Move
