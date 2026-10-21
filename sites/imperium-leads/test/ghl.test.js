@@ -41,8 +41,11 @@ test("a workflow webhook is read: the person, the appointment, its calendar, tim
   // An API event, with the appointment on its own.
   const e = readBooking({ type: "AppointmentUpdate", appointment: { id: "appt_9", title: "Interior", startTime: "2026-10-25T13:00:00+11:00", appointmentStatus: "noshow" } });
   assert.deepEqual([e.apptId, e.title, e.status], ["appt_9", "Interior", "noshow"]);
-  // The calendar's own id is never taken for the appointment's.
-  assert.equal(readBooking({ calendar: { id: "cal_1", startTime: "2026-10-24T09:00:00" } }).apptId, "");
+  // No appointment ID: the calendar's id goes with the contact, so two people never share a job.
+  assert.equal(readBooking({ contact_id: "c_1", calendar: { id: "cal_1", startTime: "2026-10-24T09:00:00" } }).apptId, "cal_1-c_1");
+  assert.equal(readBooking({ contact_id: "c_2", calendar: { id: "cal_1", startTime: "2026-10-24T09:00:00" } }).apptId, "cal_1-c_2");
+  assert.equal(readBooking({ phone: "0400 111 222", startTime: "2026-10-24T09:00:00" }).apptId, "contact-0400111222");
+  assert.equal(readBooking({ calendar: { id: "cal_1" } }).apptId, ""); // nobody to go with it
 });
 
 test("a new person: a new lead (GHL booking, Booked) and its job, the job written first", () => {

@@ -93,9 +93,17 @@ export function readBooking(body) {
   let car = pick(cd.vehicle, cd.car, b.vehicle, b.car);
   if (!car) for (const src of [cd, b]) for (const [k, v] of Object.entries(src)) if (!car && /vehicle|^car$|make.*model/i.test(k)) car = pick(v);
   const tz = pick(c.selectedTimezone, c.timezone, a.timezone, cd.timezone, b.timezone);
+  const contactId = clip(pick(b.contact_id, b.contactId, a.contactId, ct.id, cd.contact_id), 120);
+  const start = pick(c.startTime, c.start_time, a.startTime, a.start_time, b.startTime, b.start_time, cd.startTime, cd.start_time, cd.start);
+  // GHL's own appointment ID. Without one: the calendar's "id" with the contact (so two people never
+  // share a job), else the contact on its own, so the same booking still never comes in twice.
+  let apptId = pick(c.appointmentId, c.appointment_id, a.id, a.appointmentId, b.appointmentId, b.appointment_id, cd.appointmentId, cd.appointment_id);
+  const who = contactId || pick(b.phone, ct.phone, cd.phone).replace(/\D/g, "") || pick(b.email, ct.email, cd.email).toLowerCase();
+  if (!apptId && pick(c.id) && who) apptId = pick(c.id) + "-" + who;
+  if (!apptId && start && who) apptId = "contact-" + who;
   return {
-    apptId: clip(pick(c.appointmentId, c.appointment_id, a.id, a.appointmentId, b.appointmentId, b.appointment_id, cd.appointmentId, cd.appointment_id, cd.appointment_id), 120),
-    contactId: clip(pick(b.contact_id, b.contactId, a.contactId, ct.id, cd.contact_id), 120),
+    apptId: clip(apptId, 120),
+    contactId,
     name: clip(pick(b.full_name, b.fullName, b.name, ct.name, ct.fullName, cd.full_name, cd.name, [first, last].filter(Boolean).join(" ")), 120),
     phone: cleanPhone(pick(b.phone, ct.phone, cd.phone, b.contact_phone)),
     email: clip(pick(b.email, ct.email, cd.email), 200).toLowerCase(),
@@ -104,7 +112,7 @@ export function readBooking(body) {
     car: clip(car, 200),
     calendar: clip(pick(c.calendarName, c.calendar_name, c.name, b.calendarName, b.calendar_name, cd.calendarName, cd.calendar_name, cd.calendar), 200),
     title: clip(pick(c.title, a.title, b.appointment_title, b.title, cd.title), 200),
-    start: parseWhen(pick(c.startTime, c.start_time, a.startTime, a.start_time, b.startTime, b.start_time, cd.startTime, cd.start_time, cd.start), tz),
+    start: parseWhen(start, tz),
     end: parseWhen(pick(c.endTime, c.end_time, a.endTime, a.end_time, b.endTime, b.end_time, cd.endTime, cd.end_time, cd.end), tz),
     rawStatus: clip(pick(c.appoinmentStatus, c.appointmentStatus, c.appointment_status, c.status, a.appointmentStatus, a.status, b.appointmentStatus, b.appointment_status, cd.appointmentStatus, cd.appointment_status, cd.status, b.status), 60),
     status: statusOf(pick(c.appoinmentStatus, c.appointmentStatus, c.appointment_status, c.status, a.appointmentStatus, a.status, b.appointmentStatus, b.appointment_status, cd.appointmentStatus, cd.appointment_status, cd.status, b.status), b.type),
