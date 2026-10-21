@@ -318,7 +318,9 @@ export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new
     jobData = { ...cur, ...jobData };
   } else {
     jobId = "ghl-" + safeId(bk.apptId); number = J.nextNumber(jobs);
-    const price = (lead ? (lead.priceRange ? lead.priceRange.replace("–", "-") : lead.revenue != null && lead.revenue !== "" ? String(lead.revenue) : lead.quoted != null && lead.quoted !== "" ? String(lead.quoted) : "") : "") || bk.price;
+    // A new job: the price in the booking's notes, else the lead's. (The lead's price can be its
+    // other job's, when they've booked again or booked two things.)
+    const price = bk.price || (lead ? (lead.priceRange ? lead.priceRange.replace("–", "-") : lead.revenue != null && lead.revenue !== "" ? String(lead.revenue) : lead.quoted != null && lead.quoted !== "" ? String(lead.quoted) : "") : "");
     jobData = J.blank({ number, leadId: lead ? lead.id : "ghl-" + safeId(bk.apptId), service, price, date: t.date, start: t.start, end: t.end, allDay: !t.start && J.lengthOf(service, cfg).allDay && !!t.date,
       notes: bk.notes, createdAt: at, createdBy: "GHL", updatedAt: at, checkService: !mapped, ...ghl });
     writes.push({ collection: "jobs", id: jobId, op: "create", data: jobData });

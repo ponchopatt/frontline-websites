@@ -38,6 +38,7 @@ buttons, one list to work through, everything rare behind a "…" menu.
 | `api/lead.js` | New enquiries in. |
 | `api/deposit.js` | Makes the $50 Stripe deposit link, and says whether one's paid (team only). |
 | `api/ghl-import.js` | Brings in the past GHL appointments (a practice run first). |
+| `api/ad-spend.js` | Brings in the ad spend from Meta, each day and on the button (the reading is in `lib/meta.js`). |
 | `api/ghl-webhook.js` | GoHighLevel bookings in: the lead booked, its job made, moved or cancelled (the rules are in `lib/ghl.js`). |
 | `api/stripe-webhook.js` | Stripe tells it a deposit is paid: the lead shows Deposit paid and moves to Booked. |
 | `public/deposit.html` | The "Deposit paid" page customers land on after paying. |
@@ -412,8 +413,47 @@ by job day (`ILJobs.money`): Booked $ is every job in the period, Cash collected
 Paid, Still to collect the done ones not ticked Paid, Coming up the ones not done yet. Jobs with
 no price count as $0; the line under the tiles says how many and lists them. **By ad**:
 leads, booked, booked $ and close rate for each ad (leads from before the ad was kept show as
-Unknown). Ad spend (one total a week), the End of day forms, and **More** (lost reasons, reviews,
-by source, by service, next service due) are as before. Tap any figure or row to see who's in it.
+Unknown); tap an ad to see what it cost, once the spend comes from Meta. Ad spend (one total a
+week), the End of day forms, and **More** (lost reasons, reviews, by source, by service, next
+service due) are as before. Tap any figure or row to see who's in it.
+
+## The price list
+
+Settings → Calendar → **Price list**: each service's price by car size (Sedan, SUV or ute, 4WD
+or van, Bike), from the website to start with (`ILJobs.DEFAULTS.prices`); ceramic coating has a
+row for 3, 5 and 7 years, the maintenance plan one for outside and one for inside and out. A
+price left blank is quoted for the car. Saved in `settings/calendar.prices`.
+
+Under every price box (a job, a booking, the Add tab, editing a lead) there's a button for each
+size with its price for the service picked. Tap one to fill the box. The size the car looks like
+(`ILJobs.sizeOf`: "Kluger" is an SUV, "LandCruiser" a 4WD, "Corolla" a sedan) is outlined. A
+lead's "from" price on its card and its worth on the Board come from the list too.
+
+## Ad spend from Meta: `/api/ad-spend`
+
+Brings in each ad's spend from Meta (Facebook and Instagram), a day at a time, adds it up into
+weeks (Monday to Sunday) and saves `spend/<Monday>` with the week's `total` and each ad's
+(`byAd`), marked `from: "meta"`. A total typed in by hand is kept as `handTotal`. It runs:
+
+- every morning (about 6:20am Canberra; the cron in `vercel.json`), once `CRON_SECRET` is set;
+- when Numbers is open and it's been 6 hours;
+- on **Get from Meta** (Numbers → Ad spend).
+
+`settings/meta` says when it last ran and how it went (Numbers shows it). Only the live site
+saves; a preview, or `?dry=1`, answers what it would save. `?weeks=N` goes back N weeks (3 unless
+said).
+
+To link it, in Vercel (project → Settings → Environment Variables, Production):
+
+| | |
+|---|---|
+| `META_ACCESS_TOKEN` | A token that can read the ad account (`ads_read`). Best is a system user's (Meta Business Settings → Users → System users → Add, give it the ad account with "View performance", then Generate new token with `ads_read`): it doesn't run out. |
+| `META_AD_ACCOUNT_ID` | The number after `act=` in Ads Manager's address. More than one: a comma between. |
+| `CRON_SECRET` | Any long random words, so only Vercel can start the morning run. |
+| `META_APP_SECRET` | Only if the Meta app asks for "app secret proof". |
+| `META_API_VERSION` | Leave it: `v23.0` unless set. |
+
+Then redeploy. Never paste the token into a chat or the repo.
 
 ## Reviews
 
