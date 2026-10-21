@@ -272,4 +272,9 @@ test("a GHL booking with a new number but the same full name, booked here within
   const imp = planBooking(payload({ phone: "0411 999 888", email: "" }), { leads: [jo], jobs: [mine], now: NOW, keepDates: true });
   assert.deepEqual(["date" in imp.writes[0].data, imp.writes[0].data.ghlAppointmentId], [false, "appt_1"]); // bringing in the history: linked, not moved
   assert.match(imp.result, /here it's Sun 25 Oct 1:00pm, GHL says Sat 24 Oct 9:00am/);
+  // Booked here for a day that's just passed (not marked done yet): still the same booking.
+  const late = lead({ id: "lt", name: "Jo", phone: "", email: "", stage: "Booked", jobDate: "2026-10-19" });
+  const lj = { ...mine, id: "lead-lt", leadId: "lt", date: "2026-10-19" };
+  const lp = planBooking(payload({ full_name: "Jo", phone: "0411 999 888", email: "" }, { startTime: "2026-10-21T09:00:00" }), { leads: [late], jobs: [lj], now: NOW, keepDates: true });
+  assert.deepEqual([lp.writes[0].id, lp.summary.matchedBy], ["lead-lt", "name and day"]);
 });
