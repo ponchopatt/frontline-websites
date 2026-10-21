@@ -242,3 +242,32 @@ test("deleted in the app: GHL leaves the job alone, and never books a deleted le
   const again = planBooking(payload({}, { appointmentId: "appt_2" }), gone);
   assert.deepEqual([again.writes[1].op, again.writes[1].id], ["create", "ghl-appt_2"]);
 });
+
+test("history: the same full name with a job within 3 days is that job; an open lead the job happened for is Done", async () => {
+  const { planPast } = await import("../lib/ghl.js");
+  const past = (o = {}, cal = {}) => payload({ phone: "0411 999 888", email: "", ...o }, { startTime: "2026-10-01T09:00:00", endTime: "2026-10-01T12:00:00", appoinmentStatus: "showed", notes: "$300", ...cal });
+  // Typed in here with another number, done the next day: matched, its day kept.
+  const jo = lead({ id: "jo", phone: "0400 000 111", stage: "Done", jobDate: "2026-10-02", revenue: null });
+  const jj = { id: "lead-jo", leadId: "jo", number: 1001, date: "2026-10-02", status: "Completed", price: "", createdAt: at("2026-09-28") };
+  const m = planPast(past(), { leads: [jo], jobs: [jj], now: NOW });
+  assert.deepEqual([m.kind, m.writes[0].id, "date" in m.writes[0].data], ["matched", "lead-jo", false]);
+  assert.match(m.result, /here it's Fri 2 Oct/);
+  // Only a first name here: not matched on the name alone.
+  assert.equal(planPast(past(), { leads: [{ ...jo, name: "Jo" }], jobs: [jj], now: NOW }).kind, "new");
+  // Still Chasing here, but GHL says the job was done: that lead is Done with this job.
+  const ch = lead({ id: "ch", phone: "0411 999 888", stage: "Chasing", touches: 2, date: "2026-09-28", jobDate: "" });
+  const d = planPast(past(), { leads: [ch], jobs: [], now: NOW });
+  assert.equal(d.kind, "done");
+  const lp = d.writes[1].data;
+  assert.deepEqual([d.writes[1].id, lp.stage, lp.jobDate, lp.revenue, lp.paid, d.writes[0].data.leadId, d.writes[0].data.status], ["ch", "Done", "2026-10-01", 300, "Yes", "ch", "Completed"]);
+});
+
+test("a GHL booking with a new number but the same full name, booked here within 3 days: linked, not doubled", () => {
+  const jo = lead({ id: "jo", phone: "0400 000 111", stage: "Booked", jobDate: "2026-10-25", jobTime: "13:00" });
+  const mine = { id: "lead-jo", leadId: "jo", number: 1004, status: "Scheduled", date: "2026-10-25", start: "13:00", end: "16:30", createdAt: at("2026-10-19") };
+  const live = planBooking(payload({ phone: "0411 999 888", email: "" }), { leads: [jo], jobs: [mine], now: NOW });
+  assert.deepEqual([live.writes[0].id, live.summary.matchedBy, live.writes[0].data.date], ["lead-jo", "name and day", "2026-10-24"]); // a live booking: GHL's time
+  const imp = planBooking(payload({ phone: "0411 999 888", email: "" }), { leads: [jo], jobs: [mine], now: NOW, keepDates: true });
+  assert.deepEqual(["date" in imp.writes[0].data, imp.writes[0].data.ghlAppointmentId], [false, "appt_1"]); // bringing in the history: linked, not moved
+  assert.match(imp.result, /here it's Sun 25 Oct 1:00pm, GHL says Sat 24 Oct 9:00am/);
+});
