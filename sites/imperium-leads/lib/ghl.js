@@ -183,7 +183,7 @@ const dayWords = (date, start) => {
   repeat of the old one, so the old job and its takings stay as they were.
 */
 export function findLead(leads, phone, email, today, contactId) {
-  const real = (leads || []).filter((l) => l && !l.junk);
+  const real = (leads || []).filter((l) => l && !l.junk && !l.deleted);
   if (contactId) {
     const same = real.filter((l) => l.ghlContactId === contactId && M.stageOf(l, today) !== "Done");
     same.sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
@@ -230,6 +230,7 @@ export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new
   const job = jobs.find((j) => j.ghlAppointmentId === bk.apptId);
 
   // ---- An appointment we have: moved, cancelled, no-show or showed.
+  if (job && job.deleted) return out(true, "Job " + job.number + " was deleted in the app, so it was left.", [], { jobId: job.id, number: job.number });
   if (job) {
     const lead = leads.find((l) => l.id === job.leadId) || null;
     const isCur = lead && (J.currentJob(jobs, lead.id) || {}).id === job.id;
@@ -350,7 +351,7 @@ export function planPast(body, { leads = [], jobs = [], cfg = null, now = new Da
   const ghl = { source: "ghl", ghlAppointmentId: bk.apptId, ghlContactId: bk.contactId, ghlCalendar: bk.calendar, ghlStatus: bk.rawStatus || "", ghlNotes: bk.notes };
   const note = [bk.calendar || bk.title, dayWords(t.date, t.start), bk.price ? "$" + bk.price : ""].filter(Boolean).join(", ");
   const key = M.phoneKey(bk.phone);
-  const same = leads.filter((l) => l && !l.junk && ((bk.contactId && l.ghlContactId === bk.contactId) || (key.length >= 8 && M.phoneKey(l.phone) === key) || (bk.email && String(l.email || "").trim().toLowerCase() === bk.email)))
+  const same = leads.filter((l) => l && !l.junk && !l.deleted && ((bk.contactId && l.ghlContactId === bk.contactId) || (key.length >= 8 && M.phoneKey(l.phone) === key) || (bk.email && String(l.email || "").trim().toLowerCase() === bk.email)))
     .sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
   const sameDay = same.find((l) => l.jobDate === date);
   if (sameDay) {

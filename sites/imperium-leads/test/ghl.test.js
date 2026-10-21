@@ -232,3 +232,13 @@ test("past appointments: the same day's job takes the appointment; someone new i
   assert.equal(planPast(past({}, { appoinmentStatus: "noshow" }), { now: NOW }).kind, "skipped");
   assert.equal(planPast(payload(), { now: NOW }).kind, "upcoming");
 });
+
+test("deleted in the app: GHL leaves the job alone, and never books a deleted lead again", () => {
+  const { job, l, opts } = booked();
+  const gone = { ...opts, jobs: [{ ...job, deleted: true, status: "Cancelled" }], leads: [{ ...l, deleted: true, junk: true }] };
+  const moved = planBooking(payload({}, { startTime: "2026-10-25T13:00:00" }), gone);
+  assert.deepEqual([moved.writes.length, /deleted in the app/.test(moved.result)], [0, true]);
+  // A new booking from the same person: a new lead, not the deleted one.
+  const again = planBooking(payload({}, { appointmentId: "appt_2" }), gone);
+  assert.deepEqual([again.writes[1].op, again.writes[1].id], ["create", "ghl-appt_2"]);
+});

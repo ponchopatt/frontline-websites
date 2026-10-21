@@ -697,7 +697,8 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   const OBJ=["Price","Timing","Checking with partner","Wants more info","Thinking about it","Other"];
   // The two choices under the ad names in "Which ad?".
   const NONE="__none", REF="__ref";
-  let db=null, dl=null, api=null, leads=[], loaded=false, canWrite=true, who=null;
+  // leads: what the app shows. leadsAll also has the deleted ones (for the backup).
+  let db=null, dl=null, api=null, leads=[], leadsAll=[], loaded=false, canWrite=true, who=null;
   // Shared settings, one doc each: reviews, goal, hours, templates (the texts), ads (names), simple (the day this version went live).
   let reviewSettings={}, hoursSaved={}, goalSettings={}, templates={}, adsSaved=null, simple=null, spendWeeks=[], nights=[];
   const H = () => M.hours(hoursSaved);
@@ -1150,7 +1151,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   // Change status, tag, notes, details. `pick` opens straight on a status (from the Board).
   function openMenu(id,pick){
     const l=current(id); if(!l) return;
-    const st=stage(l), job=J.currentJob(allJobs,id);
+    const st=stage(l), cj=J.currentJob(jobsAll,id), job=cj&&!cj.deleted?cj:null;
     const g=sheet(head(l,[l.car,l.service,l.phone].filter(Boolean).join(" · "))+
       (canWrite?"":'<div class="banner">View only. Ask for edit access.</div>')+
       '<div class="eyebrow"><span>Change status</span><span>Now: '+esc(st==="Waiting"?"Waiting ("+M.WAIT_REASONS[M.waitReasonOf(l)]+")":st)+'</span></div>'+
@@ -1169,7 +1170,8 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       ((l.enquiries||[]).length?'<div class="eyebrow">Enquired again</div><div class="log">'+(l.enquiries||[]).slice().reverse().map(e=>'<div><span>'+esc(dayName(localDate(e.at)))+'</span><div>'+esc([e.source+(e.ad?" ("+e.ad+")":""),e.service,e.car,e.notes].filter(Boolean).join(" · "))+'</div></div>').join("")+'</div>':"")+
       '<div class="row"><button class="btn secondary" id="m-edit" type="button">Edit details</button>'+(job?'<button class="btn secondary" id="m-job" type="button">Job '+esc(job.number)+'</button>':"")+(st==="Done"?'<button class="btn secondary" id="m-review" type="button">Review steps</button>':"")+'</div>'+
       (l.old_status&&l.old_status!==st?'<p class="help">Before the update this was: '+esc(l.old_status)+'.</p>':"")+
-      (l.repeatOf?'<p class="help">A repeat: this person was a lead before. <button type="button" class="mini" id="m-repeat">Open the old lead</button></p>':""));
+      (l.repeatOf?'<p class="help">A repeat: this person was a lead before. <button type="button" class="mini" id="m-repeat">Open the old lead</button></p>':"")+
+      (canWrite?'<button class="btn danger" id="m-del" type="button">Delete this lead</button>':""));
     const more=g("#m-more");
     const busyAll=on=>document.querySelectorAll("#sheet button").forEach(b=>b.disabled=on);
     const go=async(patch,msg)=>{ busyAll(true); if(await save(id,patch)){ closeSheet(); toast(msg); return true; } busyAll(false); return false; };
@@ -1208,6 +1210,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     const mj=g("#m-job"); if(mj) mj.addEventListener("click",()=>openJobForm(job.id));
     const rv=g("#m-review"); if(rv) rv.addEventListener("click",()=>openReview(id));
     const rep=g("#m-repeat"); if(rep) rep.addEventListener("click",()=>openMenu(l.repeatOf));
+    const del=g("#m-del"); if(del) del.addEventListener("click",()=>deleteLead(id));
   }
 
   // ---------- EDIT DETAILS ----------
@@ -1613,7 +1616,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   async function exportJson(){
     if(!dl) return;
     const rows=list=>list.map(x=>{ const d={...x}; delete d.id; return {id:x.id, data:d}; });
-    const data=JSON.stringify({savedAt:new Date().toISOString(), leads:rows(leads), jobs:rows(allJobs), events:rows(allEvents), nights, spend:spendWeeks,
+    const data=JSON.stringify({savedAt:new Date().toISOString(), leads:rows(leadsAll), jobs:rows(jobsAll), events:rows(allEvents), nights, spend:spendWeeks,
       settings:{reviews:reviewSettings, goal:goalSettings, hours:hoursSaved, templates, ads:adsSaved, simple, calendar:calSaved}},null,1);
     try{ await dl.save({filename:"imperium-backup-"+today()+".json", data:new Blob([data],{type:"application/json"})}); }catch(e){ if(e&&e.code!=="cancelled") toast("Couldn't download"); }
   }
@@ -1833,7 +1836,9 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   // A job is linked to its lead: the customer (name, phone, car, address) stays on the lead and is
   // read from there. Settings (crew, kits, lengths, add-ons) are in settings/calendar.
   const J=window.ILJobs;
-  let allJobs=[], allEvents=[], calSaved=null, jobsLoaded=false, eventsLoaded=false;
+  // allJobs: what the calendar shows. jobsAll also has the deleted ones, so their numbers are never
+  // given out again and a booked lead whose job was deleted doesn't get a new one by itself.
+  let allJobs=[], jobsAll=[], allEvents=[], calSaved=null, jobsLoaded=false, eventsLoaded=false;
   const CAL=()=>J.settings(calSaved);
   const leadOf=id=>leads.find(x=>x.id===id)||null;
   const jobById=id=>allJobs.find(x=>x.id===id)||null;
@@ -2322,14 +2327,14 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     return true;
   }
   async function jobToLead(j){
-    const l=current(j.leadId), cur=J.currentJob(allJobs,j.leadId);
+    const l=current(j.leadId), cur=J.currentJob(jobsAll,j.leadId);
     if(!l || (cur && cur.id!==j.id)) return; // an older job: the lead is on to the next one
     const p=J.leadPatch(j,l);
     if(Object.keys(p).length) await save(l.id,p,{fromJob:true});
   }
   // The lead's booking changed (here, the menu, Edit details, a deposit, ✓ Job done): its job follows.
   function leadToJob(id){
-    const l=current(id), j=J.currentJob(allJobs,id); if(!l||!j) return;
+    const l=current(id), j=J.currentJob(jobsAll,id); if(!l||!j||j.deleted) return;
     const st=stage(l), p={};
     if(st==="Booked"){
       if(j.status==="Completed") return; // booked again: housekeeping makes the new job
@@ -2358,14 +2363,14 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       try{
         if(!(window.LEADS_CONFIG||{}).preview)
           await db.doc("backups/leads-"+at.replace(/[:.]/g,"-")).set({savedAt:at, reason:"before the job calendar (a job for each booked or done lead)", count:leads.length, leads:leads.map(l=>{ const d={...l}; delete d.id; return {id:l.id, data:d}; })});
-        for(const x of J.toMake(leads,allJobs,cfg,t,at,true)) await db.doc("jobs/"+x.id).set({...x.job, createdBy:"Calendar setup"});
+        for(const x of J.toMake(leads,jobsAll,cfg,t,at,true)) await db.doc("jobs/"+x.id).set({...x.job, createdBy:"Calendar setup"});
         await db.doc("settings/calendar").set({...calSaved, jobsMigratedAt:at, jobsMigratedBy:who||""});
       }catch(e){ /* tried again next time; the jobs already made are kept */ }
       syncJobs.migrating=false;
       return;
     }
     if(makingJobs.size) return;
-    J.toMake(leads.filter(l=>!pendingLeads.has(l.id)),allJobs,cfg,t,at,false).forEach(x=>{
+    J.toMake(leads.filter(l=>!pendingLeads.has(l.id)),jobsAll,cfg,t,at,false).forEach(x=>{
       makingJobs.add(x.id);
       db.doc("jobs/"+x.id).set({...x.job, createdBy:who||""}).catch(()=>{}).finally(()=>makingJobs.delete(x.id));
     });
@@ -2373,6 +2378,31 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       if(renumbering.has(r.id)) return;
       renumbering.add(r.id); saveJob(r.id,{number:r.number},{fromLead:true}).finally(()=>renumbering.delete(r.id));
     });
+  }
+
+  // ---------- DELETE (a test booking, a mistake) ----------
+  // Off the app everywhere, for both phones. Kept in the database marked deleted (and not real), so
+  // nothing is lost and it can be brought back; it's in the JSON backup too.
+  async function deleteJob(id){
+    const j=jobById(id); if(!j||!db||!canWrite) return false;
+    if(!confirm("Delete job "+(j.number||"")+"? It comes off the calendar.")) return false;
+    const now=new Date().toISOString();
+    if(!await saveJob(id,{deleted:true, status:"Cancelled", deletedAt:now, deletedBy:who||""},{fromLead:true})) return false;
+    const l=current(j.leadId), cur=J.currentJob(jobsAll,j.leadId);
+    if(l && stage(l)==="Booked" && cur && cur.id===id && confirm("Move "+(l.name||"this lead")+" back to Chasing?\n\nCancel keeps them as Booked (with no job)."))
+      await save(l.id,M.setStage(l,"Chasing",today()),{fromJob:true});
+    toast("Job "+(j.number||"")+" deleted.");
+    return true;
+  }
+  async function deleteLead(id){
+    const l=current(id); if(!l||!db||!canWrite) return false;
+    const js=jobsAll.filter(j=>j.leadId===id && !j.deleted);
+    if(!confirm("Delete "+(l.name||"this lead")+"?"+(js.length?"\n\n"+(js.length===1?"Job "+js[0].number+" goes":"Jobs "+js.map(j=>j.number).join(", ")+" go")+" too.":"")+"\n\nIt comes off the app for both of you.")) return false;
+    const now=new Date().toISOString(), mark={deleted:true, deletedAt:now, deletedBy:who||""};
+    for(const j of js) await saveJob(j.id,{...mark, status:"Cancelled"},{fromLead:true});
+    if(!await save(id,{...mark, junk:true},{fromJob:true})) return false;
+    closeSheet(); toast((l.name||"The lead")+" deleted.");
+    return true;
   }
 
   // ---------- ASSIGN CREW (from a card; each tap saves) ----------
@@ -2449,7 +2479,8 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       '<label>Notes<textarea id="jf-notes" rows="2" placeholder="Gate code, dog in the yard">'+esc(j.notes||"")+'</textarea></label>'+
       '<div class="eyebrow">Status</div><div class="seg two" id="jf-status" data-value="'+esc(j.status||"Scheduled")+'">'+J.STATUSES.map(v=>'<button type="button" data-v="'+v+'">'+v+'</button>').join("")+'</div>'+
       '<button class="btn" id="jf-save" type="button"'+(canWrite?"":" disabled")+'>'+(old?"Save job":"Add job")+'</button>'+
-      (old&&lead0.id?'<button class="btn secondary" id="jf-lead" type="button">Open the lead</button>':""));
+      (old&&lead0.id?'<button class="btn secondary" id="jf-lead" type="button">Open the lead</button>':"")+
+      (old&&canWrite?'<button class="btn danger" id="jf-del" type="button">Delete this job</button>':""));
     const svc=()=>g("#jf-svc").dataset.value||"Other";
     let endTouched=!!(old && old.end && old.end!==J.endFor(old.start,old.service,cfg)), allDayTouched=!!old||!!preset.start||!!preset.allDay;
     const autoEnd=()=>{ if(endTouched) return; const st=g("#jf-start").value; g("#jf-end").value=st?J.endFor(st,svc(),cfg):""; };
@@ -2467,6 +2498,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     g("#jf-crew").addEventListener("click",e=>{ const b=e.target.closest("[data-crew]"); if(b) b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true")); });
     const depB=g("#jf-dep"); if(depB) depB.addEventListener("click",()=>openDeposit(linked));
     const leadB=g("#jf-lead"); if(leadB) leadB.addEventListener("click",()=>openMenu(linked));
+    const delB=g("#jf-del"); if(delB) delB.addEventListener("click",async()=>{ if(await deleteJob(id)) closeSheet(); });
     // Linking a lead: its details fill in; one that already has a job open opens that job instead.
     const showLinked=()=>{
       const l=linked&&leadOf(linked);
@@ -2519,7 +2551,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
           const l=current(linked);
           if(l){
             const cp=custPatch(l); if(Object.keys(cp).length) await save(linked,cp,{fromJob:true});
-            const isCur=(J.currentJob(allJobs,linked)||{}).id===id, l2=current(linked);
+            const isCur=(J.currentJob(jobsAll,linked)||{}).id===id, l2=current(linked);
             if(isCur && f.status!==prev){
               if(f.status==="Completed" && stage(l2)!=="Done") await save(linked,{...R.completePatch(l2,now), ...M.setStage(l2,"Done",today()), jobDate:f.date&&f.date<=today()?f.date:today()},{fromJob:true});
               else if(f.status==="Cancelled" && stage(l2)==="Booked"){ if(confirm("Job cancelled. Move "+(l2.name||"this lead")+" back to Chasing?\n\nCancel keeps them as Booked.")) await save(linked,M.setStage(l2,"Chasing",today()),{fromJob:true}); }
@@ -2536,7 +2568,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
             linked=l.id; toast("Same phone as "+(l.name||"a lead")+": added to that lead."); }
           else preset.repeatOf=m.repeatOf||"";
         }
-        const number=J.nextNumber(allJobs), cur=linked?J.currentJob(allJobs,linked):null;
+        const number=J.nextNumber(jobsAll), cur=linked?J.currentJob(jobsAll,linked):null;
         let lid=linked, ref=null;
         if(!lid){ ref=db.collection("leads").doc(); lid=ref.id; }
         pendingLeads.add(lid);
@@ -2712,11 +2744,11 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       doc("settings/ads",v=>{ adsSaved=v; });
       doc("settings/simple",v=>{ simple=v||{}; });
       doc("settings/calendar",v=>{ calSaved=v||{}; });
-      db.collection("jobs").onSnapshot(snap=>{ allJobs=snap.docs.map(x=>Object.assign({id:x.id},x.data())); jobsLoaded=true; renderAll(); syncJobs(); }, ()=>{});
+      db.collection("jobs").onSnapshot(snap=>{ jobsAll=snap.docs.map(x=>Object.assign({id:x.id},x.data())); allJobs=jobsAll.filter(j=>!j.deleted); jobsLoaded=true; renderAll(); syncJobs(); }, ()=>{});
       db.collection("events").onSnapshot(snap=>{ allEvents=snap.docs.map(x=>Object.assign({id:x.id},x.data())); eventsLoaded=true; renderAll(); }, ()=>{});
       db.collection("nights").onSnapshot(snap=>{ nights=snap.docs.map(x=>x.data()); renderAll(); }, ()=>{});
       db.collection("spend").onSnapshot(snap=>{ spendWeeks=snap.docs.map(x=>x.data()); renderAll(); }, ()=>{});
-      db.collection("leads").orderBy("createdAt","desc").onSnapshot(snap=>{ leads=snap.docs.map(x=>migrate(Object.assign({id:x.id},x.data()))); loaded=true; renderAll(); upgradeOnLoad(); housekeeping(); checkDeposits(); }, ()=>{ $("#offline").hidden=false; });
+      db.collection("leads").orderBy("createdAt","desc").onSnapshot(snap=>{ leadsAll=snap.docs.map(x=>migrate(Object.assign({id:x.id},x.data()))); leads=leadsAll.filter(l=>!l.deleted); loaded=true; renderAll(); upgradeOnLoad(); housekeeping(); checkDeposits(); }, ()=>{ $("#offline").hidden=false; });
     });
   }
   connect();

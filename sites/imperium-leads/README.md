@@ -346,6 +346,15 @@ Set up: Vercel → Settings → Environment Variables → `GHL_WEBHOOK_SECRET` =
 string, then redeploy. In GHL: Automation → Workflows → new workflow, triggers **Appointment
 Status** and **Customer Booked Appointment**, action **Webhook**, method POST, the URL above.
 
+## Deleting
+
+**Delete this lead** (bottom of a lead's … menu) and **Delete this job** (bottom of a job) ask
+first, then take it off the app for both phones; deleting a lead takes its jobs too, and deleting
+a booked lead's job asks whether to move the lead back to Chasing. Nothing is wiped: the lead or
+job is kept marked `deleted` (a lead also not real), so it's in the JSON backup and can be brought
+back. A deleted job's number isn't given out again, GHL leaves a deleted job alone, and a new GHL
+booking from the same person makes a new lead.
+
 ## The $50 deposit (Stripe)
 
 **Send $50 deposit** is on Chasing and Booked leads. Pick the day and time, tap **Make deposit
