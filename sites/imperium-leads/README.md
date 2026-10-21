@@ -154,7 +154,7 @@ lead's old status is kept in `old_status`, and every field it changed is kept in
 | New | New |
 | Chasing, Quoted | Chasing (the quote stays in `quoted`, and counts as a touch) |
 | Booked | Booked |
-| Done, Review asked, Owes money | Done, with two ticks: Review asked and Owes money |
+| Done, Review asked, Owes money | Done, with Review asked ticked, and Did they pay? answered |
 | Waiting, Lost, Not real | Waiting, reason No reply, Lost or Not real |
 
 ## The four touches
@@ -196,7 +196,11 @@ since it came in · which touch is next ("Touch 2 of 4") on the second. Three bu
 | ✓ DONE | logs that this touch was sent and books in the next one. On a booking it's **✓ Job done** |
 
 Booked jobs have two ticks: **Offered ceramic** and **Offered maint. plan**. Done jobs also have
-**Review asked** and **Owes money** (ticked when it isn't paid; unticking marks it paid).
+**Review asked**, and **Did they pay? Yes / No**: Yes puts the job in **Payments done**
+(`paid: "Yes"`, `paidAt`, `paidBy`), No in **Waiting for payment** (`paid: "No"`). Not answered
+yet counts as waiting. The question pops up big straight after **✓ Job done** (and after Done in
+the … menu, or a job saved as Completed on the calendar). The Board has a column for each
+(Payments done shows the last 30 days), and the Leads tab can show either.
 
 **…** opens the rest: change status (Booked asks the day and price; Waiting asks the reason),
 the tag (Hot, Warm, Browsing), add a note, the full notes and history, Edit details, and Review
@@ -406,11 +410,11 @@ share of new leads replied to within 5 minutes, and the share of this week's job
 ceramic and a plan.
 
 Then, for the period and person picked: Leads, Booked, Close rate, Replied within 5 minutes,
-Booked $, Cash collected, Still to collect, Coming up, Ad spend, Cost per booked job, Quotes out.
+Booked $, Payments done, Waiting for payment, Coming up, Ad spend, Cost per booked job, Quotes out.
 Leads count by the day they came in. The past jobs brought in from GHL (`importedFrom: "ghl"`)
 count in the money but not as leads, since they're all booked. The money is the calendar's jobs
-by job day (`ILJobs.money`): Booked $ is every job in the period, Cash collected the ones ticked
-Paid, Still to collect the done ones not ticked Paid, Coming up the ones not done yet. Jobs with
+by job day (`ILJobs.money`): Booked $ is every job in the period, Payments done the ones paid,
+Waiting for payment the done ones not paid yet, Coming up the ones not done yet. Jobs with
 no price count as $0; the line under the tiles says how many and lists them. **By ad**:
 leads, booked, booked $ and close rate for each ad (leads from before the ad was kept show as
 Unknown); tap an ad to see what it cost, once the spend comes from Meta. Ad spend (one total a
