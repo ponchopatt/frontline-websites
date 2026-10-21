@@ -17,7 +17,7 @@ import { isTeam } from "../lib/team.js";
   days; the app shows it in Settings. Only the live site writes. A preview, or ?dry=1, answers
   what it would do and changes nothing.
 
-  GET with the key: a check that it's set up. GET ?log=1 from the app (team only): the log.
+  GET with the key: a check that it's set up. GET ?log=1 (the app, or with the key): the log.
 */
 
 const TURN = ["_system", "owner-turn"];
@@ -124,7 +124,7 @@ export async function POST(request) {
       await log(db, at, { ok: false, result: "Couldn't save: " + (e && e.message), planned: plan.result, done, body: kept });
       return json({ ok: false, error: "Couldn't save. GHL can try again." }, 500);
     }
-    await log(db, at, { ok: plan.ok, result: plan.result, ...plan.summary, done, body: kept });
+    await log(db, at, { ok: plan.ok, result: plan.result, ...plan.summary, done, body: kept, type: request.headers.get("content-type") || "", agent: (request.headers.get("user-agent") || "").slice(0, 120) });
   }
   console.log("ghl-webhook:", dry ? "(dry run)" : "", plan.summary.appointmentId || "-", plan.result);
   // Bad data is answered 200 so GHL doesn't keep sending it; it's in the log.
@@ -134,7 +134,8 @@ export async function POST(request) {
 export async function GET(request) {
   const url = new URL(request.url);
   if (url.searchParams.get("log")) {
-    if (!(await isTeam(request))) return json({ error: "Sign in first" }, 401);
+    // The app (signed in), or anyone with the key: to see what GHL sent.
+    if (!sameSecret(givenKey(request), process.env.GHL_WEBHOOK_SECRET) && !(await isTeam(request))) return json({ error: "Sign in first" }, 401);
     const { data, error } = await adminClient().from("docs").select("id,data").eq("collection", "ghl_log").order("id", { ascending: false }).limit(40);
     if (error) return json({ error: "Couldn't read the log" }, 500);
     return json({ entries: data.map((r) => r.data) });

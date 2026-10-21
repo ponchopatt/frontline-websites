@@ -82,6 +82,10 @@ test("GET with the key says it's set up; the log is for the team only", async ()
     assert.deepEqual([ok.ok, ok.ready, ok.live], [true, true, true]);
     assert.equal((await GET(new Request("https://x.vercel.app/api/ghl-webhook"))).status, 401);
     assert.equal((await GET(new Request("https://x.vercel.app/api/ghl-webhook?log=1"))).status, 401);
+    // With the key, the log can be read (to see what GHL sent).
+    const lg = await GET(new Request("https://x.vercel.app/api/ghl-webhook?log=1&key=s3cret"));
+    assert.equal(lg.status, 200);
+    assert.deepEqual(await lg.json(), { entries: [] });
   } finally {
     s.restore();
   }
