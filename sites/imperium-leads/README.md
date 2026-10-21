@@ -398,12 +398,19 @@ all to Waiting** asks you to confirm, and moves them to Waiting (No reply).
 
 ## Numbers
 
-**This week** (Monday to Sunday, both of you): money from this week's jobs against the target
-(a progress bar), jobs done, ceramics sold, new maintenance plans, the share of new leads replied
-to within 5 minutes, and the share of this week's jobs offered a ceramic and a plan.
+**This week** (Monday to Sunday, both of you): money from this week's jobs on the calendar
+against the target (a progress bar; a lead with two jobs this week counts both), jobs done,
+ceramics sold, new maintenance plans (a plan visit for someone already on a plan isn't new), the
+share of new leads replied to within 5 minutes, and the share of this week's jobs offered a
+ceramic and a plan.
 
 Then, for the period and person picked: Leads, Booked, Close rate, Replied within 5 minutes,
-Booked $, Cash collected, Still to collect, Ad spend, Cost per booked job, Quotes out. **By ad**:
+Booked $, Cash collected, Still to collect, Coming up, Ad spend, Cost per booked job, Quotes out.
+Leads count by the day they came in. The past jobs brought in from GHL (`importedFrom: "ghl"`)
+count in the money but not as leads, since they're all booked. The money is the calendar's jobs
+by job day (`ILJobs.money`): Booked $ is every job in the period, Cash collected the ones ticked
+Paid, Still to collect the done ones not ticked Paid, Coming up the ones not done yet. Jobs with
+no price count as $0; the line under the tiles says how many and lists them. **By ad**:
 leads, booked, booked $ and close rate for each ad (leads from before the ad was kept show as
 Unknown). Ad spend (one total a week), the End of day forms, and **More** (lost reasons, reviews,
 by source, by service, next service due) are as before. Tap any figure or row to see who's in it.

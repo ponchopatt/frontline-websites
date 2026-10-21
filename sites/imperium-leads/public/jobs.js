@@ -135,6 +135,39 @@
     if (job && job.finalPrice != null && job.finalPrice !== "" && isFinite(Number(job.finalPrice))) return Number(job.finalPrice);
     return priceOf(job).low;
   }
+  /*
+    The money from the jobs, by job day: { booked, collected, owed, upcoming, items, noPrice }.
+    keep(day) says which days count, keepLead(lead) whose jobs. Each job counts at total(), with
+    state "paid", "owed" or "upcoming" (in .items with its lead). A lead's own job is paid when
+    the lead is ticked Paid, owed once it's done and isn't, else still to come. An older job of the
+    same lead (done before they booked again) counts as paid. Cancelled and deleted jobs, and the
+    jobs of deleted or not-real leads, don't count. Jobs with no price are in .noPrice.
+  */
+  function money(jobs, leads, today, keep, keepLead) {
+    var byId = {}, live = (jobs || []).filter(function (j) { return j && !j.deleted && j.status !== "Cancelled"; });
+    var out = { booked: 0, collected: 0, owed: 0, upcoming: 0, items: [], noPrice: [] };
+    (leads || []).forEach(function (l) { if (l && l.id) byId[l.id] = l; });
+    var cur = {};
+    Object.keys(byId).forEach(function (id) { cur[id] = null; });
+    live.forEach(function (j) {
+      var c = cur[j.leadId];
+      if (c === undefined) return;
+      if (!c || String(j.createdAt || "") > String(c.createdAt || "") || (String(j.createdAt || "") === String(c.createdAt || "") && String(j.id) > String(c.id))) cur[j.leadId] = j;
+    });
+    live.forEach(function (j) {
+      var l = byId[j.leadId];
+      if (!l || l.deleted || l.junk || !M.isDay(j.date) || (keep && !keep(j.date)) || (keepLead && !keepLead(l))) return;
+      var v = total(j);
+      if (!(v > 0)) { out.noPrice.push({ job: j, lead: l }); return; }
+      var state = cur[l.id] === j
+        ? (l.paid === "Yes" ? "paid" : M.owesMoney(l, today) ? "owed" : "upcoming")
+        : (j.status === "Completed" || (!!today && j.date < today) ? "paid" : "upcoming");
+      out.booked += v;
+      out[state === "paid" ? "collected" : state] += v;
+      out.items.push({ job: j, lead: l, value: v, state: state });
+    });
+    return out;
+  }
 
   /* ------------------------------------------------------------ jobs */
 
@@ -412,7 +445,7 @@
     SERVICES: SERVICES, STATUSES: STATUSES, EVENT_TYPES: EVENT_TYPES, DEFAULTS: DEFAULTS, FIRST_NUMBER: FIRST_NUMBER,
     settings: settings, serviceFromLead: serviceFromLead, serviceToLead: serviceToLead, serviceFromText: serviceFromText,
     toMin: toMin, hm: hm, lengthOf: lengthOf, endFor: endFor, timeLabel: timeLabel, sortKey: sortKey,
-    addOnTotal: addOnTotal, priceOf: priceOf, total: total,
+    addOnTotal: addOnTotal, priceOf: priceOf, total: total, money: money,
     nextNumber: nextNumber, title: title, blank: blank, fromLead: fromLead, currentJob: currentJob, leadJobId: leadJobId, toMake: toMake, renumber: renumber,
     leadPatch: leadPatch, jobPatch: jobPatch,
     sundayOf: sundayOf, weekDays: weekDays, agenda: agenda, busyDays: busyDays, initials: initials, matches: matches,

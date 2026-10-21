@@ -792,15 +792,19 @@
     This week's money against the weekly goal. Weeks run Monday to Sunday by job date. A booked
     job counts at its price (else its quote): done once its day has come, else still booked.
     Returns { weekOf, done, booked, total, goal, left, daysLeft, pct } (goal, left, pct are null
-    with no goal set).
+    with no goal set). values, when given, is the week's jobs as [{ day, value }] (from the
+    calendar, so a lead with two jobs counts both) instead of the leads.
   */
-  function weekMoney(leads, today, goal) {
+  function weekMoney(leads, today, goal, values) {
     var mon = mondayOf(today), sun = addDays(mon, 6), done = 0, booked = 0;
-    (leads || []).forEach(function (l) {
-      if (!l || l.junk || !isBooked(l, today) || !isDay(l.jobDate) || l.jobDate < mon || l.jobDate > sun) return;
-      var v = Number(l.revenue != null && l.revenue !== "" ? l.revenue : l.quoted);
-      if (!isFinite(v) || v <= 0) return;
-      if (l.jobDate <= today) done += v; else booked += v;
+    var add = function (day, v) {
+      if (!isDay(day) || day < mon || day > sun || !isFinite(v) || v <= 0) return;
+      if (day <= today) done += v; else booked += v;
+    };
+    if (values) values.forEach(function (x) { if (x) add(x.day, Number(x.value)); });
+    else (leads || []).forEach(function (l) {
+      if (!l || l.junk || !isBooked(l, today)) return;
+      add(l.jobDate, Number(l.revenue != null && l.revenue !== "" ? l.revenue : l.quoted));
     });
     var g = Number(goal) > 0 ? Number(goal) : null, total = done + booked;
     return { weekOf: mon, done: done, booked: booked, total: total, goal: g,
@@ -810,7 +814,8 @@
   /*
     This week (Monday to Sunday): the money against the goal, jobs done, ceramics sold, new
     maintenance plans, new leads replied to within 5 minutes, and the upsell ticks on this week's
-    jobs. o is { goal, hours, now }. Each count keeps its leads (in .items) for the run-down.
+    jobs. o is { goal, hours, now, values } (values: see weekMoney). Each count keeps its leads (in
+    .items) for the run-down. A plan visit for someone already on a plan isn't a new plan.
   */
   function weekStats(leads, today, o) {
     o = o || {};
@@ -821,9 +826,16 @@
     var jobs = live.filter(function (l) { return isBooked(l, today) && inWeek(l.jobDate); });
     var done = jobs.filter(function (l) { return stageOf(l, today) === "Done"; });
     var ceramics = jobs.filter(function (l) { return l.service === "Ceramic"; });
+    var hadPlan = function (l) {
+      var key = phoneKey(l.phone);
+      return live.some(function (x) {
+        if (x === l || x.service !== "Maintenance plan" || !isBooked(x, today) || !isDay(x.jobDate) || x.jobDate >= l.jobDate) return false;
+        return (!!l.repeatOf && x.id === l.repeatOf) || (key.length >= 8 && phoneKey(x.phone) === key);
+      });
+    };
     var plans = live.filter(function (l) {
       if (l.plan === "Yes" && isDay(l.planSince)) return inWeek(l.planSince);
-      return isBooked(l, today) && l.service === "Maintenance plan" && inWeek(l.jobDate);
+      return isBooked(l, today) && l.service === "Maintenance plan" && inWeek(l.jobDate) && !hadPlan(l);
     });
     // New leads this week whose clock has run 5 minutes or that have been replied to, and how fast
     // each was (First contact when it's been picked, else the app's own time).
@@ -843,7 +855,7 @@
     var ceramicOffered = jobs.filter(function (l) { return l.offeredCeramic === "Yes"; });
     var planOffered = jobs.filter(function (l) { return l.offeredPlan === "Yes"; });
     return {
-      weekOf: mon, money: weekMoney(live, today, o.goal),
+      weekOf: mon, money: weekMoney(live, today, o.goal, o.values),
       jobsDone: { n: done.length, items: done }, ceramics: { n: ceramics.length, items: ceramics }, plans: { n: plans.length, items: plans },
       replied: { fast: fast.length, of: fresh.length, items: fresh, buckets: buckets },
       upsell: { jobs: jobs.length, items: jobs, ceramic: ceramicOffered.length, plan: planOffered.length },
