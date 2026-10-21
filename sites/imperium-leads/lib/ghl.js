@@ -89,9 +89,19 @@ export function readBooking(body) {
   const first = pick(b.first_name, b.firstName, ct.firstName, ct.first_name, cd.first_name, cd.firstName);
   const last = pick(b.last_name, b.lastName, ct.lastName, ct.last_name, cd.last_name, cd.lastName);
   const street = [pick(b.address1, ct.address1, cd.address1), pick(b.city, ct.city), pick(b.state, ct.state), pick(b.postal_code, b.postalCode, ct.postalCode)].filter(Boolean).join(", ");
-  // The car, from any field named for it.
-  let car = pick(cd.vehicle, cd.car, b.vehicle, b.car);
-  if (!car) for (const src of [cd, b]) for (const [k, v] of Object.entries(src)) if (!car && /vehicle|^car$|make.*model/i.test(k)) car = pick(v);
+  // The contact's own form answers, from any field named for them: the car, the service they
+  // want ("What Service"), and how soon ("How Soon?").
+  const field = (re, ...first) => {
+    let v = pick(...first);
+    for (const src of [cd, b]) for (const [k, x] of Object.entries(src)) if (!v && re.test(k)) v = pick(x);
+    return v;
+  };
+  const car = field(/vehicle|^car$|make.*model/i, cd.vehicle, cd.car, b.vehicle, b.car);
+  // Which ad they came from: GHL keeps the ad's name in utm content.
+  const real = (v) => (v && !/^(none|null|undefined)$/i.test(String(v).trim()) ? String(v).trim() : "");
+  const src = [obj(ct.lastAttributionSource), obj(ct.attributionSource), obj(b.lastAttributionSource), obj(b.attributionSource)];
+  const ad = src.map((x) => real(x.utmContent || x.utm_content || x.adName)).find(Boolean) || "";
+  const paid = src.some((x) => /facebook|instagram|meta|paid/i.test([x.source, x.adSource, x.sessionSource, x.medium].join(" ")));
   const tz = pick(c.selectedTimezone, c.timezone, a.timezone, cd.timezone, b.timezone);
   const contactId = clip(pick(b.contact_id, b.contactId, a.contactId, ct.id, cd.contact_id), 120);
   const start = pick(c.startTime, c.start_time, a.startTime, a.start_time, b.startTime, b.start_time, cd.startTime, cd.start_time, cd.start);
@@ -108,8 +118,12 @@ export function readBooking(body) {
     phone: cleanPhone(pick(b.phone, ct.phone, cd.phone, b.contact_phone)),
     email: clip(pick(b.email, ct.email, cd.email), 200).toLowerCase(),
     address: clip(pick(b.full_address, street, c.address, a.address, cd.address), 300),
-    suburb: clip(pick(b.city, ct.city, cd.suburb, cd.city), 120),
+    suburb: clip(pick(b.city, ct.city, cd.suburb, cd.city, b.Suburb, b.suburb), 120),
     car: clip(car, 200),
+    serviceAnswer: clip(field(/service/i, cd.service, b.service), 120),
+    howSoon: clip(field(/how soon/i, cd.when, b.when), 120),
+    ad: clip(ad, 120),
+    fromAds: paid || !!ad,
     calendar: clip(pick(c.calendarName, c.calendar_name, c.name, b.calendarName, b.calendar_name, cd.calendarName, cd.calendar_name, cd.calendar), 200),
     title: clip(pick(c.title, a.title, b.appointment_title, b.title, cd.title), 200),
     start: parseWhen(start, tz),
@@ -139,12 +153,17 @@ const dayWords = (date, start) => {
 };
 
 /**
-  The lead a booking belongs to: by phone, then by email. A lead still open, booked, or from the
+  The lead a booking belongs to: by its GHL contact, then phone, then email. A lead still open, booked, or from the
   last 30 days is used; someone whose job is done (or from longer ago) gets a new lead marked as a
   repeat of the old one, so the old job and its takings stay as they were.
 */
-export function findLead(leads, phone, email, today) {
+export function findLead(leads, phone, email, today, contactId) {
   const real = (leads || []).filter((l) => l && !l.junk);
+  if (contactId) {
+    const same = real.filter((l) => l.ghlContactId === contactId && M.stageOf(l, today) !== "Done");
+    same.sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
+    if (same.length) return { lead: same[0], by: "GHL contact" };
+  }
   const key = M.phoneKey(phone);
   const byPhone = key.length >= 8 ? real.filter((l) => M.phoneKey(l.phone) === key) : [];
   const byEmail = email ? real.filter((l) => String(l.email || "").trim().toLowerCase() === email) : [];
@@ -164,9 +183,9 @@ export function findLead(leads, phone, email, today) {
 function newLead(bk, service, now, owner) {
   const date = M.canberraDate(now);
   return {
-    ...M.newFields(""),
+    ...M.newFields(M.timelineOf(bk.howSoon)),
     date, createdAt: now.toISOString(), owner, name: bk.name, phone: bk.phone, email: bk.email, suburb: bk.suburb, car: bk.car,
-    source: "GHL booking", ad: "", fromAd: "", referredBy: "", address: bk.address, jobTime: "", access: "",
+    source: "GHL booking", ad: bk.ad, fromAd: bk.ad ? "ad" : "", referredBy: "", address: bk.address, jobTime: "", access: "",
     service: J.serviceToLead(service), status: "New", nextFollowUp: date, lastContact: "", replyMins: null, quoted: null,
     jobDate: "", revenue: null, paid: "", plan: "", upsellOffered: "", upsellTaken: "", reviewAsked: "", reviewLeft: "",
     objection: "", lostWhy: "", nextDue: "", log: [], booked: "Pending", notes: bk.notes ? "From GHL: " + bk.notes : "",
@@ -215,7 +234,7 @@ export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new
     if (bk.start && (t.date !== job.date || t.start !== job.start || t.end !== job.end)) Object.assign(patch, { date: t.date, start: t.start, end: t.end, allDay: false });
     if (job.status === "Cancelled") patch.status = "Scheduled";
     if (bk.rawStatus && bk.rawStatus !== job.ghlStatus) patch.ghlStatus = bk.rawStatus;
-    const sv = J.serviceFromText(bk.calendar) || J.serviceFromText(bk.title);
+    const sv = J.serviceFromText(bk.calendar) || J.serviceFromText(bk.title) || J.serviceFromText(bk.serviceAnswer);
     if (sv && job.checkService) Object.assign(patch, { service: sv, checkService: false });
     if (bk.calendar && bk.calendar !== job.ghlCalendar) patch.ghlCalendar = bk.calendar;
     if (!Object.keys(patch).length) return out(true, "No change: job " + job.number + ".", [], base);
@@ -234,8 +253,8 @@ export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new
   // ---- A booking we don't have yet.
   if (bk.status !== "booked") return out(true, "Ignored: " + (bk.rawStatus || bk.status) + " for a booking that isn't here.");
   if (!bk.phone && !bk.email && !bk.name) return out(false, "No name, phone or email in what GHL sent, so nothing was changed.");
-  const found = findLead(leads, bk.phone, bk.email, today);
-  const mapped = J.serviceFromText(bk.calendar) || J.serviceFromText(bk.title);
+  const found = findLead(leads, bk.phone, bk.email, today, bk.contactId);
+  const mapped = J.serviceFromText(bk.calendar) || J.serviceFromText(bk.title) || J.serviceFromText(bk.serviceAnswer);
   const service = mapped || "Other", t = when(bk, service, cfg);
   const ghl = { source: "ghl", ghlAppointmentId: bk.apptId, ghlContactId: bk.contactId, ghlCalendar: bk.calendar, ghlStatus: bk.rawStatus || "booked", ghlNotes: bk.notes };
   const writes = [];
@@ -259,6 +278,10 @@ export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new
   if (lead) {
     let lp = M.stageOf(lead, today) !== "Booked" ? M.book(lead, { date: t.date, time: t.start, ...(lead.address ? {} : { address: bk.address }) }, at, "GHL") : { jobDate: t.date || lead.jobDate, jobTime: t.start || lead.jobTime || "" };
     for (const k of ["email", "address", "suburb", "car", "name"]) if (bk[k] && !String(lead[k] || "").trim()) lp[k] = bk[k];
+    if (mapped && (!lead.service || lead.service === "Not sure")) lp.service = J.serviceToLead(mapped);
+    if (bk.ad && !lead.ad && !lead.fromAd) Object.assign(lp, { ad: bk.ad, fromAd: "ad" });
+    const tl = M.timelineOf(bk.howSoon);
+    if (tl && !lead.timeline) lp.timeline = tl;
     if (!lead.ghlContactId && bk.contactId) lp.ghlContactId = bk.contactId;
     lp = { ...lp, ...J.leadPatch(jobData, { ...lead, ...lp }) };
     lp.log = (lp.log || lead.log || []).concat([entry(at, "GHL booking", note)]);

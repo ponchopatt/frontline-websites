@@ -152,3 +152,40 @@ test("the job number counts on from the jobs there are", () => {
   assert.equal(planBooking(payload(), { jobs: [{ id: "a", number: 1001 }, { id: "b", number: 1007 }], now: NOW }).writes[0].data.number, 1008);
   assert.equal(J.nextNumber([]), 1001);
 });
+
+// The contact's form answers and where they came from, as GHL sends them (made-up person).
+const withAnswers = (o = {}, cal = {}) => payload({
+  "What Service": "Exterior only", "Type Of Vehicle": "Hatch/Sedan", "How Soon?": "Within 1-2 Weeks", Suburb: "",
+  contact: { attributionSource: { utmContent: "None", source: "facebook" }, lastAttributionSource: { utmContent: "Raptor Ad", utm_campaign: "Winter Detailing Ads", source: "facebook", sessionSource: "Paid Social" } },
+  ...o,
+}, { calendarName: "Detailing Bookings", title: "Booking", ...cal });
+
+test("GHL fills in what it knows: the service they asked for, the car, how soon, which ad", () => {
+  const b = readBooking(withAnswers());
+  assert.deepEqual([b.serviceAnswer, b.car, b.howSoon, b.ad, b.fromAds], ["Exterior only", "Hatch/Sedan", "Within 1-2 Weeks", "Raptor Ad", true]);
+  const p = planBooking(withAnswers(), { now: NOW });
+  const job = p.writes[0].data, l = p.writes[1].data;
+  // The calendar's name doesn't say, so the form's answer gives the service: no Check service.
+  assert.deepEqual([job.service, job.checkService], ["Exterior", false]);
+  assert.deepEqual([l.service, l.car, l.timeline, l.ad, l.fromAd, l.source], ["Exterior", "Hatch/Sedan", "within_1_2_weeks", "Raptor Ad", "ad", "GHL booking"]);
+  assert.doesNotMatch(p.result, /Check service/);
+  // Nothing that says the service anywhere: Other, Check service.
+  const none = planBooking(withAnswers({ "What Service": "" }), { now: NOW });
+  assert.deepEqual([none.writes[0].data.service, none.writes[0].data.checkService], ["Other", true]);
+});
+
+test("a lead already here keeps what it has; only the gaps are filled", () => {
+  const jo = lead({ id: "jo", phone: "0400111222", service: "Not sure", car: "Kluger", ad: "", fromAd: "" });
+  const p = planBooking(withAnswers(), { leads: [jo], now: NOW });
+  const lp = p.writes[1].data;
+  assert.deepEqual([lp.service, "car" in lp, lp.ad, lp.fromAd, lp.timeline], ["Exterior", false, "Raptor Ad", "ad", "within_1_2_weeks"]);
+  const known = lead({ id: "k", phone: "0400111222", service: "Ceramic", ad: "Vw Ad", fromAd: "ad", timeline: "asap" });
+  const kp = planBooking(withAnswers(), { leads: [known], now: NOW }).writes[1].data;
+  assert.deepEqual(["service" in kp, "ad" in kp, "timeline" in kp], [false, false, false]);
+});
+
+test("the GHL contact is matched first, even with a new phone number", () => {
+  const jo = lead({ id: "jo", phone: "0499 999 999", ghlContactId: "c_1" });
+  const p = planBooking(payload(), { leads: [jo, lead({ id: "other", phone: "0400111222" })], now: NOW });
+  assert.deepEqual([p.writes[1].id, p.summary.matchedBy], ["jo", "GHL contact"]);
+});
