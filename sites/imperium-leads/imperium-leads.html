@@ -334,6 +334,115 @@ body.cal .calbar{display:flex}
 .jc.e-other .js{color:var(--muted);background:var(--surface2)}
 :root[data-theme="dark"] .jc .js{background:rgba(0,0,0,.25)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .jc .js{background:rgba(0,0,0,.25)}}
+/* Day, week and month. */
+.cal-nav{display:flex;align-items:center;gap:6px;margin-right:auto;min-width:0;flex:1 1 auto}
+.cal-nav b{font-size:17px;font-weight:700;margin-left:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.arr2{flex:0 0 44px;width:44px;height:44px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;font-size:22px;font-weight:700;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 0 3px}
+.arr2:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.cal-nav .mini{min-height:44px;text-transform:uppercase;letter-spacing:.06em}
+.vsw.sm button{min-height:40px;font-size:12.5px;display:inline-flex;align-items:center;gap:5px}
+.vsw.sm svg{width:16px;height:16px}
+.cal-notes{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap}
+.cal-notes .cal-clash{flex:1 1 220px}
+.cal-notes .mini{min-height:44px}
+.cal-clash{display:flex;align-items:center;gap:8px;width:100%;text-align:left;font:inherit;font-weight:700;font-size:14px;background:var(--bad-bg);color:var(--bad);border:0;border-radius:12px;padding:10px 12px;min-height:44px;cursor:pointer}
+.bang{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:16px;height:16px;border-radius:999px;background:var(--bad);color:#fff;font-style:normal;font-size:11px;font-weight:700;line-height:1;margin-right:4px;vertical-align:1px}
+.cal-wrap{display:flex;gap:12px;align-items:flex-start;min-width:0}
+#calGrid{flex:1 1 auto;min-width:0}
+#calGrid:empty{display:none}
+.cal-side{flex:0 0 260px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;position:sticky;top:calc(var(--toph,64px) + 12px);max-height:calc(100vh - var(--toph,64px) - 24px);overflow:auto}
+.side-h{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:14px}
+.side-h .n{background:var(--surface2);border-radius:999px;padding:1px 9px;font-size:12px;font-weight:700;color:var(--muted)}
+.ud{display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;font:inherit;border:1px dashed var(--accent);background:var(--accent-bg);color:var(--text);border-radius:10px;padding:8px 10px;min-height:48px;cursor:grab}
+.ud b{font-size:13px}
+.ud span{font-size:12px;color:var(--muted)}
+.chip{display:flex;align-items:center;gap:0;width:100%;min-width:0;text-align:left;font:inherit;font-size:12.5px;font-weight:700;padding:0 8px;min-height:36px;border-radius:8px;border:1px solid transparent;cursor:pointer;white-space:nowrap;overflow:hidden;color:var(--text);flex:0 0 auto}
+.chip span{overflow:hidden;text-overflow:ellipsis;flex:0 0 auto}
+.chip .cr{font-weight:600;flex:1 1 auto;min-width:0}
+.chip svg{width:13px;height:13px;flex:0 0 13px;margin-right:4px}
+.chip[draggable="true"]{cursor:grab}
+.chip.s-scheduled,.dvb.s-scheduled{background:var(--accent-bg);border-color:color-mix(in srgb,var(--accent) 30%,transparent)}
+.chip.s-in-progress,.dvb.s-in-progress{background:var(--warn-bg);border-color:color-mix(in srgb,var(--warn) 35%,transparent)}
+.chip.s-completed,.dvb.s-completed{background:var(--good-bg);border-color:color-mix(in srgb,var(--good) 30%,transparent)}
+.chip.s-cancelled,.dvb.s-cancelled{background:var(--surface2);color:var(--muted);text-decoration:line-through}
+.chip.e-meeting,.dvb.e-meeting{background:var(--pink-bg);color:var(--pink)}
+.chip.e-timeoff,.dvb.e-timeoff{background:var(--surface2);color:var(--muted)}
+.chip.e-other,.dvb.e-other{background:var(--surface);border-color:var(--line)}
+.chip.clash,.dvb.clash{border-color:var(--bad);box-shadow:inset 0 0 0 1px var(--bad)}
+.chip:focus-visible,.dvb:focus-visible,.mo-c:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.over{background:var(--accent-bg)!important;outline:2px dashed var(--accent);outline-offset:-2px}
+.muted{color:var(--muted);font-weight:600}
+/* Week: rows for kits and people, a column a day. */
+.wk-sc{overflow:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface);overscroll-behavior:contain}
+.wk{display:grid;grid-template-columns:96px repeat(7,minmax(0,1fr));width:100%;min-width:calc(96px + 7 * 112px)}
+.wk-c{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px;min-width:0}
+.wk-h{position:sticky;top:0;z-index:2;background:var(--surface);text-align:center;font-size:13px;font-weight:600;color:var(--muted);padding:10px 4px}
+.wk-h b{color:var(--text);font-size:15px}
+.wk-h.today,.wk-h.today b{color:var(--accent)}
+.wk-corner{position:sticky;top:0;left:0;z-index:3;background:var(--surface)}
+.wk-rl{position:sticky;left:0;z-index:1;background:var(--surface);display:flex;align-items:center;gap:6px;font-size:13px;min-height:64px}
+.wk-rl b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wk-rl .av{width:28px;height:28px;flex-basis:28px;font-size:11px}
+.wk-cell{display:flex;flex-direction:column;gap:4px;min-height:64px;cursor:copy}
+.wk-cell.today{background:color-mix(in srgb,var(--accent-bg) 45%,transparent)}
+/* Day: a column a person, ALL-DAY on top, 7am to 7pm down the side. */
+.dv-sc{overflow:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface);overscroll-behavior:contain;position:relative}
+.dv{display:grid;grid-template-columns:64px repeat(var(--n),minmax(0,1fr));width:100%;min-width:calc(64px + var(--n) * 124px);position:relative}
+.dv-c{border-right:1px solid var(--line);min-width:0}
+.dv-ch{position:sticky;top:0;z-index:4;background:var(--surface);border-bottom:1px solid var(--line);height:56px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;padding:0 6px}
+.dv-ch .av{width:28px;height:28px;flex-basis:28px;font-size:11px}
+.dv-corner{position:sticky;top:0;left:0;z-index:5;background:var(--surface);border-bottom:1px solid var(--line);height:56px}
+.dv-adl{position:sticky;left:0;top:56px;z-index:5;background:var(--surface);border-bottom:2px solid var(--line);font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);display:flex;align-items:center;justify-content:center;min-height:48px}
+.dv-ad{position:sticky;top:56px;z-index:4;background:var(--surface);border-bottom:2px solid var(--line);padding:5px;display:flex;flex-direction:column;gap:4px;min-height:48px;cursor:copy}
+.dv-tg{position:sticky;left:0;z-index:3;background:var(--surface)}
+.dv-tg span{position:absolute;right:6px;transform:translateY(-50%);font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.dv-tg span:first-child{transform:none}
+.dv-col{position:relative;cursor:copy;background-image:linear-gradient(to bottom,var(--line) 1px,transparent 1px),linear-gradient(to bottom,color-mix(in srgb,var(--line) 55%,transparent) 1px,transparent 1px);background-size:100% 96px,100% 48px}
+.dvb{position:absolute;border-radius:10px;border:1px solid transparent;padding:5px 7px 14px;font-size:12px;line-height:1.25;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;gap:1px;color:var(--text);user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;box-sizing:border-box}
+.dvb b{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dvb b svg{width:12px;height:12px;vertical-align:-1px;margin-right:3px}
+.dvb span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dvb .sb svg{width:11px;height:11px;vertical-align:-1px;margin-right:2px}
+.dvb .tm{color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
+.dvb .avs{display:flex;gap:3px;align-items:center;margin-top:2px}
+.dvb .avs .av{width:22px;height:22px;flex-basis:22px;font-size:9.5px;border-width:1px}
+.dvb .avs .kit{font-size:10px;padding:1px 6px}
+.dvb .rs{position:absolute;left:0;right:0;bottom:0;height:16px;cursor:ns-resize;touch-action:none;display:flex;align-items:center;justify-content:center}
+.dvb .rs::after{content:"";width:26px;height:4px;border-radius:2px;background:currentColor;opacity:.3}
+.dvb.dragging{z-index:6;box-shadow:0 8px 24px rgba(0,0,0,.25);opacity:.92;pointer-events:none}
+.dvb[data-ev] .rs{display:none}
+.now{position:absolute;left:0;right:0;height:2px;background:var(--bad);z-index:2;pointer-events:none}
+/* Month. */
+.mo{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.mo-h{text-align:center;font-size:11px;font-weight:700;color:var(--muted);padding:8px 0;border-bottom:1px solid var(--line)}
+.mo-c{min-height:104px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:4px;display:flex;flex-direction:column;gap:3px;cursor:pointer;min-width:0}
+.mo-c:nth-child(7n+7){border-right:0}
+.mo-c.out{background:var(--bg)}
+.mo-c.out .mo-n{color:var(--muted);opacity:.6}
+.mo-n{font-size:13px;font-weight:700;width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.mo-c.today .mo-n{background:var(--accent);color:var(--accent-ink)}
+.mo .chip{min-height:22px;font-size:11px;padding:0 5px;border-radius:6px;cursor:pointer}
+.mo .chip .bang{width:13px;height:13px;font-size:9px;margin-right:2px}
+.more-n{font-size:11px;font-weight:700;color:var(--muted);padding-left:4px}
+body.cal.cal-wide main{max-width:1400px}
+@media (max-width:700px){
+  .wk-sc,.dv-sc{margin-inline:-16px;border-radius:0;border-left:0;border-right:0}
+  .mo{margin-inline:-16px;border-radius:0;border-left:0;border-right:0}
+  .mo-c{min-height:84px;padding:3px 2px}
+  .mo .chip{padding:0 3px;font-size:10.5px}
+  .mo .chip .cr{display:none}
+  .wk{grid-template-columns:84px repeat(7,minmax(0,1fr));min-width:calc(84px + 7 * 104px)}
+  .dv{grid-template-columns:52px repeat(var(--n),minmax(0,1fr));min-width:calc(52px + var(--n) * 112px)}
+  .cal-nav b{font-size:15px}
+  .cal-f.grid .cal-nav{flex:1 1 100%}
+  .cal-f.grid .chipsel{flex:1 1 0;min-width:0;max-width:none;font-size:13.5px;padding:0 22px 0 10px;background-position:right 8px center}
+  .cal-f.grid .vsw{flex:0 0 auto}
+  .cal-f.grid .vsw button{padding:0;width:42px;justify-content:center}
+  .cal-f.grid .vsw .t{display:none}
+  .wk{grid-template-columns:92px repeat(7,minmax(0,1fr))!important;min-width:calc(92px + 7 * 104px)!important}
+  .wk-rl{gap:4px;padding:6px 5px}
+  .wk-rl .av{width:24px;height:24px;flex-basis:24px;font-size:10px}
+}
 .jtags{display:flex;flex-wrap:wrap;gap:6px}
 .jtag{font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 8px;border-radius:999px;background:var(--surface);color:var(--text);border:1px solid var(--line)}
 .jtag.warn{background:var(--warn-bg);color:var(--warn-ink);border-color:transparent}
@@ -466,12 +575,16 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     </div>
     <div class="cal-search" id="calSearch" hidden><input id="cq" type="search" placeholder="Job number, name, car, suburb" aria-label="Search jobs"><button class="x" id="cqClose" type="button">Close</button></div>
     <div class="cal-f">
-      <label class="monthpick"><select id="calMonth" aria-label="Month"></select></label>
+      <label class="monthpick" id="calMonthWrap"><select id="calMonth" aria-label="Month"></select></label>
       <button type="button" class="mini" id="calToday">Today</button>
-      <select id="calWho" class="chipsel" aria-label="Who"></select>
+      <div class="cal-nav" id="calNav" hidden><button type="button" class="arr2" data-nav="-1" aria-label="Back">‹</button><button type="button" class="mini" data-nav="0">Today</button><button type="button" class="arr2" data-nav="1" aria-label="Next">›</button><b id="calTitle"></b></div>
+      <select id="calWho" class="chipsel" aria-label="Assigned"></select>
       <select id="calSvc" class="chipsel" aria-label="Service"></select>
+      <div class="vsw sm" id="calMode" aria-label="Show" hidden><button type="button" data-mode="overall" aria-pressed="true" aria-label="Overall" title="Overall"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" d="M4 5h16v14H4zM4 10h16M9.5 5v14M14.5 5v14"/></svg><span class="t">Overall</span></button><button type="button" data-mode="list" aria-pressed="false" aria-label="List" title="List"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M8 7h12M8 12h12M8 17h12M4 7h.01M4 12h.01M4 17h.01"/></svg><span class="t">List</span></button></div>
     </div>
+    <div class="cal-notes" id="calNotes" hidden><button type="button" class="cal-clash" id="calClash" hidden></button><button type="button" class="mini" id="calUnsched" hidden>No date yet</button></div>
     <div class="strip" id="calStrip" aria-label="Week"></div>
+    <div class="cal-wrap" id="calWrap"><div id="calGrid"></div><aside class="cal-side" id="calSide" hidden></aside></div>
     <div class="list" id="calList"></div>
   </section>
 
@@ -1752,7 +1865,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
         (l.address?'<a class="pin" href="'+esc(mapsHref(l.address))+'" target="_blank" rel="noopener" aria-label="Open '+esc(l.address)+' in Google Maps">'+PIN+'</a>':"")+
         '<span class="js">'+esc(st)+'</span></div>'+
       '<div class="jn">'+esc(l.name||"No name")+'</div>'+
-      (j.source==="ghl"||j.checkService||j.ghlFlag?'<div class="jtags">'+(j.source==="ghl"?'<span class="jtag">From GHL</span>':"")+(j.checkService?'<span class="jtag warn">Check service</span>':"")+(j.ghlFlag?'<span class="jtag bad">'+esc(j.ghlFlag)+'</span>':"")+'</div>':"")+
+      (j.source==="ghl"||j.checkService||j.ghlFlag||CL[j.id]?'<div class="jtags">'+(CL[j.id]?'<span class="jtag bad">Clash: '+esc(clashWho(j).join(", "))+'</span>':"")+(j.source==="ghl"?'<span class="jtag">From GHL</span>':"")+(j.checkService?'<span class="jtag warn">Check service</span>':"")+(j.ghlFlag?'<span class="jtag bad">'+esc(j.ghlFlag)+'</span>':"")+'</div>':"")+
       '<div class="jc3"><span class="jtm">'+esc(J.timeLabel(j))+'</span><span class="jcrew">'+(j.crew||[]).map(avatar).join("")+(j.kit?'<span class="kit">'+esc(j.kit)+'</span>':"")+
         '<button type="button" class="asg" data-asg="'+esc(j.id)+'" aria-label="Assign crew to job '+esc(j.number||"")+'">'+ASSIGN+'</button></span></div>'+
     '</div>';
@@ -1765,12 +1878,148 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       '<div class="jtm">'+esc(J.timeLabel(e))+'</div>'+
     '</div>';
   }
+  // ---------- WHICH VIEW (remembered on this phone) ----------
+  let calView="agenda", calMode="overall", CL={}, calDragging=false, calDirty=false, dayScrolled="";
+  try{ const v=localStorage.getItem("il-cal-view"); if(["agenda","day","week","month"].includes(v)) calView=v; calMode=localStorage.getItem("il-cal-mode")==="list"?"list":"overall"; }catch(e){}
+  // The day view: 7:00am to 7:00pm, 30 minutes a row of 48px.
+  const PX=1.6, DAY_FROM=7*60, DAY_TO=19*60, SNAP=15;
+  const fine=()=>matchMedia("(pointer:fine)").matches;
+  const inRange=(x,from,days)=>M.isDay(x.date) && x.date>=from && x.date<=M.addDays(from,days-1);
+  const shownJobs=()=>allJobs.filter(j=>keepJob(j) && (!calSvc||j.service===calSvc));
+  const shownEvents=()=>calSvc?[]:liveEvents().filter(keepEvent);
+  const noDateJobs=()=>allJobs.filter(j=>OPEN_JOB.includes(j.status||"Scheduled") && !M.isDay(j.date) && keepJob(j) && (!calSvc||j.service===calSvc));
+  // "7am", "7:30", "12pm": short enough for the side of the day view.
+  const shortTime=m=>{ const h=Math.floor(m/60), mm=m%60; return mm?(h%12||12)+":"+String(mm).padStart(2,"0"):(h%12||12)+(h<12?"am":"pm"); };
+  const byTime=(a,b)=>J.sortKey(a)-J.sortKey(b)||(a.number||0)-(b.number||0);
+  const clashWho=j=>[...new Set((CL[j.id]||[]).map(c=>c.who))];
+  function calRange(){
+    if(calView==="day") return {from:calDay, days:1};
+    if(calView==="month"){ const first=calDay.slice(0,7)+"-01"; return {from:first, days:M.daysBetween(first,M.addDays(first,32).slice(0,7)+"-01")}; }
+    return {from:J.sundayOf(calDay), days:7};
+  }
+  function calTitle(){
+    const p=dParts(calDay);
+    if(calView==="day") return p.wd+" "+p.n+" "+p.mon;
+    if(calView==="month") return monthName(calDay.slice(0,7));
+    const w=J.weekDays(calDay), a=dParts(w[0]), b=dParts(w[6]);
+    return a.n+(a.mon!==b.mon?" "+a.mon:"")+" – "+b.n+" "+b.mon;
+  }
+  function calNav(n){
+    if(n===0) calDay=today();
+    else if(calView==="day") calDay=M.addDays(calDay,n);
+    else if(calView==="month"){ const [y,m]=calDay.split("-").map(Number); calDay=new Date(Date.UTC(y,m-1+n,1)).toISOString().slice(0,10); }
+    else calDay=M.addDays(calDay,7*n);
+    renderCal(); window.scrollTo({top:0});
+  }
+  function setView(v){
+    calView=v; try{ localStorage.setItem("il-cal-view",v); }catch(e){}
+    if(v==="agenda"){ calQ=""; }
+    renderCal(); window.scrollTo({top:0});
+  }
+  // A small chip: "1004 - Kluger" in its status colour (red ring and ! when it clashes).
+  function chip(j,o={}){
+    const l=leadOf(j.leadId)||{}, st=J.STATUSES.includes(j.status)?j.status:"Scheduled", c=CL[j.id], tag=o.span?"span":"button";
+    return '<'+tag+(o.span?"":' type="button"')+' class="chip s-'+slug(st)+(c?" clash":"")+'" data-job="'+esc(j.id)+'"'+(!o.span&&fine()?' draggable="true"':"")+' title="'+esc(jobName(j)+" · "+(l.name||"No name")+" · "+J.timeLabel(j)+(c?" · Clash: "+clashWho(j).join(", "):""))+'">'+
+      (c?'<i class="bang" aria-label="Clash">!</i>':"")+'<span>'+esc(j.number||"New")+'</span><span class="cr">&nbsp;- '+esc(l.car||j.service||"")+'</span></'+tag+'>';
+  }
+  function evChip(e,o={}){
+    const type=J.EVENT_TYPES[e.type]?e.type:"other", tag=o.span?"span":"button";
+    return '<'+tag+(o.span?"":' type="button"')+' class="chip e-'+type+'" data-ev="'+esc(e.id)+'" title="'+esc((e.title||J.EVENT_TYPES[type])+" · "+J.timeLabel(e))+'">'+(type==="timeoff"?PLANE:"")+'<span>'+esc(e.title||J.EVENT_TYPES[type])+'</span></'+tag+'>';
+  }
+  function listHtml(groups,noDate,empty){
+    const t=today();
+    const html=(noDate.length?'<div class="dh"><b>–</b><span>No date yet</span></div>'+noDate.map(jobCard).join(""):"")+
+      groups.map(g=>{ const p=dParts(g.day);
+        return '<div class="dh'+(g.day===calDay&&!calQ?" sel":"")+'" id="dh-'+g.day+'"><b>'+p.n+'</b><span>'+esc(p.wd+" "+p.mon)+(calQ&&g.day.slice(0,4)!==t.slice(0,4)?" "+g.day.slice(0,4):"")+'</span>'+(g.day===t?'<em>Today</em>':"")+'</div>'+
+          g.items.map(it=>it.kind==="job"?jobCard(it.x):eventCard(it.x)).join(""); }).join("");
+    return html||'<div class="empty">'+esc(empty)+'</div>';
+  }
+
+  // Week: a row for each kit and person (and No crew yet), a column for each day.
+  function weekHtml(){
+    const cfg=CAL(), days=J.weekDays(calDay), t=today();
+    const js=shownJobs().filter(j=>inRange(j,days[0],7)), es=shownEvents().filter(e=>inRange(e,days[0],7));
+    let rows=calWho?[calWho==="__none"?"":calWho]:J.resources(cfg);
+    if(!calWho && js.some(j=>J.onRow(j,""))) rows=[""].concat(rows);
+    const everyone=es.filter(e=>!(e.who||[]).length);
+    const cell=(d,name,inner)=>'<div class="wk-c wk-cell'+(d===t?" today":"")+'" data-day="'+d+'" data-row="'+esc(name)+'">'+inner+'</div>';
+    const label=r=>r===""?'<span class="muted">No crew yet</span>':cfg.kits.includes(r)?'<span class="kit">'+esc(r)+'</span>':avatar(r)+'<b>'+esc(r)+'</b>';
+    return '<div class="wk-sc" id="calSc"><div class="wk">'+
+      '<div class="wk-c wk-corner"></div>'+days.map(d=>{ const p=dParts(d); return '<div class="wk-c wk-h'+(d===t?" today":"")+'"><b>'+p.n+'</b> '+esc(p.wd)+'</div>'; }).join("")+
+      (everyone.length&&!calWho?'<div class="wk-c wk-rl"><b>Everyone</b></div>'+days.map(d=>cell(d,"__all",everyone.filter(e=>e.date===d).sort(byTime).map(e=>evChip(e)).join(""))).join(""):"")+
+      rows.map(r=>'<div class="wk-c wk-rl">'+label(r)+'</div>'+days.map(d=>cell(d,r,
+        js.filter(j=>j.date===d && J.onRow(j,r)).sort(byTime).map(j=>chip(j)).join("")+
+        (r?es.filter(e=>e.date===d && (e.who||[]).includes(r)).sort(byTime).map(e=>evChip(e)).join(""):""))).join("")).join("")+
+    '</div></div>';
+  }
+  // Day: a column for each person (and No crew yet), ALL-DAY on top, the hours down the side.
+  function dayHtml(){
+    const cfg=CAL(), d=calDay, t=today();
+    const js=shownJobs().filter(j=>j.date===d), es=shownEvents().filter(e=>e.date===d);
+    let cols=calWho?[calWho==="__none"?"":calWho]:cfg.crew.slice();
+    if(!calWho && js.some(j=>!(j.crew||[]).length)) cols.push("");
+    const timed=x=>!x.allDay && J.toMin(x.start)!=null;
+    const inCol=(x,c)=>c===""?!(x.crew||[]).length:(x.crew||[]).includes(c)||x.kit===c;
+    const evIn=(e,c)=>c!=="" && (!(e.who||[]).length||(e.who||[]).includes(c));
+    const rowsM=[]; for(let m=DAY_FROM;m<DAY_TO;m+=30) rowsM.push(m);
+    const H=(DAY_TO-DAY_FROM)*PX;
+    const block=(it,c)=>{
+      const x=it.x, s=Math.max(DAY_FROM,Math.min(it.s,DAY_TO-30)), e=Math.min(DAY_TO,Math.max(it.e,s+30));
+      const pos='top:'+((s-DAY_FROM)*PX)+'px;height:'+Math.max(30,(e-s)*PX-2)+'px;left:calc('+(it.lane/it.lanes*100)+'% + 2px);width:calc('+(100/it.lanes)+'% - 4px)';
+      if(it.kind==="event"){ const type=J.EVENT_TYPES[x.type]?x.type:"other";
+        return '<div class="dvb e-'+type+'" data-ev="'+esc(x.id)+'" style="'+pos+'" role="button" tabindex="0"><b>'+(type==="timeoff"?PLANE:"")+esc(x.title||J.EVENT_TYPES[type])+'</b><span class="tm">'+esc(J.timeLabel(x))+'</span></div>'; }
+      const l=leadOf(x.leadId)||{}, st=J.STATUSES.includes(x.status)?x.status:"Scheduled", cl=CL[x.id];
+      return '<div class="dvb s-'+slug(st)+(cl?" clash":"")+'" data-job="'+esc(x.id)+'" data-col="'+esc(c)+'" style="'+pos+'" role="button" tabindex="0" aria-label="'+esc(jobName(x)+", "+J.timeLabel(x))+'">'+
+        '<b>'+(cl?'<i class="bang">!</i>':"")+esc(x.service||"Job")+'</b>'+
+        '<span>'+esc(x.number||"")+(l.car?" · "+esc(l.car):"")+'</span>'+
+        (l.suburb||l.address?'<span class="sb">'+PIN+esc(l.suburb||l.address)+'</span>':"")+
+        '<span class="tm">'+esc(J.timeLabel(x))+'</span>'+
+        '<span class="avs">'+(x.crew||[]).map(avatar).join("")+(x.kit?'<span class="kit">'+esc(x.kit)+'</span>':"")+'</span>'+
+        '<span class="rs" data-rs aria-hidden="true"></span></div>';
+    };
+    const colHtml=c=>{
+      const items=js.filter(j=>timed(j)&&inCol(j,c)).map(j=>{ const sp=J.span(j,cfg); return {kind:"job",x:j,s:sp[0],e:sp[1]}; })
+        .concat(es.filter(e=>timed(e)&&evIn(e,c)).map(e=>{ const sp=J.span(e,cfg); return {kind:"event",x:e,s:sp[0],e:sp[1]}; }));
+      const nowM=M.canberraMinutes(new Date());
+      return '<div class="dv-c dv-col" data-col="'+esc(c)+'" style="height:'+H+'px">'+J.lanes(items).map(it=>block(it,c)).join("")+
+        (d===t && nowM>=DAY_FROM && nowM<=DAY_TO?'<i class="now" style="top:'+((nowM-DAY_FROM)*PX)+'px"></i>':"")+'</div>';
+    };
+    return '<div class="dv-sc" id="calSc"><div class="dv" style="--n:'+cols.length+'">'+
+      '<div class="dv-c dv-corner"></div>'+cols.map(c=>'<div class="dv-c dv-ch">'+(c===""?'<b class="muted">No crew yet</b>':cfg.kits.includes(c)?'<span class="kit">'+esc(c)+'</span>':avatar(c)+'<b>'+esc(c)+'</b>')+'</div>').join("")+
+      '<div class="dv-c dv-adl">ALL-DAY</div>'+cols.map(c=>'<div class="dv-c dv-ad" data-col="'+esc(c)+'" data-allday="1">'+js.filter(j=>!timed(j)&&inCol(j,c)).sort(byTime).map(j=>chip(j)).join("")+es.filter(e=>!timed(e)&&evIn(e,c)).map(e=>evChip(e)).join("")+'</div>').join("")+
+      '<div class="dv-c dv-tg" style="height:'+H+'px">'+rowsM.map(m=>'<span style="top:'+((m-DAY_FROM)*PX)+'px">'+esc(shortTime(m))+'</span>').join("")+'</div>'+
+      cols.map(colHtml).join("")+
+    '</div></div>';
+  }
+  // Month: each day shows up to 3, then "+2 more". Tap a day for its Day view.
+  function monthHtml(){
+    const ds=J.monthDays(calDay), t=today(), ym=calDay.slice(0,7), js=shownJobs(), es=shownEvents();
+    return '<div class="mo" id="calSc">'+["S","M","T","W","T","F","S"].map(x=>'<div class="mo-h">'+x+'</div>').join("")+
+      ds.map(d=>{
+        const items=js.filter(j=>j.date===d).sort(byTime).map(j=>chip(j,{span:true})).concat(es.filter(e=>e.date===d).sort(byTime).map(e=>evChip(e,{span:true}))), more=items.length-3;
+        return '<div class="mo-c'+(d.slice(0,7)!==ym?" out":"")+(d===t?" today":"")+'" data-mday="'+d+'" data-day="'+d+'" role="button" tabindex="0" aria-label="'+esc(dayName(d)+(items.length?", "+items.length+" on":""))+'">'+
+          '<span class="mo-n">'+dParts(d).n+'</span>'+items.slice(0,3).join("")+(more>0?'<span class="more-n">+'+more+' more</span>':"")+'</div>';
+      }).join("")+'</div>';
+  }
+  function sideHtml(list){
+    return '<div class="side-h"><b>Booked - no date yet</b><span class="n">'+list.length+'</span></div>'+
+      (list.length?list.map(j=>{ const l=leadOf(j.leadId)||{}; return '<button type="button" class="ud" data-job="'+esc(j.id)+'"'+(fine()?' draggable="true"':"")+'><b>'+esc(jobName(j))+'</b><span>'+esc(l.name||"No name")+'</span></button>'; }).join("")+'<p class="help">Drag one onto the calendar, or tap it to pick the day.</p>'
+        :'<p class="help">Every booking has a day.</p>');
+  }
+  function fitGrid(){
+    const sc=$("#calSc"); if(!sc || sc.classList.contains("mo")) return;
+    const top=sc.getBoundingClientRect().top+window.scrollY, bottom=isPhone()?document.querySelector(".tabs").offsetHeight+10:16;
+    sc.style.height=Math.max(340,window.innerHeight-top-bottom)+"px";
+  }
+  addEventListener("resize",()=>{ if(!$("#view-cal").hidden) fitGrid(); });
+
   function renderCal(){
+    if(calDragging){ calDirty=true; return; }
     document.documentElement.style.setProperty("--toph",document.querySelector(".top").offsetHeight+"px");
-    const cfg=CAL(), t=today();
-    // The month picker: 6 months back to a year ahead (and the week shown, if it's further).
+    const cfg=CAL(), t=today(), ag=calView==="agenda";
+    // The month picker (Agenda): 6 months back to a year ahead (and the week shown, if it's further).
     const ms=$("#calMonth");
-    if(document.activeElement!==ms){
+    if(ag && document.activeElement!==ms){
       const [y,m]=t.split("-").map(Number), list=[];
       for(let i=-6;i<=12;i++){ const d=new Date(Date.UTC(y,m-1+i,1)); list.push(d.toISOString().slice(0,7)); }
       const cur=calDay.slice(0,7); if(!list.includes(cur)) list.push(cur); list.sort();
@@ -1780,30 +2029,59 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     if(calWho && calWho!=="__none" && !names.includes(calWho)) calWho="";
     if(calSvc && !J.SERVICES.includes(calSvc)) calSvc="";
     const ws=$("#calWho"), ss=$("#calSvc");
-    if(document.activeElement!==ws) ws.innerHTML='<option value="">All</option>'+names.map(n=>'<option'+(n===calWho?" selected":"")+'>'+esc(n)+'</option>').join("")+'<option value="__none"'+(calWho==="__none"?" selected":"")+'>No crew yet</option>';
+    if(document.activeElement!==ws) ws.innerHTML='<option value="">Assigned: All</option>'+names.map(n=>'<option value="'+esc(n)+'"'+(n===calWho?" selected":"")+'>'+esc(n)+'</option>').join("")+'<option value="__none"'+(calWho==="__none"?" selected":"")+'>No crew yet</option>';
     if(document.activeElement!==ss) ss.innerHTML='<option value="">All services</option>'+J.SERVICES.map(n=>'<option'+(n===calSvc?" selected":"")+'>'+esc(n)+'</option>').join("");
     ws.classList.toggle("on",!!calWho); ss.classList.toggle("on",!!calSvc);
-    // The week strip: today circled, a dot under each day with a job.
-    const days=J.weekDays(calDay), busy=J.busyDays(allJobs.filter(keepJob),{service:calSvc});
-    $("#calStrip").innerHTML='<button type="button" class="arr" data-wk="-1" aria-label="Last week">‹</button>'+days.map(d=>{ const p=dParts(d);
-      return '<button type="button" class="d'+(d===t?" today":"")+(busy[d]?" busy":"")+'" data-day="'+d+'" aria-pressed="'+(d===calDay)+'" aria-label="'+esc(p.wd+" "+p.n+" "+p.mon+(busy[d]?", has jobs":""))+'"><span class="w">'+esc(p.wd.charAt(0))+'</span><span class="n">'+p.n+'</span><i></i></button>'; }).join("")+
-      '<button type="button" class="arr" data-wk="1" aria-label="Next week">›</button>';
+    $("#calViews").querySelectorAll("[data-cv]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.cv===calView)));
+    $("#calMode").querySelectorAll("[data-mode]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mode===calMode)));
+    ["#calMonthWrap","#calToday","#calStrip"].forEach(s=>{ $(s).hidden=!ag; });
+    $("#calNav").hidden=ag; $("#calMode").hidden=ag; $("#calTitle").textContent=ag?"":calTitle();
+    const grid=!ag && calMode==="overall";
+    document.body.classList.toggle("cal-wide",!ag);
+    CL=J.clashes(allJobs,liveEvents(),cfg);
     const a=attention(); $("#bellDot").hidden=!a.n; $("#bellDot").textContent=a.n>9?"9+":a.n;
-    const el=$("#calList");
-    if(!loaded||!jobsLoaded){ el.innerHTML=skel(3,118); return; }
-    let groups, noDate=[];
-    if(calQ){
+    // Booked with no day yet: a panel beside the calendar on a computer, a button on a phone.
+    const nd=noDateJobs(), side=grid && window.innerWidth>=1000;
+    $("#calUnsched").hidden=!nd.length || side; $("#calUnsched").textContent="No date yet ("+nd.length+")";
+    $("#calSide").hidden=!side; if(side) $("#calSide").innerHTML=sideHtml(nd);
+    // Clashes in what's shown.
+    const r=ag?{from:J.sundayOf(calDay),days:7}:calRange(), clashing=allJobs.filter(j=>CL[j.id] && inRange(j,r.from,r.days) && keepJob(j));
+    $("#calClash").hidden=!clashing.length || !!calQ;
+    $("#calNotes").hidden=$("#calClash").hidden && $("#calUnsched").hidden;
+    $(".cal-f").classList.toggle("grid",!ag);
+    if(clashing.length) $("#calClash").innerHTML='<i class="bang">!</i>'+clashing.length+(clashing.length===1?" job clashes":" jobs clash")+" "+(calView==="day"?"on this day":calView==="month"?"this month":"this week")+": "+esc([...new Set(clashing.flatMap(clashWho))].join(", "))+'. Tap to see.';
+    if(ag){
+      // The week strip: today circled, a dot under each day with a job.
+      const days=J.weekDays(calDay), busy=J.busyDays(allJobs.filter(keepJob),{service:calSvc});
+      $("#calStrip").innerHTML='<button type="button" class="arr" data-wk="-1" aria-label="Last week">‹</button>'+days.map(d=>{ const p=dParts(d);
+        return '<button type="button" class="d'+(d===t?" today":"")+(busy[d]?" busy":"")+'" data-day="'+d+'" aria-pressed="'+(d===calDay)+'" aria-label="'+esc(p.wd+" "+p.n+" "+p.mon+(busy[d]?", has jobs":""))+'"><span class="w">'+esc(p.wd.charAt(0))+'</span><span class="n">'+p.n+'</span><i></i></button>'; }).join("")+
+        '<button type="button" class="arr" data-wk="1" aria-label="Next week">›</button>';
+    }
+    const el=$("#calList"), gr=$("#calGrid");
+    if(!loaded||!jobsLoaded){ gr.innerHTML=""; el.innerHTML=skel(3,118); return; }
+    if(grid){
+      el.innerHTML="";
+      gr.innerHTML=calView==="week"?weekHtml():calView==="day"?dayHtml():monthHtml();
+      fitGrid();
+      if(calView==="day" && dayScrolled!==calDay){
+        dayScrolled=calDay;
+        const now=M.canberraMinutes(new Date()), at=calDay===t && now>DAY_FROM+60 ? now-60 : 8*60;
+        const sc=$("#calSc"); sc.scrollTop=Math.max(0,(at-DAY_FROM)*PX);
+      }
+      return;
+    }
+    gr.innerHTML="";
+    if(ag && calQ){
       const q=calQ.toLowerCase(), js=allJobs.filter(j=>J.matches(j,leadOf(j.leadId),q)), es=liveEvents().filter(e=>[e.title,J.EVENT_TYPES[e.type],(e.who||[]).join(" ")].join(" ").toLowerCase().includes(q));
-      noDate=js.filter(j=>!M.isDay(j.date));
-      groups=J.agenda(js,es,"2000-01-01",40000);
-    } else groups=J.agenda(allJobs,liveEvents(),days[0],7,{service:calSvc, keep:keepJob, keepEvent});
-    const html=(noDate.length?'<div class="dh"><b>–</b><span>No date yet</span></div>'+noDate.map(jobCard).join(""):"")+
-      groups.map(g=>{ const p=dParts(g.day);
-        return '<div class="dh'+(g.day===calDay&&!calQ?" sel":"")+'" id="dh-'+g.day+'"><b>'+p.n+'</b><span>'+esc(p.wd+" "+p.mon)+(calQ&&g.day.slice(0,4)!==t.slice(0,4)?" "+g.day.slice(0,4):"")+'</span>'+(g.day===t?'<em>Today</em>':"")+'</div>'+
-          g.items.map(it=>it.kind==="job"?jobCard(it.x):eventCard(it.x)).join(""); }).join("");
-    el.innerHTML=(calQ?'<p class="help">'+(noDate.length+groups.reduce((n,g)=>n+g.items.length,0))+' found</p>':"")+
-      (html||'<div class="empty">'+(calQ?"No jobs match.":"Nothing booked this week"+(calWho||calSvc?" for this filter":"")+". Tap + ADD to book a job.")+'</div>')+
-      (calQ?"":'<button type="button" class="btn secondary" data-wk="1">Next week ›</button>');
+      const groups=J.agenda(js,es,"2000-01-01",40000), noDate=js.filter(j=>!M.isDay(j.date));
+      el.innerHTML='<p class="help">'+(noDate.length+groups.reduce((n,g)=>n+g.items.length,0))+' found</p>'+listHtml(groups,noDate,"No jobs match.");
+      return;
+    }
+    const rr=ag?{from:J.weekDays(calDay)[0],days:7}:calRange();
+    const groups=J.agenda(allJobs,liveEvents(),rr.from,rr.days,{service:calSvc, keep:keepJob, keepEvent});
+    const word=calView==="day"?"on this day":calView==="month"?"this month":"this week";
+    el.innerHTML=listHtml(groups,[],"Nothing booked "+word+(calWho||calSvc?" for this filter":"")+". Tap + ADD to book a job.")+
+      (ag?'<button type="button" class="btn secondary" data-wk="1">Next week ›</button>':"");
   }
   // Tap a day: it's picked (+ ADD books on it) and the list goes to it. Swipe the strip for the next week.
   function shiftWeek(n){ calDay=M.addDays(calDay,7*n); renderCal(); window.scrollTo({top:0}); }
@@ -1831,7 +2109,164 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   $("#calToday").addEventListener("click",()=>{ calDay=today(); renderCal(); window.scrollTo({top:0}); });
   $("#calWho").addEventListener("change",e=>{ calWho=e.target.value; try{ localStorage.setItem("il-cal-who",calWho); }catch(x){} e.target.blur(); renderCal(); });
   $("#calSvc").addEventListener("change",e=>{ calSvc=e.target.value; try{ localStorage.setItem("il-cal-svc",calSvc); }catch(x){} e.target.blur(); renderCal(); });
-  $("#calViews").addEventListener("click",e=>{ const b=e.target.closest("[data-cv]"); if(b && b.dataset.cv!=="agenda") toast(b.textContent+" view is coming in the next update."); });
+  $("#calViews").addEventListener("click",e=>{ const b=e.target.closest("[data-cv]"); if(b && b.dataset.cv!==calView) setView(b.dataset.cv); });
+  $("#calMode").addEventListener("click",e=>{ const b=e.target.closest("[data-mode]"); if(!b) return; calMode=b.dataset.mode; try{ localStorage.setItem("il-cal-mode",calMode); }catch(x){} renderCal(); });
+  $("#calNav").addEventListener("click",e=>{ const b=e.target.closest("[data-nav]"); if(b) calNav(Number(b.dataset.nav)); });
+  $("#calUnsched").addEventListener("click",openNoDate);
+  $("#calClash").addEventListener("click",openClashes);
+
+  // Tapping the grids: a job or event opens it; an empty spot adds a job there; a month day opens its Day view.
+  let suppressClick=0;
+  $("#calWrap").addEventListener("click",e=>{
+    if(performance.now()-suppressClick<400) return;
+    const mo=e.target.closest("[data-mday]"); if(mo){ calDay=mo.dataset.mday; setView("day"); return; }
+    const jb=e.target.closest("[data-job]"); if(jb){ openJobForm(jb.dataset.job); return; }
+    const ev=e.target.closest("[data-ev]"); if(ev){ openEventForm(ev.dataset.ev); return; }
+    const cell=e.target.closest(".wk-cell"); if(cell && cell.dataset.row!=="__all"){ openJobForm(null,{date:cell.dataset.day, crew:crewFor(cell.dataset.row)}); return; }
+    const col=e.target.closest(".dv-col");
+    if(col){ const m=snapTo(DAY_FROM+(e.clientY-col.getBoundingClientRect().top)/PX, 30); openJobForm(null,{date:calDay, start:J.hm(m), crew:crewFor(col.dataset.col)}); return; }
+    const ad=e.target.closest(".dv-ad"); if(ad) openJobForm(null,{date:calDay, allDay:true, crew:crewFor(ad.dataset.col)});
+  });
+  $("#calWrap").addEventListener("keydown",e=>{ if((e.key==="Enter"||e.key===" ") && e.target.matches(".mo-c,.dvb")){ e.preventDefault(); e.target.click(); } });
+  const snapTo=(m,step=SNAP)=>Math.max(0,Math.min(24*60-step,Math.round(m/step)*step));
+  const crewFor=row=>row && CAL().crew.includes(row)?[row]:[];
+  const kitFor=row=>row && CAL().kits.includes(row)?row:"";
+
+  // Moved on the calendar: saved straight away (the lead's day and time follow).
+  async function moveJob(id,patch,said){
+    const j=jobById(id); if(!j||!canWrite) return false;
+    if(!await saveJob(id,patch)) { renderCal(); return false; }
+    toast(said||("Job "+(j.number||"")+" moved."));
+    return true;
+  }
+  const movedWords=(j,p)=>"Job "+(j.number||"")+" moved"+(p.date&&p.date!==j.date?" to "+dayName(p.date):"")+(p.start?" "+(p.date&&p.date!==j.date?"":"to ")+M.timeLabel(p.start):"")+(p.crew&&JSON.stringify(p.crew)!==JSON.stringify(j.crew||[])?", "+(p.crew.join(" and ")||"no crew"):"")+(p.kit!=null&&p.kit!==j.kit?", "+(p.kit||"no kit"):"")+".";
+
+  // On a computer: drag a chip (or one from Booked - no date yet) onto a day, a person or a time.
+  let dnd=null;
+  $("#view-cal").addEventListener("dragstart",e=>{
+    const el=e.target.closest("[data-job]"); if(!el || el.classList.contains("dvb")) return;
+    const from=el.closest(".wk-cell")?el.closest(".wk-cell").dataset.row:el.closest(".dv-ad")?el.closest(".dv-ad").dataset.col:"";
+    dnd={id:el.dataset.job, from:from==="__all"?"":from};
+    e.dataTransfer.setData("text/plain",el.dataset.job); e.dataTransfer.effectAllowed="move";
+  });
+  const dropTarget=e=>e.target.closest(".wk-cell:not([data-row='__all']),.mo-c,.dv-col,.dv-ad");
+  $("#view-cal").addEventListener("dragover",e=>{ const t=dnd&&dropTarget(e); if(!t) return; e.preventDefault(); e.dataTransfer.dropEffect="move";
+    document.querySelectorAll("#view-cal .over").forEach(x=>{ if(x!==t) x.classList.remove("over"); }); t.classList.add("over"); });
+  $("#view-cal").addEventListener("dragleave",e=>{ const t=dropTarget(e); if(t && !t.contains(e.relatedTarget)) t.classList.remove("over"); });
+  $("#view-cal").addEventListener("dragend",()=>{ dnd=null; document.querySelectorAll("#view-cal .over").forEach(x=>x.classList.remove("over")); });
+  $("#view-cal").addEventListener("drop",e=>{
+    const t=dropTarget(e); if(!t||!dnd) return; e.preventDefault(); t.classList.remove("over");
+    const j=jobById(dnd.id), from=dnd.from; dnd=null; if(!j) return;
+    const kits=CAL().kits; let p={};
+    if(t.classList.contains("wk-cell")) p={date:t.dataset.day, ...J.moveTo(j,"",from,t.dataset.row,kits)};
+    else if(t.classList.contains("mo-c")) p={date:t.dataset.mday};
+    else if(t.classList.contains("dv-ad")) p={date:calDay, allDay:true, start:"", end:"", ...J.moveTo(j,"",from,t.dataset.col,kits)};
+    else {
+      const m=snapTo(DAY_FROM+(e.clientY-t.getBoundingClientRect().top)/PX);
+      p={date:calDay, ...J.moveTo(j,J.hm(m),from,t.dataset.col,kits)};
+      if(J.toMin(j.start)==null||J.toMin(j.end)==null) p.end=J.endFor(J.hm(m),j.service,CAL())||J.hm(m+60);
+      if(!M.isDay(j.date) && !p.crew && t.dataset.col) p.crew=crewFor(t.dataset.col);
+    }
+    moveJob(j.id,p,movedWords(j,p));
+  });
+
+  // The day view: hold and drag a job to move it (to another time or person); drag its bottom edge
+  // to make it longer or shorter. On a phone, hold for a moment first, so scrolling still scrolls.
+  (()=>{
+    const wrap=$("#calWrap"); let d=null, hold=null;
+    const colAt=x=>[...document.querySelectorAll("#calSc .dv-col")].find(c=>{ const r=c.getBoundingClientRect(); return x>=r.left && x<r.right; });
+    function start(block,mode,x,y){
+      const j=jobById(block.dataset.job); if(!j||!canWrite) return false;
+      const s=J.toMin(j.start), e=J.toMin(j.end)!=null&&J.toMin(j.end)>s?J.toMin(j.end):s+60;
+      d={block, j, mode, x0:x, y0:y, s0:s, e0:e, s, e, from:block.dataset.col, col:block.closest(".dv-col"), sc:$("#calSc"), st0:$("#calSc").scrollTop, moved:false};
+      calDragging=true; block.classList.add("dragging");
+      if(mode==="move"){ block.style.left="2px"; block.style.width="calc(100% - 4px)"; }
+      if(navigator.vibrate) try{ navigator.vibrate(15); }catch(x){}
+      return true;
+    }
+    function move(x,y){
+      if(!d) return;
+      const sc=d.sc, r=sc.getBoundingClientRect();
+      if(y>r.bottom-40) sc.scrollTop+=12; else if(y<r.top+90) sc.scrollTop-=12;
+      const dy=(y-d.y0)+(sc.scrollTop-d.st0)*1, dm=dy/PX;
+      if(Math.abs(y-d.y0)>3||Math.abs(x-d.x0)>3) d.moved=true;
+      if(d.mode==="move"){
+        const len=d.e0-d.s0; d.s=Math.max(0,Math.min(24*60-len,snapTo(d.s0+dm))); d.e=d.s+len;
+        const c=colAt(x); if(c && c!==d.col){ c.appendChild(d.block); d.col=c; }
+      } else d.e=Math.max(d.s0+30,Math.min(24*60,snapTo(d.e0+dm)));
+      const top=(Math.max(DAY_FROM,d.s)-DAY_FROM)*PX;
+      d.block.style.top=top+"px"; d.block.style.height=Math.max(30,(Math.min(DAY_TO,d.e)-Math.max(DAY_FROM,d.s))*PX-2)+"px";
+      const tm=d.block.querySelector(".tm"); if(tm) tm.textContent=M.clock(d.s)+" - "+M.clock(d.e);
+    }
+    async function end(){
+      if(!d) return;
+      const {j,mode,s,e,from,col,moved}=d; d.block.classList.remove("dragging"); d=null; calDragging=false;
+      suppressClick=performance.now();
+      if(!moved){ calDirty=false; renderCal(); return; }
+      const to=col?col.dataset.col:from, p=mode==="move"?J.moveTo(j,J.hm(s),from,to,CAL().kits):{end:J.hm(e)};
+      if(mode==="move") p.end=J.hm(e);
+      calDirty=false;
+      await moveJob(j.id,p,mode==="move"?movedWords(j,p):"Job "+(j.number||"")+" now ends "+M.clock(e)+".");
+      renderCal();
+    }
+    // A mouse or pen: drag straight away.
+    wrap.addEventListener("pointerdown",e=>{
+      if(e.pointerType==="touch" || e.button!==0) return;
+      const b=e.target.closest(".dvb[data-job]"); if(!b) return;
+      const rs=!!e.target.closest("[data-rs]"), x0=e.clientX, y0=e.clientY; let on=false;
+      const mv=ev=>{ if(!on && (Math.abs(ev.clientX-x0)>4||Math.abs(ev.clientY-y0)>4)) on=start(b,rs?"resize":"move",x0,y0); if(on){ ev.preventDefault(); move(ev.clientX,ev.clientY); } };
+      const up=()=>{ removeEventListener("pointermove",mv); removeEventListener("pointerup",up); if(on) end(); };
+      addEventListener("pointermove",mv); addEventListener("pointerup",up);
+    });
+    // A finger: hold to pick it up (the bottom edge: straight away), then drag.
+    wrap.addEventListener("touchstart",e=>{
+      const b=e.target.closest(".dvb[data-job]"); if(!b||e.touches.length>1) return;
+      const p=e.touches[0], rs=!!e.target.closest("[data-rs]");
+      if(rs){ e.preventDefault(); start(b,"resize",p.clientX,p.clientY); return; }
+      clearTimeout(hold);
+      const x0=p.clientX, y0=p.clientY;
+      hold=setTimeout(()=>{ hold=null; start(b,"move",x0,y0); },350);
+      b._x0=x0; b._y0=y0;
+    },{passive:false});
+    wrap.addEventListener("touchmove",e=>{
+      const p=e.touches[0];
+      if(d){ e.preventDefault(); move(p.clientX,p.clientY); return; }
+      const b=e.target.closest(".dvb"); if(hold && b && (Math.abs(p.clientX-b._x0)>8||Math.abs(p.clientY-b._y0)>8)){ clearTimeout(hold); hold=null; }
+    },{passive:false});
+    const stop=()=>{ clearTimeout(hold); hold=null; if(d) end(); };
+    wrap.addEventListener("touchend",stop); wrap.addEventListener("touchcancel",stop);
+    wrap.addEventListener("contextmenu",e=>{ if(e.target.closest(".dvb")) e.preventDefault(); });
+  })();
+  // Swipe the day view left or right for the next or last day (from the edge, when it scrolls sideways).
+  (()=>{
+    const wrap=$("#calWrap"); let x0=null, y0=0, sl=0, max=0;
+    wrap.addEventListener("touchstart",e=>{ if(calView!=="day"||calMode!=="overall"||e.touches.length>1) { x0=null; return; } const sc=$("#calSc"); const p=e.touches[0]; x0=p.clientX; y0=p.clientY; sl=sc?sc.scrollLeft:0; max=sc?sc.scrollWidth-sc.clientWidth:0; },{passive:true});
+    wrap.addEventListener("touchend",e=>{
+      if(x0==null||calDragging) return; const p=e.changedTouches[0], dx=p.clientX-x0, dy=p.clientY-y0; x0=null;
+      if(Math.abs(dx)<60 || Math.abs(dx)<Math.abs(dy)*1.5) return;
+      if(dx<0 && sl>=max-2) calNav(1); else if(dx>0 && sl<=2) calNav(-1);
+    },{passive:true});
+  })();
+
+  // Booked - no date yet (a phone's button): tap one to pick its day.
+  function openNoDate(){
+    const list=noDateJobs();
+    sheet('<div class="sheet-h"><div><h2>Booked - no date yet</h2><p class="help">Tap one to pick its day and time.</p></div><button class="x" id="closeSheet" type="button">Close</button></div>'+
+      (list.length?'<div class="rd">'+list.map(j=>'<button type="button" class="rd-row" data-job="'+esc(j.id)+'"><span class="rd-name">'+esc(jobName(j))+'</span><span class="r">'+esc(J.priceOf(j).text)+'</span><span class="ln">'+esc([(leadOf(j.leadId)||{}).name,(leadOf(j.leadId)||{}).suburb].filter(Boolean).join(" · "))+'</span></button>').join("")+'</div>':'<div class="allDone">Every booking has a day</div>'));
+    document.querySelectorAll("#sheet [data-job]").forEach(b=>b.addEventListener("click",()=>openJobForm(b.dataset.job)));
+  }
+  // The clashes in what's shown: who, which jobs, when.
+  function openClashes(){
+    const r=calView==="agenda"?{from:J.sundayOf(calDay),days:7}:calRange(), seen=new Set(), rows=[];
+    allJobs.filter(j=>CL[j.id] && inRange(j,r.from,r.days)).sort(byTime).sort((a,b)=>a.date.localeCompare(b.date)).forEach(j=>(CL[j.id]||[]).forEach(c=>{
+      const key=[j.id,c.id].sort().join("|")+c.who; if(seen.has(key)) return; seen.add(key);
+      const o=c.kind==="job"?jobById(c.id):allEvents.find(e=>e.id===c.id);
+      rows.push('<button type="button" class="rd-row" data-job="'+esc(j.id)+'"><span class="rd-name">'+esc(c.who)+': '+esc(j.number+(c.kind==="job"&&o?" and "+o.number:" while on time off"))+'</span><span class="r bad">Clash</span><span class="ln">'+esc(dayName(j.date)+" · "+J.timeLabel(j)+(c.kind==="job"&&o?" and "+J.timeLabel(o):""))+'</span></button>');
+    }));
+    sheet('<div class="sheet-h"><div><h2>Clashes</h2><p class="help">One person or kit on two jobs at once. Tap one to change it.</p></div><button class="x" id="closeSheet" type="button">Close</button></div>'+
+      (rows.length?'<div class="rd">'+rows.join("")+'</div>':'<div class="allDone">No clashes</div>'));
+    document.querySelectorAll("#sheet [data-job]").forEach(b=>b.addEventListener("click",()=>openJobForm(b.dataset.job)));
+  }
   $("#calSearchBtn").addEventListener("click",()=>{ if(!$("#view-cal").hidden){ $("#calSearch").hidden=false; $("#cq").focus(); } });
   $("#cq").addEventListener("input",()=>{ calQ=$("#cq").value.trim(); renderCal(); });
   $("#cqClose").addEventListener("click",()=>{ calQ=""; $("#cq").value=""; $("#calSearch").hidden=true; renderCal(); });
@@ -1839,18 +2274,18 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   $("#calMenu").addEventListener("click",openCalMenu);
   $("#calAdd").addEventListener("click",openAddChooser);
 
-  // The bell: open jobs with no day, and jobs in the next 7 days with no crew or no time.
+  // The bell: open jobs with no day, and jobs in the next 7 days that clash, or have no crew or no time.
   function attention(){
     const t=today(), soon=M.addDays(t,7), open=allJobs.filter(j=>OPEN_JOB.includes(j.status||"Scheduled"));
     const upcoming=open.filter(j=>M.isDay(j.date) && j.date>=t && j.date<=soon);
-    const noDate=open.filter(j=>!M.isDay(j.date)), noCrew=upcoming.filter(j=>!(j.crew||[]).length), noTime=upcoming.filter(j=>!j.allDay && J.toMin(j.start)==null);
-    return {noDate, noCrew, noTime, n:new Set([...noDate,...noCrew,...noTime]).size};
+    const noDate=open.filter(j=>!M.isDay(j.date)), noCrew=upcoming.filter(j=>!(j.crew||[]).length), noTime=upcoming.filter(j=>!j.allDay && J.toMin(j.start)==null), clash=upcoming.filter(j=>CL[j.id]);
+    return {noDate, noCrew, noTime, clash, n:new Set([...noDate,...noCrew,...noTime,...clash]).size};
   }
   function openBell(){
     const a=attention(), why=new Map();
-    [[a.noDate,"No date yet"],[a.noCrew,"No crew yet"],[a.noTime,"No time set"]].forEach(([list,w])=>list.forEach(j=>why.set(j,(why.get(j)||[]).concat(w))));
+    [[a.clash,null],[a.noDate,"No date yet"],[a.noCrew,"No crew yet"],[a.noTime,"No time set"]].forEach(([list,w])=>list.forEach(j=>why.set(j,(why.get(j)||[]).concat(w||"Clash: "+clashWho(j).join(", ")))));
     const row=(j,w)=>'<button type="button" class="rd-row" data-job="'+esc(j.id)+'"><span class="rd-name">'+esc(jobName(j))+'</span><span class="r warn">'+esc(w.join(", "))+'</span><span class="ln">'+esc([(leadOf(j.leadId)||{}).name, M.isDay(j.date)?dayName(j.date):"", J.timeLabel(j)].filter(Boolean).join(" · "))+'</span></button>';
-    sheet('<div class="sheet-h"><div><h2>Needs attention</h2><p class="help">Jobs in the next 7 days, and bookings with no day yet.</p></div><button class="x" id="closeSheet" type="button">Close</button></div>'+
+    sheet('<div class="sheet-h"><div><h2>Needs attention</h2><p class="help">Jobs in the next 7 days (clashes, no crew, no time), and bookings with no day yet.</p></div><button class="x" id="closeSheet" type="button">Close</button></div>'+
       (why.size?'<div class="rd">'+[...why].map(([j,w])=>row(j,w)).join("")+'</div>':'<div class="allDone">All sorted</div>'));
     document.querySelectorAll("#sheet [data-job]").forEach(b=>b.addEventListener("click",()=>openJobForm(b.dataset.job)));
   }
@@ -1971,7 +2406,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   // The customer is a lead: find one, or type a new customer and a lead is made for them.
   function openJobForm(id,preset={}){
     const cfg=CAL(), old=id?jobById(id):null; if(id&&!old) return;
-    const j=old?{...old}:J.blank({date:preset.date||"", service:"Full Detail"});
+    const j=old?{...old}:J.blank({date:preset.date||"", service:"Full Detail", start:preset.start||"", end:preset.start?J.endFor(preset.start,"Full Detail",cfg):"", allDay:!!preset.allDay, crew:preset.crew||[]});
     let linked=old?old.leadId:"";
     const lead0=linked?leadOf(linked)||{}:{};
     const ADD=cfg.addOns.concat((j.addOns||[]).filter(a=>!cfg.addOns.some(c=>c.name===a.name)).map(a=>({name:a.name, price:null})));
@@ -2016,7 +2451,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       '<button class="btn" id="jf-save" type="button"'+(canWrite?"":" disabled")+'>'+(old?"Save job":"Add job")+'</button>'+
       (old&&lead0.id?'<button class="btn secondary" id="jf-lead" type="button">Open the lead</button>':""));
     const svc=()=>g("#jf-svc").dataset.value||"Other";
-    let endTouched=!!(old && old.end && old.end!==J.endFor(old.start,old.service,cfg)), allDayTouched=!!old;
+    let endTouched=!!(old && old.end && old.end!==J.endFor(old.start,old.service,cfg)), allDayTouched=!!old||!!preset.start||!!preset.allDay;
     const autoEnd=()=>{ if(endTouched) return; const st=g("#jf-start").value; g("#jf-end").value=st?J.endFor(st,svc(),cfg):""; };
     const showTimes=()=>{ const ad=g("#jf-allday").checked; g("#jf-sw").hidden=ad; g("#jf-ew").hidden=ad; };
     const lenHelp=()=>{ const v=svc(), len=J.lengthOf(v,cfg); g("#jf-len").textContent=v+(len.allDay?" is all day":" is "+(len.minutes/60)+" hours")+" by default (Settings)."; };
@@ -2024,7 +2459,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     const svcChanged=()=>{ svcTouched=true; if(!allDayTouched){ g("#jf-allday").checked=J.lengthOf(svc(),cfg).allDay; showTimes(); } autoEnd(); lenHelp(); };
     const statusChanged=()=>{ g("#jf-finalWrap").hidden=g("#jf-status").dataset.value!=="Completed"; };
     seg(g("#jf-svc"),svcChanged); seg(g("#jf-kit")); seg(g("#jf-status"),statusChanged);
-    if(!old) g("#jf-allday").checked=J.lengthOf(j.service,cfg).allDay;
+    if(!old) g("#jf-allday").checked=preset.start?false:preset.allDay||J.lengthOf(j.service,cfg).allDay;
     showTimes(); lenHelp(); statusChanged();
     g("#jf-allday").addEventListener("change",()=>{ allDayTouched=true; showTimes(); });
     g("#jf-start").addEventListener("input",autoEnd); g("#jf-start").addEventListener("change",autoEnd);

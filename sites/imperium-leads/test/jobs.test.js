@@ -132,3 +132,45 @@ test("a lead booked again after its job was done gets a second job; a cancelled 
   assert.deepEqual(J.toMake([again], [cancelled], null, TODAY, at(TODAY), false), []);
   assert.equal(J.currentJob([done], "nobody"), null);
 });
+
+test("clashes: one person or kit on two jobs at once, or on a job while on time off", () => {
+  const job = (id, o) => ({ id, date: "2026-10-22", service: "Interior", status: "Scheduled", crew: [], kit: "", ...o });
+  const jobs = [
+    job("a", { start: "09:00", end: "12:00", crew: ["Lucas"], kit: "Kit 1" }),
+    job("b", { start: "11:00", end: "13:00", crew: ["Lucas", "AJ"] }), // Lucas twice
+    job("c", { start: "12:00", end: "14:00", kit: "Kit 1" }), // starts as a ends: fine
+    job("d", { allDay: true, crew: ["AJ"] }), // all day: AJ on b too
+    job("e", { start: "09:00", end: "12:00", crew: ["Nick"], status: "Cancelled" }),
+    job("f", { start: "10:00", crew: ["Nick"] }), // no end: Interior is 2 hours
+    job("g", { date: "2026-10-23", start: "09:00", end: "10:00", crew: ["Lucas"] }),
+  ];
+  const events = [{ id: "off", type: "timeoff", date: "2026-10-22", allDay: true, who: ["Nick"] }, { id: "meet", type: "meeting", date: "2026-10-22", start: "09:00", end: "10:00", who: [] }];
+  const c = J.clashes(jobs, events);
+  assert.deepEqual(Object.keys(c).sort(), ["a", "b", "d", "f"]);
+  assert.deepEqual(c.a, [{ id: "b", who: "Lucas", kind: "job" }]);
+  assert.deepEqual(c.b.map((x) => x.id + ":" + x.who).sort(), ["a:Lucas", "d:AJ"]);
+  assert.deepEqual(c.f, [{ id: "off", who: "Nick", kind: "timeoff" }]);
+  assert.deepEqual(J.span({ date: "2026-10-22", start: "10:00", service: "Interior" }), [600, 720]);
+  assert.equal(J.span({ date: "2026-10-22" }), null);
+});
+
+test("side by side where they overlap; the month's grid; rows for people and kits", () => {
+  const out = J.lanes([{ id: 1, s: 540, e: 720 }, { id: 2, s: 600, e: 660 }, { id: 3, s: 660, e: 780 }, { id: 4, s: 800, e: 860 }]);
+  assert.deepEqual(out.map((x) => [x.id, x.lane, x.lanes]), [[1, 0, 2], [2, 1, 2], [3, 1, 2], [4, 0, 1]]);
+  const oct = J.monthDays("2026-10-21");
+  assert.deepEqual([oct[0], oct.at(-1), oct.length], ["2026-09-27", "2026-10-31", 35]);
+  assert.equal(J.monthDays("2026-08-05").length, 42); // 1 Aug is a Saturday
+  assert.deepEqual(J.resources(), ["Kit 1", "Kit 2", "Lucas", "Nick", "AJ", "Ananth", "Angus"]);
+  assert.deepEqual([J.onRow({ crew: ["AJ"], kit: "Kit 2" }, "Kit 2"), J.onRow({ crew: ["AJ"] }, "AJ"), J.onRow({ crew: [] }, ""), J.onRow({ who: ["Nick"] }, "Nick")], [true, true, true, true]);
+});
+
+test("moving a job: it keeps its length; onto a person swaps them in, onto a kit sets the kit", () => {
+  const job = { start: "09:00", end: "12:30", crew: ["Lucas", "AJ"], kit: "Kit 1" };
+  const kits = ["Kit 1", "Kit 2"];
+  assert.deepEqual(J.moveTo(job, "10:15", "Lucas", "Lucas", kits), { start: "10:15", end: "13:45", allDay: false });
+  assert.deepEqual(J.moveTo(job, "", "Lucas", "Nick", kits), { crew: ["AJ", "Nick"] });
+  assert.deepEqual(J.moveTo(job, "", "Lucas", "", kits), { crew: ["AJ"] });
+  assert.deepEqual(J.moveTo(job, "", "Kit 1", "Kit 2", kits), { kit: "Kit 2" });
+  assert.deepEqual(J.moveTo({ crew: [], start: "09:00", end: "10:00" }, "", "", "Nick", kits), { crew: ["Nick"] });
+  assert.deepEqual(J.moveTo({ start: "", end: "" }, "08:00", "", "", kits), { start: "08:00", end: "09:00", allDay: false });
+});
