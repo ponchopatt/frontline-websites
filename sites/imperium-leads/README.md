@@ -253,8 +253,7 @@ time it was sent (`onMyWayAt`, `onMyWayBy`).
 
 The **Calendar** tab has its own top bar: the menu (the other tabs, Settings, Switch person),
 search (job number, name, phone, car, suburb), the logo, and the bell (open jobs with no day, and
-jobs in the next 7 days with no crew or no time). Under it: Agenda | Day | Week | Month (Day,
-Week and Month come next), the month, a crew filter and a service filter (remembered on the
+jobs in the next 7 days with no crew or no time). Under it: Agenda | Day | Week | Month, then (on Agenda) the month, a crew filter and a service filter (remembered on the
 phone), and a week strip, Sunday to Saturday: today circled, a dot under each day with a job.
 Swipe the strip (or tap ‹ ›) to change week. The list is that week's jobs and events by day,
 each a card in its status colour (Scheduled blue, In Progress yellow, Completed green, Cancelled
@@ -262,6 +261,21 @@ grey; Team Meeting pink, Time Off grey with a plane): "1001 - Full Detail - Mazd
 when there's an address (tap for Google Maps), the customer, the time, the status, the crew's
 initials and the assign-crew button (each tap saves). **+ ADD** makes a job or an event, on the
 day picked in the strip.
+
+**Day, Week and Month** have ‹ TODAY ›, the Assigned filter (a person, a kit, or No crew yet),
+the service filter, and **Overall | List** (List is the same days as cards).
+- **Week**: a row for each kit and person (and No crew yet, and Everyone for team events), a
+  column a day ("20 Tue"); jobs are chips "1004 - Kluger" in their status colour. Tap one to open
+  it, tap an empty spot to add a job there. On a computer, drag a chip to another day or row.
+- **Day**: a column a person, ALL-DAY on top, 7am to 7pm in half hours. Jobs are blocks as long as
+  they take (service, number, car, suburb, crew, time). Hold and drag a block to move it to
+  another time or person; drag its bottom edge to make it longer or shorter. It saves straight
+  away, and the lead's day and time follow. Swipe left or right (at the edge) for the next day.
+- **Month**: up to 3 a day, then "+2 more". Tap a day for its Day view.
+- **Clashes**: one person or kit on two jobs at once (or on a job while on time off) shows red on
+  both jobs, a line above the calendar (tap it for the list), and in the bell.
+- **Booked - no date yet**: a panel beside the calendar on a computer (drag one onto a day), a
+  button on a phone (tap one to pick its day).
 
 A **job** (collection `jobs`) is linked to its lead: the customer's name, phone, car, address and
 suburb stay on the lead, and editing them on a job changes the lead. A job has its number (1001

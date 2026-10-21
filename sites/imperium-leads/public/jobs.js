@@ -305,6 +305,109 @@
     return hay.indexOf(q) !== -1;
   }
 
+  /* ------------------------------------------------------------ week, day and month */
+
+  // The rows of the week view and the columns of the day view: the kits, then the crew.
+  function resources(cfg) {
+    var c = settings(cfg);
+    return c.kits.concat(c.crew);
+  }
+  // Is this job (or event) on that person's or kit's row? "" is the row for no one yet.
+  function onRow(x, name) {
+    var crew = (x && (x.crew || x.who)) || [];
+    if (name === "") return !crew.length && !(x && x.kit);
+    return crew.indexOf(name) !== -1 || (!!x && x.kit === name);
+  }
+  // [start, end] in minutes for a job or event, or null when it has no time. All day is the whole
+  // day; a start with no end runs for the service's default length.
+  function span(x, cfg) {
+    if (!x || !M.isDay(x.date)) return null;
+    if (x.allDay) return [0, 24 * 60];
+    var s = toMin(x.start), e = toMin(x.end);
+    if (s == null) return null;
+    if (e == null || e <= s) {
+      var len = x.service ? lengthOf(x.service, cfg) : { allDay: false, minutes: 60 };
+      e = len.allDay ? 24 * 60 : s + len.minutes;
+    }
+    return [s, e];
+  }
+  /*
+    Clashes: one person or kit on two jobs at once (or on a job while on time off). Cancelled jobs
+    don't count. Returns { jobId: [{ id, who, kind }] } for each job in a clash, kind "job" or
+    "timeoff" (the event's id).
+  */
+  function clashes(jobs, events, cfg) {
+    var out = {}, live = (jobs || []).filter(function (j) { return j && j.status !== "Cancelled" && span(j, cfg); });
+    var add = function (id, other, who, kind) {
+      var list = (out[id] = out[id] || []);
+      if (!list.some(function (c) { return c.id === other && c.who === who; })) list.push({ id: other, who: who, kind: kind });
+    };
+    var names = function (x) { return ((x.crew || []).concat(x.kit ? [x.kit] : [])); };
+    for (var i = 0; i < live.length; i++) {
+      var a = live[i], sa = span(a, cfg);
+      for (var k = i + 1; k < live.length; k++) {
+        var b = live[k];
+        if (b.date !== a.date) continue;
+        var sb = span(b, cfg);
+        if (!(sa[0] < sb[1] && sb[0] < sa[1])) continue;
+        names(a).forEach(function (n) { if (names(b).indexOf(n) !== -1) { add(a.id, b.id, n, "job"); add(b.id, a.id, n, "job"); } });
+      }
+      (events || []).forEach(function (e) {
+        if (!e || e.deleted || e.type !== "timeoff" || e.date !== a.date) return;
+        var se = span(e, cfg);
+        if (!se || !(sa[0] < se[1] && se[0] < sa[1])) return;
+        (e.who || []).forEach(function (n) { if (names(a).indexOf(n) !== -1) add(a.id, e.id, n, "timeoff"); });
+      });
+    }
+    return out;
+  }
+  // Side by side where they overlap: each item gets { lane, lanes } (items are [{ s, e, ... }]).
+  function lanes(items) {
+    var sorted = items.slice().sort(function (a, b) { return a.s - b.s || b.e - a.e; }), group = [], end = -1;
+    var close = function () { var n = 0; group.forEach(function (x) { n = Math.max(n, x.lane + 1); }); group.forEach(function (x) { x.lanes = n; }); group = []; };
+    sorted.forEach(function (x) {
+      if (group.length && x.s >= end) close();
+      var used = group.filter(function (g) { return g.e > x.s; }).map(function (g) { return g.lane; }), lane = 0;
+      while (used.indexOf(lane) !== -1) lane++;
+      x.lane = lane; group.push(x); end = Math.max(end, x.e);
+    });
+    close();
+    return sorted;
+  }
+  // The days of a month's grid: whole weeks, Sunday first, from the week the 1st is in.
+  function monthDays(date) {
+    var first = String(date).slice(0, 7) + "-01", start = sundayOf(first), out = [];
+    var next = M.addDays(first, 32).slice(0, 7);
+    for (var i = 0; i < 42; i++) {
+      var d = M.addDays(start, i);
+      if (i % 7 === 0 && i >= 28 && d.slice(0, 7) >= next) break;
+      out.push(d);
+    }
+    return out;
+  }
+  /*
+    Moving a job: a new start (it keeps its length), and from one row or column to another ("" is
+    no one yet). Onto a kit sets the kit; onto a person swaps them in for the one it came from.
+    `kits` says which names are kits. Returns the fields to save.
+  */
+  function moveTo(job, start, from, to, kits) {
+    var p = {}, s0 = toMin(job.start), e0 = toMin(job.end), s = toMin(start);
+    if (s != null) {
+      var len = s0 != null && e0 != null && e0 > s0 ? e0 - s0 : 60;
+      p.start = hm(s); p.end = hm(Math.min(24 * 60 - 1, s + len)); p.allDay = false;
+    }
+    if (from === to) return p;
+    var isKit = function (n) { return (kits || []).indexOf(n) !== -1; }, crew = (job.crew || []).slice();
+    if (isKit(to)) p.kit = to;
+    else if (isKit(from)) { if (to) { if (crew.indexOf(to) === -1) crew.push(to); p.crew = crew; } else p.kit = ""; }
+    else {
+      crew = crew.filter(function (n) { return n !== from; });
+      if (to && crew.indexOf(to) === -1) crew.push(to);
+      p.crew = crew;
+    }
+    return p;
+  }
+
   root.ILJobs = {
     SERVICES: SERVICES, STATUSES: STATUSES, EVENT_TYPES: EVENT_TYPES, DEFAULTS: DEFAULTS, FIRST_NUMBER: FIRST_NUMBER,
     settings: settings, serviceFromLead: serviceFromLead, serviceToLead: serviceToLead, serviceFromText: serviceFromText,
@@ -313,5 +416,6 @@
     nextNumber: nextNumber, title: title, blank: blank, fromLead: fromLead, currentJob: currentJob, leadJobId: leadJobId, toMake: toMake, renumber: renumber,
     leadPatch: leadPatch, jobPatch: jobPatch,
     sundayOf: sundayOf, weekDays: weekDays, agenda: agenda, busyDays: busyDays, initials: initials, matches: matches,
+    resources: resources, onRow: onRow, span: span, clashes: clashes, lanes: lanes, monthDays: monthDays, moveTo: moveTo,
   };
 })(typeof window !== "undefined" ? window : globalThis);
