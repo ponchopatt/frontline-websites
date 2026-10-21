@@ -174,3 +174,57 @@ test("moving a job: it keeps its length; onto a person swaps them in, onto a kit
   assert.deepEqual(J.moveTo({ crew: [], start: "09:00", end: "10:00" }, "", "", "Nick", kits), { crew: ["Nick"] });
   assert.deepEqual(J.moveTo({ start: "", end: "" }, "08:00", "", "", kits), { start: "08:00", end: "09:00", allDay: false });
 });
+
+test("money: the calendar's jobs by job day: paid, still to collect, coming up, and no price", () => {
+  const L = [
+    lead({ id: "a", stage: "Done", jobDate: "2026-10-18", completedAt: at("2026-10-18"), revenue: 300, paid: "Yes" }),
+    lead({ id: "b", stage: "Done", jobDate: "2026-10-19", completedAt: at("2026-10-19"), revenue: 250, paid: "No" }),
+    lead({ id: "c", stage: "Booked", jobDate: "2026-10-23", revenue: 650 }), // two jobs: both count
+    lead({ id: "d", stage: "Booked", jobDate: "2026-10-24" }), // no price yet
+    lead({ id: "e", stage: "Booked", jobDate: "2026-10-22", revenue: 400, junk: true }),
+    lead({ id: "f", stage: "Done", jobDate: "2026-10-21", completedAt: at("2026-10-21"), revenue: 695, paid: "Yes" }), // booked again: the older job was paid
+    lead({ id: "g", stage: "Booked", jobDate: "2026-11-02", revenue: 200, owner: "Ananth" }),
+  ];
+  const job = (id, leadId, date, price, o = {}) => J.blank({ id, leadId, date, price: price == null ? "" : String(price), createdAt: at("2026-10-01"), ...o });
+  const jobs = [
+    job("a1", "a", "2026-10-18", 300, { status: "Completed", finalPrice: 300 }),
+    job("b1", "b", "2026-10-19", 250, { status: "Completed" }),
+    job("c1", "c", "2026-10-23", 650, { createdAt: at("2026-10-02") }),
+    job("c2", "c", "2026-11-06", 650, { createdAt: at("2026-10-01") }),
+    job("d1", "d", "2026-10-24", null),
+    job("e1", "e", "2026-10-22", 400),
+    job("f1", "f", "2026-10-15", 205, { status: "Completed", createdAt: at("2026-10-01") }),
+    job("f2", "f", "2026-10-21", 695, { status: "Completed", createdAt: at("2026-10-05") }),
+    job("g1", "g", "2026-11-02", 200),
+    job("x1", "c", "2026-10-25", 999, { status: "Cancelled" }),
+    job("x2", "c", "2026-10-26", 999, { deleted: true }),
+  ];
+  const all = J.money(jobs, L, TODAY);
+  assert.deepEqual([all.booked, all.collected, all.owed, all.upcoming], [300 + 250 + 650 + 650 + 205 + 695 + 200, 300 + 205 + 695, 250, 650 + 650 + 200]);
+  assert.deepEqual(all.noPrice.map((x) => x.job.id), ["d1"]);
+  assert.equal(all.items.find((x) => x.job.id === "b1").state, "owed");
+  // Only October, only Angus's.
+  const oct = J.money(jobs, L, TODAY, (d) => d.slice(0, 7) === "2026-10", (l) => l.owner === "Angus");
+  assert.deepEqual([oct.booked, oct.items.length], [300 + 250 + 650 + 205 + 695, 5]);
+});
+
+test("this week's money can come from the jobs, so a lead with two jobs counts both", () => {
+  const L = [lead({ id: "c", stage: "Booked", jobDate: "2026-11-06", revenue: 650 }), lead({ id: "a", stage: "Done", jobDate: "2026-10-19", completedAt: at("2026-10-19"), revenue: 300 })];
+  assert.equal(M.weekMoney(L, TODAY, 5000).total, 300);
+  const values = [{ day: "2026-10-19", value: 300 }, { day: "2026-10-23", value: 650 }, { day: "2026-11-06", value: 650 }];
+  const m = M.weekMoney(L, TODAY, 5000, values);
+  assert.deepEqual([m.done, m.booked, m.total], [300, 650, 950]);
+  assert.equal(M.weekStats(L, TODAY, { goal: 5000, values }).money.total, 950);
+});
+
+test("a plan visit for someone already on a plan isn't a new plan", () => {
+  const p = (id, jobDate, o = {}) => lead({ id, stage: jobDate < TODAY ? "Done" : "Booked", jobDate, completedAt: jobDate < TODAY ? at(jobDate) : null, service: "Maintenance plan", ...o });
+  const L = [
+    p("old", "2026-10-06", { phone: "0400 111 222" }),
+    p("again", "2026-10-20", { phone: "+61 400 111 222" }), // the same person, two weeks on
+    p("linked", "2026-10-21", { phone: "", repeatOf: "old2" }),
+    p("old2", "2026-09-30", { phone: "0400 333 444" }),
+    p("new", "2026-10-22", { phone: "0400 555 666" }), // a first plan visit: new
+  ];
+  assert.deepEqual(M.weekStats(L, TODAY, { goal: 5000 }).plans.items.map((l) => l.id), ["new"]);
+});
