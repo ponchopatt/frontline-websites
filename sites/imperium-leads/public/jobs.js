@@ -41,7 +41,27 @@
     // Hours, or "allday".
     lengths: { "Full Detail": 3.5, Interior: 2, Exterior: 1.5, "Maintenance Plan": 2.5, "Paint Correction": "allday", "Ceramic Coating": "allday", Other: 2 },
     addOns: [{ name: "Mat stain removal", price: 55 }, { name: "Travel fee", price: null }],
+    // The price list, from the website (imperiumdetailing.com.au). A service with more than one
+    // kind has a row for each, after " · ". Blank (null) is quoted for the car.
+    prices: {
+      "Full Detail": { sedan: 225, suv: 250, large: 270, bike: 135 },
+      Interior: { sedan: 140, suv: 165, large: 170, bike: null },
+      Exterior: { sedan: 110, suv: 120, large: 140, bike: null },
+      "Paint Correction": { sedan: 397, suv: 497, large: 547, bike: null },
+      "Ceramic Coating · 3 years": { sedan: 997, suv: 1097, large: 1147, bike: 245 },
+      "Ceramic Coating · 5 years": { sedan: 1197, suv: 1297, large: 1347, bike: 325 },
+      "Ceramic Coating · 7 years": { sedan: 1347, suv: 1447, large: 1597, bike: 400 },
+      "Maintenance Plan · Outside": { sedan: 90, suv: null, large: null, bike: null },
+      "Maintenance Plan · Inside and out": { sedan: 150, suv: null, large: null, bike: null },
+    },
   };
+  // Car sizes, as the website prices them.
+  var SIZES = [
+    { id: "sedan", label: "Sedan", long: "Hatch or sedan", say: "a hatch or sedan" },
+    { id: "suv", label: "SUV or ute", long: "SUV or ute", say: "an SUV or ute" },
+    { id: "large", label: "4WD or van", long: "4WD, van or 8-seater", say: "a 4WD, van or 8-seater" },
+    { id: "bike", label: "Bike", long: "Motorbike", say: "a motorbike" },
+  ];
 
   function clean(list) {
     var out = [];
@@ -59,7 +79,57 @@
     var addOns = Array.isArray(saved.addOns) ? saved.addOns.filter(function (a) { return a && String(a.name || "").trim(); }).map(function (a) {
       return { name: String(a.name).trim(), price: a.price === "" || a.price == null || isNaN(Number(a.price)) ? null : Number(a.price) };
     }) : DEFAULTS.addOns.slice();
-    return { crew: clean(saved.crew).length ? clean(saved.crew) : DEFAULTS.crew.slice(), kits: clean(saved.kits).length ? clean(saved.kits) : DEFAULTS.kits.slice(), lengths: lengths, addOns: addOns };
+    // A price left blank on purpose (null) stays blank; one never set is the website's.
+    var prices = {};
+    Object.keys(DEFAULTS.prices).forEach(function (k) {
+      var row = saved.prices && saved.prices[k];
+      prices[k] = {};
+      SIZES.forEach(function (z) {
+        var v = row ? row[z.id] : undefined;
+        prices[k][z.id] = v === undefined ? DEFAULTS.prices[k][z.id] : Number(v) > 0 ? Number(v) : null;
+      });
+    });
+    return { crew: clean(saved.crew).length ? clean(saved.crew) : DEFAULTS.crew.slice(), kits: clean(saved.kits).length ? clean(saved.kits) : DEFAULTS.kits.slice(), lengths: lengths, addOns: addOns, prices: prices };
+  }
+
+  /* ------------------------------------------------------------ the price list */
+
+  // The size a car looks like from what was typed ("Mazda CX-5", "LandCruiser 200", "Kia
+  // Carnival"): "sedan", "suv", "large" or "bike"; "" when it doesn't say (or it's a truck, a
+  // boat or a caravan, which are quoted). First match wins.
+  var SIZE_WORDS = [
+    [/\b(trucks?|prime mover|rigid|bus|boat|caravan|jet ?ski|tractor)\b/, ""],
+    [/\b(motor ?bikes?|motorcycles?|harley|ducati|kawasaki|ninja|ktm|yamaha|vespa|scooter)\b/, "bike"],
+    [/\bprado\b/, "suv"],
+    [/\b(land ?cruiser|lc ?(70|76|79|100|200|300)|patrol|y6[12]|ram|silverado|f-?150|tundra|sequoia|tahoe|escalade|ldv|deliver ?9|carnival|tarago|odyssey|staria|imax|i-?load|hiace|transit|sprinter|crafter|trafic|vito|v-?class|people mover)\b/, "large"],
+    [/\b(ranger|raptor|hilux|triton|navara|d-?max|bt-?50|amarok|colorado|shark|cannon|rav ?4|cx-?\d+|x-?trail|outlander|forester|outback|kluger|pajero|everest|fortuner|santa ?fe|tucson|palisade|sorento|sportage|seltos|kona|venue|niro|telluride|model [xy]|tiguan|touareg|t-?roc|kodiaq|karoq|x[1-7]|q[2-8]|gl[abcesk]|ml|rx|nx|ux|gx|lx|territory|captiva|trailblazer|mu-?x|jeep|wrangler|cherokee|compass|discovery|defender|range rover|evoque|velar|macan|cayenne|haval|jolion|h6|tank|asx|eclipse cross|qashqai|juke|pathfinder|cr-?v|hr-?v|zr-?v|c-?hr|yaris cross|corolla cross|xc[469]0|ioniq ?5|ev[69]|atto ?3|vitara|jimny|s-?cross|bronco|explorer|endura|escape|kuga|puma|tiggo|omoda|sealion|tesla y)\b/, "suv"],
+    [/\b(4wd|4x4|vans?|[78] ?-?seat(er)?s?)\b/, "large"],
+    [/\b(suv|ute|awd)\b/, "suv"],
+  ];
+  function sizeOf(car) {
+    var c = String(car || "").toLowerCase().replace(/[’']/g, "");
+    if (!/[a-z]/.test(c)) return "";
+    for (var i = 0; i < SIZE_WORDS.length; i++) if (SIZE_WORDS[i][0].test(c)) return SIZE_WORDS[i][1];
+    return "sedan";
+  }
+  // A service's rows in the price list: [{ kind, prices }] (kind is "" when there's one row), only
+  // the rows with at least one price.
+  function priceOptions(prices, service) {
+    var out = [];
+    Object.keys(prices || {}).forEach(function (k) {
+      var i = k.indexOf(" · "), sv = i === -1 ? k : k.slice(0, i), row = prices[k] || {};
+      if (sv !== service || !SIZES.some(function (z) { return row[z.id] != null; })) return;
+      out.push({ kind: i === -1 ? "" : k.slice(i + 3), prices: row });
+    });
+    return out;
+  }
+  // The list price for a service and car: the first row, at the car's size (a sedan when the car
+  // doesn't say). null when there's no price for it.
+  function listPrice(prices, service, car) {
+    var o = priceOptions(prices, service)[0];
+    if (!o) return null;
+    var z = sizeOf(car) || "sedan";
+    return o.prices[z] != null ? o.prices[z] : null;
   }
   function serviceFromLead(s) {
     return FROM_LEAD[s] || "Other";
@@ -442,7 +512,7 @@
   }
 
   root.ILJobs = {
-    SERVICES: SERVICES, STATUSES: STATUSES, EVENT_TYPES: EVENT_TYPES, DEFAULTS: DEFAULTS, FIRST_NUMBER: FIRST_NUMBER,
+    SERVICES: SERVICES, SIZES: SIZES, sizeOf: sizeOf, priceOptions: priceOptions, listPrice: listPrice, STATUSES: STATUSES, EVENT_TYPES: EVENT_TYPES, DEFAULTS: DEFAULTS, FIRST_NUMBER: FIRST_NUMBER,
     settings: settings, serviceFromLead: serviceFromLead, serviceToLead: serviceToLead, serviceFromText: serviceFromText,
     toMin: toMin, hm: hm, lengthOf: lengthOf, endFor: endFor, timeLabel: timeLabel, sortKey: sortKey,
     addOnTotal: addOnTotal, priceOf: priceOf, total: total, money: money,

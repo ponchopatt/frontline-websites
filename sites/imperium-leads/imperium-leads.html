@@ -497,6 +497,24 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 .found button b{font-weight:700}
 .found button span{font-size:12.5px;color:var(--muted)}
 .linked{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--accent-bg);color:var(--accent);border-radius:12px;padding:8px 8px 8px 12px;font-weight:700;font-size:14px}
+/* The price list under a price box: a button per car size. */
+.pp-wrap{display:flex;flex-direction:column;gap:6px}
+.pp-h{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.02em}
+.pp{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:6px}
+.ppb{font:inherit;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:12px;min-height:52px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer}
+.ppb span{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+.ppb b{font-size:15px;font-variant-numeric:tabular-nums}
+.ppb.guess{border:2px solid var(--accent)}
+.ppb[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.ppb[aria-pressed="true"] span{color:inherit}
+.ppb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pp-kinds{display:flex;gap:6px}
+.pp-kinds button{flex:1 1 0;min-width:0;font:inherit;font-size:13px;font-weight:600;min-height:40px;border-radius:999px;border:1px solid var(--line);background:var(--surface2);color:var(--text);cursor:pointer}
+.pp-kinds button[aria-pressed="true"]{background:var(--text);border-color:var(--text);color:var(--surface)}
+.plist{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px 6px;align-items:end}
+.plist .pl-n{grid-column:1/-1;font-size:14px;font-weight:700;margin-top:6px}
+.plist label{font-size:11px;font-weight:600;color:var(--muted);gap:2px}
+.plist input{min-height:44px;padding:0 6px;text-align:center}
 .addon{display:grid;grid-template-columns:minmax(0,1fr) 96px;gap:8px;align-items:center}
 .addon .toggle{min-height:48px}
 .cal-sk{display:flex;flex-direction:column;gap:10px}
@@ -654,6 +672,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
           <label id="timeWrap" hidden>Time<input id="f-jobTime" type="time"></label>
           <label id="addrWrap" class="full" hidden>Address<input id="f-address" placeholder="12 Example St, Gungahlin" autocomplete="street-address"></label>
           <label id="priceWrap" class="full" hidden>Price $ (or a range, like 250-300)<input id="f-price" inputmode="text" placeholder="250"></label>
+          <div class="pp-wrap full" id="f-pp" hidden></div>
           <label class="full">Notes<textarea id="f-notes" placeholder="Dog hair. Wants a weekend."></textarea></label>
         </div>
       </details>
@@ -704,8 +723,9 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     <div class="card">
       <div class="eyebrow"><span>Ad spend</span></div>
       <div class="tbl"><table id="adSpend"></table></div>
-      <button class="btn secondary" id="spendBtn" type="button">Add this week's ad spend</button>
-      <p class="help">Once a week, type the total spent on ads (from Ads Manager). Saved for both phones. Counts both of you.</p>
+      <p class="help" id="metaLine"></p>
+      <div class="row"><button class="btn secondary" id="metaBtn" type="button">Get from Meta</button><button class="btn secondary" id="spendBtn" type="button">Type it in</button></div>
+      <p class="help">The spend comes from Meta by itself each day once it's linked. Counts both of you.</p>
     </div>
     <div class="card">
       <div class="eyebrow"><span>End of day forms</span><span>Last 7 days</span></div>
@@ -738,7 +758,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   // leads: what the app shows. leadsAll also has the deleted ones (for the backup).
   let db=null, dl=null, api=null, leads=[], leadsAll=[], loaded=false, canWrite=true, who=null;
   // Shared settings, one doc each: reviews, goal, hours, templates (the texts), ads (names), simple (the day this version went live).
-  let reviewSettings={}, hoursSaved={}, goalSettings={}, templates={}, adsSaved=null, simple=null, spendWeeks=[], nights=[];
+  let reviewSettings={}, hoursSaved={}, goalSettings={}, templates={}, adsSaved=null, simple=null, spendWeeks=[], nights=[], metaSync;
   const H = () => M.hours(hoursSaved);
   const MOON = '<svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21 14.5A8.5 8.5 0 0 1 9.5 3a8.5 8.5 0 1 0 11.5 11.5z"/></svg>';
 
@@ -818,8 +838,9 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   function fillAdSelect(){ const s=$("#f-ad"); if(document.activeElement===s) return; const v=s.value; s.innerHTML=adOptions(v); s.value=v; }
 
   // ---------- ADD ----------
-  seg($("#f-service")); seg($("#f-timeline"));
-  const stageChanged=v=>{ ["#dateWrap","#timeWrap","#addrWrap"].forEach(x=>{ $(x).hidden = v!=="Booked"; }); $("#priceWrap").hidden = v==="New"; $("#saveBtn").textContent = v==="Booked" ? "Save booking" : "Save lead"; };
+  let fPp=()=>{};
+  seg($("#f-service"),()=>fPp()); seg($("#f-timeline"));
+  const stageChanged=v=>{ ["#dateWrap","#timeWrap","#addrWrap"].forEach(x=>{ $(x).hidden = v!=="Booked"; }); $("#priceWrap").hidden = v==="New"; fPp(); $("#saveBtn").textContent = v==="Booked" ? "Save booking" : "Save lead"; };
   seg($("#f-stage"), stageChanged);
   $("#addForm").addEventListener("submit", async e=>{
     e.preventDefault();
@@ -874,13 +895,13 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   // Name, car, service, price (or quote), how long since it came in, and which touch is next;
   // the latest call note. Then TEXT, CALL, NOTES and ✓ DONE, and on bookings On my way and the
   // deposit. Everything else is behind the … button.
-  function textFor(l){ return T.message(l,{today:today(), owner:l.owner||who||"", reviewLink:R.settings(reviewSettings).reviewLink, templates}).text; }
+  function textFor(l){ return T.message(l,{today:today(), owner:l.owner||who||"", reviewLink:R.settings(reviewSettings).reviewLink, templates, price:l.quoted!=null&&l.quoted!==""?l.quoted:listPrice(l)}).text; }
   function priceTag(l){
     const st=stage(l), n=v=>v===""||v==null||isNaN(Number(v))?null:Number(v);
     if((st==="Booked"||st==="Done") && l.priceRange) return '<span class="pr">$'+esc(l.priceRange)+'</span>';
     if((st==="Booked"||st==="Done") && n(l.revenue)!=null) return '<span class="pr">'+money(n(l.revenue))+'</span>';
     if(n(l.quoted)!=null) return '<span class="pr">'+money(n(l.quoted))+' quote</span>';
-    const s=T.priceFor(l.service,l.car); return s?'<span class="pr est">from '+money(s)+'</span>':"";
+    const s=listPrice(l); return s?'<span class="pr est">from '+money(s)+'</span>':"";
   }
   function ago(l){
     const d=new Date(l.createdAt || (l.date?l.date+"T09:00:00":""));
@@ -1237,10 +1258,11 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       g("#m-stage").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===s)));
       more.innerHTML="";
       if(s==="Booked"){
-        const sp=T.priceFor(l.service,l.car);
+        const sp=listPrice(l);
         more.innerHTML='<div class="grid"><label>Day<input id="m-job" type="date" value="'+esc(l.jobDate||l.depositDate||"")+'"></label><label>Time<input id="m-time" type="time" value="'+esc(l.jobTime||l.depositTime||"")+'"></label>'+
           '<label class="full">Address<input id="m-addr" value="'+esc(l.address||"")+'" placeholder="12 Example St, Gungahlin" autocomplete="street-address"></label>'+
-          '<label class="full">Price $ (or a range, like 250-300)<input id="m-price" inputmode="text" value="'+esc(l.priceRange||l.revenue||l.quoted||sp||"")+'"></label></div><button class="btn" id="m-book" type="button">Save booking</button>';
+          '<label class="full">Price $ (or a range, like 250-300)<input id="m-price" inputmode="text" value="'+esc(l.priceRange||l.revenue||l.quoted||sp||"")+'"></label><div class="pp-wrap full" id="m-pp" hidden></div></div><button class="btn" id="m-book" type="button">Save booking</button>';
+        pricePicker(g("#m-pp"),g("#m-price"),()=>J.serviceFromLead(l.service),()=>l.car);
         g("#m-book").addEventListener("click",()=>{ const date=g("#m-job").value; if(!date){ toast("Pick the day they're booked for"); g("#m-job").focus(); return; }
           const untouched=!(l.log||[]).some(M.isTouch);
           go(M.book(l,{date, time:g("#m-time").value, address:g("#m-addr").value, price:g("#m-price").value},new Date().toISOString(),who),"Booked. Legend.")
@@ -1300,6 +1322,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
         '<label>Time<input id="e-jobTime" type="time" value="'+esc(l.jobTime||"")+'"></label>'+
         '<label class="full">Address<input id="e-address" value="'+esc(l.address||"")+'" autocomplete="street-address"></label>'+
         '<label class="full">Price $ (or a range, like 250-300)<input id="e-revenue" inputmode="text" value="'+esc(l.priceRange||l.revenue||"")+'"></label>'+
+        '<div class="pp-wrap full" id="e-pp" hidden></div>'+
         '<label>Paid?'+yn("paid",l.paid)+'</label>'+
         '<label>On a maintenance plan?'+yn("plan",l.plan)+'</label>'+
         '<label>Upsell taken?'+yn("upsellTaken",l.upsellTaken)+'</label>'+
@@ -1310,6 +1333,8 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       '<button class="btn" id="saveEdit" type="button"'+(canWrite?"":" disabled")+'>Save changes</button>');
     const s=$("#sheet");
     s.querySelectorAll(".seg").forEach(x=>seg(x));
+    const ePp=pricePicker(g("#e-pp"),g("#e-revenue"),()=>J.serviceFromLead(g("#e-service").value),()=>g("#e-car").value);
+    g("#e-service").addEventListener("change",()=>ePp()); g("#e-car").addEventListener("input",()=>ePp());
     g("#saveEdit").addEventListener("click",async()=>{
       const sv=name=>s.querySelector('[data-name="'+name+'"]').dataset.value||"", adv=g("#e-ad").value;
       const upd={ owner:g("#e-owner").value, name:g("#e-name").value.trim(), phone:g("#e-phone").value.trim(), email:g("#e-email").value.trim(), date:g("#e-date").value,
@@ -1365,7 +1390,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   // ---------- BOARD ----------
   // Every open lead, one column per status, with what each column is worth; then jobs that owe money.
   const COLS=["New","Chasing","Booked","Waiting"];
-  const worth = l => M.dealValue(l,today(),T.priceFor(l.service,l.car));
+  const worth = l => M.dealValue(l,today(),listPrice(l));
   const coldRank = l => { const c=M.coldness(l,today()); return c ? (c.level==="cold"?2:1)*1000+c.days : 0; };
   const isPhone=()=>matchMedia("(max-width:700px)").matches;
   function renderBoard(){
@@ -1529,8 +1554,10 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     $("#tilesHelp").innerHTML="Tap a number to see who's in it. Leads count by the day they came in, money by the job's day."+
       (cash.noPrice.length?' <button type="button" class="inlink" data-drill="noPrice">'+jobs(cash.noPrice.length)+" with no price yet</button> "+(cash.noPrice.length===1?"counts":"count")+" as $0.":"");
     // By ad: leads, booked, booked $ and close rate.
-    const ga=M.byAd(rows,t);
-    ga.forEach(g=>{ drill["ad:"+g.ad]={title:g.ad, sub:g.booked+" of "+g.leads+" booked", items:g.items.map(l=>({l, r:isBooked(l)?(price(l)?money(price(l)):"Booked"):stage(l), cls:isBooked(l)?"good":"", ln:[l.service, "Came in "+dayName(l.date||localDate(l.createdAt)), l.owner]}))}; });
+    const ga=M.byAd(rows,t), adKey=v=>String(v||"").trim().toLowerCase(), spentOn={};
+    spendWeeks.forEach(x=>{ if(x&&M.isDay(x.weekOf)&&inPeriodDay(x.weekOf)) Object.entries(x.byAd||{}).forEach(([k,v])=>{ if(Number(v)>0) spentOn[adKey(k)]=(spentOn[adKey(k)]||0)+Number(v); }); });
+    const adSub=g=>{ const sp=spentOn[adKey(g.ad)]; return g.booked+" of "+g.leads+" booked"+(sp?", "+money(sp)+" spent"+(g.booked?", "+money(sp/g.booked)+" per booked job":""):""); };
+    ga.forEach(g=>{ drill["ad:"+g.ad]={title:g.ad, sub:adSub(g), items:g.items.map(l=>({l, r:isBooked(l)?(price(l)?money(price(l)):"Booked"):stage(l), cls:isBooked(l)?"good":"", ln:[l.service, "Came in "+dayName(l.date||localDate(l.createdAt)), l.owner]}))}; });
     $("#byAd").innerHTML = ga.length ? '<tr><th>Ad</th><th class="n">Leads</th><th class="n">Booked</th><th class="n">Booked $</th><th class="n">Close</th></tr>'+
       ga.map(g=>'<tr data-drill="'+esc("ad:"+g.ad)+'" tabindex="0"><td class="ad">'+esc(g.ad)+'</td><td class="n">'+g.leads+'</td><td class="n">'+g.booked+'</td><td class="n">'+money(g.money)+'</td><td class="n">'+pct(g.booked,g.leads)+'</td></tr>').join("")
       : '<tr><td class="empty">No leads in this period yet.</td></tr>';
@@ -1542,6 +1569,8 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       : '<tr><td class="empty">No call notes in this period yet. Tap Notes on a lead to add one.</td></tr>';
     const row=(label,v)=>'<tr><td>'+label+'</td><td class="n">'+v+'</td></tr>';
     $("#adSpend").innerHTML=row("Spent in this period",money(ads.spend))+row("Leads from ads",ads.leads)+row("Booked from ads",ads.booked)+row("Per booked job",ads.perBooked==null?"–":money(ads.perBooked));
+    $("#metaLine").textContent=metaSync&&metaSync.lastSync?(metaSync.ok?"From Meta, updated "+agoWords(metaSync.lastSync)+".":"Meta didn't work last time: "+(metaSync.error||"no reason given")):"Not linked to Meta yet, so it's typed in.";
+    metaAuto();
     // More.
     const plan=rows.filter(l=>l.plan==="Yes").length, upsO=rows.filter(l=>l.upsellOffered==="Yes"||l.offeredCeramic==="Yes"||l.offeredPlan==="Yes").length, upsT=rows.filter(l=>l.upsellTaken==="Yes").length;
     const open=rows.filter(isOpen).length, touches=rows.reduce((a,l)=>a+M.touchDays(l.log),0);
@@ -1572,6 +1601,25 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     $("#dueCard").hidden=!due.length;
     $("#dueList").innerHTML=due.map(l=>leadCard(l,{owner:true})).join(""); wire($("#dueList"));
   }
+  // ---------- AD SPEND FROM META (/api/ad-spend) ----------
+  // Brought in when Numbers is open and it's been 6 hours (once each time the app opens), or on
+  // the button. The daily run in Vercel does it too.
+  const agoWords=iso=>{ const m=Math.max(0,Math.round((Date.now()-new Date(iso))/6e4)); return m<2?"just now":m<60?m+" min ago":m<1440?Math.round(m/60)+" h ago":Math.round(m/1440)+(Math.round(m/1440)===1?" day ago":" days ago"); };
+  let metaTried=false, metaBusy=false;
+  async function metaPull(quiet){
+    if(!api||metaBusy) return;
+    metaBusy=true; const b=$("#metaBtn"); b.disabled=true; b.textContent="Getting…";
+    try{ const r=await api.call("/api/ad-spend?weeks="+(quiet?3:8),{method:"POST"}); if(!quiet) toast(r.dryRun?"Checked Meta (a preview saves nothing).":"Ad spend updated from Meta."); }
+    catch(e){ if(!quiet) toast(e.code==="not_set_up"?"Meta isn't linked yet. Add the key in Vercel first.":e.status===401?"Sign in again, then try.":"Meta: "+(e.message||"try again")); }
+    metaBusy=false; b.disabled=false; b.textContent="Get from Meta";
+  }
+  function metaAuto(){
+    if(metaTried||!api||!canWrite||metaSync===undefined) return;
+    if(metaSync&&metaSync.lastSync&&Date.now()-new Date(metaSync.lastSync)<6*36e5) return;
+    metaTried=true; metaPull(true);
+  }
+  $("#metaBtn").addEventListener("click",()=>metaPull(false));
+
   // Tap a figure: who's in it. Tap a name to open that lead's … menu.
   function openDrill(key){
     const d=drill[key]; if(!d) return;
@@ -1887,7 +1935,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   // The weekly ad spend: one total a week, saved for both phones (spend/<Monday>).
   $("#spendBtn").addEventListener("click",()=>{
     const mon=M.mondayOf(today()), weeks=[0,1,2,3].map(n=>M.addDays(mon,-7*n));
-    const g=sheet('<div class="sheet-h"><div><h2>Ad spend</h2><p class="help">The total spent on ads that week, from Ads Manager. Saved for both phones.</p></div><button class="x" id="closeSheet" type="button">Close</button></div>'+
+    const g=sheet('<div class="sheet-h"><div><h2>Ad spend</h2><p class="help">The total spent on ads that week, from Ads Manager. Saved for both phones. Once Meta is linked, it fills this in by itself.</p></div><button class="x" id="closeSheet" type="button">Close</button></div>'+
       '<label>Week<select id="sp-week">'+weeks.map((w,i)=>'<option value="'+w+'">'+(i===0?"This week":i===1?"Last week":i+" weeks ago")+' (from '+esc(dayName(w))+')</option>').join("")+'</select></label>'+
       '<label>Total spent $<input id="sp-total" type="number" inputmode="decimal" min="0" placeholder="0"></label>'+
       '<button class="btn" id="sp-save" type="button">Save</button>');
@@ -2512,6 +2560,34 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     g("#as-done").addEventListener("click",closeSheet);
   }
 
+  // ---------- PRICE PICKER (Settings → Price list) ----------
+  // Under a price box: a button for each car size with its price for the service picked, the size
+  // the car looks like outlined. Tap one to fill the box. Returns a redraw for when the service
+  // or the car changes. svcOf gives a job's service (Full Detail, …).
+  function pricePicker(box, input, svcOf, carOf){
+    let kind="";
+    const draw=()=>{
+      const opts=J.priceOptions(CAL().prices, svcOf());
+      if(!opts.length){ box.hidden=true; box.innerHTML=""; return; }
+      if(!opts.some(o=>o.kind===kind)) kind=opts[0].kind;
+      const o=opts.find(x=>x.kind===kind), car=String(carOf()||"").trim(), guess=J.sizeOf(car), val=String(input.value||"").trim(), z=J.SIZES.find(x=>x.id===guess);
+      box.hidden=false;
+      box.innerHTML='<span class="pp-h">Price list'+(z?' · '+esc(car)+' looks like '+esc(z.say):"")+'</span>'+
+        (opts.length>1?'<div class="pp-kinds">'+opts.map(x=>'<button type="button" data-kind="'+esc(x.kind)+'" aria-pressed="'+(x.kind===kind)+'">'+esc(x.kind)+'</button>').join("")+'</div>':"")+
+        '<div class="pp">'+J.SIZES.filter(x=>o.prices[x.id]!=null).map(x=>'<button type="button" class="ppb'+(x.id===guess?" guess":"")+'" data-price="'+o.prices[x.id]+'" aria-pressed="'+(val===String(o.prices[x.id]))+'" aria-label="'+esc(x.long+" $"+o.prices[x.id])+'"><span>'+esc(x.label)+'</span><b>$'+o.prices[x.id]+'</b></button>').join("")+'</div>';
+    };
+    box.addEventListener("click",e=>{
+      const k=e.target.closest("[data-kind]"); if(k){ kind=k.dataset.kind; draw(); return; }
+      const b=e.target.closest("[data-price]"); if(!b) return;
+      input.value=b.dataset.price; input.dispatchEvent(new Event("input",{bubbles:true})); draw();
+    });
+    input.addEventListener("input",()=>box.querySelectorAll("[data-price]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.price===String(input.value).trim()))));
+    draw();
+    return draw;
+  }
+  // A lead's list price: its service and car on the price list (a sedan when the car doesn't say).
+  const listPrice=l=>J.listPrice(CAL().prices, J.serviceFromLead(l&&l.service), l&&l.car);
+
   // ---------- A JOB (new, or change one) ----------
   // The customer is a lead: find one, or type a new customer and a lead is made for them.
   function openJobForm(id,preset={}){
@@ -2544,6 +2620,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
         return '<div class="addon"><label class="toggle"><span>'+esc(a.name)+'</span><input type="checkbox" data-addon="'+i+'"'+(on?" checked":"")+'></label><input type="number" inputmode="decimal" min="0" data-addonp="'+i+'" value="'+esc(on&&on.price!=null?on.price:a.price!=null?a.price:"")+'" placeholder="$" aria-label="'+esc(a.name)+' price"></div>'; }).join(""):"")+
       '<div class="grid">'+
         '<label class="full">Price $ (or a range, like 280-350)<input id="jf-price" inputmode="text" value="'+esc(j.price||"")+'" placeholder="280"></label>'+
+        '<div class="pp-wrap full" id="jf-pp" hidden></div>'+
         '<label class="full" id="jf-finalWrap">Final price $<input id="jf-final" type="number" inputmode="decimal" min="0" value="'+esc(j.finalPrice??"")+'"></label>'+
       '</div>'+
       '<div class="eyebrow">When</div>'+
@@ -2566,12 +2643,14 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     const autoEnd=()=>{ if(endTouched) return; const st=g("#jf-start").value; g("#jf-end").value=st?J.endFor(st,svc(),cfg):""; };
     const showTimes=()=>{ const ad=g("#jf-allday").checked; g("#jf-sw").hidden=ad; g("#jf-ew").hidden=ad; };
     const lenHelp=()=>{ const v=svc(), len=J.lengthOf(v,cfg); g("#jf-len").textContent=v+(len.allDay?" is all day":" is "+(len.minutes/60)+" hours")+" by default (Settings)."; };
-    let svcTouched=false;
-    const svcChanged=()=>{ svcTouched=true; if(!allDayTouched){ g("#jf-allday").checked=J.lengthOf(svc(),cfg).allDay; showTimes(); } autoEnd(); lenHelp(); };
+    let svcTouched=false, ppDraw=()=>{};
+    const svcChanged=()=>{ svcTouched=true; if(!allDayTouched){ g("#jf-allday").checked=J.lengthOf(svc(),cfg).allDay; showTimes(); } autoEnd(); lenHelp(); ppDraw(); };
     const statusChanged=()=>{ g("#jf-finalWrap").hidden=g("#jf-status").dataset.value!=="Completed"; };
     seg(g("#jf-svc"),svcChanged); seg(g("#jf-kit")); seg(g("#jf-status"),statusChanged);
     if(!old) g("#jf-allday").checked=preset.start?false:preset.allDay||J.lengthOf(j.service,cfg).allDay;
     showTimes(); lenHelp(); statusChanged();
+    ppDraw=pricePicker(g("#jf-pp"),g("#jf-price"),svc,()=>g("#jf-car").value);
+    g("#jf-car").addEventListener("input",()=>ppDraw());
     g("#jf-allday").addEventListener("change",()=>{ allDayTouched=true; showTimes(); });
     g("#jf-start").addEventListener("input",autoEnd); g("#jf-start").addEventListener("change",autoEnd);
     g("#jf-end").addEventListener("input",()=>{ endTouched=true; });
@@ -2743,6 +2822,9 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       '<p class="help">Each job can be changed on its own too.</p>'+
       '<label>Add-ons (one per line: name, price)<textarea id="c-addons" rows="3">'+esc(c.addOns.map(a=>a.name+(a.price!=null?", "+a.price:"")).join("\n"))+'</textarea></label>'+
       '<p class="help">Leave the price off (like Travel fee) to type it on each job.</p>'+
+      '<div class="eyebrow"><span>Price list</span><span>$ by car size</span></div>'+
+      '<div class="plist">'+Object.keys(c.prices).map(k=>'<span class="pl-n">'+esc(k)+'</span>'+J.SIZES.map(z=>'<label>'+esc(z.label)+'<input type="number" inputmode="numeric" min="0" data-pl="'+esc(k)+'" data-pz="'+z.id+'" value="'+(c.prices[k][z.id]!=null?c.prices[k][z.id]:"")+'" aria-label="'+esc(k+", "+z.long)+'"></label>').join("")).join("")+'</div>'+
+      '<p class="help">From the website. Leave one blank if you quote it for the car. These fill the price when you tap a car size on a job or a booking.</p>'+
       '<button class="btn" id="c-save" type="button">Save calendar settings</button></div>';
   }
   function wireCalSettings(g,put){
@@ -2754,7 +2836,9 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       const lengths={};
       J.SERVICES.forEach(sv=>{ const all=document.querySelector('#sheet [data-lenall="'+sv+'"]').checked, v=num(document.querySelector('#sheet [data-len="'+sv+'"]').value); lengths[sv]=all?"allday":v>0&&v<=14?v:J.DEFAULTS.lengths[sv]; });
       const addOns=lines("#c-addons").map(x=>{ const m=/^(.*?)(?:\s*,\s*\$?\s*(\d+(?:\.\d+)?))?\s*$/.exec(x); return {name:m[1].trim(), price:m[2]!=null?Number(m[2]):null}; }).filter(a=>a.name);
-      put("settings/calendar",{...(calSaved||{}), crew, kits, lengths, addOns},g("#c-save"),"Calendar settings saved.");
+      const prices={};
+      document.querySelectorAll("#sheet [data-pl]").forEach(i=>{ const k=i.dataset.pl, v=num(i.value); (prices[k]=prices[k]||{})[i.dataset.pz]=v>0?v:null; });
+      put("settings/calendar",{...(calSaved||{}), crew, kits, lengths, addOns, prices},g("#c-save"),"Calendar settings saved.");
     });
   }
 
@@ -2787,9 +2871,12 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   }
 
   // ---------- BOOT ----------
+  // The Add tab's price list, now the calendar settings are known.
+  fPp=pricePicker($("#f-pp"),$("#f-price"),()=>$("#priceWrap").hidden?"":J.serviceFromLead($("#f-service").dataset.value),()=>$("#f-car").value);
+  $("#f-car").addEventListener("input",()=>fPp());
   function renderAll(){
     const cur=document.querySelector('.tab[aria-selected="true"]').dataset.tab;
-    if(cur==="today") renderToday(); else if(cur==="cal") renderCal(); else if(cur==="leads") renderList(); else if(cur==="board") renderBoard(); else if(cur==="numbers") renderNumbers(); else if(cur==="add") fillAdSelect();
+    if(cur==="today") renderToday(); else if(cur==="cal") renderCal(); else if(cur==="leads") renderList(); else if(cur==="board") renderBoard(); else if(cur==="numbers") renderNumbers(); else if(cur==="add"){ fillAdSelect(); fPp(); }
     // How many to do now, on the tab.
     const n=loaded?M.todayList(leads,todayOpts()).show.length:0; $("#dotToday").hidden=!n; $("#dotToday").textContent=n;
   }
@@ -2824,6 +2911,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       doc("settings/ads",v=>{ adsSaved=v; });
       doc("settings/simple",v=>{ simple=v||{}; });
       doc("settings/calendar",v=>{ calSaved=v||{}; });
+      doc("settings/meta",v=>{ metaSync=v; });
       db.collection("jobs").onSnapshot(snap=>{ jobsAll=snap.docs.map(x=>Object.assign({id:x.id},x.data())); allJobs=jobsAll.filter(j=>!j.deleted); jobsLoaded=true; renderAll(); syncJobs(); }, ()=>{});
       db.collection("events").onSnapshot(snap=>{ allEvents=snap.docs.map(x=>Object.assign({id:x.id},x.data())); eventsLoaded=true; renderAll(); }, ()=>{});
       db.collection("nights").onSnapshot(snap=>{ nights=snap.docs.map(x=>x.data()); renderAll(); }, ()=>{});

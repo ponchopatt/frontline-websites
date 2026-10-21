@@ -228,3 +228,28 @@ test("a plan visit for someone already on a plan isn't a new plan", () => {
   ];
   assert.deepEqual(M.weekStats(L, TODAY, { goal: 5000 }).plans.items.map((l) => l.id), ["new"]);
 });
+
+test("the price list: the website's prices by car size; one left blank stays blank", () => {
+  const p = J.settings().prices;
+  assert.deepEqual(p["Full Detail"], { sedan: 225, suv: 250, large: 270, bike: 135 });
+  assert.deepEqual(p["Ceramic Coating · 7 years"], { sedan: 1347, suv: 1447, large: 1597, bike: 400 });
+  const s = J.settings({ prices: { "Full Detail": { sedan: "230", bike: null }, Exterior: { suv: "" } } }).prices;
+  assert.deepEqual([s["Full Detail"].sedan, s["Full Detail"].suv, s["Full Detail"].bike, s.Exterior.suv, s.Exterior.sedan], [230, 250, null, null, 110]);
+});
+
+test("a car's size from what was typed", () => {
+  const want = {
+    "Mazda CX-5": "suv", "Ford Ranger 4x4": "suv", Hilux: "suv", Kluger: "suv", "Toyota Landcruiser Prado": "suv", "BMW x2": "suv", "Tesla Model Y": "suv",
+    "LandCruiser 200": "large", "Nissan Patrol Y62": "large", "Kia Carnival": "large", "Hiace van": "large", "7 seater": "large", "Ram 1500": "large",
+    "Toyota Corolla": "sedan", "Tesla Model 3": "sedan", "VW Golf": "sedan", "Mazda 3": "sedan", Harley: "bike", "small truck": "", "": "",
+  };
+  for (const [car, size] of Object.entries(want)) assert.equal(J.sizeOf(car), size, car);
+});
+
+test("a service's rows in the price list, and a lead's list price", () => {
+  const p = J.settings().prices;
+  assert.deepEqual(J.priceOptions(p, "Ceramic Coating").map((o) => o.kind), ["3 years", "5 years", "7 years"]);
+  assert.deepEqual(J.priceOptions(p, "Full Detail").map((o) => o.kind), [""]);
+  assert.deepEqual(J.priceOptions(p, "Other"), []);
+  assert.deepEqual([J.listPrice(p, "Full Detail", "Kluger"), J.listPrice(p, "Full Detail", "LandCruiser"), J.listPrice(p, "Full Detail", ""), J.listPrice(p, "Interior", "Harley"), J.listPrice(p, "Maintenance Plan", "Ranger")], [250, 270, 225, null, null]);
+});
