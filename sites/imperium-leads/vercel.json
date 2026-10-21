@@ -4,7 +4,7 @@
   "buildCommand": "node build.mjs",
   "outputDirectory": "public",
   "ignoreCommand": "git diff --quiet HEAD^ HEAD -- .",
-  "functions": { "api/ghl-import.js": { "maxDuration": 60 } },
+  "functions": { "api/ghl-import.js": { "maxDuration": 300 } },
   "headers": [
     { "source": "/sw.js", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
     { "source": "/(index.html|config.js|claude-shim.js|reviews.js|model.js|texts.js|jobs.js)?", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
