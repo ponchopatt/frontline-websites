@@ -168,6 +168,8 @@ function when(bk, service, cfg) {
 }
 
 const OPEN = ["Scheduled", "In Progress"];
+// A job's GHL appointments: one, or more when one job was booked as two (a two-day job).
+const hasAppt = (j, id) => !!j && !!id && (j.ghlAppointmentId === id || (Array.isArray(j.ghlAppointmentIds) && j.ghlAppointmentIds.includes(id)));
 // "Jo  Smith", "jo smith" and "Jo-Smith" are one name.
 const nameOf = (s) => String(s ?? "").toLowerCase().replace(/[^a-z]+/g, " ").trim();
 // The same person by name: the same first and last name; or the same first name when that's all
@@ -246,7 +248,7 @@ export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new
   const bk = readBooking(body), at = now.toISOString(), today = M.canberraDate(now);
   const out = (ok, result, writes = [], extra = {}) => ({ ok, result, writes, summary: { appointmentId: bk.apptId, name: bk.name, status: bk.status, ...extra } });
   if (!bk.apptId) return out(false, "No appointment ID in what GHL sent, so nothing was changed.");
-  const job = jobs.find((j) => j.ghlAppointmentId === bk.apptId);
+  const job = jobs.find((j) => hasAppt(j, bk.apptId));
 
   // ---- An appointment we have: moved, cancelled, no-show or showed.
   if (job && job.deleted) return out(true, "Job " + job.number + " was deleted in the app, so it was left.", [], { jobId: job.id, number: job.number });
@@ -360,7 +362,7 @@ export function planPast(body, { leads = [], jobs = [], cfg = null, now = new Da
   const out = (kind, result, writes = []) => ({ ok: true, kind, result, writes, summary: { appointmentId: bk.apptId, name: bk.name, price: bk.price } });
   if (!bk.apptId || !bk.start) return out("skipped", "No appointment ID or time.");
   const date = M.canberraDate(bk.start);
-  const had = jobs.find((j) => j.ghlAppointmentId === bk.apptId);
+  const had = jobs.find((j) => hasAppt(j, bk.apptId));
   if (had) {
     // In already. If a run stopped between a job and its new lead, the lead is made now.
     if (had.deleted || leads.some((l) => l.id === had.leadId) || !String(had.leadId || "").startsWith("ghl-")) return out("already", "Already in.");
@@ -390,7 +392,10 @@ export function planPast(body, { leads = [], jobs = [], cfg = null, now = new Da
   if (sameDay) {
     const w = [], cur = jobs.filter((j) => j.leadId === sameDay.id && !j.deleted && daysApart(j.date, date) <= 3).sort((a, b) => daysApart(a.date, date) - daysApart(b.date, date) || String(b.createdAt || "").localeCompare(String(a.createdAt || "")))[0];
     if (cur) {
-      const p = { ...ghl, updatedAt: at };
+      // Already linked to another appointment (one job, two GHL bookings): this one is added to it.
+      const p = cur.ghlAppointmentId && cur.ghlAppointmentId !== bk.apptId
+        ? { ghlAppointmentIds: [...new Set([cur.ghlAppointmentId, ...(cur.ghlAppointmentIds || []), bk.apptId])], updatedAt: at }
+        : { ...ghl, updatedAt: at };
       if (low != null && !String(cur.price || "").trim()) p.price = bk.price;
       if (low != null && cur.status === "Completed" && (cur.finalPrice == null || cur.finalPrice === "") && (sameDay.revenue == null || sameDay.revenue === "")) p.finalPrice = low;
       w.push({ collection: "jobs", id: cur.id, op: "merge", data: p });

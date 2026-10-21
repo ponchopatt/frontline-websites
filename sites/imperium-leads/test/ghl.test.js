@@ -289,3 +289,20 @@ test("a run that stopped between a job and its new lead: the next run makes the 
   // With its lead there, it's simply in already.
   assert.equal(planPast(past, { leads: [{ id: "ghl-appt_1", name: "Jo Smith" }], jobs: [orphan], now: NOW }).kind, "already");
 });
+
+test("one job booked as two GHL appointments: both stay linked to it, and either one finds it", async () => {
+  const { planPast, applyWrites } = await import("../lib/ghl.js");
+  const day = (id, d) => payload({}, { appointmentId: id, startTime: d + "T09:00:00", endTime: d + "T15:00:00", appoinmentStatus: "showed", notes: "" });
+  const jo = lead({ id: "jo", phone: "0400111222", stage: "Done", jobDate: "2026-08-10", revenue: 900 });
+  const state = { leads: [jo], jobs: [{ id: "lead-jo", leadId: "jo", number: 1001, date: "2026-08-10", status: "Completed", price: "900", createdAt: at("2026-08-01") }] };
+  applyWrites(state, planPast(day("a1", "2026-08-10"), { ...state, now: NOW }).writes);
+  const second = planPast(day("a2", "2026-08-11"), { ...state, now: NOW });
+  assert.equal(second.kind, "matched");
+  assert.deepEqual(second.writes[0].data.ghlAppointmentIds, ["a1", "a2"]);
+  assert.equal("ghlAppointmentId" in second.writes[0].data, false); // the first stays
+  applyWrites(state, second.writes);
+  assert.deepEqual([planPast(day("a1", "2026-08-10"), { ...state, now: NOW }).kind, planPast(day("a2", "2026-08-11"), { ...state, now: NOW }).kind], ["already", "already"]);
+  // A move on the second appointment finds the job too.
+  const moved = planBooking(payload({}, { appointmentId: "a2", startTime: "2026-08-12T09:00:00" }), { ...state, now: NOW });
+  assert.equal(moved.summary.jobId, "lead-jo");
+});
