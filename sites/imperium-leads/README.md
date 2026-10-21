@@ -37,6 +37,7 @@ buttons, one list to work through, everything rare behind a "…" menu.
 | `api/unlock.js` | PIN check and sign-in. |
 | `api/lead.js` | New enquiries in. |
 | `api/deposit.js` | Makes the $50 Stripe deposit link, and says whether one's paid (team only). |
+| `api/ghl-import.js` | Brings in the past GHL appointments (a practice run first). |
 | `api/ghl-webhook.js` | GoHighLevel bookings in: the lead booked, its job made, moved or cancelled (the rules are in `lib/ghl.js`). |
 | `api/stripe-webhook.js` | Stripe tells it a deposit is paid: the lead shows Deposit paid and moves to Booked. |
 | `public/deposit.html` | The "Deposit paid" page customers land on after paying. |
@@ -318,6 +319,25 @@ also go in an `x-ghl-secret` header). Anything without the key is turned away (4
   60 days. Settings → **GHL bookings** → Show what GHL sent.
 - Only the live site writes. A preview, or `&dry=1` on the end, answers what it would do and
   changes nothing. A GET with the key answers `{"ok":true,"ready":true}`.
+
+- **Price**: read from the appointment's description (a stated total, "quote 320", else the
+  biggest dollar amount, so a $50 deposit isn't taken for the job), else the title.
+
+### The past appointments: `POST /api/ghl-import?key=<GHL_WEBHOOK_SECRET>`
+
+Brings in every GHL appointment from two years back to a year ahead (`&from=` and `&to=` to
+change it), with a private integration token in `GHL_API_TOKEN` (GHL → Settings → Private
+Integrations: view calendars, calendar events, contacts and opportunities). The sub-account is
+`GHL_LOCATION_ID`, else the one the last booking came from.
+- Already here (the same person with a job that day): that job takes the appointment ID, and the
+  job and lead get the price if they have none. Nothing else on the lead changes.
+- Someone new: a lead (from the day GHL first had them), Done and paid, with its job Completed.
+  A customer from before is marked as a repeat. Still to come: a normal booking.
+- Cancelled and no-shows are left out. The price is the description's, else the contact's
+  latest opportunity value.
+- It's a practice run (what it would do, nothing saved) unless `&go=1`, which backs up every
+  lead and job first. A run does up to `&max=` appointments (120) from `&start=`; `next` in the
+  answer is where the next run starts. Running it again changes nothing already brought in.
 
 Set up: Vercel → Settings → Environment Variables → `GHL_WEBHOOK_SECRET` = any long random
 string, then redeploy. In GHL: Automation → Workflows → new workflow, triggers **Appointment

@@ -29,6 +29,28 @@ export function cleanPhone(phone) {
   return "+" + d; // another country's number, as given
 }
 
+/**
+  A price in words like an appointment's description: "$280", "$1,200", "$280-350", "350 dollars",
+  "quote 320", "Total: $450". "" when there isn't one. A number with no $ or price word (a street
+  number, a phone number) is never taken.
+*/
+export function priceFromText(text) {
+  const t = String(text ?? "").replace(/(\d),(\d{3})/g, "$1$2");
+  const num = "(\\d{2,5}(?:\\.\\d{1,2})?)", range = "(?:\\s*(?:-|–|to)\\s*\\$?\\s?" + num + ")?";
+  const ok = (m) => {
+    const a = Math.round(Number(m[1])), b = m[2] ? Math.round(Number(m[2])) : a;
+    return a >= 20 && a <= 20000 ? (b > a && b <= 20000 ? a + "-" + b : String(a)) : "";
+  };
+  // Said outright: "total $450", "quote 320".
+  const said = new RegExp("\\b(?:total|price|quote|quoted|cost|charged|value|amount)\\b\\s*(?:is|of|was|:|=)?\\s*\\$?\\s?" + num + range, "i").exec(t);
+  if (said && ok(said)) return ok(said);
+  // Else the biggest dollar amount (a $50 deposit beside a $330 job is the deposit).
+  const all = [...t.matchAll(new RegExp("\\$\\s?" + num + range, "gi"))].map(ok).filter(Boolean);
+  if (all.length) return all.sort((x, y) => Number(y.split("-")[0]) - Number(x.split("-")[0]))[0];
+  const words = new RegExp(num + "\\s*(?:dollars|aud|bucks)\\b", "i").exec(t);
+  return words ? ok(words) : "";
+}
+
 /** booked | cancelled | showed | noshow, from GHL's appointment status (or the event's type). */
 export function statusOf(raw, type) {
   const s = String(raw ?? "").toLowerCase().replace(/[\s_-]/g, "");
@@ -131,6 +153,9 @@ export function readBooking(body) {
     rawStatus: clip(pick(c.appoinmentStatus, c.appointmentStatus, c.appointment_status, c.status, a.appointmentStatus, a.status, b.appointmentStatus, b.appointment_status, cd.appointmentStatus, cd.appointment_status, cd.status, b.status), 60),
     status: statusOf(pick(c.appoinmentStatus, c.appointmentStatus, c.appointment_status, c.status, a.appointmentStatus, a.status, b.appointmentStatus, b.appointment_status, cd.appointmentStatus, cd.appointment_status, cd.status, b.status), b.type),
     notes: clip(pick(c.notes, a.notes, cd.notes, b.notes), 2000),
+    // What the job was worth: from its description, its title, else a value sent with it.
+    price: priceFromText(pick(c.notes, a.notes, cd.notes, b.notes)) || priceFromText(pick(c.title, a.title, b.title, cd.title)) ||
+      (Number(pick(cd.price, cd.value, b.monetaryValue, b.opportunityValue, cd.monetaryValue)) > 0 ? String(Math.round(Number(pick(cd.price, cd.value, b.monetaryValue, b.opportunityValue, cd.monetaryValue)))) : ""),
   };
 }
 
@@ -237,6 +262,7 @@ export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new
     const sv = J.serviceFromText(bk.calendar) || J.serviceFromText(bk.title) || J.serviceFromText(bk.serviceAnswer);
     if (sv && job.checkService) Object.assign(patch, { service: sv, checkService: false });
     if (bk.calendar && bk.calendar !== job.ghlCalendar) patch.ghlCalendar = bk.calendar;
+    if (bk.price && !String(job.price || "").trim()) patch.price = bk.price;
     if (!Object.keys(patch).length) return out(true, "No change: job " + job.number + ".", [], base);
     const w = [jobW(patch)];
     if (isCur) {
@@ -269,7 +295,7 @@ export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new
     jobData = { ...cur, ...jobData };
   } else {
     jobId = "ghl-" + safeId(bk.apptId); number = J.nextNumber(jobs);
-    const price = lead ? (lead.priceRange ? lead.priceRange.replace("–", "-") : lead.revenue != null && lead.revenue !== "" ? String(lead.revenue) : lead.quoted != null && lead.quoted !== "" ? String(lead.quoted) : "") : "";
+    const price = (lead ? (lead.priceRange ? lead.priceRange.replace("–", "-") : lead.revenue != null && lead.revenue !== "" ? String(lead.revenue) : lead.quoted != null && lead.quoted !== "" ? String(lead.quoted) : "") : "") || bk.price;
     jobData = J.blank({ number, leadId: lead ? lead.id : "ghl-" + safeId(bk.apptId), service, price, date: t.date, start: t.start, end: t.end, allDay: !t.start && J.lengthOf(service, cfg).allDay && !!t.date,
       notes: bk.notes, createdAt: at, createdBy: "GHL", updatedAt: at, checkService: !mapped, ...ghl });
     writes.push({ collection: "jobs", id: jobId, op: "create", data: jobData });
@@ -298,4 +324,78 @@ export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new
   doc.log = (doc.log || []).concat([entry(at, "GHL booking", note)]);
   writes.push({ collection: "leads", id: jobData.leadId, op: "create", data: M.sync(doc, today) });
   return out(true, "New lead " + (bk.name || bk.phone || bk.email) + (found.repeatOf ? " (a repeat customer)" : "") + ": job " + number + ", " + dayWords(t.date, t.start) + (mapped ? "" : ". Check service") + ".", writes, { jobId, number, leadId: jobData.leadId, newLead: true, owner: turn });
+}
+
+/**
+  A past GHL appointment, for bringing in the history. Already here (its appointment ID, or the
+  same person with a job that day): that job takes the appointment ID, and the job and lead get the
+  price if they have none; nothing else changes. Someone new on that day: a lead, Done and paid
+  (it's in the past), with its job Completed. Cancelled and no-shows are left out; one still to
+  come is a normal booking. `created` is when GHL first had the contact (the lead's day).
+*/
+export function planPast(body, { leads = [], jobs = [], cfg = null, now = new Date(), created = "" } = {}) {
+  const bk = readBooking(body), today = M.canberraDate(now), at = now.toISOString();
+  const out = (kind, result, writes = []) => ({ ok: true, kind, result, writes, summary: { appointmentId: bk.apptId, name: bk.name, price: bk.price } });
+  if (!bk.apptId || !bk.start) return out("skipped", "No appointment ID or time.");
+  if (jobs.some((j) => j.ghlAppointmentId === bk.apptId)) return out("already", "Already in.");
+  const date = M.canberraDate(bk.start);
+  if (date >= today) {
+    const p = planBooking(body, { leads, jobs, cfg, now, turn: "" });
+    return { ...p, kind: p.writes.length ? "upcoming" : "skipped" };
+  }
+  if (bk.status === "cancelled" || bk.status === "noshow") return out("skipped", (bk.status === "noshow" ? "No-show" : "Cancelled") + ": left out.");
+  const mapped = J.serviceFromText(bk.calendar) || J.serviceFromText(bk.title) || J.serviceFromText(bk.serviceAnswer);
+  const service = mapped || "Other", t = when(bk, service, cfg);
+  const low = bk.price ? Number(bk.price.split("-")[0]) : null, range = bk.price.includes("-") ? bk.price.replace("-", "–") : "";
+  const ghl = { source: "ghl", ghlAppointmentId: bk.apptId, ghlContactId: bk.contactId, ghlCalendar: bk.calendar, ghlStatus: bk.rawStatus || "", ghlNotes: bk.notes };
+  const note = [bk.calendar || bk.title, dayWords(t.date, t.start), bk.price ? "$" + bk.price : ""].filter(Boolean).join(", ");
+  const key = M.phoneKey(bk.phone);
+  const same = leads.filter((l) => l && !l.junk && ((bk.contactId && l.ghlContactId === bk.contactId) || (key.length >= 8 && M.phoneKey(l.phone) === key) || (bk.email && String(l.email || "").trim().toLowerCase() === bk.email)))
+    .sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
+  const sameDay = same.find((l) => l.jobDate === date);
+  if (sameDay) {
+    const w = [], cur = jobs.filter((j) => j.leadId === sameDay.id && j.date === date).sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")))[0];
+    if (cur) {
+      const p = { ...ghl, updatedAt: at };
+      if (low != null && !String(cur.price || "").trim()) p.price = bk.price;
+      if (low != null && cur.status === "Completed" && (cur.finalPrice == null || cur.finalPrice === "") && (sameDay.revenue == null || sameDay.revenue === "")) p.finalPrice = low;
+      w.push({ collection: "jobs", id: cur.id, op: "merge", data: p });
+    } else {
+      const job = J.blank({ number: J.nextNumber(jobs), leadId: sameDay.id, service, price: bk.price, finalPrice: low, date, start: t.start, end: t.end, allDay: !t.start && J.lengthOf(service, cfg).allDay,
+        status: M.stageOf(sameDay, today) === "Done" ? "Completed" : "Scheduled", notes: bk.notes, createdAt: at, createdBy: "GHL import", updatedAt: at, checkService: !mapped, ...ghl });
+      w.push({ collection: "jobs", id: "ghl-" + safeId(bk.apptId), op: "create", data: job });
+    }
+    const lp = {};
+    if (low != null && (sameDay.revenue == null || sameDay.revenue === "")) Object.assign(lp, { revenue: low, priceRange: range });
+    for (const k of ["email", "address", "suburb", "car"]) if (bk[k] && !String(sameDay[k] || "").trim()) lp[k] = bk[k];
+    if (mapped && (!sameDay.service || sameDay.service === "Not sure")) lp.service = J.serviceToLead(mapped);
+    if (!sameDay.ghlContactId && bk.contactId) lp.ghlContactId = bk.contactId;
+    if (Object.keys(lp).length) w.push({ collection: "leads", id: sameDay.id, op: "merge", data: { ...lp, updatedAt: at } });
+    return out("matched", "Matched " + (sameDay.name || "a lead") + " on " + dayWords(date) + (lp.revenue != null ? ", price $" + bk.price : "") + ".", w);
+  }
+  // Someone new to the tracker for that job: a lead, Done and paid, and its job, Completed.
+  const start = bk.start, joined = created && !isNaN(new Date(created)) && new Date(created) <= start ? new Date(created) : start;
+  const id = "ghl-" + safeId(bk.apptId);
+  const job = J.blank({ number: J.nextNumber(jobs), leadId: id, service, price: bk.price, finalPrice: low, date, start: t.start, end: t.end, allDay: !t.start && J.lengthOf(service, cfg).allDay,
+    status: "Completed", notes: bk.notes, createdAt: at, createdBy: "GHL import", updatedAt: at, checkService: !mapped, ...ghl });
+  const doc = newLead(bk, service, joined, "");
+  Object.assign(doc, {
+    stage: "Done", status: "Booked", booked: "Yes", jobDate: date, jobTime: t.start, revenue: low, priceRange: range, paid: "Yes", nextFollowUp: "",
+    completedAt: (bk.end && bk.end > start ? bk.end : start).toISOString(), reviewStatus: null, replyMins: null, importedFrom: "ghl",
+    log: [entry(start.toISOString(), "GHL booking (from the past)", note)],
+  });
+  if (same.length) doc.repeatOf = same[0].id;
+  return out("new", "New lead " + (bk.name || bk.phone || bk.email || "?") + ": job " + job.number + ", " + dayWords(date) + (bk.price ? ", $" + bk.price : ", no price") + ".",
+    [{ collection: "jobs", id, op: "create", data: job }, { collection: "leads", id, op: "create", data: M.sync(doc, today) }]);
+}
+
+/** A plan's writes, applied to the leads and jobs in hand, so the next appointment sees them. */
+export function applyWrites(state, writes) {
+  for (const w of writes) {
+    const list = w.collection === "jobs" ? state.jobs : w.collection === "leads" ? state.leads : null;
+    if (!list) continue;
+    const had = list.find((x) => x.id === w.id);
+    if (had) { if (w.op === "merge") Object.assign(had, w.data); }
+    else list.push({ id: w.id, ...w.data });
+  }
 }

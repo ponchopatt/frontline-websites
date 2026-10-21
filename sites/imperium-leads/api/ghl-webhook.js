@@ -143,5 +143,5 @@ export async function GET(request) {
   const expected = process.env.GHL_WEBHOOK_SECRET;
   if (!expected) return json({ ok: false, error: "GHL_WEBHOOK_SECRET isn't set in Vercel" }, 500);
   if (!sameSecret(givenKey(request), expected)) return json({ ok: false, error: "Not allowed" }, 401);
-  return json({ ok: true, ready: true, live: live(), note: "The GHL webhook is set up. GHL should POST bookings here." });
+  return json({ ok: true, ready: true, live: live(), apiToken: !!process.env.GHL_API_TOKEN, note: "The GHL webhook is set up. GHL should POST bookings here." });
 }
