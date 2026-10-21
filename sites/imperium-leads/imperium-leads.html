@@ -2438,15 +2438,26 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       syncJobs.migrating=false;
       return;
     }
-    if(makingJobs.size) return;
-    J.toMake(leads.filter(l=>!pendingLeads.has(l.id)),jobsAll,cfg,t,at,false).forEach(x=>{
-      makingJobs.add(x.id);
-      db.doc("jobs/"+x.id).set({...x.job, createdBy:who||""}).catch(()=>{}).finally(()=>makingJobs.delete(x.id));
-    });
+    if(!makingJobs.size && J.toMake(leads.filter(l=>!pendingLeads.has(l.id)),jobsAll,cfg,t,at,false).length) makeJobs(cfg,t);
     J.renumber(allJobs.map(j=>({id:j.id, job:j}))).forEach(r=>{
       if(renumbering.has(r.id)) return;
       renumbering.add(r.id); saveJob(r.id,{number:r.number},{fromLead:true}).finally(()=>renumbering.delete(r.id));
     });
+  }
+
+  // A booked lead with no job gets one, but only after a fresh look at the server: a phone that's
+  // just woken up can have the new leads before the jobs GHL (or the other phone) made for them.
+  async function makeJobs(cfg,t){
+    makingJobs.add("(checking)");
+    try{
+      const [ls,js]=await Promise.all([db.collection("leads").get(), db.collection("jobs").get()]);
+      const fresh=ls.docs.map(x=>migrate(Object.assign({id:x.id},x.data()))).filter(l=>!l.deleted && !pendingLeads.has(l.id));
+      for(const x of J.toMake(fresh,js.docs.map(x=>Object.assign({id:x.id},x.data())),cfg,t,new Date().toISOString(),false)){
+        makingJobs.add(x.id);
+        await db.doc("jobs/"+x.id).set({...x.job, createdBy:who||""}).catch(()=>{});
+      }
+    }catch(e){ /* tried again on the next change */ }
+    makingJobs.clear();
   }
 
   // ---------- DELETE (a test booking, a mistake) ----------

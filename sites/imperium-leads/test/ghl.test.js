@@ -200,6 +200,18 @@ test("the price comes from the description: a stated total, else the biggest dol
   assert.deepEqual([p.writes[0].data.price, p.writes[1].data.revenue], ["320", 320]);
 });
 
+test("a second booking for someone already booked: the new job has its own price, not the first job's", () => {
+  const jo = lead({ id: "jo", stage: "Booked", jobDate: "2026-10-23", jobTime: "09:00", revenue: 650 });
+  const first = { id: "ghl-appt_0", leadId: "jo", number: 1146, status: "Scheduled", service: "Other", price: "650", date: "2026-10-23", start: "09:00", end: "12:00", ghlAppointmentId: "appt_0", createdAt: at("2026-10-21") };
+  const p = planBooking(payload({}, { appointmentId: "appt_2", startTime: "2026-11-06T09:00:00", endTime: "2026-11-06T12:00:00", notes: "$700-1000" }), { leads: [jo], jobs: [first], now: NOW });
+  const job = byId(p.writes, "jobs")[0], lp = byId(p.writes, "leads")[0];
+  assert.deepEqual([job.op, job.id, job.data.price], ["create", "ghl-appt_2", "700-1000"]);
+  assert.deepEqual([lp.data.jobDate, lp.data.revenue, lp.data.priceRange], ["2026-11-06", 700, "700–1000"]);
+  // No price in the notes: the lead's price, as before.
+  const q = planBooking(payload({}, { appointmentId: "appt_3", startTime: "2026-11-06T09:00:00", notes: "" }), { leads: [jo], jobs: [first], now: NOW });
+  assert.equal(byId(q.writes, "jobs")[0].data.price, "650");
+});
+
 test("past appointments: the same day's job takes the appointment; someone new is a done, paid lead", async () => {
   const { planPast, applyWrites } = await import("../lib/ghl.js");
   const past = (o = {}, cal = {}) => payload(o, { startTime: "2026-08-10T09:00:00", endTime: "2026-08-10T12:00:00", appoinmentStatus: "showed", notes: "$300", ...cal });
