@@ -359,8 +359,19 @@ export function planPast(body, { leads = [], jobs = [], cfg = null, now = new Da
   const bk = readBooking(body), today = M.canberraDate(now), at = now.toISOString();
   const out = (kind, result, writes = []) => ({ ok: true, kind, result, writes, summary: { appointmentId: bk.apptId, name: bk.name, price: bk.price } });
   if (!bk.apptId || !bk.start) return out("skipped", "No appointment ID or time.");
-  if (jobs.some((j) => j.ghlAppointmentId === bk.apptId)) return out("already", "Already in.");
   const date = M.canberraDate(bk.start);
+  const had = jobs.find((j) => j.ghlAppointmentId === bk.apptId);
+  if (had) {
+    // In already. If a run stopped between a job and its new lead, the lead is made now.
+    if (had.deleted || leads.some((l) => l.id === had.leadId) || !String(had.leadId || "").startsWith("ghl-")) return out("already", "Already in.");
+    const past = date < today, svc = had.service || "Other", tt = when(bk, svc, cfg), lo = bk.price ? Number(bk.price.split("-")[0]) : null;
+    const doc = newLead(bk, svc, created && !isNaN(new Date(created)) && new Date(created) <= bk.start ? new Date(created) : past ? bk.start : now, "");
+    if (past) Object.assign(doc, { stage: "Done", status: "Booked", booked: "Yes", jobDate: date, jobTime: tt.start, revenue: lo, priceRange: bk.price.includes("-") ? bk.price.replace("-", "–") : "", paid: "Yes", nextFollowUp: "",
+      completedAt: (bk.end && bk.end > bk.start ? bk.end : bk.start).toISOString(), reviewStatus: null, replyMins: null, importedFrom: "ghl" });
+    else { Object.assign(doc, M.book(doc, { date: tt.date, time: tt.start, address: bk.address }, at, "GHL")); doc.replyMins = null; }
+    doc.log = (doc.log || []).concat([entry(bk.start.toISOString(), "GHL booking", [bk.calendar || bk.title, dayWords(date, tt.start)].filter(Boolean).join(", "))]);
+    return out("repaired", "Made the missing lead for job " + had.number + " (" + (bk.name || bk.phone || "?") + ").", [{ collection: "leads", id: had.leadId, op: "create", data: M.sync(doc, today) }]);
+  }
   if (date >= today) {
     const p = planBooking(body, { leads, jobs, cfg, now, turn: "", keepDates: true });
     return { ...p, kind: p.writes.length ? "upcoming" : "skipped" };

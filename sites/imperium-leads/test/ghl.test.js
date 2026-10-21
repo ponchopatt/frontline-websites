@@ -278,3 +278,14 @@ test("a GHL booking with a new number but the same full name, booked here within
   const lp = planBooking(payload({ full_name: "Jo", phone: "0411 999 888", email: "" }, { startTime: "2026-10-21T09:00:00" }), { leads: [late], jobs: [lj], now: NOW, keepDates: true });
   assert.deepEqual([lp.writes[0].id, lp.summary.matchedBy], ["lead-lt", "name and day"]);
 });
+
+test("a run that stopped between a job and its new lead: the next run makes the lead", async () => {
+  const { planPast } = await import("../lib/ghl.js");
+  const past = payload({}, { startTime: "2026-08-10T09:00:00", endTime: "2026-08-10T12:00:00", appoinmentStatus: "showed", notes: "$300" });
+  const orphan = { id: "ghl-appt_1", leadId: "ghl-appt_1", number: 1020, ghlAppointmentId: "appt_1", service: "Full Detail", date: "2026-08-10", status: "Completed" };
+  const r = planPast(past, { leads: [], jobs: [orphan], now: NOW });
+  assert.equal(r.kind, "repaired");
+  assert.deepEqual([r.writes.length, r.writes[0].collection, r.writes[0].id, r.writes[0].op, r.writes[0].data.stage, r.writes[0].data.revenue, r.writes[0].data.paid], [1, "leads", "ghl-appt_1", "create", "Done", 300, "Yes"]);
+  // With its lead there, it's simply in already.
+  assert.equal(planPast(past, { leads: [{ id: "ghl-appt_1", name: "Jo Smith" }], jobs: [orphan], now: NOW }).kind, "already");
+});

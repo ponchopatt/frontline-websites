@@ -57,15 +57,16 @@ test("a practice run says what it would bring in, and writes nothing", async () 
   }
 });
 
-test("&go=1 backs up first, then writes each job before its lead", async () => {
+test("&go=1 backs up first, then writes the new jobs, then their leads", async () => {
   const s = fake({ leads: [{ id: "l1", data: { name: "Kept", phone: "0499 999 999", stage: "Chasing" } }] });
   try {
     const out = await (await run("&go=1")).json();
     assert.equal(out.dryRun, false);
-    const w = s.calls.filter((c) => c.host === "fake.supabase.co" && c.method === "POST" && c.body && c.body.collection).map((c) => c.body.collection + "/" + c.body.id);
-    assert.deepEqual(w.slice(0, 5), ["backups/" + w[0].split("/")[1], "jobs/ghl-ev1", "leads/ghl-ev1", "jobs/ghl-ev2", "leads/ghl-ev2"]);
+    const w = s.calls.filter((c) => c.host === "fake.supabase.co" && c.method === "POST" && c.body && (c.body.collection || Array.isArray(c.body)))
+      .map((c) => (Array.isArray(c.body) ? c.body : [c.body]).map((b) => b.collection + "/" + b.id).join(" "));
     assert.ok(w[0].startsWith("backups/leads-"));
-    assert.equal(s.calls.some((c) => c.body && c.body.id === "l1"), false); // a lead not in GHL is never touched
+    assert.deepEqual(w.slice(1, 3), ["jobs/ghl-ev1 jobs/ghl-ev2", "leads/ghl-ev1 leads/ghl-ev2"]);
+    assert.equal(s.calls.some((c) => !(c.body && c.body.collection === "backups") && JSON.stringify(c.body || "").includes('"l1"')), false); // a lead not in GHL is never touched (only backed up)
   } finally {
     s.restore();
   }

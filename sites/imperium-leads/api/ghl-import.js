@@ -77,7 +77,7 @@ export async function POST(request, { fetchFn } = {}) {
     }));
     // Worked out in order, each seeing what the ones before it made.
     const state = { leads: leadRows.map((r) => ({ id: r.id, ...r.data })), jobs: jobRows.map((r) => ({ id: r.id, ...r.data })) };
-    const counts = { new: 0, matched: 0, done: 0, upcoming: 0, already: 0, skipped: 0 }, lines = [], writes = [];
+    const counts = { new: 0, matched: 0, done: 0, upcoming: 0, repaired: 0, already: 0, skipped: 0 }, lines = [], writes = [];
     let priced = 0;
     for (const ev of part) {
       const ct = people[ev.contactId];
@@ -95,19 +95,27 @@ export async function POST(request, { fetchFn } = {}) {
         await writeDoc(db, "backups", "leads-" + stamp.replace(/[:.]/g, "-"), { savedAt: stamp, reason: "before bringing in the past GHL appointments", count: leadRows.length,
           leads: leadRows.map((r) => ({ id: r.id, data: r.data })), jobs: jobRows.map((r) => ({ id: r.id, data: r.data })) });
       }
-      for (const w of writes) {
-        if (w.op === "create") {
-          const { error } = await db.from("docs").upsert({ collection: w.collection, id: w.id, data: w.data, updated_at: new Date().toISOString() }, { onConflict: "collection,id", ignoreDuplicates: true });
-          if (error) throw new Error(error.message);
-        } else {
-          const { error } = await db.rpc("docs_merge", { p_collection: w.collection, p_id: w.id, p_patch: w.data });
+      // New jobs first (all at once), then new leads, then the changes to what's there, so a stop
+      // part way never leaves a lead booked with no job (and a job left without its new lead is
+      // put right by the next run).
+      const stamp = new Date().toISOString();
+      for (const col of ["jobs", "leads"]) {
+        const rows = writes.filter((w) => w.op === "create" && w.collection === col).map((w) => ({ collection: col, id: w.id, data: w.data, updated_at: stamp }));
+        for (let i = 0; i < rows.length; i += 100) {
+          const { error } = await db.from("docs").upsert(rows.slice(i, i + 100), { onConflict: "collection,id", ignoreDuplicates: true });
           if (error) throw new Error(error.message);
         }
-        done.push(w.op + " " + w.collection + "/" + w.id);
+        done.push(rows.length + " new " + col);
       }
+      const merges = writes.filter((w) => w.op === "merge");
+      await pool(merges, 6, async (w) => {
+        const { error } = await db.rpc("docs_merge", { p_collection: w.collection, p_id: w.id, p_patch: w.data });
+        if (error) throw new Error(error.message);
+      });
+      done.push(merges.length + " changes");
     }
     const next = start + part.length < evs.length ? start + part.length : null;
-    const result = (go ? "Brought in " : "Practice run: would bring in ") + (counts.new + counts.matched + counts.done + counts.upcoming) + " of " + part.length + " appointments (" + counts.new + " new leads, " + counts.matched + " matched to jobs here, " + counts.done + " open leads now done, " + counts.upcoming + " still to come, " + counts.already + " already in, " + counts.skipped + " left out).";
+    const result = (go ? "Brought in " : "Practice run: would bring in ") + (counts.new + counts.matched + counts.done + counts.upcoming) + " of " + part.length + " appointments (" + counts.new + " new leads, " + counts.matched + " matched to jobs here, " + counts.done + " open leads now done, " + counts.upcoming + " still to come, " + counts.already + " already in, " + counts.skipped + " left out" + (counts.repaired ? ", " + counts.repaired + " missing leads made" : "") + ").";
     if (go) await writeDoc(db, "ghl_log", now.toISOString() + "-import", { at: now.toISOString(), ok: true, result, done: done.slice(0, 50), counts }).catch(() => {});
     return json({ ok: true, dryRun: !go, result, from, to, calendars: cals.map((c) => c.name), appointments: evs.length, start, end: start + part.length, next, counts, priced, lines, writes: writes.length });
   } catch (e) {
