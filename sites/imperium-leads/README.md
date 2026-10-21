@@ -45,6 +45,9 @@ buttons, one list to work through, everything rare behind a "…" menu.
 | `supabase/schema.sql` | The table, its team-only rule, live updates. |
 | `build.mjs` | Makes `public/index.html` (the page plus the phone-app tags), copies supabase-js, writes `public/config.js`. |
 
+Vercel builds this app only when something in this folder changed (`ignoreCommand` in
+`vercel.json`), so a change to another site in the repo doesn't use up a build.
+
 ## Set up (once)
 
 1. **Supabase** (free): New project `imperium-leads`, region Sydney. SQL Editor → New query →
