@@ -168,8 +168,15 @@ function when(bk, service, cfg) {
 }
 
 const OPEN = ["Scheduled", "In Progress"];
-// "Jo  Smith", "jo smith" and "Jo-Smith" are one name. Only a name with a first and last name counts.
-const nameKey = (s) => { const n = String(s ?? "").toLowerCase().replace(/[^a-z]+/g, " ").trim(); return n.includes(" ") ? n : ""; };
+// "Jo  Smith", "jo smith" and "Jo-Smith" are one name.
+const nameOf = (s) => String(s ?? "").toLowerCase().replace(/[^a-z]+/g, " ").trim();
+// The same person by name: the same first and last name; or the same first name when that's all
+// there is here and the lead here has no phone or email to say otherwise.
+const sameName = (l, name) => {
+  const a = nameOf(l && l.name), b = nameOf(name);
+  if (!a || a !== b) return false;
+  return a.includes(" ") || (M.phoneKey(l.phone).length < 8 && !String(l.email || "").trim());
+};
 const daysApart = (a, b) => (M.isDay(a) && M.isDay(b) ? Math.abs(M.daysBetween(a, b)) : 99);
 const safeId = (s) => String(s).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 80);
 const entry = (at, outcome, note = "") => ({ at, by: "GHL", type: "note", outcome, note });
@@ -205,11 +212,10 @@ export function findLead(leads, phone, email, today, contactId, name, date) {
       same.find((l) => M.isOpen(l, today) || (M.stageOf(l, today) !== "Done" && M.isDay(dayOf(l)) && M.daysBetween(dayOf(l), today) <= 30));
     return hit ? { lead: hit, by } : { repeatOf: same[0].id, by };
   }
-  // A different number or email, but the same full name booked within 3 days: the same booking
-  // (often typed in here first, from a call).
-  const nk = nameKey(name);
-  if (nk && M.isDay(date)) {
-    const near = real.filter((l) => nameKey(l.name) === nk && M.stageOf(l, today) === "Booked" && daysApart(l.jobDate, date) <= 3)
+  // A different number or email, but the same name (see sameName) booked within 3 days: the same
+  // booking (often typed in here first, from a call).
+  if (nameOf(name) && M.isDay(date)) {
+    const near = real.filter((l) => sameName(l, name) && M.stageOf(l, today) === "Booked" && daysApart(l.jobDate, date) <= 3)
       .sort((a, b) => daysApart(a.jobDate, date) - daysApart(b.jobDate, date))[0];
     if (near) return { lead: near, by: "name and day" };
   }
@@ -367,7 +373,7 @@ export function planPast(body, { leads = [], jobs = [], cfg = null, now = new Da
   const key = M.phoneKey(bk.phone);
   const same = leads.filter((l) => l && !l.junk && !l.deleted && ((bk.contactId && l.ghlContactId === bk.contactId) || (key.length >= 8 && M.phoneKey(l.phone) === key) || (bk.email && String(l.email || "").trim().toLowerCase() === bk.email)))
     .sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
-  const nk = nameKey(bk.name), byName = nk ? leads.filter((l) => l && !l.junk && !l.deleted && nameKey(l.name) === nk && !same.includes(l)) : [];
+  const byName = leads.filter((l) => l && !l.junk && !l.deleted && sameName(l, bk.name) && !same.includes(l));
   const sameDay = same.concat(byName).filter((l) => daysApart(l.jobDate, date) <= 3).sort((a, b) => daysApart(a.jobDate, date) - daysApart(b.jobDate, date))[0];
   if (sameDay) {
     const w = [], cur = jobs.filter((j) => j.leadId === sameDay.id && !j.deleted && daysApart(j.date, date) <= 3).sort((a, b) => daysApart(a.date, date) - daysApart(b.date, date) || String(b.createdAt || "").localeCompare(String(a.createdAt || "")))[0];

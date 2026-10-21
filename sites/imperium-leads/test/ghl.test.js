@@ -252,8 +252,10 @@ test("history: the same full name with a job within 3 days is that job; an open 
   const m = planPast(past(), { leads: [jo], jobs: [jj], now: NOW });
   assert.deepEqual([m.kind, m.writes[0].id, "date" in m.writes[0].data], ["matched", "lead-jo", false]);
   assert.match(m.result, /here it's Fri 2 Oct/);
-  // Only a first name here: not matched on the name alone.
-  assert.equal(planPast(past(), { leads: [{ ...jo, name: "Jo" }], jobs: [jj], now: NOW }).kind, "new");
+  // Only a first name, and a different phone here: not matched on the name alone.
+  assert.equal(planPast(past({ full_name: "Jo" }), { leads: [{ ...jo, name: "Jo" }], jobs: [jj], now: NOW }).kind, "new");
+  // Only a first name both sides, and no phone or email here to say otherwise: matched.
+  assert.equal(planPast(past({ full_name: "Jo" }), { leads: [{ ...jo, name: "Jo", phone: "", email: "" }], jobs: [jj], now: NOW }).kind, "matched");
   // Still Chasing here, but GHL says the job was done: that lead is Done with this job.
   const ch = lead({ id: "ch", phone: "0411 999 888", stage: "Chasing", touches: 2, date: "2026-09-28", jobDate: "" });
   const d = planPast(past(), { leads: [ch], jobs: [], now: NOW });
