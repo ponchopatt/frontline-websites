@@ -314,7 +314,8 @@ also go in an `x-ghl-secret` header). Anything without the key is turned away (4
   and the job shows **Check service** until someone picks one on the job.
 - **Filled in from GHL**: the car ("Type Of Vehicle"), how soon ("How Soon?"), suburb, address,
   email, and which ad (GHL's utm content). On a lead already here only the empty ones are filled;
-  nothing it has is changed. A lead is matched by its GHL contact first, then phone, then email.
+  nothing it has is changed. A lead is matched by its GHL contact first, then phone, then email, then the same full name
+  booked within 3 days (often typed in here first, from a call).
 - **The same appointment again**: a new time moves the job (and the lead's day and time);
   cancelled cancels the job and moves the lead back to Chasing; no-show flags the job
   **No-show**; showed leaves it as it is.
@@ -332,8 +333,11 @@ Brings in every GHL appointment from two years back to a year ahead (`&from=` an
 change it), with a private integration token in `GHL_API_TOKEN` (GHL → Settings → Private
 Integrations: view calendars, calendar events, contacts and opportunities). The sub-account is
 `GHL_LOCATION_ID`, else the one the last booking came from.
-- Already here (the same person with a job that day): that job takes the appointment ID, and the
-  job and lead get the price if they have none. Nothing else on the lead changes.
+- Already here (the same person, by GHL contact, phone, email or full name, with a job within 3
+  days): that job takes the appointment ID, and the job and lead get the price if they have none.
+  Its day isn't moved (the answer says when GHL's differs). Nothing else on the lead changes.
+- Still open here (New, Chasing or Waiting, no job day) but GHL says the job happened within two
+  months of them coming in: that lead is Done and paid, with this job.
 - Someone new: a lead (from the day GHL first had them), Done and paid, with its job Completed.
   A customer from before is marked as a repeat. Still to come: a normal booking.
 - Cancelled and no-shows are left out. The price is the description's, else the contact's

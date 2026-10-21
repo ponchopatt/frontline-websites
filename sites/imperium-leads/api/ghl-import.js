@@ -10,8 +10,9 @@ import { isTeam } from "../lib/team.js";
   token in GHL_API_TOKEN (GHL → Settings → Private Integrations).
 
   Each appointment from `from` to `to` (two years back to a year ahead, by default) goes through
-  planPast (lib/ghl.js): matched to its lead, or a new lead and its job; the price read from its
-  description, else its opportunity's value. Nothing is changed on a lead but the gaps.
+  planPast (lib/ghl.js): matched to its lead's job, an open lead made Done with it, or a new lead
+  and its job; the price read from its description, else its opportunity's value. A lead keeps
+  what it has; only the gaps are filled.
 
   It's a practice run unless &go=1 (and only the live site ever writes): it answers what it
   would do. A real run backs up every lead and job first. A run does up to `max` appointments
@@ -76,14 +77,14 @@ export async function POST(request, { fetchFn } = {}) {
     }));
     // Worked out in order, each seeing what the ones before it made.
     const state = { leads: leadRows.map((r) => ({ id: r.id, ...r.data })), jobs: jobRows.map((r) => ({ id: r.id, ...r.data })) };
-    const counts = { new: 0, matched: 0, upcoming: 0, already: 0, skipped: 0 }, lines = [], writes = [];
+    const counts = { new: 0, matched: 0, done: 0, upcoming: 0, already: 0, skipped: 0 }, lines = [], writes = [];
     let priced = 0;
     for (const ev of part) {
       const ct = people[ev.contactId];
       const body = bodyFor(ev, ct, calName[ev.calendarId], fieldNames, values[ev.contactId] || 0);
       const p = planPast(body, { leads: state.leads, jobs: state.jobs, cfg: J.settings(cfg || {}), now, created: ct && ct.dateAdded });
       counts[p.kind] = (counts[p.kind] || 0) + 1;
-      if (p.summary.price || values[ev.contactId]) priced += p.kind === "new" || p.kind === "matched" ? 1 : 0;
+      if (p.summary.price || values[ev.contactId]) priced += ["new", "matched", "done"].includes(p.kind) ? 1 : 0;
       if (p.writes.length) { applyWrites(state, p.writes); writes.push(...p.writes); }
       if (lines.length < 400) lines.push(String(ev.startTime).slice(0, 10) + " " + (calName[ev.calendarId] || "") + ": " + p.result);
     }
@@ -106,7 +107,7 @@ export async function POST(request, { fetchFn } = {}) {
       }
     }
     const next = start + part.length < evs.length ? start + part.length : null;
-    const result = (go ? "Brought in " : "Practice run: would bring in ") + (counts.new + counts.matched + counts.upcoming) + " of " + part.length + " appointments (" + counts.new + " new leads, " + counts.matched + " matched to leads here, " + counts.upcoming + " still to come, " + counts.already + " already in, " + counts.skipped + " left out).";
+    const result = (go ? "Brought in " : "Practice run: would bring in ") + (counts.new + counts.matched + counts.done + counts.upcoming) + " of " + part.length + " appointments (" + counts.new + " new leads, " + counts.matched + " matched to jobs here, " + counts.done + " open leads now done, " + counts.upcoming + " still to come, " + counts.already + " already in, " + counts.skipped + " left out).";
     if (go) await writeDoc(db, "ghl_log", now.toISOString() + "-import", { at: now.toISOString(), ok: true, result, done: done.slice(0, 50), counts }).catch(() => {});
     return json({ ok: true, dryRun: !go, result, from, to, calendars: cals.map((c) => c.name), appointments: evs.length, start, end: start + part.length, next, counts, priced, lines, writes: writes.length });
   } catch (e) {

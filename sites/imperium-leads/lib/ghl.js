@@ -168,6 +168,9 @@ function when(bk, service, cfg) {
 }
 
 const OPEN = ["Scheduled", "In Progress"];
+// "Jo  Smith", "jo smith" and "Jo-Smith" are one name. Only a name with a first and last name counts.
+const nameKey = (s) => { const n = String(s ?? "").toLowerCase().replace(/[^a-z]+/g, " ").trim(); return n.includes(" ") ? n : ""; };
+const daysApart = (a, b) => (M.isDay(a) && M.isDay(b) ? Math.abs(M.daysBetween(a, b)) : 99);
 const safeId = (s) => String(s).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 80);
 const entry = (at, outcome, note = "") => ({ at, by: "GHL", type: "note", outcome, note });
 const changed = (patch, old) => Object.fromEntries(Object.entries(patch).filter(([k, v]) => JSON.stringify(v) !== JSON.stringify(old[k])));
@@ -178,11 +181,12 @@ const dayWords = (date, start) => {
 };
 
 /**
-  The lead a booking belongs to: by its GHL contact, then phone, then email. A lead still open, booked, or from the
+  The lead a booking belongs to: by its GHL contact, then phone, then email, then the same full
+  name booked within 3 days. A lead still open, booked, or from the
   last 30 days is used; someone whose job is done (or from longer ago) gets a new lead marked as a
   repeat of the old one, so the old job and its takings stay as they were.
 */
-export function findLead(leads, phone, email, today, contactId) {
+export function findLead(leads, phone, email, today, contactId, name, date) {
   const real = (leads || []).filter((l) => l && !l.junk && !l.deleted);
   if (contactId) {
     const same = real.filter((l) => l.ghlContactId === contactId && M.stageOf(l, today) !== "Done");
@@ -200,6 +204,14 @@ export function findLead(leads, phone, email, today, contactId) {
     const hit = same.find((l) => M.stageOf(l, today) === "Booked") ||
       same.find((l) => M.isOpen(l, today) || (M.stageOf(l, today) !== "Done" && M.isDay(dayOf(l)) && M.daysBetween(dayOf(l), today) <= 30));
     return hit ? { lead: hit, by } : { repeatOf: same[0].id, by };
+  }
+  // A different number or email, but the same full name booked within 3 days: the same booking
+  // (often typed in here first, from a call).
+  const nk = nameKey(name);
+  if (nk && M.isDay(date)) {
+    const near = real.filter((l) => nameKey(l.name) === nk && M.stageOf(l, today) === "Booked" && daysApart(l.jobDate, date) <= 3)
+      .sort((a, b) => daysApart(a.jobDate, date) - daysApart(b.jobDate, date))[0];
+    if (near) return { lead: near, by: "name and day" };
   }
   return {};
 }
@@ -223,7 +235,7 @@ function newLead(bk, service, now, owner) {
   What to do with one GHL request. `leads` and `jobs` are [{ id, ...data }]; `turn` is whose turn a
   new lead is ("Angus" or "Ananth"). Nothing is written here.
 */
-export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new Date(), turn = "Angus" } = {}) {
+export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new Date(), turn = "Angus", keepDates = false } = {}) {
   const bk = readBooking(body), at = now.toISOString(), today = M.canberraDate(now);
   const out = (ok, result, writes = [], extra = {}) => ({ ok, result, writes, summary: { appointmentId: bk.apptId, name: bk.name, status: bk.status, ...extra } });
   if (!bk.apptId) return out(false, "No appointment ID in what GHL sent, so nothing was changed.");
@@ -280,18 +292,19 @@ export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new
   // ---- A booking we don't have yet.
   if (bk.status !== "booked") return out(true, "Ignored: " + (bk.rawStatus || bk.status) + " for a booking that isn't here.");
   if (!bk.phone && !bk.email && !bk.name) return out(false, "No name, phone or email in what GHL sent, so nothing was changed.");
-  const found = findLead(leads, bk.phone, bk.email, today, bk.contactId);
   const mapped = J.serviceFromText(bk.calendar) || J.serviceFromText(bk.title) || J.serviceFromText(bk.serviceAnswer);
   const service = mapped || "Other", t = when(bk, service, cfg);
+  const found = findLead(leads, bk.phone, bk.email, today, bk.contactId, bk.name, t.date);
   const ghl = { source: "ghl", ghlAppointmentId: bk.apptId, ghlContactId: bk.contactId, ghlCalendar: bk.calendar, ghlStatus: bk.rawStatus || "booked", ghlNotes: bk.notes };
   const writes = [];
-  let lead = found.lead || null, jobId, number, jobData;
+  let lead = found.lead || null, jobId, number, jobData, differs = "";
   const cur = lead ? J.currentJob(jobs, lead.id) : null;
   if (cur && OPEN.includes(cur.status || "Scheduled") && !cur.ghlAppointmentId) {
     // Already booked here: that job takes the GHL booking's time.
     jobId = cur.id; number = cur.number;
     jobData = { ...ghl, date: t.date, start: t.start, end: t.end, allDay: !t.start && cur.allDay, ...(mapped && mapped !== cur.service ? { service: mapped } : {}), updatedAt: at };
-    if (!t.date) { delete jobData.date; delete jobData.start; delete jobData.end; delete jobData.allDay; }
+    if (!t.date || (keepDates && M.isDay(cur.date))) { delete jobData.date; delete jobData.start; delete jobData.end; delete jobData.allDay; }
+    if (keepDates && cur.date !== t.date) differs = "here it's " + dayWords(cur.date, cur.start) + ", GHL says " + dayWords(t.date, t.start);
     writes.push({ collection: "jobs", id: jobId, op: "merge", data: jobData });
     jobData = { ...cur, ...jobData };
   } else {
@@ -303,7 +316,8 @@ export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new
   }
   const note = [bk.calendar || bk.title, dayWords(t.date, t.start)].filter(Boolean).join(", ");
   if (lead) {
-    let lp = M.stageOf(lead, today) !== "Booked" ? M.book(lead, { date: t.date, time: t.start, ...(lead.address ? {} : { address: bk.address }) }, at, "GHL") : { jobDate: t.date || lead.jobDate, jobTime: t.start || lead.jobTime || "" };
+    let lp = M.stageOf(lead, today) !== "Booked" ? M.book(lead, { date: t.date, time: t.start, ...(lead.address ? {} : { address: bk.address }) }, at, "GHL")
+      : differs ? {} : { jobDate: t.date || lead.jobDate, jobTime: t.start || lead.jobTime || "" };
     for (const k of ["email", "address", "suburb", "car", "name"]) if (bk[k] && !String(lead[k] || "").trim()) lp[k] = bk[k];
     if (mapped && (!lead.service || lead.service === "Not sure")) lp.service = J.serviceToLead(mapped);
     if (bk.ad && !lead.ad && !lead.fromAd) Object.assign(lp, { ad: bk.ad, fromAd: "ad" });
@@ -315,7 +329,7 @@ export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new
     const merged = M.sync({ ...lead, ...lp, updatedAt: at }, today), p = changed(merged, lead);
     delete p.id;
     writes.push({ collection: "leads", id: lead.id, op: "merge", data: p });
-    return out(true, "Booked " + (lead.name || "the lead") + " (found by " + found.by + "): job " + number + ", " + dayWords(t.date, t.start) + (mapped ? "" : ". Check service") + ".", writes, { jobId, number, leadId: lead.id, matchedBy: found.by });
+    return out(true, (differs ? "Linked to " + (lead.name || "the lead") + "'s booking (found by " + found.by + "): job " + number + "; " + differs : "Booked " + (lead.name || "the lead") + " (found by " + found.by + "): job " + number + ", " + dayWords(t.date, t.start)) + (mapped ? "" : ". Check service") + ".", writes, { jobId, number, leadId: lead.id, matchedBy: found.by, differs });
   }
   const doc = newLead(bk, service, now, turn);
   if (found.repeatOf) doc.repeatOf = found.repeatOf;
@@ -341,7 +355,7 @@ export function planPast(body, { leads = [], jobs = [], cfg = null, now = new Da
   if (jobs.some((j) => j.ghlAppointmentId === bk.apptId)) return out("already", "Already in.");
   const date = M.canberraDate(bk.start);
   if (date >= today) {
-    const p = planBooking(body, { leads, jobs, cfg, now, turn: "" });
+    const p = planBooking(body, { leads, jobs, cfg, now, turn: "", keepDates: true });
     return { ...p, kind: p.writes.length ? "upcoming" : "skipped" };
   }
   if (bk.status === "cancelled" || bk.status === "noshow") return out("skipped", (bk.status === "noshow" ? "No-show" : "Cancelled") + ": left out.");
@@ -353,9 +367,10 @@ export function planPast(body, { leads = [], jobs = [], cfg = null, now = new Da
   const key = M.phoneKey(bk.phone);
   const same = leads.filter((l) => l && !l.junk && !l.deleted && ((bk.contactId && l.ghlContactId === bk.contactId) || (key.length >= 8 && M.phoneKey(l.phone) === key) || (bk.email && String(l.email || "").trim().toLowerCase() === bk.email)))
     .sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
-  const sameDay = same.find((l) => l.jobDate === date);
+  const nk = nameKey(bk.name), byName = nk ? leads.filter((l) => l && !l.junk && !l.deleted && nameKey(l.name) === nk && !same.includes(l)) : [];
+  const sameDay = same.concat(byName).filter((l) => daysApart(l.jobDate, date) <= 3).sort((a, b) => daysApart(a.jobDate, date) - daysApart(b.jobDate, date))[0];
   if (sameDay) {
-    const w = [], cur = jobs.filter((j) => j.leadId === sameDay.id && j.date === date).sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")))[0];
+    const w = [], cur = jobs.filter((j) => j.leadId === sameDay.id && !j.deleted && daysApart(j.date, date) <= 3).sort((a, b) => daysApart(a.date, date) - daysApart(b.date, date) || String(b.createdAt || "").localeCompare(String(a.createdAt || "")))[0];
     if (cur) {
       const p = { ...ghl, updatedAt: at };
       if (low != null && !String(cur.price || "").trim()) p.price = bk.price;
@@ -372,7 +387,25 @@ export function planPast(body, { leads = [], jobs = [], cfg = null, now = new Da
     if (mapped && (!sameDay.service || sameDay.service === "Not sure")) lp.service = J.serviceToLead(mapped);
     if (!sameDay.ghlContactId && bk.contactId) lp.ghlContactId = bk.contactId;
     if (Object.keys(lp).length) w.push({ collection: "leads", id: sameDay.id, op: "merge", data: { ...lp, updatedAt: at } });
-    return out("matched", "Matched " + (sameDay.name || "a lead") + " on " + dayWords(date) + (lp.revenue != null ? ", price $" + bk.price : "") + ".", w);
+    const off = sameDay.jobDate !== date ? " (here it's " + dayWords(sameDay.jobDate) + ")" : "";
+    return out("matched", "Matched " + (sameDay.name || "a lead") + " on " + dayWords(date) + off + (lp.revenue != null ? ", price $" + bk.price : "") + ".", w);
+  }
+  // Still open here (New, Chasing or Waiting, no job day) but GHL says the job happened, in the two
+  // months after they came in: that lead is Done, with this job.
+  const open = same.concat(byName).filter((l) => M.isOpen(l, today) && !M.isDay(l.jobDate) && M.isDay(l.date) && l.date <= date && M.daysBetween(l.date, date) <= 60)[0];
+  if (open) {
+    const id = "ghl-" + safeId(bk.apptId);
+    const job = J.blank({ number: J.nextNumber(jobs), leadId: open.id, service, price: bk.price, finalPrice: low, date, start: t.start, end: t.end, allDay: !t.start && J.lengthOf(service, cfg).allDay,
+      status: "Completed", notes: bk.notes, createdAt: at, createdBy: "GHL import", updatedAt: at, checkService: !mapped, ...ghl });
+    const lp = { ...M.setStage(open, "Done", today), jobDate: date, jobTime: t.start, completedAt: (bk.end && bk.end > bk.start ? bk.end : bk.start).toISOString(),
+      log: (open.log || []).concat([entry(bk.start.toISOString(), "GHL booking (from the past)", note)]), updatedAt: at };
+    if (low != null && (open.revenue == null || open.revenue === "")) Object.assign(lp, { revenue: low, priceRange: range });
+    if (!open.paid) lp.paid = "Yes";
+    for (const k of ["email", "address", "suburb", "car"]) if (bk[k] && !String(open[k] || "").trim()) lp[k] = bk[k];
+    if (mapped && (!open.service || open.service === "Not sure")) lp.service = J.serviceToLead(mapped);
+    if (!open.ghlContactId && bk.contactId) lp.ghlContactId = bk.contactId;
+    return out("done", "Done: " + (open.name || "a lead") + " was " + M.stageOf(open, today) + " here, GHL says the job was " + dayWords(date) + (bk.price ? ", $" + bk.price : "") + ".",
+      [{ collection: "jobs", id, op: "create", data: job }, { collection: "leads", id: open.id, op: "merge", data: lp }]);
   }
   // Someone new to the tracker for that job: a lead, Done and paid, and its job, Completed.
   const start = bk.start, joined = created && !isNaN(new Date(created)) && new Date(created) <= start ? new Date(created) : start;
