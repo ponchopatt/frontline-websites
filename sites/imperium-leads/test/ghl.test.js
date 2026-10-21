@@ -189,3 +189,46 @@ test("the GHL contact is matched first, even with a new phone number", () => {
   const p = planBooking(payload(), { leads: [jo, lead({ id: "other", phone: "0400111222" })], now: NOW });
   assert.deepEqual([p.writes[1].id, p.summary.matchedBy], ["jo", "GHL contact"]);
 });
+
+test("the price comes from the description: a stated total, else the biggest dollar amount", async () => {
+  const { priceFromText } = await import("../lib/ghl.js");
+  const cases = { "$280": "280", "Full detail $1,200": "1200", "$280-350": "280-350", "quote 320": "320", "Total: $450.00": "450", "Deposit $50. Total $380": "380",
+    "Paid $50 deposit, rest $330 on the day": "330", "350 dollars": "350", "12 Example St 2912": "", "call 0400 111 222": "", "Interior $5": "" };
+  for (const [t, want] of Object.entries(cases)) assert.equal(priceFromText(t), want, t);
+  // A booking with its price in the description: the job and the new lead have it.
+  const p = planBooking(payload({}, { notes: "Full detail, quoted $320" }), { now: NOW });
+  assert.deepEqual([p.writes[0].data.price, p.writes[1].data.revenue], ["320", 320]);
+});
+
+test("past appointments: the same day's job takes the appointment; someone new is a done, paid lead", async () => {
+  const { planPast, applyWrites } = await import("../lib/ghl.js");
+  const past = (o = {}, cal = {}) => payload(o, { startTime: "2026-08-10T09:00:00", endTime: "2026-08-10T12:00:00", appoinmentStatus: "showed", notes: "$300", ...cal });
+  // Already here, with a job that day and no price: the job gets the appointment and the price.
+  const jo = lead({ id: "jo", phone: "0400111222", stage: "Done", jobDate: "2026-08-10", revenue: null });
+  const jj = { id: "lead-jo", leadId: "jo", number: 1001, date: "2026-08-10", status: "Completed", price: "", finalPrice: null, createdAt: at("2026-08-01") };
+  const m = planPast(past(), { leads: [jo], jobs: [jj], now: NOW });
+  assert.equal(m.kind, "matched");
+  assert.deepEqual([m.writes[0].id, m.writes[0].data.ghlAppointmentId, m.writes[0].data.price, m.writes[0].data.finalPrice], ["lead-jo", "appt_1", "300", 300]);
+  assert.deepEqual([m.writes[1].data.revenue, "stage" in m.writes[1].data], [300, false]);
+  // A price already on the lead (from the End of day form) is kept.
+  const kept = planPast(past(), { leads: [{ ...jo, revenue: 280 }], jobs: [jj], now: NOW });
+  assert.equal("revenue" in (kept.writes.find((w) => w.collection === "leads") || { data: {} }).data, false); // only the gaps are filled
+  assert.equal(kept.writes[0].data.finalPrice, undefined);
+  // Someone new: a lead from when GHL first had them, Done and paid, its job Completed.
+  const n = planPast(past(), { leads: [], jobs: [{ id: "x", number: 1010 }], now: NOW, created: "2026-07-01T00:00:00Z" });
+  assert.equal(n.kind, "new");
+  const [job, l] = [n.writes[0].data, n.writes[1].data];
+  assert.deepEqual([job.number, job.status, job.finalPrice, job.date, job.start, job.end, job.ghlAppointmentId], [1011, "Completed", 300, "2026-08-10", "09:00", "12:00", "appt_1"]);
+  assert.deepEqual([l.stage, l.paid, l.revenue, l.jobDate, l.date, l.source, l.owner, l.importedFrom], ["Done", "Yes", 300, "2026-08-10", "2026-07-01", "GHL booking", "", "ghl"]);
+  // Brought in once: the next run finds it already in.
+  const state = { leads: [], jobs: [] };
+  applyWrites(state, n.writes);
+  assert.equal(planPast(past(), { ...state, now: NOW }).kind, "already");
+  // A repeat customer from before: a new lead, marked as a repeat.
+  const old = lead({ id: "old", phone: "0400111222", stage: "Done", jobDate: "2026-03-01" });
+  assert.equal(planPast(past(), { leads: [old], jobs: [], now: NOW }).writes[1].data.repeatOf, "old");
+  // Left out: cancelled and no-shows. Still to come: a normal booking.
+  assert.equal(planPast(past({}, { appoinmentStatus: "cancelled" }), { now: NOW }).kind, "skipped");
+  assert.equal(planPast(past({}, { appoinmentStatus: "noshow" }), { now: NOW }).kind, "skipped");
+  assert.equal(planPast(payload(), { now: NOW }).kind, "upcoming");
+});
