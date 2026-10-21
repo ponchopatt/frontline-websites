@@ -292,8 +292,11 @@ also go in an `x-ghl-secret` header). Anything without the key is turned away (4
   marked as a repeat, so the old job stays as it was. The job keeps GHL's appointment ID
   (`ghlAppointmentId`), so the same booking is never added twice, and shows **From GHL**.
 - **Service** comes from the calendar's name, else the appointment's title ("Ceramic Coating",
-  "Interior Detail"…). If neither says, it's Other and the job shows **Check service** until
-  someone picks one on the job.
+  "Interior Detail"…), else the contact's form answer ("What Service"). If none says, it's Other
+  and the job shows **Check service** until someone picks one on the job.
+- **Filled in from GHL**: the car ("Type Of Vehicle"), how soon ("How Soon?"), suburb, address,
+  email, and which ad (GHL's utm content). On a lead already here only the empty ones are filled;
+  nothing it has is changed. A lead is matched by its GHL contact first, then phone, then email.
 - **The same appointment again**: a new time moves the job (and the lead's day and time);
   cancelled cancels the job and moves the lead back to Chasing; no-show flags the job
   **No-show**; showed leaves it as it is.
