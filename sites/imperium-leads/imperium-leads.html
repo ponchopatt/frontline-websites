@@ -1491,14 +1491,14 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     $("#week").innerHTML='<div class="eyebrow"><span>This week (Mon to Sun)</span><span>Both of you</span></div>'+
       '<div class="big">'+money(m.total)+' <span>of '+money(m.goal)+' target</span></div>'+
       '<div class="gbar" role="img" aria-label="'+m.pct+'% of the target"><i class="d" style="width:'+pc(m.done)+'"></i><i class="k" style="width:'+pc(m.booked)+'"></i></div>'+
-      '<div class="key"><span><i class="sw" style="background:var(--good)"></i>Done <b>'+money(m.done)+'</b></span><span><i class="sw" style="background:var(--accent);opacity:.45"></i>Booked <b>'+money(m.booked)+'</b></span>'+
+      '<div class="key"><span><i class="sw" style="background:var(--good)"></i>Done <b>'+money(m.done)+'</b></span><span><i class="sw" style="background:var(--accent);opacity:.45"></i>Still to come <b>'+money(m.booked)+'</b></span>'+
         '<span>'+(m.left?'<b>'+money(m.left)+'</b> to go · '+left:m.done>=m.goal?'<b>Target hit!</b>':'<b>Booked to hit it</b> · '+left)+'</span></div>'+
       '<div class="tiles">'+tile(w.jobsDone.n,"Jobs done","","wJobs")+tile(w.ceramics.n,"Ceramics sold","","wCeramic")+tile(w.plans.n,"New plans","","wPlans")+
         tile(rep==null?"–":rep+"%","Replied ≤5 min",rep==null?"":rep>=80?"good":rep>=50?"warn":"bad","wReplied")+
         tile(pct(w.upsell.ceramic,w.upsell.jobs),"Offered ceramic","","wUpsell")+tile(pct(w.upsell.plan,w.upsell.jobs),"Offered plan","","wUpsell")+'</div>'+
       '<div class="eyebrow"><span>How fast we first reply</span><span>'+w.replied.of+' new '+(w.replied.of===1?"lead":"leads")+'</span></div>'+
       (w.replied.of?'<div class="tbl"><table>'+w.replied.buckets.map(b=>'<tr data-drill="'+esc("wSpeed:"+b.key)+'" tabindex="0"><td>'+(b.key==="none"?esc(b.label):'<span class="fctag fc-'+esc(b.key)+'">'+esc(b.label)+'</span>')+'<div class="bar"><i style="width:'+b.pct+'%"></i></div></td><td class="n">'+b.pct+'%</td><td class="n">'+b.n+'</td></tr>').join("")+'</table></div>':'<p class="help">No new leads this week yet.</p>')+
-      '<p class="help">Money is this week\'s jobs by job day. Target and ad names are in Settings (⚙).</p>';
+      '<p class="help">Only jobs on this week\'s days count, whenever they were booked. Done is jobs up to today, still to come is the rest of the week. Target and ad names are in Settings (⚙).</p>';
   }
   // A lead in a reply-speed run-down: its bucket, and whether it was picked by hand or the app's time.
   function speedItem(l,h){
