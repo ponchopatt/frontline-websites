@@ -216,7 +216,7 @@ export function findLead(leads, phone, email, today, contactId, name, date) {
   // booking (often typed in here first, from a call).
   if (nameOf(name) && M.isDay(date)) {
     // Booked here (its day may have just passed without being marked done).
-    const near = real.filter((l) => sameName(l, name) && (M.stageOf(l, today) === "Booked" || (l.stage === "Booked" && !l.completedAt)) && daysApart(l.jobDate, date) <= 3)
+    const near = real.filter((l) => sameName(l, name) && (M.stageOf(l, today) === "Booked" || (!l.completedAt && M.stageOf(l, today) === "Done")) && daysApart(l.jobDate, date) <= 3)
       .sort((a, b) => daysApart(a.jobDate, date) - daysApart(b.jobDate, date))[0];
     if (near) return { lead: near, by: "name and day" };
   }
