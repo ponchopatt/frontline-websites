@@ -96,7 +96,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .b.two{white-space:normal;line-height:1.1;font-size:13px;text-align:center}
 .do2{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:6px}
 .b.alt{background:var(--good-bg);color:var(--good);border-color:transparent;text-transform:none;letter-spacing:0}
-.lead .lastnote{font-size:13.5px;line-height:1.35;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--surface2);border-radius:8px;padding:6px 10px}
+.lead .lastnote,.sheet .lastnote{font-size:13.5px;line-height:1.35;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--surface2);border-radius:8px;padding:6px 10px}
 .lead .addr{display:flex;align-items:center;gap:6px;min-height:40px;padding:4px 0;font-size:14px;font-weight:600;color:var(--accent);text-decoration:none;line-height:1.3;overflow-wrap:anywhere}
 .lead .addr svg{flex:0 0 18px;width:18px;height:18px}
 .lead .when{font-weight:700;color:var(--text);font-size:14.5px}
@@ -443,6 +443,21 @@ body.cal.cal-wide main{max-width:1400px}
   .wk-rl{gap:4px;padding:6px 5px}
   .wk-rl .av{width:24px;height:24px;flex-basis:24px;font-size:10px}
 }
+/* The lead's … menu. */
+.macts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.mact{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:64px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;font-size:13px;font-weight:700;text-decoration:none;cursor:pointer;padding:6px 2px}
+.mact svg{width:22px;height:22px;color:var(--accent)}
+.mact.off{color:var(--muted);grid-column:span 2;cursor:default}
+.mact.off svg{color:var(--muted)}
+.mact:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.msec{display:flex;flex-direction:column;gap:8px}
+.seg.pills{flex-wrap:nowrap;gap:5px}
+.seg.pills button{flex:1 1 0;min-width:0;min-height:44px;font-size:13px;padding:0 2px;border-radius:999px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mn{background:var(--surface2);border-radius:999px;padding:1px 8px;font-size:12px;margin-left:4px}
+details.more-f > summary .mn{color:var(--muted)}
+.mhist{display:flex;flex-direction:column;gap:10px;padding-top:4px}
+.linkdel{align-self:center;background:none;border:0;color:var(--bad);font:inherit;font-size:14px;font-weight:700;min-height:44px;padding:0 14px;cursor:pointer;border-radius:10px;margin-top:4px}
+.linkdel:focus-visible{outline:2px solid var(--bad)}
 .jtags{display:flex;flex-wrap:wrap;gap:6px}
 .jtag{font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 8px;border-radius:999px;background:var(--surface);color:var(--text);border:1px solid var(--line)}
 .jtag.warn{background:var(--warn-bg);color:var(--warn-ink);border-color:transparent}
@@ -985,7 +1000,14 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   // Calls and texts often happen before they're logged here, so this is picked by hand. It wins
   // over the app's own reply time in the Numbers.
   const FC_TAG={"5":"⚡ 5 min","30":"5–30 min","30plus":"30 min+","nextday":"Next day"};
-  const fcButtons = cur => '<div class="fcpick">'+M.FIRST_CONTACT_KEYS.map(k=>'<button type="button" data-fc="'+k+'" aria-pressed="'+(cur===k)+'">'+esc(M.FIRST_CONTACT[k])+'</button>').join("")+'</div>';
+  const FC_SHORT={"5":"≤5 min","30":"5–30 min","30plus":"30 min+","nextday":"Next day"};
+  // Big buttons in the pop-up; one row of small ones (compact) in the … menu.
+  const fcButtons = (cur,compact) => '<div class="'+(compact?"seg pills":"fcpick")+'">'+M.FIRST_CONTACT_KEYS.map(k=>'<button type="button" data-fc="'+k+'" aria-pressed="'+(cur===k)+'" title="'+esc(M.FIRST_CONTACT[k])+'">'+esc(compact?FC_SHORT[k]:M.FIRST_CONTACT[k])+'</button>').join("")+'</div>';
+  const IC=(d)=>'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="'+d+'"/></svg>';
+  const IC_CALL=IC("M5 4h3l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z");
+  const IC_TEXT=IC("M4 5h16v11H8l-4 4z");
+  const IC_NOTE=IC("M5 4h10l4 4v12H5zM14 4v5h5M8 13h8M8 17h5");
+  const IC_EDIT=IC("M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4");
   async function setFirstContact(id,key){
     const l=current(id); if(!l||!db) return false;
     const clear = l.firstContact===key;
@@ -1152,26 +1174,39 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   function openMenu(id,pick){
     const l=current(id); if(!l) return;
     const st=stage(l), cj=J.currentJob(jobsAll,id), job=cj&&!cj.deleted?cj:null;
+    // Quick actions on top; status, first contact and tag one row each; notes and history folded away.
+    const ph=digits(l.phone), notes=M.callNotes(l), hist=(l.log||[]).filter(e=>e&&e.at&&!(e.type==="note"&&!e.outcome)).length;
+    const histN=notes.length+hist+(l.enquiries||[]).length+(l.notes?1:0);
+    const act=(id2,label,icon,href)=>(href?'<a class="mact" id="'+id2+'" href="'+esc(href)+'">':'<button type="button" class="mact" id="'+id2+'">')+icon+'<span>'+label+'</span>'+(href?'</a>':'</button>');
     const g=sheet(head(l,[l.car,l.service,l.phone].filter(Boolean).join(" · "))+
       (canWrite?"":'<div class="banner">View only. Ask for edit access.</div>')+
-      '<div class="eyebrow"><span>Change status</span><span>Now: '+esc(st==="Waiting"?"Waiting ("+M.WAIT_REASONS[M.waitReasonOf(l)]+")":st)+'</span></div>'+
-      '<div class="seg three" id="m-stage">'+M.STAGES.map(s=>'<button type="button" data-v="'+s+'" aria-pressed="'+(s===st)+'">'+s+'</button>').join("")+'</div>'+
-      '<div id="m-more"></div>'+
-      '<div class="eyebrow"><span>First contact</span><span>'+(M.FIRST_CONTACT[l.firstContact]&&l.firstContactBy?esc("Set by "+l.firstContactBy):"How fast was the first reply?")+'</span></div>'+
-      '<div id="m-fc">'+fcButtons(l.firstContact)+'</div>'+
-      '<div class="eyebrow"><span>Tag (sets the order on Today)</span></div>'+
-      '<div class="seg three" id="m-tag" data-value="'+esc(l.score||"")+'">'+M.TAGS.map(t=>'<button type="button" data-v="'+t+'">'+t+'</button>').join("")+'</div>'+
-      '<button class="btn secondary" id="m-addNote" type="button">Add a call note</button>'+
-      noteHistory(M.callNotes(l))+
-      (l.notes?'<div class="eyebrow">From the form</div><p class="fullnote">'+esc(l.notes)+'</p>':"")+
+      '<div class="macts">'+
+        (ph?act("m-call","Call",IC_CALL,"tel:"+ph)+act("m-text","Text",IC_TEXT,T.smsHref(ph,textFor(l))):'<span class="mact off">'+IC_CALL+'<span>No phone</span></span>')+
+        act("m-addNote","Note",IC_NOTE)+act("m-edit","Edit",IC_EDIT)+
+      '</div>'+
+      (notes[0]?'<div class="lastnote" title="Latest note">'+esc(M.noteLine(notes[0]))+'</div>':"")+
+      '<div class="msec"><div class="eyebrow"><span>Status</span><span>'+esc(st==="Waiting"?"Waiting: "+M.WAIT_REASONS[M.waitReasonOf(l)]:"")+'</span></div>'+
+        '<div class="seg pills" id="m-stage">'+M.STAGES.map(s=>'<button type="button" data-v="'+s+'" aria-pressed="'+(s===st)+'">'+s+'</button>').join("")+'</div>'+
+        '<div id="m-more"></div></div>'+
+      (job||st==="Done"?'<div class="row">'+(job?'<button class="btn secondary small" id="m-job" type="button">Job '+esc(job.number)+(job.date?" · "+esc(dayName(job.date)):"")+'</button>':"")+(st==="Done"?'<button class="btn secondary small" id="m-review" type="button">Review steps</button>':"")+'</div>':"")+
+      '<div class="msec"><div class="eyebrow"><span>First contact</span><span>'+(M.FIRST_CONTACT[l.firstContact]&&l.firstContactBy?esc("Set by "+l.firstContactBy):"How fast we replied")+'</span></div>'+
+        '<div id="m-fc">'+fcButtons(l.firstContact,true)+'</div></div>'+
+      '<div class="msec"><div class="eyebrow"><span>Tag</span><span>Sets the order on Today</span></div>'+
+        '<div class="seg pills" id="m-tag" data-value="'+esc(l.score||"")+'">'+M.TAGS.map(t=>'<button type="button" data-v="'+t+'">'+t+'</button>').join("")+'</div></div>'+
       (l.depositPaid==="Yes"?'<p class="help"><span class="paidtag">Deposit paid ✓</span> $'+esc(l.depositAmount||M.DEPOSIT)+' on '+esc(when(l.depositPaidAt))+'</p>':"")+
       (l.onMyWayAt?'<p class="help">On my way sent '+esc(when(l.onMyWayAt))+(l.onMyWayBy?" by "+esc(l.onMyWayBy):"")+'</p>':"")+
-      history(l)+
-      ((l.enquiries||[]).length?'<div class="eyebrow">Enquired again</div><div class="log">'+(l.enquiries||[]).slice().reverse().map(e=>'<div><span>'+esc(dayName(localDate(e.at)))+'</span><div>'+esc([e.source+(e.ad?" ("+e.ad+")":""),e.service,e.car,e.notes].filter(Boolean).join(" · "))+'</div></div>').join("")+'</div>':"")+
-      '<div class="row"><button class="btn secondary" id="m-edit" type="button">Edit details</button>'+(job?'<button class="btn secondary" id="m-job" type="button">Job '+esc(job.number)+'</button>':"")+(st==="Done"?'<button class="btn secondary" id="m-review" type="button">Review steps</button>':"")+'</div>'+
-      (l.old_status&&l.old_status!==st?'<p class="help">Before the update this was: '+esc(l.old_status)+'.</p>':"")+
+      (histN?'<details class="more-f" id="m-hist"><summary>Notes and history <span class="mn">'+histN+'</span> <span aria-hidden="true">▾</span></summary><div class="mhist">'+
+        noteHistory(notes)+
+        (l.notes?'<div class="eyebrow">From the form</div><p class="fullnote">'+esc(l.notes)+'</p>':"")+
+        history(l)+
+        ((l.enquiries||[]).length?'<div class="eyebrow">Enquired again</div><div class="log">'+(l.enquiries||[]).slice().reverse().map(e=>'<div><span>'+esc(dayName(localDate(e.at)))+'</span><div>'+esc([e.source+(e.ad?" ("+e.ad+")":""),e.service,e.car,e.notes].filter(Boolean).join(" · "))+'</div></div>').join("")+'</div>':"")+
+        (l.old_status&&l.old_status!==st?'<p class="help">Before the update this was: '+esc(l.old_status)+'.</p>':"")+
+      '</div></details>':"")+
       (l.repeatOf?'<p class="help">A repeat: this person was a lead before. <button type="button" class="mini" id="m-repeat">Open the old lead</button></p>':"")+
-      (canWrite?'<button class="btn danger" id="m-del" type="button">Delete this lead</button>':""));
+      (canWrite?'<button class="linkdel" id="m-del" type="button">Delete this lead</button>':""));
+    const ct=g("#m-call"), tx=g("#m-text");
+    if(ct) ct.addEventListener("click",()=>noteReply(id));
+    if(tx) tx.addEventListener("click",()=>noteReply(id));
     const more=g("#m-more");
     const busyAll=on=>document.querySelectorAll("#sheet button").forEach(b=>b.disabled=on);
     const go=async(patch,msg)=>{ busyAll(true); if(await save(id,patch)){ closeSheet(); toast(msg); return true; } busyAll(false); return false; };
