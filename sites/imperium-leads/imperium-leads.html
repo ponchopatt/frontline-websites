@@ -126,6 +126,19 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .b[aria-disabled="true"]{opacity:.4;cursor:default}
 .b:disabled{opacity:.5}
 .b:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* Did they pay? on a done job: Yes (Payments done) or No (Waiting for payment). */
+.paidq{display:grid;grid-template-columns:minmax(0,1fr) 84px 84px;gap:8px;align-items:center;background:var(--surface2);border-radius:12px;padding:6px 6px 6px 12px}
+.paidq .q{font-size:14px;font-weight:700}
+.paidq.yes .q{color:var(--good)}
+.paidq.no .q{color:var(--bad)}
+.paidq button{font:inherit;font-size:15px;font-weight:700;min-height:44px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--text);cursor:pointer}
+.paidq button.py[aria-pressed="true"]{background:var(--good);border-color:var(--good);color:#fff}
+.paidq button.pn[aria-pressed="true"]{background:var(--bad);border-color:var(--bad);color:#fff}
+.paidq button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.paidbig{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.paidbig .btn{min-height:64px;font-size:18px}
+.paidbig .btn.yes{background:var(--good);border-color:var(--good);color:#fff}
+.paidbig .btn.no{background:var(--bad);border-color:var(--bad);color:#fff}
 .ticks{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px}
 .tick{flex-direction:row;align-items:center;gap:10px;min-height:44px;padding:6px 10px;border-radius:10px;background:var(--surface2);color:var(--text);font-size:13.5px;font-weight:600;letter-spacing:0;cursor:pointer;line-height:1.2}
 .tick input{width:22px;height:22px;min-height:0;flex:0 0 22px;padding:0;margin:0;accent-color:var(--accent)}
@@ -686,7 +699,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     <div class="filters">
       <input id="q" type="search" placeholder="Search name, car, suburb, phone">
       <select id="fStatus" aria-label="Status">
-        <option value="">All</option><option>New</option><option>Chasing</option><option>Booked</option><option>Done</option><option>Waiting</option><option value="owed">Owes money</option><option value="lost">Waiting: lost</option><option value="junk">Not real</option>
+        <option value="">All</option><option>New</option><option>Chasing</option><option>Booked</option><option>Done</option><option>Waiting</option><option value="owed">Waiting for payment</option><option value="paid">Payments done</option><option value="lost">Waiting: lost</option><option value="junk">Not real</option>
       </select>
       <div class="seg two" data-viewseg><button type="button" data-v="mine">Mine</button><button type="button" data-v="both">Both</button></div>
     </div>
@@ -934,9 +947,18 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     const st=stage(l); if(st!=="Booked" && st!=="Done") return "";
     const tk=(k,label,on,cls="")=>'<label class="tick'+(cls?" "+cls:"")+(on?" on":"")+'"><input type="checkbox" data-tick="'+k+'"'+(on?" checked":"")+'><span>'+label+'</span></label>';
     return '<div class="ticks">'+
-      (st==="Done"?tk("review","Review asked",M.reviewAsked(l))+tk("owes","Owes money",owes(l),"owe"):"")+
+      (st==="Done"?tk("review","Review asked",M.reviewAsked(l)):"")+
       tk("ceramic","Offered ceramic",l.offeredCeramic==="Yes")+tk("plan","Offered maint. plan",l.offeredPlan==="Yes")+
     '</div>';
+  }
+  // A done job: did they pay? Yes puts it in Payments done, No in Waiting for payment. Not
+  // answered yet counts as waiting.
+  function paidRow(l){
+    if(stage(l)!=="Done") return "";
+    const v=l.paid==="Yes"?"Yes":l.paid==="No"?"No":"";
+    return '<div class="paidq'+(v==="Yes"?" yes":v==="No"?" no":"")+'"><span class="q">'+(v==="Yes"?"Paid ✓":v==="No"?"Waiting for payment":"Did they pay?")+'</span>'+
+      '<button type="button" class="py" data-act="paid" data-v="Yes" aria-pressed="'+(v==="Yes")+'">Yes</button>'+
+      '<button type="button" class="pn" data-act="paid" data-v="No" aria-pressed="'+(v==="No")+'">No</button></div>';
   }
   const PIN='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>';
   const mapsHref = a => "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(a);
@@ -969,7 +991,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
         '<button type="button" class="more" data-act="more" aria-label="More for '+esc(l.name||"this lead")+'">…</button></div>'+
       '<div class="meta">'+meta+'</div>'+addr+
       (n?'<div class="lastnote" title="Latest note">'+esc(M.noteLine(n))+'</div>':"")+
-      ticks(l)+buttons(l)+
+      paidRow(l)+ticks(l)+buttons(l)+
     '</div>';
   }
   function wire(el){
@@ -981,7 +1003,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       if(a==="omw"){ const l=current(id); if(l&&db) save(id,M.onMyWay(l,new Date().toISOString(),who)); return; } // and the link opens messages
       if(a==="nophone"){ e.preventDefault(); toast("No phone number. Add one: … then Edit details."); return; }
       if(a==="done") doneTouch(id,b); else if(a==="jobdone") jobDone(id,b); else if(a==="more") openMenu(id);
-      else if(a==="notes") openNotes(id); else if(a==="deposit") openDeposit(id);
+      else if(a==="notes") openNotes(id); else if(a==="deposit") openDeposit(id); else if(a==="paid") setPaid(id,b.dataset.v);
     }));
     el.querySelectorAll("[data-tick]").forEach(cb=>cb.addEventListener("change",()=>setTick(cb)));
     el.querySelectorAll(".lead").forEach(c=>c.addEventListener("click",e=>{ if(e.target.closest("button,a,input,label")) return; openMenu(c.dataset.id); }));
@@ -1018,13 +1040,31 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     else toast("Done. "+M.touchLabel(a,today())+" is "+whenWord(a.nextFollowUp)+".");
   }
   const whenWord = d => !d ? "next" : d===today() ? "today" : d===addDays(1) ? "tomorrow" : dayName(d);
-  // ✓ Job done on a booking: Done, then tick Review asked and Owes money on the card.
+  // ✓ Job done on a booking: Done, then did they pay?
   async function jobDone(id,btn){
     const l=current(id); if(!l||!db) return;
     if(btn) btn.disabled=true;
     const now=new Date().toISOString();
-    if(await save(id,{...R.completePatch(l,now), ...M.setStage(l,"Done",today()), jobDate:l.jobDate&&l.jobDate<=today()?l.jobDate:today()})) toast("Job done. Tick Review asked and Owes money if they apply.");
+    if(await save(id,{...R.completePatch(l,now), ...M.setStage(l,"Done",today()), jobDate:l.jobDate&&l.jobDate<=today()?l.jobDate:today()})) askPaid(id);
     else if(btn) btn.disabled=false;
+  }
+  // Did they pay? Yes: Payments done. No: Waiting for payment.
+  async function setPaid(id,v){
+    const l=current(id); if(!l||!db||!canWrite) return false;
+    if(l.paid===v && stage(l)==="Done"){ toast(v==="Yes"?"Already in Payments done.":"Already waiting for payment."); return true; }
+    const ok=await save(id,v==="Yes"?{paid:"Yes", paidAt:new Date().toISOString(), paidBy:who||""}:{paid:"No"});
+    if(ok) toast(v==="Yes"?"Paid. It's in Payments done.":"Not paid yet. It's in Waiting for payment.");
+    return ok;
+  }
+  // Straight after a job is done: the question, big.
+  function askPaid(id){
+    const l=current(id); if(!l||l.paid==="Yes"){ toast("Job done."); return; }
+    const pr=Number(l.revenue)>0?money(l.revenue):"";
+    const g=sheet('<div class="sheet-h"><div><h2>Job done. Did they pay?</h2><p class="help">'+esc([l.name||"No name", l.car, pr].filter(Boolean).join(" · "))+'</p></div><button class="x" id="closeSheet" type="button">Later</button></div>'+
+      '<div class="paidbig"><button class="btn yes" id="ap-yes" type="button">Yes</button><button class="btn no" id="ap-no" type="button">No</button></div>'+
+      '<p class="help">Yes goes to Payments done. No goes to Waiting for payment. You can change it on the card.</p>');
+    const go=async v=>{ g("#ap-yes").disabled=g("#ap-no").disabled=true; if(await setPaid(id,v)) closeSheet(); else g("#ap-yes").disabled=g("#ap-no").disabled=false; };
+    g("#ap-yes").addEventListener("click",()=>go("Yes")); g("#ap-no").addEventListener("click",()=>go("No"));
   }
   async function setTick(cb){
     const id=cb.closest("[data-id]").dataset.id, l=current(id), on=cb.checked; if(!l||!db){ cb.checked=!on; return; }
@@ -1272,7 +1312,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
           '<p class="help">Not real keeps it here but out of Today and every number.</p>';
         more.querySelectorAll("[data-reason]").forEach(b=>b.addEventListener("click",()=>go(M.setStage(l,"Waiting",today(),b.dataset.reason,new Date().toISOString()),"Moved to Waiting ("+M.WAIT_REASONS[b.dataset.reason]+").")));
       } else if(s==="Done"){
-        go({...R.completePatch(l,new Date().toISOString()), ...M.setStage(l,"Done",today()), jobDate:l.jobDate&&l.jobDate<=today()?l.jobDate:today()},"Marked done.");
+        go({...R.completePatch(l,new Date().toISOString()), ...M.setStage(l,"Done",today()), jobDate:l.jobDate&&l.jobDate<=today()?l.jobDate:today()},"Marked done.").then(ok=>{ if(ok) askPaid(id); });
       } else if(s!==st){
         go(M.setStage(l,s,today()),s==="Chasing"?"Moved to Chasing. "+M.touchLabel({...l,...M.setStage(l,s,today())},today())+" is due today.":"Moved to New.");
       }
@@ -1379,7 +1419,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   ["#q","#fStatus"].forEach(sel=>$(sel).addEventListener(sel==="#q"?"input":"change",()=>{ listShown=100; renderList(); }));
   function renderList(){
     const q=$("#q").value.trim().toLowerCase(), fs=$("#fStatus").value;
-    const match=l=>!fs || (fs==="owed"?owes(l):fs==="junk"?!!l.junk:fs==="lost"?stage(l)==="Waiting"&&M.waitReasonOf(l)==="lost":stage(l)===fs && (fs!=="Waiting"||!l.junk));
+    const match=l=>!fs || (fs==="owed"?owes(l):fs==="paid"?!l.junk&&stage(l)==="Done"&&l.paid==="Yes":fs==="junk"?!!l.junk:fs==="lost"?stage(l)==="Waiting"&&M.waitReasonOf(l)==="lost":stage(l)===fs && (fs!=="Waiting"||!l.junk));
     const rows=leads.filter(l=>match(l) && isMine(l) && (!q||[l.name,l.car,l.suburb,l.phone,l.email,l.service,l.notes,l.ad].join(" ").toLowerCase().includes(q)));
     const el=$("#list"), shown=rows.slice(0,listShown);
     el.innerHTML = !loaded ? skel(4,150) : rows.length ? shown.map(l=>leadCard(l,{owner:true})).join("")+(rows.length>listShown?'<button class="btn secondary" id="listMore" type="button">Show more ('+(rows.length-listShown)+' to go)</button>':"") : '<div class="empty">'+(leads.length?"Nothing matches.":"No leads yet. Add the first one.")+'</div>';
@@ -1415,14 +1455,19 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     }).join("");
     const owed=leads.filter(l=>owes(l) && isMine(l)).sort((a,b)=>String(a.jobDate||"").localeCompare(String(b.jobDate||"")));
     const owedSum=owed.reduce((a,l)=>a+(Number(l.revenue??l.quoted)||0),0);
+    const since=addDays(-30), paidDone=leads.filter(l=>!l.junk && stage(l)==="Done" && l.paid==="Yes" && isMine(l) && (l.jobDate||"")>=since)
+      .sort((a,b)=>String(b.jobDate||"").localeCompare(String(a.jobDate||""))), paidSum=paidDone.reduce((a,l)=>a+(Number(l.revenue)||0),0);
     $("#board").insertAdjacentHTML("beforeend",'<div class="col" data-col="collect" data-nodrop>'+
-      '<div class="col-h"><div class="t"><span>Done, owes money</span><span class="n">'+owed.length+'</span></div><div class="v">'+money(owedSum)+'</div></div>'+
-      (owed.length?owed.map(l=>leadCard(l,{board:true})).join(""):'<div class="empty">Nobody owes you.</div>')+'</div>');
+      '<div class="col-h"><div class="t"><span>Waiting for payment</span><span class="n">'+owed.length+'</span></div><div class="v">'+money(owedSum)+'</div></div>'+
+      (owed.length?owed.map(l=>leadCard(l,{board:true})).join(""):'<div class="empty">Nobody owes you.</div>')+'</div>'+
+      '<div class="col" data-col="paid" data-nodrop>'+
+      '<div class="col-h"><div class="t"><span>Payments done</span><span class="n">'+paidDone.length+'</span></div><div class="v">'+money(paidSum)+'</div><div class="c" style="color:var(--muted)">Last 30 days</div></div>'+
+      (paidDone.length?paidDone.slice(0,60).map(l=>leadCard(l,{board:true})).join("")+(paidDone.length>60?'<p class="help">+'+(paidDone.length-60)+' more on the Leads tab</p>':""):'<div class="empty">None in the last 30 days.</div>')+'</div>');
     const quotes=rows.filter(l=>stage(l)==="Chasing").reduce((a,l)=>a+(Number(l.quoted)||0),0);
     const bookedSum=rows.filter(l=>stage(l)==="Booked").reduce((a,l)=>{ const v=worth(l); return a+(v?v.amount:0); },0);
     $("#bTotals").innerHTML='<div class="tile"><b>'+money(quotes)+'</b><span>Quotes out</span></div>'+
       '<div class="tile"><b>'+money(bookedSum)+'</b><span>Booked, to come</span></div>'+
-      '<div class="tile '+(owedSum?"warn":"")+'"><b>'+money(owedSum)+'</b><span>Owed</span></div>';
+      '<div class="tile '+(owedSum?"warn":"")+'"><b>'+money(owedSum)+'</b><span>Waiting for payment</span></div>';
     const board=$("#board");
     $("#bStages").innerHTML=[...board.querySelectorAll(".col")].map((c,i)=>'<button type="button" data-i="'+i+'"'+(c.querySelector(".col-h .c")?' class="cold"':"")+'>'+esc(c.querySelector(".t span").textContent)+'<span class="n">'+c.querySelector(".t .n").textContent+'</span></button>').join("");
     $("#bStages").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{ const c=board.querySelectorAll(".col")[b.dataset.i]; board.scrollTo({left:c.offsetLeft-board.firstElementChild.offsetLeft, behavior:"smooth"});
@@ -1538,8 +1583,8 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       close:{title:"Close rate", sub:booked.length+" of "+rows.length+" booked", items:rows.slice().sort((a,b)=>(isBooked(b)?1:0)-(isBooked(a)?1:0)).map(l=>({l, r:isBooked(l)?"Booked":stage(l), cls:isBooked(l)?"good":"", ln:[l.service, l.source, l.owner]}))},
       replied:{title:"Replied within 5 minutes", sub:fast+" of "+replied.length+" fast. First contact where it's been picked, else the app's time", items:replied.slice().sort((a,b)=>M.FIRST_CONTACT_KEYS.indexOf(M.replySpeed(a,h).bucket)-M.FIRST_CONTACT_KEYS.indexOf(M.replySpeed(b,h).bucket)).map(l=>speedItem(l,h))},
       bookedMoney:{title:"Booked $", sub:money(cash.booked)+" from "+jobs(cash.items.length)+" on these days", items:jobItems(cash.items)},
-      collected:{title:"Cash collected", sub:money(cash.collected)+" from "+jobs(inState("paid").length)+" ticked Paid", items:jobItems(inState("paid"))},
-      toCollect:{title:"Still to collect", sub:money(cash.owed)+" from "+jobs(inState("owed").length)+" done, not ticked Paid", items:jobItems(inState("owed"))},
+      collected:{title:"Payments done", sub:money(cash.collected)+" from "+jobs(inState("paid").length)+" paid", items:jobItems(inState("paid"))},
+      toCollect:{title:"Waiting for payment", sub:money(cash.owed)+" from "+jobs(inState("owed").length)+" done, not paid yet", items:jobItems(inState("owed"))},
       upcoming:{title:"Coming up", sub:money(cash.upcoming)+" from "+jobs(inState("upcoming").length)+" not done yet", items:jobItems(inState("upcoming"))},
       noPrice:{title:"No price yet", sub:"These count as $0. Add a price on the job.", items:cash.noPrice.slice().sort((a,b)=>String(a.job.date).localeCompare(String(b.job.date))).map(it=>({l:it.lead, r:"", ln:[it.job.number?"Job "+it.job.number:"", dayName(it.job.date), it.lead.owner]}))},
       quotesOut:{title:"Quotes out", sub:"Chasing, with a quote given", items:quotesOut.map(l=>({l, r:money(l.quoted), ln:[l.service, M.touchLabel(l,t), l.owner]}))},
@@ -1548,7 +1593,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     $("#tiles").innerHTML=
       tile(rows.length,"Leads","","leads")+tile(booked.length,"Booked","","booked")+tile(pct(booked.length,rows.length),"Close rate",closeRate>=.4?"good":closeRate>=.25?"warn":rows.length?"bad":"","close")+
       tile(fastRate==null?"–":Math.round(fastRate*100)+"%","Replied ≤5 min",fastRate==null?"":fastRate>=.8?"good":fastRate>=.5?"warn":"bad","replied")+
-      tile(money(cash.booked),"Booked $","","bookedMoney")+tile(money(cash.collected),"Cash collected","good","collected")+tile(money(cash.owed),"Still to collect",cash.owed>0?"warn":"","toCollect")+tile(money(cash.upcoming),"Coming up","","upcoming")+
+      tile(money(cash.booked),"Booked $","","bookedMoney")+tile(money(cash.collected),"Payments done","good","collected")+tile(money(cash.owed),"Waiting for payment",cash.owed>0?"warn":"","toCollect")+tile(money(cash.upcoming),"Coming up","","upcoming")+
       tile(money(ads.spend),"Ad spend","","ads")+tile(ads.perBooked==null?"–":money(ads.perBooked),"Cost per booked job","","ads")+
       tile(money(quotesOut.reduce((a,l)=>a+(Number(l.quoted)||0),0)),"Quotes out","","quotesOut");
     $("#tilesHelp").innerHTML="Tap a number to see who's in it. Leads count by the day they came in, money by the job's day."+
@@ -1757,7 +1802,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       '</div>'+
       '<label>Where from?<div class="seg" id="j-source" data-value="">'+SOURCES.filter(v=>v!=="GHL booking").map(v=>'<button type="button" data-v="'+esc(v)+'">'+esc(v)+'</button>').join("")+'</div></label>'+
       '<div class="grid">'+(owed?"":tg("paid","Paid"))+tg("offeredCeramic","Offered ceramic")+tg("offeredPlan","Offered maint. plan")+tg("plan","On a plan")+'</div>'+
-      '<button class="btn" id="j-save" type="button"'+(owed?"":" disabled")+'>'+(owed?"Add to owes money":"Save job")+'</button>');
+      '<button class="btn" id="j-save" type="button"'+(owed?"":" disabled")+'>'+(owed?"Add to Waiting for payment":"Save job")+'</button>');
     const s=$("#sheet");
     seg(g("#j-service"),()=>{ g("#j-save").disabled=false; }); seg(g("#j-source"));
     g("#j-save").addEventListener("click",async()=>{
@@ -1784,10 +1829,10 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
         let patch={paid:doc.paid};
         if(doc.revenue!=null) patch.revenue=doc.revenue;
         if(!owed && !R.isDone(hit)) patch={...patch, ...R.completePatch(hit,now)};
-        if(await save(hit.id,patch)){ toast(owed?"Added to owes money.":"Job updated."); closeSheet(); } else b.disabled=false;
+        if(await save(hit.id,patch)){ toast(owed?"Added to Waiting for payment.":"Job updated."); closeSheet(); } else b.disabled=false;
         return;
       }
-      try{ await db.collection("leads").add(M.sync(doc,today())); toast(owed?"Added to owes money.":"Job saved."); closeSheet(); }catch(err){ b.disabled=false; writeFail(err); }
+      try{ await db.collection("leads").add(M.sync(doc,today())); toast(owed?"Added to Waiting for payment.":"Job saved."); closeSheet(); }catch(err){ b.disabled=false; writeFail(err); }
     });
   }
 
@@ -2717,7 +2762,9 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
               else if(OPEN_JOB.includes(f.status) && !OPEN_JOB.includes(prev) && stage(l2)!=="Booked") await save(linked,M.book(l2,{date:f.date, time, address:cust.address},now,who),{fromJob:true});
             }
           }
-          closeSheet(); toast("Job "+old.number+" saved."); return;
+          closeSheet(); toast("Job "+old.number+" saved.");
+          if(f.status==="Completed" && prev!=="Completed" && linked) askPaid(linked);
+          return;
         }
         // A new job. The same phone as a lead already here: that lead (as on the Add tab).
         if(!linked){
@@ -2759,6 +2806,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
         }
         pendingLeads.delete(lid);
         closeSheet(); toast("Job "+number+" added."+(f.date?"":" No day yet: it's under the bell."));
+        if(f.status==="Completed") askPaid(lid);
         if(M.isDay(f.date) && !$("#view-cal").hidden){ calDay=f.date; renderCal(); }
       }catch(err){ b.disabled=false; pendingLeads.clear(); writeFail(err); }
     });
