@@ -318,3 +318,12 @@ test("one job booked as two GHL appointments: both stay linked to it, and either
   const moved = planBooking(payload({}, { appointmentId: "a2", startTime: "2026-08-12T09:00:00" }), { ...state, now: NOW });
   assert.equal(moved.summary.jobId, "lead-jo");
 });
+
+test("an appointment on a deleted job and a live one goes by the live one", () => {
+  const jo = lead({ id: "jo", stage: "Booked", jobDate: "2026-10-28", jobTime: "08:00", revenue: 300 });
+  const gone = { id: "ghl-appt_1", leadId: "x2", number: 1151, status: "Cancelled", deleted: true, ghlAppointmentId: "appt_1", date: "2026-10-24", start: "09:00", createdAt: at("2026-10-19") };
+  const mine = { id: "lead-jo", leadId: "jo", number: 1056, status: "Scheduled", service: "Full Detail", date: "2026-10-28", start: "08:00", end: "11:30", ghlAppointmentId: "appt_1", ghlStatus: "confirmed", ghlCalendar: "Full Detail", createdAt: at("2026-10-19") };
+  const p = planBooking(payload(), { leads: [jo], jobs: [gone, mine], now: NOW });
+  assert.match(p.result, /^Moved job 1056/);
+  assert.deepEqual([p.writes[0].id, p.writes[0].data.date, p.writes[0].data.start], ["lead-jo", "2026-10-24", "09:00"]);
+});

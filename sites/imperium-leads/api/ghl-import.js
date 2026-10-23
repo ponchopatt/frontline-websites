@@ -1,4 +1,4 @@
-import { bodyFor, calendars, contact, customFields, events, opportunities } from "../lib/ghl-api.js";
+import { bodyFor, calendars, contact, customFields, events, locationOf, opportunities } from "../lib/ghl-api.js";
 import { applyWrites, planPast, readBooking } from "../lib/ghl.js";
 import { json, sameSecret } from "../lib/http.js";
 import J from "../lib/jobs.js";
@@ -25,16 +25,6 @@ const keyOf = (request) => {
   return url.searchParams.get("key") || request.headers.get("x-ghl-secret") || "";
 };
 const day = (d) => d.toISOString().slice(0, 10);
-
-// The sub-account: GHL_LOCATION_ID, else the one the last booking came from.
-async function locationOf(db) {
-  if (process.env.GHL_LOCATION_ID) return process.env.GHL_LOCATION_ID;
-  const { data } = await db.from("docs").select("data").eq("collection", "ghl_log").order("id", { ascending: false }).limit(20);
-  for (const r of data || []) {
-    try { const b = JSON.parse(r.data.body || "{}"); if (b.location && b.location.id) return b.location.id; } catch { /* next */ }
-  }
-  return "";
-}
 
 async function pool(items, n, fn) {
   const out = new Array(items.length);

@@ -4,8 +4,8 @@
   "buildCommand": "node build.mjs",
   "outputDirectory": "public",
   "ignoreCommand": "git diff --quiet HEAD^ HEAD -- .",
-  "functions": { "api/ghl-import.js": { "maxDuration": 300 } },
-  "crons": [{ "path": "/api/ad-spend", "schedule": "23 19 * * *" }],
+  "functions": { "api/ghl-import.js": { "maxDuration": 300 }, "api/ghl-sync.js": { "maxDuration": 60 } },
+  "crons": [{ "path": "/api/ad-spend", "schedule": "23 19 * * *" }, { "path": "/api/ghl-sync", "schedule": "7 * * * *" }],
   "headers": [
     { "source": "/sw.js", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
     { "source": "/(index.html|config.js|claude-shim.js|reviews.js|model.js|texts.js|jobs.js)?", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
