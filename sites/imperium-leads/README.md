@@ -374,6 +374,9 @@ ahead and puts each through the webhook's rules (`planBooking`). GHL wins:
   GHL's day);
 - a job with two GHL appointments goes by its first one.
 
+A job's end is GHL's when the booking is an hour or more. A shorter one is GHL's default slot
+(30 minutes), so the job gets its service's usual length instead (Settings → Calendar).
+
 Anything it changes is in the GHL log (Settings → Show what GHL sent), and `settings/ghlsync`
 says when it last ran. `?dry=1` (and any preview) answers what it would change and saves nothing.
 It takes the webhook's key, the app's sign-in, or Vercel's `CRON_SECRET`.

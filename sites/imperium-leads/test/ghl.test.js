@@ -327,3 +327,10 @@ test("an appointment on a deleted job and a live one goes by the live one", () =
   assert.match(p.result, /^Moved job 1056/);
   assert.deepEqual([p.writes[0].id, p.writes[0].data.date, p.writes[0].data.start], ["lead-jo", "2026-10-24", "09:00"]);
 });
+
+test("GHL's end when the booking is an hour or more; its 30-minute default slot gets the service's length", () => {
+  const short = planBooking(payload({}, { calendarName: "Full Detail", startTime: "2026-10-24T15:00:00", endTime: "2026-10-24T15:30:00" }), { now: NOW });
+  assert.deepEqual([short.writes[0].data.start, short.writes[0].data.end], ["15:00", "18:30"]); // Full Detail: 3.5 hours
+  const own = planBooking(payload({}, { calendarName: "Full Detail", startTime: "2026-10-24T08:00:00", endTime: "2026-10-24T10:30:00" }), { now: NOW });
+  assert.deepEqual([own.writes[0].data.start, own.writes[0].data.end], ["08:00", "10:30"]);
+});
