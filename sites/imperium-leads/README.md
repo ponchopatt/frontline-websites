@@ -429,11 +429,19 @@ all to Waiting** asks you to confirm, and moves them to Waiting (No reply).
 
 ## Numbers
 
-**This week** (Monday to Sunday, both of you): money from this week's jobs on the calendar
+**This week** (Monday to Sunday, both of you; ‹ and › go back to earlier weeks and forward
+again): money from that week's jobs on the calendar
 against the target (a progress bar; a lead with two jobs this week counts both), jobs done,
 ceramics sold, new maintenance plans (a plan visit for someone already on a plan isn't new), the
 share of new leads replied to within 5 minutes, and the share of this week's jobs offered a
 ceramic and a plan.
+
+**Gross volume** (both of you): the money from the jobs on days up to today, by job day, over
+the last week (**1W**, a point a day), four weeks (**4W**, a point a day) or year (**1YR**, a
+point a week), with the change against the same stretch before it (`ILJobs.volume`). Under it,
+the same split by service: Details (everything else), Paint correction and Ceramic coating, each
+a line with its total. Tap, drag or arrow across a chart to see a day; **Show as a table** has
+every point.
 
 Then, for the period and person picked: Leads, Booked, Close rate, Replied within 5 minutes,
 Booked $, Payments done, Waiting for payment, Coming up, Ad spend, Cost per booked job, Quotes out.
