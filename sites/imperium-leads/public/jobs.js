@@ -213,6 +213,36 @@
     same lead (done before they booked again) counts as paid. Cancelled and deleted jobs, and the
     jobs of deleted or not-real leads, don't count. Jobs with no price are in .noPrice.
   */
+  // The services in the money chart: details (all the rest), paint correction, ceramic coating.
+  var GROUPS = [{ id: "details", label: "Details" }, { id: "correction", label: "Paint correction" }, { id: "ceramic", label: "Ceramic coating" }];
+  function groupOf(service) {
+    return service === "Paint Correction" ? "correction" : service === "Ceramic Coating" ? "ceramic" : "details";
+  }
+  /*
+    Gross volume: the money from the jobs on days up to today, over a stretch ending today. "1W" and
+    "4W" have a point a day (7, 28); "1Y" a point a week (52, Monday to Sunday). Each point is split
+    by service (GROUPS). prev is the same length of time just before, for the change. keepLead(lead)
+    says whose. A job counts as it does in money().
+  */
+  function volume(jobs, leads, today, range, keepLead) {
+    var weekly = range === "1Y", n = range === "1W" ? 7 : range === "4W" ? 28 : 52, points = [], i;
+    var first = weekly ? M.addDays(M.mondayOf(today), -7 * (n - 1)) : M.addDays(today, -(n - 1));
+    for (i = 0; i < n; i++) {
+      var from = M.addDays(first, i * (weekly ? 7 : 1));
+      points.push({ from: from, to: weekly ? M.addDays(from, 6) : from, total: 0, details: 0, correction: 0, ceramic: 0, jobs: 0 });
+    }
+    var span = M.daysBetween(first, today) + 1, prevFrom = M.addDays(first, -span);
+    var out = { range: range, weekly: weekly, points: points, total: 0, prev: 0, jobs: 0, details: 0, correction: 0, ceramic: 0 };
+    money(jobs, leads, today, function (d) { return d >= prevFrom && d <= today; }, keepLead).items.forEach(function (it) {
+      var d = it.job.date;
+      if (d < first) { out.prev += it.value; return; }
+      var p = points[Math.floor(M.daysBetween(first, d) / (weekly ? 7 : 1))], g = groupOf(it.job.service);
+      if (!p) return;
+      p.total += it.value; p[g] += it.value; p.jobs++;
+      out.total += it.value; out[g] += it.value; out.jobs++;
+    });
+    return out;
+  }
   function money(jobs, leads, today, keep, keepLead) {
     var byId = {}, live = (jobs || []).filter(function (j) { return j && !j.deleted && j.status !== "Cancelled"; });
     var out = { booked: 0, collected: 0, owed: 0, upcoming: 0, items: [], noPrice: [] };
@@ -515,7 +545,7 @@
     SERVICES: SERVICES, SIZES: SIZES, sizeOf: sizeOf, priceOptions: priceOptions, listPrice: listPrice, STATUSES: STATUSES, EVENT_TYPES: EVENT_TYPES, DEFAULTS: DEFAULTS, FIRST_NUMBER: FIRST_NUMBER,
     settings: settings, serviceFromLead: serviceFromLead, serviceToLead: serviceToLead, serviceFromText: serviceFromText,
     toMin: toMin, hm: hm, lengthOf: lengthOf, endFor: endFor, timeLabel: timeLabel, sortKey: sortKey,
-    addOnTotal: addOnTotal, priceOf: priceOf, total: total, money: money,
+    addOnTotal: addOnTotal, priceOf: priceOf, total: total, money: money, GROUPS: GROUPS, groupOf: groupOf, volume: volume,
     nextNumber: nextNumber, title: title, blank: blank, fromLead: fromLead, currentJob: currentJob, leadJobId: leadJobId, toMake: toMake, renumber: renumber,
     leadPatch: leadPatch, jobPatch: jobPatch,
     sundayOf: sundayOf, weekDays: weekDays, agenda: agenda, busyDays: busyDays, initials: initials, matches: matches,

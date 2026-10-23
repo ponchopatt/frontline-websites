@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
 <style>
 :root{
+  --s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;
   --bg:#F3F5F8;--surface:#FFFFFF;--surface2:#E9EDF2;--line:#D6DCE4;
   --text:#121721;--muted:#5C6675;--accent:#1F5FD6;--accent-ink:#FFFFFF;
   --good:#1E9E5A;--warn:#D98A0B;--bad:#D6453D;--good-bg:#E4F5EB;--warn-bg:#FBF0DA;--bad-bg:#FBE4E2;--accent-bg:#E4ECFB;--pink:#B8336F;--pink-bg:#FBE3EF;--warn-ink:#8A5300;
@@ -10,6 +11,7 @@
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
+    --s1:#3987e5;--s2:#d95926;--s3:#199e70;
     --bg:#0B0E12;--surface:#141920;--surface2:#1C232C;--line:#2A3340;
     --text:#E8ECF1;--muted:#8B95A5;--accent:#3E7BF0;--accent-ink:#FFFFFF;
     --good:#34C776;--warn:#F0A429;--bad:#EF5F58;--good-bg:#12291C;--warn-bg:#2B2210;--bad-bg:#2E1614;--accent-bg:#152546;--pink:#F06AA8;--pink-bg:#33172A;--warn-ink:#F0A429;
@@ -18,6 +20,7 @@
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
+  --s1:#3987e5;--s2:#d95926;--s3:#199e70;
   --bg:#0B0E12;--surface:#141920;--surface2:#1C232C;--line:#2A3340;
   --text:#E8ECF1;--muted:#8B95A5;--accent:#3E7BF0;--accent-ink:#FFFFFF;
   --good:#34C776;--warn:#F0A429;--bad:#EF5F58;--good-bg:#12291C;--warn-bg:#2B2210;--bad-bg:#2E1614;--accent-bg:#152546;--pink:#F06AA8;--pink-bg:#33172A;--warn-ink:#F0A429;
@@ -264,6 +267,32 @@ main.wide{max-width:1400px}
 .low .lw{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .low .lw p{margin:0;font-size:14px;color:var(--text)}
 /* This week, on Numbers. */
+.wk-nav{display:flex;align-items:center;gap:6px}
+.wk-nav span{flex:1;text-align:center}
+.wk-nav button{font:inherit;font-size:20px;font-weight:700;line-height:1;width:44px;height:36px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--text);cursor:pointer}
+.wk-nav button:disabled{opacity:.35;cursor:default}
+.gv-hero{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.gv-hero b{font-size:24px;font-weight:700;line-height:1.1}
+.gv-hero .dl{font-size:13px;font-weight:700}
+.gv-hero .dl.up{color:var(--good)}
+.gv-hero .dl.down{color:var(--bad)}
+.gv-hero .dl.flat{color:var(--muted)}
+.chart{position:relative;touch-action:pan-y;outline:none;border-radius:10px}
+.chart:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.chart svg{display:block;width:100%;overflow:visible}
+.chart .ax{font-size:11px;fill:var(--muted);font-variant-numeric:tabular-nums}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.chart .xh{stroke:var(--muted);stroke-width:1}
+.chart .tip{position:absolute;top:0;pointer-events:none;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:10px;padding:6px 9px;font-size:12px;min-width:120px;z-index:2}
+.chart .tip .d{color:var(--muted);font-weight:600;margin-bottom:2px}
+.chart .tip .r{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.chart .tip .r b{font-variant-numeric:tabular-nums}
+.chart .tip .r span{color:var(--muted)}
+.lk{display:inline-block;width:14px;height:0;border-top:2px solid;border-radius:2px;flex:0 0 auto}
+.gv-leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px}
+.gv-leg div{display:flex;align-items:center;gap:6px}
+.gv-leg b{font-variant-numeric:tabular-nums}
+.gv-leg span{color:var(--muted)}
 .goal .big{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
 .goal .big span{font-size:15px;color:var(--muted);font-weight:600}
 .goal .gbar{display:flex;height:14px;border-radius:999px;background:var(--surface2);overflow:hidden}
@@ -722,6 +751,17 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   <!-- NUMBERS -->
   <section id="view-numbers" role="tabpanel">
     <div class="card goal" id="week"></div>
+    <div class="card" id="gv">
+      <div class="eyebrow"><span>Gross volume</span><span>Both of you</span></div>
+      <div class="seg three" id="gvRange" data-value="4W"><button type="button" data-v="1W">1W</button><button type="button" data-v="4W">4W</button><button type="button" data-v="1Y">1YR</button></div>
+      <div class="gv-hero"><b id="gvTotal"></b><span class="dl" id="gvDelta"></span></div>
+      <div class="chart" id="gvChart" tabindex="0" role="img" aria-label="Gross volume"></div>
+      <div class="eyebrow"><span>By service</span></div>
+      <div class="gv-leg" id="gvLegend"></div>
+      <div class="chart" id="gvSvc" tabindex="0" role="img" aria-label="Gross volume by service"></div>
+      <details class="more-f" id="gvTable"><summary>Show as a table <span aria-hidden="true">▾</span></summary><div class="tbl"><table id="gvTbl"></table></div></details>
+      <p class="help">Money from jobs on days up to today, by job day. Tap or drag across a chart to see a day.</p>
+    </div>
     <div class="seg three" id="period" data-value="30"><button type="button" data-v="month">This month</button><button type="button" data-v="30">Last 30 days</button><button type="button" data-v="all">All time</button></div>
     <div class="seg three" id="nWho" data-value=""><button type="button" data-v="">Both</button><button type="button" data-v="Angus">Angus</button><button type="button" data-v="Ananth">Ananth</button></div>
     <div class="tiles" id="tiles"></div>
@@ -1530,31 +1570,104 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   const price = l => Number(l.revenue)>0?Number(l.revenue):0;
   const jobs = n => n+" job"+(n===1?"":"s");
   const tile=(v,label,cls="",key="")=>key?'<button type="button" class="tile '+cls+'" data-drill="'+key+'"><b>'+v+'</b><span>'+label+'</span></button>':'<div class="tile '+cls+'"><b>'+v+'</b><span>'+label+'</span></div>';
+  // Which week the card shows: 0 is this week, -1 last week, and so on (‹ and › on the card).
+  let weekOff=0;
   function renderWeek(){
     const t=today(), h=H(), goal=Number(goalSettings.weekly)>0?Number(goalSettings.weekly):5000;
-    const mon=M.mondayOf(t), sun=M.addDays(mon,6), wm=jobsLoaded?J.money(allJobs,leads,t,d=>d>=mon&&d<=sun):null;
-    const w=M.weekStats(leads,t,{goal, hours:h, now:new Date(), values:wm&&wm.items.map(it=>({day:it.job.date, value:it.value}))}), m=w.money;
+    const mon=M.addDays(M.mondayOf(t),7*weekOff), sun=M.addDays(mon,6), wm=jobsLoaded?J.money(allJobs,leads,t,d=>d>=mon&&d<=sun):null;
+    const w=M.weekStats(leads,t,{goal, hours:h, now:new Date(), weekOf:mon, values:wm&&wm.items.map(it=>({day:it.job.date, value:it.value}))}), m=w.money;
+    const wk=weekOff===0?"this week":weekOff===-1?"last week":"the week of "+dayName(mon), Wk=wk.charAt(0).toUpperCase()+wk.slice(1);
     const pc=n=>Math.min(100,n/m.goal*100).toFixed(1)+"%", left=m.daysLeft===0?"last day":m.daysLeft===1?"1 day left":m.daysLeft+" days left";
     const jl=l=>[l.service, l.jobDate?"Job "+dayName(l.jobDate):"", l.owner];
-    drill.wJobs={title:"Jobs done this week", items:w.jobsDone.items.map(l=>({l, r:price(l)?money(price(l)):"", ln:jl(l)}))};
-    drill.wCeramic={title:"Ceramics this week", sub:"Jobs booked as Ceramic", items:w.ceramics.items.map(l=>({l, r:price(l)?money(price(l)):"", ln:jl(l)}))};
-    drill.wPlans={title:"New maintenance plans", sub:"Put on a plan this week, or booked as one", items:w.plans.items.map(l=>({l, r:"", ln:jl(l)}))};
-    drill.wReplied={title:"Replied within 5 min", sub:w.replied.fast+" of "+w.replied.of+" new leads this week", items:w.replied.items.map(l=>speedItem(l,h))};
-    w.replied.buckets.forEach(b=>{ drill["wSpeed:"+b.key]={title:b.label, sub:b.n+" of "+w.replied.of+" new leads this week", items:b.items.map(l=>speedItem(l,h))}; });
-    drill.wUpsell={title:"Upsells offered this week", sub:"Ticks on this week's jobs", items:w.upsell.items.map(l=>({l, r:[l.offeredCeramic==="Yes"?"Ceramic":"", l.offeredPlan==="Yes"?"Plan":""].filter(Boolean).join(" + ")||"Not offered", cls:l.offeredCeramic==="Yes"||l.offeredPlan==="Yes"?"good":"", ln:jl(l)}))};
+    drill.wJobs={title:"Jobs done "+wk, items:w.jobsDone.items.map(l=>({l, r:price(l)?money(price(l)):"", ln:jl(l)}))};
+    drill.wCeramic={title:"Ceramics "+wk, sub:"Jobs booked as Ceramic", items:w.ceramics.items.map(l=>({l, r:price(l)?money(price(l)):"", ln:jl(l)}))};
+    drill.wPlans={title:"New maintenance plans", sub:"Put on a plan "+wk+", or booked as one", items:w.plans.items.map(l=>({l, r:"", ln:jl(l)}))};
+    drill.wReplied={title:"Replied within 5 min", sub:w.replied.fast+" of "+w.replied.of+" new leads "+wk, items:w.replied.items.map(l=>speedItem(l,h))};
+    w.replied.buckets.forEach(b=>{ drill["wSpeed:"+b.key]={title:b.label, sub:b.n+" of "+w.replied.of+" new leads "+wk, items:b.items.map(l=>speedItem(l,h))}; });
+    drill.wUpsell={title:"Upsells offered "+wk, sub:"Ticks on the jobs "+wk, items:w.upsell.items.map(l=>({l, r:[l.offeredCeramic==="Yes"?"Ceramic":"", l.offeredPlan==="Yes"?"Plan":""].filter(Boolean).join(" + ")||"Not offered", cls:l.offeredCeramic==="Yes"||l.offeredPlan==="Yes"?"good":"", ln:jl(l)}))};
     const rep=w.replied.of?Math.round(100*w.replied.fast/w.replied.of):null;
     $("#week").classList.toggle("hit", m.total>=m.goal);
-    $("#week").innerHTML='<div class="eyebrow"><span>This week (Mon to Sun)</span><span>Both of you</span></div>'+
+    $("#week").innerHTML='<div class="wk-nav"><button type="button" data-wkstep="-1" aria-label="The week before">‹</button>'+
+        '<span class="eyebrow" style="justify-content:center">'+esc(Wk)+(weekOff<-1?"":" (Mon to Sun)")+' · Both of you</span>'+
+        '<button type="button" data-wkstep="1" aria-label="The week after"'+(weekOff>=0?" disabled":"")+'>›</button></div>'+
       '<div class="big">'+money(m.total)+' <span>of '+money(m.goal)+' target</span></div>'+
       '<div class="gbar" role="img" aria-label="'+m.pct+'% of the target"><i class="d" style="width:'+pc(m.done)+'"></i><i class="k" style="width:'+pc(m.booked)+'"></i></div>'+
-      '<div class="key"><span><i class="sw" style="background:var(--good)"></i>Done <b>'+money(m.done)+'</b></span><span><i class="sw" style="background:var(--accent);opacity:.45"></i>Still to come <b>'+money(m.booked)+'</b></span>'+
-        '<span>'+(m.left?'<b>'+money(m.left)+'</b> to go · '+left:m.done>=m.goal?'<b>Target hit!</b>':'<b>Booked to hit it</b> · '+left)+'</span></div>'+
+      '<div class="key"><span><i class="sw" style="background:var(--good)"></i>Done <b>'+money(m.done)+'</b></span>'+(m.over?"":'<span><i class="sw" style="background:var(--accent);opacity:.45"></i>Still to come <b>'+money(m.booked)+'</b></span>')+
+        '<span>'+(m.over?(m.total>=m.goal?'<b>Target hit!</b>':'<b>'+money(m.goal-m.total)+'</b> short of the target'):m.left?'<b>'+money(m.left)+'</b> to go · '+left:m.done>=m.goal?'<b>Target hit!</b>':'<b>Booked to hit it</b> · '+left)+'</span></div>'+
       '<div class="tiles">'+tile(w.jobsDone.n,"Jobs done","","wJobs")+tile(w.ceramics.n,"Ceramics sold","","wCeramic")+tile(w.plans.n,"New plans","","wPlans")+
         tile(rep==null?"–":rep+"%","Replied ≤5 min",rep==null?"":rep>=80?"good":rep>=50?"warn":"bad","wReplied")+
         tile(pct(w.upsell.ceramic,w.upsell.jobs),"Offered ceramic","","wUpsell")+tile(pct(w.upsell.plan,w.upsell.jobs),"Offered plan","","wUpsell")+'</div>'+
       '<div class="eyebrow"><span>How fast we first reply</span><span>'+w.replied.of+' new '+(w.replied.of===1?"lead":"leads")+'</span></div>'+
       (w.replied.of?'<div class="tbl"><table>'+w.replied.buckets.map(b=>'<tr data-drill="'+esc("wSpeed:"+b.key)+'" tabindex="0"><td>'+(b.key==="none"?esc(b.label):'<span class="fctag fc-'+esc(b.key)+'">'+esc(b.label)+'</span>')+'<div class="bar"><i style="width:'+b.pct+'%"></i></div></td><td class="n">'+b.pct+'%</td><td class="n">'+b.n+'</td></tr>').join("")+'</table></div>':'<p class="help">No new leads this week yet.</p>')+
-      '<p class="help">Only jobs on this week\'s days count, whenever they were booked. Done is jobs up to today, still to come is the rest of the week. Target and ad names are in Settings (⚙).</p>';
+      '<p class="help">Only jobs on '+(weekOff===0?"this week\'s":"that week\'s")+' days count, whenever they were booked. Done is jobs up to today, still to come is the rest of the week. Target and ad names are in Settings (⚙).</p>';
+  }
+  $("#week").addEventListener("click",e=>{ const b=e.target.closest("[data-wkstep]"); if(!b||b.disabled) return; e.stopPropagation(); weekOff=Math.min(0,weekOff+Number(b.dataset.wkstep)); renderWeek(); });
+
+  // ---------- GROSS VOLUME (1W, 4W, 1YR; and by service) ----------
+  let gvRange="4W";
+  try{ const v=localStorage.getItem("il-gv"); if(["1W","4W","1Y"].includes(v)) gvRange=v; }catch(e){}
+  const GV_BEFORE={"1W":"the 7 days before","4W":"the 4 weeks before","1Y":"the year before"};
+  const GV_SVC=[{key:"details",name:"Details",color:"var(--s1)"},{key:"correction",name:"Paint correction",color:"var(--s2)"},{key:"ceramic",name:"Ceramic coating",color:"var(--s3)"}];
+  const shortDay=d=>new Date(d+"T12:00:00").toLocaleDateString("en-AU",{day:"numeric",month:"short"});
+  const compact=v=>v>=1000?"$"+String(Math.round(v/100)/10).replace(/\.0$/,"")+"K":"$"+Math.round(v);
+  function niceTop(max){
+    if(!(max>0)) return 100;
+    const mag=Math.pow(10,Math.floor(Math.log10(max)));
+    for(const f of [1,2,4,5,6,8,10]) if(f*mag>=max) return f*mag;
+    return 10*mag;
+  }
+  function renderGv(){
+    if(!jobsLoaded) return;
+    const v=J.volume(allJobs,leads,today(),gvRange);
+    setSeg($("#gvRange"),gvRange);
+    $("#gvTotal").textContent=money(v.total);
+    const dl=$("#gvDelta");
+    if(v.prev>0){ const ch=Math.round(100*(v.total-v.prev)/v.prev); dl.className="dl "+(ch>0?"up":ch<0?"down":"flat"); dl.textContent=(ch>0?"▲ ":ch<0?"▼ ":"")+Math.abs(ch)+"% vs "+GV_BEFORE[gvRange]; }
+    else { dl.className="dl flat"; dl.textContent=v.total?"":"No jobs yet in this stretch"; }
+    const label=p=>v.weekly?"Week of "+dayName(p.from):dayName(p.from);
+    lineChart($("#gvChart"),v.points,[{key:"total",name:"Gross volume",color:"var(--accent)",area:true}],{label});
+    $("#gvLegend").innerHTML=GV_SVC.map(x=>'<div><i class="lk" style="border-color:'+x.color+'"></i><span>'+esc(x.name)+'</span><b>'+money(v[x.key])+'</b></div>').join("");
+    lineChart($("#gvSvc"),v.points,GV_SVC,{label,h:150});
+    $("#gvTbl").innerHTML='<tr><th>'+(v.weekly?"Week of":"Day")+'</th><th class="n">Total</th><th class="n">Details</th><th class="n">Correction</th><th class="n">Ceramic</th></tr>'+
+      v.points.slice().reverse().map(p=>'<tr><td>'+esc(dayName(p.from))+'</td><td class="n">'+money(p.total)+'</td><td class="n">'+money(p.details)+'</td><td class="n">'+money(p.correction)+'</td><td class="n">'+money(p.ceramic)+'</td></tr>').join("");
+  }
+  seg($("#gvRange"),v=>{ gvRange=v; try{ localStorage.setItem("il-gv",v); }catch(e){} renderGv(); });
+  // A line chart in plain SVG: 2px lines on a hairline grid, the latest point marked, and a
+  // crosshair with every line's value where you tap, drag, hover or arrow.
+  function lineChart(el,pts,series,o={}){
+    const W=Math.max(260,el.clientWidth||340), H0=o.h||170, pl=44, pr=10, pt=8, pb=22, iw=W-pl-pr, ih=H0-pt-pb, n=pts.length;
+    const top=niceTop(Math.max(0,...pts.flatMap(p=>series.map(x=>p[x.key]))));
+    const X=i=>pl+(n<2?iw/2:i*iw/(n-1)), Y=v=>pt+ih-v/top*ih;
+    let svg='<svg viewBox="0 0 '+W+' '+H0+'" height="'+H0+'" aria-hidden="true">';
+    [0,top/2,top].forEach(v=>{ svg+='<line class="grid" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+Y(v)+'" y2="'+Y(v)+'"/><text class="ax" x="'+(pl-6)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+esc(compact(v))+'</text>'; });
+    const xi=n>2?[0,Math.round((n-1)/2),n-1]:[0,n-1];
+    xi.forEach((i,k)=>{ svg+='<text class="ax" x="'+X(i)+'" y="'+(H0-6)+'" text-anchor="'+(k===0?"start":k===xi.length-1?"end":"middle")+'">'+esc(shortDay(pts[i].from))+'</text>'; });
+    series.forEach(x=>{
+      const d=pts.map((p,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(p[x.key]).toFixed(1)).join(" ");
+      if(x.area) svg+='<path d="'+d+" L"+X(n-1).toFixed(1)+" "+Y(0)+" L"+X(0).toFixed(1)+" "+Y(0)+' Z" fill="'+x.color+'" fill-opacity=".1"/>';
+      svg+='<path d="'+d+'" fill="none" stroke="'+x.color+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>'+
+        '<circle cx="'+X(n-1)+'" cy="'+Y(pts[n-1][x.key])+'" r="4" fill="'+x.color+'" stroke="var(--surface)" stroke-width="2"/>';
+    });
+    el.innerHTML=svg+'<line class="xh" x1="0" x2="0" y1="'+pt+'" y2="'+(pt+ih)+'" visibility="hidden"/></svg><div class="tip" hidden></div>';
+    // The crosshair lives inside the SVG so it scales with it.
+    const sv=el.querySelector("svg"), xh=el.querySelector(".xh"), tip=el.querySelector(".tip"); sv.appendChild(xh);
+    let cur=-1;
+    const show=i=>{
+      cur=Math.max(0,Math.min(n-1,i)); const px=X(cur);
+      xh.setAttribute("x1",px); xh.setAttribute("x2",px); xh.setAttribute("visibility","visible");
+      tip.replaceChildren(); const dd=document.createElement("div"); dd.className="d"; dd.textContent=o.label(pts[cur]); tip.appendChild(dd);
+      series.forEach(x=>{ const r=document.createElement("div"), k=document.createElement("i"), b=document.createElement("b"), sp=document.createElement("span");
+        r.className="r"; k.className="lk"; k.style.borderColor=x.color; b.textContent=money(pts[cur][x.key]); sp.textContent=x.name; r.append(k,b,sp); tip.appendChild(r); });
+      tip.hidden=false;
+      const sc=el.clientWidth/W, left=px*sc, tw=tip.offsetWidth;
+      tip.style.left=Math.max(0,Math.min(el.clientWidth-tw, left<el.clientWidth/2?left+10:left-10-tw))+"px";
+    };
+    const hide=()=>{ xh.setAttribute("visibility","hidden"); tip.hidden=true; cur=-1; };
+    const idx=e=>{ const r=el.getBoundingClientRect(), px=(e.clientX-r.left)*W/r.width; return Math.round((px-pl)/(n<2?1:iw/(n-1))); };
+    el.onpointerdown=e=>show(idx(e)); el.onpointermove=e=>{ if(e.pointerType!=="touch"||e.buttons) show(idx(e)); };
+    el.onpointerleave=e=>{ if(e.pointerType!=="touch") hide(); };
+    el.onkeydown=e=>{ if(e.key==="ArrowLeft"||e.key==="ArrowRight"){ e.preventDefault(); show((cur<0?n-1:cur)+(e.key==="ArrowLeft"?-1:1)); } else if(e.key==="Escape") hide(); };
+    el.onfocus=()=>{ if(cur<0) show(n-1); }; el.onblur=hide;
   }
   // A lead in a reply-speed run-down: its bucket, and whether it was picked by hand or the app's time.
   function speedItem(l,h){
@@ -1564,6 +1677,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   }
   function renderNumbers(){
     renderWeek();
+    renderGv();
     renderNights();
     const w=$("#nWho").dataset.value, t=today(), h=H();
     // Leads count from the day they came in. The past jobs brought in from GHL count in the money,

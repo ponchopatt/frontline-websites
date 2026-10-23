@@ -253,3 +253,29 @@ test("a service's rows in the price list, and a lead's list price", () => {
   assert.deepEqual(J.priceOptions(p, "Other"), []);
   assert.deepEqual([J.listPrice(p, "Full Detail", "Kluger"), J.listPrice(p, "Full Detail", "LandCruiser"), J.listPrice(p, "Full Detail", ""), J.listPrice(p, "Interior", "Harley"), J.listPrice(p, "Maintenance Plan", "Ranger")], [250, 270, 225, null, null]);
 });
+
+test("gross volume: jobs on days up to today, a point a day (1W, 4W) or a week (1Y), split by service", () => {
+  const L = [lead({ id: "a", stage: "Done", jobDate: "2026-10-19", completedAt: at("2026-10-19"), revenue: 300, paid: "Yes" }), lead({ id: "b", owner: "Ananth", stage: "Booked", jobDate: "2026-10-25", revenue: 1097 })];
+  const job = (id, leadId, date, price, service) => J.blank({ id, leadId, date, price: String(price), service, createdAt: at("2026-09-01"), status: date < TODAY ? "Completed" : "Scheduled" });
+  const jobs = [
+    job("j1", "a", "2026-10-19", 300, "Full Detail"), job("j0", "a", "2026-10-02", 497, "Paint Correction"), // an older job of the same lead
+    job("j2", "b", "2026-10-20", 1097, "Ceramic Coating"), job("j3", "b", "2026-10-25", 250, "Full Detail"), // a day still to come: not counted
+    job("j4", "a", "2026-10-11", 150, "Interior"), // the week before: the 1W "before"
+  ];
+  const w = J.volume(jobs, L, TODAY, "1W");
+  assert.deepEqual([w.points.length, w.points[0].from, w.points[6].from], [7, "2026-10-14", TODAY]);
+  assert.deepEqual([w.total, w.details, w.correction, w.ceramic, w.jobs], [1397, 300, 0, 1097, 2]);
+  assert.deepEqual([w.points.find((p) => p.from === "2026-10-20").ceramic, w.prev], [1097, 150]);
+  const m = J.volume(jobs, L, TODAY, "4W");
+  assert.deepEqual([m.points.length, m.total, m.correction], [28, 300 + 497 + 1097 + 150, 497]);
+  const y = J.volume(jobs, L, TODAY, "1Y");
+  assert.deepEqual([y.points.length, y.points[51].from, y.points[51].to], [52, "2026-10-19", "2026-10-25"]);
+  assert.equal(y.points[51].total, 300 + 1097);
+  assert.equal(J.volume(jobs, L, TODAY, "1W", (l) => l.owner === "Angus").total, 300);
+});
+
+test("an earlier week: its money, jobs and target, all done", () => {
+  const L = [lead({ id: "a", stage: "Done", jobDate: "2026-10-13", completedAt: at("2026-10-13"), revenue: 300 }), lead({ id: "b", stage: "Booked", jobDate: "2026-10-22", revenue: 250 })];
+  const w = M.weekStats(L, TODAY, { goal: 5000, weekOf: "2026-10-14" });
+  assert.deepEqual([w.weekOf, w.money.total, w.money.done, w.money.booked, w.money.daysLeft, w.money.over, w.jobsDone.n], ["2026-10-12", 300, 300, 0, 0, true, 1]);
+});

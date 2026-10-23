@@ -53,7 +53,7 @@ test("the weekly goal counts this week's booked jobs by job day: done once the d
     job("2026-10-16", { junk: true }),
     lead({ stage: "Chasing", quoted: 900, jobDate: "2026-10-16" }), // not booked
   ];
-  assert.deepEqual(plain(M.weekMoney(L, TODAY, 3000)), { weekOf: "2026-10-12", done: 550, booked: 300, total: 850, goal: 3000, left: 2150, daysLeft: 3, pct: 28 });
+  assert.deepEqual(plain(M.weekMoney(L, TODAY, 3000)), { weekOf: "2026-10-12", done: 550, booked: 300, total: 850, goal: 3000, left: 2150, daysLeft: 3, over: false, pct: 28 });
   assert.equal(M.weekMoney(L, TODAY, 500).left, 0);
   assert.equal(M.weekMoney(L, TODAY, 500).pct, 100);
   assert.equal(M.weekMoney(L, TODAY, "").goal, null);

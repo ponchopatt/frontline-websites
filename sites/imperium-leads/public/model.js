@@ -795,8 +795,8 @@
     with no goal set). values, when given, is the week's jobs as [{ day, value }] (from the
     calendar, so a lead with two jobs counts both) instead of the leads.
   */
-  function weekMoney(leads, today, goal, values) {
-    var mon = mondayOf(today), sun = addDays(mon, 6), done = 0, booked = 0;
+  function weekMoney(leads, today, goal, values, weekOf) {
+    var mon = isDay(weekOf) ? mondayOf(weekOf) : mondayOf(today), sun = addDays(mon, 6), done = 0, booked = 0;
     var add = function (day, v) {
       if (!isDay(day) || day < mon || day > sun || !isFinite(v) || v <= 0) return;
       if (day <= today) done += v; else booked += v;
@@ -808,19 +808,20 @@
     });
     var g = Number(goal) > 0 ? Number(goal) : null, total = done + booked;
     return { weekOf: mon, done: done, booked: booked, total: total, goal: g,
-      left: g == null ? null : Math.max(0, g - total), daysLeft: daysBetween(today, sun),
+      left: g == null ? null : Math.max(0, g - total), daysLeft: Math.max(0, daysBetween(today, sun)), over: sun < today,
       pct: g == null ? null : Math.min(100, Math.round(total / g * 100)) };
   }
   /*
     This week (Monday to Sunday): the money against the goal, jobs done, ceramics sold, new
     maintenance plans, new leads replied to within 5 minutes, and the upsell ticks on this week's
-    jobs. o is { goal, hours, now, values } (values: see weekMoney). Each count keeps its leads (in
-    .items) for the run-down. A plan visit for someone already on a plan isn't a new plan.
+    jobs. o is { goal, hours, now, values, weekOf } (values: see weekMoney; weekOf, a day in an
+    earlier week to look at instead). Each count keeps its leads (in .items) for the run-down. A
+    plan visit for someone already on a plan isn't a new plan.
   */
   function weekStats(leads, today, o) {
     o = o || {};
     var h = o.hours || hours(), now = o.now || new Date();
-    var mon = mondayOf(today), sun = addDays(mon, 6);
+    var mon = isDay(o.weekOf) ? mondayOf(o.weekOf) : mondayOf(today), sun = addDays(mon, 6);
     var inWeek = function (d) { return isDay(d) && d >= mon && d <= sun; };
     var live = (leads || []).filter(function (l) { return l && !l.junk; });
     var jobs = live.filter(function (l) { return isBooked(l, today) && inWeek(l.jobDate); });
@@ -855,7 +856,7 @@
     var ceramicOffered = jobs.filter(function (l) { return l.offeredCeramic === "Yes"; });
     var planOffered = jobs.filter(function (l) { return l.offeredPlan === "Yes"; });
     return {
-      weekOf: mon, money: weekMoney(live, today, o.goal, o.values),
+      weekOf: mon, money: weekMoney(live, today, o.goal, o.values, mon),
       jobsDone: { n: done.length, items: done }, ceramics: { n: ceramics.length, items: ceramics }, plans: { n: plans.length, items: plans },
       replied: { fast: fast.length, of: fresh.length, items: fresh, buckets: buckets },
       upsell: { jobs: jobs.length, items: jobs, ceramic: ceramicOffered.length, plan: planOffered.length },
