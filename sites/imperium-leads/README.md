@@ -38,6 +38,7 @@ buttons, one list to work through, everything rare behind a "…" menu.
 | `api/lead.js` | New enquiries in. |
 | `api/deposit.js` | Makes the $50 Stripe deposit link, and says whether one's paid (team only). |
 | `api/ghl-import.js` | Brings in the past GHL appointments (a practice run first). |
+| `api/ghl-sync.js` | Makes the calendar match GHL: every hour, when the calendar is open, and from Settings (GHL wins). |
 | `api/ad-spend.js` | Brings in the ad spend from Meta, each day and on the button (the reading is in `lib/meta.js`). |
 | `api/ghl-webhook.js` | GoHighLevel bookings in: the lead booked, its job made, moved or cancelled (the rules are in `lib/ghl.js`). |
 | `api/stripe-webhook.js` | Stripe tells it a deposit is paid: the lead shows Deposit paid and moves to Booked. |
@@ -356,6 +357,26 @@ Integrations: view calendars, calendar events, contacts and opportunities). The 
 Set up: Vercel → Settings → Environment Variables → `GHL_WEBHOOK_SECRET` = any long random
 string, then redeploy. In GHL: Automation → Workflows → new workflow, triggers **Appointment
 Status** and **Customer Booked Appointment**, action **Webhook**, method POST, the URL above.
+
+### Matching the calendar to GHL: `/api/ghl-sync`
+
+GHL doesn't send the webhook for everything: nothing comes when a booking is deleted, and not
+always when one is moved in GHL's phone app. So every hour (the cron in `vercel.json`, once
+`CRON_SECRET` is set), when the calendar is open and it's been 15 minutes, and on **Match the
+calendar to GHL now** in Settings, the app reads every appointment from a week ago to six months
+ahead and puts each through the webhook's rules (`planBooking`). GHL wins:
+
+- a booking that isn't here is booked in (as the webhook would);
+- a moved one moves its job (and the lead's day and time);
+- a cancelled one cancels its job, and a job whose GHL booking was deleted is cancelled too
+  (the lead goes back to Chasing);
+- a job deleted in the app is left alone, and a job that's done stays done (it only moves to
+  GHL's day);
+- a job with two GHL appointments goes by its first one.
+
+Anything it changes is in the GHL log (Settings → Show what GHL sent), and `settings/ghlsync`
+says when it last ran. `?dry=1` (and any preview) answers what it would change and saves nothing.
+It takes the webhook's key, the app's sign-in, or Vercel's `CRON_SECRET`.
 
 ## Deleting
 

@@ -772,7 +772,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   // leads: what the app shows. leadsAll also has the deleted ones (for the backup).
   let db=null, dl=null, api=null, leads=[], leadsAll=[], loaded=false, canWrite=true, who=null;
   // Shared settings, one doc each: reviews, goal, hours, templates (the texts), ads (names), simple (the day this version went live).
-  let reviewSettings={}, hoursSaved={}, goalSettings={}, templates={}, adsSaved=null, simple=null, spendWeeks=[], nights=[], metaSync;
+  let reviewSettings={}, hoursSaved={}, goalSettings={}, templates={}, adsSaved=null, simple=null, spendWeeks=[], nights=[], metaSync, ghlSync;
   const H = () => M.hours(hoursSaved);
   const MOON = '<svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21 14.5A8.5 8.5 0 0 1 9.5 3a8.5 8.5 0 1 0 11.5 11.5z"/></svg>';
 
@@ -1710,7 +1710,9 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
         '<button class="btn" id="rs-save" type="button">Save review settings</button></div>'+
       '<div class="set-sec"><div class="eyebrow">GHL bookings</div><p class="help">GoHighLevel sends each booking here. The key on the end is GHL_WEBHOOK_SECRET from Vercel.</p>'+
         '<p class="say">'+esc((window.LEADS_CONFIG||{}).preview?"https://frontline-websites-6mjg.vercel.app":location.origin)+'/api/ghl-webhook?key=YOUR_KEY</p>'+
-        '<button class="btn secondary" id="s-ghl" type="button">Show what GHL sent</button><div class="ghl-log" id="s-ghlLog"></div></div>'+
+        '<div class="row"><button class="btn secondary" id="s-ghlSync" type="button">Match the calendar to GHL now</button><button class="btn secondary" id="s-ghl" type="button">Show what GHL sent</button></div>'+
+        '<p class="help">'+(ghlSync&&ghlSync.lastSync?(ghlSync.ok?"Last matched to GHL "+agoWords(ghlSync.lastSync)+(ghlSync.by?" ("+esc(ghlSync.by)+")":"")+".":"Matching to GHL didn't work last time: "+esc(ghlSync.error||"no reason given")):"Not matched to GHL yet.")+' It happens by itself every hour, and when the calendar is open.</p>'+
+        '<div class="ghl-log" id="s-ghlLog"></div></div>'+
       '<div class="set-sec"><div class="eyebrow">Backup</div><p class="help">Every lead, saved to this phone. The JSON has the jobs and events too.</p><div class="row"><button class="btn secondary" id="s-csv" type="button">Download CSV</button><button class="btn secondary" id="s-json" type="button">Download JSON</button></div></div>');
     const put=async(path,data,btn,msg)=>{ if(!db){ toast("Not connected. Try again in a sec."); return false; } btn.disabled=true; try{ await db.doc(path).set({...data, updatedAt:new Date().toISOString(), by:who||""}); toast(msg||"Saved."); btn.disabled=false; return true; }catch(err){ btn.disabled=false; writeFail(err); return false; } };
     document.querySelectorAll("#sheet [data-tpl]").forEach(t=>{ const fit=()=>{ t.style.height="auto"; t.style.height=(t.scrollHeight+2)+"px"; }; fit(); t.addEventListener("input",fit); });
@@ -1723,6 +1725,12 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     g("#h-save").addEventListener("click",()=>{ const start=g("#h-start").value, end=g("#h-end").value; if(!start||!end||end<=start){ toast("The end needs to be after the start"); return; } put("settings/hours",{start,end},g("#h-save"),"Call hours saved."); });
     g("#rs-save").addEventListener("click",()=>put("settings/reviews",{reviewLink:g("#rs-link").value.trim(), senderName:g("#rs-sender").value.trim(), businessName:g("#rs-biz").value.trim()},g("#rs-save"),"Review settings saved."));
     g("#s-ghl").addEventListener("click",()=>showGhlLog(g("#s-ghlLog"),g("#s-ghl")));
+    g("#s-ghlSync").addEventListener("click",async()=>{
+      const b=g("#s-ghlSync"); b.disabled=true; b.textContent="Matching…";
+      const r=await ghlPull(false);
+      b.disabled=false; b.textContent="Match the calendar to GHL now";
+      if(r&&r.lines) g("#s-ghlLog").innerHTML=r.lines.length?'<div class="log">'+r.lines.map(x=>'<div><div>'+esc(x)+'</div></div>').join("")+'</div>':'<p class="help">Nothing to change: '+r.appointments+' GHL bookings, all on the calendar.</p>';
+    });
     g("#s-csv").addEventListener("click",exportCsv);
     g("#s-json").addEventListener("click",exportJson);
   }
@@ -2198,8 +2206,26 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   }
   addEventListener("resize",()=>{ if(!$("#view-cal").hidden) fitGrid(); });
 
+  // ---------- MATCH THE CALENDAR TO GHL (/api/ghl-sync) ----------
+  // When the calendar is open and it's been 15 minutes (the hourly run in Vercel does it too), or
+  // from Settings. GHL wins: bookings deleted or moved there are put right here.
+  let ghlTried=false, ghlBusy=false;
+  async function ghlPull(quiet){
+    if(!api||ghlBusy) return null;
+    ghlBusy=true; let r=null;
+    try{ r=await api.call("/api/ghl-sync",{method:"POST"}); if(!quiet) toast(r.dryRun?"Checked GHL (a preview saves nothing).":r.changes?"Matched to GHL: "+r.changes+(r.changes===1?" change.":" changes."):"The calendar already matches GHL."); }
+    catch(e){ if(!quiet) toast(e.code==="not_set_up"?"GHL isn't linked (GHL_API_TOKEN in Vercel).":e.status===401?"Sign in again, then try.":"GHL: "+(e.message||"try again")); }
+    ghlBusy=false; return r;
+  }
+  function ghlAuto(){
+    if(ghlTried||!api||!canWrite||ghlSync===undefined) return;
+    if(ghlSync&&ghlSync.lastSync&&Date.now()-new Date(ghlSync.lastSync)<15*6e4) return;
+    ghlTried=true; ghlPull(true);
+  }
+
   function renderCal(){
     if(calDragging){ calDirty=true; return; }
+    ghlAuto();
     document.documentElement.style.setProperty("--toph",document.querySelector(".top").offsetHeight+"px");
     const cfg=CAL(), t=today(), ag=calView==="agenda";
     // The month picker (Agenda): 6 months back to a year ahead (and the week shown, if it's further).
@@ -2979,6 +3005,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       doc("settings/simple",v=>{ simple=v||{}; });
       doc("settings/calendar",v=>{ calSaved=v||{}; });
       doc("settings/meta",v=>{ metaSync=v; });
+      doc("settings/ghlsync",v=>{ ghlSync=v; });
       db.collection("jobs").onSnapshot(snap=>{ jobsAll=snap.docs.map(x=>Object.assign({id:x.id},x.data())); allJobs=jobsAll.filter(j=>!j.deleted); jobsLoaded=true; renderAll(); syncJobs(); }, ()=>{});
       db.collection("events").onSnapshot(snap=>{ allEvents=snap.docs.map(x=>Object.assign({id:x.id},x.data())); eventsLoaded=true; renderAll(); }, ()=>{});
       db.collection("nights").onSnapshot(snap=>{ nights=snap.docs.map(x=>x.data()); renderAll(); }, ()=>{});

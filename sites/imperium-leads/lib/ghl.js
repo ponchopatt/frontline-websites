@@ -169,7 +169,7 @@ function when(bk, service, cfg) {
 
 const OPEN = ["Scheduled", "In Progress"];
 // A job's GHL appointments: one, or more when one job was booked as two (a two-day job).
-const hasAppt = (j, id) => !!j && !!id && (j.ghlAppointmentId === id || (Array.isArray(j.ghlAppointmentIds) && j.ghlAppointmentIds.includes(id)));
+export const hasAppt = (j, id) => !!j && !!id && (j.ghlAppointmentId === id || (Array.isArray(j.ghlAppointmentIds) && j.ghlAppointmentIds.includes(id)));
 // "Jo  Smith", "jo smith" and "Jo-Smith" are one name.
 const nameOf = (s) => String(s ?? "").toLowerCase().replace(/[^a-z]+/g, " ").trim();
 // The same person by name: the same first and last name; or the same first name when that's all
@@ -248,7 +248,8 @@ export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new
   const bk = readBooking(body), at = now.toISOString(), today = M.canberraDate(now);
   const out = (ok, result, writes = [], extra = {}) => ({ ok, result, writes, summary: { appointmentId: bk.apptId, name: bk.name, status: bk.status, ...extra } });
   if (!bk.apptId) return out(false, "No appointment ID in what GHL sent, so nothing was changed.");
-  const job = jobs.find((j) => hasAppt(j, bk.apptId));
+  // The job with this appointment (one that's still here before one deleted in the app).
+  const job = jobs.find((j) => !j.deleted && hasAppt(j, bk.apptId)) || jobs.find((j) => hasAppt(j, bk.apptId));
 
   // ---- An appointment we have: moved, cancelled, no-show or showed.
   if (job && job.deleted) return out(true, "Job " + job.number + " was deleted in the app, so it was left.", [], { jobId: job.id, number: job.number });
@@ -262,7 +263,10 @@ export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new
       return { collection: "leads", id: lead.id, op: "merge", data: p };
     };
     const base = { jobId: job.id, number: job.number, leadId: job.leadId };
+    // A job with two GHL appointments goes by its first one; the other doesn't move or cancel it.
+    const second = !!job.ghlAppointmentId && job.ghlAppointmentId !== bk.apptId;
     if (bk.status === "showed") return out(true, "Showed: job " + job.number + " left as it is.", [], base);
+    if (second && bk.status !== "booked") return out(true, "The other GHL appointment of job " + job.number + " (" + bk.status + "): the job goes by its first one, so it was left.", [], base);
     if (bk.status === "cancelled") {
       if (job.status === "Cancelled") return out(true, "Already cancelled: job " + job.number + ".", [], base);
       if (job.status === "Completed") return out(true, "Job " + job.number + " is already completed, so it was left.", [], base);
@@ -278,18 +282,19 @@ export function planBooking(body, { leads = [], jobs = [], cfg = null, now = new
     }
     // Booked or confirmed again: a new time moves the job (and the lead's day and time).
     const t = when(bk, job.service, cfg), patch = {};
-    if (bk.start && (t.date !== job.date || t.start !== job.start || t.end !== job.end)) Object.assign(patch, { date: t.date, start: t.start, end: t.end, allDay: false });
+    if (bk.start && !second && (t.date !== job.date || t.start !== job.start || t.end !== job.end)) Object.assign(patch, { date: t.date, start: t.start, end: t.end, allDay: false });
     if (job.status === "Cancelled") patch.status = "Scheduled";
-    if (bk.rawStatus && bk.rawStatus !== job.ghlStatus) patch.ghlStatus = bk.rawStatus;
+    if (bk.rawStatus && bk.rawStatus !== job.ghlStatus && !second) patch.ghlStatus = bk.rawStatus;
     const sv = J.serviceFromText(bk.calendar) || J.serviceFromText(bk.title) || J.serviceFromText(bk.serviceAnswer);
     if (sv && job.checkService) Object.assign(patch, { service: sv, checkService: false });
-    if (bk.calendar && bk.calendar !== job.ghlCalendar) patch.ghlCalendar = bk.calendar;
+    if (bk.calendar && bk.calendar !== job.ghlCalendar && !second) patch.ghlCalendar = bk.calendar;
     if (bk.price && !String(job.price || "").trim()) patch.price = bk.price;
     if (!Object.keys(patch).length) return out(true, "No change: job " + job.number + ".", [], base);
     const w = [jobW(patch)];
     if (isCur) {
       const j2 = { ...job, ...patch };
-      let lp = M.stageOf(lead, today) !== "Booked" ? M.book(lead, { date: j2.date, time: j2.start }, at, "GHL") : {};
+      // A job that's done stays done: only its day and time move.
+      let lp = M.stageOf(lead, today) !== "Booked" && job.status !== "Completed" ? M.book(lead, { date: j2.date, time: j2.start }, at, "GHL") : {};
       lp = { ...lp, ...J.leadPatch(j2, { ...lead, ...lp }) };
       if (patch.date || patch.start) lp.log = (lp.log || lead.log || []).concat([entry(at, "GHL: moved", dayWords(j2.date, j2.start))]);
       if (Object.keys(lp).length) w.push(leadW(lp));

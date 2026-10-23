@@ -31,6 +31,7 @@ export async function ghlGet(path, params, { token, version = "2021-07-28", fetc
   }
 }
 
+export const appointment = async (id, o) => { const b = await ghlGet("/calendars/events/appointments/" + encodeURIComponent(id), {}, { ...o, version: "2021-04-15" }); return b.appointment || b.event || null; };
 export const calendars = async (locationId, o) => (await ghlGet("/calendars/", { locationId }, { ...o, version: "2021-04-15" })).calendars || [];
 export const contact = async (id, o) => (await ghlGet("/contacts/" + encodeURIComponent(id), {}, o)).contact || null;
 export const customFields = async (locationId, o) => (await ghlGet("/locations/" + encodeURIComponent(locationId) + "/customFields", {}, o)).customFields || [];
@@ -77,4 +78,14 @@ export function bodyFor(ev, ct, calendarName, fieldNames, value) {
   }
   if (value) body.monetaryValue = value;
   return body;
+}
+
+// The sub-account: GHL_LOCATION_ID, else the one the last booking came from (in the webhook log).
+export async function locationOf(db) {
+  if (process.env.GHL_LOCATION_ID) return process.env.GHL_LOCATION_ID;
+  const { data } = await db.from("docs").select("data").eq("collection", "ghl_log").order("id", { ascending: false }).limit(20);
+  for (const r of data || []) {
+    try { const b = JSON.parse(r.data.body || "{}"); if (b.location && b.location.id) return b.location.id; } catch { /* next */ }
+  }
+  return "";
 }
