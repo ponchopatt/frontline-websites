@@ -199,8 +199,10 @@ Booked jobs have two ticks: **Offered ceramic** and **Offered maint. plan**. Don
 **Review asked**, and **Did they pay? Yes / No**: Yes puts the job in **Payments done**
 (`paid: "Yes"`, `paidAt`, `paidBy`), No in **Waiting for payment** (`paid: "No"`). Not answered
 yet counts as waiting. The question pops up big straight after **✓ Job done** (and after Done in
-the … menu, or a job saved as Completed on the calendar). The Board has a column for each
-(Payments done shows the last 30 days), and the Leads tab can show either.
+the … menu, or a job saved as Completed on the calendar). The same Yes / No is at the top of a
+booking's … menu and of its job on the calendar (it saves on the tap), and calendar cards say
+**Paid** or **Not paid**. The Board has a column for each (Payments done shows the last 30
+days), and the Leads tab can show either.
 
 **…** opens the rest: change status (Booked asks the day and price; Waiting asks the reason),
 the tag (Hot, Warm, Browsing), add a note, the full notes and history, Edit details, and Review
