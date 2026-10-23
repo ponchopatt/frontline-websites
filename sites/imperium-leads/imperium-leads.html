@@ -489,6 +489,7 @@ details.more-f > summary .mn{color:var(--muted)}
 .jtag{font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 8px;border-radius:999px;background:var(--surface);color:var(--text);border:1px solid var(--line)}
 .jtag.warn{background:var(--warn-bg);color:var(--warn-ink);border-color:transparent}
 .jtag.bad{background:var(--bad-bg);color:var(--bad);border-color:transparent}
+.jtag.good{background:var(--good-bg);color:var(--good);border-color:transparent}
 .ghl-log{display:flex;flex-direction:column}
 .ghl-log details{border-bottom:1px solid var(--line);padding:8px 2px}
 .ghl-log summary{cursor:pointer;list-style:none;display:flex;flex-direction:column;gap:2px;min-height:44px;justify-content:center}
@@ -953,10 +954,10 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   }
   // A done job: did they pay? Yes puts it in Payments done, No in Waiting for payment. Not
   // answered yet counts as waiting.
-  function paidRow(l){
-    if(stage(l)!=="Done") return "";
+  function paidRow(l,booked){
+    const st=stage(l); if(st!=="Done" && !(booked && st==="Booked")) return "";
     const v=l.paid==="Yes"?"Yes":l.paid==="No"?"No":"";
-    return '<div class="paidq'+(v==="Yes"?" yes":v==="No"?" no":"")+'"><span class="q">'+(v==="Yes"?"Paid ✓":v==="No"?"Waiting for payment":"Did they pay?")+'</span>'+
+    return '<div class="paidq'+(v==="Yes"?" yes":v==="No"?" no":"")+'"><span class="q">'+(v==="Yes"?"Paid ✓":v==="No"?(st==="Done"?"Waiting for payment":"Not paid yet"):"Did they pay?")+'</span>'+
       '<button type="button" class="py" data-act="paid" data-v="Yes" aria-pressed="'+(v==="Yes")+'">Yes</button>'+
       '<button type="button" class="pn" data-act="paid" data-v="No" aria-pressed="'+(v==="No")+'">No</button></div>';
   }
@@ -1047,6 +1048,14 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     const now=new Date().toISOString();
     if(await save(id,{...R.completePatch(l,now), ...M.setStage(l,"Done",today()), jobDate:l.jobDate&&l.jobDate<=today()?l.jobDate:today()})) askPaid(id);
     else if(btn) btn.disabled=false;
+  }
+  // The Yes / No in a sheet (the … menu, a job): saves on the tap and shows the answer there.
+  function wirePaid(box,id){
+    if(!box) return;
+    box.addEventListener("click",async e=>{
+      const b=e.target.closest('[data-act="paid"]'); if(!b) return;
+      if(await setPaid(id,b.dataset.v)){ const l=current(id); if(l) box.innerHTML=paidRow({...l, paid:b.dataset.v},true); }
+    });
   }
   // Did they pay? Yes: Payments done. No: Waiting for payment.
   async function setPaid(id,v){
@@ -1269,6 +1278,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
         act("m-addNote","Note",IC_NOTE)+act("m-edit","Edit",IC_EDIT)+
       '</div>'+
       (notes[0]?'<div class="lastnote" title="Latest note">'+esc(M.noteLine(notes[0]))+'</div>':"")+
+      (st==="Booked"||st==="Done"?'<div id="m-paid">'+paidRow(l,true)+'</div>':"")+
       '<div class="msec"><div class="eyebrow"><span>Status</span><span>'+esc(st==="Waiting"?"Waiting: "+M.WAIT_REASONS[M.waitReasonOf(l)]:"")+'</span></div>'+
         '<div class="seg pills" id="m-stage">'+M.STAGES.map(s=>'<button type="button" data-v="'+s+'" aria-pressed="'+(s===st)+'">'+s+'</button>').join("")+'</div>'+
         '<div id="m-more"></div></div>'+
@@ -1289,6 +1299,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
       (l.repeatOf?'<p class="help">A repeat: this person was a lead before. <button type="button" class="mini" id="m-repeat">Open the old lead</button></p>':"")+
       (canWrite?'<button class="linkdel" id="m-del" type="button">Delete this lead</button>':""));
     const ct=g("#m-call"), tx=g("#m-text");
+    wirePaid(g("#m-paid"),id);
     if(ct) ct.addEventListener("click",()=>noteReply(id));
     if(tx) tx.addEventListener("click",()=>noteReply(id));
     const more=g("#m-more");
@@ -2026,14 +2037,20 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   const keepJob=j=>!calWho || (calWho==="__none" ? !(j.crew||[]).length && !j.kit : (j.crew||[]).includes(calWho) || j.kit===calWho);
   const keepEvent=e=>!calWho || (calWho!=="__none" && (!(e.who||[]).length || e.who.includes(calWho)));
 
+  // Paid or not, for the lead's own job: Paid once ticked, Not paid once it's done and isn't.
+  function paidTag(j,l){
+    if(!l.id || (J.currentJob(allJobs,l.id)||{}).id!==j.id) return "";
+    if(l.paid==="Yes") return '<span class="jtag good">Paid</span>';
+    return owes(l) ? '<span class="jtag bad">Not paid</span>' : "";
+  }
   function jobCard(j){
-    const l=leadOf(j.leadId)||{}, st=J.STATUSES.includes(j.status)?j.status:"Scheduled";
+    const l=leadOf(j.leadId)||{}, st=J.STATUSES.includes(j.status)?j.status:"Scheduled", pt=paidTag(j,l);
     return '<div class="jc s-'+slug(st)+'" data-job="'+esc(j.id)+'" role="button" tabindex="0">'+
       '<div class="jc1"><b class="jt">'+esc(jobName(j))+'</b>'+
         (l.address?'<a class="pin" href="'+esc(mapsHref(l.address))+'" target="_blank" rel="noopener" aria-label="Open '+esc(l.address)+' in Google Maps">'+PIN+'</a>':"")+
         '<span class="js">'+esc(st)+'</span></div>'+
       '<div class="jn">'+esc(l.name||"No name")+'</div>'+
-      (j.source==="ghl"||j.checkService||j.ghlFlag||CL[j.id]?'<div class="jtags">'+(CL[j.id]?'<span class="jtag bad">Clash: '+esc(clashWho(j).join(", "))+'</span>':"")+(j.source==="ghl"?'<span class="jtag">From GHL</span>':"")+(j.checkService?'<span class="jtag warn">Check service</span>':"")+(j.ghlFlag?'<span class="jtag bad">'+esc(j.ghlFlag)+'</span>':"")+'</div>':"")+
+      (pt||j.source==="ghl"||j.checkService||j.ghlFlag||CL[j.id]?'<div class="jtags">'+pt+(CL[j.id]?'<span class="jtag bad">Clash: '+esc(clashWho(j).join(", "))+'</span>':"")+(j.source==="ghl"?'<span class="jtag">From GHL</span>':"")+(j.checkService?'<span class="jtag warn">Check service</span>':"")+(j.ghlFlag?'<span class="jtag bad">'+esc(j.ghlFlag)+'</span>':"")+'</div>':"")+
       '<div class="jc3"><span class="jtm">'+esc(J.timeLabel(j))+'</span><span class="jcrew">'+(j.crew||[]).map(avatar).join("")+(j.kit?'<span class="kit">'+esc(j.kit)+'</span>':"")+
         '<button type="button" class="asg" data-asg="'+esc(j.id)+'" aria-label="Assign crew to job '+esc(j.number||"")+'">'+ASSIGN+'</button></span></div>'+
     '</div>';
@@ -2647,6 +2664,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
         : '<div class="row nowrap"><span class="help" style="flex:1">No deposit yet.</span><button class="btn small secondary" id="jf-dep" type="button">Send $'+M.DEPOSIT+' deposit</button></div>') : "";
     const g=sheet((old?jobHead(old,(old.status||"Scheduled")+(old.source==="ghl"?" · From GHL"+(old.ghlCalendar?" ("+old.ghlCalendar+")":""):"")+(old.createdAt?" · added "+dayName(localDate(old.createdAt)):"")):'<div class="sheet-h"><div><h2>New job</h2><p class="help">Find the lead, or type a new customer.</p></div><button class="x" id="closeSheet" type="button">Close</button></div>')+
       (canWrite?"":'<div class="banner">View only. Ask for edit access.</div>')+
+      (old&&lead0.id&&(J.currentJob(allJobs,lead0.id)||{}).id===old.id?'<div id="jf-paid">'+paidRow(lead0,true)+'</div>':"")+
       '<div class="eyebrow">Customer</div>'+
       (old?"":'<label>Find a lead<input id="jf-find" type="search" placeholder="Name, phone or car" autocomplete="off"></label><div class="found" id="jf-found" hidden></div>')+
       '<div id="jf-linked"></div>'+
@@ -2702,6 +2720,7 @@ body.cal .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
     g("#jf-crew").addEventListener("click",e=>{ const b=e.target.closest("[data-crew]"); if(b) b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true")); });
     const depB=g("#jf-dep"); if(depB) depB.addEventListener("click",()=>openDeposit(linked));
     const leadB=g("#jf-lead"); if(leadB) leadB.addEventListener("click",()=>openMenu(linked));
+    wirePaid(g("#jf-paid"),linked);
     const delB=g("#jf-del"); if(delB) delB.addEventListener("click",async()=>{ if(await deleteJob(id)) closeSheet(); });
     // Linking a lead: its details fill in; one that already has a job open opens that job instead.
     const showLinked=()=>{
