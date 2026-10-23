@@ -160,10 +160,14 @@ export function readBooking(body) {
 }
 
 // The day, start and end in Canberra ("" when GHL gave no time).
+// A booking's day, start and end. GHL's end when the booking is an hour or more; a shorter one is
+// GHL's default slot (30 minutes), so the end is the service's usual length instead.
+const SHORTEST = 60;
 function when(bk, service, cfg) {
   if (!bk.start) return { date: "", start: "", end: "" };
   const date = M.canberraDate(bk.start), start = J.hm(M.canberraMinutes(bk.start));
-  const end = bk.end && M.canberraDate(bk.end) === date && bk.end > bk.start ? J.hm(M.canberraMinutes(bk.end)) : J.endFor(start, service, cfg) || "";
+  const own = bk.end && M.canberraDate(bk.end) === date && bk.end - bk.start >= SHORTEST * 6e4;
+  const end = own ? J.hm(M.canberraMinutes(bk.end)) : J.endFor(start, service, cfg) || "";
   return { date, start, end };
 }
 
