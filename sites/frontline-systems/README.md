@@ -134,9 +134,16 @@ It sells by Imperium's own month (28 Sep to 25 Oct 2026: $2,000 on Meta ads,
 - **The first screen does the work.** Who it's for, the result, the offer, the
   price ($0 to us, you pay for ads), one button, and the proof (the docket) all
   sit above the fold on a phone and on a laptop.
+- **Video, then booking, straight away.** Like the Goh Consulting and Syncova
+  funnels: Step 1 is the video, Step 2 is the booking box right under it. The
+  box asks 4 quick questions (details, business, jobs a week, ad budget; the
+  last two are big tap buttons), then the calendar opens with their name, email
+  and phone filled in. Until then the calendar shows greyed out and locked.
 - **One action, repeated.** Every button says *Book your free strategy call* and
-  goes to the booking section. On phones a bar with the button and spots left
-  shows once the first button scrolls away, and hides at the booking section.
+  goes to the booking box. Everything below it (proof, the teaching, the offer,
+  the FAQ) is for people who need more, and it ends with one more button. On
+  phones a bar with the button and spots left shows once the first button
+  scrolls away, and hides at the booking box.
 - **Proof before the pitch.** The two real screens (Meta Ads Manager and the
   $41.7K graphic) sit side by side, not in a carousel.
 - **Teach, then sell.** The problem (slow replies, no follow-up, no numbers),
@@ -154,12 +161,12 @@ answers on the same docket. Bright blue only ever means *book a call*.
 
 | `CONFIG` key | What it does when empty | What to put in |
 |---|---|---|
-| `bookingUrl` | Shows a short form instead of the calendar | The GHL booking widget link (Calendars, Share, the `https://api.leadconnectorhq.com/widget/booking/...` link) |
+| `bookingUrl` | The 4 questions still run, then Patrick gets the answers and texts back | The GHL booking widget link (Calendars, Share, the `https://api.leadconnectorhq.com/widget/booking/...` link). The page adds `first_name`, `last_name`, `email`, `phone` and any `utm_` tags from the ad |
 | `vslUrl` | Previews show an empty frame marking the spot; the live site leaves the video section out | A YouTube, Vimeo or Loom link, or an `.mp4` |
 | `vslPoster` | Uses YouTube's own picture, or none | Any picture link |
 | `pixelId` | No tracking | The Meta Pixel ID. It sends PageView, Lead (form), ViewContent (video play) and Schedule (booked page) |
 | `spots`, `spotsTaken` | 3 and 0 | Add one to `spotsTaken` each time a detailer signs up. Every "spots" line and the boxes follow it |
-| `formEndpoint` | The form opens an email to Patrick | A webhook (GHL inbound webhook, Make) that takes JSON |
+| `formEndpoint` | Answers aren't saved anywhere (with no calendar, they open an email to Patrick) | A webhook that takes JSON (a GHL inbound webhook works). It gets `stage: "started"` once they give name, email and mobile, so you can text people who stop halfway, and `stage: "answered"` at the end with jobs and budget |
 
 In GHL, set the booking calendar's thank-you page to
 `https://frontlinesystems.com.au/detailers/booked/`, so a booking lands there

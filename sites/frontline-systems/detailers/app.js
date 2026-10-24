@@ -136,72 +136,146 @@ const CONFIG = {
       };
     });
 
-  /* ---- Booking: the GHL calendar, or the backup form ----------------- */
-  const cal = $('#cal'), form = $('#form');
-  if (CONFIG.bookingUrl && cal) {
-    const f = document.createElement('iframe');
-    f.src = CONFIG.bookingUrl;
-    f.title = 'Book your free strategy call';
-    f.id = 'ghl-booking';
-    f.loading = 'lazy';
-    f.scrolling = 'no';
-    cal.append(f);
-    cal.hidden = false;
-    form.hidden = true;
-    // GHL's own script sizes the calendar to fit.
-    const s = document.createElement('script');
-    s.src = 'https://link.msgsndr.com/js/form_embed.js';
-    s.async = true;
-    document.body.append(s);
-  } else if (form) {
-    $('[data-book-sub]').textContent = 'Leave your details and Patrick will text you to set a time. It’s a short call to see if we’re a fit. No pressure.';
-    const err = $('#formErr');
-    const done = (msg) => {
-      const box = $('.sent') || document.createElement('div');
+  /* ---- Booking: 4 quick questions, then the calendar ------------------ */
+  // Step 1 is the video. With no video on the page, the booking isn't "Step 2".
+  if (!vsl || vsl.hidden) $$('[data-step2]').forEach((el) => el.remove());
+  const form = $('#form'), cal = $('#cal'), grid = $('.apply-grid');
+  if (form) {
+    const qs = $$('.q', form), err = $('#formErr'), next = $('[data-next]', form), back = $('[data-back]', form);
+    const hasCal = /^https:\/\//.test(CONFIG.bookingUrl);
+    let at = 0, started = false;
+
+    // The calendar, greyed out until the questions are done.
+    if (hasCal) {
+      cal.hidden = false;
+      grid.classList.add('two');
+      const ghost = $('[data-ghost]'), now = new Date(), y = now.getFullYear(), m = now.getMonth();
+      const html = [`<b>${now.toLocaleDateString('en-AU', { month: 'long', year: 'numeric' })}</b>`];
+      ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].forEach((d) => html.push(`<span class="dow">${d}</span>`));
+      for (let i = 0; i < (new Date(y, m, 1).getDay() + 6) % 7; i++) html.push('<span></span>');
+      for (let d = 1; d <= new Date(y, m + 1, 0).getDate(); d++) html.push(`<span>${d}</span>`);
+      ghost.innerHTML = html.join('');
+    } else {
+      $('[data-tab-cal]').textContent = 'We text you';
+      $('[data-book-sub]').textContent = 'Answer 4 quick questions and Patrick will text you to set a time. It’s a short call to see if we’re a fit. No pressure.';
+    }
+
+    const show = (i, focus) => {
+      at = i;
+      qs.forEach((q, k) => { q.hidden = k !== i; });
+      $('[data-qnum]').textContent = i + 1;
+      $('[data-qbar]').style.width = ((i + 1) / qs.length) * 100 + '%';
+      back.hidden = i === 0;
+      next.textContent = i < qs.length - 1 ? 'Continue' : hasCal ? 'Open the calendar' : 'Send my answers';
+      err.hidden = true;
+      if (focus) { const el = $('input', qs[i]); if (el) el.focus({ preventScroll: true }); }
+    };
+    // The first answer that isn't right yet on a question, or null.
+    const wrong = (q) => {
+      for (const el of $$('input', q)) {
+        if (el.type === 'radio') {
+          if (!$$(`input[name="${el.name}"]`, q).some((r) => r.checked)) return el;
+          continue;
+        }
+        const v = el.value.trim();
+        const ok = !!v && (el.type !== 'email' || /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) && (el.type !== 'tel' || v.replace(/\D/g, '').length >= 8);
+        el.setAttribute('aria-invalid', ok ? 'false' : 'true');
+        if (!ok) return el;
+      }
+      return null;
+    };
+    const say = (el) => {
+      if (el.type === 'radio') err.textContent = 'Please pick one.';
+      else {
+        const what = $(`label[for="${el.id}"]`).textContent.toLowerCase();
+        err.textContent = el.value.trim() ? `Please check your ${what.replace(/^your /, '')}.` : `Please fill in ${what}.`;
+      }
+      err.hidden = false;
+      el.focus();
+    };
+    const answers = (stage) => {
+      const d = {};
+      new FormData(form).forEach((v, k) => { d[k] = String(v).trim(); });
+      return { ...d, stage, page: 'detailers', from: location.href };
+    };
+    const post = (d) => fetch(CONFIG.formEndpoint, { method: 'POST', headers: { 'content-type': 'application/json', accept: 'application/json' }, body: JSON.stringify(d), keepalive: true });
+    const done = (title, msg) => {
+      const box = document.createElement('div');
       box.className = 'sent';
       box.setAttribute('role', 'status');
-      box.innerHTML = '<h3>Almost done</h3><p></p>';
+      box.innerHTML = '<h3></h3><p></p>';
+      $('h3', box).textContent = title;
       $('p', box).textContent = msg;
-      form.after(box);
+      form.replaceWith(box);
+      return box;
     };
+    const openCal = (d) => {
+      const first = d.name.split(/\s+/)[0], last = d.name.split(/\s+/).slice(1).join(' ');
+      let src = CONFIG.bookingUrl;
+      try {
+        const u = new URL(CONFIG.bookingUrl);
+        // Fill in what they've told us, and carry the ad's tracking through.
+        Object.entries({ first_name: first, last_name: last, full_name: d.name, email: d.email, phone: d.phone }).forEach(([k, v]) => { if (v) u.searchParams.set(k, v); });
+        new URLSearchParams(location.search).forEach((v, k) => { if (/^(utm_|fbclid$)/.test(k)) u.searchParams.set(k, v); });
+        src = u.toString();
+      } catch { /* use the link as given */ }
+      const f = document.createElement('iframe');
+      f.src = src;
+      f.title = 'Pick a time for your call';
+      f.id = 'ghl-booking';
+      f.scrolling = 'no';
+      cal.replaceChildren(f);
+      const sc = document.createElement('script');
+      sc.src = 'https://link.msgsndr.com/js/form_embed.js'; // GHL's own script sizes the calendar to fit
+      sc.async = true;
+      document.body.append(sc);
+      $('[data-tab="form"]').classList.remove('on');
+      $('[data-tab-cal]').classList.add('on');
+      done(`Thanks, ${first}. Now pick a time.`, 'Choose a time on the calendar. You’ll get a text and an email to confirm it.');
+      if (!matchMedia('(min-width: 900px)').matches) cal.scrollIntoView({ block: 'start' });
+    };
+
+    back.addEventListener('click', () => show(Math.max(0, at - 1), true));
+    // Tapping an answer moves on by itself, except on the last question.
+    $$('.opt input', form).forEach((r) => r.addEventListener('change', () => {
+      if (at < qs.length - 1 && r.closest('.q') === qs[at]) setTimeout(() => show(at + 1, true), 160);
+    }));
+
     form.addEventListener('submit', async (ev) => {
       ev.preventDefault();
-      const fields = $$('input,select', form);
-      let bad = null;
-      fields.forEach((el) => {
-        const ok = el.value.trim() && (el.type !== 'email' || /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value.trim())) && (el.type !== 'tel' || el.value.replace(/\D/g, '').length >= 8);
-        el.setAttribute('aria-invalid', ok ? 'false' : 'true');
-        if (!ok && !bad) bad = el;
-      });
-      if (bad) {
-        const what = $(`label[for="${bad.id}"]`).textContent.toLowerCase();
-        err.textContent = bad.tagName === 'SELECT' ? `Please pick ${what}.` : bad.value.trim() ? `Please check your ${what.replace(/^your /, '')}.` : `Please fill in ${what}.`;
-        err.hidden = false;
-        bad.focus();
-        return;
-      }
-      err.hidden = true;
-      const data = Object.fromEntries(fields.map((el) => [el.name, el.value.trim()]));
-      data.page = 'detailers';
+      const bad = wrong(qs[at]);
+      if (bad) return say(bad);
+      // Name, email and mobile are enough to follow up, even if they stop here.
+      if (at === 0 && !started && CONFIG.formEndpoint) { started = true; post(answers('started')).catch(() => {}); }
+      if (at < qs.length - 1) return show(at + 1, true);
+
+      const d = answers('answered');
       track('Lead', { content_name: 'Detailer offer' });
+      if (hasCal) {
+        if (CONFIG.formEndpoint) post(d).catch(() => {});
+        return openCal(d);
+      }
       if (!CONFIG.formEndpoint) {
-        const body = Object.entries(data).map(([k, v]) => `${k}: ${v}`).join('\n');
-        location.href = `mailto:${CONFIG.email}?subject=${encodeURIComponent('Detailer offer: ' + data.business)}&body=${encodeURIComponent(body)}`;
-        done('Your email app should open with your details in it. Hit send and Patrick will text you to set a time.');
+        const body = ['name', 'email', 'phone', 'business', 'area', 'jobs', 'budget'].map((k) => `${k}: ${d[k] || ''}`).join('\n');
+        location.href = `mailto:${CONFIG.email}?subject=${encodeURIComponent('Detailer offer: ' + d.business)}&body=${encodeURIComponent(body)}`;
+        done('Almost done', 'Your email app should open with your answers in it. Hit send and Patrick will text you to set a time.');
         return;
       }
-      const btn = $('button[type=submit]', form);
-      btn.disabled = true; btn.textContent = 'Sending';
+      next.disabled = true;
+      next.textContent = 'Sending';
       try {
-        const res = await fetch(CONFIG.formEndpoint, { method: 'POST', headers: { 'content-type': 'application/json', accept: 'application/json' }, body: JSON.stringify(data) });
+        const res = await post(d);
         if (!res.ok) throw new Error(res.status);
         location.href = '/detailers/booked/?via=form';
       } catch {
-        btn.disabled = false; btn.textContent = 'Send my details';
-        err.innerHTML = `That didn’t send. Please email <a href="mailto:${CONFIG.email}">${CONFIG.email}</a> or try again.`;
+        next.disabled = false;
+        next.textContent = 'Send my answers';
+        err.innerHTML = `That didn’t send. Please try again, or email <a href="mailto:${CONFIG.email}">${CONFIG.email}</a>.`;
         err.hidden = false;
       }
     });
+
+    show(0, false);
   }
 
   /* ---- Sticky book bar on phones ------------------------------------- */

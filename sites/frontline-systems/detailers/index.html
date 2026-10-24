@@ -81,12 +81,96 @@
      an empty frame to mark the spot and the live site leaves the section out. -->
 <section class="band ink vsl" id="vsl" data-vsl hidden>
   <div class="wrap">
-    <h2 class="h-sm">Watch this before you book</h2>
+    <h2 class="h-sm"><span class="step-tag">Step 1</span>Watch this before you book</h2>
     <p class="sub">How the system works, and what happens in the 4 weeks.</p>
     <div class="frame" id="vslFrame">
       <p class="frame-empty"><span>Your video goes here. Put its YouTube, Vimeo or Loom link in <code>vslUrl</code> at the top of <code>detailers/app.js</code>.</span></p>
     </div>
-    <a class="btn" href="#book">Book your free strategy call</a>
+  </div>
+</section>
+
+<!-- Step 2, straight after the video (as the Goh and Syncova funnels do): a few quick
+     questions, then the calendar opens. The calendar is GHL's, from CONFIG.bookingUrl;
+     without one, the answers go to Patrick and he texts back. -->
+<section class="band ink book" id="book">
+  <div class="wrap">
+    <h2 class="h-sm"><span class="step-tag" data-step2>Step 2</span>Book your free strategy call</h2>
+    <p class="sub" data-book-sub>Answer 4 quick questions, then pick a time. It&rsquo;s a short call to see if we&rsquo;re a fit. No pressure.</p>
+
+    <div class="apply" id="apply">
+      <ol class="apply-tabs" aria-hidden="true">
+        <li class="on" data-tab="form">Your details</li>
+        <li data-tab="cal" data-tab-cal>Pick a time</li>
+      </ol>
+      <div class="apply-grid">
+        <form class="form" id="form" novalidate>
+          <p class="q-count" aria-live="polite">Question <span data-qnum>1</span> of 4</p>
+          <div class="q-bar" aria-hidden="true"><i data-qbar></i></div>
+
+          <fieldset class="q" data-q="1">
+            <legend>Your details</legend>
+            <div class="field-t">
+              <label for="f-name">Your name</label>
+              <input id="f-name" name="name" autocomplete="name" required>
+            </div>
+            <div class="field-t">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field-t">
+              <label for="f-phone">Mobile</label>
+              <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required>
+            </div>
+          </fieldset>
+
+          <fieldset class="q" data-q="2">
+            <legend>Your business</legend>
+            <div class="field-t">
+              <label for="f-biz">Business name</label>
+              <input id="f-biz" name="business" autocomplete="organization" required>
+            </div>
+            <div class="field-t">
+              <label for="f-area">Town or city</label>
+              <input id="f-area" name="area" autocomplete="address-level2" required>
+            </div>
+          </fieldset>
+
+          <fieldset class="q" data-q="3">
+            <legend>How many jobs do you do a week right now?</legend>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="jobs" value="Under 5" required><span>Under 5</span></label>
+              <label class="opt"><input type="radio" name="jobs" value="5 to 10"><span>5 to 10</span></label>
+              <label class="opt"><input type="radio" name="jobs" value="10 to 20"><span>10 to 20</span></label>
+              <label class="opt"><input type="radio" name="jobs" value="Over 20"><span>Over 20</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="q" data-q="4">
+            <legend>What could you spend on ads each week?</legend>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="budget" value="Under $150" required><span>Under $150</span></label>
+              <label class="opt"><input type="radio" name="budget" value="$150 to $300"><span>$150 to $300</span></label>
+              <label class="opt"><input type="radio" name="budget" value="$300 to $600"><span>$300 to $600</span></label>
+              <label class="opt"><input type="radio" name="budget" value="Over $600"><span>Over $600</span></label>
+            </div>
+          </fieldset>
+
+          <p class="form-err" id="formErr" role="alert" hidden></p>
+          <div class="q-nav">
+            <button class="btn-back" type="button" data-back hidden>Back</button>
+            <button class="btn" type="submit" data-next>Continue</button>
+          </div>
+          <p class="form-note">We only use your details to talk about this offer. <a href="/privacy/">Privacy policy</a></p>
+        </form>
+
+        <div class="cal" id="cal" hidden>
+          <div class="cal-lock" data-lock>
+            <div class="cal-ghost" data-ghost aria-hidden="true"></div>
+            <p class="cal-msg"><strong>The calendar opens next.</strong> Answer the 4 questions and pick a time that suits you.</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -391,60 +475,13 @@
   </div>
 </section>
 
-<!-- Booking. The GHL calendar when CONFIG.bookingUrl is set, else a short form. -->
-<section class="band ink book" id="book">
-  <div class="wrap">
-    <h2>Book your free strategy call</h2>
-    <p class="sub" data-book-sub>Pick a time below. It&rsquo;s a short call to see if we&rsquo;re a fit. No pressure.</p>
-    <div class="cal" id="cal" hidden></div>
 
-    <form class="form" id="form" novalidate>
-      <div class="form-grid">
-        <div class="field-t">
-          <label for="f-name">Your name</label>
-          <input id="f-name" name="name" autocomplete="name" required>
-        </div>
-        <div class="field-t">
-          <label for="f-biz">Business name</label>
-          <input id="f-biz" name="business" autocomplete="organization" required>
-        </div>
-        <div class="field-t">
-          <label for="f-phone">Mobile</label>
-          <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required>
-        </div>
-        <div class="field-t">
-          <label for="f-email">Email</label>
-          <input id="f-email" name="email" type="email" autocomplete="email" required>
-        </div>
-        <div class="field-t">
-          <label for="f-area">Town or city</label>
-          <input id="f-area" name="area" autocomplete="address-level2" required>
-        </div>
-        <div class="field-t">
-          <label for="f-jobs">Jobs a week right now</label>
-          <select id="f-jobs" name="jobs" required>
-            <option value="">Pick one</option>
-            <option>Under 5</option>
-            <option>5 to 10</option>
-            <option>10 to 20</option>
-            <option>Over 20</option>
-          </select>
-        </div>
-        <div class="field-t field-wide">
-          <label for="f-budget">What you could spend on ads a week</label>
-          <select id="f-budget" name="budget" required>
-            <option value="">Pick one</option>
-            <option>Under $150</option>
-            <option>$150 to $300</option>
-            <option>$300 to $600</option>
-            <option>Over $600</option>
-          </select>
-        </div>
-      </div>
-      <p class="form-err" id="formErr" role="alert" hidden></p>
-      <button class="btn" type="submit">Send my details</button>
-      <p class="form-note">Patrick will text you to set a time. We only use your details to talk about this offer. <a href="/privacy/">Privacy policy</a></p>
-    </form>
+<!-- The close: back up to the booking. -->
+<section class="band ink close">
+  <div class="wrap">
+    <h2>3 spots. 4 weeks free. You only pay for ads.</h2>
+    <p class="sub"><span data-spots-text>3 of 3 spots open.</span> Answer 4 quick questions and pick a time.</p>
+    <a class="btn" href="#book">Book your free strategy call</a>
   </div>
 </section>
 
