@@ -8,6 +8,11 @@
 <link rel="icon" href="/assets/favicon.ico" sizes="any">
 <link rel="icon" href="/assets/frontline-icon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#0B1B36">
+<script>
+  // GHL can open this page inside its booking widget. The widget sits on our own page, so
+  // the whole tab can move here instead.
+  if (window.top !== window.self) { try { window.top.location.replace(location.href); } catch (e) {} }
+</script>
 <link rel="preload" href="/detailers/assets/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/detailers/styles.css">
 </head>
@@ -15,41 +20,76 @@
 
 <header class="top">
   <div class="wrap top-in">
-    <a class="brand" href="/" aria-label="Frontline Systems home">
+    <span class="brand">
       <img src="/assets/frontline-mark-light.svg" width="40" height="29" alt="">
       <span>Frontline Systems</span>
-    </a>
+    </span>
   </div>
 </header>
 
-<!-- GHL sends people here after they book (set it as the calendar's thank-you page). -->
+<!-- The confirmation page. Set it as the GHL calendar's redirect after booking. It sets the
+     rules for the call: on time, numbers ready, everyone who decides there. -->
 <main class="band ink done">
-  <div class="wrap">
-    <h1>You&rsquo;re booked in.</h1>
-    <p class="lede">Your call is in the calendar. Here&rsquo;s how to get the most out of it.</p>
-    <ol class="next">
-      <li>
-        <h3>Check your texts and email</h3>
-        <p>The time and the link to join are in there. Add it to your calendar now.</p>
-      </li>
-      <li>
-        <h3>Have your numbers handy</h3>
-        <p>Roughly how many jobs you do a week, your usual prices, and what you could spend on ads.</p>
-      </li>
-      <li>
-        <h3>Bring your questions</h3>
-        <p>We&rsquo;ll show you the real Imperium setup and tell you straight if it&rsquo;s a fit.</p>
-      </li>
-    </ol>
-    <a class="btn" href="/detailers/">Back to the offer</a>
+  <div class="wrap done-in">
+    <h1>You&rsquo;re booked in. Now read this.</h1>
+    <p class="lede">The time and the link to join are in your email and texts. Add it to your calendar now. There are only 3 spots, so here&rsquo;s how we run these calls.</p>
+
+    <section class="done-block" aria-labelledby="rules">
+      <h2 id="rules">The rules</h2>
+      <ul class="rules">
+        <li><strong>Be there on time.</strong> The call starts on the minute and runs 45 minutes. If you&rsquo;re more than 5 minutes late, we&rsquo;ll move you to the next free time.</li>
+        <li><strong>Everyone who decides is on the call.</strong> If a partner or anyone else has a say in spending money on your business, they join too. We don&rsquo;t run the call twice.</li>
+        <li><strong>Somewhere quiet, with a screen.</strong> A laptop is best, a phone is fine. Not from the car between jobs: we&rsquo;ll be sharing our screen.</li>
+        <li><strong>Can&rsquo;t make it?</strong> Reschedule from your confirmation email at least 24 hours before, so someone else can have the time.</li>
+      </ul>
+    </section>
+
+    <section class="done-block" aria-labelledby="bring">
+      <h2 id="bring">Have these numbers ready</h2>
+      <ul class="bring">
+        <li>How many jobs you do a week, and your busiest days</li>
+        <li>Your prices: your main packages and your average job</li>
+        <li>Where your work comes from now: Facebook, Instagram, Google, word of mouth</li>
+        <li>What you spend on ads now, if anything</li>
+        <li>How many more jobs a week you could take on</li>
+        <li>What you could put into ads each week</li>
+      </ul>
+    </section>
+
+    <section class="done-block" aria-labelledby="how">
+      <h2 id="how">How the call will go</h2>
+      <ol class="call">
+        <li>
+          <h3>Your business <span>10 min</span></h3>
+          <p>Where your jobs come from, what&rsquo;s working and what isn&rsquo;t.</p>
+        </li>
+        <li>
+          <h3>Our system <span>15 min</span></h3>
+          <p>We show you Imperium&rsquo;s real setup: the ads, the instant replies, the booking and the tracker, with real numbers.</p>
+        </li>
+        <li>
+          <h3>Your numbers <span>10 min</span></h3>
+          <p>Your area, your prices and your ad budget, and what 4 weeks could look like for you.</p>
+        </li>
+        <li>
+          <h3>The decision <span>10 min</span></h3>
+          <p>If it&rsquo;s a fit, we offer you one of the 3 spots and set a start date. If it isn&rsquo;t, we&rsquo;ll tell you straight.</p>
+        </li>
+      </ol>
+    </section>
+
+    <div class="deal-line">
+      <p class="deal-big">Don&rsquo;t waste our time and we won&rsquo;t waste yours.</p>
+      <p>Turn up on time, with your numbers and everyone who decides. We&rsquo;ll be straight with you either way.</p>
+    </div>
   </div>
 </main>
 
 <script src="/detailers/app.js" defer></script>
 <script>
-  // The booking itself is the conversion.
+  // The booking itself is the conversion. Counted once, in the tab, not inside the widget.
   window.addEventListener('load', function () {
-    if (window.fbq) window.fbq('track', 'Schedule');
+    if (window.fbq && window.top === window.self) window.fbq('track', 'Schedule');
   });
 </script>
 </body>

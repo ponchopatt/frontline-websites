@@ -134,6 +134,8 @@ weeks of free marketing and setup.
 1. For car detailers in Australia. 3 spots open.
 2. 4 weeks of free marketing for detailers.
 3. No setup fee. No monthly fee. You only pay for your ads.
+
+On a laptop the headline runs wider than the video, in two lines, as Syncova's does.
 4. (1) Watch the 2 minute video
 5. The video
 6. Book your free call (button)
@@ -176,8 +178,14 @@ that label.
    - Business name and town (short text)
    - How many jobs do you do a week right now? Under 5 / 5 to 10 / 10 to 20 / Over 20
    - What could you spend on ads each week? Under $150 / $150 to $300 / $300 to $600 / Over $600
-2. **The thank-you page.** Set the calendar's redirect after booking to
-   `https://getfrontlinesystems.com/detailers/booked/`, so a booking counts as Schedule.
+2. **The confirmation page.** Set the calendar's redirect after booking to the
+   booked page: `https://frontline-websites-frontline-system.vercel.app/detailers/booked/`
+   for now, then `https://getfrontlinesystems.com/detailers/booked/` once the domain is on.
+   It sets the rules for the call: be on time (45 minutes, more than 5 late gets moved),
+   everyone who decides on the call, somewhere quiet with a screen, reschedule 24 hours
+   ahead. It also lists the numbers to have ready and how the call runs (business 10,
+   system 15, numbers 10, decision 10). If GHL opens it inside the calendar, the page
+   moves the whole tab to it, and it counts Schedule once.
 
 ### Before the ads run
 
