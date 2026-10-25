@@ -128,7 +128,9 @@ h2 { font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.3rem); }
 /* ------------------------------------------------- calendar, 8 and 9 ---- */
 .book { padding-top: 8px; }
 .book-in { display: flex; flex-direction: column; align-items: center; }
-.cal { position: relative; width: 100%; max-width: 760px; margin-top: 14px; min-height: 700px; background: var(--paper); color: var(--text); border-radius: 14px; }
+/* 700px at most: GHL's calendar switches to its narrow layout at 720px and under, where
+   "Schedule meeting" runs across the full width of the form instead of sitting in a corner. */
+.cal { position: relative; width: 100%; max-width: 700px; margin-top: 14px; min-height: 700px; background: var(--paper); color: var(--text); border-radius: 14px; }
 /* Nothing clips the calendar: it grows with each step (see app.js), and the frame rounds its own corners. */
 .cal iframe { display: block; width: 100%; min-height: 700px; border: 0; border-radius: 14px; }
 .cal-help { margin-top: 12px; font-size: 0.88rem; color: var(--muted-d); text-align: center; }
