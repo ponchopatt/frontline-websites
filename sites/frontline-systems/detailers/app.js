@@ -4,7 +4,7 @@
 const CONFIG = {
   bookingUrl: '',   // GHL booking widget link, https://api.leadconnectorhq.com/widget/booking/...
   vslUrl: 'https://youtu.be/tM1K19JjLHE', // the video: a YouTube, Vimeo or Loom link, or an .mp4
-  vslPoster: '',    // optional picture shown before the video plays
+  vslPoster: '',    // for an .mp4 only: the picture shown before it plays
   pixelId: '',      // Meta Pixel ID, digits only
   spots: 3,         // spots in this round
   spotsTaken: 0,    // add one each time a detailer signs up
@@ -45,41 +45,35 @@ const CONFIG = {
   });
 
   /* ---- Video ---------------------------------------------------------- */
-  // An embed link for the usual hosts. Anything else is used as given.
+  // The host's own player, embedded as it is (as the Goh funnel does): one tap to play on any
+  // phone, where a picture that loads the player on tap needs a second tap on iPhones.
   function embed(url) {
     let m;
-    if ((m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/))) return { src: `https://www.youtube-nocookie.com/embed/${m[1]}?autoplay=1&rel=0&modestbranding=1&playsinline=1`, poster: `https://i.ytimg.com/vi/${m[1]}/hqdefault.jpg` };
-    if ((m = url.match(/vimeo\.com\/(?:video\/)?(\d+)/))) return { src: `https://player.vimeo.com/video/${m[1]}?autoplay=1&title=0&byline=0&portrait=0` };
-    if ((m = url.match(/loom\.com\/(?:share|embed)\/([\w]+)/))) return { src: `https://www.loom.com/embed/${m[1]}?autoplay=1&hide_owner=true&hide_share=true&hide_title=true` };
+    if ((m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/))) return { src: `https://www.youtube-nocookie.com/embed/${m[1]}?rel=0&modestbranding=1&playsinline=1` };
+    if ((m = url.match(/vimeo\.com\/(?:video\/)?(\d+)/))) return { src: `https://player.vimeo.com/video/${m[1]}?title=0&byline=0&portrait=0` };
+    if ((m = url.match(/loom\.com\/(?:share|embed)\/([\w]+)/))) return { src: `https://www.loom.com/embed/${m[1]}?hide_owner=true&hide_share=true&hide_title=true` };
     if (/\.(mp4|webm|mov)(\?|$)/i.test(url)) return { video: url };
     return { src: url };
   }
   const vsl = $('[data-vsl]'), frame = $('#vslFrame');
   if (vsl && CONFIG.vslUrl) {
     const e = embed(CONFIG.vslUrl);
-    const poster = CONFIG.vslPoster || e.poster || '';
-    frame.innerHTML = '';
-    const play = document.createElement('button');
-    play.type = 'button';
-    play.className = 'play';
-    play.setAttribute('aria-label', 'Play the video');
-    if (poster) play.style.backgroundImage = `url("${poster.replace(/"/g, '%22')}")`;
-    play.innerHTML = '<span class="play-btn"></span><span class="play-label">Watch the video</span>';
-    play.addEventListener('click', () => {
-      let el;
-      if (e.video) {
-        el = document.createElement('video');
-        el.src = e.video; el.controls = true; el.autoplay = true; el.playsInline = true;
-      } else {
-        el = document.createElement('iframe');
-        el.src = e.src; el.title = 'Video: how the system works';
-        el.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
-        el.allowFullscreen = true;
-      }
-      frame.replaceChildren(el);
-      track('ViewContent', { content_name: 'VSL' });
-    }, { once: true });
-    frame.append(play);
+    let el;
+    if (e.video) {
+      el = document.createElement('video');
+      el.src = e.video; el.controls = true; el.playsInline = true; el.preload = 'metadata';
+      if (CONFIG.vslPoster) el.poster = CONFIG.vslPoster;
+      el.addEventListener('play', () => track('ViewContent', { content_name: 'VSL' }), { once: true });
+    } else {
+      el = document.createElement('iframe');
+      el.src = e.src; el.title = 'Video: how the system works'; el.loading = 'lazy';
+      el.allow = 'fullscreen; picture-in-picture; encrypted-media';
+      el.allowFullscreen = true;
+      // A tap into another site's player only shows here as the page losing focus to it.
+      const played = () => { if (document.activeElement === el) { track('ViewContent', { content_name: 'VSL' }); window.removeEventListener('blur', played); } };
+      window.addEventListener('blur', played);
+    }
+    frame.replaceChildren(el);
     vsl.hidden = false;
   } else if (vsl && !live) {
     vsl.hidden = false; // previews show the empty spot; the live site leaves it out

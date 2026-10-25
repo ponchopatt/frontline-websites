@@ -183,12 +183,6 @@ h3 { font-size: 1.15rem; font-weight: 750; font-stretch: 106%; line-height: 1.25
 .frame iframe, .frame video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .frame-empty { position: absolute; inset: 16px; display: grid; place-items: center; text-align: center; padding: 16px; border: 2px dashed rgba(157,185,255,.45); border-radius: 8px; color: var(--muted-d); font-size: 0.95rem; }
 .frame-empty code { color: #fff; font-family: inherit; font-weight: 650; }
-.play { position: absolute; inset: 0; width: 100%; border: 0; padding: 0; background: var(--ink-2) center / cover no-repeat; cursor: pointer; color: #fff; }
-.play::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,27,54,0) 40%, rgba(11,27,54,.7)); }
-.play-btn { position: absolute; left: 50%; top: 50%; width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%; background: var(--act); display: grid; place-items: center; transition: transform .15s ease; }
-.play:hover .play-btn { transform: scale(1.06); }
-.play-btn::after { content: ""; margin-left: 6px; border-style: solid; border-width: 14px 0 14px 22px; border-color: transparent transparent transparent #fff; }
-.play-label { position: absolute; left: 20px; bottom: 16px; font-weight: 650; font-size: 0.95rem; }
 
 /* ------------------------------------------------------------ proof ---- */
 .proof-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
