@@ -3,7 +3,7 @@
    without it (see README, "Detailer offer page"). */
 const CONFIG = {
   bookingUrl: '',   // GHL booking widget link, https://api.leadconnectorhq.com/widget/booking/...
-  vslUrl: '',       // the video: a YouTube, Vimeo or Loom link, or an .mp4
+  vslUrl: 'https://youtu.be/tM1K19JjLHE', // the video: a YouTube, Vimeo or Loom link, or an .mp4
   vslPoster: '',    // optional picture shown before the video plays
   pixelId: '',      // Meta Pixel ID, digits only
   spots: 3,         // spots in this round
