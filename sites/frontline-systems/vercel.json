@@ -1,6 +1,9 @@
 {
   "cleanUrls": true,
   "trailingSlash": true,
+  "redirects": [
+    { "source": "/", "destination": "/detailers/", "permanent": false }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",
