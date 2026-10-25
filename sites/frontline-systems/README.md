@@ -179,8 +179,7 @@ that label.
    - How many jobs do you do a week right now? Under 5 / 5 to 10 / 10 to 20 / Over 20
    - What could you spend on ads each week? Under $150 / $150 to $300 / $300 to $600 / Over $600
 2. **The confirmation page.** Set the calendar's redirect after booking to the
-   booked page: `https://frontline-websites-frontline-system.vercel.app/detailers/booked/`
-   for now, then `https://getfrontlinesystems.com/detailers/booked/` once the domain is on.
+   booked page: `https://www.getfrontlinesystems.com/detailers/booked/`.
    It sets the rules for the call: be on time (45 minutes, more than 5 late gets moved),
    everyone who decides on the call, somewhere quiet with a screen, reschedule 24 hours
    ahead. It also lists the numbers to have ready and how the call runs (business 10,
@@ -189,9 +188,10 @@ that label.
 
 ### Before the ads run
 
-- **Domain.** Add `getfrontlinesystems.com` to this Vercel project (Settings, Domains).
-  Then point its DNS at Vercel. Right now it shows a different page, hosted
-  behind Cloudflare.
+- **Domain.** `getfrontlinesystems.com` is on this Vercel project (DNS in Cloudflare,
+  set to DNS only). `www.getfrontlinesystems.com` is the main address: the bare domain
+  jumps to it, and `/` jumps to `/detailers/`. The page's canonical and share links use
+  the www address. Use `https://www.getfrontlinesystems.com` in ads.
 - **The link must be public.** The project's production link
   (`frontline-websites-frontline-system.vercel.app`) opens with no login.
   Deployment-specific links (the long ones with a random part) sit behind Vercel's
