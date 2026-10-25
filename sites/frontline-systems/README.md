@@ -205,6 +205,12 @@ qualify it as firms that waited longer.
 
 ## Deploying
 
+**The home page goes to the detailer page.** `vercel.json` sends `/` to
+`/detailers/` with a temporary redirect, because the detailer offer is what's
+being sold now. The old tradie page is still in `index.html`; to show it again,
+delete the `redirects` entry.
+
+
 The domain `frontlinesystems.com.au` already resolves (Cloudflare) and currently
 returns 404, so it is free to point wherever you like.
 
