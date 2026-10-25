@@ -22,16 +22,15 @@
   </div>
 </header>
 
-<!-- GHL sends people here after they book (set it as the calendar's thank-you page).
-     The backup form sends them here with ?via=form. -->
+<!-- GHL sends people here after they book (set it as the calendar's thank-you page). -->
 <main class="band ink done">
   <div class="wrap">
-    <h1 id="title">You&rsquo;re booked in.</h1>
-    <p class="lede" id="lede">Your call is in the calendar. Here&rsquo;s how to get the most out of it.</p>
+    <h1>You&rsquo;re booked in.</h1>
+    <p class="lede">Your call is in the calendar. Here&rsquo;s how to get the most out of it.</p>
     <ol class="next">
       <li>
         <h3>Check your texts and email</h3>
-        <p id="step1">The time and the link to join are in there. Add it to your calendar now.</p>
+        <p>The time and the link to join are in there. Add it to your calendar now.</p>
       </li>
       <li>
         <h3>Have your numbers handy</h3>
@@ -46,21 +45,11 @@
   </div>
 </main>
 
-<script>
-  (function () {
-    var form = /[?&]via=form\b/.test(location.search);
-    if (form) {
-      document.getElementById('title').textContent = 'Got it. We’ll text you.';
-      document.getElementById('lede').textContent = 'Patrick will text you to find a time for the call.';
-      document.getElementById('step1').textContent = 'The text will come from Patrick. Reply with a time that suits you.';
-    }
-  })();
-</script>
 <script src="/detailers/app.js" defer></script>
 <script>
-  // The booking itself is the conversion. The form already counted as a Lead.
+  // The booking itself is the conversion.
   window.addEventListener('load', function () {
-    if (window.fbq && !/[?&]via=form\b/.test(location.search)) window.fbq('track', 'Schedule');
+    if (window.fbq) window.fbq('track', 'Schedule');
   });
 </script>
 </body>

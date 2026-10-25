@@ -5,7 +5,7 @@ and it works; drag the folder onto any host and it works there too.
 
     index.html          the page
     privacy/index.html  privacy policy
-    detailers/          the detailer offer page (see "Detailer offer page" below)
+    detailers/          the detailer landing page (see "Detailer offer page" below)
     styles.css          all styling, tokens at the top
     app.js              tier switcher, sticky bar, form
     assets/             logo, favicons, fonts, the Imperium reel, share card
@@ -119,89 +119,80 @@ real.
 
 ## Detailer offer page (`/detailers/`)
 
-A page for one offer: **3 detailers get 4 weeks of free marketing and setup.**
-It sells by Imperium's own month (28 Sep to 25 Oct 2026: $2,000 on Meta ads,
-99 leads at $20.17, $41.7K of work) and ends at one action: book a call.
+A landing page with one job and one exit: **watch the video, book the call.** It
+matches Syncova's funnel (same offer, same stack). The offer: 3 detailers get 4
+weeks of free marketing and setup.
 
     detailers/index.html         the page
     detailers/booked/index.html  where people land after booking (noindex)
     detailers/styles.css         its own styles, tokens at the top
-    detailers/app.js             CONFIG, spots, video, calculators, booking, pixel
-    detailers/assets/            font, proof screens, app screens, share image
+    detailers/app.js             CONFIG, spots, video, calendar, pixel
+    detailers/assets/            font, proof screens, share image
 
-### How it is built to convert
+### The 11 blocks, in order, and nothing else
 
-- **The first screen does the work.** Who it's for, the result, the offer, the
-  price ($0 to us, you pay for ads), one button, and the proof (the docket) all
-  sit above the fold on a phone and on a laptop.
-- **Video, then booking, straight away.** Like the Goh Consulting and Syncova
-  funnels: Step 1 is the video, Step 2 is the booking box right under it. The
-  box asks 4 quick questions (details, business, jobs a week, ad budget; the
-  last two are big tap buttons), then the calendar opens with their name, email
-  and phone filled in. Until then the calendar shows greyed out and locked.
-- **One action, repeated.** Every button says *Book your free strategy call* and
-  goes to the booking box. Everything below it (proof, the teaching, the offer,
-  the FAQ) is for people who need more, and it ends with one more button. On
-  phones a bar with the button and spots left shows once the first button
-  scrolls away, and hides at the booking box.
-- **Proof before the pitch.** The two real screens (Meta Ads Manager and the
-  $41.7K graphic) sit side by side, not in a carousel.
-- **Teach, then sell.** The problem (slow replies, no follow-up, no numbers),
-  then a calculator so they see their own cost, then the system, then 4 steps,
-  then a second calculator for ads, then the offer with a reason it's free and a
-  reason it's only 3.
-- **Risk taken away.** No setup fee, $0 for 4 weeks, you only pay for ads, you
-  decide after. A fit list says who it isn't for, so the calls are better.
+1. For car detailers in Australia. 3 spots open.
+2. 4 weeks of free marketing for detailers.
+3. No setup fee. No monthly fee. You only pay for your ads.
+4. (1) Watch the 2 minute video
+5. The video
+6. Book your free call (button)
+7. The offer, 4 lines, with the ad spend stated
+8. (2) Book your free strategy call
+9. The GHL calendar, embedded
+10. Who you're dealing with: Imperium's docket and the two real screens
+11. The results disclaimer, with the ABN line and the privacy link
 
-The look: navy and white, one typeface (Archivo) at three widths. The docket (a
-job sheet with a torn top) is the one bold thing; the calculators print their
-answers on the same docket. Bright blue only ever means *book a call*.
+The header is the logo only, not a link. On phones a bar with the button and
+spots left shows once the first button scrolls away, and hides at the calendar.
+
+**There's no separate form.** The qualifying questions live in the GHL calendar's
+own booking form, so people book on the spot. Set that up in GHL (below).
+
+**What was cut** isn't lost. The calculators, the problem and system sections, the
+app screens, how it works, the fit list, the FAQ, the bio and the 4-question form
+are kept in `drafts/frontline-main-site/` for the main site.
+
+**The $41.7K is labelled as Imperium's total work.** On the docket the ad numbers
+(spent, leads, cost per lead) and "Imperium's total work in the same 4 weeks:
+$41.7K" are two separate parts, with no total rule between them. Read stacked, it
+would look like $2,000 of ads made $41.7K. If the $41.7K is something else, change
+that label.
 
 ### Fill these in (top of `detailers/app.js`)
 
-| `CONFIG` key | What it does when empty | What to put in |
+| `CONFIG` key | Now | What it does |
 |---|---|---|
-| `bookingUrl` | The 4 questions still run, then Patrick gets the answers and texts back | The GHL booking widget link (Calendars, Share, the `https://api.leadconnectorhq.com/widget/booking/...` link). The page adds `first_name`, `last_name`, `email`, `phone` and any `utm_` tags from the ad |
-| `vslUrl` | Previews show an empty frame marking the spot; the live site leaves the video section out | A YouTube (Unlisted or Public, embedding allowed), Vimeo or Loom link, or an `.mp4`. It shows in the host's own player |
-| `vslPoster` | None | For an `.mp4` only: the picture shown before it plays |
-| `pixelId` | No tracking | The Meta Pixel ID. It sends PageView, Lead (form), ViewContent (video play) and Schedule (booked page) |
-| `spots`, `spotsTaken` | 3 and 0 | Add one to `spotsTaken` each time a detailer signs up. Every "spots" line and the boxes follow it |
-| `formEndpoint` | Answers aren't saved anywhere (with no calendar, they open an email to Patrick) | A webhook that takes JSON (a GHL inbound webhook works). It gets `stage: "started"` once they give name, email and mobile, so you can text people who stop halfway, and `stage: "answered"` at the end with jobs and budget |
+| `bookingUrl` | `https://api.leadconnectorhq.com/widget/booking/YpAx9beLYyqM5mSxezDC` | The calendar. The page passes on any `utm_` tags and `fbclid` from the ad. Without JavaScript, there's a link to it instead |
+| `vslUrl` | `https://youtu.be/tM1K19JjLHE` | The video, in YouTube's own player. It must be Unlisted or Public with embedding allowed. With none, previews show an empty frame and the live site leaves the video out |
+| `vslPoster` | empty | For an `.mp4` only: the picture shown before it plays |
+| `pixelId` | empty | The Meta Pixel ID. It sends PageView, ViewContent (video play) and Schedule (booked page) |
+| `spots`, `spotsTaken` | 3 and 0 | Add one to `spotsTaken` each time a detailer signs up |
 
-In GHL, set the booking calendar's thank-you page to
-`https://frontlinesystems.com.au/detailers/booked/`, so a booking lands there
-and counts as Schedule.
+### Set up in GHL (the calendar lives in the Frontline account)
 
-### Check before it goes live
+1. **The 4 questions go in the booking form.** In the calendar's settings
+   (Forms and Payment), use a custom form with name, email and phone, plus:
+   - Business name and town (short text)
+   - How many jobs do you do a week right now? Under 5 / 5 to 10 / 10 to 20 / Over 20
+   - What could you spend on ads each week? Under $150 / $150 to $300 / $300 to $600 / Over $600
+2. **The thank-you page.** Set the calendar's redirect after booking to
+   `https://getfrontlinesystems.com/detailers/booked/`, so a booking counts as Schedule.
 
-Every line on the page has to be true. These came from the brief or are my best
-guess, so please confirm or change them:
+### Before the ads run
 
-1. **What the $41.7K is.** The page says "We did $41.7K of detailing in 4 weeks"
-   and "Work done from Imperium's job records". It doesn't say all of it came
-   from ads. If it did, it can say so; if it's booked not done, change "did".
-2. **The $2,000 was in the same 4 weeks.** The Meta card shows the campaign's
-   spend; the page puts it in the 28 Sep to 25 Oct box.
-3. **What happens after 4 weeks.** The page says you decide, the monthly price
-   is given on the call, and if you stop "there's nothing to cancel and nothing
-   owed". If there's a contract or a minimum, change the FAQ and step 4.
-4. **What's in the setup.** Ads planned and run, a text within a minute, day 1,
-   3 and 7 follow-up, online booking, the tracker app, weekly numbers. Remove
-   anything you won't do for all 3.
-5. **Time and dates.** "Built in about a week", "a couple of hours in the first
-   week", "Patrick will text you to set a time".
-6. **Meta lead forms.** The FAQ says you don't need a website because leads come
-   through Meta's forms. Imperium's main campaign is a Leads campaign; check
-   that's how you'd run theirs.
-7. **Patrick's photo.** The founder section shows "PP". To use a photo, add
-   `detailers/assets/patrick.webp` (square, 320 px or more) and in
-   `detailers/index.html` change `<div class="face" aria-hidden="true">PP</div>`
-   to `<img class="face" src="/detailers/assets/patrick.webp" width="160" height="160" alt="Patrick Pendergast">`.
-
-The app screens use made-up customers and numbers, and say so under them. The
-speed-to-lead line cites Harvard Business Review (2011, 1.25 million leads):
-firms that tried to reach a lead within an hour were nearly 7 times as likely to
-qualify it as firms that waited longer.
+- **Domain.** Add `getfrontlinesystems.com` to this Vercel project (Settings, Domains).
+  Then point its DNS at Vercel. Right now it shows a different page, hosted
+  behind Cloudflare.
+- **The link must be public.** The project's production link
+  (`frontline-websites-frontline-system.vercel.app`) opens with no login.
+  Deployment-specific links (the long ones with a random part) sit behind Vercel's
+  login under Deployment Protection. Use the production link or the domain in
+  ads, never a deployment link.
+- **The page's claims.**
+  - Confirm what the $41.7K covers.
+  - Confirm the $2,000 was spent in the same 4 weeks.
+  - Confirm the video is about 2 minutes.
 
 ## Deploying
 
