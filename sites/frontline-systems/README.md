@@ -168,7 +168,7 @@ that label.
 | `bookingUrl` | `https://api.leadconnectorhq.com/widget/booking/YpAx9beLYyqM5mSxezDC` | The calendar. The page passes on any `utm_` tags and `fbclid` from the ad. Without JavaScript, there's a link to it instead |
 | `vslUrl` | `https://youtu.be/tM1K19JjLHE` | The video, in YouTube's own player. It must be Unlisted or Public with embedding allowed. With none, previews show an empty frame and the live site leaves the video out |
 | `vslPoster` | empty | For an `.mp4` only: the picture shown before it plays |
-| `pixelId` | empty | The Meta Pixel ID. It sends PageView, ViewContent (video play) and Schedule (booked page) |
+| `pixelId` | `2325442974923679` | The Meta Pixel (dataset "Frontline Systems website"). It sends PageView, ViewContent (video play) and Schedule (booked page). A `<noscript>` image counts PageView with scripts off |
 | `spots`, `spotsTaken` | 3 and 0 | Add one to `spotsTaken` each time a detailer signs up |
 
 ### Set up in GHL (the calendar lives in the Frontline account)

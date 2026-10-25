@@ -6,7 +6,7 @@ const CONFIG = {
   bookingUrl: 'https://api.leadconnectorhq.com/widget/booking/YpAx9beLYyqM5mSxezDC', // the GHL calendar
   vslUrl: 'https://youtu.be/tM1K19JjLHE', // the video: a YouTube, Vimeo or Loom link, or an .mp4
   vslPoster: '',    // for an .mp4 only: the picture shown before it plays
-  pixelId: '',      // Meta Pixel ID, digits only
+  pixelId: '2325442974923679', // Meta Pixel ID (Frontline Systems website)
   spots: 3,         // spots in this round
   spotsTaken: 0,    // add one each time a detailer signs up
 };
