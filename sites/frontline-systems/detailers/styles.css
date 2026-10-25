@@ -108,15 +108,22 @@ h3 { font-size: 1.15rem; font-weight: 750; font-stretch: 106%; line-height: 1.25
 }
 
 /* ------------------------------------------------------------- hero ---- */
-.hero { padding-top: 36px; padding-bottom: 72px; }
-.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 44px; }
-.for { color: var(--muted-d); font-size: 0.98rem; margin-bottom: 18px; }
+/* Centred, as on Syncova's page, so the video sits on the first screen under a short headline. */
+.hero { padding-top: 28px; padding-bottom: 56px; }
+.hero-in { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.hero h1 { max-width: 16ch; }
+.for { color: var(--muted-d); font-size: 0.95rem; margin-bottom: 14px; }
 .for strong { color: #fff; font-weight: 650; }
-.lede { margin-top: 22px; max-width: 54ch; font-size: 1.12rem; color: #D9E1EE; }
-.cta { margin-top: 30px; }
+.lede { margin-top: 16px; max-width: 50ch; font-size: 1.06rem; line-height: 1.55; color: #D9E1EE; }
+.hero .vsl { width: 100%; max-width: 880px; margin-top: 22px; }
+.step-line { display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 650; font-size: 1rem; }
+.step-line .step-tag { margin: 0; font-size: 0.8rem; vertical-align: 0; }
+.hero .frame { margin: 12px auto 0; box-shadow: 0 30px 70px -30px rgba(0,0,0,.7); }
+.cta { margin-top: 26px; display: flex; flex-direction: column; align-items: center; width: 100%; }
 .cta .btn { width: 100%; }
 @media (min-width: 600px) { .cta .btn { width: auto; } }
 .ticks { list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 0.95rem; }
+.hero .ticks { justify-content: center; }
 .ticks li { position: relative; padding-left: 24px; }
 .ticks li::before {
   content: ""; position: absolute; left: 2px; top: 0.42em;
@@ -126,8 +133,20 @@ h3 { font-size: 1.15rem; font-weight: 750; font-stretch: 106%; line-height: 1.25
 }
 .ink .ticks li::before { color: var(--sky); }
 @media (min-width: 900px) {
-  .hero { padding-top: 64px; padding-bottom: 112px; }
-  .hero-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: center; gap: 72px; }
+  .hero { padding-top: 36px; padding-bottom: 80px; }
+  .hero h1 { max-width: 22ch; font-size: clamp(2.4rem, 1.5rem + 2vw, 3.2rem); }
+  .hero .vsl { max-width: 720px; }
+}
+
+/* The offer and Imperium's month, straight after the video. */
+.deal { padding-top: 0; }
+.deal-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; }
+.deal-card { padding: 26px 22px; border-radius: 14px; background: var(--ink-2); border: 1px solid rgba(157,185,255,.22); }
+.deal-card p { margin-top: 12px; color: #D9E1EE; max-width: 52ch; }
+.deal-card p:last-child { color: #fff; font-weight: 650; }
+@media (min-width: 900px) {
+  .deal-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 440px); gap: 72px; align-items: center; }
+  .deal-card { padding: 34px 34px; }
 }
 
 /* ----------------------------------------------------------- docket ---- */
@@ -176,7 +195,7 @@ h3 { font-size: 1.15rem; font-weight: 750; font-stretch: 106%; line-height: 1.25
 
 /* -------------------------------------------------------------- vsl ---- */
 .frame {
-  position: relative; margin-top: 28px; max-width: 920px;
+  position: relative; margin-top: 28px; max-width: 880px;
   aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden;
   background: var(--ink-2); border: 1px solid rgba(255,255,255,.14);
 }
@@ -328,7 +347,7 @@ input[type=range]:focus-visible::-moz-range-thumb { outline: 3px solid var(--act
 /* ------------------------------------------------------------- book ---- */
 /* Step 2 of the funnel: a white card on navy, questions on the left and the
    calendar on the right. The calendar stays locked until the questions are done. */
-.vsl, .book { padding-top: 0; }
+.book { padding-top: 0; }
 .step-tag {
   display: inline-block; margin-right: 12px; padding: 4px 12px 5px;
   border-radius: 999px; background: var(--act); color: #fff;
