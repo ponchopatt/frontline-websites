@@ -5,6 +5,7 @@ and it works; drag the folder onto any host and it works there too.
 
     index.html          the page
     privacy/index.html  privacy policy
+    detailers/          the detailer offer page (see "Detailer offer page" below)
     styles.css          all styling, tokens at the top
     app.js              tier switcher, sticky bar, form
     assets/             logo, favicons, fonts, the Imperium reel, share card
@@ -116,7 +117,99 @@ real.
 
 ---
 
+## Detailer offer page (`/detailers/`)
+
+A page for one offer: **3 detailers get 4 weeks of free marketing and setup.**
+It sells by Imperium's own month (28 Sep to 25 Oct 2026: $2,000 on Meta ads,
+99 leads at $20.17, $41.7K of work) and ends at one action: book a call.
+
+    detailers/index.html         the page
+    detailers/booked/index.html  where people land after booking (noindex)
+    detailers/styles.css         its own styles, tokens at the top
+    detailers/app.js             CONFIG, spots, video, calculators, booking, pixel
+    detailers/assets/            font, proof screens, app screens, share image
+
+### How it is built to convert
+
+- **The first screen does the work.** Who it's for, the result, the offer, the
+  price ($0 to us, you pay for ads), one button, and the proof (the docket) all
+  sit above the fold on a phone and on a laptop.
+- **Video, then booking, straight away.** Like the Goh Consulting and Syncova
+  funnels: Step 1 is the video, Step 2 is the booking box right under it. The
+  box asks 4 quick questions (details, business, jobs a week, ad budget; the
+  last two are big tap buttons), then the calendar opens with their name, email
+  and phone filled in. Until then the calendar shows greyed out and locked.
+- **One action, repeated.** Every button says *Book your free strategy call* and
+  goes to the booking box. Everything below it (proof, the teaching, the offer,
+  the FAQ) is for people who need more, and it ends with one more button. On
+  phones a bar with the button and spots left shows once the first button
+  scrolls away, and hides at the booking box.
+- **Proof before the pitch.** The two real screens (Meta Ads Manager and the
+  $41.7K graphic) sit side by side, not in a carousel.
+- **Teach, then sell.** The problem (slow replies, no follow-up, no numbers),
+  then a calculator so they see their own cost, then the system, then 4 steps,
+  then a second calculator for ads, then the offer with a reason it's free and a
+  reason it's only 3.
+- **Risk taken away.** No setup fee, $0 for 4 weeks, you only pay for ads, you
+  decide after. A fit list says who it isn't for, so the calls are better.
+
+The look: navy and white, one typeface (Archivo) at three widths. The docket (a
+job sheet with a torn top) is the one bold thing; the calculators print their
+answers on the same docket. Bright blue only ever means *book a call*.
+
+### Fill these in (top of `detailers/app.js`)
+
+| `CONFIG` key | What it does when empty | What to put in |
+|---|---|---|
+| `bookingUrl` | The 4 questions still run, then Patrick gets the answers and texts back | The GHL booking widget link (Calendars, Share, the `https://api.leadconnectorhq.com/widget/booking/...` link). The page adds `first_name`, `last_name`, `email`, `phone` and any `utm_` tags from the ad |
+| `vslUrl` | Previews show an empty frame marking the spot; the live site leaves the video section out | A YouTube (Unlisted or Public, embedding allowed), Vimeo or Loom link, or an `.mp4`. It shows in the host's own player |
+| `vslPoster` | None | For an `.mp4` only: the picture shown before it plays |
+| `pixelId` | No tracking | The Meta Pixel ID. It sends PageView, Lead (form), ViewContent (video play) and Schedule (booked page) |
+| `spots`, `spotsTaken` | 3 and 0 | Add one to `spotsTaken` each time a detailer signs up. Every "spots" line and the boxes follow it |
+| `formEndpoint` | Answers aren't saved anywhere (with no calendar, they open an email to Patrick) | A webhook that takes JSON (a GHL inbound webhook works). It gets `stage: "started"` once they give name, email and mobile, so you can text people who stop halfway, and `stage: "answered"` at the end with jobs and budget |
+
+In GHL, set the booking calendar's thank-you page to
+`https://frontlinesystems.com.au/detailers/booked/`, so a booking lands there
+and counts as Schedule.
+
+### Check before it goes live
+
+Every line on the page has to be true. These came from the brief or are my best
+guess, so please confirm or change them:
+
+1. **What the $41.7K is.** The page says "We did $41.7K of detailing in 4 weeks"
+   and "Work done from Imperium's job records". It doesn't say all of it came
+   from ads. If it did, it can say so; if it's booked not done, change "did".
+2. **The $2,000 was in the same 4 weeks.** The Meta card shows the campaign's
+   spend; the page puts it in the 28 Sep to 25 Oct box.
+3. **What happens after 4 weeks.** The page says you decide, the monthly price
+   is given on the call, and if you stop "there's nothing to cancel and nothing
+   owed". If there's a contract or a minimum, change the FAQ and step 4.
+4. **What's in the setup.** Ads planned and run, a text within a minute, day 1,
+   3 and 7 follow-up, online booking, the tracker app, weekly numbers. Remove
+   anything you won't do for all 3.
+5. **Time and dates.** "Built in about a week", "a couple of hours in the first
+   week", "Patrick will text you to set a time".
+6. **Meta lead forms.** The FAQ says you don't need a website because leads come
+   through Meta's forms. Imperium's main campaign is a Leads campaign; check
+   that's how you'd run theirs.
+7. **Patrick's photo.** The founder section shows "PP". To use a photo, add
+   `detailers/assets/patrick.webp` (square, 320 px or more) and in
+   `detailers/index.html` change `<div class="face" aria-hidden="true">PP</div>`
+   to `<img class="face" src="/detailers/assets/patrick.webp" width="160" height="160" alt="Patrick Pendergast">`.
+
+The app screens use made-up customers and numbers, and say so under them. The
+speed-to-lead line cites Harvard Business Review (2011, 1.25 million leads):
+firms that tried to reach a lead within an hour were nearly 7 times as likely to
+qualify it as firms that waited longer.
+
 ## Deploying
+
+**The home page goes to the detailer page.** `vercel.json` sends `/` to
+`/detailers/` with a temporary redirect, because the detailer offer is what's
+being sold now. The old tradie page is still in `index.html`; to show it again,
+delete the `redirects` entry.
+
 
 The domain `frontlinesystems.com.au` already resolves (Cloudflare) and currently
 returns 404, so it is free to point wherever you like.
