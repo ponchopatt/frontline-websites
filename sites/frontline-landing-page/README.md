@@ -13,6 +13,6 @@ no build step.
 On Vercel: Root Directory `sites/frontline-landing-page`, Framework Preset
 "Other", no build command.
 
-It's a copy of `sites/frontline-systems/detailers/`. The README there has the
+It's a copy of `sites/frontline-systems/detailers/` (the cut-back landing page). The README there has the
 CONFIG table and the claims to check before it goes live. Change both copies
 together, or retire one.
