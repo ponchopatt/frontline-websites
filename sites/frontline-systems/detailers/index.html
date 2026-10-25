@@ -43,22 +43,41 @@
 
 <main>
 
-<!-- Hero: the offer, the proof and the button, all on the first screen. -->
+<!-- Hero, as Syncova does it: who it's for, the offer in a few words, and the video right
+     there on the first screen, then the button. The video's link is CONFIG.vslUrl in app.js;
+     with none, previews show an empty frame to mark the spot and the live site leaves it out. -->
 <section class="band ink hero">
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <p class="for">For car detailers in Australia. <strong data-spots-line>3 spots open.</strong></p>
-      <h1>We did $41.7K of detailing in 4&nbsp;weeks. We&rsquo;ll set up the same system for you, free.</h1>
-      <p class="lede">We run Imperium Detailing in Canberra. $2,000 of Meta ads got us 99 leads at $20.17 each. Now we&rsquo;re setting up the same system for 3 detailers and running it free for 4 weeks. You only pay Meta for your ads.</p>
-      <div class="cta">
-        <a class="btn" href="#book" id="heroCta">Book your free strategy call</a>
-        <ul class="ticks" aria-label="What it costs">
-          <li>No setup fee</li>
-          <li>$0 to us for 4 weeks</li>
-          <li>You only pay for ad spend</li>
-          <li>Only 3 spots</li>
-        </ul>
+  <div class="wrap hero-in">
+    <p class="for">For car detailers in Australia. <strong data-spots-line>3 spots open.</strong></p>
+    <h1>4 weeks of free marketing for detailers.</h1>
+    <p class="lede">We did $41.7K of detailing in 4 weeks at Imperium Detailing, Canberra. We&rsquo;ll set up the same system for you. No setup fee. You only pay for your ads.</p>
+
+    <div class="vsl" id="vsl" data-vsl hidden>
+      <p class="step-line"><span class="step-tag">Step 1</span>Watch this short video</p>
+      <div class="frame" id="vslFrame">
+        <p class="frame-empty"><span>Your video goes here. Put its YouTube, Vimeo or Loom link in <code>vslUrl</code> at the top of <code>detailers/app.js</code>.</span></p>
       </div>
+    </div>
+
+    <div class="cta">
+      <a class="btn" href="#book" id="heroCta">Book your free strategy call</a>
+      <ul class="ticks" aria-label="What it costs">
+        <li>No setup fee</li>
+        <li>$0 to us for 4 weeks</li>
+        <li>You only pay for ad spend</li>
+        <li>Only 3 spots</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- The offer and the proof, straight after the video. -->
+<section class="band ink deal">
+  <div class="wrap deal-grid">
+    <div class="deal-card">
+      <h2 class="h-sm">Here&rsquo;s the offer</h2>
+      <p>4 weeks of marketing and setup for your detailing business, completely free. We run your Meta ads, text every lead back within a minute, follow up until they book, and put it all in a tracker on your phone.</p>
+      <p>No setup fee. No monthly fee for the 4 weeks. You only pay Meta for your ad spend.</p>
     </div>
 
     <figure class="docket docket-hero" aria-labelledby="dk1">
@@ -74,18 +93,6 @@
       </dl>
       <figcaption class="dk-foot">Ad numbers from Meta Ads Manager. Work done from Imperium&rsquo;s job records. <a href="#proof">See the screens</a></figcaption>
     </figure>
-  </div>
-</section>
-
-<!-- The video. Put its link in CONFIG.vslUrl in app.js. With no link, previews show
-     an empty frame to mark the spot and the live site leaves the section out. -->
-<section class="band ink vsl" id="vsl" data-vsl hidden>
-  <div class="wrap">
-    <h2 class="h-sm"><span class="step-tag">Step 1</span>Watch this before you book</h2>
-    <p class="sub">How the system works, and what happens in the 4 weeks.</p>
-    <div class="frame" id="vslFrame">
-      <p class="frame-empty"><span>Your video goes here. Put its YouTube, Vimeo or Loom link in <code>vslUrl</code> at the top of <code>detailers/app.js</code>.</span></p>
-    </div>
   </div>
 </section>
 
