@@ -83,13 +83,45 @@ const CONFIG = {
     f.src = src;
     f.title = 'Book your free strategy call';
     f.id = 'ghl-booking';
-    f.scrolling = 'no';
+    f.scrolling = 'auto'; // if sizing ever fails, the form can still be scrolled to its button
     f.loading = 'lazy';
     cal.replaceChildren(f);
     const sc = document.createElement('script');
     sc.src = 'https://link.msgsndr.com/js/form_embed.js'; // GHL's own script sizes the calendar to fit
     sc.async = true;
     document.body.append(sc);
+
+    // Our own sizing, so "Schedule meeting" is never cut off. The calendar is 2 steps and
+    // the form step is far taller than the date picker. GHL's script resizes the frame, but
+    // ad blockers often block its domain, and then the frame stays date-picker sized. The
+    // widget speaks iframe-resizer: it says Ready, waits for a parent to answer, then sends
+    // its height on every change. We answer if GHL's script hasn't within 2 seconds, and
+    // always add room under the content for anything that grows late (the "are you human"
+    // check on the form).
+    const ROOM = 40;
+    let sized = false;
+    // A minimum height, so GHL's script setting the exact height can't take the room away.
+    const fit = (h) => { if (h > 0) f.style.minHeight = (h + ROOM) + 'px'; };
+    window.addEventListener('message', (e) => {
+      let host = '';
+      try { host = new URL(e.origin).hostname; } catch { return; }
+      if (!/(^|\.)(leadconnectorhq\.com|msgsndr\.com)$/.test(host) || e.source !== f.contentWindow) return;
+      const d = e.data;
+      if (typeof d === 'string') {
+        const m = /^\[iFrameSizer\][^:]*:(\d+)(?:\.\d+)?:/.exec(d);
+        if (m) { sized = true; fit(+m[1]); return; }
+        if (d.indexOf('[iFrameResizerChild]Ready') === 0) {
+          setTimeout(() => {
+            if (!sized) e.source.postMessage(`[iFrameSizer]${f.id}:8:false:false:32:true:true:null:bodyOffset:null:null:0:false:parent:scroll:true`, e.origin);
+          }, 2000);
+          return;
+        }
+      }
+      // GHL's own height message: ["highlevel.setHeight", {height}], sometimes sent as text.
+      let a = d;
+      if (typeof a === 'string' && a.charAt(0) === '[') { try { a = JSON.parse(a); } catch { a = null; } }
+      if (Array.isArray(a) && a[0] === 'highlevel.setHeight' && a[1]) fit(+a[1].height);
+    });
   }
 
   /* ---- Sticky book bar on phones ------------------------------------- */
