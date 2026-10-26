@@ -44,3 +44,4 @@ Give it a URL that does not impersonate them. `bondi-demo-frontline.vercel.app` 
 | `aqua-brothers` | Aqua Brothers Plumbing | Canberra | Built, not yet sent |
 | `xtreme-works` | Xtreme Works | Sydney | Built, not yet sent |
 | `bloom-nutrition` | Bloom Nutrition (speed remake of bloomnu.com's homepage) | Austin, Texas | Built, not yet sent |
+| `driven-detailing` | Driven Detailing (mobile car detailing) | Wantirna South, Melbourne | Built, not yet sent |
