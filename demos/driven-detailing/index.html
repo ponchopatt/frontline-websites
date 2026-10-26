@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- DEMO built on spec for a pitch. Never indexed: see robots.txt, vercel.json and demos/README.md. -->
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<title>Mobile Car Detailing Wantirna South | Driven Detailing</title>
+<meta name="description" content="Mobile car detailing at your home or work across south-east Melbourne. Pick your car and see your price. Open 7 days.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Driven Detailing: mobile car detailing, south-east Melbourne">
+<meta property="og:description" content="Pick your car and see your price. Seb comes to you. Open 7 days.">
+<meta property="og:image" content="assets/og.jpg">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#05070c">
+<link rel="preload" href="fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="assets/hero-800.webp" media="(max-width: 599px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/hero-1400.webp" imagesrcset="assets/hero-800.webp 800w, assets/hero-1400.webp 1400w" imagesizes="(min-width: 960px) 52vw, 100vw" media="(min-width: 600px)" fetchpriority="high">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#price">Skip to prices</a>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#top" aria-label="Driven Detailing, back to the top">
+      <img src="assets/logo-96.webp" srcset="assets/logo-96.webp 1x, assets/logo-192.webp 2x" width="40" height="40" alt="">
+      <span>Driven Detailing</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#price">Prices</a>
+      <a href="#work">Our work</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#plus">Driven+</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="top-act">
+      <a class="btn ghost sm call-top" href="tel:+61404714415">Call <span class="wide-only">0404 714 415</span></a>
+      <a class="btn sm wide-only" href="#book">Book a detail</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- Hero: what it is, where, the first prices, and the rating. On a phone the bar at the
+     bottom is the call to action, so the photo and the prices get the first screen. -->
+<section class="hero">
+  <div class="wrap hero-in">
+    <figure class="hero-pic">
+      <!-- Phones get the 800px photo whatever their pixel density: it shows 390px wide. -->
+      <picture>
+        <source media="(max-width: 599px)" srcset="assets/hero-800.webp">
+        <img src="assets/hero-1400.webp" srcset="assets/hero-800.webp 800w, assets/hero-1400.webp 1400w" sizes="(min-width: 960px) 52vw, 100vw" width="1400" height="933" alt="Seb detailing a white Porsche 911 in a driveway" fetchpriority="high">
+      </picture>
+    </figure>
+    <div class="hero-copy">
+      <h1>Your car detailed at home or&nbsp;work.</h1>
+      <p class="sub">Seb comes to you across Wantirna South and south-east Melbourne. Open 7&nbsp;days.</p>
+      <a class="rating" href="#reviews">
+        <span class="stars" aria-hidden="true"><svg viewBox="0 0 100 20"><use href="#star5"/></svg></span>
+        <span><strong>5.0</strong> from 50+ Google reviews</span>
+      </a>
+      <ul class="strip" aria-label="Starting prices for a sedan">
+        <li><a href="#price" data-pick="maint"><span>Maintenance</span><b>$80</b></a></li>
+        <li><a href="#price" data-pick="sig"><span>Signature</span><b>$120</b></a></li>
+        <li><a href="#price" data-pick="pres"><span>Prestige</span><b>$260</b></a></li>
+      </ul>
+      <p class="strip-note">From-prices for a sedan. Tap one for your car.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#price">See your price</a>
+        <a class="btn ghost" href="sms:+61404714415" data-sms>Text Seb</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- The four reasons to pick Driven, as they say them, in one quiet line each. -->
+<section class="why" aria-label="Why Driven">
+  <ul class="wrap why-in">
+    <li><strong>We come to you</strong><span>Your driveway, carport or work car park.</span></li>
+    <li><strong>One detailer, start to finish</strong><span>The person who quotes your job does the work.</span></li>
+    <li><strong>We don&rsquo;t leave until you&rsquo;re happy</strong><span>Every detail ends with a final inspection.</span></li>
+    <li><strong>Open 7 days</strong><span>Mon to Sat 6am to 10pm. Sun 12pm to 10pm.</span></li>
+  </ul>
+</section>
+
+<!-- The price picker replaces 5 long package cards and 3 carousels: pick the car, pick
+     inside and out or interior only, and the 3 packages show that car's price. -->
+<section class="sec price" id="price" aria-labelledby="price-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="price-h">Your price in 10&nbsp;seconds.</h2>
+      <p>Pick your car and the job. These are Seb&rsquo;s real prices.</p>
+    </div>
+
+    <div class="picker">
+      <fieldset class="seg" aria-label="Your car">
+        <legend>Your car</legend>
+        <label><input type="radio" name="size" value="0" checked><span>Sedan or small</span></label>
+        <label><input type="radio" name="size" value="1"><span>SUV or large</span></label>
+        <label><input type="radio" name="size" value="2"><span>7-seater or XL</span></label>
+      </fieldset>
+      <fieldset class="seg" aria-label="The job">
+        <legend>The job</legend>
+        <label><input type="radio" name="kind" value="full" checked><span>Inside and out</span></label>
+        <label><input type="radio" name="kind" value="int"><span>Interior only</span></label>
+      </fieldset>
+    </div>
+
+    <div class="packs" id="packs" role="radiogroup" aria-label="Package">
+      <!-- Filled by app.js from PACKAGES. This is the no-JS view. -->
+      <noscript>
+        <p class="nojs">Maintenance from $80, Signature from $120, Prestige from $260 for a sedan. Text Seb on <a href="sms:+61404714415">0404 714 415</a> for your price.</p>
+      </noscript>
+    </div>
+
+    <div class="total" id="total" aria-live="polite">
+      <div class="total-txt">
+        <p class="total-name" id="totalName">Signature Detail, sedan</p>
+        <p class="total-price"><span>From</span> <b id="totalPrice">$120</b></p>
+      </div>
+      <a class="btn" href="#book" id="totalBook">Book this detail</a>
+    </div>
+    <p class="fee">A travel fee applies outside Wantirna South. The final price is confirmed before Seb starts.</p>
+
+    <details class="addons">
+      <summary><span>Add-ons</span><span class="addons-n">16 extras, from $20</span></summary>
+      <div class="addons-in">
+        <div>
+          <h3>Outside</h3>
+          <ul>
+            <li><span>Tyre Endurance Gel</span><b>$20</b></li>
+            <li><span>Rain Repellent</span><b>$30</b></li>
+            <li><span>Headlight Restoration</span><b>from $30</b></li>
+            <li><span>Light Scratch Removal</span><b>from $30</b></li>
+            <li><span>Glass Polish</span><b>from $40</b></li>
+            <li><span>Trim Restoration</span><b>from $50</b></li>
+            <li><span>Clay Bar Decontamination</span><b>from $50</b></li>
+            <li><span>Engine Bay Detail</span><b>from $60</b></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Protection</h3>
+          <ul>
+            <li><span>Spray-On Ceramic Coating</span><b>$60</b></li>
+            <li><span>Carnauba Wax</span><b>from $60</b></li>
+            <li><span>Paint Correction</span><b>from $250</b></li>
+          </ul>
+          <h3>Inside</h3>
+          <ul>
+            <li><span>Stain Removal</span><b>from $40</b></li>
+            <li><span>Steam Clean</span><b>from $40</b></li>
+            <li><span>Leather Conditioning</span><b>$40</b></li>
+            <li><span>Interior Trim Protectant</span><b>$50</b></li>
+            <li><span>Deep Odour Removal</span><b>from $150</b></li>
+          </ul>
+        </div>
+      </div>
+      <p class="addons-note">Add any of these to a package. Ask for them when you book and Seb bundles them into one price.</p>
+    </details>
+  </div>
+</section>
+
+<!-- Before and after: one big slider, three real jobs. -->
+<section class="sec work" id="work" aria-labelledby="work-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="work-h">Before and after.</h2>
+      <p>Real customer cars. Drag the line.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Pick a job">
+      <button type="button" role="tab" aria-selected="true" data-ba="exterior">Paint</button>
+      <button type="button" role="tab" aria-selected="false" data-ba="interior">Interior</button>
+      <button type="button" role="tab" aria-selected="false" data-ba="wheel">Wheels</button>
+    </div>
+    <div class="ba" id="ba" style="--pos:50%">
+      <img class="ba-after" src="assets/exterior-after-1000.webp" srcset="assets/exterior-after-600.webp 600w, assets/exterior-after-1000.webp 1000w" sizes="(min-width: 960px) 880px, 100vw" width="1000" height="750" alt="Mercedes-Benz GLE after detailing, paintwork clean and glossy" loading="lazy" decoding="async">
+      <div class="ba-before-wrap">
+        <img class="ba-before" src="assets/exterior-before-1000.webp" srcset="assets/exterior-before-600.webp 600w, assets/exterior-before-1000.webp 1000w" sizes="(min-width: 960px) 880px, 100vw" width="1000" height="750" alt="The same Mercedes-Benz GLE before, covered in dirt and road spray" loading="lazy" decoding="async">
+      </div>
+      <span class="ba-tag ba-tag-b" aria-hidden="true">Before</span>
+      <span class="ba-tag ba-tag-a" aria-hidden="true">After</span>
+      <span class="ba-line" aria-hidden="true"><span class="ba-knob"></span></span>
+      <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Show more of the before or the after photo">
+    </div>
+    <p class="ba-cap" id="baCap">Mercedes-Benz GLE, full exterior.</p>
+    <p class="more"><a href="https://www.instagram.com/drivendetailing.au/" rel="noopener" target="_blank">See every finished car on Instagram</a></p>
+  </div>
+</section>
+
+<!-- Reviews: their own 3, word for word, first name and initial. -->
+<section class="sec reviews" id="reviews" aria-labelledby="rev-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="rev-h">5.0 from 50+ Google&nbsp;reviews.</h2>
+      <p><a href="https://www.google.com/maps/search/?api=1&amp;query=Driven+Detailing+Wantirna+South" rel="noopener" target="_blank">Read them all on Google</a></p>
+    </div>
+    <div class="rev-grid">
+      <figure class="rev">
+        <svg class="rev-stars" viewBox="0 0 100 20" role="img" aria-label="5 stars"><use href="#star5"/></svg>
+        <blockquote><p>Sebastian did an exceptional job with the detail. Car is looking brand new again! Very professional to deal with and knowledgeable. Even went out of his way to provide advice on leather care and did more work than what was quoted.&nbsp;&hellip;</p></blockquote>
+        <figcaption>Nathan J. <span>October 2026</span></figcaption>
+      </figure>
+      <figure class="rev">
+        <svg class="rev-stars" viewBox="0 0 100 20" role="img" aria-label="5 stars"><use href="#star5"/></svg>
+        <blockquote><p>Driven Detailing went above and beyond. Seb replies with prompt responses, and is upfront with prices and all the extra options available. He arrived on time and did a fabulous job. Tidied up everything before he left.&nbsp;&hellip;</p></blockquote>
+        <figcaption>Grant M. <span>September 2026</span></figcaption>
+      </figure>
+      <figure class="rev">
+        <svg class="rev-stars" viewBox="0 0 100 20" role="img" aria-label="5 stars"><use href="#star5"/></svg>
+        <blockquote><p>Sebastian did an amazing job with my car and my daughter&rsquo;s car also. We were so happy with the results that Sebastian has become our permanent car detailer.</p></blockquote>
+        <figcaption>Nancy L. <span>July 2026</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- Meet Seb: their own words, cut down. -->
+<section class="sec seb" aria-labelledby="seb-h">
+  <div class="wrap seb-in">
+    <figure class="seb-pic">
+      <img src="assets/seb-1240.webp" srcset="assets/seb-640.webp 640w, assets/seb-1240.webp 1240w" sizes="(min-width: 960px) 560px, 100vw" width="1240" height="624" alt="Sebastian Smith, founder of Driven Detailing, beside a freshly detailed white Porsche 911" loading="lazy" decoding="async">
+    </figure>
+    <div class="seb-copy">
+      <h2 id="seb-h">One detailer. Every car. Done&nbsp;properly.</h2>
+      <p>Driven Detailing is run by Sebastian Smith, a Wantirna South local. The person who quotes your job is the same person who turns up, does the work and walks you through the finish.</p>
+      <p>Seb brings the products and equipment. All he needs is a tap and a power point.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Driven+: the offer in one line, the price for the car picked above, the perks, and the
+     rewards ladder. The full terms sit behind one tap instead of on the page. -->
+<section class="sec plus" id="plus" aria-labelledby="plus-h">
+  <div class="wrap">
+    <div class="plus-card">
+      <div class="plus-top">
+        <div>
+          <h2 id="plus-h">Driven+</h2>
+          <p class="plus-line">A detail every month. 10% off every visit. No lock-in.</p>
+        </div>
+        <p class="plus-price"><span id="plusName">Signature, sedan</span><b id="plusPrice">$108</b><span>a visit, normally <s id="plusWas">$120</s></span></p>
+      </div>
+      <ul class="perks">
+        <li>10% off every detail and enhancement</li>
+        <li>Priority booking for weekends and pre-holiday spots</li>
+        <li>No travel fee within 10 km of Wantirna South</li>
+        <li>Pay on the day. No upfront payment</li>
+      </ul>
+      <h3 class="ladder-h">The longer you stay, the more you get</h3>
+      <ol class="ladder">
+        <li><b>Visit 1</b>Free Tyre Endurance Gel</li>
+        <li><b>Visit 2</b>Free Rain Repellent</li>
+        <li><b>Visit 3</b>Free Leather Conditioning</li>
+        <li><b>Visit 4</b>Free Interior Trim Protectant</li>
+        <li><b>Visit 6</b>Free Engine Bay Detail</li>
+        <li><b>Visit 9</b>Free Clay Bar and Carnauba Wax</li>
+        <li class="gold"><b>Visit 12</b>A free detail, then 15% off every visit</li>
+      </ol>
+      <div class="plus-cta">
+        <a class="btn" href="#book" data-plus>Join Driven+</a>
+        <details class="terms">
+          <summary>The fine print</summary>
+          <p>Driven+ includes one detail per calendar month at member price, for one nominated vehicle, on a standing monthly booking. Extra details in the same month are charged at the normal price. Pay on the day; no lock-in, cancel anytime before your next booking. Each month&rsquo;s detail counts as one visit on the rewards timeline. Missing a month resets your rewards progress and ends Gold status (one holiday pause per year). The rewards timeline repeats every year. Driven+ Maintenance starts with a Signature Detail at member price if your car hasn&rsquo;t been detailed by us in the last 6 weeks. If your package already includes a reward, you can swap it for an enhancement of equal value. Rewards have no cash value and can&rsquo;t be transferred.</p>
+        </details>
+      </div>
+    </div>
+
+    <div class="refer">
+      <h3>Give $30. Get $30.</h3>
+      <p>Send a friend to Seb. Their first detail comes with a free rain repellent, and you get $30 credit once their car&rsquo;s done. Driven+ members get $45. No codes: your friend just says your name when they text.</p>
+      <details class="terms">
+        <summary>Referral terms</summary>
+        <p>Credit is issued once your friend completes and pays for a detail of $100 or more, and expires 12 months from issue. Credit stacks, on one booking or split across several.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- Where and when, in one block. A link to Maps instead of a heavy map embed. -->
+<section class="sec area" aria-labelledby="area-h">
+  <div class="wrap area-in">
+    <div>
+      <h2 id="area-h">Where Seb goes.</h2>
+      <p>Based in Wantirna South. Seb covers south-east Melbourne, including:</p>
+      <ul class="subs">
+        <li>Wantirna</li><li>Rowville</li><li>Scoresby</li><li>Knoxfield</li><li>Wheelers Hill</li><li>Glen Waverley</li><li>Vermont South</li><li>Mulgrave</li><li>Ferntree Gully</li><li>Boronia</li><li>Bayswater</li>
+      </ul>
+      <p class="small">A travel fee applies outside Wantirna South. Not sure about your suburb? <a href="sms:+61404714415" data-sms>Text it to Seb</a>.</p>
+    </div>
+    <dl class="hours">
+      <div><dt>Monday to Saturday</dt><dd>6am to 10pm</dd></div>
+      <div><dt>Sunday</dt><dd>12pm to 10pm</dd></div>
+      <div><dt>What Seb needs</dt><dd>A tap and a power point</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- FAQ: their own answers, shortened. The prices question is answered by the picker. -->
+<section class="sec faq" id="faq" aria-labelledby="faq-h">
+  <div class="wrap faq-in">
+    <div class="sec-head">
+      <h2 id="faq-h">Questions.</h2>
+      <p>Can&rsquo;t see yours? <a href="sms:+61404714415" data-sms>Text Seb on 0404 714 415</a>.</p>
+    </div>
+    <div class="qs">
+      <details><summary>How long does a detail take?</summary><p>Maintenance takes 45 to 60 minutes, Signature 1.5 to 2 hours and Prestige 3 to 4 hours. Signature Interior is about 1 hour and Prestige Interior 2 to 2.5 hours. Very dirty cars or added extras can take longer.</p></details>
+      <details><summary>Do you come to my home or work?</summary><p>Yes. Seb details your car in your driveway, carport, garage or work car park. He just needs a water tap and a power point.</p></details>
+      <details><summary>Is there a travel fee?</summary><p>Outside Wantirna South, yes. Text your suburb to 0404 714 415 for an exact quote. Driven+ members pay no travel fee within 10 km of Wantirna South.</p></details>
+      <details><summary>What&rsquo;s the difference between Signature and Prestige?</summary><p>Signature is a complete clean inside and out: wash, wheels and arches, door jambs, full vacuum, dash and trims, leather shampoo and glass. Prestige adds clay bar, carnauba wax, premium tyre dressing, deep carpet shampoo, steam cleaning, stain and odour treatment, and leather conditioning.</p></details>
+      <details><summary>Do you do paint correction and scratch removal?</summary><p>Yes. Light scratch removal starts from $30 and full paint correction from $250, depending on the paint and the size of the car. Send a few daylight photos of the paint for an exact quote.</p></details>
+      <details><summary>Do you do ceramic coating?</summary><p>Yes. The Spray-On Ceramic Coating is $60 and can be added to any detail. It&rsquo;s a ceramic (SiO2) sealant that adds gloss, makes water bead off and keeps the car easier to clean. It&rsquo;s a spray-on layer, not a multi-year professional ceramic coating.</p></details>
+      <details><summary>How does Driven+ work?</summary><p>One detail a month on a standing booking, at 10% off. You get free upgrades the longer you stay, and Gold status (15% off) after 12 visits. Pay on the day, no lock-in.</p></details>
+      <details><summary>How do I book?</summary><p>Use the booking form below, or call or text 0404 714 415 with your car, your suburb and a few photos. Seb replies with a time and a price.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- Booking: 3 short steps instead of a 9-field form on a white box. The details carry
+     over from the price picker. With no booking system behind this demo, the last step
+     opens a text to Seb with everything filled in. On a yes, it becomes an instant
+     booking calendar (see the README). -->
+<section class="sec book" id="book" aria-labelledby="book-h">
+  <div class="wrap book-in">
+    <div class="sec-head">
+      <h2 id="book-h">Book your detail.</h2>
+      <p>Three quick steps. Seb confirms your time and price.</p>
+    </div>
+
+    <form class="bk" id="bk" novalidate>
+      <ol class="bk-steps" aria-hidden="true">
+        <li class="on">Your detail</li><li>Day and time</li><li>Your details</li>
+      </ol>
+
+      <fieldset class="bk-step" data-step="1">
+        <legend class="sr-only">Step 1 of 3: your detail</legend>
+        <p class="bk-sum" id="bkSum">Signature Detail, sedan, from $120</p>
+        <p class="bk-help"><a href="#price">Change it in the price picker</a></p>
+        <label class="fld">
+          <span>Your car</span>
+          <input name="car" type="text" autocomplete="off" placeholder="e.g. 2019 Mazda CX-5" required>
+        </label>
+        <label class="fld">
+          <span>Your suburb</span>
+          <input name="suburb" type="text" autocomplete="address-level2" placeholder="e.g. Rowville" required>
+        </label>
+        <button class="btn wide" type="button" data-next>Next</button>
+      </fieldset>
+
+      <fieldset class="bk-step" data-step="2" hidden>
+        <legend class="sr-only">Step 2 of 3: day and time</legend>
+        <p class="bk-q">Which day suits?</p>
+        <div class="chips" id="days"><!-- the next 7 days, from app.js --></div>
+        <p class="bk-q">What time?</p>
+        <div class="chips">
+          <label><input type="radio" name="time" value="Morning"><span>Morning</span></label>
+          <label><input type="radio" name="time" value="Afternoon"><span>Afternoon</span></label>
+          <label><input type="radio" name="time" value="Evening"><span>Evening</span></label>
+        </div>
+        <div class="bk-nav">
+          <button class="btn ghost" type="button" data-back>Back</button>
+          <button class="btn" type="button" data-next>Next</button>
+        </div>
+      </fieldset>
+
+      <fieldset class="bk-step" data-step="3" hidden>
+        <legend class="sr-only">Step 3 of 3: your details</legend>
+        <label class="fld">
+          <span>Your name</span>
+          <input name="name" type="text" autocomplete="name" required>
+        </label>
+        <label class="fld">
+          <span>Mobile</span>
+          <input name="mobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="04xx xxx xxx" required>
+        </label>
+        <label class="fld">
+          <span>Anything Seb should know? <em>Optional</em></span>
+          <textarea name="note" rows="2" placeholder="e.g. dog hair, add headlight restoration"></textarea>
+        </label>
+        <div class="bk-nav">
+          <button class="btn ghost" type="button" data-back>Back</button>
+          <button class="btn" type="submit">Send to Seb</button>
+        </div>
+      </fieldset>
+
+      <div class="bk-done" id="bkDone" hidden tabindex="-1">
+        <h3>Your message to Seb is ready.</h3>
+        <p>Your texts app has opened with your booking filled in. Press send, and Seb will confirm your time and price.</p>
+        <p class="bk-copy">Texts app didn&rsquo;t open? Text this to <a class="nw" href="sms:+61404714415">0404&nbsp;714&nbsp;415</a>:</p>
+        <pre id="bkMsg"></pre>
+        <button class="btn ghost sm" type="button" id="bkCopyBtn">Copy the message</button>
+      </div>
+      <p class="bk-err" id="bkErr" role="alert" hidden></p>
+    </form>
+
+    <div class="or">
+      <p>Rather talk?</p>
+      <a class="btn ghost" href="tel:+61404714415">Call 0404 714 415</a>
+      <a class="btn ghost" href="sms:+61404714415" data-sms>Text Seb</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <p class="foot-brand"><img src="assets/logo-96.webp" width="32" height="32" alt="" loading="lazy">Driven Detailing</p>
+    <p>Mobile car detailing, Wantirna South VIC 3152. Sebastian Smith. ABN 99 285 337 684.</p>
+    <p class="foot-links"><a href="tel:+61404714415">0404 714 415</a><a href="https://www.instagram.com/drivendetailing.au/" rel="noopener" target="_blank">Instagram</a><a href="https://www.facebook.com/p/Driven-Detailing-61594324528065/" rel="noopener" target="_blank">Facebook</a></p>
+    <p class="small">Prices are from-prices and can change with the car&rsquo;s size and condition. The final price is confirmed before work starts.</p>
+  </div>
+</footer>
+
+<!-- Phones: call, text and book are always one tap away. -->
+<nav class="bar" aria-label="Contact Seb">
+  <a href="tel:+61404714415"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg>Call</a>
+  <a href="sms:+61404714415" data-sms><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c.6 0 1 .4 1 1v11c0 .6-.4 1-1 1H8l-4 4V5c0-.6.4-1 1-1Z"/></svg>Text</a>
+  <a class="bar-book" href="#book">Book a detail</a>
+</nav>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="star" viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 5.9L10 14.8 4.6 17.7l1.2-5.9L1.4 7.7l6-.7z" fill="currentColor"/></symbol>
+    <symbol id="star5" viewBox="0 0 100 20"><use href="#star" x="0" width="20" height="20"/><use href="#star" x="20" width="20" height="20"/><use href="#star" x="40" width="20" height="20"/><use href="#star" x="60" width="20" height="20"/><use href="#star" x="80" width="20" height="20"/></symbol>
+  </defs>
+</svg>
+
+<script src="app.js" defer></script>
+</body>
+</html>
