@@ -79,7 +79,7 @@ Measured the same way for both (390px phone, cache off, `scratchpad` Playwright 
 | First screen | 245KB, 9 files | 225KB, 7 files |
 | Whole page, scrolled to the end | 856KB, 16 files | 452KB, 11 files |
 | Page length on a phone | 17,846px | 8,387px |
-| Taps from landing to a booking request | 3 taps then 9 fields, then wait for a reply | 4 fields and 3 taps, then press send |
+| Booking | 9 fields, then wait for a reply | 4 boxes to type in, 2 taps for day and time, then press send |
 
 No sideways scroll at 320, 390, 768, 1024, 1440 or 1920px. Every link and button is at
 least 44px tall to tap.
