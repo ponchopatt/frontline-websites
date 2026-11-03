@@ -4,7 +4,7 @@ A phone app for the crew to plan and track short videos.
 
 - Live: https://frontline-websites-6mjg.vercel.app/film/
 - Add it to the home screen: open the link in Safari, tap Share, then "Add to Home Screen".
-- PINs are **not** in this repo, because the repo is public. Pat has them. To change them, see "Changing the PINs".
+- No PIN: anyone with the link can open it and pick a name. Pat chose this to keep it simple.
 
 ## Where it lives and why
 
@@ -57,23 +57,22 @@ Also done from the nice-to-have list:
 10. **Views:** enter the view count on Posted ideas. The Numbers tab shows average views by type.
 11. **Weekly target bar**, e.g. "9 of 14 posted this week". The owner can change the target (Numbers tab).
 
-### Logins
+### Opening it
 
-- **Team PIN (4 digits):** the crew. They can see ideas, tick shots and move stages.
-- **Owner PIN (6 digits):** everything else (add, edit, assign, delete, import, views, target).
-- After the PIN, "Who are you?" sets the name. A phone stays signed in for 180 days.
-- 5 wrong PINs locks it for 15 minutes. Each 5 after that doubles the wait, up to 12 hours.
+- There's no PIN. The first screen is "Who are you?" and the phone remembers the name.
+- The crew (Ant, Lucas, Nick, AJ) only see their Today screen.
+- "I'm the owner" gets the Inbox, Board, Today, Numbers and More tabs.
+- The trade-off: anyone who finds the link could change or delete ideas. There's no customer data in it. A PIN can be added back later if needed.
 
 ### Daily reminder for GoHighLevel
 
 ```
-GET https://frontline-websites-6mjg.vercel.app/api/film?action=today&key=<REMINDER KEY>
+GET https://frontline-websites-6mjg.vercel.app/api/film?action=today
 ```
 
 - It returns plain text, one line per person, e.g. `Ant, 2 videos today: Mat slap, POV wheels.`
 - Add `&who=Ant` for one person's line only.
 - Add `&format=json` for JSON.
-- Pat has the reminder key.
 
 To set it up in GHL, create a workflow with a daily 7am trigger, then a Webhook or Custom Webhook action using GET on that URL. Then send the reply text as an SMS to each crew member (use `&who=Name` once per person).
 
@@ -85,7 +84,6 @@ To set it up in GHL, create a workflow with a daily 7am trigger, then a Webhook 
 4. Add **Get Contents of URL**:
    - URL: `https://frontline-websites-6mjg.vercel.app/api/film`
    - Method: **POST**
-   - Headers: `x-film-pin` = your owner PIN
    - Request Body: **JSON**, with `action` = `inbox`, `url` = **Shortcut Input**, `note` = **Provided Input**
 5. Add **Get Dictionary Value** for `message`, then **Show Notification** with it.
 
@@ -101,20 +99,10 @@ Now in TikTok or Instagram, tap Share → Save to Film List.
 - **Import the real ideas.** `imperium_film_ideas.json` wasn't reachable from the build computer, so Pat needs to import it once (More tab → Import ideas).
 - **GHL reminder workflow.** The endpoint is live; the workflow itself is set up in GHL (steps above).
 
-## Changing the PINs
-
-Pick one of these:
-
-- **Easiest:** in Vercel → imperium-leads project → Settings → Environment Variables, set `FILM_TEAM_PIN`, `FILM_ADMIN_PIN` and/or `FILM_REMINDER_KEY`, then redeploy. These override the stored ones.
-- Or replace the `film_system/pins` doc in Supabase. It holds scrypt hashes (`{salt, hash}`) and is made with `hashPin` from `api/film.js`.
-
-Changing a PIN doesn't sign out phones that are already signed in. To sign every phone out, set a new `FILM_TOKEN_SECRET` in Vercel.
-
 ## Run it on a computer
 
 ```
-FILM_LOCAL_STORE=/tmp/film.json FILM_TOKEN_SECRET=dev FILM_TEAM_PIN=1111 FILM_ADMIN_PIN=222222 \
-  FILM_REMINDER_KEY=dev node film/dev-server.mjs
+FILM_LOCAL_STORE=/tmp/film.json node film/dev-server.mjs
 ```
 
-Then open http://localhost:8790/film/ (those PINs are for the local copy only).
+Then open http://localhost:8790/film/.
