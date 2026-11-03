@@ -1,0 +1,14 @@
+{
+  "name": "Imperium Film List",
+  "short_name": "Film List",
+  "description": "What to film today, and what's next.",
+  "start_url": "/film/",
+  "scope": "/film/",
+  "display": "standalone",
+  "background_color": "#050608",
+  "theme_color": "#050608",
+  "icons": [
+    { "src": "/film/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/film/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

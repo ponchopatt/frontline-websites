@@ -4,7 +4,7 @@
   touched, so no lead data is ever stored here. When online the network always wins, so a new
   release shows up on the next open.
 */
-const CACHE = "imperium-leads-shell-v9";
+const CACHE = "imperium-leads-shell-v10";
 const SHELL = ["/", "/claude-shim.js", "/reviews.js", "/model.js", "/texts.js", "/jobs.js", "/vendor/supabase.js", "/config.js", "/manifest.json", "/icon-192.png", "/icon-512.png", "/apple-touch-icon.png"];
 
 self.addEventListener("install", (event) => {
@@ -15,7 +15,7 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE && !k.startsWith("imperium-film-")).map((k) => caches.delete(k))))
       .then(() => self.clients.claim()),
   );
 });
@@ -24,7 +24,9 @@ self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
-  if (url.origin !== self.location.origin || url.pathname.startsWith("/api/")) return;
+  // /film/ is the Film List, with its own worker: leave it alone, so its pages never land in
+  // this cache in place of the leads app's.
+  if (url.origin !== self.location.origin || url.pathname.startsWith("/api/") || url.pathname.startsWith("/film/")) return;
   const key = req.mode === "navigate" ? "/" : url.pathname;
   if (!SHELL.includes(key)) return;
   event.respondWith(
