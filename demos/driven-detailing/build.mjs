@@ -51,7 +51,8 @@ const P = {
   table: (ids) => {
     const rows = ids.map((id) => {
       const p = job(id);
-      const cells = p.prices.map((n) => `<td>${$(n)}${p.ranged ? `<small>to ${$(n + RANGE)}</small>` : ''}</td>`).join('');
+      const cells = p.prices.map((n, i) => n == null ? '<td>Quoted</td>'
+        : `<td>${$(n)}${p.ranged ? `<small>to ${$(n + RANGE)}</small>` : p.twoStep ? `<small>two-step ${$(p.twoStep[i])}</small>` : ''}</td>`).join('');
       return `<tr><td>${p.name}<small>${p.time || p.desc}</small></td>${cells}</tr>`;
     }).join('\n');
     const ranged = ids.some((id) => job(id).ranged);

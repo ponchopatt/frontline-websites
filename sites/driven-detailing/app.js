@@ -26,6 +26,11 @@ const PACKAGES = [
     inc: ['Vacuum: seats, carpets and boot', 'Dashboard, console and wheel', 'Door trims and high-touch areas', 'Foot pedals deep cleaned', 'Leather seats shampooed', 'Interior glass cleaned', 'Odour neutraliser and freshener', 'Final inspection and finish'],
   },
   {
+    id: 'pc', name: 'Paint Correction',
+    desc: 'Machine polish for swirl marks, scratches and dull paint', prices: [347, null, null], twoStep: [547, null, null],
+    inc: ['Full wash and clay bar decontamination', 'Paint checked under good light, and the finish agreed with you', 'Machine polish matched to your paint', 'Single-step: one polish for swirl marks and haze', 'Two-step: a cut, then a polish, for deeper defects'],
+  },
+  {
     id: 'ext', name: 'Exterior Detail', time: '45 to 60 min',
     desc: 'Complete exterior detail', prices: [110, 125, 140],
     inc: ['Premium pH-balanced wash', 'Clay bar decontamination', 'Spray-on ceramic sealant', 'Wheels, rims and tyres detailed', 'Premium tyre shine', 'Wheel arches and mudguards', 'Wipers and blades cleaned', 'Exterior glass cleaned', 'Door jambs cleaned', 'Final inspection and finish'],
@@ -52,8 +57,14 @@ const BA = {
   const price = (p) => p.prices[state.size];
   // "a Full Detail", "an Interior Detail".
   const aName = (p) => (/^[AEIOU]/.test(p.name) ? 'an ' : 'a ') + p.name;
-  // "$260 to $320" for a job with a condition range, "$125" for a set price.
-  const priceText = (p) => money(price(p)) + (p.ranged ? ' to ' + money(price(p) + RANGE) : '');
+  // "$260 to $320" for a job with a condition range, "$125" for a set price, "$347 single-step,
+  // $547 two-step" for paint correction, and "quoted" where there's no price for that car.
+  const priceText = (p) => {
+    const n = price(p);
+    if (n == null) return 'quoted';
+    if (p.twoStep) return `${money(n)} single-step, ${money(p.twoStep[state.size])} two-step`;
+    return money(n) + (p.ranged ? ' to ' + money(n + RANGE) : '');
+  };
   // "a hatch or sedan", "an SUV or ute".
   const aSize = () => (/^(suv|[aeiou])/i.test(SIZES[state.size]) ? 'an ' : 'a ') + SIZES[state.size];
   // The quote form follows the price list's pick until they choose a detail in the form,
@@ -64,7 +75,7 @@ const BA = {
     if (!state.formChose) sel.value = pick().name;
     const p = PACKAGES.find((x) => x.name === sel.value);
     line.hidden = !p;
-    if (p) $('#qfPickTxt').textContent = `${p.name} for ${aSize()}: ${priceText(p)}.`;
+    if (p) $('#qfPickTxt').textContent = price(p) == null ? `${p.name} for ${aSize()} is quoted from photos of the paint.` : `${p.name} for ${aSize()}: ${priceText(p)}.`;
   }
 
   /* ---- Text links: open a text to Seb with the current pick filled in ---- */
@@ -74,6 +85,13 @@ const BA = {
 
   /* ---- Price picker --------------------------------------------------- */
   const packs = $('#packs');
+  // The big number on a card and the line under it.
+  const priceBlock = (p) => {
+    const n = price(p);
+    if (n == null) return '<b>Quoted</b><small>Text Seb photos of the paint</small>';
+    if (p.twoStep) return `<b>${money(n)}</b><small>single-step, ${money(p.twoStep[state.size])} two-step</small>`;
+    return `<b>${money(n)}</b><small>${p.ranged ? 'to ' + money(n + RANGE) + ', by condition' : 'Set price'}</small>`;
+  };
   function renderPacks() {
     packs.replaceChildren(...PACKAGES.map((p) => {
       const card = document.createElement('div');
@@ -83,7 +101,7 @@ const BA = {
         `<label><input type="radio" name="pack" value="${p.id}"${p.id === state.pack ? ' checked' : ''}>` +
         `<span class="pack-row"><span class="pack-name">${p.tag ? `<span class="pack-tag">${p.tag}</span>` : ''}${p.name}</span>` +
         `<span class="pack-desc">${p.desc}${p.time ? '. ' + p.time : ''}.</span>` +
-        `<span class="pack-price"><b>${money(price(p))}</b><small>${p.ranged ? 'to ' + money(price(p) + RANGE) + ', by condition' : 'Set price'}</small></span></span></label>` +
+        `<span class="pack-price">${priceBlock(p)}</span></span></label>` +
         `<details><summary>What&rsquo;s included</summary><ul>${p.inc.map((i) => `<li>${i}</li>`).join('')}</ul></details>`;
       return card;
     }));
@@ -93,7 +111,7 @@ const BA = {
     const p = pick();
     $$('.pack', packs).forEach((c) => c.classList.toggle('on', c.dataset.id === state.pack));
     $('#totalName').textContent = `${p.name}, ${SIZES[state.size]}`;
-    $('#totalPrice').textContent = priceText(p);
+    $('#totalPrice').textContent = price(p) == null ? 'Quoted' : priceText(p);
     $('#calPick').textContent = `${p.name}, ${SIZES[state.size]}, ${priceText(p)}`;
     pickLine();
     syncSms();

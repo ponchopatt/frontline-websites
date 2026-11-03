@@ -44,7 +44,7 @@ export default function content(P) {
     blocks: [
       `<h2>${h2}</h2>${body}`,
       `<h2>Prices in ${SUBURBS[slug]}</h2>${P.table(['full', 'int', 'ext', 'maint'])}
-       <p>Every detail is done on-site with our own products and equipment. See what&rsquo;s in each one in the <a href="/#price">price list</a>, or add paint correction, wax or headlight restoration.</p>`,
+       <p>Every detail is done on-site with our own products and equipment. See what&rsquo;s in each one in the <a href="/#price">price list</a>, or add paint correction or headlight restoration.</p>`,
       beforeArrive,
       `<h2>Nearby suburbs we service</h2>
        <p>As well as ${SUBURBS[slug]}, we regularly detail cars in ${near(nearby)}, and across south-east Melbourne.</p>`,
@@ -88,30 +88,28 @@ export default function content(P) {
     },
     {
       path: '/exterior-car-detailing/',
-      title: 'Exterior Car Detailing, Clay Bar & Wax | Driven Detailing',
+      title: 'Exterior Car Detailing, Clay Bar & Ceramic Sealant | Driven Detailing',
       desc: `Mobile exterior car detailing in south-east Melbourne. Every Exterior Detail includes a clay bar and a spray-on ceramic sealant. From ${P.from('ext')}.`,
       crumb: 'Exterior detailing',
-      h1: 'Exterior car detailing, clay bar and wax.',
-      intro: 'From a quick maintenance wash to a full decontamination and wax, Driven Detailing restores the gloss to your paint, wheels and glass at your home or workplace across south-east Melbourne.',
-      quick: `An Exterior Detail with Driven Detailing starts from ${P.trio('ext')}, takes 45 to 60 minutes, and includes a clay bar and a spray-on ceramic sealant. Add carnauba wax (from $60) to any detail.`,
+      h1: 'Exterior car detailing, clay bar and ceramic sealant.',
+      intro: 'From a quick maintenance wash to a full decontamination and ceramic sealant, Driven Detailing restores the gloss to your paint, wheels and glass at your home or workplace across south-east Melbourne.',
+      quick: `An Exterior Detail with Driven Detailing starts from ${P.trio('ext')}, takes 45 to 60 minutes, and includes a clay bar and a spray-on ceramic sealant.`,
       pic: 'wheel-after',
       picAlt: 'A BMW alloy wheel after a Driven Detailing wheel clean',
       blocks: [
         `<h2>How we detail the outside of your car</h2>
          <ol>
            <li><strong>Wheels first.</strong> Rims, tyres and arches are cleaned before the paint, so brake dust and grime aren&rsquo;t splashed onto a clean panel.</li>
-           <li><strong>pH-balanced wash.</strong> A premium pH-balanced shampoo that lifts dirt without stripping existing wax or sealant.</li>
+           <li><strong>pH-balanced wash.</strong> A premium pH-balanced shampoo that lifts dirt without stripping existing protection.</li>
            <li><strong>Door jambs, wipers and glass.</strong> The places a drive-through wash misses.</li>
            <li><strong>Microfibre dry.</strong> Soft towels only: no chamois or squeegees that drag grit across the paint.</li>
            <li><strong>Decontaminate and protect.</strong> Clay bar to remove bonded contamination, then a spray-on ceramic sealant for gloss and water beading.</li>
          </ol>`,
         `<h2>What does a clay bar do?</h2>
-         <p>Even after a wash, paint can feel rough to the touch. That roughness is bonded contamination (industrial fallout, tree sap, overspray and road tar) that shampoo alone can&rsquo;t lift. A clay bar glides over lubricated paint and pulls those particles out, leaving the surface smooth so wax bonds properly and the finish looks deeper.</p>
-         <p>A clay bar is part of every Exterior and Full Detail. You can add it to a Maintenance Detail from $50.</p>`,
-        `<h2>Carnauba wax protection</h2>
-         <p>Carnauba is a natural wax that adds warmth and gloss to paint and makes water bead and roll off, so the car stays cleaner between details. Add Carnauba Wax to any detail from $60. For best results we clay the paint first.</p>`,
-        `<h2>Spray-on ceramic coating</h2>
-         <p>Want protection that outlasts a wax? Every Exterior and Full Detail finishes with our spray-on ceramic sealant, and you can add it to a Maintenance Detail for $60. It&rsquo;s a ceramic (SiO2) sealant sprayed onto clean paint that adds slickness and gloss, makes water bead and sheet off, and makes the car easier to wash between details.</p>
+         <p>Even after a wash, paint can feel rough to the touch. That roughness is bonded contamination (industrial fallout, tree sap, overspray and road tar) that shampoo alone can&rsquo;t lift. A clay bar glides over lubricated paint and pulls those particles out, leaving the surface smooth so the ceramic sealant bonds properly and the finish looks deeper.</p>
+         <p>A clay bar is part of every Exterior and Full Detail.</p>`,
+        `<h2>Spray-on ceramic sealant</h2>
+         <p>Every Exterior and Full Detail finishes with our spray-on ceramic sealant. It&rsquo;s a ceramic (SiO2) sealant sprayed onto clean paint that adds slickness and gloss, makes water bead and sheet off, and makes the car easier to wash between details.</p>
          <p>A spray-on ceramic is a quick, affordable layer of protection applied as part of your detail. It isn&rsquo;t the same as a multi-year professional ceramic coating, which needs full paint correction and hours of curing. It goes on after the clay bar, so it bonds to perfectly clean paint.</p>`,
         P.reviews([
           ['Gabriel R.', 'Sebs attention to detail exceeded my expectations! Did an awesome job on my AMG, looks better now than when it left the showroom! Will be booking again.'],
@@ -122,27 +120,23 @@ export default function content(P) {
         `<h2>Exterior add-ons</h2>
          <ul>
            <li>Tyre Endurance Gel, $20</li>
-           <li>Trim Restoration, from $50</li>
-           <li>Headlight Restoration, from $30</li>
-           <li>Glass Polish, from $40</li>
-           <li>Light Scratch Removal, from $30</li>
-           <li>Clay Bar Decontamination, from $50 (already in Exterior and Full Details)</li>
-           <li>Carnauba Wax, from $60</li>
-           <li>Rain Repellent, $30</li>
-           <li>Engine Bay Detail, from $60</li>
-           <li>Spray-On Ceramic Coating, $60 (already in Exterior and Full Details)</li>
-           <li><a href="/paint-correction/">Paint Correction</a>, from $250</li>
+           <li>Engine Bay Detail, $80</li>
+           <li>Trim Restoration, from $100</li>
+           <li>Headlight Restoration, $150</li>
+           <li>Glass Polish, quoted</li>
+           <li>Light Scratch Removal, quoted</li>
+           <li><a href="/paint-correction/">Paint Correction</a>, from $347</li>
          </ul>`,
       ],
     },
     {
       path: '/paint-correction/',
       title: 'Paint Correction & Scratch Removal | Driven Detailing',
-      desc: 'Mobile paint correction in south-east Melbourne. Remove swirl marks, light scratches and dull paint. Scratch removal from $30, correction from $250.',
+      desc: `Mobile paint correction in south-east Melbourne. Remove swirl marks, light scratches and dull paint. Single-step from ${P.from('pc')}, two-step from $547.`,
       crumb: 'Paint correction',
       h1: 'Paint correction and scratch removal.',
       intro: 'Swirl marks, light scratches and dull, hazy paint make even a clean car look tired. Paint correction machine-polishes the clear coat to remove those defects and bring back a sharp, glossy reflection, done at your home or workplace across south-east Melbourne.',
-      quick: 'At Driven Detailing, light scratch removal starts from $30 and full paint correction from $250, depending on the paint&rsquo;s condition and the car&rsquo;s size. Text daylight photos of the paintwork to 0404 714 415 for an accurate quote.',
+      quick: `At Driven Detailing, paint correction on a hatch or sedan is ${P.from('pc')} for a single-step and $547 for a two-step. Bigger cars, and light scratch removal, are quoted: text daylight photos of the paintwork to 0404 714 415.`,
       pic: 'exterior-after',
       picAlt: 'Glossy Mercedes-Benz GLE paintwork after a Driven Detailing exterior detail',
       blocks: [
@@ -160,19 +154,12 @@ export default function content(P) {
            <li><strong>Wash and decontaminate.</strong> A full wash, then a clay bar to remove bonded contamination, so we&rsquo;re polishing clean paint.</li>
            <li><strong>Inspect.</strong> We check the paint under good light and agree on the target finish with you.</li>
            <li><strong>Machine polish.</strong> A machine polisher and compound or polish matched to your paint to remove the defects.</li>
-           <li><strong>Protect.</strong> Freshly corrected paint should be protected: add carnauba wax (from $60) to lock in the gloss.</li>
          </ol>`,
-        `<h2>Prices</h2>
-         <div class="ptable"><table>
-           <thead><tr><th scope="col">Service</th><th scope="col">Price</th></tr></thead>
-           <tbody>
-             <tr><td>Light Scratch Removal</td><td>from $30</td></tr>
-             <tr><td>Paint Correction</td><td>from $250</td></tr>
-             <tr><td>Clay Bar Decontamination</td><td>from $50</td></tr>
-             <tr><td>Carnauba Wax</td><td>from $60</td></tr>
-           </tbody>
-         </table></div>
-         <p>Paint correction is quoted per car, because the time it takes depends on how hard the paint is and how many defects there are. Photos in daylight or under a torch help us quote accurately.</p>`,
+        `<h2>Single-step or two-step?</h2>
+         <p>A <strong>single-step</strong> correction is one machine polish. It takes out swirl marks and haze, and brings back the gloss.</p>
+         <p>A <strong>two-step</strong> correction cuts first, for deeper defects, then polishes to refine the finish. Not sure which your car needs? Send photos and Seb will tell you.</p>`,
+        `<h2>Prices</h2>${P.table(['pc'])}
+         <p>Bigger cars, and light scratch removal, are quoted per car, because the time it takes depends on how hard the paint is and how many defects there are. Photos in daylight or under a torch help us quote accurately.</p>`,
       ],
     },
     suburb({

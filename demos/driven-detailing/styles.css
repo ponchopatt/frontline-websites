@@ -58,8 +58,10 @@ h1, h2, h3 { margin: 0; font-weight: 620; font-stretch: 125%; letter-spacing: -0
 .small { font-size: 15px; color: var(--dim); }
 .nw { white-space: nowrap; }
 em.nw { font-style: normal; }
+/* One inline box inside a button, so its words wrap as text instead of as separate flex items. */
+.seg i { font-style: normal; }
 /* Inline links get a 44px tall tap area without moving the text around them. */
-.sec-head p a, .bk-help a, .small a, .qf-pick a, .qf-or a, .qf-small a, .book-phone { display: inline-block; padding: 12px 0; margin: -12px 0; }
+.sec-head p a, .bk-help a, .small a, .qf-pick a, .qf-or a, .qf-small a, .book-phone, .addons li a { display: inline-block; padding: 12px 0; margin: -12px 0; }
 .wrap { width: 100%; max-width: 1160px; margin: 0 auto; padding: 0 var(--gut); }
 
 /* ---- Buttons ------------------------------------------------------------ */
@@ -155,7 +157,7 @@ em.nw { font-style: normal; }
 .pack-tag { position: absolute; top: -11px; left: 18px; margin: 0; padding: 2px 8px; border-radius: 999px; background: var(--blue); color: #fff; font-size: 12px; font-weight: 600; font-stretch: 100%; }
 .pack-desc { grid-column: 1; font-size: 14.5px; color: var(--dim); }
 .pack-price { grid-column: 2; grid-row: 1 / span 2; text-align: right; line-height: 1; white-space: nowrap; }
-.pack-price small { display: block; font-size: 12.5px; color: var(--dim); margin-top: 6px; }
+.pack-price small { display: block; font-size: 12.5px; color: var(--dim); margin-top: 6px; white-space: normal; max-width: 15ch; margin-left: auto; }
 .pack-price b { font-size: 30px; font-weight: 720; font-stretch: 112%; font-variant-numeric: tabular-nums; }
 .pack details { border-top: 1px solid var(--line); margin: 0 18px; }
 .pack summary { list-style: none; cursor: pointer; padding: 12px 0 14px; font-size: 14.5px; color: var(--blue-text); min-height: 44px; display: flex; align-items: center; justify-content: space-between; }
@@ -382,13 +384,16 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-1px); }
 
   .picker { max-width: 640px; margin-bottom: 22px; }
   .packs { grid-template-columns: repeat(2, 1fr); gap: 14px; align-items: start; }
+  .packs .pack:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .pack label { padding: 24px 22px 18px; }
   .pack-tag { left: 22px; }
   .pack-row { grid-template-columns: 1fr; }
   .pack-price { grid-column: 1; grid-row: auto; text-align: left; margin-top: 14px; }
+  .pack-price small { margin-left: 0; max-width: none; }
   .pack details { margin: 0 22px; }
   .pack ul { columns: 1; }
   .total { padding: 16px 16px 16px 24px; }
+  .total .btn { flex: 0 0 auto; }
   .total-name, .total-price { font-size: 15px; }
   .total-txt { display: flex; align-items: baseline; gap: 18px; }
   .total-price b { font-size: 30px; }
