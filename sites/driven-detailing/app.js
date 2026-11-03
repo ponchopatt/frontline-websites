@@ -12,19 +12,19 @@ const RANGE = 60;
 
 const PACKAGES = [
   {
-    id: 'full', name: 'Full Detail', time: '1.5 to 2 hrs', tag: 'Most popular', ranged: true,
+    id: 'full', name: 'Full Detail', time: '2 to 2.5 hrs', tag: 'Most popular', ranged: true,
     desc: 'Complete interior and exterior detail', prices: [225, 260, 290],
-    inc: ['Premium pH-balanced wash', 'Wheels, rims and tyres detailed', 'Premium tyre shine', 'Wheel arches and mudguards', 'Wipers and blades cleaned', 'Exterior glass cleaned', 'Door jambs cleaned', 'Vacuum: seats, carpets and boot', 'Dashboard, console and wheel', 'Door trims and high-touch areas', 'Foot pedals deep cleaned', 'Leather seats shampooed', 'Interior glass cleaned', 'Odour neutraliser and freshener', 'Final inspection and finish'],
+    inc: ['Premium pH-balanced wash', 'Clay bar decontamination', 'Spray-on ceramic sealant', 'Wheels, rims and tyres detailed', 'Premium tyre shine', 'Wheel arches and mudguards', 'Wipers and blades cleaned', 'Exterior glass cleaned', 'Door jambs cleaned', 'Vacuum: seats, carpets and boot', 'Dashboard, console and wheel', 'Door trims and high-touch areas', 'Foot pedals deep cleaned', 'Leather seats shampooed', 'Interior glass cleaned', 'Odour neutraliser and freshener', 'Final inspection and finish'],
   },
   {
-    id: 'int', name: 'Interior Detail', time: 'About 1 hr', ranged: true,
+    id: 'int', name: 'Interior Detail', time: '1.5 to 2 hrs', ranged: true,
     desc: 'Complete interior detail', prices: [140, 165, 170],
     inc: ['Vacuum: seats, carpets and boot', 'Dashboard, console and wheel', 'Door trims and high-touch areas', 'Foot pedals deep cleaned', 'Leather seats shampooed', 'Interior glass cleaned', 'Odour neutraliser and freshener', 'Final inspection and finish'],
   },
   {
-    id: 'ext', name: 'Exterior Detail',
+    id: 'ext', name: 'Exterior Detail', time: '45 to 60 min',
     desc: 'Complete exterior detail', prices: [110, 125, 140],
-    inc: ['Premium pH-balanced wash', 'Wheels, rims and tyres detailed', 'Premium tyre shine', 'Wheel arches and mudguards', 'Wipers and blades cleaned', 'Exterior glass cleaned', 'Door jambs cleaned', 'Final inspection and finish'],
+    inc: ['Premium pH-balanced wash', 'Clay bar decontamination', 'Spray-on ceramic sealant', 'Wheels, rims and tyres detailed', 'Premium tyre shine', 'Wheel arches and mudguards', 'Wipers and blades cleaned', 'Exterior glass cleaned', 'Door jambs cleaned', 'Final inspection and finish'],
   },
   {
     id: 'maint', name: 'Maintenance Detail', time: '45 to 60 min',

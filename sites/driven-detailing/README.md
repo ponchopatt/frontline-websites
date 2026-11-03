@@ -64,7 +64,8 @@ Vercel serves the files as they are, with no build step.
    - point `www` to the CNAME Vercel shows (turn off Hostinger's CDN if it holds `www`);
    - **leave the MX records alone.** His email runs on Hostinger.
 5. **Check it.** Open every old address in the table above. Book a test detail.
-6. **Google Search Console.** Submit `https://drivendetailing.com.au/sitemap.xml`.
+6. **Google Search Console.** Submit `https://www.drivendetailing.com.au/sitemap.xml`. The
+   site's main address is the `www` one, because Vercel sends `drivendetailing.com.au` there.
 7. **Take down the demo.** Delete the demo's Vercel project, and the `demos/driven-detailing`
    folder (and its copy on `claude/clever-gates-o4atph`), as `demos/README.md` says.
 
@@ -80,4 +81,3 @@ Vercel serves the files as they are, with no build step.
   marketing partner and mentions memberships. If Frontline takes over from Offsider, it
   needs updating.
 - **"5.0 from 50+ Google reviews"** is his own claim. Check it on Google.
-- **How long an Exterior Detail takes** isn't shown anywhere. His site never listed one.
