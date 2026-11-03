@@ -44,4 +44,15 @@ Give it a URL that does not impersonate them. `bondi-demo-frontline.vercel.app` 
 | `aqua-brothers` | Aqua Brothers Plumbing | Canberra | Built, not yet sent |
 | `xtreme-works` | Xtreme Works | Sydney | Built, not yet sent |
 | `bloom-nutrition` | Bloom Nutrition (speed remake of bloomnu.com's homepage) | Austin, Texas | Built, not yet sent |
-| `driven-detailing` | Driven Detailing (mobile car detailing) | Wantirna South, Melbourne | Sent. Go-live copy ready in `sites/driven-detailing`, not live |
+| `driven-detailing` | Driven Detailing (mobile car detailing) | Wantirna South, Melbourne | Live. This folder is now a copy of `sites/driven-detailing` (see below) |
+
+## Driven Detailing: why `demos/driven-detailing` is the live site
+
+drivendetailing.com.au is attached to a Vercel project whose Root Directory is still
+`demos/driven-detailing`, so this folder holds an exact copy of `sites/driven-detailing`, the
+real site. Change `sites/driven-detailing`, then copy it here:
+
+    rm -r demos/driven-detailing && cp -r sites/driven-detailing demos/driven-detailing
+
+Once the project's Root Directory is set to `sites/driven-detailing`, delete this folder.
+
