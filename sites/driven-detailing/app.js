@@ -3,8 +3,12 @@
 const PHONE = '+61404714415';
 // Seb's booking calendar: paste its GoHighLevel booking link here, like
 // 'https://api.leadconnectorhq.com/widget/booking/…'. While it's empty, the booking section
-// is the 3-step form that opens a text to Seb.
+// is the 3-step quote form.
 const BOOKING_URL = '';
+// The quote form's delivery: a Web3Forms access key (web3forms.com), which emails every
+// request to the address it was made for. While it's empty, the form opens a text to Seb
+// with the request filled in instead.
+const QUOTE_KEY = '';
 const SIZES = ['hatch or sedan', 'SUV or ute', '4x4 or 7-seater'];
 // Full and interior details can cost up to this much more for a car in bad condition,
 // agreed before Seb starts. Exterior and maintenance are set prices.
@@ -12,19 +16,19 @@ const RANGE = 60;
 
 const PACKAGES = [
   {
-    id: 'full', name: 'Full Detail', time: '1.5 to 2 hrs', tag: 'Most popular', ranged: true,
+    id: 'full', name: 'Full Detail', time: '2 to 2.5 hrs', tag: 'Most popular', ranged: true,
     desc: 'Complete interior and exterior detail', prices: [225, 260, 290],
-    inc: ['Premium pH-balanced wash', 'Wheels, rims and tyres detailed', 'Premium tyre shine', 'Wheel arches and mudguards', 'Wipers and blades cleaned', 'Exterior glass cleaned', 'Door jambs cleaned', 'Vacuum: seats, carpets and boot', 'Dashboard, console and wheel', 'Door trims and high-touch areas', 'Foot pedals deep cleaned', 'Leather seats shampooed', 'Interior glass cleaned', 'Odour neutraliser and freshener', 'Final inspection and finish'],
+    inc: ['Premium pH-balanced wash', 'Clay bar decontamination', 'Spray-on ceramic sealant', 'Wheels, rims and tyres detailed', 'Premium tyre shine', 'Wheel arches and mudguards', 'Wipers and blades cleaned', 'Exterior glass cleaned', 'Door jambs cleaned', 'Vacuum: seats, carpets and boot', 'Dashboard, console and wheel', 'Door trims and high-touch areas', 'Foot pedals deep cleaned', 'Leather seats shampooed', 'Interior glass cleaned', 'Odour neutraliser and freshener', 'Final inspection and finish'],
   },
   {
-    id: 'int', name: 'Interior Detail', time: 'About 1 hr', ranged: true,
+    id: 'int', name: 'Interior Detail', time: '1.5 to 2 hrs', ranged: true,
     desc: 'Complete interior detail', prices: [140, 165, 170],
     inc: ['Vacuum: seats, carpets and boot', 'Dashboard, console and wheel', 'Door trims and high-touch areas', 'Foot pedals deep cleaned', 'Leather seats shampooed', 'Interior glass cleaned', 'Odour neutraliser and freshener', 'Final inspection and finish'],
   },
   {
-    id: 'ext', name: 'Exterior Detail',
+    id: 'ext', name: 'Exterior Detail', time: '45 to 60 min',
     desc: 'Complete exterior detail', prices: [110, 125, 140],
-    inc: ['Premium pH-balanced wash', 'Wheels, rims and tyres detailed', 'Premium tyre shine', 'Wheel arches and mudguards', 'Wipers and blades cleaned', 'Exterior glass cleaned', 'Door jambs cleaned', 'Final inspection and finish'],
+    inc: ['Premium pH-balanced wash', 'Clay bar decontamination', 'Spray-on ceramic sealant', 'Wheels, rims and tyres detailed', 'Premium tyre shine', 'Wheel arches and mudguards', 'Wipers and blades cleaned', 'Exterior glass cleaned', 'Door jambs cleaned', 'Final inspection and finish'],
   },
   {
     id: 'maint', name: 'Maintenance Detail', time: '45 to 60 min',
@@ -227,16 +231,45 @@ const BA = {
       if (!f.name.value.trim()) return fail('Add your name.', f.name), false;
       const digits = f.mobile.value.replace(/\D/g, '');
       if (!/^(04\d{8}|614\d{8})$/.test(digits)) return fail('Check your mobile. It should look like 0412 345 678.', f.mobile), false;
+      if (f.email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value.trim())) return fail('Check your email, or leave it empty.', f.email), false;
     }
     return true;
   };
   $$('[data-next]', form).forEach((b) => b.addEventListener('click', () => { if (check(step)) show(step + 1); }));
   $$('[data-back]', form).forEach((b) => b.addEventListener('click', () => show(step - 1)));
 
-  form.addEventListener('submit', (e) => {
+  // What the customer sees once the request has gone, or hasn't: sent by email, ready to
+  // text, or the send failed (then the text is the way out).
+  const finish = (how) => {
+    const done = $('#bkDone');
+    $('#bkDoneH').textContent = how === 'sent' ? 'Sent. Seb will be in touch.' : how === 'failed' ? 'That didn\u2019t send.' : 'Your message to Seb is ready.';
+    $('#bkDoneP').textContent = how === 'sent'
+      ? 'Seb will get back to you to confirm a time and price. His number is 0404 714 415.'
+      : how === 'failed'
+        ? 'Something went wrong on our side. Text it to Seb instead and he\u2019ll get back to you.'
+        : 'Your texts app has opened with your request filled in. Press send, and Seb will confirm your time and price.';
+    $('#bkTextIt').hidden = how === 'sent';
+    $('#bkTextBtn').hidden = how !== 'failed';
+    $('#bkTextBtn').href = smsHref($('#bkMsg').textContent);
+    $('#bkCopyLead').hidden = how !== 'text';
+    err.hidden = true;
+    steps.forEach((s) => { s.hidden = true; });
+    $('.bk-steps', form).hidden = true;
+    done.hidden = false; done.focus();
+  };
+  const openText = (msg) => {
+    const go = document.createElement('a');
+    go.href = smsHref(msg);
+    document.body.append(go); go.click(); go.remove();
+  };
+  const sendBtn = $('button[type="submit"]', form);
+  sendBtn.textContent = QUOTE_KEY ? 'Send my request' : 'Send to Seb';
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!check(3)) return;
     const f = form.elements, p = pick();
+    if (f.company.value) return; // the hidden field only bots fill in
     const day = form.querySelector('input[name="day"]:checked').value;
     const time = form.querySelector('input[name="time"]:checked');
     const lines = [
@@ -247,18 +280,46 @@ const BA = {
       `Name: ${f.name.value.trim()}`,
       `Mobile: ${f.mobile.value.trim()}`,
     ];
+    if (f.email.value.trim()) lines.push(`Email: ${f.email.value.trim()}`);
     if (f.note.value.trim()) lines.push(`Note: ${f.note.value.trim()}`);
     const msg = lines.join('\n');
     $('#bkMsg').textContent = msg;
-    err.hidden = true;
-    steps.forEach((s) => { s.hidden = true; });
-    $('.bk-steps', form).hidden = true;
-    const done = $('#bkDone');
-    done.hidden = false; done.focus();
-    // Open the texts app with the booking filled in.
-    const go = document.createElement('a');
-    go.href = smsHref(msg);
-    document.body.append(go); go.click(); go.remove();
+    if (!QUOTE_KEY) { finish('text'); openText(msg); return; }
+
+    sendBtn.disabled = true; sendBtn.textContent = 'Sending\u2026';
+    try {
+      const payload = {
+        access_key: QUOTE_KEY,
+        // What Seb sees in his inbox before he opens anything.
+        subject: `Quote request: ${p.name} in ${f.suburb.value.trim()}`,
+        from_name: `${f.name.value.trim()} (Driven Detailing website)`,
+        detail: `${p.name}, ${SIZES[state.size]}, ${priceText(p)}`,
+        car: f.car.value.trim(), suburb: f.suburb.value.trim(),
+        when: `${day}${time ? ', ' + time.value.toLowerCase() : ''}`,
+        name: f.name.value.trim(), mobile: f.mobile.value.trim(),
+        email: f.email.value.trim(), note: f.note.value.trim(),
+        message: msg,
+      };
+      if (payload.email) payload.replyto = payload.email; // so Seb can just hit reply
+      // A dead network would leave the button on "Sending" for ever, so give up after 12s.
+      const giveUp = new AbortController();
+      const timer = setTimeout(() => giveUp.abort(), 12000);
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+        signal: giveUp.signal,
+      }).finally(() => clearTimeout(timer));
+      // Web3Forms can answer 200 with {success:false}, so the status alone isn't enough.
+      const body = await res.json().catch(() => null);
+      if (!res.ok || (body && body.success === false)) throw new Error(String(res.status));
+      finish('sent');
+      form.reset();
+    } catch {
+      finish('failed');
+    } finally {
+      sendBtn.disabled = false; sendBtn.textContent = 'Send my request';
+    }
   });
   $('#bkCopyBtn').addEventListener('click', async (e) => {
     try { await navigator.clipboard.writeText($('#bkMsg').textContent); e.target.textContent = 'Copied'; }

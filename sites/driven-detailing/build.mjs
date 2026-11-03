@@ -15,7 +15,7 @@ import content from './content.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const read = (f) => fs.readFileSync(path.join(here, f), 'utf8');
-const SITE = 'https://drivendetailing.com.au';
+const SITE = 'https://www.drivendetailing.com.au';
 
 // ---- From index.html: the shared blocks, with its own #links pointed at the home page.
 const home = read('index.html');

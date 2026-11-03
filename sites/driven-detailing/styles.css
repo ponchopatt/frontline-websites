@@ -280,6 +280,8 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-1px); }
 .chips input:checked + span small { color: var(--soft); }
 .bk-nav { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; }
 .bk-err { margin-top: 12px; color: #ff8a8a; font-size: 15px; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.bk .btn:disabled { opacity: .6; cursor: progress; }
 .bk-done h3 { font-size: 22px; }
 .bk-done p { margin-top: 10px; color: var(--soft); }
 .bk-done .bk-copy { font-size: 14.5px; color: var(--dim); }

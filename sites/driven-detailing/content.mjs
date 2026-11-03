@@ -44,7 +44,7 @@ export default function content(P) {
     blocks: [
       `<h2>${h2}</h2>${body}`,
       `<h2>Prices in ${SUBURBS[slug]}</h2>${P.table(['full', 'int', 'ext', 'maint'])}
-       <p>Every detail is done on-site with our own products and equipment. See what&rsquo;s in each one in the <a href="/#price">price list</a>, or add paint correction, clay bar, wax or headlight restoration.</p>`,
+       <p>Every detail is done on-site with our own products and equipment. See what&rsquo;s in each one in the <a href="/#price">price list</a>, or add paint correction, wax or headlight restoration.</p>`,
       beforeArrive,
       `<h2>Nearby suburbs we service</h2>
        <p>As well as ${SUBURBS[slug]}, we regularly detail cars in ${near(nearby)}, and across south-east Melbourne.</p>`,
@@ -59,7 +59,7 @@ export default function content(P) {
       crumb: 'Interior detailing',
       h1: 'Interior car detailing at your home or work.',
       intro: 'A properly clean cabin is the part of the car you actually live in. Driven Detailing brings a full interior detail to your driveway or workplace car park anywhere across south-east Melbourne: vacuum, plastics, leather, glass and odour, done by hand.',
-      quick: `Driven Detailing&rsquo;s mobile Interior Detail starts from ${P.trio('int')}, and takes about an hour. A very dirty cabin can be up to ${P.range} more, and Seb tells you before he starts.`,
+      quick: `Driven Detailing&rsquo;s mobile Interior Detail starts from ${P.trio('int')}, and takes 1.5 to 2 hours. A very dirty cabin can be up to ${P.range} more, and Seb tells you before he starts.`,
       pic: 'interior-after',
       picAlt: 'A Mercedes-Benz GLE cabin after a Driven Detailing interior detail',
       blocks: [
@@ -89,11 +89,11 @@ export default function content(P) {
     {
       path: '/exterior-car-detailing/',
       title: 'Exterior Car Detailing, Clay Bar & Wax | Driven Detailing',
-      desc: `Mobile exterior car detailing in south-east Melbourne: pH-balanced wash, wheels, glass, clay bar, carnauba wax and $60 spray-on ceramic coating. From ${P.from('ext')}.`,
+      desc: `Mobile exterior car detailing in south-east Melbourne. Every Exterior Detail includes a clay bar and a spray-on ceramic sealant. From ${P.from('ext')}.`,
       crumb: 'Exterior detailing',
       h1: 'Exterior car detailing, clay bar and wax.',
       intro: 'From a quick maintenance wash to a full decontamination and wax, Driven Detailing restores the gloss to your paint, wheels and glass at your home or workplace across south-east Melbourne.',
-      quick: `An Exterior Detail with Driven Detailing starts from ${P.trio('ext')}. Add clay bar (from $50), carnauba wax (from $60) or a spray-on ceramic coating ($60) to any detail.`,
+      quick: `An Exterior Detail with Driven Detailing starts from ${P.trio('ext')}, takes 45 to 60 minutes, and includes a clay bar and a spray-on ceramic sealant. Add carnauba wax (from $60) to any detail.`,
       pic: 'wheel-after',
       picAlt: 'A BMW alloy wheel after a Driven Detailing wheel clean',
       blocks: [
@@ -103,16 +103,16 @@ export default function content(P) {
            <li><strong>pH-balanced wash.</strong> A premium pH-balanced shampoo that lifts dirt without stripping existing wax or sealant.</li>
            <li><strong>Door jambs, wipers and glass.</strong> The places a drive-through wash misses.</li>
            <li><strong>Microfibre dry.</strong> Soft towels only: no chamois or squeegees that drag grit across the paint.</li>
-           <li><strong>Decontaminate and protect (add-on).</strong> Clay bar to remove bonded contamination, then carnauba wax for gloss and water beading.</li>
+           <li><strong>Decontaminate and protect.</strong> Clay bar to remove bonded contamination, then a spray-on ceramic sealant for gloss and water beading.</li>
          </ol>`,
         `<h2>What does a clay bar do?</h2>
          <p>Even after a wash, paint can feel rough to the touch. That roughness is bonded contamination (industrial fallout, tree sap, overspray and road tar) that shampoo alone can&rsquo;t lift. A clay bar glides over lubricated paint and pulls those particles out, leaving the surface smooth so wax bonds properly and the finish looks deeper.</p>
-         <p>Add clay bar decontamination to any detail from $50.</p>`,
+         <p>A clay bar is part of every Exterior and Full Detail. You can add it to a Maintenance Detail from $50.</p>`,
         `<h2>Carnauba wax protection</h2>
          <p>Carnauba is a natural wax that adds warmth and gloss to paint and makes water bead and roll off, so the car stays cleaner between details. Add Carnauba Wax to any detail from $60. For best results we clay the paint first.</p>`,
         `<h2>Spray-on ceramic coating</h2>
-         <p>Want protection that outlasts a wax? Add our Spray-On Ceramic Coating for $60 to any detail. It&rsquo;s a ceramic (SiO2) sealant sprayed onto clean paint that adds slickness and gloss, makes water bead and sheet off, and makes the car easier to wash between details.</p>
-         <p>A spray-on ceramic is a quick, affordable layer of protection applied as part of your detail. It isn&rsquo;t the same as a multi-year professional ceramic coating, which needs full paint correction and hours of curing. For best results, pair it with Clay Bar Decontamination so it bonds to perfectly clean paint.</p>`,
+         <p>Want protection that outlasts a wax? Every Exterior and Full Detail finishes with our spray-on ceramic sealant, and you can add it to a Maintenance Detail for $60. It&rsquo;s a ceramic (SiO2) sealant sprayed onto clean paint that adds slickness and gloss, makes water bead and sheet off, and makes the car easier to wash between details.</p>
+         <p>A spray-on ceramic is a quick, affordable layer of protection applied as part of your detail. It isn&rsquo;t the same as a multi-year professional ceramic coating, which needs full paint correction and hours of curing. It goes on after the clay bar, so it bonds to perfectly clean paint.</p>`,
         P.reviews([
           ['Gabriel R.', 'Sebs attention to detail exceeded my expectations! Did an awesome job on my AMG, looks better now than when it left the showroom! Will be booking again.'],
           ['Stephen W.', 'Amazing professional service that made my Porsche 911 look brand new! Definitely recommend.'],
@@ -126,11 +126,11 @@ export default function content(P) {
            <li>Headlight Restoration, from $30</li>
            <li>Glass Polish, from $40</li>
            <li>Light Scratch Removal, from $30</li>
-           <li>Clay Bar Decontamination, from $50</li>
+           <li>Clay Bar Decontamination, from $50 (already in Exterior and Full Details)</li>
            <li>Carnauba Wax, from $60</li>
            <li>Rain Repellent, $30</li>
            <li>Engine Bay Detail, from $60</li>
-           <li>Spray-On Ceramic Coating, $60</li>
+           <li>Spray-On Ceramic Coating, $60 (already in Exterior and Full Details)</li>
            <li><a href="/paint-correction/">Paint Correction</a>, from $250</li>
          </ul>`,
       ],
@@ -196,7 +196,7 @@ export default function content(P) {
       intro: 'From daily drivers to prestige cars, Driven Detailing details vehicles at Wheelers Hill homes with the care and finish of a studio, without you leaving your driveway.',
       h2: 'Careful detailing for Wheelers Hill cars',
       body: `<p>Wheelers Hill is only a few minutes from our Wantirna South base, so it&rsquo;s right on our doorstep. We detail European and prestige vehicles, and our process is built for them: pH-balanced shampoo that won&rsquo;t strip existing protection, wheels cleaned first, soft microfibre drying, and leather that&rsquo;s shampooed, not wiped with an all-purpose cleaner. Add Leather Conditioning to finish it.</p>
-        <p>For paint that has lost its gloss or picked up swirl marks from automatic car washes, ask about <a href="/paint-correction/">paint correction</a>, or add clay bar and carnauba wax to your detail.</p>`,
+        <p>For paint that has lost its gloss or picked up swirl marks from automatic car washes, ask about <a href="/paint-correction/">paint correction</a>. Every Full and Exterior Detail includes a clay bar and a spray-on ceramic sealant.</p>`,
       nearby: ['Glen Waverley', 'Mulgrave', 'Rowville', 'Wantirna South'],
     }),
     suburb({
@@ -204,7 +204,7 @@ export default function content(P) {
       intro: 'Ferntree Gully cars live close to the Dandenong Ranges, and it shows in the leaves, sap and dust. Driven Detailing cleans and protects them at your home, inside and out.',
       h2: 'Detailing for cars at the foot of the Dandenongs',
       body: `<p>Ferntree Gully sits at the foot of the Dandenong Ranges in the City of Knox, east of our Wantirna South base. Living near the hills and all that greenery means more leaf litter in the scuttle panel and door jambs, tree sap and bird droppings on the paint, and dusty interiors after weekends up the mountain or at the 1000 Steps.</p>
-        <p>Tree sap and bird droppings can etch paint if they&rsquo;re left too long. Add a clay bar to remove bonded contamination and carnauba wax to finish, which makes the next clean-up easier. For dusty cabins and muddy footwells, add a steam clean to an Interior or Full Detail.</p>`,
+        <p>Tree sap and bird droppings can etch paint if they&rsquo;re left too long. Every Full and Exterior Detail includes a clay bar to remove bonded contamination and a spray-on ceramic sealant, which makes the next clean-up easier. For dusty cabins and muddy footwells, add a steam clean to an Interior or Full Detail.</p>`,
       nearby: ['Boronia', 'Knoxfield', 'Bayswater', 'Rowville', 'Wantirna South'],
     }),
     suburb({
