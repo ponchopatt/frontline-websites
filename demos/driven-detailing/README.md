@@ -50,11 +50,11 @@ The problems are about turning visitors into bookings:
 ## What the demo does
 
 - **First screen (phone):** their own photo of Seb and the 911, "Your car detailed at
-  home or work.", the area and "Open 7 days", the rating, and the three from-prices.
-  Tapping a price picks that package below.
-- **Price picker:** pick sedan, SUV or 7-seater, and inside and out or interior only. The
-  packages show that car's real price, with "What's included" behind a tap. The 16
-  add-ons are grouped into outside, protection and inside, behind one tap.
+  home or work.", the area and "Open 7 days", the rating, and the full detail price for
+  each car size. Tapping a price picks that car below.
+- **Price picker:** pick hatch or sedan, SUV or ute, or 4x4 or 7-seater. The 4 jobs show
+  that car's price, with "What's included" behind a tap. The 16 add-ons are grouped into
+  outside, protection and inside, behind one tap. The prices are our proposed ones (below).
 - **Before and after:** one big slider with three of their jobs (paint, interior, wheels).
   Drag anywhere on a phone or a mouse, arrow keys on a keyboard.
 - **Reviews:** their three Google reviews, word for word (shortened with "…" where long),
@@ -69,6 +69,28 @@ The problems are about turning visitors into bookings:
 
 **Testing the booking:** the last step opens a real text to Seb's real number. Don't
 press send while testing.
+
+## Prices in the demo: our proposal, not theirs
+
+The demo shows the prices Pat wants to pitch to Seb, not the prices on his site now. Seb
+hasn't agreed to them. The job names and "What's included" lists are Driven's own.
+
+| Job | Hatch or sedan | SUV or ute | 4x4 or 7-seater | Condition |
+|---|---|---|---|---|
+| Full Detail (was Signature) | $225 | $260 | $290 | up to $60 more |
+| Interior Detail (was Signature Interior) | $140 | $165 | $170 | up to $60 more |
+| Exterior Detail (new) | $110 | $125 | $140 | set price |
+| Maintenance Detail | $165 | $185 | $200 | set price |
+
+- Prestige and Prestige Interior are gone. Their extras (clay bar, wax, steam clean and
+  so on) are still there as add-ons.
+- The Exterior Detail's list is the outside half of their Signature Detail's list.
+- The $60 condition range is on full and interior details only, like Imperium's. Seb
+  tells the customer before he starts.
+- Driven+ stays at 10% off, so members pay $202.50 / $234 / $261 for a Full Detail and
+  $148.50 / $166.50 / $180 for Maintenance. Interior and exterior aren't Driven+ plans.
+- Their current prices, for comparison: Signature $120 / $140 / $160 and Maintenance
+  $80 / $90 / $100.
 
 ## Numbers
 
@@ -108,3 +130,5 @@ hero video, like Imperium's) and more before and afters.
   their site.
 - "Open 7 days" is from their posted hours (Mon to Sat 6am to 10pm, Sun 12pm to 10pm).
 - The demo's suburb list is the one in their FAQ.
+- The prices are our proposal. Seb would have to agree to them before anything goes live.
+- How long an Exterior Detail takes isn't shown. Driven has never listed one.

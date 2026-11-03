@@ -1,44 +1,36 @@
 /* Driven Detailing demo: price picker, before/after slider, booking steps, text links.
-   Every price and package list here is Driven's own, from drivendetailing.com.au. */
+   The package lists, add-ons, photos and words are Driven's own, from drivendetailing.com.au.
+   The prices are the new prices we're proposing to Seb (see the README), not his current ones. */
 const PHONE = '+61404714415';
-const SIZES = ['sedan', 'SUV', '7-seater'];
-const SIZE_LABELS = ['Sedan or small', 'SUV or large', '7-seater or XL'];
+const SIZES = ['hatch or sedan', 'SUV or ute', '4x4 or 7-seater'];
+// Full and interior details can cost up to this much more for a car in bad condition,
+// agreed before Seb starts. Exterior and maintenance are set prices.
+const RANGE = 60;
+// Driven+ members pay this share of the normal price (10% off).
+const MEMBER = 0.9;
 
-const PACKAGES = {
-  full: [
-    {
-      id: 'maint', name: 'Maintenance Detail', short: 'Maintenance', time: '45 to 60 min',
-      desc: 'Quick, regular upkeep', prices: [80, 90, 100], member: [72, 81, 90],
-      inc: ['Premium pH-balanced wash', 'Wheels, rims and tyres cleaned', 'Light interior wipe-down', 'Interior vacuum', 'Interior and exterior glass', 'Microfibre towel dry'],
-    },
-    {
-      id: 'sig', name: 'Signature Detail', short: 'Signature', time: '1.5 to 2 hrs', tag: 'Most popular',
-      desc: 'Complete interior and exterior detail', prices: [120, 140, 160], member: [108, 126, 144],
-      inc: ['Premium pH-balanced wash', 'Wheels, rims and tyres detailed', 'Premium tyre shine', 'Wheel arches and mudguards', 'Wipers and blades cleaned', 'Exterior glass cleaned', 'Door jambs cleaned', 'Vacuum: seats, carpets and boot', 'Dashboard, console and wheel', 'Door trims and high-touch areas', 'Foot pedals deep cleaned', 'Leather seats shampooed', 'Interior glass cleaned', 'Odour neutraliser and freshener', 'Final inspection and finish'],
-    },
-    {
-      id: 'pres', name: 'Prestige Detail', short: 'Prestige', time: '3 to 4 hrs',
-      desc: 'Decontaminate, protect and preserve', prices: [260, 300, 320], member: [234, 270, 288],
-      plus: 'Everything in Signature, plus:',
-      inc: ['Clay bar decontamination', 'Carnauba wax protection', 'Premium tyre dressing', 'Deep carpet shampoo', 'Targeted steam cleaning', 'Stain and odour treatment', 'Leather conditioned and coated'],
-    },
-  ],
-  int: [
-    {
-      id: 'sigint', name: 'Signature Interior', short: 'Signature Interior', time: 'About 1 hr',
-      desc: 'Complete interior detail', prices: [100, 120, 140],
-      inc: ['Vacuum: seats, carpets and boot', 'Dashboard, console and wheel', 'Door trims and high-touch areas', 'Foot pedals deep cleaned', 'Leather seats shampooed', 'Interior glass cleaned', 'Odour neutraliser and freshener', 'Final inspection and finish'],
-      note: 'Add the full exterior for $20 more with the Signature Detail.',
-    },
-    {
-      id: 'presint', name: 'Prestige Interior', short: 'Prestige Interior', time: '2 to 2.5 hrs',
-      desc: 'Deep clean, restore and protect', prices: [200, 240, 260],
-      plus: 'Everything in Signature Interior, plus:',
-      inc: ['Deep carpet shampoo', 'Targeted steam cleaning', 'Stain and odour treatment', 'Leather conditioned and coated', 'Interior trim restored and protected', 'Headliner, seatbelts and seat rails detailed'],
-      note: 'Add the full exterior, with clay bar and carnauba wax, for $60 more with the Prestige Detail.',
-    },
-  ],
-};
+const PACKAGES = [
+  {
+    id: 'full', name: 'Full Detail', time: '1.5 to 2 hrs', tag: 'Most popular', ranged: true, plan: true,
+    desc: 'Complete interior and exterior detail', prices: [225, 260, 290],
+    inc: ['Premium pH-balanced wash', 'Wheels, rims and tyres detailed', 'Premium tyre shine', 'Wheel arches and mudguards', 'Wipers and blades cleaned', 'Exterior glass cleaned', 'Door jambs cleaned', 'Vacuum: seats, carpets and boot', 'Dashboard, console and wheel', 'Door trims and high-touch areas', 'Foot pedals deep cleaned', 'Leather seats shampooed', 'Interior glass cleaned', 'Odour neutraliser and freshener', 'Final inspection and finish'],
+  },
+  {
+    id: 'int', name: 'Interior Detail', time: 'About 1 hr', ranged: true,
+    desc: 'Complete interior detail', prices: [140, 165, 170],
+    inc: ['Vacuum: seats, carpets and boot', 'Dashboard, console and wheel', 'Door trims and high-touch areas', 'Foot pedals deep cleaned', 'Leather seats shampooed', 'Interior glass cleaned', 'Odour neutraliser and freshener', 'Final inspection and finish'],
+  },
+  {
+    id: 'ext', name: 'Exterior Detail',
+    desc: 'Complete exterior detail', prices: [110, 125, 140],
+    inc: ['Premium pH-balanced wash', 'Wheels, rims and tyres detailed', 'Premium tyre shine', 'Wheel arches and mudguards', 'Wipers and blades cleaned', 'Exterior glass cleaned', 'Door jambs cleaned', 'Final inspection and finish'],
+  },
+  {
+    id: 'maint', name: 'Maintenance Detail', time: '45 to 60 min', plan: true,
+    desc: 'Quick, regular upkeep', prices: [165, 185, 200],
+    inc: ['Premium pH-balanced wash', 'Wheels, rims and tyres cleaned', 'Light interior wipe-down', 'Interior vacuum', 'Interior and exterior glass', 'Microfibre towel dry'],
+  },
+];
 
 const BA = {
   exterior: { cap: 'Mercedes-Benz GLE, full exterior.', a: 'Mercedes-Benz GLE after detailing, paintwork clean and glossy', b: 'The same Mercedes-Benz GLE before, covered in dirt and road spray' },
@@ -49,67 +41,58 @@ const BA = {
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-  const money = (n) => '$' + n;
-  const state = { size: 0, kind: 'full', pack: 'sig', plus: false };
-  const pick = () => PACKAGES[state.kind].find((p) => p.id === state.pack) || PACKAGES[state.kind][0];
+  const money = (n) => '$' + (n % 1 ? n.toFixed(2) : n);
+  const state = { size: 0, pack: 'full', plus: false };
+  const pick = () => PACKAGES.find((p) => p.id === state.pack) || PACKAGES[0];
+  const price = (p) => p.prices[state.size];
+  // "$260 to $320" for a job with a condition range, "$125" for a set price.
+  const priceText = (p) => money(price(p)) + (p.ranged ? ' to ' + money(price(p) + RANGE) : '');
+  // Driven+ is a plan for the full and maintenance details. Interior and exterior show the full detail's.
+  const plan = () => (pick().plan ? pick() : PACKAGES[0]);
 
   /* ---- Text links: open a text to Seb with the current pick filled in ---- */
   const smsHref = (body) => `sms:${PHONE}?&body=${encodeURIComponent(body)}`;
-  const quoteText = () => {
-    const p = pick();
-    return `Hi Seb, I'd like a price for a ${p.name} on my ${SIZES[state.size]}.\nCar: \nSuburb: `;
-  };
+  const quoteText = () => `Hi Seb, I'd like a price for a ${pick().name} on my ${SIZES[state.size]}.\nCar: \nSuburb: `;
   const syncSms = () => $$('[data-sms]').forEach((a) => { a.href = smsHref(quoteText()); });
 
   /* ---- Price picker --------------------------------------------------- */
   const packs = $('#packs');
   function renderPacks() {
-    const list = PACKAGES[state.kind];
-    if (!list.some((p) => p.id === state.pack)) state.pack = state.kind === 'int' ? 'sigint' : 'sig';
-    packs.replaceChildren(...list.map((p) => {
+    packs.replaceChildren(...PACKAGES.map((p) => {
       const card = document.createElement('div');
       card.className = 'pack' + (p.id === state.pack ? ' on' : '');
       card.dataset.id = p.id;
-      const items = (p.plus ? `<li class="plus">${p.plus}</li>` : '') + p.inc.map((i) => `<li>${i}</li>`).join('');
       card.innerHTML =
         `<label><input type="radio" name="pack" value="${p.id}"${p.id === state.pack ? ' checked' : ''}>` +
         `<span class="pack-row"><span class="pack-name">${p.tag ? `<span class="pack-tag">${p.tag}</span>` : ''}${p.name}</span>` +
-        `<span class="pack-desc">${p.desc}. ${p.time}.</span>` +
-        `<span class="pack-price"><small>from</small><b>${money(p.prices[state.size])}</b></span></span></label>` +
-        `<details><summary>What&rsquo;s included</summary><ul>${items}</ul>${p.note ? `<p class="small" style="padding-bottom:16px">${p.note}</p>` : ''}</details>`;
+        `<span class="pack-desc">${p.desc}${p.time ? '. ' + p.time : ''}.</span>` +
+        `<span class="pack-price"><b>${money(price(p))}</b><small>${p.ranged ? 'to ' + money(price(p) + RANGE) + ', by condition' : 'Set price'}</small></span></span></label>` +
+        `<details><summary>What&rsquo;s included</summary><ul>${p.inc.map((i) => `<li>${i}</li>`).join('')}</ul></details>`;
       return card;
     }));
     update();
   }
   function update() {
-    const p = pick();
+    const p = pick(), m = plan();
     $$('.pack', packs).forEach((c) => c.classList.toggle('on', c.dataset.id === state.pack));
     $('#totalName').textContent = `${p.name}, ${SIZES[state.size]}`;
-    $('#totalPrice').textContent = money(p.prices[state.size]);
-    // Driven+ shows the member price of the same package for the same car. Interior-only
-    // isn't a Driven+ plan, so it shows the Signature plan instead.
-    const m = state.kind === 'full' ? p : PACKAGES.full[1];
+    $('#totalPrice').textContent = priceText(p);
     $('#bkSum').textContent = state.plus
-      ? `Driven+ ${m.short}, ${SIZES[state.size]}, ${money(m.member[state.size])} a visit`
-      : `${p.name}, ${SIZES[state.size]}, from ${money(p.prices[state.size])}`;
-    $('#plusName').textContent = `${m.short}, ${SIZES[state.size]}`;
-    $('#plusPrice').textContent = money(m.member[state.size]);
-    $('#plusWas').textContent = money(m.prices[state.size]);
+      ? `Driven+ ${m.name}, ${SIZES[state.size]}, ${money(price(m) * MEMBER)} a visit`
+      : `${p.name}, ${SIZES[state.size]}, ${priceText(p)}`;
+    $('#plusName').textContent = `${m.name}, ${SIZES[state.size]}`;
+    $('#plusPrice').textContent = money(price(m) * MEMBER);
+    $('#plusWas').textContent = money(price(m));
     syncSms();
   }
   $$('input[name="size"]').forEach((r) => r.addEventListener('change', () => { state.size = +r.value; renderPacks(); }));
-  $$('input[name="kind"]').forEach((r) => r.addEventListener('change', () => {
-    state.kind = r.value;
-    state.pack = r.value === 'int' ? 'sigint' : 'sig';
-    renderPacks();
-  }));
   packs.addEventListener('change', (e) => {
     if (e.target.name === 'pack') { state.pack = e.target.value; update(); }
   });
-  // The prices in the hero pick that package in the picker.
-  $$('[data-pick]').forEach((a) => a.addEventListener('click', () => {
-    state.kind = 'full'; state.pack = a.dataset.pick;
-    $('input[name="kind"][value="full"]').checked = true;
+  // The prices in the hero pick that car size for the full detail.
+  $$('[data-size]').forEach((a) => a.addEventListener('click', () => {
+    state.size = +a.dataset.size; state.pack = 'full';
+    $(`input[name="size"][value="${state.size}"]`).checked = true;
     renderPacks();
   }));
   // Join Driven+ books the plan; every other way into the booking form books a one-off detail.
@@ -196,10 +179,10 @@ const BA = {
     const f = form.elements, p = pick();
     const day = form.querySelector('input[name="day"]:checked').value;
     const time = form.querySelector('input[name="time"]:checked');
-    const plan = state.kind === 'full' ? p : PACKAGES.full[1];
+    const m = plan();
     const want = state.plus
-      ? `to join Driven+ with the ${plan.short} plan for my ${SIZES[state.size]} (${money(plan.member[state.size])} a visit)`
-      : `to book a ${p.name} for my ${SIZES[state.size]} (from ${money(p.prices[state.size])})`;
+      ? `to join Driven+ with the ${m.name} plan for my ${SIZES[state.size]} (${money(price(m) * MEMBER)} a visit)`
+      : `to book a ${p.name} for my ${SIZES[state.size]} (${priceText(p)})`;
     const lines = [
       `Hi Seb, I'd like ${want}.`,
       `Car: ${f.car.value.trim()}`,

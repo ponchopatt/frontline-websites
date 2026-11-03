@@ -62,12 +62,12 @@
         <span class="stars" aria-hidden="true"><svg viewBox="0 0 100 20"><use href="#star5"/></svg></span>
         <span><strong>5.0</strong> from 50+ Google reviews</span>
       </a>
-      <ul class="strip" aria-label="Starting prices for a sedan">
-        <li><a href="#price" data-pick="maint"><span>Maintenance</span><b>$80</b></a></li>
-        <li><a href="#price" data-pick="sig"><span>Signature</span><b>$120</b></a></li>
-        <li><a href="#price" data-pick="pres"><span>Prestige</span><b>$260</b></a></li>
+      <ul class="strip" aria-label="Full detail prices by car">
+        <li><a href="#price" data-size="0"><span>Hatch or sedan</span><b>$225</b></a></li>
+        <li><a href="#price" data-size="1"><span>SUV or ute</span><b>$260</b></a></li>
+        <li><a href="#price" data-size="2"><span>4x4 or <em class="nw">7-seater</em></span><b>$290</b></a></li>
       </ul>
-      <p class="strip-note">From-prices for a sedan. Tap one for your car.</p>
+      <p class="strip-note">Full detail prices. Exterior from $110, interior from $140.</p>
       <div class="hero-cta">
         <a class="btn" href="#price">See your price</a>
         <a class="btn ghost" href="sms:+61404714415" data-sms>Text Seb</a>
@@ -86,40 +86,35 @@
   </ul>
 </section>
 
-<!-- The price picker replaces 5 long package cards and 3 carousels: pick the car, pick
-     inside and out or interior only, and the 3 packages show that car's price. -->
+<!-- The price picker replaces 5 long package cards and 3 carousels: pick the car and the
+     4 jobs show that car's price. The prices are the new ones we're proposing (see the README). -->
 <section class="sec price" id="price" aria-labelledby="price-h">
   <div class="wrap">
     <div class="sec-head">
       <h2 id="price-h">Your price in 10&nbsp;seconds.</h2>
-      <p>Pick your car and the job. These are Seb&rsquo;s real prices.</p>
+      <p>Pick your car. A full or interior detail can be up to $60 more if the car needs extra work. Seb tells you before he starts.</p>
     </div>
 
     <div class="picker">
       <fieldset class="seg" aria-label="Your car">
         <legend>Your car</legend>
-        <label><input type="radio" name="size" value="0" checked><span>Sedan or small</span></label>
-        <label><input type="radio" name="size" value="1"><span>SUV or large</span></label>
-        <label><input type="radio" name="size" value="2"><span>7-seater or XL</span></label>
-      </fieldset>
-      <fieldset class="seg" aria-label="The job">
-        <legend>The job</legend>
-        <label><input type="radio" name="kind" value="full" checked><span>Inside and out</span></label>
-        <label><input type="radio" name="kind" value="int"><span>Interior only</span></label>
+        <label><input type="radio" name="size" value="0" checked><span>Hatch or sedan</span></label>
+        <label><input type="radio" name="size" value="1"><span>SUV or ute</span></label>
+        <label><input type="radio" name="size" value="2"><span>4x4 or <em class="nw">7-seater</em></span></label>
       </fieldset>
     </div>
 
     <div class="packs" id="packs" role="radiogroup" aria-label="Package">
       <!-- Filled by app.js from PACKAGES. This is the no-JS view. -->
       <noscript>
-        <p class="nojs">Maintenance from $80, Signature from $120, Prestige from $260 for a sedan. Text Seb on <a href="sms:+61404714415">0404 714 415</a> for your price.</p>
+        <p class="nojs">For a hatch or sedan: Full Detail $225, Interior Detail $140, Exterior Detail $110, Maintenance Detail $165. Text Seb on <a href="sms:+61404714415">0404 714 415</a> for your price.</p>
       </noscript>
     </div>
 
     <div class="total" id="total" aria-live="polite">
       <div class="total-txt">
-        <p class="total-name" id="totalName">Signature Detail, sedan</p>
-        <p class="total-price"><span>From</span> <b id="totalPrice">$120</b></p>
+        <p class="total-name" id="totalName">Full Detail, hatch or sedan</p>
+        <p class="total-price"><b id="totalPrice">$225 to $285</b></p>
       </div>
       <a class="btn" href="#book" id="totalBook">Book this detail</a>
     </div>
@@ -241,7 +236,7 @@
           <h2 id="plus-h">Driven+</h2>
           <p class="plus-line">A detail every month. 10% off every visit. No lock-in.</p>
         </div>
-        <p class="plus-price"><span id="plusName">Signature, sedan</span><b id="plusPrice">$108</b><span>a visit, normally <s id="plusWas">$120</s></span></p>
+        <p class="plus-price"><span id="plusName">Full Detail, hatch or sedan</span><b id="plusPrice">$202.50</b><span>a visit, normally <s id="plusWas">$225</s></span></p>
       </div>
       <ul class="perks">
         <li>10% off every detail and enhancement</li>
@@ -263,7 +258,7 @@
         <a class="btn" href="#book" data-plus>Join Driven+</a>
         <details class="terms">
           <summary>The fine print</summary>
-          <p>Driven+ includes one detail per calendar month at member price, for one nominated vehicle, on a standing monthly booking. Extra details in the same month are charged at the normal price. Pay on the day; no lock-in, cancel anytime before your next booking. Each month&rsquo;s detail counts as one visit on the rewards timeline. Missing a month resets your rewards progress and ends Gold status (one holiday pause per year). The rewards timeline repeats every year. Driven+ Maintenance starts with a Signature Detail at member price if your car hasn&rsquo;t been detailed by us in the last 6 weeks. If your package already includes a reward, you can swap it for an enhancement of equal value. Rewards have no cash value and can&rsquo;t be transferred.</p>
+          <p>Driven+ includes one detail per calendar month at member price, for one nominated vehicle, on a standing monthly booking. Extra details in the same month are charged at the normal price. Pay on the day; no lock-in, cancel anytime before your next booking. Each month&rsquo;s detail counts as one visit on the rewards timeline. Missing a month resets your rewards progress and ends Gold status (one holiday pause per year). The rewards timeline repeats every year. Driven+ Maintenance starts with a Full Detail at member price if your car hasn&rsquo;t been detailed by us in the last 6 weeks. If your package already includes a reward, you can swap it for an enhancement of equal value. Rewards have no cash value and can&rsquo;t be transferred.</p>
         </details>
       </div>
     </div>
@@ -306,10 +301,11 @@
       <p>Can&rsquo;t see yours? <a href="sms:+61404714415" data-sms>Text Seb on 0404 714 415</a>.</p>
     </div>
     <div class="qs">
-      <details><summary>How long does a detail take?</summary><p>Maintenance takes 45 to 60 minutes, Signature 1.5 to 2 hours and Prestige 3 to 4 hours. Signature Interior is about 1 hour and Prestige Interior 2 to 2.5 hours. Very dirty cars or added extras can take longer.</p></details>
+      <details><summary>How long does a detail take?</summary><p>A Full Detail takes 1.5 to 2 hours, an Interior Detail about 1 hour and a Maintenance Detail 45 to 60 minutes. Very dirty cars or added extras can take longer.</p></details>
       <details><summary>Do you come to my home or work?</summary><p>Yes. Seb details your car in your driveway, carport, garage or work car park. He just needs a water tap and a power point.</p></details>
       <details><summary>Is there a travel fee?</summary><p>Outside Wantirna South, yes. Text your suburb to 0404 714 415 for an exact quote. Driven+ members pay no travel fee within 10 km of Wantirna South.</p></details>
-      <details><summary>What&rsquo;s the difference between Signature and Prestige?</summary><p>Signature is a complete clean inside and out: wash, wheels and arches, door jambs, full vacuum, dash and trims, leather shampoo and glass. Prestige adds clay bar, carnauba wax, premium tyre dressing, deep carpet shampoo, steam cleaning, stain and odour treatment, and leather conditioning.</p></details>
+      <details><summary>Why is the price a range?</summary><p>Every car is different. A full or interior detail on a car in normal shape is the first price. A very dirty car can be up to $60 more. Seb tells you the final price before he starts. Exterior and maintenance details are set prices.</p></details>
+      <details><summary>Which detail do I need?</summary><p>The Full Detail is a complete clean inside and out: wash, wheels and arches, door jambs, full vacuum, dash and trims, leather shampoo and glass. Interior and Exterior Details do one half of that. Maintenance is quick upkeep for a car that&rsquo;s already in good shape. For more, add clay bar, wax, steam cleaning and more from the add-ons.</p></details>
       <details><summary>Do you do paint correction and scratch removal?</summary><p>Yes. Light scratch removal starts from $30 and full paint correction from $250, depending on the paint and the size of the car. Send a few daylight photos of the paint for an exact quote.</p></details>
       <details><summary>Do you do ceramic coating?</summary><p>Yes. The Spray-On Ceramic Coating is $60 and can be added to any detail. It&rsquo;s a ceramic (SiO2) sealant that adds gloss, makes water bead off and keeps the car easier to clean. It&rsquo;s a spray-on layer, not a multi-year professional ceramic coating.</p></details>
       <details><summary>How does Driven+ work?</summary><p>One detail a month on a standing booking, at 10% off. You get free upgrades the longer you stay, and Gold status (15% off) after 12 visits. Pay on the day, no lock-in.</p></details>
@@ -336,7 +332,7 @@
 
       <fieldset class="bk-step" data-step="1">
         <legend class="sr-only">Step 1 of 3: your detail</legend>
-        <p class="bk-sum" id="bkSum">Signature Detail, sedan, from $120</p>
+        <p class="bk-sum" id="bkSum">Full Detail, hatch or sedan, $225 to $285</p>
         <p class="bk-help"><a href="#price">Change it in the price picker</a></p>
         <label class="fld">
           <span>Your car</span>
