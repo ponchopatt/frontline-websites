@@ -94,7 +94,8 @@ the customer when they gave an email.
     Restoration $150, Glass Polish and Light Scratch Removal quoted, and the interior add-ons as before.
     Rain repellent, clay bar, spray-on ceramic and wax are gone as add-ons (clay bar and ceramic
     are in every Full and Exterior Detail).
-- **The referral offer** still gives the friend a free rain repellent, which is no longer an add-on.
+- **The referral offer** is now "You both get $30 off": the friend gets $30 off their first
+  detail, and the customer who referred them gets $30 off their next one.
 - **Driven+ is gone** from the site, and its old pages redirect to the home page. He'll
   need to tell his current members.
 - **The privacy policy** is his own, word for word. It names Offsider Agency as his
