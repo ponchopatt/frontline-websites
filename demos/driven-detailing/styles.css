@@ -57,6 +57,7 @@ h1, h2, h3 { margin: 0; font-weight: 620; font-stretch: 125%; letter-spacing: -0
 .skip:focus { top: 12px; }
 .small { font-size: 15px; color: var(--dim); }
 .nw { white-space: nowrap; }
+em.nw { font-style: normal; }
 /* Inline links get a 44px tall tap area without moving the text around them. */
 .sec-head p a, .bk-help a, .small a { display: inline-block; padding: 12px 0; margin: -12px 0; }
 .wrap { width: 100%; max-width: 1160px; margin: 0 auto; padding: 0 var(--gut); }
@@ -154,7 +155,7 @@ h1, h2, h3 { margin: 0; font-weight: 620; font-stretch: 125%; letter-spacing: -0
 .pack-tag { position: absolute; top: -11px; left: 18px; margin: 0; padding: 2px 8px; border-radius: 999px; background: var(--blue); color: #fff; font-size: 12px; font-weight: 600; font-stretch: 100%; }
 .pack-desc { grid-column: 1; font-size: 14.5px; color: var(--dim); }
 .pack-price { grid-column: 2; grid-row: 1 / span 2; text-align: right; line-height: 1; white-space: nowrap; }
-.pack-price small { display: block; font-size: 12px; color: var(--dim); margin-bottom: 4px; }
+.pack-price small { display: block; font-size: 12.5px; color: var(--dim); margin-top: 6px; }
 .pack-price b { font-size: 30px; font-weight: 720; font-stretch: 112%; font-variant-numeric: tabular-nums; }
 .pack details { border-top: 1px solid var(--line); margin: 0 18px; }
 .pack summary { list-style: none; cursor: pointer; padding: 12px 0 14px; font-size: 14.5px; color: var(--blue-text); min-height: 44px; display: flex; align-items: center; justify-content: space-between; }
@@ -171,8 +172,10 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-1px); }
 .total { margin-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 14px 14px 18px; border-radius: var(--r); background: var(--panel-2); border: 1px solid var(--line-2); }
 .total-name { font-size: 14px; color: var(--soft); }
 .total-price { font-size: 14px; color: var(--dim); line-height: 1.1; }
-.total-price b { font-size: 26px; font-weight: 720; font-stretch: 112%; color: var(--text); font-variant-numeric: tabular-nums; }
-.total .btn { flex: none; padding: 0 18px; }
+.total-price b { font-size: 21px; font-weight: 720; font-stretch: 112%; color: var(--text); font-variant-numeric: tabular-nums; }
+.total { flex-wrap: wrap; }
+.total-txt { flex: 1 1 190px; }
+.total .btn { flex: 1 1 auto; padding: 0 18px; }
 .fee { margin-top: 10px; font-size: 14px; color: var(--dim); }
 
 .addons { margin-top: 26px; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-2); }
@@ -372,8 +375,8 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-1px); }
   .sec-head p { margin: 0; max-width: 40ch; text-align: right; }
   .sec-head h2, .seb h2, .area h2 { font-size: clamp(2.3rem, 1rem + 2.2vw, 3rem); }
 
-  .picker { grid-template-columns: 3fr 2fr; gap: 24px; margin-bottom: 22px; }
-  .packs { grid-template-columns: repeat(3, 1fr); gap: 14px; align-items: start; }
+  .picker { max-width: 640px; margin-bottom: 22px; }
+  .packs { grid-template-columns: repeat(2, 1fr); gap: 14px; align-items: start; }
   .pack label { padding: 24px 22px 18px; }
   .pack-tag { left: 22px; }
   .pack-row { grid-template-columns: 1fr; }
