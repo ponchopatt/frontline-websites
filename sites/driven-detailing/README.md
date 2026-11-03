@@ -28,6 +28,9 @@ What's different from the demo:
   the top of `app.js`, and the booking section shows his calendar instead of the 3-step
   form that texts him. The ad's tracking tags (`utm_…`, `fbclid`, `gclid`) are passed on
   to the calendar.
+- **A quote form that sends.** The 3-step booking form emails each request to Seb through
+  Web3Forms once `QUOTE_KEY` at the top of `app.js` is set (see below). Until then, and if a
+  send ever fails, it hands the customer a text to Seb with everything filled in.
 - **A footer** with links to the services, the suburbs and the privacy policy.
 - **Root paths** (`/assets/…`), so the same header and footer work on every page.
 
@@ -48,6 +51,17 @@ copied from `index.html` (between its `shared:` comments), and their prices are 
     node build.mjs
 
 Vercel serves the files as they are, with no build step.
+
+## The quote form's key
+
+1. Go to web3forms.com and enter the email Seb wants the requests sent to.
+2. Web3Forms emails that address an access key.
+3. Paste the key into `QUOTE_KEY` at the top of `app.js` and push. It's safe to have in the
+   page: it can only send to that one address.
+4. Send a test request from the live site and check it arrives.
+
+Each email's subject is "Quote request: [detail] in [suburb]", and replying goes straight to
+the customer when they gave an email.
 
 ## Going live, once Seb says yes
 

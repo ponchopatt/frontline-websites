@@ -389,8 +389,8 @@
 </section>
 
 <!-- Booking: Seb's booking calendar once BOOKING_URL in app.js is set (see the README).
-     Until then, 3 short steps that carry over the price picker's pick and open a text to
-     Seb with everything filled in. -->
+     Until then, a 3-step quote form that carries over the price picker's pick. With
+     QUOTE_KEY set it emails the request to Seb; without it, it opens a text to him. -->
 <section class="sec book" id="book" aria-labelledby="book-h">
   <div class="wrap book-in">
     <div class="sec-head">
@@ -445,9 +445,15 @@
           <input name="mobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="04xx xxx xxx" required>
         </label>
         <label class="fld">
+          <span>Email <em>Optional</em></span>
+          <input name="email" type="email" autocomplete="email" placeholder="you@example.com">
+        </label>
+        <label class="fld">
           <span>Anything Seb should know? <em>Optional</em></span>
           <textarea name="note" rows="2" placeholder="e.g. dog hair, add headlight restoration"></textarea>
         </label>
+        <!-- Only bots fill this in, and a request with it filled in isn't sent. -->
+        <label class="hp" aria-hidden="true">Company <input name="company" type="text" tabindex="-1" autocomplete="off"></label>
         <div class="bk-nav">
           <button class="btn ghost" type="button" data-back>Back</button>
           <button class="btn" type="submit">Send to Seb</button>
@@ -455,11 +461,14 @@
       </fieldset>
 
       <div class="bk-done" id="bkDone" hidden tabindex="-1">
-        <h3>Your message to Seb is ready.</h3>
-        <p>Your texts app has opened with your booking filled in. Press send, and Seb will confirm your time and price.</p>
-        <p class="bk-copy">Texts app didn&rsquo;t open? Text this to <a class="nw" href="sms:+61404714415">0404&nbsp;714&nbsp;415</a>:</p>
-        <pre id="bkMsg"></pre>
-        <button class="btn ghost sm" type="button" id="bkCopyBtn">Copy the message</button>
+        <h3 id="bkDoneH">Your message to Seb is ready.</h3>
+        <p id="bkDoneP">Your texts app has opened with your request filled in. Press send, and Seb will confirm your time and price.</p>
+        <div id="bkTextIt">
+          <a class="btn wide" id="bkTextBtn" href="sms:+61404714415" hidden>Text it to Seb</a>
+          <p class="bk-copy"><span id="bkCopyLead">Texts app didn&rsquo;t open? </span>Text this to <a class="nw" href="sms:+61404714415">0404&nbsp;714&nbsp;415</a>:</p>
+          <pre id="bkMsg"></pre>
+          <button class="btn ghost sm" type="button" id="bkCopyBtn">Copy the message</button>
+        </div>
       </div>
       <p class="bk-err" id="bkErr" role="alert" hidden></p>
     </form>
