@@ -3,7 +3,7 @@
 const PHONE = '+61404714415';
 // Seb's booking calendar: paste its GoHighLevel booking link here, like
 // 'https://api.leadconnectorhq.com/widget/booking/…'. While it's empty, the booking section
-// is the 3-step quote form.
+// is the quote form.
 const BOOKING_URL = '';
 // The quote form's delivery: a Web3Forms access key (web3forms.com), which emails every
 // request to the address it was made for. While it's empty, the form opens a text to Seb
@@ -47,13 +47,25 @@ const BA = {
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const money = (n) => '$' + (n % 1 ? n.toFixed(2) : n);
-  const state = { size: 0, pack: 'full' };
+  const state = { size: 0, pack: 'full', formChose: false };
   const pick = () => PACKAGES.find((p) => p.id === state.pack) || PACKAGES[0];
   const price = (p) => p.prices[state.size];
   // "a Full Detail", "an Interior Detail".
   const aName = (p) => (/^[AEIOU]/.test(p.name) ? 'an ' : 'a ') + p.name;
   // "$260 to $320" for a job with a condition range, "$125" for a set price.
   const priceText = (p) => money(price(p)) + (p.ranged ? ' to ' + money(price(p) + RANGE) : '');
+  // "a hatch or sedan", "an SUV or ute".
+  const aSize = () => (/^(suv|[aeiou])/i.test(SIZES[state.size]) ? 'an ' : 'a ') + SIZES[state.size];
+  // The quote form follows the price list's pick until they choose a detail in the form,
+  // and its line under the fields gives that detail's price for the car picked.
+  function pickLine() {
+    const sel = $('#bk select[name="service"]'), line = $('#qfPick');
+    if (!sel || !line) return;
+    if (!state.formChose) sel.value = pick().name;
+    const p = PACKAGES.find((x) => x.name === sel.value);
+    line.hidden = !p;
+    if (p) $('#qfPickTxt').textContent = `${p.name} for ${aSize()}: ${priceText(p)}.`;
+  }
 
   /* ---- Text links: open a text to Seb with the current pick filled in ---- */
   const smsHref = (body) => `sms:${PHONE}?&body=${encodeURIComponent(body)}`;
@@ -82,7 +94,8 @@ const BA = {
     $$('.pack', packs).forEach((c) => c.classList.toggle('on', c.dataset.id === state.pack));
     $('#totalName').textContent = `${p.name}, ${SIZES[state.size]}`;
     $('#totalPrice').textContent = priceText(p);
-    $('#bkSum').textContent = $('#calPick').textContent = `${p.name}, ${SIZES[state.size]}, ${priceText(p)}`;
+    $('#calPick').textContent = `${p.name}, ${SIZES[state.size]}, ${priceText(p)}`;
+    pickLine();
     syncSms();
   }
   $$('input[name="size"]').forEach((r) => r.addEventListener('change', () => { state.size = +r.value; renderPacks(); }));
@@ -186,118 +199,86 @@ const BA = {
     });
   }
 
-  /* ---- Booking steps -------------------------------------------------- */
+  /* ---- Quote form ----------------------------------------------------- */
+  // One screen, like Imperium's: the detail and when, the car and suburb, then contact.
   const form = $('#bk');
-  const steps = $$('.bk-step', form);
-  const dots = $$('.bk-steps li', form);
   const err = $('#bkErr');
-  let step = 1;
+  const panel = $('#qfText');
+  const sendBtn = $('#qfSend');
+  const isPhone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  // The next 7 days as chips: today, tomorrow, then the weekday and date.
-  const days = $('#days');
-  const fmt = new Intl.DateTimeFormat('en-AU', { weekday: 'short', day: 'numeric', month: 'short' });
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(); d.setDate(d.getDate() + i);
-    const parts = fmt.formatToParts(d);
-    const wd = parts.find((x) => x.type === 'weekday').value;
-    const dm = `${parts.find((x) => x.type === 'day').value} ${parts.find((x) => x.type === 'month').value}`;
-    const top = i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : wd;
-    const label = document.createElement('label');
-    label.innerHTML = `<input type="radio" name="day" value="${top === wd ? wd + ' ' + dm : top + ' (' + wd + ' ' + dm + ')'}"><span>${top}<small>${dm}</small></span>`;
-    days.append(label);
-  }
+  // Once they pick a detail in the form itself, the price list stops changing it.
+  form.elements.service.addEventListener('change', () => { state.formChose = true; pickLine(); });
+  $('#totalBook').addEventListener('click', () => { state.formChose = false; update(); });
 
-  const show = (n) => {
-    step = n;
-    steps.forEach((s) => { s.hidden = +s.dataset.step !== n; });
-    dots.forEach((d, i) => { d.classList.toggle('on', i === n - 1); d.classList.toggle('done', i < n - 1); });
-    err.hidden = true;
-    if (form.getBoundingClientRect().top < 0) form.scrollIntoView({ block: 'start' });
-  };
   const fail = (msg, el) => {
     err.textContent = msg; err.hidden = false;
     if (el) { el.setAttribute('aria-invalid', 'true'); el.focus(); }
   };
-  $$('input, textarea', form).forEach((i) => i.addEventListener('input', () => i.removeAttribute('aria-invalid')));
-  form.addEventListener('change', () => { err.hidden = true; });
-  const check = (n) => {
+  $$('input, textarea, select', form).forEach((i) => i.addEventListener('input', () => { i.removeAttribute('aria-invalid'); err.hidden = true; }));
+  const check = () => {
     const f = form.elements;
-    if (n === 1) {
-      if (!f.car.value.trim()) return fail('Add your car, so Seb knows the size and the job.', f.car), false;
-      if (!f.suburb.value.trim()) return fail('Add your suburb, so Seb can check the travel.', f.suburb), false;
-    }
-    if (n === 2 && !form.querySelector('input[name="day"]:checked')) return fail('Pick a day that suits you.'), false;
-    if (n === 3) {
-      if (!f.name.value.trim()) return fail('Add your name.', f.name), false;
-      const digits = f.mobile.value.replace(/\D/g, '');
-      if (!/^(04\d{8}|614\d{8})$/.test(digits)) return fail('Check your mobile. It should look like 0412 345 678.', f.mobile), false;
-      if (f.email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value.trim())) return fail('Check your email, or leave it empty.', f.email), false;
-    }
+    if (!f.when.value) return fail('Pick when you want it done.', f.when), false;
+    if (!f.car.value.trim()) return fail('Add your car, so Seb knows the size and the job.', f.car), false;
+    if (!f.suburb.value.trim()) return fail('Add your suburb, so Seb can check the travel.', f.suburb), false;
+    if (!f.name.value.trim()) return fail('Add your name.', f.name), false;
+    if (!/^(04\d{8}|614\d{8})$/.test(f.mobile.value.replace(/\D/g, ''))) return fail('Check your mobile. It should look like 0412 345 678.', f.mobile), false;
+    if (f.email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value.trim())) return fail('Check your email, or leave it empty.', f.email), false;
     return true;
   };
-  $$('[data-next]', form).forEach((b) => b.addEventListener('click', () => { if (check(step)) show(step + 1); }));
-  $$('[data-back]', form).forEach((b) => b.addEventListener('click', () => show(step - 1)));
 
-  // What the customer sees once the request has gone, or hasn't: sent by email, ready to
-  // text, or the send failed (then the text is the way out).
-  const finish = (how) => {
-    const done = $('#bkDone');
-    $('#bkDoneH').textContent = how === 'sent' ? 'Sent. Seb will be in touch.' : how === 'failed' ? 'That didn\u2019t send.' : 'Your message to Seb is ready.';
-    $('#bkDoneP').textContent = how === 'sent'
-      ? 'Seb will get back to you to confirm a time and price. His number is 0404 714 415.'
-      : how === 'failed'
-        ? 'Something went wrong on our side. Text it to Seb instead and he\u2019ll get back to you.'
-        : 'Your texts app has opened with your request filled in. Press send, and Seb will confirm your time and price.';
-    $('#bkTextIt').hidden = how === 'sent';
-    $('#bkTextBtn').hidden = how !== 'failed';
-    $('#bkTextBtn').href = smsHref($('#bkMsg').textContent);
-    $('#bkCopyLead').hidden = how !== 'text';
-    err.hidden = true;
-    steps.forEach((s) => { s.hidden = true; });
-    $('.bk-steps', form).hidden = true;
-    done.hidden = false; done.focus();
+  // The text way out: when there's no QUOTE_KEY, and when a send fails.
+  const showText = (failed) => {
+    $('#qfTextH').textContent = failed ? 'That didn’t send. Text it to Seb instead.' : 'Send this to Seb as a text';
+    panel.hidden = false;
+    panel.scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    panel.focus({ preventScroll: true });
   };
   const openText = (msg) => {
     const go = document.createElement('a');
     go.href = smsHref(msg);
     document.body.append(go); go.click(); go.remove();
   };
-  const sendBtn = $('button[type="submit"]', form);
-  sendBtn.textContent = QUOTE_KEY ? 'Send my request' : 'Send to Seb';
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!check(3)) return;
-    const f = form.elements, p = pick();
-    if (f.company.value) return; // the hidden field only bots fill in
-    const day = form.querySelector('input[name="day"]:checked').value;
-    const time = form.querySelector('input[name="time"]:checked');
+    const f = form.elements;
+    if (f.company.value || f.botcheck.checked) return; // only bots fill these in
+    err.hidden = true; panel.hidden = true;
+    if (!check()) return;
+    const p = PACKAGES.find((x) => x.name === f.service.value);
+    const detail = p ? `${p.name} (${SIZES[state.size]}, ${priceText(p)})` : f.service.value;
+    const v = (k) => f[k].value.trim();
     const lines = [
-      `Hi Seb, I'd like to book ${aName(p)} for my ${SIZES[state.size]} (${priceText(p)}).`,
-      `Car: ${f.car.value.trim()}`,
-      `Suburb: ${f.suburb.value.trim()}`,
-      `When: ${day}${time ? ', ' + time.value.toLowerCase() : ''}`,
-      `Name: ${f.name.value.trim()}`,
-      `Mobile: ${f.mobile.value.trim()}`,
+      'Hi Seb, I\'d like a quote.',
+      `Detail: ${detail}`,
+      `When: ${f.when.value}`,
+      `Car: ${v('car')}`,
+      `Suburb: ${v('suburb')}`,
+      `Name: ${v('name')}`,
+      `Mobile: ${v('mobile')}`,
     ];
-    if (f.email.value.trim()) lines.push(`Email: ${f.email.value.trim()}`);
-    if (f.note.value.trim()) lines.push(`Note: ${f.note.value.trim()}`);
+    if (v('email')) lines.push(`Email: ${v('email')}`);
+    if (v('note')) lines.push(`Note: ${v('note')}`);
     const msg = lines.join('\n');
     $('#bkMsg').textContent = msg;
-    if (!QUOTE_KEY) { finish('text'); openText(msg); return; }
+    $('#bkTextBtn').href = smsHref(msg);
 
-    sendBtn.disabled = true; sendBtn.textContent = 'Sending\u2026';
+    if (!QUOTE_KEY) {
+      showText(false);
+      if (isPhone) openText(msg); // only a phone has a messages app to open
+      return;
+    }
+
+    sendBtn.disabled = true; sendBtn.textContent = 'Sending…';
     try {
       const payload = {
         access_key: QUOTE_KEY,
         // What Seb sees in his inbox before he opens anything.
-        subject: `Quote request: ${p.name} in ${f.suburb.value.trim()}`,
-        from_name: `${f.name.value.trim()} (Driven Detailing website)`,
-        detail: `${p.name}, ${SIZES[state.size]}, ${priceText(p)}`,
-        car: f.car.value.trim(), suburb: f.suburb.value.trim(),
-        when: `${day}${time ? ', ' + time.value.toLowerCase() : ''}`,
-        name: f.name.value.trim(), mobile: f.mobile.value.trim(),
-        email: f.email.value.trim(), note: f.note.value.trim(),
+        subject: `Quote request: ${f.service.value} in ${v('suburb')}`,
+        from_name: `${v('name')} (Driven Detailing website)`,
+        detail, when: f.when.value, car: v('car'), suburb: v('suburb'),
+        name: v('name'), mobile: v('mobile'), email: v('email'), note: v('note'),
         message: msg,
       };
       if (payload.email) payload.replyto = payload.email; // so Seb can just hit reply
@@ -313,12 +294,15 @@ const BA = {
       // Web3Forms can answer 200 with {success:false}, so the status alone isn't enough.
       const body = await res.json().catch(() => null);
       if (!res.ok || (body && body.success === false)) throw new Error(String(res.status));
-      finish('sent');
-      form.reset();
+      form.hidden = true;
+      const done = $('#bkDone');
+      done.hidden = false;
+      done.scrollIntoView({ block: 'center' });
+      done.focus({ preventScroll: true });
     } catch {
-      finish('failed');
+      showText(true);
     } finally {
-      sendBtn.disabled = false; sendBtn.textContent = 'Send my request';
+      sendBtn.disabled = false; sendBtn.textContent = 'Request my quote';
     }
   });
   $('#bkCopyBtn').addEventListener('click', async (e) => {
