@@ -162,12 +162,10 @@ em.nw { font-style: normal; }
 .pack summary::-webkit-details-marker { display: none; }
 .pack summary::after, .addons summary::after, .qs summary::after, .terms summary::after { content: ""; width: 9px; height: 9px; border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: rotate(45deg) translateY(-3px); transition: transform .2s; flex: none; margin-left: 12px; }
 details[open] > summary::after { transform: rotate(225deg) translateY(-1px); }
-.pack ul, .addons ul, .perks { list-style: none; margin: 0; padding: 0; }
+.pack ul, .addons ul { list-style: none; margin: 0; padding: 0; }
 .pack ul { padding-bottom: 16px; columns: 1; font-size: 15px; color: var(--soft); }
 .pack li { padding: 3px 0 3px 20px; position: relative; break-inside: avoid; }
-.pack li::before, .perks li::before { content: ""; position: absolute; left: 2px; top: .72em; width: 8px; height: 4px; border-left: 1.6px solid var(--blue-text); border-bottom: 1.6px solid var(--blue-text); transform: rotate(-45deg); }
-.pack li.plus { padding-left: 0; color: var(--text); font-weight: 600; }
-.pack li.plus::before { display: none; }
+.pack li::before { content: ""; position: absolute; left: 2px; top: .72em; width: 8px; height: 4px; border-left: 1.6px solid var(--blue-text); border-bottom: 1.6px solid var(--blue-text); transform: rotate(-45deg); }
 
 .total { margin-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 14px 14px 18px; border-radius: var(--r); background: var(--panel-2); border: 1px solid var(--line-2); }
 .total-name { font-size: 14px; color: var(--soft); }
@@ -222,32 +220,12 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-1px); }
 .seb-pic img { width: 100%; height: 100%; object-fit: cover; }
 .seb-copy p { margin-top: 14px; color: var(--soft); max-width: 56ch; }
 
-/* ---- Driven+ ------------------------------------------------------------- */
-.plus-card { border: 1px solid rgba(26,92,255,.55); border-radius: 18px; padding: 24px 20px; background: radial-gradient(120% 90% at 100% 0%, rgba(26,92,255,.18), rgba(26,92,255,0) 60%), var(--panel); }
-.plus h2 { font-size: clamp(2rem, 8vw, 2.6rem); }
-.plus-line { margin-top: 10px; color: var(--soft); max-width: 36ch; }
-.plus-top { display: grid; gap: 18px; }
-.plus-price { display: grid; gap: 2px; align-content: start; }
-.plus-price span { font-size: 14px; color: var(--dim); }
-.plus-price span:first-child { color: var(--soft); }
-.plus-price b { font-size: 44px; line-height: 1.05; font-weight: 720; font-stretch: 112%; font-variant-numeric: tabular-nums; }
-.plus-price s { color: var(--dim); }
-.perks { margin-top: 22px; display: grid; gap: 8px; }
-.perks li { position: relative; padding-left: 22px; font-size: 15.5px; }
-.ladder-h { margin-top: 28px; font-size: 17px; font-stretch: 112%; }
-.ladder { list-style: none; margin: 14px 0 0; padding: 0; position: relative; display: grid; gap: 0; }
-.ladder li { position: relative; padding: 0 0 14px 26px; font-size: 15px; color: var(--soft); }
-.ladder li::before { content: ""; position: absolute; left: 4px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--bg); border: 2px solid var(--blue-text); }
-.ladder li:not(:last-child)::after { content: ""; position: absolute; left: 9px; top: 19px; bottom: 2px; width: 1px; background: var(--line-2); }
-.ladder b { display: block; font-size: 13px; color: var(--dim); font-weight: 600; line-height: 1.3; }
-.ladder .gold { color: var(--text); }
-.ladder .gold::before { border-color: var(--gold); background: var(--gold); }
-.plus-cta { margin-top: 18px; display: grid; gap: 14px; }
+/* ---- Referrals ----------------------------------------------------------- */
 .terms summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; min-height: 44px; color: var(--blue-text); font-size: 15px; }
 .terms summary::-webkit-details-marker { display: none; }
 .terms p { font-size: 13.5px; color: var(--dim); line-height: 1.55; max-width: 72ch; padding-bottom: 6px; }
-.refer { margin-top: 18px; padding: 22px 20px 12px; border-radius: var(--r); border: 1px solid var(--line); background: var(--bg-2); }
-.refer h3 { font-size: 21px; }
+.refer { padding: 22px 20px 12px; border-radius: var(--r); border: 1px solid var(--line); background: var(--bg-2); }
+.refer h2 { font-size: 21px; }
 .refer > p { margin-top: 8px; color: var(--soft); font-size: 16px; max-width: 64ch; }
 
 /* ---- Area and hours ------------------------------------------------------ */
@@ -338,10 +316,6 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-1px); }
   .rev-grid { grid-template-columns: repeat(2, 1fr); }
   .addons-in { grid-template-columns: 1fr 1fr; }
   .pack ul { columns: 2; column-gap: 28px; }
-  .plus-top { grid-template-columns: 1fr auto; align-items: end; }
-  .plus-price { text-align: right; }
-  .plus-cta { grid-template-columns: auto 1fr; align-items: start; }
-  .plus-cta .btn { justify-self: start; }
   .chips, #days { grid-template-columns: repeat(7, 1fr); }
   .chips:not(#days) { grid-template-columns: repeat(3, 1fr); }
   .bar { display: none; }
@@ -400,12 +374,6 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-1px); }
 
   .seb-in { grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
 
-  .plus-card { padding: 44px 48px; }
-  .ladder { grid-template-columns: repeat(7, 1fr); gap: 10px; margin-top: 20px; }
-  .ladder li { padding: 26px 0 0; font-size: 14.5px; line-height: 1.35; }
-  .ladder li::before { left: 0; top: 0; }
-  .ladder li:not(:last-child)::after { left: 15px; right: -6px; top: 6px; bottom: auto; width: auto; height: 1px; }
-  .ladder b { margin-bottom: 4px; }
   .refer { padding: 28px 32px 16px; }
 
   .area-in { grid-template-columns: 3fr 2fr; gap: 80px; }
