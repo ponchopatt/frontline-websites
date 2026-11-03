@@ -4,16 +4,12 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-// The server runs on a local file instead of Supabase, with its own token secret.
+// The server runs on a local file instead of Supabase.
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "film-"));
 process.env.FILM_LOCAL_STORE = path.join(dir, "store.json");
-process.env.FILM_TOKEN_SECRET = "test-secret";
-delete process.env.FILM_TEAM_PIN;
-delete process.env.FILM_ADMIN_PIN;
-delete process.env.FILM_REMINDER_KEY;
 
-const { Film, C, filmStore } = await import("../lib/film-store.js");
-const { POST, GET, hashPin } = await import("../api/film.js");
+const { Film } = await import("../lib/film-store.js");
+const { POST, GET } = await import("../api/film.js");
 
 const T = "2026-11-04"; // a Wednesday
 const idea = (o) => Film.newIdea({ title: "Idea", ...o }, { id: o.id || o.title, now: "2026-11-01T00:00:00Z" });
@@ -137,17 +133,12 @@ test("import: loose field names, all To film and unassigned, no doubles", () => 
 
 /* ------------------------------------------------------------ the endpoint */
 
-const call = async (body, token, headers = {}) => {
-  const res = await POST(new Request("http://x/api/film", { method: "POST", headers: { "Content-Type": "application/json", ...(token ? { Authorization: "Bearer " + token } : {}), ...headers }, body: JSON.stringify(body) }));
+const call = async (body) => {
+  const res = await POST(new Request("http://x/api/film", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }));
   return { status: res.status, body: await res.json() };
 };
 
-test("the endpoint: PINs, roles, the inbox, ideas, stages, import and the reminder", async (t) => {
-  const store = filmStore();
-  // Not set up: no PINs anywhere.
-  assert.equal((await call({ action: "unlock", pin: "1234" })).status, 503);
-  await store.put(C.system, "pins", { team: { salt: "s1", hash: hashPin("2468", "s1") }, admin: { salt: "s2", hash: hashPin("135790", "s2") }, reminderKey: "remind-me" });
-
+test("the endpoint: no PIN, the inbox, ideas, stages, import and the reminder", async (t) => {
   // TikTok's preview comes from its oEmbed endpoint; here it's faked.
   const realFetch = globalThis.fetch;
   globalThis.fetch = async (url) => {
@@ -156,66 +147,55 @@ test("the endpoint: PINs, roles, the inbox, ideas, stages, import and the remind
   };
   t.after(() => { globalThis.fetch = realFetch; });
 
-  assert.equal((await call({ action: "list" })).status, 401);
-  assert.equal((await call({ action: "unlock", pin: "0000" })).body.error, "wrong");
-  const crew = await call({ action: "unlock", pin: "2468" });
-  assert.equal(crew.body.role, "crew");
-  const admin = await call({ action: "unlock", pin: "135790" });
-  assert.equal(admin.body.role, "admin");
-  const CT = crew.body.token, AT = admin.body.token;
-  assert.equal((await call({ action: "list" }, "forged.token")).status, 401);
+  // Open to anyone with the link: no PIN, no token.
+  assert.equal((await call({ action: "list" })).status, 200);
+  assert.equal((await GET(new Request("http://x/api/film?action=ping")).then((r) => r.json())).ready, true);
 
-  // The crew can't add to the inbox; the owner can, by token or by PIN header (the Shortcut).
-  assert.equal((await call({ action: "inbox", url: "https://www.instagram.com/reel/A/" }, CT)).status, 403);
-  const ig = await call({ action: "inbox", url: "https://www.instagram.com/reel/AbC/?igsh=1", note: "the hook" }, AT);
+  // The inbox: Instagram is a link only, TikTok gets its public preview.
+  const ig = await call({ action: "inbox", url: "https://www.instagram.com/reel/AbC/?igsh=1", note: "the hook" });
   assert.equal(ig.status, 200);
   assert.equal(ig.body.inspo.url, "https://www.instagram.com/reel/AbC/");
   assert.equal(ig.body.inspo.meta, null);
-  const tt = await call({ action: "inbox", url: "https://www.tiktok.com/@a/video/123?lang=en" }, null, { "x-film-pin": "135790" });
+  const tt = await call({ action: "inbox", url: "https://www.tiktok.com/@a/video/123?lang=en" });
   assert.equal(tt.status, 200);
   assert.deepEqual(tt.body.inspo.meta, { thumb: "https://p16.tiktokcdn.com/x.jpg", title: "Mud to mirror", author: "detailer" });
-  assert.equal((await call({ action: "inbox", url: "https://www.tiktok.com/@a/video/123" }, AT)).body.duplicate, true);
-  assert.equal((await call({ action: "inbox", url: "https://www.tiktok.com/@a/video/9" }, null, { "x-film-pin": "2468" })).status, 403);
-  assert.equal((await call({ action: "inbox", url: "nope" }, AT)).status, 400);
+  assert.equal(tt.body.inspo.createdBy, Film.OWNER);
+  assert.equal((await call({ action: "inbox", url: "https://www.tiktok.com/@a/video/123" })).body.duplicate, true);
+  assert.equal((await call({ action: "inbox", url: "nope" })).status, 400);
 
   // Make it ours: the idea gets the reel's link, the reel remembers the idea.
-  const made = await call({ action: "saveIdea", inspoId: tt.body.inspo.id, fields: { title: "Mat slap", type: "Satisfying", steps: "Wide\nSlap", assignee: "Ant", due: Film.dayIn(new Date()) } }, AT);
+  const made = await call({ action: "saveIdea", inspoId: tt.body.inspo.id, fields: { title: "Mat slap", type: "Satisfying", steps: "Wide\nSlap", assignee: "Ant", due: Film.dayIn(new Date(), "Australia/Sydney") } });
   assert.equal(made.status, 200);
   const id = made.body.idea.id;
   assert.equal(made.body.idea.link, "https://www.tiktok.com/@a/video/123");
   assert.deepEqual(made.body.inspo.ideaIds, [id]);
-  assert.equal((await call({ action: "saveIdea", fields: { title: "x" } }, CT)).status, 403);
-  assert.equal((await call({ action: "saveIdea", fields: { title: "" } }, AT)).status, 400);
+  assert.equal((await call({ action: "saveIdea", fields: { title: "" } })).status, 400);
 
   // Ant opens it and films it; Undo moves it back.
-  const list = await call({ action: "list" }, CT);
+  const list = await call({ action: "list" });
   assert.equal(list.body.ideas.length, 1);
   assert.equal(list.body.inspo.length, 2);
-  const filmed = await call({ action: "move", id, dir: 1, who: "Ant" }, CT);
+  const filmed = await call({ action: "move", id, dir: 1, who: "Ant" });
   assert.equal(filmed.body.idea.stage, "filmed");
   assert.equal(filmed.body.idea.history[0].by, "Ant");
-  assert.equal((await call({ action: "move", id, dir: -1, who: "Ant" }, CT)).body.idea.stage, "tofilm");
-  await call({ action: "move", id, dir: 1, who: "Ant" }, CT);
+  assert.equal((await call({ action: "move", id, dir: -1, who: "Ant" })).body.idea.stage, "tofilm");
 
-  // The reminder for GoHighLevel, before it's filmed and after.
+  // The reminder for GoHighLevel: Ant has one today; an old link with a key still works.
   const remind = async (q) => { const res = await GET(new Request("http://x/api/film?" + q)); return { status: res.status, text: await res.text() }; };
-  assert.equal((await remind("action=today&key=wrong")).status, 401);
-  assert.equal((await remind("action=today&key=remind-me")).text, "No videos due today.");
+  assert.equal((await remind("action=today")).text, "Ant, 1 video today: Mat slap.");
+  assert.equal((await remind("action=today&key=old&who=Nick")).text, "Nick, nothing to film today.");
+  await call({ action: "move", id, dir: 1, who: "Ant" });
+  assert.equal((await remind("action=today")).text, "No videos due today.");
 
   // Views, the weekly target, import, delete.
-  assert.equal((await call({ action: "setViews", id, views: 1234 }, AT)).body.idea.views, 1234);
-  assert.equal((await call({ action: "settings", weeklyTarget: 10 }, AT)).body.settings.weeklyTarget, 10);
-  const imp = await call({ action: "import", data: [{ title: "Imported one" }, { title: "Mat slap" }] }, AT);
+  assert.equal((await call({ action: "setViews", id, views: 1234 })).body.idea.views, 1234);
+  assert.equal((await call({ action: "settings", weeklyTarget: 10 })).body.settings.weeklyTarget, 10);
+  const imp = await call({ action: "import", data: [{ title: "Imported one" }, { title: "Mat slap" }] });
   assert.deepEqual([imp.body.added, imp.body.skipped], [1, 1]);
-  assert.equal((await call({ action: "deleteIdea", id }, AT)).status, 200);
-  const after = await call({ action: "list" }, AT);
+  assert.equal((await call({ action: "deleteIdea", id })).status, 200);
+  const after = await call({ action: "list" });
   assert.equal(after.body.ideas.length, 1);
   assert.deepEqual(after.body.inspo.find((x) => x.platform === "tiktok").ideaIds, []);
   assert.equal(after.body.settings.weeklyTarget, 10);
-
-  // 5 wrong PINs in a row lock it.
-  for (let i = 0; i < 4; i++) await call({ action: "unlock", pin: "9999" });
-  const locked = await call({ action: "unlock", pin: "9999" });
-  assert.equal(locked.status, 429);
-  assert.equal((await call({ action: "unlock", pin: "135790" })).status, 429);
+  assert.equal((await call({ action: "nope" })).status, 400);
 });

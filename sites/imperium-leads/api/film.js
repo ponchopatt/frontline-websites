@@ -1,97 +1,22 @@
-import { createHmac, randomUUID, scryptSync } from "node:crypto";
-import { json, sameSecret } from "../lib/http.js";
+import { randomUUID } from "node:crypto";
+import { json } from "../lib/http.js";
 import { C, Film, filmStore } from "../lib/film-store.js";
 
 /*
-  Imperium Film List's one endpoint. POST { action, ... } with "Authorization: Bearer <token>";
-  the token comes from action "unlock" with the team PIN (the crew) or the admin PIN (the
-  owner). GET ?action=today&key=<reminder key> is the morning reminder for GoHighLevel.
-
-  The PINs and the reminder key are never in the code: they live in docs film_system/pins as
-  scrypt hashes (and the key), or in FILM_TEAM_PIN / FILM_ADMIN_PIN / FILM_REMINDER_KEY, which
-  win when set. Wrong PINs lock it like the leads app's PIN screen: 5 wrong in a row, 15
-  minutes; each 5 after that, twice as long (up to 12 hours).
+  Imperium Film List's one endpoint. POST { action, who, ... }. There's no PIN: anyone with
+  the link can use it, on purpose (the owner asked for that). Who did what is the name the
+  phone picked. GET ?action=today is the morning reminder for GoHighLevel.
 
   Instagram links are stored as links only: nothing about an Instagram reel is ever fetched.
   TikTok's public preview (thumbnail, caption, creator) comes from its oEmbed endpoint.
 */
 
 const TZ = "Australia/Sydney";
-const TOKEN_DAYS = 180;
 const UA = { "User-Agent": "ImperiumFilmList/1.0 (+https://imperiumdetailing.com.au)" };
 
 const nowIso = () => new Date().toISOString();
 const today = () => Film.dayIn(new Date(), TZ);
 const fail = (error, status = 400, extra = {}) => json({ error, ...extra }, status);
-
-/* ------------------------------------------------------------ tokens and PINs */
-
-function tokenSecret() {
-  if (process.env.FILM_TOKEN_SECRET) return process.env.FILM_TOKEN_SECRET;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!key) throw new Error("No secret to sign Film List tokens with");
-  return createHmac("sha256", key).update("imperium film list tokens").digest("hex");
-}
-function sign(payload) {
-  const body = Buffer.from(JSON.stringify(payload)).toString("base64url");
-  return body + "." + createHmac("sha256", tokenSecret()).update(body).digest("base64url");
-}
-function verify(token) {
-  const [body, mac] = String(token || "").split(".");
-  if (!body || !mac) return null;
-  if (!sameSecret(mac, createHmac("sha256", tokenSecret()).update(body).digest("base64url"))) return null;
-  try {
-    const p = JSON.parse(Buffer.from(body, "base64url").toString("utf8"));
-    return p.exp > Date.now() && (p.role === "admin" || p.role === "crew") ? p : null;
-  } catch {
-    return null;
-  }
-}
-const bearer = (request) => verify((request.headers.get("authorization") || "").replace(/^Bearer\s+/i, ""));
-
-export const hashPin = (pin, salt) => scryptSync(String(pin), salt, 32).toString("hex");
-
-async function secrets(store) {
-  const doc = (await store.get(C.system, "pins")) || {};
-  const env = { team: process.env.FILM_TEAM_PIN, admin: process.env.FILM_ADMIN_PIN, reminderKey: process.env.FILM_REMINDER_KEY };
-  const is = (given, which) => {
-    if (!given) return false;
-    if (env[which]) return sameSecret(String(given), env[which]);
-    const h = doc[which];
-    return !!(h && h.salt && h.hash) && sameSecret(hashPin(given, h.salt), h.hash);
-  };
-  return {
-    ready: !!((env.team || doc.team) && (env.admin || doc.admin)),
-    roleFor: (pin) => (is(pin, "admin") ? "admin" : is(pin, "team") ? "crew" : null),
-    reminderKey: env.reminderKey || doc.reminderKey || "",
-  };
-}
-
-// The role a PIN opens, "wrong", or { locked: minutes }. Every wrong try counts.
-async function tryPin(store, pin) {
-  const lock = (await store.get(C.system, "lock")) || { fails: 0, lockedUntil: null };
-  const now = Date.now();
-  if (lock.lockedUntil && Date.parse(lock.lockedUntil) > now) return { locked: Math.ceil((Date.parse(lock.lockedUntil) - now) / 60000) };
-  const s = await secrets(store);
-  if (!s.ready) return { notReady: true };
-  const role = s.roleFor(String(pin ?? ""));
-  if (!role) {
-    const fails = (lock.fails || 0) + 1;
-    const next = { fails, lockedUntil: null, lastFail: new Date(now).toISOString() };
-    if (fails % 5 === 0) {
-      const minutes = Math.min(12 * 60, 15 * 2 ** (fails / 5 - 1));
-      next.lockedUntil = new Date(now + minutes * 60000).toISOString();
-      await store.put(C.system, "lock", next);
-      return { locked: minutes };
-    }
-    await store.put(C.system, "lock", next);
-    return { wrong: true };
-  }
-  if (lock.fails) await store.put(C.system, "lock", { fails: 0, lockedUntil: null });
-  return { role };
-}
-const pinError = (r) =>
-  r.locked ? fail("locked", 429, { minutes: r.locked }) : r.notReady ? fail("Film List isn't set up yet", 503) : fail("wrong", 401);
 
 /* ------------------------------------------------------------ TikTok */
 
@@ -217,29 +142,13 @@ export async function POST(request) {
   const action = String(body.action || "");
 
   try {
-    if (action === "unlock") {
-      const r = await tryPin(store, body.pin);
-      if (!r.role) return pinError(r);
-      return json({ ok: true, role: r.role, token: sign({ role: r.role, exp: Date.now() + TOKEN_DAYS * 86400000 }) });
-    }
-
-    // The iPhone Shortcut sends the admin PIN in a header instead of a token.
-    let auth = bearer(request);
-    if (!auth && action === "inbox" && (request.headers.get("x-film-pin") || body.pin)) {
-      const r = await tryPin(store, request.headers.get("x-film-pin") || body.pin);
-      if (r.role !== "admin") return r.role ? fail("That needs the owner's PIN", 403) : pinError(r);
-      auth = { role: "admin" };
-    }
-    if (!auth) return fail("Unlock first", 401);
-    const admin = auth.role === "admin";
-    const who = Film.cleanPerson(body.who) || (admin ? Film.OWNER : null);
-    const ownerOnly = () => fail("Only the owner can do that", 403);
+    const who = Film.cleanPerson(body.who) || Film.OWNER;
 
     switch (action) {
       case "list":
-        return json({ ok: true, role: auth.role, ...(await list(store)) });
+        return json({ ok: true, ...(await list(store)) });
       case "inbox":
-        return admin ? await saveInspo(store, body, who) : ownerOnly();
+        return await saveInspo(store, body, who);
       case "setMeta": {
         // Any phone that reaches TikTok fills in a missing or stale preview.
         const inspo = await store.get(C.inspo, body.id);
@@ -251,18 +160,16 @@ export async function POST(request) {
         return json({ ok: true, inspo: { ...inspo, id: body.id } });
       }
       case "deleteInspo":
-        if (!admin) return ownerOnly();
         await store.del(C.inspo, String(body.id || ""));
         return json({ ok: true });
       case "saveIdea":
-        return admin ? await saveIdea(store, body, who) : ownerOnly();
+        return await saveIdea(store, body, who);
       case "deleteIdea":
-        return admin ? await deleteIdea(store, String(body.id || "")) : ownerOnly();
+        return await deleteIdea(store, String(body.id || ""));
       case "move":
         // await, so a failure lands in the catch below.
         return await moveIdea(store, body, who);
       case "setViews": {
-        if (!admin) return ownerOnly();
         const idea = await store.get(C.ideas, body.id);
         if (!idea) return fail("That idea's gone", 404);
         const n = body.views === "" || body.views == null ? null : Math.round(Number(body.views));
@@ -272,14 +179,12 @@ export async function POST(request) {
         return json({ ok: true, idea: next });
       }
       case "import": {
-        if (!admin) return ownerOnly();
         const existing = await store.all(C.ideas);
         const r = Film.importIdeas(body.data, existing, { id: () => randomUUID(), now: nowIso(), by: Film.OWNER });
         if (r.ideas.length) await store.putMany(C.ideas, r.ideas);
         return json({ ok: true, added: r.ideas.length, skipped: r.skipped, bad: r.bad });
       }
       case "settings": {
-        if (!admin) return ownerOnly();
         const t = Math.round(Number(body.weeklyTarget));
         if (!(t >= 1 && t <= 100)) return fail("The target is a number from 1 to 100");
         const settings = { ...((await store.get(C.system, "settings")) || {}), weeklyTarget: t };
@@ -297,17 +202,16 @@ export async function POST(request) {
 }
 
 /*
-  GET ?action=today&key=<reminder key>[&who=Ant][&format=json]
+  GET ?action=today[&who=Ant][&format=json]
   For a GoHighLevel workflow each morning: each person's videos for today as a short text,
   "Ant, 2 videos today: Mat slap, POV wheels." format=json adds one entry per person.
+  An old link with &key=... still works; the key is just ignored.
 */
 export async function GET(request) {
   const url = new URL(request.url);
-  const store = filmStore();
-  const s = await secrets(store);
-  if (url.searchParams.get("action") === "ping") return json({ ok: true, ready: s.ready });
+  if (url.searchParams.get("action") === "ping") return json({ ok: true, ready: true });
   if (url.searchParams.get("action") !== "today") return fail("Unknown action");
-  if (!s.reminderKey || !sameSecret(url.searchParams.get("key") || "", s.reminderKey)) return fail("Wrong key", 401);
+  const store = filmStore();
   const ideas = await store.all(C.ideas);
   const day = today();
   const who = url.searchParams.get("who");

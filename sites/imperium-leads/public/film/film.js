@@ -2,7 +2,7 @@
   Imperium Film List: the page. Everything it shows is drawn here from S (the state) and the
   list from /api/film; the rules (stages, Today, the numbers) are in film-model.js.
 
-  The crew: team PIN, pick your name, and the only screen is Today. The owner (admin PIN):
+  No PIN: open it, pick your name. The crew's only screen is Today. The owner gets
   Inbox, Board, Today, Numbers and More along the bottom.
 */
 (() => {
@@ -22,30 +22,27 @@
   const plural = (n, one, many) => n + " " + (n === 1 ? one : many);
 
   const S = {
-    token: local.get("token"), role: local.get("role"), who: local.get("who"),
+    who: local.get("who"),
     data: null, loading: false, loadError: "",
     tab: local.get("tab") || "board", stage: "tofilm", fType: "", fTag: "", fPerson: "",
     inboxFilter: "all", todayPerson: M.CREW[0],
-    pin: "", pinMsg: "", pinFor: null,
     editing: null, draft: { url: "", note: "" }, inboxMsg: "", importMsg: "", importText: "",
     ticks: readJSON(local.get("ticks"), {}), confirm: null, saving: false,
   };
-  const isOwner = () => S.role === "admin" && S.who === M.OWNER;
+  const isOwner = () => S.who === M.OWNER;
+  // Left over from when it had a PIN.
+  local.set("token", null); local.set("role", null);
 
   /* ------------------------------------------------------------ server */
 
   async function api(action, payload) {
     const res = await fetch("/api/film", {
       method: "POST",
-      headers: { "Content-Type": "application/json", ...(S.token ? { Authorization: "Bearer " + S.token } : {}) },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action, who: S.who, ...(payload || {}) }),
     });
     let body = null;
     try { body = await res.json(); } catch { /* not JSON */ }
-    if (res.status === 401 && action !== "unlock") {
-      lock("Unlock the Film List again.");
-      throw new Error("Unlock again");
-    }
     if (!res.ok) {
       const e = new Error((body && body.error) || "Something went wrong. Check your signal and try again.");
       e.body = body;
@@ -55,12 +52,11 @@
   }
 
   async function load(quiet) {
-    if (S.loading || !S.token) return;
+    if (S.loading) return;
     S.loading = true;
     try {
       const r = await api("list");
       S.data = { inspo: r.inspo, ideas: r.ideas, settings: r.settings };
-      if (r.role !== S.role) { S.role = r.role; local.set("role", r.role); }
       S.loadError = "";
     } catch (e) {
       S.loadError = e.message;
@@ -81,12 +77,6 @@
     const i = S.data.inspo.findIndex((x) => x.id === inspo.id);
     if (i >= 0) S.data.inspo[i] = inspo;
     else S.data.inspo.unshift(inspo);
-  }
-
-  function lock(msg) {
-    S.token = null; S.role = null; S.data = null; S.pin = ""; S.pinMsg = msg || ""; S.pinFor = null;
-    local.set("token", null); local.set("role", null);
-    render();
   }
 
   /* ------------------------------------------------------------ toast with Undo */
@@ -259,28 +249,11 @@
 
   /* ------------------------------------------------------------ screens */
 
-  function renderLock() {
-    const owner = S.pinFor === "owner";
-    const n = Math.min(6, Math.max(4, S.pin.length));
-    app.innerHTML = `<div class="lock">
-      <img src="/film/icon-192.png" alt="">
-      <div class="stack"><h1>${owner ? "Owner PIN" : "Film List"}</h1><p class="soft">${owner ? "Enter the owner PIN to add and assign ideas." : "Enter the team PIN."}</p></div>
-      <div class="dots" aria-label="${S.pin.length} numbers entered">${Array.from({ length: n }, (_, i) => `<i class="${i < S.pin.length ? "on" : ""}"></i>`).join("")}</div>
-      <p class="err" role="alert">${esc(S.pinMsg)}</p>
-      <div class="keypad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map((k) => `<button type="button" data-key="${k}">${k}</button>`).join("")}
-        <button type="button" class="key-back" data-key="back" aria-label="Delete a number">Delete</button>
-        <button type="button" data-key="0">0</button>
-        <button type="button" class="key-go" data-key="go">Go</button></div>
-      ${owner ? `<button type="button" class="link-btn" data-act="cancelOwner">Back</button>` : ""}
-    </div>`;
-  }
-
   function renderWho() {
     app.innerHTML = `${header("")}<main><div class="wrap stack">
       <div class="page-head"><h1>Who are you?</h1><p class="soft">Pick your name. This phone remembers it.</p></div>
       <div class="who">${M.CREW.map((p) => `<button type="button" class="btn quiet" data-act="pickWho" data-who="${p}">${p}</button>`).join("")}
-        <button type="button" class="btn ghost" data-act="pickOwner">I&rsquo;m the owner</button></div>
-      <button type="button" class="link-btn" data-act="lock">Lock the app</button>
+        <button type="button" class="btn ghost" data-act="pickWho" data-who="${M.OWNER}">I&rsquo;m the owner</button></div>
     </div></main>`;
   }
 
@@ -381,12 +354,12 @@
           <li>Open the <strong>Shortcuts</strong> app, tap <strong>+</strong>, and name it <strong>Save to Film List</strong>.</li>
           <li>Tap the <strong>(i)</strong> button and turn on <strong>Show in Share Sheet</strong>. Set it to receive <strong>URLs</strong> and <strong>Text</strong>.</li>
           <li>Add <strong>Ask for Input</strong> (Text). Prompt: <em>Why we like it?</em></li>
-          <li>Add <strong>Get Contents of URL</strong>. URL: <code>${esc(location.origin)}/api/film</code>. Method <strong>POST</strong>. Headers: <code>x-film-pin</code> = your owner PIN. Request Body <strong>JSON</strong>: <code>action</code> = <code>inbox</code>, <code>url</code> = <strong>Shortcut Input</strong>, <code>note</code> = <strong>Provided Input</strong>.</li>
+          <li>Add <strong>Get Contents of URL</strong>. URL: <code>${esc(location.origin)}/api/film</code>. Method <strong>POST</strong>. Request Body <strong>JSON</strong>: <code>action</code> = <code>inbox</code>, <code>url</code> = <strong>Shortcut Input</strong>, <code>note</code> = <strong>Provided Input</strong>.</li>
           <li>Add <strong>Get Dictionary Value</strong>: <code>message</code>, then <strong>Show Notification</strong> with it.</li>
         </ol>
         <p class="hint">It saves the link and your note only. No video is ever downloaded.</p></div>
-      <div class="card"><h2>This phone</h2><p class="soft">Signed in as the owner.</p>
-        <div class="btns"><button type="button" class="btn ghost" data-act="switch">Switch person</button><button type="button" class="btn ghost" data-act="lock">Lock the app</button></div></div>
+      <div class="card"><h2>This phone</h2><p class="soft">This phone is set to the owner.</p>
+        <button type="button" class="btn ghost wide" data-act="switch">Switch person</button></div>
     </div>`;
   }
 
@@ -420,8 +393,7 @@
   }
 
   function render() {
-    document.body.classList.toggle("has-tabs", !!(S.token && S.who && isOwner() && S.data && !S.editing && !S.pinFor));
-    if (!S.token || S.pinFor) return renderLock();
+    document.body.classList.toggle("has-tabs", !!(isOwner() && S.data && !S.editing));
     if (!S.who) return renderWho();
     if (!S.data) {
       app.innerHTML = `${header("")}<main><div class="wrap"><p class="${S.loadError ? "err" : "dim"}">${esc(S.loadError || "Loading the Film List...")}</p>${S.loadError ? `<button type="button" class="btn" data-act="reload">Try again</button>` : ""}</div></main>`;
@@ -439,25 +411,6 @@
   }
 
   /* ------------------------------------------------------------ doing things */
-
-  async function unlock() {
-    if (S.pin.length < 4) { S.pinMsg = "The PIN is at least 4 numbers."; return render(); }
-    const pin = S.pin;
-    S.pin = "";
-    try {
-      const r = await api("unlock", { pin });
-      if (S.pinFor === "owner" && r.role !== "admin") { S.pinMsg = "That's the team PIN. Enter the owner PIN."; return render(); }
-      S.token = r.token; S.role = r.role;
-      local.set("token", r.token); local.set("role", r.role);
-      if (r.role === "admin" && (S.pinFor === "owner" || !S.who)) { S.who = M.OWNER; local.set("who", M.OWNER); }
-      S.pinFor = null; S.pinMsg = ""; S.data = null;
-      render();
-    } catch (e) {
-      const b = e.body || {};
-      S.pinMsg = b.error === "locked" ? `Too many wrong tries. Try again in ${b.minutes} minutes.` : b.error === "wrong" ? "Wrong PIN. Try again." : e.message;
-      render();
-    }
-  }
 
   async function moveIdea(id, dir, isUndo) {
     const idea = find(id);
@@ -543,23 +496,7 @@
 
   /* ------------------------------------------------------------ events */
 
-  document.addEventListener("keydown", (ev) => {
-    if (S.token && !S.pinFor) return;
-    if (/^[0-9]$/.test(ev.key)) { if (S.pin.length < 6) S.pin += ev.key; render(); }
-    else if (ev.key === "Backspace") { S.pin = S.pin.slice(0, -1); render(); }
-    else if (ev.key === "Enter") unlock();
-  });
-
   app.addEventListener("click", async (ev) => {
-    const key = ev.target.closest("[data-key]");
-    if (key && (!S.token || S.pinFor)) {
-      const k = key.dataset.key;
-      if (k === "go") return unlock();
-      if (k === "back") S.pin = S.pin.slice(0, -1);
-      else if (S.pin.length < 6) S.pin += k;
-      S.pinMsg = "";
-      return render();
-    }
     const b = ev.target.closest("[data-act]");
     if (!b) return;
     const act = b.dataset.act;
@@ -568,14 +505,7 @@
       case "tab": S.tab = b.dataset.tab; local.set("tab", S.tab); render(); window.scrollTo(0, 0); break;
       case "set": S[b.dataset.key] = b.dataset.value; render(); break;
       case "pickWho": S.who = b.dataset.who; local.set("who", S.who); render(); break;
-      case "pickOwner":
-        if (S.role === "admin") { S.who = M.OWNER; local.set("who", M.OWNER); }
-        else { S.pinFor = "owner"; S.pin = ""; S.pinMsg = ""; }
-        render();
-        break;
-      case "cancelOwner": S.pinFor = null; S.pin = ""; S.pinMsg = ""; render(); break;
       case "switch": S.who = null; local.set("who", null); render(); break;
-      case "lock": lock(""); break;
       case "reload": S.loadError = ""; render(); break;
       case "next": moveIdea(id, 1); break;
       case "back": moveIdea(id, -1); break;
@@ -702,8 +632,8 @@
   });
 
   // A fresh list when the app comes back to the front, and every minute while it's open.
-  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.token && S.who) load(true); });
-  setInterval(() => { if (document.visibilityState === "visible" && S.token && S.who && !S.editing) load(true); }, 60000);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.who) load(true); });
+  setInterval(() => { if (document.visibilityState === "visible" && S.who && !S.editing) load(true); }, 60000);
 
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("/film/sw.js", { scope: "/film/" }).catch(() => { /* fine without */ });
 

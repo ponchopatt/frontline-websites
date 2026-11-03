@@ -1,10 +1,9 @@
 /*
   Film List on a computer, with no Supabase: the page from public/ and /api/film on a JSON file.
 
-    FILM_LOCAL_STORE=/tmp/film.json FILM_TOKEN_SECRET=dev FILM_TEAM_PIN=1111 FILM_ADMIN_PIN=222222 \
-      FILM_REMINDER_KEY=dev node film/dev-server.mjs
+    FILM_LOCAL_STORE=/tmp/film.json node film/dev-server.mjs
 
-  Then open http://localhost:8790/film/. The PINs here are for this computer only.
+  Then open http://localhost:8790/film/.
 */
 import http from "node:http";
 import fs from "node:fs";
