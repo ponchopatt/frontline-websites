@@ -383,107 +383,113 @@
       <details><summary>Which detail do I need?</summary><p>The Full Detail is a complete clean inside and out: wash, clay bar, spray-on ceramic sealant, wheels and arches, door jambs, full vacuum, dash and trims, leather shampoo and glass. Interior and Exterior Details do one half of that. Maintenance is quick upkeep for a car that&rsquo;s already in good shape. For more, add wax, steam cleaning and more from the add-ons.</p></details>
       <details><summary>Do you do paint correction and scratch removal?</summary><p>Yes. Light scratch removal starts from $30 and full paint correction from $250, depending on the paint and the size of the car. Send a few daylight photos of the paint for an exact quote.</p></details>
       <details><summary>Do you do ceramic coating?</summary><p>Yes. Every Full and Exterior Detail includes a spray-on ceramic sealant, and you can add it to any other detail for $60. It&rsquo;s a ceramic (SiO2) sealant that adds gloss, makes water bead off and keeps the car easier to clean. It&rsquo;s a spray-on layer, not a multi-year professional ceramic coating.</p></details>
-      <details><summary>How do I book?</summary><p>Book below, or call or text 0404 714 415 with your car, your suburb and a few photos. Seb replies with a time and a price.</p></details>
+      <details><summary>How do I book?</summary><p>Fill in the quote form below, or call or text 0404 714 415 with your car, your suburb and a few photos. Seb replies with a time and a price.</p></details>
     </div>
   </div>
 </section>
 
-<!-- Booking: Seb's booking calendar once BOOKING_URL in app.js is set (see the README).
-     Until then, a 3-step quote form that carries over the price picker's pick. With
-     QUOTE_KEY set it emails the request to Seb; without it, it opens a text to him. -->
+<!-- Booking: a one-screen quote form, like Imperium's. With QUOTE_KEY in app.js set it
+     emails the request to Seb; without it, it hands the customer a text to him. With
+     BOOKING_URL set, Seb's booking calendar shows here instead (see the README). -->
 <section class="sec book" id="book" aria-labelledby="book-h">
   <div class="wrap book-in">
-    <div class="sec-head">
-      <h2 id="book-h">Book your detail.</h2>
-      <p id="bookLede">Three quick steps. Seb confirms your time and price.</p>
-    </div>
-
-    <form class="bk" id="bk" novalidate>
-      <ol class="bk-steps" aria-hidden="true">
-        <li class="on">Your detail</li><li>Day and time</li><li>Your details</li>
-      </ol>
-
-      <fieldset class="bk-step" data-step="1">
-        <legend class="sr-only">Step 1 of 3: your detail</legend>
-        <p class="bk-sum" id="bkSum">Full Detail, hatch or sedan, $225 to $285</p>
-        <p class="bk-help"><a href="#price">Change it in the price picker</a></p>
-        <label class="fld">
-          <span>Your car</span>
-          <input name="car" type="text" autocomplete="off" placeholder="e.g. 2019 Mazda CX-5" required>
-        </label>
-        <label class="fld">
-          <span>Your suburb</span>
-          <input name="suburb" type="text" autocomplete="address-level2" placeholder="e.g. Rowville" required>
-        </label>
-        <button class="btn wide" type="button" data-next>Next</button>
-      </fieldset>
-
-      <fieldset class="bk-step" data-step="2" hidden>
-        <legend class="sr-only">Step 2 of 3: day and time</legend>
-        <p class="bk-q">Which day suits?</p>
-        <div class="chips" id="days"><!-- the next 7 days, from app.js --></div>
-        <p class="bk-q">What time?</p>
-        <div class="chips">
-          <label><input type="radio" name="time" value="Morning"><span>Morning</span></label>
-          <label><input type="radio" name="time" value="Afternoon"><span>Afternoon</span></label>
-          <label><input type="radio" name="time" value="Evening"><span>Evening</span></label>
-        </div>
-        <div class="bk-nav">
-          <button class="btn ghost" type="button" data-back>Back</button>
-          <button class="btn" type="button" data-next>Next</button>
-        </div>
-      </fieldset>
-
-      <fieldset class="bk-step" data-step="3" hidden>
-        <legend class="sr-only">Step 3 of 3: your details</legend>
-        <label class="fld">
-          <span>Your name</span>
-          <input name="name" type="text" autocomplete="name" required>
-        </label>
-        <label class="fld">
-          <span>Mobile</span>
-          <input name="mobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="04xx xxx xxx" required>
-        </label>
-        <label class="fld">
-          <span>Email <em>Optional</em></span>
-          <input name="email" type="email" autocomplete="email" placeholder="you@example.com">
-        </label>
-        <label class="fld">
-          <span>Anything Seb should know? <em>Optional</em></span>
-          <textarea name="note" rows="2" placeholder="e.g. dog hair, add headlight restoration"></textarea>
-        </label>
-        <!-- Only bots fill this in, and a request with it filled in isn't sent. -->
-        <label class="hp" aria-hidden="true">Company <input name="company" type="text" tabindex="-1" autocomplete="off"></label>
-        <div class="bk-nav">
-          <button class="btn ghost" type="button" data-back>Back</button>
-          <button class="btn" type="submit">Send to Seb</button>
-        </div>
-      </fieldset>
-
-      <div class="bk-done" id="bkDone" hidden tabindex="-1">
-        <h3 id="bkDoneH">Your message to Seb is ready.</h3>
-        <p id="bkDoneP">Your texts app has opened with your request filled in. Press send, and Seb will confirm your time and price.</p>
-        <div id="bkTextIt">
-          <a class="btn wide" id="bkTextBtn" href="sms:+61404714415" hidden>Text it to Seb</a>
-          <p class="bk-copy"><span id="bkCopyLead">Texts app didn&rsquo;t open? </span>Text this to <a class="nw" href="sms:+61404714415">0404&nbsp;714&nbsp;415</a>:</p>
-          <pre id="bkMsg"></pre>
-          <button class="btn ghost sm" type="button" id="bkCopyBtn">Copy the message</button>
-        </div>
+    <div class="book-side">
+      <div class="sec-head">
+        <h2 id="book-h">Book your detail.</h2>
+        <p id="bookLede"><span class="wide-only">Seb gets back to you to confirm a time and price.</span><span class="phone-only">Texting is quicker: <a href="sms:+61404714415" data-sms>text Seb your car</a>. Or fill this in.</span></p>
       </div>
-      <p class="bk-err" id="bkErr" role="alert" hidden></p>
-    </form>
-
-    <div class="cal-wrap" id="calWrap" hidden>
-      <p class="bk-sum" id="calPick">Full Detail, hatch or sedan, $225 to $285</p>
-      <p class="bk-help"><a href="#price">Change it in the price picker</a></p>
-      <div class="cal" id="cal"></div>
-      <p class="cal-help">Calendar not showing? <a id="calLink" href="#" target="_blank" rel="noopener">Open it in a new tab</a></p>
+      <dl class="book-facts">
+        <div><dt>Text or call</dt><dd><a class="book-phone" href="tel:+61404714415">0404 714 415</a></dd></div>
+        <div><dt>Hours</dt><dd>Monday to Saturday 6am to 10pm, Sunday 12pm to 10pm</dd></div>
+        <div><dt>On the day, Seb needs</dt><dd>A water tap and a power point within reach of the car</dd></div>
+      </dl>
     </div>
 
-    <div class="or">
-      <p>Rather talk?</p>
-      <a class="btn ghost" href="tel:+61404714415">Call 0404 714 415</a>
-      <a class="btn ghost" href="sms:+61404714415" data-sms>Text Seb</a>
+    <div class="book-main">
+      <form class="qf" id="bk" novalidate>
+        <div class="qf-grid">
+          <label class="fld">
+            <span>Which detail?</span>
+            <select name="service" required>
+              <option value="" disabled>Choose one</option>
+              <option selected>Full Detail</option>
+              <option>Interior Detail</option>
+              <option>Exterior Detail</option>
+              <option>Maintenance Detail</option>
+              <option>Paint correction</option>
+              <option>Not sure, recommend something</option>
+            </select>
+          </label>
+          <label class="fld">
+            <span>When do you want it done?</span>
+            <select name="when" required>
+              <option value="" disabled selected>Choose one</option>
+              <option>As soon as possible</option>
+              <option>In the next 1 to 2 weeks</option>
+              <option>In the next 3 to 4 weeks</option>
+              <option>Just researching prices</option>
+            </select>
+          </label>
+          <label class="fld">
+            <span>Your car (make, model, year)</span>
+            <input name="car" type="text" autocomplete="off" placeholder="Toyota RAV4, 2021" required>
+          </label>
+          <label class="fld">
+            <span>Your suburb</span>
+            <input name="suburb" type="text" autocomplete="address-level2" placeholder="Rowville" required>
+          </label>
+          <label class="fld">
+            <span>Your name</span>
+            <input name="name" type="text" autocomplete="name" placeholder="Alex Smith" required>
+          </label>
+          <label class="fld">
+            <span>Mobile number</span>
+            <input name="mobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="0400 000 000" required>
+          </label>
+          <label class="fld qf-wide">
+            <span>Email <em>(optional)</em></span>
+            <input name="email" type="email" autocomplete="email" placeholder="you@example.com">
+          </label>
+          <label class="fld qf-wide">
+            <span>Anything Seb should know? <em>(optional)</em></span>
+            <textarea name="note" rows="3" placeholder="Pet hair, stains, paint condition, preferred days"></textarea>
+          </label>
+          <!-- Only bots fill these in, and a request with one filled in isn't sent. -->
+          <div class="hp" aria-hidden="true">
+            <label>Company <input name="company" type="text" tabindex="-1" autocomplete="off"></label>
+            <input name="botcheck" type="checkbox" tabindex="-1" autocomplete="off">
+          </div>
+        </div>
+        <p class="qf-pick" id="qfPick"><span id="qfPickTxt">Full Detail for a hatch or sedan: $225 to $285.</span> <a href="#price">Change your car</a></p>
+        <div class="qf-foot">
+          <button class="btn" type="submit" id="qfSend">Request my quote</button>
+          <span class="qf-or">Or call <a href="tel:+61404714415">0404 714 415</a></span>
+        </div>
+        <p class="qf-small">Seb gets back to you to confirm a time and price. By sending this you agree to the <a href="/privacy.html">privacy policy</a>.</p>
+        <p class="qf-err" id="bkErr" role="alert" hidden></p>
+
+        <div class="qf-panel" id="qfText" role="status" hidden tabindex="-1">
+          <h3 id="qfTextH">Send this to Seb as a text</h3>
+          <p id="qfTextP">On a phone, your messages app should have opened with the details filled in. If it didn&rsquo;t, copy them and text <a class="nw" href="sms:+61404714415">0404&nbsp;714&nbsp;415</a>.</p>
+          <pre id="bkMsg"></pre>
+          <div class="qf-panel-btns">
+            <a class="btn sm" id="bkTextBtn" href="sms:+61404714415">Open in messages</a>
+            <button class="btn ghost sm" type="button" id="bkCopyBtn">Copy details</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="qf-sent" id="bkDone" role="status" hidden tabindex="-1">
+        <h3>Sent. Seb will be in touch.</h3>
+        <p>He&rsquo;ll get back to you to confirm a time and price. His number is 0404 714 415, so save it.</p>
+      </div>
+
+      <div class="cal-wrap" id="calWrap" hidden>
+        <p class="bk-sum" id="calPick">Full Detail, hatch or sedan, $225 to $285</p>
+        <p class="bk-help"><a href="#price">Change it in the price picker</a></p>
+        <div class="cal" id="cal"></div>
+        <p class="cal-help">Calendar not showing? <a id="calLink" href="#" target="_blank" rel="noopener">Open it in a new tab</a></p>
+      </div>
     </div>
   </div>
 </section>

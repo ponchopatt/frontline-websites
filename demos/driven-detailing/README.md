@@ -28,9 +28,10 @@ What's different from the demo:
   the top of `app.js`, and the booking section shows his calendar instead of the 3-step
   form that texts him. The ad's tracking tags (`utm_…`, `fbclid`, `gclid`) are passed on
   to the calendar.
-- **A quote form that sends.** The 3-step booking form emails each request to Seb through
-  Web3Forms once `QUOTE_KEY` at the top of `app.js` is set (see below). Until then, and if a
-  send ever fails, it hands the customer a text to Seb with everything filled in.
+- **A quote form that sends.** A one-screen form like Imperium's (the detail, when, car,
+  suburb, name, mobile, and optional email and notes). It emails each request to Seb
+  through Web3Forms once `QUOTE_KEY` at the top of `app.js` is set (see below). Until then,
+  and if a send ever fails, it hands the customer a text to Seb with everything filled in.
 - **A footer** with links to the services, the suburbs and the privacy policy.
 - **Root paths** (`/assets/…`), so the same header and footer work on every page.
 
