@@ -59,8 +59,10 @@ The problems are about turning visitors into bookings:
   Drag anywhere on a phone or a mouse, arrow keys on a keyboard.
 - **Reviews:** their three Google reviews, word for word (shortened with "…" where long),
   first name and initial only.
-- **Meet Seb, Driven+, referrals, area and hours, FAQ:** their own words, cut down. The
-  Driven+ price follows the car picked above. The fine print sits behind a tap.
+- **Meet Seb, referrals, area and hours, FAQ:** their own words, cut down. The referral
+  terms sit behind a tap.
+- **No Driven+.** Pat asked for the membership to come off the demo. It's still on their
+  own site, so it's worth asking Seb about on the call.
 - **Booking:** 3 short steps (car and suburb, day and time, name and mobile), carried over
   from the price picker. With no booking system behind the demo, the last step opens a
   text to Seb with everything filled in, and shows the message to copy if the texts app
@@ -87,8 +89,6 @@ hasn't agreed to them. The job names and "What's included" lists are Driven's ow
 - The Exterior Detail's list is the outside half of their Signature Detail's list.
 - The $60 condition range is on full and interior details only, like Imperium's. Seb
   tells the customer before he starts.
-- Driven+ stays at 10% off, so members pay $202.50 / $234 / $261 for a Full Detail and
-  $148.50 / $166.50 / $180 for Maintenance. Interior and exterior aren't Driven+ plans.
 - Their current prices, for comparison: Signature $120 / $140 / $160 and Maintenance
   $80 / $90 / $100.
 

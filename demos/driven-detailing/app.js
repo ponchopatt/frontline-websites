@@ -6,12 +6,10 @@ const SIZES = ['hatch or sedan', 'SUV or ute', '4x4 or 7-seater'];
 // Full and interior details can cost up to this much more for a car in bad condition,
 // agreed before Seb starts. Exterior and maintenance are set prices.
 const RANGE = 60;
-// Driven+ members pay this share of the normal price (10% off).
-const MEMBER = 0.9;
 
 const PACKAGES = [
   {
-    id: 'full', name: 'Full Detail', time: '1.5 to 2 hrs', tag: 'Most popular', ranged: true, plan: true,
+    id: 'full', name: 'Full Detail', time: '1.5 to 2 hrs', tag: 'Most popular', ranged: true,
     desc: 'Complete interior and exterior detail', prices: [225, 260, 290],
     inc: ['Premium pH-balanced wash', 'Wheels, rims and tyres detailed', 'Premium tyre shine', 'Wheel arches and mudguards', 'Wipers and blades cleaned', 'Exterior glass cleaned', 'Door jambs cleaned', 'Vacuum: seats, carpets and boot', 'Dashboard, console and wheel', 'Door trims and high-touch areas', 'Foot pedals deep cleaned', 'Leather seats shampooed', 'Interior glass cleaned', 'Odour neutraliser and freshener', 'Final inspection and finish'],
   },
@@ -26,7 +24,7 @@ const PACKAGES = [
     inc: ['Premium pH-balanced wash', 'Wheels, rims and tyres detailed', 'Premium tyre shine', 'Wheel arches and mudguards', 'Wipers and blades cleaned', 'Exterior glass cleaned', 'Door jambs cleaned', 'Final inspection and finish'],
   },
   {
-    id: 'maint', name: 'Maintenance Detail', time: '45 to 60 min', plan: true,
+    id: 'maint', name: 'Maintenance Detail', time: '45 to 60 min',
     desc: 'Quick, regular upkeep', prices: [165, 185, 200],
     inc: ['Premium pH-balanced wash', 'Wheels, rims and tyres cleaned', 'Light interior wipe-down', 'Interior vacuum', 'Interior and exterior glass', 'Microfibre towel dry'],
   },
@@ -42,17 +40,17 @@ const BA = {
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const money = (n) => '$' + (n % 1 ? n.toFixed(2) : n);
-  const state = { size: 0, pack: 'full', plus: false };
+  const state = { size: 0, pack: 'full' };
   const pick = () => PACKAGES.find((p) => p.id === state.pack) || PACKAGES[0];
   const price = (p) => p.prices[state.size];
+  // "a Full Detail", "an Interior Detail".
+  const aName = (p) => (/^[AEIOU]/.test(p.name) ? 'an ' : 'a ') + p.name;
   // "$260 to $320" for a job with a condition range, "$125" for a set price.
   const priceText = (p) => money(price(p)) + (p.ranged ? ' to ' + money(price(p) + RANGE) : '');
-  // Driven+ is a plan for the full and maintenance details. Interior and exterior show the full detail's.
-  const plan = () => (pick().plan ? pick() : PACKAGES[0]);
 
   /* ---- Text links: open a text to Seb with the current pick filled in ---- */
   const smsHref = (body) => `sms:${PHONE}?&body=${encodeURIComponent(body)}`;
-  const quoteText = () => `Hi Seb, I'd like a price for a ${pick().name} on my ${SIZES[state.size]}.\nCar: \nSuburb: `;
+  const quoteText = () => `Hi Seb, I'd like a price for ${aName(pick())} on my ${SIZES[state.size]}.\nCar: \nSuburb: `;
   const syncSms = () => $$('[data-sms]').forEach((a) => { a.href = smsHref(quoteText()); });
 
   /* ---- Price picker --------------------------------------------------- */
@@ -73,16 +71,11 @@ const BA = {
     update();
   }
   function update() {
-    const p = pick(), m = plan();
+    const p = pick();
     $$('.pack', packs).forEach((c) => c.classList.toggle('on', c.dataset.id === state.pack));
     $('#totalName').textContent = `${p.name}, ${SIZES[state.size]}`;
     $('#totalPrice').textContent = priceText(p);
-    $('#bkSum').textContent = state.plus
-      ? `Driven+ ${m.name}, ${SIZES[state.size]}, ${money(price(m) * MEMBER)} a visit`
-      : `${p.name}, ${SIZES[state.size]}, ${priceText(p)}`;
-    $('#plusName').textContent = `${m.name}, ${SIZES[state.size]}`;
-    $('#plusPrice').textContent = money(price(m) * MEMBER);
-    $('#plusWas').textContent = money(price(m));
+    $('#bkSum').textContent = `${p.name}, ${SIZES[state.size]}, ${priceText(p)}`;
     syncSms();
   }
   $$('input[name="size"]').forEach((r) => r.addEventListener('change', () => { state.size = +r.value; renderPacks(); }));
@@ -95,8 +88,6 @@ const BA = {
     $(`input[name="size"][value="${state.size}"]`).checked = true;
     renderPacks();
   }));
-  // Join Driven+ books the plan; every other way into the booking form books a one-off detail.
-  $$('a[href="#book"]').forEach((a) => a.addEventListener('click', () => { state.plus = a.hasAttribute('data-plus'); update(); }));
   renderPacks();
 
   /* ---- Before and after ----------------------------------------------- */
@@ -179,12 +170,8 @@ const BA = {
     const f = form.elements, p = pick();
     const day = form.querySelector('input[name="day"]:checked').value;
     const time = form.querySelector('input[name="time"]:checked');
-    const m = plan();
-    const want = state.plus
-      ? `to join Driven+ with the ${m.name} plan for my ${SIZES[state.size]} (${money(price(m) * MEMBER)} a visit)`
-      : `to book a ${p.name} for my ${SIZES[state.size]} (${priceText(p)})`;
     const lines = [
-      `Hi Seb, I'd like ${want}.`,
+      `Hi Seb, I'd like to book ${aName(p)} for my ${SIZES[state.size]} (${priceText(p)}).`,
       `Car: ${f.car.value.trim()}`,
       `Suburb: ${f.suburb.value.trim()}`,
       `When: ${day}${time ? ', ' + time.value.toLowerCase() : ''}`,
