@@ -86,10 +86,15 @@ the customer when they gave an email.
 
 ## To confirm with Seb before it goes live
 
-- **The prices.** They're the new ones Pat proposed (see `demos/driven-detailing/README.md`),
-  not the ones on his current site. Full Detail $225 / $260 / $290 and Interior $140 /
-  $165 / $170 (both up to $60 more for condition), Exterior $110 / $125 / $140,
-  Maintenance $165 / $185 / $200.
+- **The prices.** They're the ones Pat set, not the ones on his old site:
+  - Full Detail $225 / $260 / $290 and Interior $140 / $165 / $170, both up to $60 more for condition;
+  - Paint Correction on a hatch or sedan $347 single-step, $547 two-step, and quoted for bigger cars;
+  - Exterior $110 / $125 / $140 and Maintenance $165 / $185 / $200;
+  - add-ons: Tyre Endurance Gel $20, Engine Bay $80, Trim Restoration from $100, Headlight
+    Restoration $150, Glass Polish and Light Scratch Removal quoted, and the interior add-ons as before.
+    Rain repellent, clay bar, spray-on ceramic and wax are gone as add-ons (clay bar and ceramic
+    are in every Full and Exterior Detail).
+- **The referral offer** still gives the friend a free rain repellent, which is no longer an add-on.
 - **Driven+ is gone** from the site, and its old pages redirect to the home page. He'll
   need to tell his current members.
 - **The privacy policy** is his own, word for word. It names Offsider Agency as his
