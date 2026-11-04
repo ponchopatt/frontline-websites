@@ -92,17 +92,57 @@ test("reminders: what each person has to do today", () => {
 
 test("import: a loose list of ideas lands in Ideas with everything in the notes", () => {
   const r = Film.importIdeas({ ideas: [
-    { title: "Mat slap", type: "Satisfying", hook: "This mat", shots: ["Wide", "Slap"], people_needed: 2, caption: "Ecosystem 💀", link: "https://www.tiktok.com/@a/video/1?x=1" },
+    { title: "Mat slap", type: "Satisfying", hook: "This mat", shots: ["Wide", "Slap"], people_needed: 2, caption: "Ecosystem 💀", link: "https://www.tiktok.com/@a/video/1?x=1", tags: "trend, skit" },
     { name: "Mat slap" }, { nope: 1 }, "Just a title",
   ] }, [{ title: "Already here" }], { id: (n) => "i" + n, now: NOW, by: "Brake" });
   assert.deepEqual([r.ideas.length, r.skipped, r.bad], [2, 1, 1]);
   const [a, b] = r.ideas;
   assert.equal(a.stage, "tofilm");
-  assert.equal(a.notes, "Type: Satisfying\nHook: This mat\nShots:\n1. Wide\n2. Slap\nPeople: 2");
+  assert.equal(a.notes, "Type: Satisfying\nPeople: 2\nHook: This mat\nSteps:\n1. Wide\n2. Slap");
+  assert.deepEqual(a.tags, ["trend", "skit"]);
+  assert.deepEqual(b.tags, []);
+  // In the file's order, a millisecond apart.
+  assert.ok(a.createdAt < b.createdAt);
   assert.equal(a.caption, "Ecosystem 💀");
   assert.equal(a.link, "https://www.tiktok.com/@a/video/1");
   assert.equal(b.title, "Just a title");
   assert.throws(() => Film.importIdeas({ nope: 1 }, [], { id: () => "x", now: "n" }), /no list of ideas/);
+});
+
+test("tags: cleaned, kept through edits, counted for the filter", () => {
+  assert.deepEqual(Film.splitTags(" Does it foam? , trend, does it foam?,, "), ["Does it foam?", "trend"]);
+  const x = Film.newIdea({ title: "A", tags: ["Does it foam?"] }, { id: "a", now: NOW });
+  assert.deepEqual(Film.editIdea(x, { title: "B" }, NOW).tags, ["Does it foam?"]); // an edit without tags keeps them
+  assert.deepEqual(Film.editIdea(x, { tags: "" }, NOW).tags, []);
+  assert.equal(Film.hasTag(x, "does it FOAM?"), true);
+  assert.deepEqual(Film.tagsIn([x, { tags: ["trend"] }, { tags: ["Does it foam?"] }, {}]), [{ tag: "Does it foam?", count: 2 }, { tag: "trend", count: 1 }]);
+});
+
+test("the Does it foam? series file: 12 episodes, in order, exactly as asked", () => {
+  const file = JSON.parse(fs.readFileSync(new URL("../film/does-it-foam.json", import.meta.url), "utf8"));
+  const r = Film.importIdeas(file, [], { id: (n) => "ep" + (n + 1), now: NOW, by: "Ananth" });
+  assert.deepEqual([r.ideas.length, r.skipped, r.bad], [12, 0, 0]);
+  const order = r.ideas.slice().sort((a, b) => a.createdAt.localeCompare(b.createdAt)).map((x) => x.title);
+  assert.deepEqual(order, r.ideas.map((x) => x.title));
+  assert.equal(order[0], "Does it foam? Ep 1: Shampoo and conditioner");
+  assert.equal(order[6], "Does it foam? Ep 7: Coke");
+  assert.equal(order[9], "Does it foam? Ep 10: Kids' bubble mixture");
+  assert.equal(order[11], "Does it foam? Ep 12: Our own snow foam");
+  for (const [i, x] of r.ideas.entries()) {
+    assert.equal(x.stage, "tofilm");
+    assert.equal(x.who, null);
+    assert.equal(x.when, null);
+    assert.deepEqual(x.tags, ["Does it foam?"]);
+    assert.match(x.title, new RegExp("^Does it foam\\? Ep " + (i + 1) + ": "));
+    assert.match(x.caption, new RegExp("^Does it foam\\? Ep " + (i + 1) + ": "));
+    assert.match(x.notes, /^Type: Satisfying\nLength: 15s\nPeople: 1\nHook: Hold up .+\. Text: DOES IT FOAM\?\nSteps:\n1\. Hold the product up to camera\n2\. Pour it into the foam cannon\n3\. Spray it on a TEST PANEL only, never a customer car\n4\. Show the result: thick, runny or nothing\n5\. Give it a score out of 10 and say: "Comment what we should try next"\n6\. Rinse the foam cannon properly after$/);
+  }
+  assert.equal(r.ideas[0].caption, "Does it foam? Ep 1: shampoo and conditioner😭");
+  assert.equal(r.ideas[6].caption, "Does it foam? Ep 7: Coke💀");
+  assert.equal(r.ideas[11].caption, "Does it foam? Ep 12: the real one");
+  assert.match(r.ideas[11].notes, /Hook: Hold up our own snow foam\./);
+  // Importing it again adds nothing.
+  assert.equal(Film.importIdeas(file, r.ideas, { id: () => "x", now: NOW }).ideas.length, 0);
 });
 
 /* ------------------------------------------------------------ the endpoint */

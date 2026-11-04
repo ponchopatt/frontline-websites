@@ -20,6 +20,11 @@ There are four lists. Every idea has a tick circle, and tapping it moves the ide
 - Every tick shows an **Undo** button for 8 seconds.
 - Tap any idea to open it. You can change the name and add notes (hook, shots), a caption with a copy button, or an example link. You can also say who does the next step and by when, move it back a list, or delete it.
 - The **Today** box at the top shows what's yours today: film, edit, schedule or post. A red dot on a list means something in it is yours today.
+- **Tags and series:** give an idea a tag (for example "Does it foam?") and a filter chip shows up above the lists. Tap it to see only that series, in order; the list counts change to match. Adding an idea while a series is showing puts it in that series.
+
+## Series
+
+- **Does it foam?** (`film/does-it-foam.json`): 12 episodes, added to the live list on 4 Nov 2026. Each one is Satisfying, 15s, 1 person, unassigned, with the same 6 steps (test panel only, never a customer car). To add them again somewhere else: gear icon, Import ideas, paste the file. Episodes already on the list are skipped.
 
 ## Reminders
 
@@ -52,7 +57,8 @@ The steps are in the app under the gear icon. Once it's set up, tap Share on any
 
 Gear icon → Import ideas → pick `imperium_film_ideas.json` (or paste it).
 - Everything lands in Ideas.
-- Hooks, shots, types and so on go into each idea's notes.
+- Tags stay tags. Types, length, people, hooks and steps go into each idea's notes.
+- They're added in the file's order.
 - Ideas with the same name as one already on the list are skipped.
 
 ## Where it lives

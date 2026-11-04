@@ -3,8 +3,9 @@
   (lib/film-store.js) and the tests. The page loads it as window.FilmModel.
 
   One kind of document, an idea:
-    { title, notes, caption, link, who, when, postAt, stage, stageAt, history, postedDay,
+    { title, notes, caption, link, tags, who, when, postAt, stage, stageAt, history, postedDay,
       createdAt, createdBy, updatedAt }
+    tags    short labels like "Does it foam?" for a series; the app filters by them
   It moves through STAGES, one tick at a time: Ideas -> Filmed -> Edited -> Scheduled -> Posted.
     who     who does the next step (blank = both of them)
     when    the day the next step is due by ("2026-11-06"), or blank
@@ -120,10 +121,36 @@
 
   /* ------------------------------------------------------------ ideas */
 
+  // "Does it foam?, trend" or ["Does it foam?"] -> ["Does it foam?", "trend"]. No repeats.
+  function splitTags(v) {
+    var list = Array.isArray(v) ? v : str(v).split(/[,\n]/);
+    var seen = {}, out = [];
+    list.forEach(function (t) {
+      var s = str(t, 40).replace(/\s+/g, " ");
+      if (s && !seen[s.toLowerCase()]) { seen[s.toLowerCase()] = 1; out.push(s); }
+    });
+    return out.slice(0, 8);
+  }
+  function hasTag(x, tag) {
+    var k = str(tag).toLowerCase();
+    return (x.tags || []).some(function (t) { return t.toLowerCase() === k; });
+  }
+  // Every tag in use, with how many ideas have it, most used first.
+  function tagsIn(ideas) {
+    var by = {};
+    (ideas || []).forEach(function (x) {
+      (x.tags || []).forEach(function (t) {
+        var k = t.toLowerCase();
+        (by[k] = by[k] || { tag: t, count: 0 }).count++;
+      });
+    });
+    return Object.keys(by).map(function (k) { return by[k]; }).sort(function (a, b) { return b.count - a.count || a.tag.localeCompare(b.tag); });
+  }
+
   // The fields anyone fills in, checked. The title is the only one that must be there.
   function cleanFields(f) {
     f = f || {};
-    var out = { title: str(f.title, 140), notes: str(f.notes, 4000), caption: str(f.caption, 2200), link: f.link ? normaliseUrl(f.link) || "" : "" };
+    var out = { title: str(f.title, 140), notes: str(f.notes, 4000), caption: str(f.caption, 2200), link: f.link ? normaliseUrl(f.link) || "" : "", tags: splitTags(f.tags || []) };
     if ("who" in f) out.who = cleanPerson(f.who);
     if ("when" in f) out.when = cleanDay(f.when);
     if ("postAt" in f) out.postAt = cleanTime(f.postAt);
@@ -134,7 +161,7 @@
     var f = cleanFields(fields);
     if (!f.title) throw new Error("An idea needs a title");
     return {
-      id: o.id, title: f.title, notes: f.notes, caption: f.caption, link: f.link,
+      id: o.id, title: f.title, notes: f.notes, caption: f.caption, link: f.link, tags: f.tags,
       who: f.who || null, when: f.when || null, postAt: null,
       stage: "tofilm", stageAt: o.now, history: [], postedDay: null, source: o.source || "app",
       createdAt: o.now, createdBy: o.by || null, updatedAt: o.now,
@@ -235,8 +262,9 @@
     var arrays = Object.keys(data).filter(function (k) { return Array.isArray(data[k]); });
     return arrays.length ? data[arrays[0]] : null;
   }
-  // A list of ideas from imperium_film_ideas.json (or anything shaped close to it). Hooks, shots,
-  // types and the rest go into the notes, so nothing in the file is lost.
+  // A list of ideas from imperium_film_ideas.json (or anything shaped close to it). Tags become
+  // tags; types, hooks, steps and the rest go into the notes, so nothing in the file is lost.
+  // They're added in the file's order, a millisecond apart, so the lists keep that order.
   function importIdeas(data, existing, o) {
     var list = ideasFrom(data);
     if (!list) throw new Error("That file has no list of ideas in it");
@@ -256,20 +284,21 @@
         if (Array.isArray(v)) v = v.map(function (s, i) { return (i + 1) + ". " + str(s); }).join("\n");
         lines.push(label ? label + ": " + str(v) : str(v));
       };
-      add("Type", pick(raw, ["type", "category", "format", "series"]));
-      add("Hook", pick(raw, ["hook", "opening", "hook_idea"]));
-      var shots = pick(raw, ["steps", "shots", "shot_list", "shotList", "script", "beats"]);
-      if (shots) lines.push("Shots:\n" + (Array.isArray(shots) ? shots.map(function (s, i) { return (i + 1) + ". " + str(s); }).join("\n") : str(shots)));
-      add("People", pick(raw, ["people", "people_needed", "peopleNeeded", "crew", "cast"]));
+      add("Type", pick(raw, ["type", "category", "format"]));
       add("Length", pick(raw, ["length", "duration", "seconds", "time"]));
-      var tags = pick(raw, ["tags", "tag", "labels"]);
-      add("Tags", Array.isArray(tags) ? tags.join(", ") : tags);
+      add("People", pick(raw, ["people", "people_needed", "peopleNeeded", "crew", "cast"]));
+      add("Hook", pick(raw, ["hook", "opening", "hook_idea"]));
+      var steps = pick(raw, ["steps", "shots", "shot_list", "shotList", "script", "beats"]);
+      if (steps) lines.push("Steps:\n" + (Array.isArray(steps) ? steps.map(function (s, i) { return (i + 1) + ". " + str(s); }).join("\n") : str(steps)));
       add("", pick(raw, ["notes", "note", "why", "description"]));
+      var at = Date.parse(o.now);
+      var now = isNaN(at) ? o.now : new Date(at + out.length).toISOString();
       out.push(newIdea({
         title: title, notes: lines.join("\n"),
         caption: pick(raw, ["caption", "captions", "copy"]),
         link: pick(raw, ["link", "url", "reference", "inspo", "example"]),
-      }, { id: o.id(n), now: o.now, by: o.by, source: "import" }));
+        tags: pick(raw, ["tags", "tag", "labels", "series"]) || [],
+      }, { id: o.id(n), now: now, by: o.by, source: "import" }));
     });
     return { ideas: out, skipped: skipped, bad: bad };
   }
@@ -286,6 +315,7 @@
     stage: stage, stageLabel: stageLabel, normaliseUrl: normaliseUrl, platformOf: platformOf,
     dayIn: dayIn, localNow: localNow, addDays: addDays, daysBetween: daysBetween, minutesBetween: minutesBetween,
     cleanDay: cleanDay, cleanTime: cleanTime, cleanPerson: cleanPerson, dayLabel: dayLabel, timeLabel: timeLabel,
+    splitTags: splitTags, hasTag: hasTag, tagsIn: tagsIn,
     cleanFields: cleanFields, newIdea: newIdea, editIdea: editIdea, move: move,
     remindersFor: remindersFor, digestText: digestText, importIdeas: importIdeas, countByStage: countByStage,
   };

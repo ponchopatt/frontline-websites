@@ -24,6 +24,7 @@
     data: null, loading: false, loadError: "",
     list: LISTS.includes(local.get("list")) ? local.get("list") : "tofilm",
     showPosted: false,
+    tag: local.get("tag") || "",   // a series filter, like "Does it foam?"
     draft: "", adding: false,
     open: null,        // the idea being edited: { id, fields, msg, confirm }
     schedule: null,    // picking when it goes up: { id, date, time, msg }
@@ -145,7 +146,7 @@
     const tickLabel = st.next ? `${st.next}: ${x.title}` : x.title;
     return `<li class="item" data-item="${x.id}" data-stage="${x.stage}">
       <button type="button" class="tick" data-act="tick" data-id="${x.id}" aria-label="${esc(tickLabel)}"></button>
-      <button type="button" class="open" data-act="open" data-id="${x.id}"><span class="t">${esc(x.title)}</span>${meta ? `<span class="m">${meta}</span>` : ""}</button>
+      <button type="button" class="open" data-act="open" data-id="${x.id}"><span class="t">${esc(x.title)}</span>${(x.tags || []).length && !S.tag ? `<span class="tg">${x.tags.map(esc).join(", ")}</span>` : ""}${meta ? `<span class="m">${meta}</span>` : ""}</button>
       <span class="chev" aria-hidden="true">›</span>
     </li>`;
   }
@@ -175,24 +176,31 @@
     </div></main>`;
   }
 
+  // "Ep 2" before "Ep 10".
+  const byTitle = (a, b) => String(a.title).localeCompare(String(b.title), "en", { numeric: true, sensitivity: "base" });
+
   function renderMain() {
-    const counts = M.countByStage(S.data.ideas);
+    const tags = M.tagsIn(S.data.ideas);
+    if (S.tag && !tags.some((t) => t.tag === S.tag)) { S.tag = ""; local.set("tag", null); }
+    const pool = S.tag ? S.data.ideas.filter((x) => M.hasTag(x, S.tag)) : S.data.ideas;
+    const counts = M.countByStage(pool);
     const mine = M.remindersFor(S.data.ideas, S.who, nowLocal());
     const kindOf = { tofilm: "film", filmed: "edit", edited: "schedule", scheduled: "post" };
     const cur = S.showPosted ? "posted" : S.list;
     const st = M.stage(cur);
-    const items = S.data.ideas.filter((x) => x.stage === cur);
+    const items = pool.filter((x) => x.stage === cur);
     if (cur === "scheduled") items.sort((a, b) => String(a.postAt).localeCompare(String(b.postAt)));
     else if (cur === "posted") items.sort((a, b) => String(b.postedDay || b.updatedAt).localeCompare(String(a.postedDay || a.updatedAt)));
-    else items.sort((a, b) => (a.when ? 0 : 1) - (b.when ? 0 : 1) || String(a.when || "").localeCompare(String(b.when || "")) || String(a.createdAt).localeCompare(String(b.createdAt)));
+    else items.sort((a, b) => (a.when ? 0 : 1) - (b.when ? 0 : 1) || String(a.when || "").localeCompare(String(b.when || "")) || String(a.createdAt).localeCompare(String(b.createdAt)) || byTitle(a, b));
     const how = { tofilm: "Tick it when it's filmed", filmed: "Tick it when it's edited", edited: "Tick to pick when it goes up", scheduled: "Tick it once it's posted", posted: "Done and dusted" }[cur];
     app.innerHTML = `${header()}<main data-stage="${cur}"><div class="wrap">
       ${S.loadError ? `<p class="err" role="alert" style="margin:10px 0">${esc(S.loadError)}</p>` : ""}
       ${todayHTML()}
       <nav class="lists" aria-label="Lists">${LISTS.map((id) => `<button type="button" data-stage="${id}" data-act="list" data-id="${id}" aria-pressed="${!S.showPosted && S.list === id}"><b>${counts[id]}</b><span>${esc(M.stageLabel(id))}</span>${mine.some((r) => r.kind === kindOf[id]) ? `<i aria-label="Something here is yours today"></i>` : ""}</button>`).join("")}</nav>
-      <div class="list-head"><h1>${esc(st.label)}</h1><p>${esc(how)}</p></div>
-      ${cur === "tofilm" ? `<form class="add" data-form="add"><input name="title" autocomplete="off" enterkeyhint="done" placeholder="Write down an idea" value="${esc(S.draft)}" data-draft="add" aria-label="New idea"><button type="submit" aria-label="Add the idea" ${S.adding ? "disabled" : ""}>${ICON.plus}</button></form>` : ""}
-      ${items.length ? `<ul class="items ${cur === "posted" ? "posted" : ""}" style="list-style:none;margin:0;padding:0">${items.map(itemHTML).join("")}</ul>` : `<div class="empty"><h2>Empty</h2><p>${esc(st.empty)}</p></div>`}
+      ${tags.length ? `<div class="chips filter" role="group" aria-label="Show"><button type="button" class="chip" data-act="tag" data-value="" aria-pressed="${!S.tag}">All</button>${tags.map((t) => `<button type="button" class="chip" data-act="tag" data-value="${esc(t.tag)}" aria-pressed="${S.tag === t.tag}">${esc(t.tag)} <span class="n">${t.count}</span></button>`).join("")}</div>` : ""}
+      <div class="list-head"><h1>${esc(st.label)}</h1><p>${esc(S.tag ? S.tag : how)}</p></div>
+      ${cur === "tofilm" ? `<form class="add" data-form="add"><input name="title" autocomplete="off" enterkeyhint="done" placeholder="${S.tag ? "Add a " + esc(S.tag) + " idea" : "Write down an idea"}" value="${esc(S.draft)}" data-draft="add" aria-label="New idea"><button type="submit" aria-label="Add the idea" ${S.adding ? "disabled" : ""}>${ICON.plus}</button></form>` : ""}
+      ${items.length ? `<ul class="items ${cur === "posted" ? "posted" : ""}" style="list-style:none;margin:0;padding:0">${items.map(itemHTML).join("")}</ul>` : `<div class="empty"><h2>Empty</h2><p>${S.tag ? `No ${esc(S.tag)} ideas in ${esc(st.label)}.` : esc(st.empty)}</p></div>`}
       ${cur === "scheduled" || cur === "posted" ? `<button type="button" class="more-link" data-act="posted">${S.showPosted ? "Back to Scheduled" : `See what's posted (${counts.posted})`}</button>` : ""}
       <div style="height:90px"></div>
     </div></main>`;
@@ -221,6 +229,7 @@
       ${step}
       <label class="field"><span>Notes <em>(hook, shots, anything)</em></span><textarea data-f="notes" rows="4" placeholder="The hook, the shots, who's in it">${esc(f.notes)}</textarea></label>
       <label class="field"><span>Caption <em>(optional)</em></span><textarea data-f="caption" rows="2" placeholder="Statements, not questions">${esc(f.caption)}</textarea>${f.caption ? `<button type="button" class="btn sm" data-act="copy" style="justify-self:start">Copy the caption</button>` : ""}</label>
+      <label class="field"><span>Tags <em>(optional, a comma between them)</em></span><input data-f="tags" value="${esc(f.tags)}" placeholder="Does it foam?" autocomplete="off"></label>
       <label class="field"><span>Example link <em>(optional)</em></span><input type="url" inputmode="url" data-f="link" value="${esc(f.link)}" placeholder="TikTok or Instagram link">${x.link ? `<a class="btn sm" href="${esc(x.link)}" target="_blank" rel="noopener" style="justify-self:start">Watch it</a>` : ""}</label>
       ${o.msg ? `<p class="err" role="alert">${esc(o.msg)}</p>` : ""}
       <button type="submit" class="btn go wide" ${S.saving ? "disabled" : ""}>${S.saving ? "Saving..." : "Save"}</button>
@@ -353,7 +362,8 @@
     if (!title || S.adding) return;
     S.adding = true;
     try {
-      const r = await api("saveIdea", { fields: { title } });
+      // Added while a series is showing: it's part of that series.
+      const r = await api("saveIdea", { fields: { title, tags: S.tag ? [S.tag] : [] } });
       put(r.idea);
       S.draft = "";
       buzz(15);
@@ -368,7 +378,7 @@
     const x = find(id);
     if (!x) return;
     S.open = { id, msg: "", confirm: false, fields: {
-      title: x.title, notes: x.notes || "", caption: x.caption || "", link: x.link || "", who: x.who || "", when: x.when || "",
+      title: x.title, notes: x.notes || "", caption: x.caption || "", link: x.link || "", tags: (x.tags || []).join(", "), who: x.who || "", when: x.when || "",
       postDate: x.postAt ? x.postAt.slice(0, 10) : "", postTime: x.postAt ? x.postAt.slice(11, 16) : "",
     } };
     render();
@@ -380,7 +390,7 @@
     const f = o.fields;
     if (!f.title.trim()) { o.msg = "Give it a name."; return render(); }
     const x = find(o.id);
-    const fields = { title: f.title, notes: f.notes, caption: f.caption, link: f.link };
+    const fields = { title: f.title, notes: f.notes, caption: f.caption, link: f.link, tags: f.tags };
     if (x.stage === "scheduled") {
       if (!f.postDate || !f.postTime) { o.msg = "Pick the day and time it goes up."; return render(); }
       fields.postAt = f.postDate + "T" + f.postTime;
@@ -485,6 +495,7 @@
       case "reload": S.loadError = ""; render(); break;
       case "list": S.list = id; S.showPosted = false; local.set("list", id); render(); break;
       case "posted": S.showPosted = !S.showPosted; render(); break;
+      case "tag": S.tag = b.dataset.value; local.set("tag", S.tag || null); render(); break;
       case "tick": tick(id); break;
       case "open": openIdea(id); break;
       case "close": S.open = null; render(); break;
