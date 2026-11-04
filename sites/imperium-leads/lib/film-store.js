@@ -6,7 +6,7 @@ import { adminClient, readCollection, readDoc, writeDoc } from "./supabase.js";
 export const Film = globalThis.FilmModel;
 
 // Its own collections in the docs table, apart from the leads.
-export const C = { inspo: "film_inspo", ideas: "film_ideas", system: "film_system" };
+export const C = { ideas: "film_ideas", system: "film_system", push: "film_push" };
 
 /*
   Where Film List keeps its documents: the leads app's Supabase docs table, through the

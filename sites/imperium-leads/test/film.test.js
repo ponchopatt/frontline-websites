@@ -7,127 +7,98 @@ import path from "node:path";
 // The server runs on a local file instead of Supabase.
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "film-"));
 process.env.FILM_LOCAL_STORE = path.join(dir, "store.json");
+delete process.env.CRON_SECRET;
 
-const { Film } = await import("../lib/film-store.js");
-const { POST, GET } = await import("../api/film.js");
+const { Film, C, filmStore } = await import("../lib/film-store.js");
+const { POST, GET, setPushSenderForTests, remindersToSend, sendReminders } = await import("../api/film.js");
 
-const T = "2026-11-04"; // a Wednesday
-const idea = (o) => Film.newIdea({ title: "Idea", ...o }, { id: o.id || o.title, now: "2026-11-01T00:00:00Z" });
+const NOW = "2026-11-04T10:00:00.000Z"; // Wed 4 Nov, 9pm in Canberra
+const idea = (o) => ({ ...Film.newIdea({ title: "Idea", ...o }, { id: o.id || o.title, now: o.now || NOW }), ...o });
 
-/* ------------------------------------------------------------ the rules */
+/* ------------------------------------------------------------ the model */
 
-test("links: Instagram and TikTok come back in one plain form", () => {
-  assert.equal(Film.normaliseUrl("https://www.instagram.com/reel/DAbc123/?igsh=xyz"), "https://www.instagram.com/reel/DAbc123/");
-  assert.equal(Film.normaliseUrl("instagram.com/reels/DAbc123"), "https://www.instagram.com/reel/DAbc123/");
-  assert.equal(Film.normaliseUrl("Look at this https://www.instagram.com/p/XYZ/ so good"), "https://www.instagram.com/p/XYZ/");
-  assert.equal(Film.normaliseUrl("https://www.tiktok.com/@imperium/video/7312345678901234567?is_from_webapp=1&sender_device=pc"), "https://www.tiktok.com/@imperium/video/7312345678901234567");
-  assert.equal(Film.normaliseUrl("https://tiktok.com/@a.b/video/1/"), "https://www.tiktok.com/@a.b/video/1");
+test("links: Instagram and TikTok come out plain", () => {
+  assert.equal(Film.normaliseUrl("look https://www.instagram.com/reel/ABC123/?igsh=xyz"), "https://www.instagram.com/reel/ABC123/");
+  assert.equal(Film.normaliseUrl("https://www.tiktok.com/@a/video/123?lang=en"), "https://www.tiktok.com/@a/video/123");
   assert.equal(Film.normaliseUrl("not a link"), null);
-  assert.equal(Film.platformOf("https://www.instagram.com/reel/A/"), "instagram");
-  assert.equal(Film.platformOf("https://vm.tiktok.com/ZM123/"), "tiktok");
-  assert.equal(Film.platformOf("https://youtube.com/shorts/1"), "other");
-  assert.equal(Film.isShortTikTok("https://vm.tiktok.com/ZM123/"), true);
-  assert.equal(Film.isShortTikTok("https://www.tiktok.com/t/ZT9abc/"), true);
-  assert.equal(Film.tiktokHandle("https://www.tiktok.com/@imperium.detailing/video/1"), "@imperium.detailing");
+  assert.equal(Film.platformOf("https://vm.tiktok.com/x"), "tiktok");
 });
 
-test("an Instagram reel keeps no data about the reel, a TikTok keeps its preview", () => {
-  const ig = Film.newInspo({ id: "a", url: "https://www.instagram.com/reel/A/", meta: { thumb: "https://x/y.jpg", title: "t" }, now: "n" });
-  assert.equal(ig.meta, null);
-  const tt = Film.newInspo({ id: "b", url: "https://www.tiktok.com/@a/video/1", meta: { thumbnail_url: "https://p16/t.jpg", title: "Satisfying wheel", author_name: "Someone", html: "<iframe>" }, now: "n" });
-  assert.deepEqual(tt.meta, { thumb: "https://p16/t.jpg", title: "Satisfying wheel", author: "Someone" });
+test("days and times are Canberra's", () => {
+  assert.equal(Film.dayIn(new Date(NOW)), "2026-11-04");
+  assert.equal(Film.localNow(new Date("2026-11-04T20:30:00Z")), "2026-11-05T07:30");
+  assert.equal(Film.minutesBetween("2026-11-05T17:10", "2026-11-05T18:00"), 50);
+  assert.equal(Film.timeLabel("2026-11-05T18:00"), "6pm");
+  assert.equal(Film.timeLabel("2026-11-05T09:30"), "9:30am");
+  assert.equal(Film.dayLabel("2026-11-05", "2026-11-04"), "Tomorrow");
+  assert.equal(Film.cleanTime("2026-11-05T25:00"), null);
+  assert.equal(Film.cleanTime("2026-11-05 18:00"), "2026-11-05T18:00");
 });
 
-test("ideas: fields are cleaned, a title is a must", () => {
-  const x = Film.newIdea({ title: " Mat slap ", type: "satisfying", tags: "trend, Trend, #skit", steps: "1. Wide shot\n- Slap\n\nAfter", people: "2", length: "15s", assignee: "ant", due: "2026-11-04" }, { id: "1", now: "n" });
-  assert.equal(x.title, "Mat slap");
-  assert.equal(x.type, "Satisfying");
-  assert.deepEqual(x.tags, ["trend", "skit"]);
-  assert.deepEqual(x.steps, ["Wide shot", "Slap", "After"]);
-  assert.equal(x.people, 2);
-  assert.equal(x.assignee, "Ant");
-  assert.equal(x.stage, "tofilm");
-  assert.throws(() => Film.newIdea({ title: "  " }, { id: "2", now: "n" }), /needs a title/);
-  assert.equal(Film.matchType("POV"), "POV Detail");
-  assert.equal(Film.matchType("asked and answered"), "");
-  assert.equal(Film.matchType("Asked & Answered"), "Asked & Answered");
+test("an idea moves Ideas -> Filmed -> Edited -> Scheduled -> Posted, and back", () => {
+  const a = Film.newIdea({ title: " Mat slap ", who: "ant", when: "2026-11-05" }, { id: "a", now: NOW, by: "Pat" });
+  assert.deepEqual([a.title, a.who, a.when, a.stage], ["Mat slap", "Ant", "2026-11-05", "tofilm"]);
+  assert.throws(() => Film.newIdea({ title: "" }, {}), /needs a title/);
+
+  const o = (extra) => ({ by: "Ant", now: "2026-11-05T01:00:00Z", today: "2026-11-05", ...extra });
+  const filmed = Film.move(a, 1, o());
+  assert.equal(filmed.stage, "filmed");
+  // who and when were for filming, so they're cleared, and Undo puts them back.
+  assert.deepEqual([filmed.who, filmed.when, filmed.stageAt], [null, null, "2026-11-05T01:00:00Z"]);
+  const undone = Film.move(filmed, -1, o());
+  assert.deepEqual([undone.stage, undone.who, undone.when], ["tofilm", "Ant", "2026-11-05"]);
+
+  const edited = Film.move(filmed, 1, o());
+  assert.equal(edited.stage, "edited");
+  assert.throws(() => Film.move(edited, 1, o()), /Pick when it goes up/);
+  const sched = Film.move(edited, 1, o({ postAt: "2026-11-06T18:00" }));
+  assert.deepEqual([sched.stage, sched.postAt, sched.when], ["scheduled", "2026-11-06T18:00", "2026-11-06"]);
+  const posted = Film.move(sched, 1, o({ today: "2026-11-06" }));
+  assert.deepEqual([posted.stage, posted.postedDay], ["posted", "2026-11-06"]);
+  assert.equal(Film.move(posted, 1, o()), null);
+  // Back from Scheduled to Edited drops the time.
+  assert.equal(Film.move(sched, -1, o()).postAt, null);
+  assert.equal(posted.history.length, 4);
 });
 
-test("stages: one step on or back, posted remembers the day, the ends stop", () => {
-  let x = idea({ title: "A" });
-  assert.equal(Film.nextLabel(x), "Filmed");
-  x = Film.move(x, 1, "Ant", "t1", T);
-  assert.equal(x.stage, "filmed");
-  assert.deepEqual(x.history[0], { from: "tofilm", to: "filmed", by: "Ant", at: "t1" });
-  x = Film.move(Film.move(x, 1, "Pat", "t2", T), 1, "Pat", "t3", T);
-  assert.equal(x.stage, "posted");
-  assert.equal(x.postedDay, T);
-  assert.equal(Film.move(x, 1, "Pat", "t4", T), null);
-  const back = Film.move(x, -1, "Pat", "t5", T);
-  assert.equal(back.stage, "edited");
-  assert.equal(back.postedDay, null);
-  assert.equal(Film.move(idea({ title: "B" }), -1, "Pat", "t", T), null);
-});
-
-test("today: only theirs, due today or late, biggest shoot first", () => {
+test("reminders: what each person has to do today", () => {
+  const now = "2026-11-05T07:30";
   const ideas = [
-    idea({ title: "Small", assignee: "Ant", due: T, people: 1, length: "12s" }),
-    idea({ title: "Big", assignee: "Ant", due: "2026-11-02", people: 3, length: "20s" }),
-    idea({ title: "Later", assignee: "Ant", due: "2026-11-09" }),
-    idea({ title: "Lucas's", assignee: "Lucas", due: T }),
-    idea({ title: "No date", assignee: "Ant" }),
-    { ...idea({ title: "Filmed already", assignee: "Ant", due: T }), stage: "filmed" },
+    idea({ id: "1", title: "Due today", who: "Ant", when: "2026-11-05" }),
+    idea({ id: "2", title: "Late", who: "Ant", when: "2026-11-03" }),
+    idea({ id: "3", title: "Later", who: "Ant", when: "2026-11-09" }),
+    idea({ id: "4", title: "No date", who: "Ant" }),
+    idea({ id: "5", title: "Pat's to film", when: "2026-11-05" }),
+    idea({ id: "6", title: "Needs editing", stage: "filmed", stageAt: "2026-11-03T22:00:00Z" }), // filmed yesterday
+    idea({ id: "7", title: "Just filmed", stage: "filmed", stageAt: "2026-11-04T20:00:00Z" }), // this morning
+    idea({ id: "8", title: "Needs scheduling", stage: "edited", stageAt: "2026-11-01T00:00:00Z" }),
+    idea({ id: "9", title: "Goes up tonight", stage: "scheduled", postAt: "2026-11-05T18:00" }),
+    idea({ id: "10", title: "Missed", stage: "scheduled", postAt: "2026-11-04T18:00" }),
+    idea({ id: "11", title: "Next week", stage: "scheduled", postAt: "2026-11-12T18:00" }),
+    idea({ id: "12", title: "Done", stage: "posted" }),
   ];
-  assert.deepEqual(Film.todayFor(ideas, "Ant", T).map((x) => x.title), ["Big", "Small"]);
-  assert.deepEqual(Film.upcomingFor(ideas, "Ant", T).map((x) => x.title), ["Later", "No date"]);
-  assert.equal(Film.dueLabel("2026-11-02", T), "2 days late");
-  assert.equal(Film.dueLabel(T, T), "Due today");
-  assert.equal(Film.dueLabel("2026-11-05", T), "Due tomorrow");
-  assert.equal(Film.reminderText(ideas, T), "Ant, 2 videos today: Big, Small.\nLucas, 1 video today: Lucas's.");
-  assert.equal(Film.reminderText(ideas, T, "nick"), "Nick, nothing to film today.");
-  assert.equal(Film.reminderText([], T), "No videos due today.");
+  const ant = Film.remindersFor(ideas, "Ant", now);
+  assert.deepEqual(ant.map((r) => r.text), ["Film: Due today", "Film: Late"]);
+  assert.equal(ant[1].late, true);
+  const pat = Film.remindersFor(ideas, "Pat", now);
+  // Late first, then the day's posts, then filming, editing, scheduling.
+  assert.deepEqual(pat.map((r) => r.text), ["Post (late): Missed", "Post at 6pm: Goes up tonight", "Film: Pat's to film", "Edit: Needs editing", "Schedule: Needs scheduling"]);
+  assert.equal(Film.digestText(pat, 2), "Post (late): Missed. Post at 6pm: Goes up tonight. And 3 more.");
+  assert.deepEqual(Film.remindersFor(ideas, "Nick", now), []);
 });
 
-test("numbers: posted this week, and average views by type", () => {
-  const p = (o) => ({ ...idea(o), stage: "posted" });
-  const ideas = [
-    p({ title: "1", type: "POV Detail", postedDay: "2026-11-03" }),
-    { ...p({ title: "2", type: "POV Detail" }), postedDay: "2026-11-03", views: 1000 },
-    { ...p({ title: "3", type: "POV Detail" }), postedDay: "2026-10-20", views: 3000 },
-    { ...p({ title: "4", type: "Reactions" }), postedDay: "2026-11-09", views: 500 },
-    idea({ title: "5", type: "Reactions" }),
-  ];
-  ideas[0].postedDay = "2026-11-03";
-  assert.deepEqual(Film.weekOf(T), { from: "2026-11-02", to: "2026-11-08" });
-  assert.equal(Film.postedThisWeek(ideas, T), 2);
-  const s = Film.statsByType(ideas);
-  assert.deepEqual(s.map((r) => [r.type, r.posted, r.avgViews]), [["POV Detail", 3, 2000], ["Reactions", 1, 500]]);
-});
-
-test("import: loose field names, all To film and unassigned, no doubles", () => {
-  let n = 0;
+test("import: a loose list of ideas lands in Ideas with everything in the notes", () => {
   const r = Film.importIdeas({ ideas: [
-    { name: "Mat slap", category: "Satisfying", shots: ["Wide", "Slap"], people_needed: 2, duration: "15s", caption: "Mat went from 💀 to new", tags: "trend" },
-    { title: "Wheel reveal", type: "Big Reveal", hook: "Watch the brake dust go", notes: "Use the GTS" },
-    { title: "Already there" },
-    { title: "" },
-    "Just a title",
-  ] }, [{ title: "already THERE" }], { id: () => "id" + n++, now: "now", by: "Pat" });
-  assert.equal(r.ideas.length, 3);
-  assert.equal(r.skipped, 1);
-  assert.equal(r.bad, 1);
-  const [a, b, c] = r.ideas;
-  assert.equal(a.title, "Mat slap");
-  assert.equal(a.type, "Satisfying");
-  assert.deepEqual(a.steps, ["Wide", "Slap"]);
-  assert.equal(a.people, 2);
+    { title: "Mat slap", type: "Satisfying", hook: "This mat", shots: ["Wide", "Slap"], people_needed: 2, caption: "Ecosystem 💀", link: "https://www.tiktok.com/@a/video/1?x=1" },
+    { name: "Mat slap" }, { nope: 1 }, "Just a title",
+  ] }, [{ title: "Already here" }], { id: (n) => "i" + n, now: NOW, by: "Pat" });
+  assert.deepEqual([r.ideas.length, r.skipped, r.bad], [2, 1, 1]);
+  const [a, b] = r.ideas;
   assert.equal(a.stage, "tofilm");
-  assert.equal(a.assignee, null);
-  assert.equal(a.source, "import");
-  assert.equal(b.type, "");
-  assert.deepEqual(b.tags, ["Big Reveal"]);
-  assert.deepEqual(b.steps, ["Note: Use the GTS"]);
-  assert.equal(c.title, "Just a title");
+  assert.equal(a.notes, "Type: Satisfying\nHook: This mat\nShots:\n1. Wide\n2. Slap\nPeople: 2");
+  assert.equal(a.caption, "Ecosystem 💀");
+  assert.equal(a.link, "https://www.tiktok.com/@a/video/1");
+  assert.equal(b.title, "Just a title");
   assert.throws(() => Film.importIdeas({ nope: 1 }, [], { id: () => "x", now: "n" }), /no list of ideas/);
 });
 
@@ -137,65 +108,113 @@ const call = async (body) => {
   const res = await POST(new Request("http://x/api/film", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }));
   return { status: res.status, body: await res.json() };
 };
+const get = async (q, headers = {}) => {
+  const res = await GET(new Request("http://x/api/film?" + q, { headers }));
+  return { status: res.status, text: await res.text() };
+};
 
-test("the endpoint: no PIN, the inbox, ideas, stages, import and the reminder", async (t) => {
-  // TikTok's preview comes from its oEmbed endpoint; here it's faked.
-  const realFetch = globalThis.fetch;
-  globalThis.fetch = async (url) => {
-    if (String(url).startsWith("https://www.tiktok.com/oembed")) return new Response(JSON.stringify({ title: "Mud to mirror", author_name: "detailer", thumbnail_url: "https://p16.tiktokcdn.com/x.jpg" }), { status: 200 });
-    throw new Error("no network in tests: " + url);
-  };
-  t.after(() => { globalThis.fetch = realFetch; });
-
-  // Open to anyone with the link: no PIN, no token.
+test("the endpoint: write ideas, tick them through, import, and the Shortcut", async () => {
   assert.equal((await call({ action: "list" })).status, 200);
-  assert.equal((await GET(new Request("http://x/api/film?action=ping")).then((r) => r.json())).ready, true);
-
-  // The inbox: Instagram is a link only, TikTok gets its public preview.
-  const ig = await call({ action: "inbox", url: "https://www.instagram.com/reel/AbC/?igsh=1", note: "the hook" });
-  assert.equal(ig.status, 200);
-  assert.equal(ig.body.inspo.url, "https://www.instagram.com/reel/AbC/");
-  assert.equal(ig.body.inspo.meta, null);
-  const tt = await call({ action: "inbox", url: "https://www.tiktok.com/@a/video/123?lang=en" });
-  assert.equal(tt.status, 200);
-  assert.deepEqual(tt.body.inspo.meta, { thumb: "https://p16.tiktokcdn.com/x.jpg", title: "Mud to mirror", author: "detailer" });
-  assert.equal(tt.body.inspo.createdBy, Film.OWNER);
-  assert.equal((await call({ action: "inbox", url: "https://www.tiktok.com/@a/video/123" })).body.duplicate, true);
-  assert.equal((await call({ action: "inbox", url: "nope" })).status, 400);
-
-  // Make it ours: the idea gets the reel's link, the reel remembers the idea.
-  const made = await call({ action: "saveIdea", inspoId: tt.body.inspo.id, fields: { title: "Mat slap", type: "Satisfying", steps: "Wide\nSlap", assignee: "Ant", due: Film.dayIn(new Date(), "Australia/Sydney") } });
+  const made = await call({ action: "saveIdea", who: "Pat", fields: { title: "Mat slap", who: "Ant", when: Film.dayIn(new Date()) } });
   assert.equal(made.status, 200);
   const id = made.body.idea.id;
-  assert.equal(made.body.idea.link, "https://www.tiktok.com/@a/video/123");
-  assert.deepEqual(made.body.inspo.ideaIds, [id]);
+  assert.equal(made.body.idea.createdBy, "Pat");
   assert.equal((await call({ action: "saveIdea", fields: { title: "" } })).status, 400);
 
-  // Ant opens it and films it; Undo moves it back.
-  const list = await call({ action: "list" });
-  assert.equal(list.body.ideas.length, 1);
-  assert.equal(list.body.inspo.length, 2);
-  const filmed = await call({ action: "move", id, dir: 1, who: "Ant" });
-  assert.equal(filmed.body.idea.stage, "filmed");
-  assert.equal(filmed.body.idea.history[0].by, "Ant");
-  assert.equal((await call({ action: "move", id, dir: -1, who: "Ant" })).body.idea.stage, "tofilm");
+  const f = await call({ action: "move", id, dir: 1, who: "Ant" });
+  assert.equal(f.body.idea.stage, "filmed");
+  assert.equal(f.body.idea.history[0].by, "Ant");
+  assert.equal((await call({ action: "move", id, dir: 1 })).body.idea.stage, "edited");
+  const noTime = await call({ action: "move", id, dir: 1 });
+  assert.equal(noTime.status, 400);
+  assert.match(noTime.body.error, /Pick when/);
+  const s = await call({ action: "move", id, dir: 1, postAt: "2026-11-06T18:00" });
+  assert.equal(s.body.idea.stage, "scheduled");
+  // Edits keep the stage; the post time can be changed.
+  const e = await call({ action: "saveIdea", id, fields: { title: "Mat slap 2", postAt: "2026-11-06T19:30", notes: "Low angle" } });
+  assert.deepEqual([e.body.idea.title, e.body.idea.stage, e.body.idea.postAt, e.body.idea.notes], ["Mat slap 2", "scheduled", "2026-11-06T19:30", "Low angle"]);
+  assert.equal((await call({ action: "move", id, dir: 1 })).body.idea.stage, "posted");
+  assert.equal((await call({ action: "move", id, dir: 1 })).status, 409);
 
-  // The reminder for GoHighLevel: Ant has one today; an old link with a key still works.
-  const remind = async (q) => { const res = await GET(new Request("http://x/api/film?" + q)); return { status: res.status, text: await res.text() }; };
-  assert.equal((await remind("action=today")).text, "Ant, 1 video today: Mat slap.");
-  assert.equal((await remind("action=today&key=old&who=Nick")).text, "Nick, nothing to film today.");
-  await call({ action: "move", id, dir: 1, who: "Ant" });
-  assert.equal((await remind("action=today")).text, "No videos due today.");
+  // The iPhone Shortcut: a shared reel becomes an idea, once.
+  const sc = await call({ action: "inbox", url: "https://www.instagram.com/reel/XyZ/?igsh=1", note: "Dog hair speedrun" });
+  assert.deepEqual([sc.body.message, sc.body.idea.title, sc.body.idea.link], ["Added to Ideas", "Dog hair speedrun", "https://www.instagram.com/reel/XyZ/"]);
+  assert.equal((await call({ action: "inbox", url: "https://www.instagram.com/reel/XyZ/" })).body.duplicate, true);
+  assert.equal((await call({ action: "inbox", url: "https://www.tiktok.com/@a/video/9" })).body.idea.title, "Idea from TikTok");
+  assert.equal((await call({ action: "inbox", url: "nope" })).status, 400);
 
-  // Views, the weekly target, import, delete.
-  assert.equal((await call({ action: "setViews", id, views: 1234 })).body.idea.views, 1234);
-  assert.equal((await call({ action: "settings", weeklyTarget: 10 })).body.settings.weeklyTarget, 10);
-  const imp = await call({ action: "import", data: [{ title: "Imported one" }, { title: "Mat slap" }] });
+  const imp = await call({ action: "import", data: [{ title: "Imported one" }, { title: "Dog hair speedrun" }] });
   assert.deepEqual([imp.body.added, imp.body.skipped], [1, 1]);
   assert.equal((await call({ action: "deleteIdea", id })).status, 200);
-  const after = await call({ action: "list" });
-  assert.equal(after.body.ideas.length, 1);
-  assert.deepEqual(after.body.inspo.find((x) => x.platform === "tiktok").ideaIds, []);
-  assert.equal(after.body.settings.weeklyTarget, 10);
+  assert.equal((await call({ action: "list" })).body.ideas.length, 3);
   assert.equal((await call({ action: "nope" })).status, 400);
+});
+
+test("phone reminders: sign up, the morning one once a day, and one before it goes up", async () => {
+  const sent = [];
+  let fail410 = false;
+  setPushSenderForTests(async (sub, payload, options) => {
+    if (fail410 && sub.endpoint.endsWith("/gone")) { const e = new Error("gone"); e.statusCode = 410; throw e; }
+    sent.push({ to: sub.endpoint, ...JSON.parse(payload), ttl: options.TTL, key: options.vapidDetails.publicKey });
+  });
+  const key = (await call({ action: "pushKey" })).body.key;
+  assert.match(key, /^[A-Za-z0-9_-]{80,}$/);
+  assert.equal((await call({ action: "pushKey" })).body.key, key); // the same keys every time
+  const sub = (end) => ({ endpoint: "https://push.example/" + end, keys: { p256dh: "BPub", auth: "auth1" } });
+  assert.equal((await call({ action: "pushSubscribe", who: "Nobody", sub: sub("x") })).status, 400);
+  assert.equal((await call({ action: "pushSubscribe", who: "Ant", sub: { endpoint: "http://bad" } })).status, 400);
+  assert.equal((await call({ action: "pushSubscribe", who: "Ant", sub: sub("ant") })).status, 200);
+  assert.equal((await call({ action: "pushSubscribe", who: "Pat", sub: sub("pat") })).status, 200);
+  assert.equal((await call({ action: "pushSubscribe", who: "Pat", sub: sub("gone") })).status, 200);
+
+  const t = await call({ action: "pushTest", endpoint: "https://push.example/ant" });
+  assert.equal(t.status, 200);
+  assert.equal(sent.pop().title, "Reminders are on");
+
+  // What would go at 7:50am, given these ideas.
+  const ideas = [
+    idea({ id: "a", title: "Wheels", who: "Ant", when: "2026-11-05" }),
+    idea({ id: "b", title: "Needs editing", stage: "filmed", stageAt: "2026-11-03T00:00:00Z" }),
+    idea({ id: "c", title: "Tonight", stage: "scheduled", postAt: "2026-11-05T18:00" }),
+    idea({ id: "d", title: "Soon", stage: "scheduled", postAt: "2026-11-05T08:30" }),
+  ];
+  const morning = remindersToSend(ideas, ["Ant", "Pat", "Nick"], "2026-11-05T07:50", new Set());
+  assert.deepEqual(morning.map((m) => [m.to, m.title, m.body]), [
+    ["Ant", "1 thing to do today", "Film: Wheels."],
+    ["Pat", "3 things to do today", "Post at 8:30am: Soon. Post at 6pm: Tonight. Edit: Needs editing."],
+    ["Pat", "Time to post", "Soon goes up at 8:30am."],
+  ]);
+  // Before 7am and after 9pm: no morning one. Already sent: not again.
+  assert.equal(remindersToSend(ideas, ["Ant"], "2026-11-05T06:50", new Set()).length, 0);
+  assert.equal(remindersToSend(ideas, ["Ant"], "2026-11-05T07:50", new Set(["today:Ant:2026-11-05"])).length, 0);
+  // At 5:50pm, the one for 6pm.
+  assert.deepEqual(remindersToSend(ideas, ["Pat"], "2026-11-05T17:50", new Set(["today:Pat:2026-11-05", "post:d:2026-11-05T08:30"])).map((m) => m.body), ["Tonight goes up at 6pm."]);
+
+  // The real run at 7:50am, twice: the second sends nothing new. A phone that's gone is forgotten.
+  const store = filmStore();
+  for (const x of ideas) await store.put(C.ideas, x.id, x);
+  fail410 = true;
+  const at = new Date("2026-11-04T20:50:00Z");
+  const first = await sendReminders(store, at);
+  assert.deepEqual(first.reminders.map((m) => [m.to, m.title]), [["Ant", "1 thing to do today"], ["Pat", "3 things to do today"], ["Pat", "Time to post"]]);
+  assert.equal(first.sent, 3); // Ant's phone once, Pat's phone twice; the gone one failed
+  assert.deepEqual(sent.slice(-3).map((m) => [m.to.split("/").pop(), m.title]), [["ant", "1 thing to do today"], ["pat", "3 things to do today"], ["pat", "Time to post"]]);
+  assert.equal(sent[sent.length - 1].ttl, 6 * 3600);
+  assert.equal(sent[sent.length - 1].key, key);
+  assert.deepEqual((await sendReminders(store, at)).reminders, []);
+  const subs = await store.all(C.push);
+  assert.deepEqual(subs.map((r) => r.sub.endpoint.split("/").pop()).sort(), ["ant", "pat"]);
+  // Vercel's run has no ?action, but says who it is.
+  assert.equal((await get("", { "user-agent": "vercel-cron/1.0" })).status, 200);
+  // With CRON_SECRET set, only Vercel gets in.
+  process.env.CRON_SECRET = "s3cret";
+  assert.equal((await get("action=remind")).status, 401);
+  assert.equal((await get("action=remind", { authorization: "Bearer s3cret" })).status, 200);
+  delete process.env.CRON_SECRET;
+
+  // The text version for GoHighLevel.
+  const text = (await get("action=today&who=Nick")).text;
+  assert.equal(text, "Nick: nothing to do today.");
+  assert.equal((await call({ action: "pushUnsubscribe", endpoint: "https://push.example/ant" })).status, 200);
+  assert.equal((await call({ action: "pushTest", endpoint: "https://push.example/ant" })).status, 404);
 });

@@ -1,45 +1,41 @@
 /*
   Imperium Film List: the plain rules (no page, no database), shared by the page, the server
-  (lib/film.js) and the tests. The page loads it as window.FilmModel.
+  (lib/film-store.js) and the tests. The page loads it as window.FilmModel.
 
-  Two kinds of document:
-    inspo  a saved reel: { url, platform, note, meta, createdAt, createdBy, ideaIds }
-           meta is TikTok's own preview ({ thumb, title, author }) or null. Instagram reels are
-           a link only: nothing about them is ever fetched or stored.
-    idea   something to film: { title, type, tags, hook, steps, caption, people, length, link,
-           platform, inspoId, assignee, due, stage, history, views, postedDay, source,
-           createdAt, createdBy, updatedAt }
-  An idea's stage is one of IDEA_STAGES. "Inspo" is the stage before them: the inbox itself.
+  One kind of document, an idea:
+    { title, notes, caption, link, who, when, postAt, stage, stageAt, history, postedDay,
+      createdAt, createdBy, updatedAt }
+  It moves through STAGES, one tick at a time: Ideas -> Filmed -> Edited -> Scheduled -> Posted.
+    who     who does the next step (blank = Pat, the owner)
+    when    the day the next step is due by ("2026-11-06"), or blank
+    postAt  the Canberra time it goes up ("2026-11-06T18:00"), set when it's scheduled
+    stageAt when it got to the stage it's in, so the app can nag about it
 */
 (function (root) {
   "use strict";
 
-  var TYPES = [
-    "POV Detail", "Come Detail With Us", "Reactions", "Day in the Life", "Funny Moments",
-    "Trend Flip", "Asked & Answered", "Team Talks", "Teach Detailers", "Teach Customers",
-    "Satisfying", "Tag a Bro", "Membership",
-  ];
   var STAGES = [
-    { id: "inspo", label: "Inspo" },
-    { id: "tofilm", label: "To film" },
-    { id: "filmed", label: "Filmed" },
-    { id: "edited", label: "Edited" },
-    { id: "posted", label: "Posted" },
+    { id: "tofilm", label: "Ideas", next: "Filmed it", step: "Film", by: "Film by", empty: "Write down an idea above. Tick it once it's filmed." },
+    { id: "filmed", label: "Filmed", next: "Edited", step: "Edit", by: "Edit by", empty: "Nothing waiting to be edited." },
+    { id: "edited", label: "Edited", next: "Schedule it", step: "Schedule", by: "Schedule by", empty: "Nothing waiting to be scheduled." },
+    { id: "scheduled", label: "Scheduled", next: "Posted", step: "Post", by: "Post on", empty: "Nothing scheduled yet." },
+    { id: "posted", label: "Posted", next: null, step: null, by: null, empty: "Nothing posted yet." },
   ];
-  var IDEA_STAGES = ["tofilm", "filmed", "edited", "posted"];
+  var IDS = STAGES.map(function (s) { return s.id; });
   var CREW = ["Ant", "Lucas", "Nick", "AJ"];
   var OWNER = "Pat";
   var PEOPLE = CREW.concat([OWNER]);
-  var DEFAULT_TARGET = 14;
+  var TZ = "Australia/Sydney"; // Canberra's time
 
   function str(v, max) {
     var s = v == null ? "" : String(v).replace(/\r\n?/g, "\n").trim();
     return max && s.length > max ? s.slice(0, max) : s;
   }
-  function stageLabel(id) {
-    for (var i = 0; i < STAGES.length; i++) if (STAGES[i].id === id) return STAGES[i].label;
-    return id;
+  function stage(id) {
+    for (var i = 0; i < STAGES.length; i++) if (STAGES[i].id === id) return STAGES[i];
+    return STAGES[0];
   }
+  function stageLabel(id) { return stage(id).label; }
 
   /* ------------------------------------------------------------ links */
 
@@ -72,250 +68,177 @@
     if (host === "tiktok.com" || host.slice(-11) === ".tiktok.com") return "tiktok";
     return "other";
   }
-  // vm.tiktok.com/…, vt.tiktok.com/… and tiktok.com/t/… are short links TikTok redirects.
-  function isShortTikTok(url) {
-    return /^https:\/\/(vm|vt)\.tiktok\.com\//i.test(url) || /^https:\/\/www\.tiktok\.com\/t\//i.test(url);
-  }
-  // "@imperiumdetailing" from a full TikTok link, "" otherwise.
-  function tiktokHandle(url) {
-    var m = /tiktok\.com\/(@[\w.]+)/i.exec(url || "");
-    return m ? m[1] : "";
-  }
-  // TikTok's own preview, kept short. Anything else is dropped.
-  function cleanMeta(meta) {
-    if (!meta || typeof meta !== "object") return null;
-    var thumb = str(meta.thumb || meta.thumbnail_url, 2000);
-    var out = { thumb: /^https:\/\//i.test(thumb) ? thumb : "", title: str(meta.title, 600), author: str(meta.author || meta.author_name, 120) };
-    return out.thumb || out.title || out.author ? out : null;
-  }
 
-  /* ------------------------------------------------------------ text fields */
+  /* ------------------------------------------------------------ days and times */
 
-  // One step per line, without the "1." or "-" people type in front.
-  function splitLines(v) {
-    var list = Array.isArray(v) ? v : str(v).split("\n");
-    return list.map(function (x) { return str(x, 300).replace(/^(\d+[.)]|[-*•])\s*/, ""); }).filter(Boolean).slice(0, 30);
+  // "2026-11-04" for a moment, in Canberra.
+  function dayIn(date, tz) {
+    var parts = new Intl.DateTimeFormat("en-CA", { timeZone: tz || TZ, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(date || new Date());
+    var get = function (t) { return parts.filter(function (p) { return p.type === t; })[0].value; };
+    return get("year") + "-" + get("month") + "-" + get("day");
   }
-  function splitTags(v) {
-    var list = Array.isArray(v) ? v : str(v).split(/[,\n#]/);
-    var seen = {}, out = [];
-    list.forEach(function (t) {
-      var s = str(t, 40).replace(/\s+/g, " ");
-      var k = s.toLowerCase();
-      if (s && !seen[k]) { seen[k] = 1; out.push(s); }
-    });
-    return out.slice(0, 12);
+  // "2026-11-04T07:30" for a moment, in Canberra.
+  function localNow(date, tz) {
+    var parts = new Intl.DateTimeFormat("en-GB", { timeZone: tz || TZ, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(date || new Date());
+    var get = function (t) { return parts.filter(function (p) { return p.type === t; })[0].value; };
+    return dayIn(date, tz) + "T" + get("hour") + ":" + get("minute");
   }
-  // "pov detail", "POV" or "POV Detail" -> "POV Detail". "" if it's not one of ours.
-  function matchType(v) {
-    var k = str(v).toLowerCase().replace(/[^a-z0-9]/g, "");
-    if (!k) return "";
-    for (var i = 0; i < TYPES.length; i++) if (TYPES[i].toLowerCase().replace(/[^a-z0-9]/g, "") === k) return TYPES[i];
-    for (i = 0; i < TYPES.length; i++) if (TYPES[i].toLowerCase().replace(/[^a-z0-9]/g, "").indexOf(k) === 0) return TYPES[i];
-    return "";
+  function addDays(day, n) {
+    return new Date(Date.parse(day + "T00:00:00Z") + n * 86400000).toISOString().slice(0, 10);
   }
-  function cleanPeople(v) {
-    var n = parseInt(v, 10);
-    return isFinite(n) && n >= 1 && n <= 10 ? n : null;
+  function daysBetween(a, b) {
+    return Math.round((Date.parse(b + "T00:00:00Z") - Date.parse(a + "T00:00:00Z")) / 86400000);
   }
-  // "15-20s", 18, "20 sec" -> the first number, for sorting. null if there's none.
-  function lengthSeconds(v) {
-    var m = /\d+/.exec(str(v));
-    return m ? +m[0] : null;
+  // Minutes from one Canberra time ("…T07:30") to another.
+  function minutesBetween(a, b) {
+    return Math.round((Date.parse(b + ":00Z") - Date.parse(a + ":00Z")) / 60000);
   }
   function cleanDay(v) {
     var s = str(v);
-    return /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : null;
+    return /^\d{4}-\d{2}-\d{2}$/.test(s) && !isNaN(Date.parse(s + "T00:00:00Z")) ? s : null;
+  }
+  function cleanTime(v) {
+    var m = /^(\d{4}-\d{2}-\d{2})[T ](\d{2}):(\d{2})/.exec(str(v));
+    return m && cleanDay(m[1]) && +m[2] < 24 && +m[3] < 60 ? m[1] + "T" + m[2] + ":" + m[3] : null;
   }
   function cleanPerson(v) {
     var s = str(v);
     for (var i = 0; i < PEOPLE.length; i++) if (PEOPLE[i].toLowerCase() === s.toLowerCase()) return PEOPLE[i];
     return null;
   }
-
-  // The fields the owner fills in, checked. title is the only one that must be there.
-  function cleanFields(f) {
-    f = f || {};
-    var out = {
-      title: str(f.title, 120),
-      type: matchType(f.type),
-      tags: splitTags(f.tags),
-      hook: str(f.hook, 500),
-      steps: splitLines(f.steps),
-      caption: str(f.caption, 2200),
-      people: cleanPeople(f.people),
-      length: str(f.length, 30),
-      link: f.link ? normaliseUrl(f.link) || "" : "",
-    };
-    out.platform = out.link ? platformOf(out.link) : null;
-    if ("assignee" in f) out.assignee = cleanPerson(f.assignee);
-    if ("due" in f) out.due = cleanDay(f.due);
-    return out;
+  // "Today", "Tomorrow", "Yesterday", "Fri 7 Nov".
+  function dayLabel(day, today) {
+    var d = daysBetween(today, day);
+    if (d === 0) return "Today";
+    if (d === 1) return "Tomorrow";
+    if (d === -1) return "Yesterday";
+    return new Date(day + "T00:00:00Z").toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
+  }
+  // "6pm", "6:30pm".
+  function timeLabel(t) {
+    var h = +t.slice(11, 13), m = t.slice(14, 16);
+    return (h % 12 || 12) + (m === "00" ? "" : ":" + m) + (h < 12 ? "am" : "pm");
   }
 
+  /* ------------------------------------------------------------ ideas */
+
+  // The fields anyone fills in, checked. The title is the only one that must be there.
+  function cleanFields(f) {
+    f = f || {};
+    var out = { title: str(f.title, 140), notes: str(f.notes, 4000), caption: str(f.caption, 2200), link: f.link ? normaliseUrl(f.link) || "" : "" };
+    if ("who" in f) out.who = cleanPerson(f.who);
+    if ("when" in f) out.when = cleanDay(f.when);
+    if ("postAt" in f) out.postAt = cleanTime(f.postAt);
+    return out;
+  }
   function newIdea(fields, o) {
     o = o || {};
     var f = cleanFields(fields);
     if (!f.title) throw new Error("An idea needs a title");
-    var idea = {
-      id: o.id, title: f.title, type: f.type, tags: f.tags, hook: f.hook, steps: f.steps,
-      caption: f.caption, people: f.people, length: f.length, link: f.link, platform: f.platform,
-      inspoId: o.inspoId || null, assignee: f.assignee || null, due: f.due || null,
-      stage: "tofilm", history: [], views: null, postedDay: null, source: o.source || "manual",
+    return {
+      id: o.id, title: f.title, notes: f.notes, caption: f.caption, link: f.link,
+      who: f.who || null, when: f.when || null, postAt: null,
+      stage: "tofilm", stageAt: o.now, history: [], postedDay: null, source: o.source || "app",
       createdAt: o.now, createdBy: o.by || null, updatedAt: o.now,
     };
-    return idea;
   }
-  // The same idea with the owner's edits. Its stage, history and views stay as they are.
+  // The same idea with someone's edits. Its stage and history stay as they are.
   function editIdea(idea, fields, now) {
     var f = cleanFields(Object.assign({}, idea, fields));
     if (!f.title) throw new Error("An idea needs a title");
-    return Object.assign({}, idea, f, { updatedAt: now });
-  }
-
-  function newInspo(o) {
-    var url = normaliseUrl(o.url);
-    if (!url) throw new Error("That isn't a link");
-    var platform = platformOf(url);
-    return {
-      id: o.id, url: url, platform: platform, note: str(o.note, 500),
-      // Instagram: the link only, never anything about the reel.
-      meta: platform === "tiktok" ? cleanMeta(o.meta) : null,
-      createdAt: o.now, createdBy: o.by || null, ideaIds: [],
-    };
-  }
-
-  /* ------------------------------------------------------------ stages */
-
-  // The idea one stage on (dir 1) or back (dir -1), or null when it's at the end already.
-  // today is the day it happens ("2026-11-04"), kept on a posted idea for the weekly count.
-  function move(idea, dir, by, now, today) {
-    var i = IDEA_STAGES.indexOf(idea.stage);
-    var j = i + (dir < 0 ? -1 : 1);
-    if (i < 0 || j < 0 || j >= IDEA_STAGES.length) return null;
-    var to = IDEA_STAGES[j];
-    var next = Object.assign({}, idea, {
-      stage: to,
-      history: (idea.history || []).concat([{ from: idea.stage, to: to, by: by || null, at: now }]).slice(-50),
-      updatedAt: now,
-    });
-    if (to === "posted") next.postedDay = today || null;
-    else if (idea.stage === "posted") next.postedDay = null;
+    var next = Object.assign({}, idea, f, { updatedAt: now });
+    if (idea.stage !== "scheduled" && idea.stage !== "posted") next.postAt = idea.postAt || null;
     return next;
   }
-  function nextLabel(idea) {
-    var i = IDEA_STAGES.indexOf(idea.stage);
-    return i >= 0 && i < IDEA_STAGES.length - 1 ? stageLabel(IDEA_STAGES[i + 1]) : null;
-  }
 
-  /* ------------------------------------------------------------ today */
-
-  // "Biggest first": the shoots that need the most people, then the longest, then the most
-  // steps, so the big setups are done while everyone's there.
-  function biggestFirst(a, b) {
-    return (b.people || 1) - (a.people || 1) ||
-      (lengthSeconds(b.length) || 0) - (lengthSeconds(a.length) || 0) ||
-      (b.steps || []).length - (a.steps || []).length ||
-      String(a.due || "").localeCompare(String(b.due || "")) ||
-      String(a.title).localeCompare(String(b.title));
-  }
-  // What someone films today: their "To film" ideas due today or before.
-  function todayFor(ideas, person, today) {
-    return (ideas || []).filter(function (x) {
-      return x.stage === "tofilm" && x.assignee === person && x.due && x.due <= today;
-    }).sort(biggestFirst);
-  }
-  // Theirs that are due later, or have no date yet, soonest first.
-  function upcomingFor(ideas, person, today) {
-    return (ideas || []).filter(function (x) {
-      return x.stage === "tofilm" && x.assignee === person && (!x.due || x.due > today);
-    }).sort(function (a, b) {
-      return (a.due ? 0 : 1) - (b.due ? 0 : 1) || String(a.due || "").localeCompare(String(b.due || "")) || biggestFirst(a, b);
+  // One stage on (dir 1) or back (dir -1), or null at the end. who and when were for the step
+  // just done, so they're cleared; moving into Scheduled needs the time it goes up.
+  function move(idea, dir, o) {
+    o = o || {};
+    var i = IDS.indexOf(idea.stage);
+    var j = i + (dir < 0 ? -1 : 1);
+    if (i < 0 || j < 0 || j >= IDS.length) return null;
+    var to = IDS[j];
+    var postAt = idea.postAt || null;
+    if (to === "scheduled" && dir > 0) {
+      postAt = cleanTime(o.postAt);
+      if (!postAt) throw new Error("Pick when it goes up");
+    }
+    if (j < IDS.indexOf("scheduled")) postAt = null;
+    var next = Object.assign({}, idea, {
+      stage: to, stageAt: o.now, who: null, when: null, postAt: postAt,
+      history: (idea.history || []).concat([{ from: idea.stage, to: to, by: o.by || null, at: o.now }]).slice(-50),
+      updatedAt: o.now,
     });
-  }
-  function daysBetween(a, b) {
-    return Math.round((Date.parse(b + "T00:00:00Z") - Date.parse(a + "T00:00:00Z")) / 86400000);
-  }
-  // "Due today", "1 day late", "Due Fri 7 Nov".
-  function dueLabel(due, today) {
-    if (!due) return "No date";
-    var d = daysBetween(due, today);
-    if (d === 0) return "Due today";
-    if (d > 0) return d + (d === 1 ? " day late" : " days late");
-    if (d === -1) return "Due tomorrow";
-    var dt = new Date(due + "T00:00:00Z");
-    return "Due " + dt.toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
+    if (to === "scheduled" && postAt) next.when = postAt.slice(0, 10);
+    next.postedDay = to === "posted" ? o.today || null : null;
+    // Going back puts the old who and when back, so an Undo really undoes.
+    if (dir < 0 && idea.history && idea.history.length) {
+      var prev = idea.history[idea.history.length - 1];
+      if (prev && prev.to === idea.stage && prev.from === to && prev.who !== undefined) { next.who = prev.who; next.when = prev.when; }
+    } else {
+      next.history[next.history.length - 1].who = idea.who || null;
+      next.history[next.history.length - 1].when = idea.when || null;
+    }
+    return next;
   }
 
-  // "Ant, 2 videos today: Mat slap, POV wheels." One line for each person with something due,
-  // or just theirs when who is given.
-  function reminderText(ideas, today, who) {
-    var people = who ? [cleanPerson(who)].filter(Boolean) : PEOPLE;
-    var lines = [];
-    people.forEach(function (p) {
-      var list = todayFor(ideas, p, today);
-      if (list.length) lines.push(p + ", " + list.length + (list.length === 1 ? " video" : " videos") + " today: " + list.map(function (x) { return x.title; }).join(", ") + ".");
-      else if (who) lines.push(p + ", nothing to film today.");
-    });
-    return lines.length ? lines.join("\n") : "No videos due today.";
-  }
+  /* ------------------------------------------------------------ reminders */
 
-  /* ------------------------------------------------------------ the numbers */
-
-  // Monday to Sunday around today.
-  function weekOf(today) {
-    var d = new Date(today + "T00:00:00Z");
-    var back = (d.getUTCDay() + 6) % 7;
-    var mon = new Date(d.getTime() - back * 86400000);
-    var sun = new Date(mon.getTime() + 6 * 86400000);
-    return { from: mon.toISOString().slice(0, 10), to: sun.toISOString().slice(0, 10) };
-  }
-  function postedThisWeek(ideas, today) {
-    var w = weekOf(today);
-    return (ideas || []).filter(function (x) { return x.stage === "posted" && x.postedDay && x.postedDay >= w.from && x.postedDay <= w.to; }).length;
-  }
-  // For each type with posted videos: how many, how many with views, and their average views.
-  function statsByType(ideas) {
-    var by = {};
+  // What someone has to do today, from every list: due today or late, plus anything filmed or
+  // edited that's been sitting a day or more. Blank "who" means it's the owner's.
+  function remindersFor(ideas, person, nowLocal) {
+    var today = nowLocal.slice(0, 10);
+    var out = [];
     (ideas || []).forEach(function (x) {
-      if (x.stage !== "posted") return;
-      var t = x.type || "No type";
-      var s = by[t] || (by[t] = { type: t, posted: 0, withViews: 0, total: 0, avgViews: null });
-      s.posted++;
-      if (typeof x.views === "number" && x.views >= 0) { s.withViews++; s.total += x.views; }
+      var mine = x.who ? x.who === person : person === OWNER;
+      if (!mine || x.stage === "posted") return;
+      var st = stage(x.stage);
+      var sitting = x.stageAt ? daysBetween(dayIn(new Date(x.stageAt)), today) : 0;
+      var due = x.when && x.when <= today;
+      if (x.stage === "scheduled") {
+        if (!x.postAt || x.postAt.slice(0, 10) > today) return;
+        var late = x.postAt.slice(0, 10) < today || minutesBetween(x.postAt, nowLocal) > 60;
+        out.push({ id: x.id, kind: "post", title: x.title, at: x.postAt, late: late,
+          text: (late ? "Post (late): " : "Post at " + timeLabel(x.postAt) + ": ") + x.title });
+        return;
+      }
+      if (x.stage === "tofilm" ? due : due || (!x.when && sitting >= 1)) {
+        out.push({ id: x.id, kind: st.step.toLowerCase(), title: x.title, late: !!(x.when && x.when < today), text: st.step + ": " + x.title });
+      }
     });
-    return Object.keys(by).map(function (k) {
-      var s = by[k];
-      s.avgViews = s.withViews ? Math.round(s.total / s.withViews) : null;
-      return s;
-    }).sort(function (a, b) { return (b.avgViews == null ? -1 : b.avgViews) - (a.avgViews == null ? -1 : a.avgViews) || b.posted - a.posted; });
+    var order = { post: 0, film: 1, edit: 2, schedule: 3 };
+    return out.sort(function (a, b) { return order[a.kind] - order[b.kind] || String(a.at || "").localeCompare(String(b.at || "")) || a.title.localeCompare(b.title); });
   }
-  function countByStage(ideas, inspo) {
-    var out = { inspo: (inspo || []).length };
-    IDEA_STAGES.forEach(function (s) { out[s] = 0; });
-    (ideas || []).forEach(function (x) { if (out[x.stage] != null) out[x.stage]++; });
-    return out;
+  // "Film: Mat slap. Edit: POV wheels. Post at 6pm: Dog hair." Long lists end "and 3 more."
+  function digestText(list, max) {
+    max = max || 4;
+    if (!list.length) return "";
+    var shown = list.slice(0, max).map(function (r) { return r.text; });
+    return shown.join(". ") + (list.length > max ? ". And " + (list.length - max) + " more." : ".");
   }
 
   /* ------------------------------------------------------------ import */
 
-  // The starting ideas, from imperium_film_ideas.json: an array of ideas, or { ideas: [...] },
-  // or any object holding one. Field names are matched loosely (title/name/idea, steps/shots,
-  // people/people_needed, length/duration…). All land in "To film", unassigned. An idea whose
-  // title is already on the list is skipped.
-  function ideasFrom(data) {
-    if (Array.isArray(data)) return data;
-    if (data && typeof data === "object") {
-      if (Array.isArray(data.ideas)) return data.ideas;
-      var keys = Object.keys(data);
-      for (var i = 0; i < keys.length; i++) if (Array.isArray(data[keys[i]])) return data[keys[i]];
+  function pick(o, keys) {
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      if (o[k] != null && o[k] !== "") return o[k];
+      var lower = Object.keys(o).filter(function (x) { return x.toLowerCase() === k.toLowerCase(); })[0];
+      if (lower && o[lower] != null && o[lower] !== "") return o[lower];
     }
     return null;
   }
-  function pick(o, names) {
-    for (var i = 0; i < names.length; i++) if (o[names[i]] != null && o[names[i]] !== "") return o[names[i]];
-    return null;
+  function ideasFrom(data) {
+    if (Array.isArray(data)) return data;
+    if (!data || typeof data !== "object") return null;
+    var keys = ["ideas", "film_ideas", "videos", "items", "list", "data"];
+    for (var i = 0; i < keys.length; i++) if (Array.isArray(data[keys[i]])) return data[keys[i]];
+    var arrays = Object.keys(data).filter(function (k) { return Array.isArray(data[k]); });
+    return arrays.length ? data[arrays[0]] : null;
   }
+  // A list of ideas from imperium_film_ideas.json (or anything shaped close to it). Hooks, shots,
+  // types and the rest go into the notes, so nothing in the file is lost.
   function importIdeas(data, existing, o) {
     var list = ideasFrom(data);
     if (!list) throw new Error("That file has no list of ideas in it");
@@ -325,51 +248,47 @@
     list.forEach(function (raw, n) {
       if (typeof raw === "string") raw = { title: raw };
       if (!raw || typeof raw !== "object") { bad++; return; }
-      var title = str(pick(raw, ["title", "name", "idea", "concept", "video"]), 120);
+      var title = str(pick(raw, ["title", "name", "idea", "concept", "video"]), 140);
       if (!title) { bad++; return; }
       if (seen[title.toLowerCase()]) { skipped++; return; }
       seen[title.toLowerCase()] = 1;
-      var tags = splitTags(pick(raw, ["tags", "tag", "labels"]) || []);
-      var typeRaw = pick(raw, ["type", "category", "format", "series"]);
-      var type = matchType(typeRaw);
-      // A type that isn't one of ours is kept as a tag rather than lost.
-      if (typeRaw && !type) tags = splitTags(tags.concat([str(typeRaw, 40)]));
-      var notes = str(pick(raw, ["notes", "note", "why"]), 500);
-      var steps = splitLines(pick(raw, ["steps", "shots", "shot_list", "shotList", "shot list", "script", "beats"]) || []);
-      if (notes) steps = steps.concat(["Note: " + notes]).slice(0, 30);
+      var lines = [];
+      var add = function (label, v) {
+        if (v == null || v === "") return;
+        if (Array.isArray(v)) v = v.map(function (s, i) { return (i + 1) + ". " + str(s); }).join("\n");
+        lines.push(label ? label + ": " + str(v) : str(v));
+      };
+      add("Type", pick(raw, ["type", "category", "format", "series"]));
+      add("Hook", pick(raw, ["hook", "opening", "hook_idea"]));
+      var shots = pick(raw, ["steps", "shots", "shot_list", "shotList", "script", "beats"]);
+      if (shots) lines.push("Shots:\n" + (Array.isArray(shots) ? shots.map(function (s, i) { return (i + 1) + ". " + str(s); }).join("\n") : str(shots)));
+      add("People", pick(raw, ["people", "people_needed", "peopleNeeded", "crew", "cast"]));
+      add("Length", pick(raw, ["length", "duration", "seconds", "time"]));
+      var tags = pick(raw, ["tags", "tag", "labels"]);
+      add("Tags", Array.isArray(tags) ? tags.join(", ") : tags);
+      add("", pick(raw, ["notes", "note", "why", "description"]));
       out.push(newIdea({
-        title: title, type: type, tags: tags,
-        hook: pick(raw, ["hook", "opening", "hook_idea"]),
-        steps: steps,
+        title: title, notes: lines.join("\n"),
         caption: pick(raw, ["caption", "captions", "copy"]),
-        people: pick(raw, ["people", "people_needed", "peopleNeeded", "crew", "cast"]),
-        length: pick(raw, ["length", "duration", "seconds", "time"]),
         link: pick(raw, ["link", "url", "reference", "inspo", "example"]),
       }, { id: o.id(n), now: o.now, by: o.by, source: "import" }));
     });
     return { ideas: out, skipped: skipped, bad: bad };
   }
 
-  /* ------------------------------------------------------------ days */
-
-  // "2026-11-04" in Canberra (or the zone given), whatever the computer's clock zone is.
-  function dayIn(date, tz) {
-    var parts = new Intl.DateTimeFormat("en-CA", { timeZone: tz || "Australia/Sydney", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(date || new Date());
-    var get = function (t) { return parts.filter(function (p) { return p.type === t; })[0].value; };
-    return get("year") + "-" + get("month") + "-" + get("day");
-  }
-  function addDays(day, n) {
-    return new Date(Date.parse(day + "T00:00:00Z") + n * 86400000).toISOString().slice(0, 10);
+  function countByStage(ideas) {
+    var out = {};
+    IDS.forEach(function (id) { out[id] = 0; });
+    (ideas || []).forEach(function (x) { if (x.stage in out) out[x.stage]++; });
+    return out;
   }
 
-  var api = {
-    TYPES: TYPES, STAGES: STAGES, IDEA_STAGES: IDEA_STAGES, CREW: CREW, OWNER: OWNER, PEOPLE: PEOPLE, DEFAULT_TARGET: DEFAULT_TARGET,
-    stageLabel: stageLabel, normaliseUrl: normaliseUrl, platformOf: platformOf, isShortTikTok: isShortTikTok, tiktokHandle: tiktokHandle, cleanMeta: cleanMeta,
-    splitLines: splitLines, splitTags: splitTags, matchType: matchType, lengthSeconds: lengthSeconds, cleanPerson: cleanPerson, cleanDay: cleanDay,
-    cleanFields: cleanFields, newIdea: newIdea, editIdea: editIdea, newInspo: newInspo,
-    move: move, nextLabel: nextLabel, todayFor: todayFor, upcomingFor: upcomingFor, dueLabel: dueLabel, reminderText: reminderText,
-    weekOf: weekOf, postedThisWeek: postedThisWeek, statsByType: statsByType, countByStage: countByStage,
-    importIdeas: importIdeas, dayIn: dayIn, addDays: addDays, daysBetween: daysBetween,
+  root.FilmModel = {
+    STAGES: STAGES, IDS: IDS, CREW: CREW, OWNER: OWNER, PEOPLE: PEOPLE, TZ: TZ,
+    stage: stage, stageLabel: stageLabel, normaliseUrl: normaliseUrl, platformOf: platformOf,
+    dayIn: dayIn, localNow: localNow, addDays: addDays, daysBetween: daysBetween, minutesBetween: minutesBetween,
+    cleanDay: cleanDay, cleanTime: cleanTime, cleanPerson: cleanPerson, dayLabel: dayLabel, timeLabel: timeLabel,
+    cleanFields: cleanFields, newIdea: newIdea, editIdea: editIdea, move: move,
+    remindersFor: remindersFor, digestText: digestText, importIdeas: importIdeas, countByStage: countByStage,
   };
-  root.FilmModel = api;
 })(typeof window !== "undefined" ? window : globalThis);

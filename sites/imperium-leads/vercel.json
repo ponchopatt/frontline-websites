@@ -5,7 +5,7 @@
   "outputDirectory": "public",
   "ignoreCommand": "git diff --quiet HEAD^ HEAD -- .",
   "functions": { "api/ghl-import.js": { "maxDuration": 300 }, "api/ghl-sync.js": { "maxDuration": 60 } },
-  "crons": [{ "path": "/api/ad-spend", "schedule": "23 19 * * *" }, { "path": "/api/ghl-sync", "schedule": "7 * * * *" }],
+  "crons": [{ "path": "/api/ad-spend", "schedule": "23 19 * * *" }, { "path": "/api/ghl-sync", "schedule": "7 * * * *" }, { "path": "/api/film?action=remind", "schedule": "50 * * * *" }],
   "headers": [
     { "source": "/sw.js", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
     { "source": "/film/(index.html|film.js|film-model.js|film.css|sw.js|manifest.json)?", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
