@@ -4,7 +4,7 @@ A simple phone app that takes each video from idea to posted.
 
 - **Live:** https://frontline-websites-6mjg.vercel.app/film/
 - **Put it on your phone:** open the link in Safari, tap Share, then Add to Home Screen. On iPhone, reminders only work once it's on the home screen.
-- **Who's on it:** Ananth and Blake. There's no PIN: open it and tap your name.
+- **Who's on it:** Ananth and Brake. There's no PIN: open it and tap your name.
 
 ## How it works
 
@@ -36,7 +36,7 @@ What counts as yours:
 | Edit or Schedule | You're picked, and its day is today or past. With no day set, you get reminded once it has waited a day |
 | Post | It's scheduled for today, or it's late |
 
-If nobody is picked for a step, both Ananth and Blake get reminded.
+If nobody is picked for a step, both Ananth and Brake get reminded.
 
 How it works underneath:
 - Reminders are standard web push. Vercel checks every hour (`vercel.json`, `/api/film?action=remind` at :50 past). Each reminder is sent only once, so running it again sends nothing new.

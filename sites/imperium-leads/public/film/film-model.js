@@ -22,7 +22,7 @@
     { id: "posted", label: "Posted", next: null, step: null, by: null, empty: "Nothing posted yet." },
   ];
   var IDS = STAGES.map(function (s) { return s.id; });
-  var PEOPLE = ["Ananth", "Blake"];
+  var PEOPLE = ["Ananth", "Brake"];
   var TZ = "Australia/Sydney"; // Canberra's time
 
   function str(v, max) {
