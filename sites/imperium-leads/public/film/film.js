@@ -1,37 +1,38 @@
 /*
-  Imperium Film List: the page. Everything it shows is drawn here from S (the state) and the
-  list from /api/film; the rules (stages, Today, the numbers) are in film-model.js.
-
-  No PIN: open it, pick your name. The crew's only screen is Today. The owner gets
-  Inbox, Board, Today, Numbers and More along the bottom.
+  Imperium Film List: the page. Four lists (Ideas, Filmed, Edited, Scheduled) and a tick that
+  moves an idea to the next one. A "Today" box shows what's yours to do, and phone reminders
+  send the same thing every morning. The rules are in film-model.js.
 */
 (() => {
   "use strict";
   const M = window.FilmModel;
   const app = document.getElementById("app");
-  const TZ = "Australia/Sydney";
-  const QUICK_TAGS = ["hook idea", "B-roll idea", "trend", "skit"];
+  const calm = () => window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const LISTS = ["tofilm", "filmed", "edited", "scheduled"];
 
   const local = {
     get(k) { try { return localStorage.getItem("film." + k); } catch { return null; } },
     set(k, v) { try { v == null ? localStorage.removeItem("film." + k) : localStorage.setItem("film." + k, v); } catch { /* private mode */ } },
   };
-  const readJSON = (s, d) => { try { return s ? JSON.parse(s) : d; } catch { return d; } };
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
-  const today = () => M.dayIn(new Date(), TZ);
   const plural = (n, one, many) => n + " " + (n === 1 ? one : many);
+  const nowLocal = () => M.localNow(new Date());
+  const today = () => nowLocal().slice(0, 10);
 
   const S = {
     who: local.get("who"),
     data: null, loading: false, loadError: "",
-    tab: local.get("tab") || "board", stage: "tofilm", fType: "", fTag: "", fPerson: "",
-    inboxFilter: "all", todayPerson: M.CREW[0],
-    editing: null, draft: { url: "", note: "" }, inboxMsg: "", importMsg: "", importText: "",
-    ticks: readJSON(local.get("ticks"), {}), confirm: null, saving: false,
+    list: LISTS.includes(local.get("list")) ? local.get("list") : "tofilm",
+    showPosted: false,
+    draft: "", adding: false,
+    open: null,        // the idea being edited: { id, fields, msg, confirm }
+    schedule: null,    // picking when it goes up: { id, date, time, msg }
+    more: false, importMsg: "", importText: "",
+    push: { state: "unknown", msg: "" },
+    saving: false,
   };
-  const isOwner = () => S.who === M.OWNER;
-  // Left over from when it had a PIN.
-  local.set("token", null); local.set("role", null);
+  // Left over from earlier versions.
+  ["token", "role", "tab", "ticks"].forEach((k) => local.set(k, null));
 
   /* ------------------------------------------------------------ server */
 
@@ -43,40 +44,28 @@
     });
     let body = null;
     try { body = await res.json(); } catch { /* not JSON */ }
-    if (!res.ok) {
-      const e = new Error((body && body.error) || "Something went wrong. Check your signal and try again.");
-      e.body = body;
-      throw e;
-    }
+    if (!res.ok) throw new Error((body && body.error) || "Something went wrong. Check your signal and try again.");
     return body;
   }
-
   async function load(quiet) {
     if (S.loading) return;
     S.loading = true;
     try {
       const r = await api("list");
-      S.data = { inspo: r.inspo, ideas: r.ideas, settings: r.settings };
+      S.data = { ideas: r.ideas };
       S.loadError = "";
     } catch (e) {
       S.loadError = e.message;
     } finally {
       S.loading = false;
     }
-    if (!quiet || !busyTyping()) render();
+    if (!quiet || !busy()) render();
   }
   const find = (id) => (S.data ? S.data.ideas.find((x) => x.id === id) : null);
-  const findInspo = (id) => (S.data ? S.data.inspo.find((x) => x.id === id) : null);
-  function putIdea(idea) {
+  function put(idea) {
     const i = S.data.ideas.findIndex((x) => x.id === idea.id);
     if (i >= 0) S.data.ideas[i] = idea;
     else S.data.ideas.unshift(idea);
-  }
-  function putInspo(inspo) {
-    if (!inspo) return;
-    const i = S.data.inspo.findIndex((x) => x.id === inspo.id);
-    if (i >= 0) S.data.inspo[i] = inspo;
-    else S.data.inspo.unshift(inspo);
   }
 
   /* ------------------------------------------------------------ toast with Undo */
@@ -91,7 +80,7 @@
     toastUndo.hidden = !undo;
     toastEl.hidden = false;
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => { toastEl.hidden = true; toastFn = null; }, undo ? 9000 : 3500);
+    toastTimer = setTimeout(() => { toastEl.hidden = true; toastFn = null; }, undo ? 8000 : 3200);
   }
   toastUndo.addEventListener("click", () => {
     const fn = toastFn;
@@ -99,383 +88,317 @@
     toastFn = null;
     if (fn) fn();
   });
-
   async function copyText(text) {
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch {
+    try { await navigator.clipboard.writeText(text); return true; } catch {
       const ta = document.createElement("textarea");
-      ta.value = text;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.opacity = "0";
-      document.body.append(ta);
-      ta.select();
+      ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.append(ta); ta.select();
       let ok = false;
       try { ok = document.execCommand("copy"); } catch { /* old browser */ }
       ta.remove();
       return ok;
     }
   }
-
-  /* ------------------------------------------------------------ TikTok previews */
-
-  // TikTok answers a phone's browser directly (it allows any site to ask), so the preview is
-  // fetched here when it can be, and the server's copy is only a fallback.
-  async function tiktokPreview(url) {
-    try {
-      const ctl = new AbortController();
-      const t = setTimeout(() => ctl.abort(), 4000);
-      const res = await fetch("https://www.tiktok.com/oembed?url=" + encodeURIComponent(url), { signal: ctl.signal });
-      clearTimeout(t);
-      return res.ok ? M.cleanMeta(await res.json()) : null;
-    } catch {
-      return null;
-    }
-  }
-  const triedPreview = new Set();
-  async function refreshPreview(x, force) {
-    if (!x || x.platform !== "tiktok" || M.isShortTikTok(x.url)) return;
-    if (triedPreview.has(x.id) && !force) return;
-    triedPreview.add(x.id);
-    const meta = await tiktokPreview(x.url);
-    if (!meta || !(meta.thumb || meta.title)) return;
-    try {
-      const r = await api("setMeta", { id: x.id, meta });
-      putInspo(r.inspo);
-      if (!busyTyping()) render();
-    } catch { /* keep what we have */ }
-  }
-  // TikTok's thumbnail links expire after a while: when one stops loading, ask for a fresh one.
-  app.addEventListener("error", (e) => {
-    const img = e.target;
-    if (img && img.tagName === "IMG" && img.dataset.refresh) {
-      img.parentNode.innerHTML = PLAY;
-      refreshPreview(findInspo(img.dataset.refresh), true);
-    }
-  }, true);
+  const buzz = (ms) => { if (navigator.vibrate) { try { navigator.vibrate(ms); } catch { /* fine */ } } };
 
   /* ------------------------------------------------------------ bits of page */
 
-  const PLAY = '<svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 8.5v7l6-3.5z" fill="currentColor"/></svg>';
-  const dayLong = (d) => new Date(d + "T00:00:00Z").toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" });
-  function header(right) {
-    return `<header class="top"><div class="wrap top-in"><span class="brand"><img src="/film/icon-192.png" alt="">Film List</span><div class="me">${right || ""}</div></div></header>`;
+  const ICON = {
+    gear: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+    plus: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+  };
+  function header() {
+    return `<header class="top"><div class="wrap top-in">
+      <span class="brand"><img src="/film/icon-192.png" alt="">Film List</span>
+      ${S.who ? `<button type="button" class="icon-btn" data-act="switch" aria-label="${esc(S.who)}. Tap to switch person">${esc(S.who)}</button><button type="button" class="icon-btn" data-act="more" aria-label="Settings">${ICON.gear}</button>` : ""}
+    </div></header>`;
   }
-  function dueTag(x, t) {
-    if (!x.due) return "";
-    const cls = x.due < t ? "late" : x.due === t ? "today" : "";
-    return `<span class="tag ${cls}">${esc(M.dueLabel(x.due, t))}</span>`;
-  }
-  function chip(key, value, label, n) {
-    return `<button type="button" class="chip" data-act="set" data-key="${key}" data-value="${esc(value)}" aria-pressed="${S[key] === value}">${esc(label)}${n != null ? ` <span class="n">${n}</span>` : ""}</button>`;
-  }
-  function nextButton(x, size) {
-    const n = M.nextLabel(x);
-    if (!n) return "";
-    const label = x.stage === "tofilm" ? "Filmed it" : "Mark as " + n.toLowerCase();
-    return `<button type="button" class="btn wide ${size || ""}" data-act="next" data-id="${x.id}">${label}</button>`;
-  }
-  function confirming(key) { return S.confirm && S.confirm.key === key && S.confirm.until > Date.now(); }
+  const dayWord = (d, t) => { const l = M.dayLabel(d, t); return /^(Today|Tomorrow|Yesterday)$/.test(l) ? l.toLowerCase() : l; };
 
-  function goalHTML(t) {
-    const target = (S.data.settings && S.data.settings.weeklyTarget) || M.DEFAULT_TARGET;
-    const done = M.postedThisWeek(S.data.ideas, t);
-    const pct = Math.min(100, Math.round((done / target) * 100));
-    return `<div class="card goal"><div class="goal-top"><span class="goal-num">${done} of ${target} posted</span><span class="dim small">this week</span></div>
-      <div class="bar ${done >= target ? "done" : ""}" role="progressbar" aria-valuemin="0" aria-valuemax="${target}" aria-valuenow="${done}" aria-label="${done} of ${target} posted this week"><i style="width:${pct}%"></i></div></div>`;
-  }
-
-  // The card the crew film from: big title, hook, the shots to tick, and one big button.
-  function filmCard(x, t) {
-    const ticks = S.ticks[x.id] || [];
-    const meta = [x.people ? plural(x.people, "person", "people") : "", x.length ? esc(x.length) : ""].filter(Boolean);
-    return `<article class="card focus">
-      <div class="block"><h2 class="card-title">${esc(x.title)}</h2>
-        <div class="tags">${x.type ? `<span class="tag type">${esc(x.type)}</span>` : ""}${dueTag(x, t)}</div>
-        ${meta.length ? `<div class="meta">${meta.map((m) => `<span>${m}</span>`).join("")}</div>` : ""}</div>
-      ${x.hook ? `<div class="block"><span class="label">Hook</span><p class="hook">${esc(x.hook)}</p></div>` : ""}
-      ${x.steps && x.steps.length ? `<div class="block"><span class="label">Shots</span><ul class="steps">${x.steps.map((s, i) => `<li><button type="button" data-act="tick" data-id="${x.id}" data-i="${i}" aria-pressed="${ticks.includes(i)}"><span class="box"></span><span>${esc(s)}</span></button></li>`).join("")}</ul></div>` : ""}
-      ${x.link || x.caption ? `<div class="btns">${x.link ? `<a class="btn ghost" href="${esc(x.link)}" target="_blank" rel="noopener">Watch the example</a>` : ""}${x.caption ? `<button type="button" class="btn ghost" data-act="copy" data-id="${x.id}">Copy caption</button>` : ""}</div>` : ""}
-      ${nextButton(x, "big")}
-    </article>`;
-  }
-  function upRow(x, t) {
-    return `<div class="card"><div class="row"><div class="grow"><p class="card-title sm">${esc(x.title)}</p><p class="dim small">${esc(x.due ? M.dueLabel(x.due, t) : "No date yet")}${x.type ? ", " + esc(x.type) : ""}</p></div></div></div>`;
-  }
-  function todayHTML(person, mine) {
+  // "Ant, film by Fri 7 Nov" / "Goes up today at 6pm" / "Waiting 3 days".
+  function metaLine(x) {
     const t = today();
-    const list = M.todayFor(S.data.ideas, person, t);
-    const up = M.upcomingFor(S.data.ideas, person, t);
-    const head = `<div class="page-head"><h1>${mine ? "Today" : esc(person) + "&rsquo;s day"}</h1><p class="soft">${esc(dayLong(t))}${list.length ? ". " + plural(list.length, "video", "videos") + " to film." : "."}</p></div>`;
-    const cards = list.length
-      ? list.map((x) => filmCard(x, t)).join("")
-      : `<div class="empty"><h2>All clear</h2><p class="soft">Nothing to film today.${up.length ? " What's next is below." : ""}</p></div>`;
-    const later = up.length ? `<section class="stack" style="margin-top:28px"><h2>Coming up</h2>${up.slice(0, 12).map((x) => upRow(x, t)).join("")}</section>` : "";
-    return head + `<div class="stack">${cards}</div>` + later;
+    const st = M.stage(x.stage);
+    const bits = [];
+    if (x.who) bits.push(esc(x.who));
+    if (x.stage === "scheduled" && x.postAt) {
+      const d = x.postAt.slice(0, 10);
+      const late = d < t || (d === t && M.minutesBetween(x.postAt, nowLocal()) > 60);
+      bits.push(`<span class="${late ? "late" : "when"}">${late ? "Was due to go up " : "Goes up "}${esc(dayWord(d, t))} at ${esc(M.timeLabel(x.postAt))}</span>`);
+    } else if (x.stage === "posted") {
+      if (x.postedDay) bits.push("Posted " + esc(dayWord(x.postedDay, t)));
+    } else if (x.when) {
+      const late = x.when < t;
+      const by = bits.length ? st.by.toLowerCase() : st.by;
+      bits.push(`<span class="${late ? "late" : "when"}">${esc(by)} ${esc(dayWord(x.when, t))}${late ? " (late)" : ""}</span>`);
+    } else if (x.stage !== "tofilm" && x.stageAt) {
+      const days = M.daysBetween(M.dayIn(new Date(x.stageAt)), t);
+      if (days >= 1) bits.push(`Waiting ${plural(days, "day", "days")}`);
+    }
+    if (x.link) bits.push(M.platformOf(x.link) === "tiktok" ? "TikTok link" : M.platformOf(x.link) === "instagram" ? "Instagram link" : "Link");
+    return bits.join(", ");
   }
 
-  function reelCard(x) {
-    const used = (x.ideaIds || []).map(find).filter(Boolean);
-    const tt = x.platform === "tiktok";
-    const ig = x.platform === "instagram";
-    const thumb = tt && x.meta && x.meta.thumb
-      ? `<div class="thumb"><img src="${esc(x.meta.thumb)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-refresh="${x.id}"></div>`
-      : `<div class="thumb ${ig ? "ig" : ""}">${PLAY}</div>`;
-    const author = tt ? (x.meta && x.meta.author) || M.tiktokHandle(x.url) : "";
-    const del = "deleteInspo:" + x.id;
-    return `<article class="card"><div class="reel">${thumb}<div class="reel-text">
-        <div class="tags"><span class="tag">${tt ? "TikTok" : ig ? "Instagram" : "Link"}</span>${author ? `<span class="dim small">${esc(author)}</span>` : ""}</div>
-        ${tt && x.meta && x.meta.title ? `<p class="clamp">${esc(x.meta.title)}</p>` : ""}
-        ${x.note ? `<p><strong>Why:</strong> ${esc(x.note)}</p>` : ""}
-        ${used.length ? `<p class="used">Made into: ${used.map((i) => esc(i.title)).join(", ")}</p>` : ""}
-      </div></div>
-      <div class="btns"><a class="btn ghost" href="${esc(x.url)}" target="_blank" rel="noopener">Watch the example</a><button type="button" class="btn" data-act="makeOurs" data-id="${x.id}">Make it ours</button></div>
-      <button type="button" class="link-btn small" data-act="deleteInspo" data-id="${x.id}">${confirming(del) ? "Tap again to delete it" : "Delete"}</button>
-    </article>`;
+  function itemHTML(x) {
+    const st = M.stage(x.stage);
+    const meta = metaLine(x);
+    const tickLabel = st.next ? `${st.next}: ${x.title}` : x.title;
+    return `<li class="item" data-item="${x.id}" data-stage="${x.stage}">
+      <button type="button" class="tick" data-act="tick" data-id="${x.id}" aria-label="${esc(tickLabel)}"></button>
+      <button type="button" class="open" data-act="open" data-id="${x.id}"><span class="t">${esc(x.title)}</span>${meta ? `<span class="m">${meta}</span>` : ""}</button>
+      <span class="chev" aria-hidden="true">›</span>
+    </li>`;
   }
 
-  function boardCard(x, t) {
-    const back = x.stage !== "tofilm";
-    return `<article class="card">
-      <div class="block"><h3 class="card-title sm">${esc(x.title)}</h3>
-        <div class="tags">${x.type ? `<span class="tag type">${esc(x.type)}</span>` : ""}<span class="tag">${esc(x.assignee || "Not assigned")}</span>${dueTag(x, t)}${(x.tags || []).map((g) => `<span class="tag">${esc(g)}</span>`).join("")}</div></div>
-      ${x.hook ? `<p class="soft">${esc(x.hook)}</p>` : ""}
-      ${x.stage === "posted" ? `<form class="row" data-form="views" data-id="${x.id}"><label class="field grow"><span>Views</span><input name="views" type="number" inputmode="numeric" min="0" placeholder="How many views?" value="${x.views == null ? "" : x.views}"></label><button class="btn sm" type="submit" style="align-self:end">Save</button></form>` : nextButton(x)}
-      <div class="row"><button type="button" class="btn sm quiet" data-act="edit" data-id="${x.id}">Edit</button>${x.caption ? `<button type="button" class="btn sm quiet" data-act="copy" data-id="${x.id}">Copy caption</button>` : ""}${x.link ? `<a class="btn sm quiet" href="${esc(x.link)}" target="_blank" rel="noopener">Watch the example</a>` : ""}${back ? `<button type="button" class="btn sm ghost" data-act="back" data-id="${x.id}">Move back</button>` : ""}</div>
-    </article>`;
+  function todayHTML() {
+    const list = M.remindersFor(S.data.ideas, S.who, nowLocal());
+    const p = S.push;
+    let bell = "";
+    if (p.state === "off") bell = `<div class="bell"><p>Get these on your phone every morning.</p><button type="button" class="btn sm" data-act="pushOn">Turn on reminders</button></div>`;
+    else if (p.state === "needs-home") bell = `<div class="bell"><p>For reminders, add Film List to your home screen first.</p><button type="button" class="btn sm" data-act="more">Show me</button></div>`;
+    else if (p.state === "blocked") bell = `<div class="bell"><p>Reminders are blocked in this phone's settings.</p></div>`;
+    if (!list.length && !bell) return "";
+    return `<section class="today" aria-label="Today">
+      <div class="today-head"><h2>${list.length ? "Today" : "All caught up"}</h2><span class="lbl">${list.length ? plural(list.length, "thing", "things") + " for you" : "Nothing due"}</span></div>
+      ${list.map((r) => `<button type="button" class="todo" data-act="open" data-id="${r.id}"><span class="kind ${r.kind}">${esc(r.kind)}</span><span class="what">${esc(r.title)}${r.kind === "post" && !r.late ? `<span class="dim small" style="display:block">at ${esc(M.timeLabel(r.at))}</span>` : ""}</span>${r.late ? `<span class="late">Late</span>` : ""}</button>`).join("")}
+      ${p.msg ? `<p class="err small">${esc(p.msg)}</p>` : ""}
+      ${bell}
+    </section>`;
   }
 
   /* ------------------------------------------------------------ screens */
 
   function renderWho() {
-    app.innerHTML = `${header("")}<main><div class="wrap stack">
-      <div class="page-head"><h1>Who are you?</h1><p class="soft">Pick your name. This phone remembers it.</p></div>
-      <div class="who">${M.CREW.map((p) => `<button type="button" class="btn quiet" data-act="pickWho" data-who="${p}">${p}</button>`).join("")}
-        <button type="button" class="btn ghost" data-act="pickWho" data-who="${M.OWNER}">I&rsquo;m the owner</button></div>
+    app.innerHTML = `${header()}<main><div class="wrap">
+      <div style="padding:22px 0 16px" class="stack"><h1>Who&rsquo;s this?</h1><p class="soft">Tap your name. Your phone remembers it, and your reminders come to you.</p></div>
+      <div class="who">${M.PEOPLE.map((p) => `<button type="button" class="btn" data-act="pickWho" data-who="${p}">${p}</button>`).join("")}</div>
     </div></main>`;
   }
 
-  function renderCrew() {
-    app.innerHTML = `${header(`<button type="button" class="btn sm ghost" data-act="switch" aria-label="Not ${esc(S.who)}? Switch person">${esc(S.who)}</button>`)}
-      <main><div class="wrap">${S.loadError ? `<p class="err" role="alert">${esc(S.loadError)}</p>` : ""}${todayHTML(S.who, true)}</div></main>`;
+  function renderMain() {
+    const counts = M.countByStage(S.data.ideas);
+    const mine = M.remindersFor(S.data.ideas, S.who, nowLocal());
+    const kindOf = { tofilm: "film", filmed: "edit", edited: "schedule", scheduled: "post" };
+    const cur = S.showPosted ? "posted" : S.list;
+    const st = M.stage(cur);
+    const items = S.data.ideas.filter((x) => x.stage === cur);
+    if (cur === "scheduled") items.sort((a, b) => String(a.postAt).localeCompare(String(b.postAt)));
+    else if (cur === "posted") items.sort((a, b) => String(b.postedDay || b.updatedAt).localeCompare(String(a.postedDay || a.updatedAt)));
+    else items.sort((a, b) => (a.when ? 0 : 1) - (b.when ? 0 : 1) || String(a.when || "").localeCompare(String(b.when || "")) || String(a.createdAt).localeCompare(String(b.createdAt)));
+    const how = { tofilm: "Tick it when it's filmed", filmed: "Tick it when it's edited", edited: "Tick to pick when it goes up", scheduled: "Tick it once it's posted", posted: "Done and dusted" }[cur];
+    app.innerHTML = `${header()}<main data-stage="${cur}"><div class="wrap">
+      ${S.loadError ? `<p class="err" role="alert" style="margin:10px 0">${esc(S.loadError)}</p>` : ""}
+      ${todayHTML()}
+      <nav class="lists" aria-label="Lists">${LISTS.map((id) => `<button type="button" data-stage="${id}" data-act="list" data-id="${id}" aria-pressed="${!S.showPosted && S.list === id}"><b>${counts[id]}</b><span>${esc(M.stageLabel(id))}</span>${mine.some((r) => r.kind === kindOf[id]) ? `<i aria-label="Something here is yours today"></i>` : ""}</button>`).join("")}</nav>
+      <div class="list-head"><h1>${esc(st.label)}</h1><p>${esc(how)}</p></div>
+      ${cur === "tofilm" ? `<form class="add" data-form="add"><input name="title" autocomplete="off" enterkeyhint="done" placeholder="Write down an idea" value="${esc(S.draft)}" data-draft="add" aria-label="New idea"><button type="submit" aria-label="Add the idea" ${S.adding ? "disabled" : ""}>${ICON.plus}</button></form>` : ""}
+      ${items.length ? `<ul class="items ${cur === "posted" ? "posted" : ""}" style="list-style:none;margin:0;padding:0">${items.map(itemHTML).join("")}</ul>` : `<div class="empty"><h2>Empty</h2><p>${esc(st.empty)}</p></div>`}
+      ${cur === "scheduled" || cur === "posted" ? `<button type="button" class="more-link" data-act="posted">${S.showPosted ? "Back to Scheduled" : `See what's posted (${counts.posted})`}</button>` : ""}
+      <div style="height:90px"></div>
+    </div></main>`;
   }
 
-  const ICONS = {
-    inbox: '<path d="M4 13l2.5-7h11L20 13v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M4 13h4l1.5 2.5h5L16 13h4"/>',
-    board: '<rect x="4" y="4" width="4.5" height="16" rx="1"/><rect x="10" y="4" width="4.5" height="11" rx="1"/><rect x="16" y="4" width="4" height="7" rx="1"/>',
-    today: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>',
-    stats: '<path d="M5 20V11M12 20V5M19 20v-6"/>',
-    more: '<circle cx="6" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="18" cy="12" r="1.3"/>',
-  };
-  const TABS = [["inbox", "Inbox"], ["board", "Board"], ["today", "Today"], ["stats", "Numbers"], ["more", "More"]];
+  function sheetHead(title, close, label) {
+    return `<div class="sheet-head"><div class="wrap"><button type="button" class="btn sm" data-act="${close}">${label || "Close"}</button><h2>${title}</h2></div></div>`;
+  }
+  const whenChips = (field, value, t) => [[t, "Today"], [M.addDays(t, 1), "Tomorrow"], [M.addDays(t, 2), M.dayLabel(M.addDays(t, 2), t)]]
+    .map(([d, l]) => `<button type="button" class="chip" data-act="pick" data-field="${field}" data-value="${d}" aria-pressed="${value === d}">${esc(l)}</button>`).join("");
 
-  function renderOwner() {
+  function renderOpen() {
+    const o = S.open;
+    const x = find(o.id);
+    if (!x) { S.open = null; return render(); }
+    const f = o.fields;
+    const st = M.stage(x.stage);
     const t = today();
-    let body = "";
-    if (S.tab === "inbox") body = inboxHTML();
-    else if (S.tab === "today") {
-      body = `<div class="chips" role="group" aria-label="Whose day" style="margin-bottom:14px">${M.PEOPLE.map((p) => chip("todayPerson", p, p, M.todayFor(S.data.ideas, p, t).length)).join("")}</div>` + todayHTML(S.todayPerson, false);
-    } else if (S.tab === "stats") body = statsHTML(t);
-    else if (S.tab === "more") body = moreHTML();
-    else body = boardHTML(t);
-    app.innerHTML = `${header(`<span class="dim small">Owner</span>`)}
-      <main><div class="wrap">${S.loadError ? `<p class="err" role="alert">${esc(S.loadError)}</p>` : ""}${body}</div></main>
-      <nav class="tabs" aria-label="Sections">${TABS.map(([id, label]) => `<button type="button" data-act="tab" data-tab="${id}" ${S.tab === id ? 'aria-current="page"' : ""}><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[id]}</svg>${label}</button>`).join("")}</nav>`;
-    if (S.tab === "inbox") S.data.inspo.forEach((x) => { if (x.platform === "tiktok" && !(x.meta && x.meta.thumb)) refreshPreview(x); });
+    const back = M.IDS.indexOf(x.stage) > 0 ? M.stage(M.IDS[M.IDS.indexOf(x.stage) - 1]) : null;
+    const step = x.stage === "posted" ? "" : x.stage === "scheduled"
+      ? `<div class="field"><span>Goes up</span><div class="pair"><input type="date" data-f="postDate" value="${esc(f.postDate)}" aria-label="Day it goes up"><input type="time" data-f="postTime" value="${esc(f.postTime)}" aria-label="Time it goes up"></div></div>`
+      : `<div class="field"><span>Who ${esc(st.step.toLowerCase())}s it? <em>(blank: Pat)</em></span><div class="chips">${M.PEOPLE.map((p) => `<button type="button" class="chip" data-act="pick" data-field="who" data-value="${p}" aria-pressed="${f.who === p}">${p}</button>`).join("")}</div></div>
+         <div class="field"><span>${esc(st.by)} <em>(optional)</em></span><div class="chips">${whenChips("when", f.when, t)}<button type="button" class="chip" data-act="pick" data-field="when" data-value="" aria-pressed="${!f.when}">No date</button></div><input type="date" data-f="when" value="${esc(f.when || "")}" aria-label="${esc(st.by)}"></div>`;
+    app.innerHTML = `<div class="sheet" data-stage="${x.stage}">${sheetHead(esc(st.label), "close", "Close")}<div class="wrap"><form class="body" data-form="idea" novalidate>
+      <label class="field"><span>The idea</span><input class="title-in" data-f="title" value="${esc(f.title)}" maxlength="140" required></label>
+      ${step}
+      <label class="field"><span>Notes <em>(hook, shots, anything)</em></span><textarea data-f="notes" rows="4" placeholder="The hook, the shots, who's in it">${esc(f.notes)}</textarea></label>
+      <label class="field"><span>Caption <em>(optional)</em></span><textarea data-f="caption" rows="2" placeholder="Statements, not questions">${esc(f.caption)}</textarea>${f.caption ? `<button type="button" class="btn sm" data-act="copy" style="justify-self:start">Copy the caption</button>` : ""}</label>
+      <label class="field"><span>Example link <em>(optional)</em></span><input type="url" inputmode="url" data-f="link" value="${esc(f.link)}" placeholder="TikTok or Instagram link">${x.link ? `<a class="btn sm" href="${esc(x.link)}" target="_blank" rel="noopener" style="justify-self:start">Watch it</a>` : ""}</label>
+      ${o.msg ? `<p class="err" role="alert">${esc(o.msg)}</p>` : ""}
+      <button type="submit" class="btn go wide" ${S.saving ? "disabled" : ""}>${S.saving ? "Saving..." : "Save"}</button>
+      <div class="btns">${back ? `<button type="button" class="btn" data-act="back" data-id="${x.id}">Back to ${esc(back.label)}</button>` : ""}<button type="button" class="btn danger" data-act="delete">${o.confirm ? "Tap again to delete" : "Delete"}</button></div>
+    </form></div></div>`;
   }
 
-  function inboxHTML() {
-    const all = S.data.inspo;
-    const f = S.inboxFilter;
-    const n = (fn) => all.filter(fn).length;
-    const unused = (x) => !(x.ideaIds || []).length;
-    const list = all.filter((x) => f === "all" || (f === "unused" ? unused(x) : x.platform === f));
-    return `<div class="page-head"><h1>Inbox</h1><p class="soft">Save reels you like. Turn the good ones into ideas.</p></div>
-      <form class="card" data-form="inbox" style="margin-bottom:16px">
-        <label class="field"><span>TikTok or Instagram link</span><input name="url" type="url" inputmode="url" autocomplete="off" placeholder="Paste the link" value="${esc(S.draft.url)}" data-draft="url"></label>
-        <label class="field"><span>Why we like it <em>(optional)</em></span><input name="note" type="text" autocomplete="off" placeholder="The hook, the edit, the idea" value="${esc(S.draft.note)}" data-draft="note"></label>
-        <button class="btn wide" type="submit" ${S.saving ? "disabled" : ""}>${S.saving ? "Saving..." : "Save to inbox"}</button>
-        ${S.inboxMsg ? `<p class="err" role="alert">${esc(S.inboxMsg)}</p>` : ""}
-      </form>
-      <div class="chips" role="group" aria-label="Show" style="margin-bottom:14px">${chip("inboxFilter", "all", "All", all.length)}${chip("inboxFilter", "tiktok", "TikTok", n((x) => x.platform === "tiktok"))}${chip("inboxFilter", "instagram", "Instagram", n((x) => x.platform === "instagram"))}${chip("inboxFilter", "unused", "Not used yet", n(unused))}</div>
-      <div class="stack">${list.length ? list.map(reelCard).join("") : `<div class="empty"><h2>Nothing here yet</h2><p class="soft">Paste a link above, or share a reel to the Film List from your phone (see More).</p></div>`}</div>`;
+  function renderSchedule() {
+    const s = S.schedule;
+    const x = find(s.id);
+    if (!x) { S.schedule = null; return render(); }
+    const t = today();
+    const now = nowLocal();
+    const quick = [[t, "18:00", "Today 6pm"], [M.addDays(t, 1), "12:00", "Tomorrow 12pm"], [M.addDays(t, 1), "18:00", "Tomorrow 6pm"], [M.addDays(t, 2), "18:00", M.dayLabel(M.addDays(t, 2), t) + " 6pm"]]
+      .filter(([d, h]) => d + "T" + h > now); // nothing that's already gone by
+    app.innerHTML = `<div class="sheet" data-stage="scheduled">${sheetHead("When does it go up?", "scheduleClose", "Cancel")}<div class="wrap"><div class="body">
+      <p style="font-weight:700;font-size:20px">${esc(x.title)}</p>
+      <div class="chips">${quick.map(([d, h, l]) => `<button type="button" class="chip" data-act="quick" data-date="${d}" data-time="${h}" aria-pressed="${s.date === d && s.time === h}">${esc(l)}</button>`).join("")}</div>
+      <div class="pair"><label class="field"><span>Day</span><input type="date" data-s="date" value="${esc(s.date)}"></label><label class="field"><span>Time</span><input type="time" data-s="time" value="${esc(s.time)}"></label></div>
+      ${s.msg ? `<p class="err" role="alert">${esc(s.msg)}</p>` : ""}
+      <button type="button" class="btn go wide" data-act="scheduleGo" ${S.saving ? "disabled" : ""}>Schedule it</button>
+      <p class="hint">Whoever has reminders on gets one before it&rsquo;s due to go up.</p>
+    </div></div></div>`;
   }
 
-  function boardHTML(t) {
-    const counts = M.countByStage(S.data.ideas, S.data.inspo);
-    const tags = [...new Set(S.data.ideas.flatMap((x) => x.tags || []))].sort((a, b) => a.localeCompare(b));
-    const types = M.TYPES.filter((ty) => S.data.ideas.some((x) => x.type === ty));
-    let cards;
-    if (S.stage === "inspo") {
-      cards = S.data.inspo.length ? S.data.inspo.map(reelCard).join("") : `<div class="empty"><h2>No saved reels</h2><p class="soft">Save reels in the Inbox.</p></div>`;
-    } else {
-      const list = S.data.ideas.filter((x) =>
-        x.stage === S.stage &&
-        (!S.fType || x.type === S.fType) &&
-        (!S.fTag || (x.tags || []).includes(S.fTag)) &&
-        (!S.fPerson || (S.fPerson === "none" ? !x.assignee : x.assignee === S.fPerson)));
-      list.sort((a, b) => (a.due ? 0 : 1) - (b.due ? 0 : 1) || String(a.due || "").localeCompare(String(b.due || "")) || String(b.updatedAt).localeCompare(String(a.updatedAt)));
-      cards = list.length ? list.map((x) => boardCard(x, t)).join("") : `<div class="empty"><h2>Nothing in ${esc(M.stageLabel(S.stage))}</h2><p class="soft">${S.fType || S.fTag || S.fPerson ? "Try clearing the filters." : "Ideas land here as they move along."}</p></div>`;
-    }
-    const filters = S.stage === "inspo" ? "" : `<div class="row" style="margin:12px 0">
-        <label class="field grow"><span class="dim small">Type</span><select data-filter="fType"><option value="">All types</option>${types.map((ty) => `<option ${S.fType === ty ? "selected" : ""}>${esc(ty)}</option>`).join("")}</select></label>
-        <label class="field grow"><span class="dim small">Who</span><select data-filter="fPerson"><option value="">Anyone</option><option value="none" ${S.fPerson === "none" ? "selected" : ""}>Not assigned</option>${M.PEOPLE.map((p) => `<option ${S.fPerson === p ? "selected" : ""}>${p}</option>`).join("")}</select></label></div>
-      ${tags.length ? `<div class="chips" role="group" aria-label="Tag" style="margin-bottom:14px">${chip("fTag", "", "All tags")}${tags.map((g) => chip("fTag", g, g)).join("")}</div>` : ""}`;
-    return `<div class="page-head"><div class="row"><h1 class="grow">Board</h1><button type="button" class="btn sm" data-act="newIdea">New idea</button></div></div>
-      ${goalHTML(t)}
-      <div class="chips" role="group" aria-label="Stage" style="margin-top:16px">${M.STAGES.map((s) => chip("stage", s.id, s.label, counts[s.id])).join("")}</div>
-      ${filters}
-      <div class="stack" style="margin-top:12px">${cards}</div>`;
-  }
-
-  function statsHTML(t) {
-    const counts = M.countByStage(S.data.ideas, S.data.inspo);
-    const rows = M.statsByType(S.data.ideas);
-    const target = (S.data.settings && S.data.settings.weeklyTarget) || M.DEFAULT_TARGET;
-    return `<div class="page-head"><h1>Numbers</h1><p class="soft">Film more of what works.</p></div>
-      <div class="stack">${goalHTML(t)}
-      <form class="card row" data-form="target"><label class="field grow"><span>Weekly target</span><input name="target" type="number" inputmode="numeric" min="1" max="100" value="${target}"></label><button class="btn sm" type="submit" style="align-self:end">Save</button></form>
-      <div class="counts">${M.STAGES.map((s) => `<div class="count"><b>${counts[s.id]}</b><span>${esc(s.label)}</span></div>`).join("")}</div>
-      <div class="card"><h2>Views by type</h2>${rows.length ? `<table class="tbl"><thead><tr><th>Type</th><th>Posted</th><th>Avg views</th></tr></thead><tbody>${rows.map((r) => `<tr><td>${esc(r.type)}</td><td>${r.posted}</td><td>${r.avgViews == null ? "No views yet" : r.avgViews.toLocaleString("en-AU")}</td></tr>`).join("")}</tbody></table>` : `<p class="soft">Once videos are posted, add their views on the Board (Posted), and the best types show up here.</p>`}</div>
-      </div>`;
-  }
-
-  function moreHTML() {
-    return `<div class="page-head"><h1>More</h1></div><div class="stack">
-      <div class="card"><h2>Import ideas</h2><p class="soft">Add imperium_film_ideas.json. Every idea lands in To film, not assigned. Ideas already on the list are skipped.</p>
-        <label class="btn ghost wide" style="cursor:pointer">Choose the file<input type="file" accept=".json,application/json" data-act-change="importFile" hidden></label>
-        <label class="field"><span>Or paste it here</span><textarea data-draft="importText" placeholder='[{"title": "Mat slap", "type": "Satisfying"}]'>${esc(S.importText)}</textarea></label>
-        <button type="button" class="btn wide" data-act="importPaste">Import</button>
-        ${S.importMsg ? `<p class="soft" role="status">${esc(S.importMsg)}</p>` : ""}</div>
-      <div class="card"><h2>Share reels from your iPhone</h2><p class="soft">Set it up once. Then on any TikTok or Instagram reel, tap Share, then Save to Film List.</p>
-        <ol class="stack" style="margin:0;padding-left:22px">
+  function renderMore() {
+    const p = S.push;
+    const pushPanel = {
+      on: `<p class="soft">This phone gets a reminder every morning at 7 with what&rsquo;s yours to film, edit, schedule or post, and one before anything goes up.</p><div class="btns"><button type="button" class="btn" data-act="pushTest">Send a test</button><button type="button" class="btn" data-act="pushOff">Turn off</button></div>`,
+      off: `<p class="soft">Get a reminder every morning at 7 with what&rsquo;s yours to do, and one before anything goes up.</p><button type="button" class="btn go wide" data-act="pushOn" data-stage="scheduled">Turn on reminders</button>`,
+      "needs-home": `<p class="soft">On iPhone, reminders only work once Film List is on your home screen:</p><ol class="steps"><li>Open this page in <strong>Safari</strong>.</li><li>Tap the <strong>Share</strong> button (the square with the arrow).</li><li>Tap <strong>Add to Home Screen</strong>, then <strong>Add</strong>.</li><li>Open Film List from the new icon, then come back here and tap <strong>Turn on reminders</strong>.</li></ol>`,
+      blocked: `<p class="soft">This phone said no to notifications. Turn them on for Film List in the phone&rsquo;s Settings, under Notifications, then come back.</p>`,
+      unsupported: `<p class="soft">This browser can&rsquo;t do reminders. On iPhone, add Film List to the home screen from Safari. On Android, use Chrome.</p>`,
+      unknown: `<p class="soft">Checking...</p>`,
+    }[p.state] || "";
+    app.innerHTML = `<div class="sheet">${sheetHead("Settings", "moreClose")}<div class="wrap"><div class="body">
+      <section class="panel"><div class="row"><h2 class="grow">Reminders</h2><span class="pill ${p.state === "on" ? "on" : ""}">${p.state === "on" ? "On" : "Off"}</span></div>${pushPanel}${p.msg ? `<p class="${/sent|on\./i.test(p.msg) ? "soft" : "err"}" role="status">${esc(p.msg)}</p>` : ""}</section>
+      <section class="panel"><h2>Add a reel from your phone</h2><p class="soft">Set this up once. Then on any TikTok or Instagram reel, tap Share, then <strong>Save to Film List</strong>, and it lands in Ideas.</p>
+        <ol class="steps">
           <li>Open the <strong>Shortcuts</strong> app, tap <strong>+</strong>, and name it <strong>Save to Film List</strong>.</li>
           <li>Tap the <strong>(i)</strong> button and turn on <strong>Show in Share Sheet</strong>. Set it to receive <strong>URLs</strong> and <strong>Text</strong>.</li>
-          <li>Add <strong>Ask for Input</strong> (Text). Prompt: <em>Why we like it?</em></li>
+          <li>Add <strong>Ask for Input</strong> (Text). Prompt: <em>What's the idea?</em></li>
           <li>Add <strong>Get Contents of URL</strong>. URL: <code>${esc(location.origin)}/api/film</code>. Method <strong>POST</strong>. Request Body <strong>JSON</strong>: <code>action</code> = <code>inbox</code>, <code>url</code> = <strong>Shortcut Input</strong>, <code>note</code> = <strong>Provided Input</strong>.</li>
           <li>Add <strong>Get Dictionary Value</strong>: <code>message</code>, then <strong>Show Notification</strong> with it.</li>
-        </ol>
-        <p class="hint">It saves the link and your note only. No video is ever downloaded.</p></div>
-      <div class="card"><h2>This phone</h2><p class="soft">This phone is set to the owner.</p>
-        <button type="button" class="btn ghost wide" data-act="switch">Switch person</button></div>
-    </div>`;
-  }
-
-  function renderEditor() {
-    const e = S.editing;
-    const f = e.fields;
-    const inspo = e.inspoId ? findInspo(e.inspoId) : null;
-    const del = "deleteIdea:" + e.id;
-    const pick = (field, value, label) => `<button type="button" class="chip" data-act="pickField" data-field="${field}" data-value="${esc(value)}" aria-pressed="${String(f[field] == null ? "" : f[field]) === String(value)}">${esc(label)}</button>`;
-    const tagOn = (g) => M.splitTags(f.tags).some((x) => x.toLowerCase() === g.toLowerCase());
-    const t = today();
-    app.innerHTML = `<div class="sheet"><div class="sheet-head"><div class="wrap"><button type="button" class="btn sm ghost" data-act="cancelEdit">Cancel</button><h2 class="grow" style="font-size:26px">${e.id ? "Edit idea" : inspo ? "Make it ours" : "New idea"}</h2></div></div>
-      <div class="wrap"><form data-form="idea" novalidate>
-        ${inspo ? `<div class="card"><span class="label">From the inbox</span>${inspo.note ? `<p><strong>Why:</strong> ${esc(inspo.note)}</p>` : ""}${inspo.meta && inspo.meta.title ? `<p class="soft clamp">${esc(inspo.meta.title)}</p>` : ""}<a class="btn ghost" href="${esc(inspo.url)}" target="_blank" rel="noopener">Watch the example</a></div>` : ""}
-        <label class="field"><span>Title</span><input data-f="title" value="${esc(f.title)}" placeholder="Mat slap" maxlength="120" required></label>
-        <label class="field"><span>Type</span><select data-f="type"><option value="">Pick a type</option>${M.TYPES.map((ty) => `<option ${f.type === ty ? "selected" : ""}>${esc(ty)}</option>`).join("")}</select></label>
-        <div class="field"><span>Tags <em>(optional)</em></span><input data-f="tags" value="${esc(Array.isArray(f.tags) ? f.tags.join(", ") : f.tags)}" placeholder="trend, skit">
-          <div class="pick">${QUICK_TAGS.map((g) => `<button type="button" class="chip" data-act="toggleTag" data-value="${esc(g)}" aria-pressed="${tagOn(g)}">${esc(g)}</button>`).join("")}</div></div>
-        <label class="field"><span>Hook</span><textarea data-f="hook" rows="2" placeholder="The first line or shot that stops the scroll">${esc(f.hook)}</textarea></label>
-        <label class="field"><span>Shots <em>(one per line)</em></span><textarea data-f="steps" rows="5" placeholder="Wide of the dirty mat&#10;Slap it on the ground&#10;Before and after">${esc(Array.isArray(f.steps) ? f.steps.join("\n") : f.steps)}</textarea></label>
-        <label class="field"><span>Caption</span><textarea data-f="caption" rows="3" placeholder="Statements, not questions">${esc(f.caption)}</textarea><span class="hint">Statements not questions. 😭 or 💀 where it fits. No "book now" and no prices.</span></label>
-        <div class="field"><span>People needed</span><div class="pick">${[1, 2, 3, 4, 5].map((n) => pick("people", n, String(n))).join("")}</div></div>
-        <div class="field"><span>Length</span><div class="pick">${["12s", "15s", "20s"].map((l) => pick("length", l, l)).join("")}</div><input data-f="length" value="${esc(f.length)}" placeholder="12 to 20 seconds"></div>
-        <label class="field"><span>Example link <em>(optional)</em></span><input data-f="link" type="url" inputmode="url" value="${esc(f.link)}" placeholder="TikTok or Instagram link"></label>
-        <div class="field"><span>Who films it</span><div class="pick">${pick("assignee", "", "Nobody yet")}${M.PEOPLE.map((p) => pick("assignee", p, p)).join("")}</div></div>
-        <div class="field"><span>Film by</span><div class="pick">${pick("due", t, "Today")}${pick("due", M.addDays(t, 1), "Tomorrow")}${pick("due", "", "No date")}</div><input data-f="due" type="date" value="${esc(f.due || "")}"></div>
-        ${e.msg ? `<p class="err" role="alert">${esc(e.msg)}</p>` : ""}
-        <button class="btn wide big" type="submit" ${S.saving ? "disabled" : ""}>${S.saving ? "Saving..." : "Save idea"}</button>
-        ${e.id ? `<button type="button" class="btn danger wide" data-act="deleteIdea">${confirming(del) ? "Tap again to delete it" : "Delete this idea"}</button>` : ""}
-      </form></div></div>`;
+        </ol></section>
+      <section class="panel"><h2>Import ideas</h2><p class="soft">Add imperium_film_ideas.json. Everything lands in Ideas. Ones already on the list are skipped.</p>
+        <label class="btn wide" style="cursor:pointer">Choose the file<input type="file" accept=".json,application/json" data-change="importFile" hidden></label>
+        <label class="field"><span>Or paste it here</span><textarea data-draft="importText" placeholder='[{"title": "Mat slap"}]'>${esc(S.importText)}</textarea></label>
+        <button type="button" class="btn wide" data-act="importPaste">Import</button>
+        ${S.importMsg ? `<p class="soft" role="status">${esc(S.importMsg)}</p>` : ""}</section>
+      <section class="panel"><h2>This phone</h2><p class="soft">This phone is set to ${esc(S.who)}.</p><button type="button" class="btn wide" data-act="switch">Switch person</button></section>
+    </div></div></div>`;
   }
 
   function render() {
-    document.body.classList.toggle("has-tabs", !!(isOwner() && S.data && !S.editing));
+    const sheet = S.open || S.schedule || S.more;
+    document.body.classList.toggle("locked", !!sheet);
     if (!S.who) return renderWho();
     if (!S.data) {
-      app.innerHTML = `${header("")}<main><div class="wrap"><p class="${S.loadError ? "err" : "dim"}">${esc(S.loadError || "Loading the Film List...")}</p>${S.loadError ? `<button type="button" class="btn" data-act="reload">Try again</button>` : ""}</div></main>`;
+      app.innerHTML = `${header()}<main><div class="wrap boot"><div class="stack" style="justify-items:center"><p class="${S.loadError ? "err" : "dim"}">${esc(S.loadError || "Loading...")}</p>${S.loadError ? `<button type="button" class="btn" data-act="reload">Try again</button>` : ""}</div></div></main>`;
       if (!S.loading && !S.loadError) load();
       return;
     }
-    if (S.editing) return renderEditor();
-    if (isOwner()) return renderOwner();
-    return renderCrew();
+    if (S.more) return renderMore();
+    if (S.schedule) return renderSchedule();
+    if (S.open) return renderOpen();
+    return renderMain();
   }
-  // Don't redraw under someone mid-typing: their text would go.
-  function busyTyping() {
+  function busy() {
     const a = document.activeElement;
-    return !!(S.editing || (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)));
+    return !!(S.open || S.schedule || S.more || (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)));
   }
 
   /* ------------------------------------------------------------ doing things */
 
-  async function moveIdea(id, dir, isUndo) {
+  async function move(id, dir, extra, undoing) {
     const idea = find(id);
     if (!idea) return;
-    const optimistic = M.move(idea, dir, S.who, new Date().toISOString(), today());
-    if (!optimistic) return;
-    putIdea(optimistic);
+    let optimistic;
+    try { optimistic = M.move(idea, dir, { by: S.who, now: new Date().toISOString(), today: today(), postAt: extra && extra.postAt }); } catch { optimistic = null; }
+    if (optimistic) put(optimistic);
     render();
     try {
-      const r = await api("move", { id, dir });
-      putIdea(r.idea);
-      if (isUndo) toast("Undone");
-      else toast("Moved to " + M.stageLabel(r.idea.stage), () => moveIdea(id, -dir, true));
+      const r = await api("move", { id, dir, postAt: extra && extra.postAt });
+      put(r.idea);
+      if (undoing) toast("Undone");
+      else toast(dir > 0 ? (r.idea.stage === "posted" ? "Posted" : "Moved to " + M.stageLabel(r.idea.stage)) : "Moved back to " + M.stageLabel(r.idea.stage), () => move(id, -dir, null, true));
     } catch (e) {
-      putIdea(idea);
+      put(idea);
       toast(e.message);
     }
     render();
   }
 
-  async function saveInbox() {
-    const url = M.normaliseUrl(S.draft.url);
-    if (!url) { S.inboxMsg = "That isn't a link. Copy the reel's link and paste it here."; return render(); }
-    S.saving = true; S.inboxMsg = "";
-    render();
-    try {
-      const meta = M.platformOf(url) === "tiktok" && !M.isShortTikTok(url) ? await tiktokPreview(url) : null;
-      const r = await api("inbox", { url, note: S.draft.note, meta });
-      putInspo(r.inspo);
-      S.draft = { url: "", note: "" };
-      S.inboxFilter = "all";
-      toast(r.message || "Saved to the inbox");
-      if (r.inspo.platform === "tiktok" && !(r.inspo.meta && r.inspo.meta.thumb)) refreshPreview(r.inspo);
-    } catch (e) {
-      S.inboxMsg = e.message;
-    } finally {
-      S.saving = false;
+  function burst(el) {
+    if (calm() || !el) return;
+    const r = el.getBoundingClientRect();
+    const b = document.createElement("div");
+    b.className = "burst";
+    b.style.left = r.left + r.width / 2 + "px";
+    b.style.top = r.top + r.height / 2 + "px";
+    const colours = ["#4a9be8", "#f5a524", "#a98bff", "#34c77b", "#f3f6fb"];
+    for (let i = 0; i < 18; i++) {
+      const a = (Math.PI * 2 * i) / 18, d = 60 + Math.random() * 50;
+      b.insertAdjacentHTML("beforeend", `<i style="background:${colours[i % 5]};--x:${Math.cos(a) * d}px;--y:${Math.sin(a) * d}px"></i>`);
     }
-    render();
+    document.body.append(b);
+    setTimeout(() => b.remove(), 800);
   }
 
-  function blankFields(o) {
-    return Object.assign({ title: "", type: "", tags: "", hook: "", steps: "", caption: "", people: null, length: "", link: "", assignee: "", due: "" }, o || {});
+  // The tick: it fills in, the row slides off, then it's in the next list.
+  function tick(id) {
+    const x = find(id);
+    if (!x || x.stage === "posted") return;
+    if (x.stage === "edited") {
+      S.schedule = { id, date: M.addDays(today(), 1), time: "18:00", msg: "" };
+      return render();
+    }
+    const el = app.querySelector(`[data-item="${id}"]`);
+    buzz(25);
+    if (!el || calm()) return move(id, 1);
+    el.classList.add("ticked");
+    if (x.stage === "scheduled") burst(el.querySelector(".tick"));
+    setTimeout(() => el.classList.add("gone"), 260);
+    setTimeout(() => move(id, 1), 480);
   }
 
-  async function saveIdea() {
-    const e = S.editing;
-    if (!String(e.fields.title || "").trim()) { e.msg = "Give it a title."; return render(); }
-    S.saving = true; e.msg = "";
-    render();
+  async function addIdea() {
+    const title = S.draft.trim();
+    if (!title || S.adding) return;
+    S.adding = true;
     try {
-      const fields = { ...e.fields, assignee: e.fields.assignee || null, due: e.fields.due || null };
-      const r = await api("saveIdea", { id: e.id, inspoId: e.inspoId, fields });
-      putIdea(r.idea);
-      if (r.inspo) putInspo(r.inspo);
-      S.editing = null;
-      if (!e.id) { S.tab = "board"; S.stage = r.idea.stage; local.set("tab", "board"); }
-      toast(e.id ? "Saved" : "Added to To film");
-    } catch (err) {
-      e.msg = err.message;
-    } finally {
-      S.saving = false;
-    }
+      const r = await api("saveIdea", { fields: { title } });
+      put(r.idea);
+      S.draft = "";
+      buzz(15);
+    } catch (e) { toast(e.message); }
+    S.adding = false;
+    render();
+    const input = app.querySelector('[data-draft="add"]');
+    if (input) input.focus();
+  }
+
+  function openIdea(id) {
+    const x = find(id);
+    if (!x) return;
+    S.open = { id, msg: "", confirm: false, fields: {
+      title: x.title, notes: x.notes || "", caption: x.caption || "", link: x.link || "", who: x.who || "", when: x.when || "",
+      postDate: x.postAt ? x.postAt.slice(0, 10) : "", postTime: x.postAt ? x.postAt.slice(11, 16) : "",
+    } };
     render();
     window.scrollTo(0, 0);
+  }
+
+  async function saveOpen() {
+    const o = S.open;
+    const f = o.fields;
+    if (!f.title.trim()) { o.msg = "Give it a name."; return render(); }
+    const x = find(o.id);
+    const fields = { title: f.title, notes: f.notes, caption: f.caption, link: f.link };
+    if (x.stage === "scheduled") {
+      if (!f.postDate || !f.postTime) { o.msg = "Pick the day and time it goes up."; return render(); }
+      fields.postAt = f.postDate + "T" + f.postTime;
+      fields.when = f.postDate;
+    } else if (x.stage !== "posted") {
+      fields.who = f.who || null;
+      fields.when = f.when || null;
+    }
+    S.saving = true; o.msg = "";
+    render();
+    try {
+      const r = await api("saveIdea", { id: o.id, fields });
+      put(r.idea);
+      S.open = null;
+      toast("Saved");
+    } catch (e) { o.msg = e.message; }
+    S.saving = false;
+    render();
   }
 
   async function importData(text) {
@@ -485,12 +408,68 @@
     render();
     try {
       const r = await api("import", { data });
-      S.importMsg = `Added ${plural(r.added, "idea", "ideas")} to To film.` + (r.skipped ? ` ${plural(r.skipped, "was", "were")} already on the list.` : "") + (r.bad ? ` ${plural(r.bad, "entry had", "entries had")} no title and ${r.bad === 1 ? "was" : "were"} left out.` : "");
+      S.importMsg = `Added ${plural(r.added, "idea", "ideas")}.` + (r.skipped ? ` ${plural(r.skipped, "was", "were")} already on the list.` : "") + (r.bad ? ` ${plural(r.bad, "had", "had")} no title.` : "");
       S.importText = "";
       await load(true);
-    } catch (e) {
-      S.importMsg = e.message;
+    } catch (e) { S.importMsg = e.message; }
+    render();
+  }
+
+  /* ------------------------------------------------------------ phone reminders */
+
+  const standalone = () => (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+  const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const b64ToBytes = (b64) => {
+    const s = atob((b64 + "=".repeat((4 - (b64.length % 4)) % 4)).replace(/-/g, "+").replace(/_/g, "/"));
+    return Uint8Array.from(s, (c) => c.charCodeAt(0));
+  };
+  async function pushReg() {
+    if (!("serviceWorker" in navigator)) return null;
+    try { return await navigator.serviceWorker.ready; } catch { return null; }
+  }
+  async function checkPush() {
+    const prev = S.push.state;
+    const ok = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+    if (!ok) S.push.state = isIOS() && !standalone() ? "needs-home" : "unsupported";
+    else if (Notification.permission === "denied") S.push.state = "blocked";
+    else {
+      const reg = await pushReg();
+      const sub = reg && (await reg.pushManager.getSubscription());
+      S.push.state = sub && Notification.permission === "granted" ? "on" : "off";
+      // Keep the server's note of whose phone this is up to date.
+      if (sub && S.who) api("pushSubscribe", { sub: sub.toJSON() }).catch(() => {});
     }
+    if (prev !== S.push.state && !busy()) render();
+    else if (S.more) render();
+  }
+  async function pushOn() {
+    S.push.msg = "";
+    try {
+      // Asked straight from the tap, or iPhones say no without asking.
+      const perm = await Notification.requestPermission();
+      if (perm !== "granted") { S.push.state = perm === "denied" ? "blocked" : "off"; return render(); }
+      const reg = await pushReg();
+      if (!reg) throw new Error("This phone can't do reminders.");
+      const { key } = await api("pushKey");
+      let sub = await reg.pushManager.getSubscription();
+      if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(key) });
+      await api("pushSubscribe", { sub: sub.toJSON() });
+      S.push.state = "on";
+      S.push.msg = "Reminders are on.";
+      api("pushTest", { endpoint: sub.endpoint }).catch(() => {});
+    } catch (e) {
+      S.push.msg = e.message || "Couldn't turn reminders on.";
+    }
+    render();
+  }
+  async function pushOff() {
+    const reg = await pushReg();
+    const sub = reg && (await reg.pushManager.getSubscription());
+    if (sub) {
+      api("pushUnsubscribe", { endpoint: sub.endpoint }).catch(() => {});
+      try { await sub.unsubscribe(); } catch { /* fine */ }
+    }
+    S.push = { state: "off", msg: "Reminders are off for this phone." };
     render();
   }
 
@@ -498,87 +477,59 @@
 
   app.addEventListener("click", async (ev) => {
     const b = ev.target.closest("[data-act]");
-    if (!b) return;
-    const act = b.dataset.act;
+    if (!b || b.disabled) return;
     const id = b.dataset.id;
-    switch (act) {
-      case "tab": S.tab = b.dataset.tab; local.set("tab", S.tab); render(); window.scrollTo(0, 0); break;
-      case "set": S[b.dataset.key] = b.dataset.value; render(); break;
-      case "pickWho": S.who = b.dataset.who; local.set("who", S.who); render(); break;
-      case "switch": S.who = null; local.set("who", null); render(); break;
+    switch (b.dataset.act) {
+      case "pickWho": S.who = b.dataset.who; local.set("who", S.who); render(); checkPush(); window.scrollTo(0, 0); break;
+      case "switch": S.who = null; S.more = false; local.set("who", null); render(); break;
       case "reload": S.loadError = ""; render(); break;
-      case "next": moveIdea(id, 1); break;
-      case "back": moveIdea(id, -1); break;
-      case "tick": {
-        const i = +b.dataset.i;
-        const list = S.ticks[id] || [];
-        S.ticks[id] = list.includes(i) ? list.filter((x) => x !== i) : list.concat([i]);
-        local.set("ticks", JSON.stringify(S.ticks));
-        b.setAttribute("aria-pressed", String(S.ticks[id].includes(i)));
-        break;
-      }
-      case "copy": {
-        const x = find(id);
-        if (x && x.caption) toast((await copyText(x.caption)) ? "Caption copied" : "Couldn't copy. Press and hold the caption to copy it.");
-        break;
-      }
-      case "makeOurs": {
-        const x = findInspo(id);
-        if (!x) break;
-        S.editing = { inspoId: id, fields: blankFields({ link: x.url }) };
-        render();
-        window.scrollTo(0, 0);
-        break;
-      }
-      case "newIdea": S.editing = { fields: blankFields() }; render(); window.scrollTo(0, 0); break;
-      case "edit": {
-        const x = find(id);
-        if (!x) break;
-        S.editing = { id, inspoId: null, fields: blankFields({ ...x, tags: (x.tags || []).join(", "), steps: (x.steps || []).join("\n"), assignee: x.assignee || "", due: x.due || "" }) };
-        render();
-        window.scrollTo(0, 0);
-        break;
-      }
-      case "cancelEdit": S.editing = null; render(); break;
-      case "pickField": {
-        const f = S.editing.fields;
-        const v = b.dataset.field === "people" ? +b.dataset.value : b.dataset.value;
-        f[b.dataset.field] = String(f[b.dataset.field]) === String(v) && b.dataset.field !== "assignee" ? (b.dataset.field === "people" ? null : "") : v;
+      case "list": S.list = id; S.showPosted = false; local.set("list", id); render(); break;
+      case "posted": S.showPosted = !S.showPosted; render(); break;
+      case "tick": tick(id); break;
+      case "open": openIdea(id); break;
+      case "close": S.open = null; render(); break;
+      case "pick": {
+        const f = S.open.fields;
+        f[b.dataset.field] = f[b.dataset.field] === b.dataset.value && b.dataset.field === "who" ? "" : b.dataset.value;
         render();
         break;
       }
-      case "toggleTag": {
-        const f = S.editing.fields;
-        const g = b.dataset.value;
-        const list = M.splitTags(f.tags);
-        const has = list.some((x) => x.toLowerCase() === g.toLowerCase());
-        f.tags = (has ? list.filter((x) => x.toLowerCase() !== g.toLowerCase()) : list.concat([g])).join(", ");
-        render();
-        break;
-      }
-      case "deleteIdea": {
-        const k = "deleteIdea:" + S.editing.id;
-        if (!confirming(k)) { S.confirm = { key: k, until: Date.now() + 4000 }; render(); break; }
-        S.confirm = null;
+      case "copy": toast((await copyText(S.open.fields.caption)) ? "Caption copied" : "Couldn't copy it."); break;
+      case "back": S.open = null; move(id, -1); break;
+      case "delete": {
+        if (!S.open.confirm) { S.open.confirm = true; render(); setTimeout(() => { if (S.open) { S.open.confirm = false; render(); } }, 4000); break; }
+        const gone = S.open.id;
         try {
-          await api("deleteIdea", { id: S.editing.id });
-          S.data.ideas = S.data.ideas.filter((x) => x.id !== S.editing.id);
-          S.data.inspo.forEach((x) => { x.ideaIds = (x.ideaIds || []).filter((i) => i !== S.editing.id); });
-          S.editing = null;
-          toast("Idea deleted");
-        } catch (e) { S.editing.msg = e.message; }
+          await api("deleteIdea", { id: gone });
+          S.data.ideas = S.data.ideas.filter((x) => x.id !== gone);
+          S.open = null;
+          toast("Deleted");
+        } catch (e) { S.open.msg = e.message; }
         render();
         break;
       }
-      case "deleteInspo": {
-        const k = "deleteInspo:" + id;
-        if (!confirming(k)) { S.confirm = { key: k, until: Date.now() + 4000 }; render(); break; }
-        S.confirm = null;
+      case "quick": S.schedule.date = b.dataset.date; S.schedule.time = b.dataset.time; render(); break;
+      case "scheduleClose": S.schedule = null; render(); break;
+      case "scheduleGo": {
+        const s = S.schedule;
+        if (!s.date || !s.time) { s.msg = "Pick the day and time."; return render(); }
+        S.schedule = null;
+        buzz(25);
+        move(s.id, 1, { postAt: s.date + "T" + s.time });
+        break;
+      }
+      case "more": S.more = true; render(); checkPush(); window.scrollTo(0, 0); break;
+      case "moreClose": S.more = false; render(); break;
+      case "pushOn": pushOn(); break;
+      case "pushOff": pushOff(); break;
+      case "pushTest": {
+        const reg = await pushReg();
+        const sub = reg && (await reg.pushManager.getSubscription());
         try {
-          await api("deleteInspo", { id });
-          S.data.inspo = S.data.inspo.filter((x) => x.id !== id);
-          toast("Deleted from the inbox");
-        } catch (e) { toast(e.message); }
+          if (!sub) throw new Error("Reminders aren't on for this phone.");
+          await api("pushTest", { endpoint: sub.endpoint });
+          S.push.msg = "Test sent. It should pop up in a few seconds.";
+        } catch (e) { S.push.msg = e.message; }
         render();
         break;
       }
@@ -586,45 +537,24 @@
     }
   });
 
-  app.addEventListener("submit", async (ev) => {
+  app.addEventListener("submit", (ev) => {
     const form = ev.target.closest("[data-form]");
     if (!form) return;
     ev.preventDefault();
-    const kind = form.dataset.form;
-    if (kind === "inbox") return saveInbox();
-    if (kind === "idea") return saveIdea();
-    if (kind === "views") {
-      const id = form.dataset.id;
-      try {
-        const r = await api("setViews", { id, views: form.elements.views.value });
-        putIdea(r.idea);
-        toast("Views saved");
-      } catch (e) { toast(e.message); }
-      document.activeElement && document.activeElement.blur();
-      return render();
-    }
-    if (kind === "target") {
-      try {
-        const r = await api("settings", { weeklyTarget: form.elements.target.value });
-        S.data.settings = r.settings;
-        toast("Target saved");
-      } catch (e) { toast(e.message); }
-      document.activeElement && document.activeElement.blur();
-      return render();
-    }
+    if (form.dataset.form === "add") return addIdea();
+    if (form.dataset.form === "idea") return saveOpen();
   });
-
   app.addEventListener("input", (ev) => {
     const el = ev.target;
-    if (el.dataset.f && S.editing) S.editing.fields[el.dataset.f] = el.value;
-    else if (el.dataset.draft === "url" || el.dataset.draft === "note") S.draft[el.dataset.draft] = el.value;
+    if (el.dataset.draft === "add") S.draft = el.value;
     else if (el.dataset.draft === "importText") S.importText = el.value;
+    else if (el.dataset.f && S.open) S.open.fields[el.dataset.f] = el.value;
+    else if (el.dataset.s && S.schedule) S.schedule[el.dataset.s] = el.value;
   });
   app.addEventListener("change", (ev) => {
     const el = ev.target;
-    if (el.dataset.filter) { S[el.dataset.filter] = el.value; render(); }
-    else if (el.dataset.f === "due" && S.editing) { S.editing.fields.due = el.value; render(); }
-    else if (el.dataset.actChange === "importFile" && el.files && el.files[0]) {
+    if (el.dataset.f === "when" && S.open) { S.open.fields.when = el.value; render(); }
+    else if (el.dataset.change === "importFile" && el.files && el.files[0]) {
       const reader = new FileReader();
       reader.onload = () => importData(String(reader.result || ""));
       reader.readAsText(el.files[0]);
@@ -632,10 +562,11 @@
   });
 
   // A fresh list when the app comes back to the front, and every minute while it's open.
-  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.who) load(true); });
-  setInterval(() => { if (document.visibilityState === "visible" && S.who && !S.editing) load(true); }, 60000);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.who && !busy()) load(true); });
+  setInterval(() => { if (document.visibilityState === "visible" && S.who && !busy()) load(true); }, 60000);
 
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("/film/sw.js", { scope: "/film/" }).catch(() => { /* fine without */ });
 
   render();
+  if (S.who) checkPush();
 })();

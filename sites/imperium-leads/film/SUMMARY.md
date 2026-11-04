@@ -1,108 +1,74 @@
-# Imperium Film List — summary
+# Imperium Film List: summary
 
-A phone app for the crew to plan and track short videos.
+A simple phone app that takes each video from idea to posted.
 
-- Live: https://frontline-websites-6mjg.vercel.app/film/
-- Add it to the home screen: open the link in Safari, tap Share, then "Add to Home Screen".
-- No PIN: anyone with the link can open it and pick a name. Pat chose this to keep it simple.
+- **Live:** https://frontline-websites-6mjg.vercel.app/film/
+- **Put it on your phone:** open the link in Safari, tap Share, then Add to Home Screen. On iPhone, reminders only work once it's on the home screen.
+- **No PIN:** anyone with the link can open it and pick their name. Pat chose this to keep it simple.
 
-## Where it lives and why
+## How it works
 
-Film List sits inside the existing imperium-leads Vercel project, under `/film/`. It uses the same Supabase database (the `docs` table) in three new collections: `film_inspo`, `film_ideas` and `film_system`.
+There are four lists. Every idea has a tick circle, and tapping it moves the idea to the next list:
 
-The brief suggested Next.js + Supabase. Reusing the leads project is simpler and just as reliable:
+| List | What it means | Ticking it |
+| --- | --- | --- |
+| **Ideas** (blue) | Things to film. Type one in at the top and tap +. | Filmed it → moves to Filmed |
+| **Filmed** (amber) | Filmed, waiting to be edited | Edited → moves to Edited |
+| **Edited** (purple) | Edited, waiting to be scheduled | Asks when it goes up → moves to Scheduled |
+| **Scheduled** (green) | Has a day and time to go up | Posted → moves to Posted (under "See what's posted") |
 
-- No new accounts, keys or Vercel project to set up.
-- No framework to keep updated.
-- It's one plain page (HTML/CSS/JS) and one function (`api/film.js`).
-- The Hobby plan allows 12 functions; the leads project now uses 9.
+- Every tick shows an **Undo** button for 8 seconds.
+- Tap any idea to open it. You can change the name and add notes (hook, shots), a caption with a copy button, or an example link. You can also say who does the next step and by when, move it back a list, or delete it.
+- The **Today** box at the top shows what's yours today: film, edit, schedule or post. A red dot on a list means something in it is yours today.
+
+## Reminders
+
+Once a phone has reminders turned on (Today box, or the gear icon then Reminders), it gets:
+
+- **every morning at 7**, what's theirs to do that day, for example "Film: Mat slap. Edit: POV wheels. Post at 6pm: Dog hair.";
+- **before anything goes up**, a "Time to post" reminder in the hour before its scheduled time.
+
+What counts as yours:
+
+| Step | When you get reminded |
+| --- | --- |
+| Film | You're picked, and its "film by" day is today or past |
+| Edit or Schedule | You're picked, and its day is today or past. With no day set, you get reminded once it has waited a day |
+| Post | It's scheduled for today, or it's late |
+
+If nobody is picked for a step, it's Pat's.
+
+How it works underneath:
+- Reminders are standard web push. Vercel checks every hour (`vercel.json`, `/api/film?action=remind` at :50 past). Each reminder is sent only once, so running it again sends nothing new.
+- The push keys are made automatically and kept in the database. There's nothing to set up.
+- Optional: set `CRON_SECRET` in Vercel so only Vercel can start the hourly check.
+- `GET /api/film?action=today[&who=Ant]` gives the same "today" text, for a GoHighLevel text if you ever want that.
+
+## Add a reel from your phone (iPhone Shortcut)
+
+The steps are in the app under the gear icon. Once it's set up, tap Share on any TikTok or Instagram reel, then Save to Film List. It lands in Ideas with the link attached. Only the link is saved: no video is downloaded.
+
+## Import
+
+Gear icon → Import ideas → pick `imperium_film_ideas.json` (or paste it).
+- Everything lands in Ideas.
+- Hooks, shots, types and so on go into each idea's notes.
+- Ideas with the same name as one already on the list are skipped.
+
+## Where it lives
+
+Film List is in the imperium-leads Vercel project under `/film/`. It uses the same Supabase `docs` table, in three collections: `film_ideas`, `film_push` (which phones have reminders on) and `film_system` (push keys and the log of what's been sent).
 
 | File | What it is |
 | --- | --- |
 | `public/film/index.html`, `film.js`, `film.css` | The app |
-| `public/film/film-model.js` | The rules (stages, today list, import, reminder text), shared by the page, the server and the tests |
-| `public/film/manifest.json`, `sw.js` | Home-screen install and offline shell |
-| `api/film.js` | The one endpoint |
+| `public/film/film-model.js` | The rules: lists, ticks, reminders and import. Shared by the page, the server and the tests |
+| `public/film/sw.js`, `manifest.json` | Home-screen install, offline shell, showing notifications |
+| `api/film.js` | The one endpoint, including the hourly reminder check |
 | `lib/film-store.js` | Database reads and writes |
 | `test/film.test.js` | Tests (`npm test`) |
-| `film/dev-server.mjs` | Run it on a computer with a JSON file instead of Supabase |
-| `film/STUDY.md` | What we borrowed from HeyOrca, Foreplay, Trello and Sandcastles |
+| `film/dev-server.mjs` | Run it on a computer with a JSON file: `FILM_LOCAL_STORE=/tmp/film.json node film/dev-server.mjs` |
 
-## Done (v1)
+## Taken out (Pat's call: keep it simple)
 
-1. **Inspo inbox**
-   - Paste a TikTok or Instagram link with an optional "why we like it" note.
-   - TikTok shows its thumbnail, caption and creator from TikTok's public oEmbed. Short links (vm., vt.) work too.
-   - Instagram stores the link only, with a big "Watch the example" button. No Instagram data is fetched or stored.
-   - No video files are ever downloaded.
-   - The iPhone Shortcut setup steps are in the app (More tab) and below.
-2. **Make it ours** turns a saved reel into an idea with the link attached. It has fields for title, type, tags, hook, shots (one per line), caption, people (1–5) and length.
-3. **Who and when**
-   - Assign each idea to Ant, Lucas, Nick, AJ or Pat, with a "film by" date.
-   - Each person picks their name and gets a Today screen with only their videos that are due today or overdue.
-   - "Biggest first" means most people needed, then longest, then most shots.
-4. **Stages:** Inspo → To film → Filmed → Edited → Posted. One big button moves an idea on, with an Undo button straight after. There's also "Move back" on the board.
-5. **Types and tags**
-   - Uses the 13 types from the brief.
-   - Free tags, with quick ones: hook idea, B-roll idea, trend, skit.
-   - Filter the board by type, tag or person.
-6. **Copy caption** on every idea.
-7. **Import:** More tab → Import ideas. Pick `imperium_film_ideas.json` or paste it.
-   - Everything lands in To film, unassigned. Ideas already on the list are skipped.
-   - Field names don't need to be exact (title/name, steps/shots, people/people_needed, and so on).
-
-Also done from the nice-to-have list:
-
-9. **Daily reminder** endpoint for GoHighLevel (below).
-10. **Views:** enter the view count on Posted ideas. The Numbers tab shows average views by type.
-11. **Weekly target bar**, e.g. "9 of 14 posted this week". The owner can change the target (Numbers tab).
-
-### Opening it
-
-- There's no PIN. The first screen is "Who are you?" and the phone remembers the name.
-- The crew (Ant, Lucas, Nick, AJ) only see their Today screen.
-- "I'm the owner" gets the Inbox, Board, Today, Numbers and More tabs.
-- The trade-off: anyone who finds the link could change or delete ideas. There's no customer data in it. A PIN can be added back later if needed.
-
-### Daily reminder for GoHighLevel
-
-```
-GET https://frontline-websites-6mjg.vercel.app/api/film?action=today
-```
-
-- It returns plain text, one line per person, e.g. `Ant, 2 videos today: Mat slap, POV wheels.`
-- Add `&who=Ant` for one person's line only.
-- Add `&format=json` for JSON.
-
-To set it up in GHL, create a workflow with a daily 7am trigger, then a Webhook or Custom Webhook action using GET on that URL. Then send the reply text as an SMS to each crew member (use `&who=Name` once per person).
-
-### iPhone Shortcut (share a reel straight into the inbox)
-
-1. Open the **Shortcuts** app, tap **+**, and name it **Save to Film List**.
-2. Tap the **(i)** button and turn on **Show in Share Sheet**. Set it to receive **URLs** and **Text**.
-3. Add **Ask for Input** (Text) with the prompt *Why we like it?*
-4. Add **Get Contents of URL**:
-   - URL: `https://frontline-websites-6mjg.vercel.app/api/film`
-   - Method: **POST**
-   - Request Body: **JSON**, with `action` = `inbox`, `url` = **Shortcut Input**, `note` = **Provided Input**
-5. Add **Get Dictionary Value** for `message`, then **Show Notification** with it.
-
-Now in TikTok or Instagram, tap Share → Save to Film List.
-
-## Left to do
-
-- **8. AI breakdown** (paste a caption or transcript, get our hook, shots and caption) is not built. It needs:
-  - an Anthropic API key in Vercel (`ANTHROPIC_API_KEY`, for the imperium-leads project);
-  - one more endpoint (the leads project would then use 10 of its 12 functions).
-
-  Our style rules are ready to go in its prompt: statements not questions, 😭 or 💀 where it fits, no "book now" or prices, 12–20 seconds, our own audio.
-- **Import the real ideas.** `imperium_film_ideas.json` wasn't reachable from the build computer, so Pat needs to import it once (More tab → Import ideas).
-- **GHL reminder workflow.** The endpoint is live; the workflow itself is set up in GHL (steps above).
-
-## Run it on a computer
-
-```
-FILM_LOCAL_STORE=/tmp/film.json node film/dev-server.mjs
-```
-
-Then open http://localhost:8790/film/.
+These were removed: the reel inbox, AI Break it down, Google Drive clips, Plan my week, the leaderboard, views by type and the weekly target. They're in the git history if they're ever wanted back.
