@@ -4,7 +4,7 @@ A simple phone app that takes each video from idea to posted.
 
 - **Live:** https://frontline-websites-6mjg.vercel.app/film/
 - **Put it on your phone:** open the link in Safari, tap Share, then Add to Home Screen. On iPhone, reminders only work once it's on the home screen.
-- **No PIN:** anyone with the link can open it and pick their name. Pat chose this to keep it simple.
+- **Who's on it:** Ananth and Blake. There's no PIN: open it and tap your name.
 
 ## How it works
 
@@ -36,13 +36,13 @@ What counts as yours:
 | Edit or Schedule | You're picked, and its day is today or past. With no day set, you get reminded once it has waited a day |
 | Post | It's scheduled for today, or it's late |
 
-If nobody is picked for a step, it's Pat's.
+If nobody is picked for a step, both Ananth and Blake get reminded.
 
 How it works underneath:
 - Reminders are standard web push. Vercel checks every hour (`vercel.json`, `/api/film?action=remind` at :50 past). Each reminder is sent only once, so running it again sends nothing new.
 - The push keys are made automatically and kept in the database. There's nothing to set up.
 - Optional: set `CRON_SECRET` in Vercel so only Vercel can start the hourly check.
-- `GET /api/film?action=today[&who=Ant]` gives the same "today" text, for a GoHighLevel text if you ever want that.
+- `GET /api/film?action=today[&who=Ananth]` gives the same "today" text, for a GoHighLevel text if you ever want that.
 
 ## Add a reel from your phone (iPhone Shortcut)
 
@@ -69,6 +69,6 @@ Film List is in the imperium-leads Vercel project under `/film/`. It uses the sa
 | `test/film.test.js` | Tests (`npm test`) |
 | `film/dev-server.mjs` | Run it on a computer with a JSON file: `FILM_LOCAL_STORE=/tmp/film.json node film/dev-server.mjs` |
 
-## Taken out (Pat's call: keep it simple)
+## Taken out (to keep it simple)
 
 These were removed: the reel inbox, AI Break it down, Google Drive clips, Plan my week, the leaderboard, views by type and the weekly target. They're in the git history if they're ever wanted back.

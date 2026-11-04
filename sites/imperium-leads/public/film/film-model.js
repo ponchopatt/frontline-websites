@@ -6,7 +6,7 @@
     { title, notes, caption, link, who, when, postAt, stage, stageAt, history, postedDay,
       createdAt, createdBy, updatedAt }
   It moves through STAGES, one tick at a time: Ideas -> Filmed -> Edited -> Scheduled -> Posted.
-    who     who does the next step (blank = Pat, the owner)
+    who     who does the next step (blank = both of them)
     when    the day the next step is due by ("2026-11-06"), or blank
     postAt  the Canberra time it goes up ("2026-11-06T18:00"), set when it's scheduled
     stageAt when it got to the stage it's in, so the app can nag about it
@@ -22,9 +22,7 @@
     { id: "posted", label: "Posted", next: null, step: null, by: null, empty: "Nothing posted yet." },
   ];
   var IDS = STAGES.map(function (s) { return s.id; });
-  var CREW = ["Ant", "Lucas", "Nick", "AJ"];
-  var OWNER = "Pat";
-  var PEOPLE = CREW.concat([OWNER]);
+  var PEOPLE = ["Ananth", "Blake"];
   var TZ = "Australia/Sydney"; // Canberra's time
 
   function str(v, max) {
@@ -186,12 +184,12 @@
   /* ------------------------------------------------------------ reminders */
 
   // What someone has to do today, from every list: due today or late, plus anything filmed or
-  // edited that's been sitting a day or more. Blank "who" means it's the owner's.
+  // edited that's been sitting a day or more. Blank "who" means it's for both of them.
   function remindersFor(ideas, person, nowLocal) {
     var today = nowLocal.slice(0, 10);
     var out = [];
     (ideas || []).forEach(function (x) {
-      var mine = x.who ? x.who === person : person === OWNER;
+      var mine = x.who ? x.who === person : PEOPLE.indexOf(person) >= 0;
       if (!mine || x.stage === "posted") return;
       var st = stage(x.stage);
       var sitting = x.stageAt ? daysBetween(dayIn(new Date(x.stageAt)), today) : 0;
@@ -284,7 +282,7 @@
   }
 
   root.FilmModel = {
-    STAGES: STAGES, IDS: IDS, CREW: CREW, OWNER: OWNER, PEOPLE: PEOPLE, TZ: TZ,
+    STAGES: STAGES, IDS: IDS, PEOPLE: PEOPLE, TZ: TZ,
     stage: stage, stageLabel: stageLabel, normaliseUrl: normaliseUrl, platformOf: platformOf,
     dayIn: dayIn, localNow: localNow, addDays: addDays, daysBetween: daysBetween, minutesBetween: minutesBetween,
     cleanDay: cleanDay, cleanTime: cleanTime, cleanPerson: cleanPerson, dayLabel: dayLabel, timeLabel: timeLabel,
