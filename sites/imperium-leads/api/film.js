@@ -4,7 +4,7 @@ import { json, sameSecret } from "../lib/http.js";
 import { C, Film, filmStore } from "../lib/film-store.js";
 
 /*
-  Imperium Film List's one endpoint. No PIN: anyone with the link can use it (Pat's choice).
+  Imperium Film List's one endpoint. No PIN: anyone with the link can use it (the owner's choice).
 
   POST { action, who, ... }
     list, saveIdea, deleteIdea, move, import    the lists
@@ -125,10 +125,12 @@ export function remindersToSend(ideas, people, nowLocal, sentKeys) {
     if (x.stage !== "scheduled" || !x.postAt) continue;
     const mins = Film.minutesBetween(nowLocal, x.postAt);
     const key = `post:${x.id}:${x.postAt}`;
-    if (mins > 70 || mins < -30 || sentKeys.has(key)) continue;
-    const to = x.who || Film.OWNER;
-    if (!people.includes(to)) continue;
-    out.push({ key, to, title: "Time to post", body: `${x.title} goes up at ${Film.timeLabel(x.postAt)}.`, tag: "post-" + x.id });
+    if (mins > 70 || mins < -30) continue;
+    // Nobody picked: it's for both of them.
+    for (const to of x.who ? [x.who] : people) {
+      if (!people.includes(to) || sentKeys.has(key + ":" + to)) continue;
+      out.push({ key: key + ":" + to, to, title: "Time to post", body: `${x.title} goes up at ${Film.timeLabel(x.postAt)}.`, tag: "post-" + x.id });
+    }
   }
   return out;
 }
@@ -165,7 +167,7 @@ export async function POST(request) {
   }
   const store = filmStore();
   const action = String(body.action || "");
-  const who = Film.cleanPerson(body.who) || Film.OWNER;
+  const who = Film.cleanPerson(body.who);
   try {
     switch (action) {
       case "list":

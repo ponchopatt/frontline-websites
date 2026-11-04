@@ -36,17 +36,18 @@ test("days and times are Canberra's", () => {
 });
 
 test("an idea moves Ideas -> Filmed -> Edited -> Scheduled -> Posted, and back", () => {
-  const a = Film.newIdea({ title: " Mat slap ", who: "ant", when: "2026-11-05" }, { id: "a", now: NOW, by: "Pat" });
-  assert.deepEqual([a.title, a.who, a.when, a.stage], ["Mat slap", "Ant", "2026-11-05", "tofilm"]);
+  const a = Film.newIdea({ title: " Mat slap ", who: "ananth", when: "2026-11-05" }, { id: "a", now: NOW, by: "Blake" });
+  assert.deepEqual([a.title, a.who, a.when, a.stage], ["Mat slap", "Ananth", "2026-11-05", "tofilm"]);
+  assert.equal(Film.newIdea({ title: "x", who: "Pat" }, {}).who, null); // only Ananth and Blake
   assert.throws(() => Film.newIdea({ title: "" }, {}), /needs a title/);
 
-  const o = (extra) => ({ by: "Ant", now: "2026-11-05T01:00:00Z", today: "2026-11-05", ...extra });
+  const o = (extra) => ({ by: "Ananth", now: "2026-11-05T01:00:00Z", today: "2026-11-05", ...extra });
   const filmed = Film.move(a, 1, o());
   assert.equal(filmed.stage, "filmed");
   // who and when were for filming, so they're cleared, and Undo puts them back.
   assert.deepEqual([filmed.who, filmed.when, filmed.stageAt], [null, null, "2026-11-05T01:00:00Z"]);
   const undone = Film.move(filmed, -1, o());
-  assert.deepEqual([undone.stage, undone.who, undone.when], ["tofilm", "Ant", "2026-11-05"]);
+  assert.deepEqual([undone.stage, undone.who, undone.when], ["tofilm", "Ananth", "2026-11-05"]);
 
   const edited = Film.move(filmed, 1, o());
   assert.equal(edited.stage, "edited");
@@ -64,11 +65,11 @@ test("an idea moves Ideas -> Filmed -> Edited -> Scheduled -> Posted, and back",
 test("reminders: what each person has to do today", () => {
   const now = "2026-11-05T07:30";
   const ideas = [
-    idea({ id: "1", title: "Due today", who: "Ant", when: "2026-11-05" }),
-    idea({ id: "2", title: "Late", who: "Ant", when: "2026-11-03" }),
-    idea({ id: "3", title: "Later", who: "Ant", when: "2026-11-09" }),
-    idea({ id: "4", title: "No date", who: "Ant" }),
-    idea({ id: "5", title: "Pat's to film", when: "2026-11-05" }),
+    idea({ id: "1", title: "Due today", who: "Ananth", when: "2026-11-05" }),
+    idea({ id: "2", title: "Late", who: "Ananth", when: "2026-11-03" }),
+    idea({ id: "3", title: "Later", who: "Ananth", when: "2026-11-09" }),
+    idea({ id: "4", title: "No date", who: "Ananth" }),
+    idea({ id: "5", title: "Anyone's to film", when: "2026-11-05" }),
     idea({ id: "6", title: "Needs editing", stage: "filmed", stageAt: "2026-11-03T22:00:00Z" }), // filmed yesterday
     idea({ id: "7", title: "Just filmed", stage: "filmed", stageAt: "2026-11-04T20:00:00Z" }), // this morning
     idea({ id: "8", title: "Needs scheduling", stage: "edited", stageAt: "2026-11-01T00:00:00Z" }),
@@ -77,21 +78,23 @@ test("reminders: what each person has to do today", () => {
     idea({ id: "11", title: "Next week", stage: "scheduled", postAt: "2026-11-12T18:00" }),
     idea({ id: "12", title: "Done", stage: "posted" }),
   ];
-  const ant = Film.remindersFor(ideas, "Ant", now);
-  assert.deepEqual(ant.map((r) => r.text), ["Film: Due today", "Film: Late"]);
-  assert.equal(ant[1].late, true);
-  const pat = Film.remindersFor(ideas, "Pat", now);
-  // Late first, then the day's posts, then filming, editing, scheduling.
-  assert.deepEqual(pat.map((r) => r.text), ["Post (late): Missed", "Post at 6pm: Goes up tonight", "Film: Pat's to film", "Edit: Needs editing", "Schedule: Needs scheduling"]);
-  assert.equal(Film.digestText(pat, 2), "Post (late): Missed. Post at 6pm: Goes up tonight. And 3 more.");
-  assert.deepEqual(Film.remindersFor(ideas, "Nick", now), []);
+  // Nobody picked means it's for both of them. Late first, then the day's posts, then filming,
+  // editing, scheduling.
+  const shared = ["Post (late): Missed", "Post at 6pm: Goes up tonight"];
+  const ananth = Film.remindersFor(ideas, "Ananth", now);
+  assert.deepEqual(ananth.map((r) => r.text), [...shared, "Film: Anyone's to film", "Film: Due today", "Film: Late", "Edit: Needs editing", "Schedule: Needs scheduling"]);
+  assert.equal(ananth.find((r) => r.title === "Late").late, true);
+  const blake = Film.remindersFor(ideas, "Blake", now);
+  assert.deepEqual(blake.map((r) => r.text), [...shared, "Film: Anyone's to film", "Edit: Needs editing", "Schedule: Needs scheduling"]);
+  assert.equal(Film.digestText(blake, 2), "Post (late): Missed. Post at 6pm: Goes up tonight. And 3 more.");
+  assert.deepEqual(Film.remindersFor(ideas, "Nobody", now), []);
 });
 
 test("import: a loose list of ideas lands in Ideas with everything in the notes", () => {
   const r = Film.importIdeas({ ideas: [
     { title: "Mat slap", type: "Satisfying", hook: "This mat", shots: ["Wide", "Slap"], people_needed: 2, caption: "Ecosystem 💀", link: "https://www.tiktok.com/@a/video/1?x=1" },
     { name: "Mat slap" }, { nope: 1 }, "Just a title",
-  ] }, [{ title: "Already here" }], { id: (n) => "i" + n, now: NOW, by: "Pat" });
+  ] }, [{ title: "Already here" }], { id: (n) => "i" + n, now: NOW, by: "Blake" });
   assert.deepEqual([r.ideas.length, r.skipped, r.bad], [2, 1, 1]);
   const [a, b] = r.ideas;
   assert.equal(a.stage, "tofilm");
@@ -115,15 +118,15 @@ const get = async (q, headers = {}) => {
 
 test("the endpoint: write ideas, tick them through, import, and the Shortcut", async () => {
   assert.equal((await call({ action: "list" })).status, 200);
-  const made = await call({ action: "saveIdea", who: "Pat", fields: { title: "Mat slap", who: "Ant", when: Film.dayIn(new Date()) } });
+  const made = await call({ action: "saveIdea", who: "Blake", fields: { title: "Mat slap", who: "Ananth", when: Film.dayIn(new Date()) } });
   assert.equal(made.status, 200);
   const id = made.body.idea.id;
-  assert.equal(made.body.idea.createdBy, "Pat");
+  assert.equal(made.body.idea.createdBy, "Blake");
   assert.equal((await call({ action: "saveIdea", fields: { title: "" } })).status, 400);
 
-  const f = await call({ action: "move", id, dir: 1, who: "Ant" });
+  const f = await call({ action: "move", id, dir: 1, who: "Ananth" });
   assert.equal(f.body.idea.stage, "filmed");
-  assert.equal(f.body.idea.history[0].by, "Ant");
+  assert.equal(f.body.idea.history[0].by, "Ananth");
   assert.equal((await call({ action: "move", id, dir: 1 })).body.idea.stage, "edited");
   const noTime = await call({ action: "move", id, dir: 1 });
   assert.equal(noTime.status, 400);
@@ -162,33 +165,34 @@ test("phone reminders: sign up, the morning one once a day, and one before it go
   assert.equal((await call({ action: "pushKey" })).body.key, key); // the same keys every time
   const sub = (end) => ({ endpoint: "https://push.example/" + end, keys: { p256dh: "BPub", auth: "auth1" } });
   assert.equal((await call({ action: "pushSubscribe", who: "Nobody", sub: sub("x") })).status, 400);
-  assert.equal((await call({ action: "pushSubscribe", who: "Ant", sub: { endpoint: "http://bad" } })).status, 400);
-  assert.equal((await call({ action: "pushSubscribe", who: "Ant", sub: sub("ant") })).status, 200);
-  assert.equal((await call({ action: "pushSubscribe", who: "Pat", sub: sub("pat") })).status, 200);
-  assert.equal((await call({ action: "pushSubscribe", who: "Pat", sub: sub("gone") })).status, 200);
+  assert.equal((await call({ action: "pushSubscribe", who: "Ananth", sub: { endpoint: "http://bad" } })).status, 400);
+  assert.equal((await call({ action: "pushSubscribe", who: "Ananth", sub: sub("ananth") })).status, 200);
+  assert.equal((await call({ action: "pushSubscribe", who: "Blake", sub: sub("blake") })).status, 200);
+  assert.equal((await call({ action: "pushSubscribe", who: "Blake", sub: sub("gone") })).status, 200);
 
-  const t = await call({ action: "pushTest", endpoint: "https://push.example/ant" });
+  const t = await call({ action: "pushTest", endpoint: "https://push.example/ananth" });
   assert.equal(t.status, 200);
   assert.equal(sent.pop().title, "Reminders are on");
 
   // What would go at 7:50am, given these ideas.
   const ideas = [
-    idea({ id: "a", title: "Wheels", who: "Ant", when: "2026-11-05" }),
+    idea({ id: "a", title: "Wheels", who: "Ananth", when: "2026-11-05" }),
     idea({ id: "b", title: "Needs editing", stage: "filmed", stageAt: "2026-11-03T00:00:00Z" }),
     idea({ id: "c", title: "Tonight", stage: "scheduled", postAt: "2026-11-05T18:00" }),
     idea({ id: "d", title: "Soon", stage: "scheduled", postAt: "2026-11-05T08:30" }),
   ];
-  const morning = remindersToSend(ideas, ["Ant", "Pat", "Nick"], "2026-11-05T07:50", new Set());
+  const morning = remindersToSend(ideas, ["Ananth", "Blake"], "2026-11-05T07:50", new Set());
   assert.deepEqual(morning.map((m) => [m.to, m.title, m.body]), [
-    ["Ant", "1 thing to do today", "Film: Wheels."],
-    ["Pat", "3 things to do today", "Post at 8:30am: Soon. Post at 6pm: Tonight. Edit: Needs editing."],
-    ["Pat", "Time to post", "Soon goes up at 8:30am."],
+    ["Ananth", "4 things to do today", "Post at 8:30am: Soon. Post at 6pm: Tonight. Film: Wheels. Edit: Needs editing."],
+    ["Blake", "3 things to do today", "Post at 8:30am: Soon. Post at 6pm: Tonight. Edit: Needs editing."],
+    ["Ananth", "Time to post", "Soon goes up at 8:30am."],
+    ["Blake", "Time to post", "Soon goes up at 8:30am."],
   ]);
-  // Before 7am and after 9pm: no morning one. Already sent: not again.
-  assert.equal(remindersToSend(ideas, ["Ant"], "2026-11-05T06:50", new Set()).length, 0);
-  assert.equal(remindersToSend(ideas, ["Ant"], "2026-11-05T07:50", new Set(["today:Ant:2026-11-05"])).length, 0);
+  // Before 7am: no morning one, but 6:50 is too early for 8:30 too. Already sent: not again.
+  assert.equal(remindersToSend(ideas, ["Ananth"], "2026-11-05T06:50", new Set()).length, 0);
+  assert.deepEqual(remindersToSend(ideas, ["Ananth"], "2026-11-05T07:50", new Set(["today:Ananth:2026-11-05"])).map((m) => m.title), ["Time to post"]);
   // At 5:50pm, the one for 6pm.
-  assert.deepEqual(remindersToSend(ideas, ["Pat"], "2026-11-05T17:50", new Set(["today:Pat:2026-11-05", "post:d:2026-11-05T08:30"])).map((m) => m.body), ["Tonight goes up at 6pm."]);
+  assert.deepEqual(remindersToSend(ideas, ["Blake"], "2026-11-05T17:50", new Set(["today:Blake:2026-11-05", "post:d:2026-11-05T08:30:Blake"])).map((m) => m.body), ["Tonight goes up at 6pm."]);
 
   // The real run at 7:50am, twice: the second sends nothing new. A phone that's gone is forgotten.
   const store = filmStore();
@@ -196,14 +200,14 @@ test("phone reminders: sign up, the morning one once a day, and one before it go
   fail410 = true;
   const at = new Date("2026-11-04T20:50:00Z");
   const first = await sendReminders(store, at);
-  assert.deepEqual(first.reminders.map((m) => [m.to, m.title]), [["Ant", "1 thing to do today"], ["Pat", "3 things to do today"], ["Pat", "Time to post"]]);
-  assert.equal(first.sent, 3); // Ant's phone once, Pat's phone twice; the gone one failed
-  assert.deepEqual(sent.slice(-3).map((m) => [m.to.split("/").pop(), m.title]), [["ant", "1 thing to do today"], ["pat", "3 things to do today"], ["pat", "Time to post"]]);
+  assert.deepEqual(first.reminders.map((m) => [m.to, m.title]), [["Ananth", "4 things to do today"], ["Blake", "3 things to do today"], ["Ananth", "Time to post"], ["Blake", "Time to post"]]);
+  assert.equal(first.sent, 4); // each phone twice; Blake's old phone is gone
+  assert.deepEqual(sent.slice(-4).map((m) => [m.to.split("/").pop(), m.title]), [["ananth", "4 things to do today"], ["blake", "3 things to do today"], ["ananth", "Time to post"], ["blake", "Time to post"]]);
   assert.equal(sent[sent.length - 1].ttl, 6 * 3600);
   assert.equal(sent[sent.length - 1].key, key);
   assert.deepEqual((await sendReminders(store, at)).reminders, []);
   const subs = await store.all(C.push);
-  assert.deepEqual(subs.map((r) => r.sub.endpoint.split("/").pop()).sort(), ["ant", "pat"]);
+  assert.deepEqual(subs.map((r) => r.sub.endpoint.split("/").pop()).sort(), ["ananth", "blake"]);
   // Vercel's run has no ?action, but says who it is.
   assert.equal((await get("", { "user-agent": "vercel-cron/1.0" })).status, 200);
   // With CRON_SECRET set, only Vercel gets in.
@@ -213,8 +217,7 @@ test("phone reminders: sign up, the morning one once a day, and one before it go
   delete process.env.CRON_SECRET;
 
   // The text version for GoHighLevel.
-  const text = (await get("action=today&who=Nick")).text;
-  assert.equal(text, "Nick: nothing to do today.");
-  assert.equal((await call({ action: "pushUnsubscribe", endpoint: "https://push.example/ant" })).status, 200);
-  assert.equal((await call({ action: "pushTest", endpoint: "https://push.example/ant" })).status, 404);
+  assert.match((await get("action=today")).text, /^Ananth: .*\nBlake: /);
+  assert.equal((await call({ action: "pushUnsubscribe", endpoint: "https://push.example/ananth" })).status, 200);
+  assert.equal((await call({ action: "pushTest", endpoint: "https://push.example/ananth" })).status, 404);
 });

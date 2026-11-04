@@ -20,7 +20,7 @@
   const today = () => nowLocal().slice(0, 10);
 
   const S = {
-    who: local.get("who"),
+    who: window.FilmModel.cleanPerson(local.get("who")),
     data: null, loading: false, loadError: "",
     list: LISTS.includes(local.get("list")) ? local.get("list") : "tofilm",
     showPosted: false,
@@ -214,7 +214,7 @@
     const back = M.IDS.indexOf(x.stage) > 0 ? M.stage(M.IDS[M.IDS.indexOf(x.stage) - 1]) : null;
     const step = x.stage === "posted" ? "" : x.stage === "scheduled"
       ? `<div class="field"><span>Goes up</span><div class="pair"><input type="date" data-f="postDate" value="${esc(f.postDate)}" aria-label="Day it goes up"><input type="time" data-f="postTime" value="${esc(f.postTime)}" aria-label="Time it goes up"></div></div>`
-      : `<div class="field"><span>Who ${esc(st.step.toLowerCase())}s it? <em>(blank: Pat)</em></span><div class="chips">${M.PEOPLE.map((p) => `<button type="button" class="chip" data-act="pick" data-field="who" data-value="${p}" aria-pressed="${f.who === p}">${p}</button>`).join("")}</div></div>
+      : `<div class="field"><span>Who ${esc(st.step.toLowerCase())}s it? <em>(blank: both of you)</em></span><div class="chips">${M.PEOPLE.map((p) => `<button type="button" class="chip" data-act="pick" data-field="who" data-value="${p}" aria-pressed="${f.who === p}">${p}</button>`).join("")}</div></div>
          <div class="field"><span>${esc(st.by)} <em>(optional)</em></span><div class="chips">${whenChips("when", f.when, t)}<button type="button" class="chip" data-act="pick" data-field="when" data-value="" aria-pressed="${!f.when}">No date</button></div><input type="date" data-f="when" value="${esc(f.when || "")}" aria-label="${esc(st.by)}"></div>`;
     app.innerHTML = `<div class="sheet" data-stage="${x.stage}">${sheetHead(esc(st.label), "close", "Close")}<div class="wrap"><form class="body" data-form="idea" novalidate>
       <label class="field"><span>The idea</span><input class="title-in" data-f="title" value="${esc(f.title)}" maxlength="140" required></label>
