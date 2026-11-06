@@ -4,9 +4,6 @@
     {
       "title": "Does it foam? Ep 1: Shampoo and conditioner",
       "type": "Satisfying",
-      "tags": [
-        "Does it foam?"
-      ],
       "length": "15s",
       "people": 1,
       "hook": "Hold up the shampoo and conditioner. Text: DOES IT FOAM?",
@@ -23,9 +20,6 @@
     {
       "title": "Does it foam? Ep 2: Bubble bath",
       "type": "Satisfying",
-      "tags": [
-        "Does it foam?"
-      ],
       "length": "15s",
       "people": 1,
       "hook": "Hold up the bubble bath. Text: DOES IT FOAM?",
@@ -42,9 +36,6 @@
     {
       "title": "Does it foam? Ep 3: Hand soap",
       "type": "Satisfying",
-      "tags": [
-        "Does it foam?"
-      ],
       "length": "15s",
       "people": 1,
       "hook": "Hold up the hand soap. Text: DOES IT FOAM?",
@@ -61,9 +52,6 @@
     {
       "title": "Does it foam? Ep 4: Dish soap",
       "type": "Satisfying",
-      "tags": [
-        "Does it foam?"
-      ],
       "length": "15s",
       "people": 1,
       "hook": "Hold up the dish soap. Text: DOES IT FOAM?",
@@ -80,9 +68,6 @@
     {
       "title": "Does it foam? Ep 5: Laundry liquid",
       "type": "Satisfying",
-      "tags": [
-        "Does it foam?"
-      ],
       "length": "15s",
       "people": 1,
       "hook": "Hold up the laundry liquid. Text: DOES IT FOAM?",
@@ -99,9 +84,6 @@
     {
       "title": "Does it foam? Ep 6: Body wash",
       "type": "Satisfying",
-      "tags": [
-        "Does it foam?"
-      ],
       "length": "15s",
       "people": 1,
       "hook": "Hold up the body wash. Text: DOES IT FOAM?",
@@ -118,9 +100,6 @@
     {
       "title": "Does it foam? Ep 7: Coke",
       "type": "Satisfying",
-      "tags": [
-        "Does it foam?"
-      ],
       "length": "15s",
       "people": 1,
       "hook": "Hold up the Coke. Text: DOES IT FOAM?",
@@ -137,9 +116,6 @@
     {
       "title": "Does it foam? Ep 8: Energy drink",
       "type": "Satisfying",
-      "tags": [
-        "Does it foam?"
-      ],
       "length": "15s",
       "people": 1,
       "hook": "Hold up the energy drink. Text: DOES IT FOAM?",
@@ -156,9 +132,6 @@
     {
       "title": "Does it foam? Ep 9: Beer",
       "type": "Satisfying",
-      "tags": [
-        "Does it foam?"
-      ],
       "length": "15s",
       "people": 1,
       "hook": "Hold up the beer. Text: DOES IT FOAM?",
@@ -175,9 +148,6 @@
     {
       "title": "Does it foam? Ep 10: Kids' bubble mixture",
       "type": "Satisfying",
-      "tags": [
-        "Does it foam?"
-      ],
       "length": "15s",
       "people": 1,
       "hook": "Hold up the kids' bubble mixture. Text: DOES IT FOAM?",
@@ -194,9 +164,6 @@
     {
       "title": "Does it foam? Ep 11: Shaving cream",
       "type": "Satisfying",
-      "tags": [
-        "Does it foam?"
-      ],
       "length": "15s",
       "people": 1,
       "hook": "Hold up the shaving cream. Text: DOES IT FOAM?",
@@ -213,9 +180,6 @@
     {
       "title": "Does it foam? Ep 12: Our own snow foam",
       "type": "Satisfying",
-      "tags": [
-        "Does it foam?"
-      ],
       "length": "15s",
       "people": 1,
       "hook": "Hold up our own snow foam. Text: DOES IT FOAM?",
@@ -228,6 +192,22 @@
         "Rinse the foam cannon properly after"
       ],
       "caption": "Does it foam? Ep 12: the real one"
+    },
+    {
+      "title": "Does it foam? Ep 13: Pre workout",
+      "type": "Satisfying",
+      "length": "15s",
+      "people": 1,
+      "hook": "Hold up the pre workout. Text: DOES IT FOAM?",
+      "steps": [
+        "Hold the product up to camera",
+        "Pour it into the foam cannon",
+        "Spray it on a TEST PANEL only, never a customer car",
+        "Show the result: thick, runny or nothing",
+        "Give it a score out of 10 and say: \"Comment what we should try next\"",
+        "Rinse the foam cannon properly after"
+      ],
+      "caption": "Does it foam? Ep 13: pre workout💀"
     }
   ]
 }

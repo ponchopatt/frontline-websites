@@ -109,7 +109,27 @@ test("import: a loose list of ideas lands in Ideas with everything in the notes"
   assert.throws(() => Film.importIdeas({ nope: 1 }, [], { id: () => "x", now: "n" }), /no list of ideas/);
 });
 
-test("tags: cleaned, kept through edits, counted for the filter", () => {
+test("series: cleaned, kept through edits, and grouped in the order they started", () => {
+  const a = Film.newIdea({ title: "Ep 1", series: "  Does   it foam? " }, { id: "a", now: "2026-11-01T00:00:00Z" });
+  assert.equal(a.series, "Does it foam?");
+  assert.equal(Film.editIdea(a, { title: "Ep 1!" }, NOW).series, "Does it foam?"); // kept when not changed
+  assert.equal(Film.editIdea(a, { series: "" }, NOW).series, "");
+  const ideas = [
+    { ...a, stage: "filmed" },
+    { series: "Holden Commodore", stage: "tofilm", createdAt: "2026-11-02T00:00:00Z" },
+    { series: "does it foam?", stage: "tofilm", createdAt: "2026-11-03T00:00:00Z" },
+    { series: "", stage: "tofilm", createdAt: "2026-10-01T00:00:00Z" },
+  ];
+  assert.deepEqual(Film.seriesIn(ideas).map((g) => [g.name, g.count, g.stages]), [
+    ["Does it foam?", 2, { filmed: 1, tofilm: 1 }],
+    ["Holden Commodore", 1, { tofilm: 1 }],
+  ]);
+  // A series on each idea in an import wins over the file's.
+  const r = Film.importIdeas({ series: "File", ideas: [{ title: "x" }, { title: "y", series: "Own" }] }, [], { id: (n) => "i" + n, now: NOW });
+  assert.deepEqual(r.ideas.map((x) => x.series), ["File", "Own"]);
+});
+
+test("tags: cleaned, kept through edits, counted", () => {
   assert.deepEqual(Film.splitTags(" Does it foam? , trend, does it foam?,, "), ["Does it foam?", "trend"]);
   const x = Film.newIdea({ title: "A", tags: ["Does it foam?"] }, { id: "a", now: NOW });
   assert.deepEqual(Film.editIdea(x, { title: "B" }, NOW).tags, ["Does it foam?"]); // an edit without tags keeps them
@@ -118,21 +138,23 @@ test("tags: cleaned, kept through edits, counted for the filter", () => {
   assert.deepEqual(Film.tagsIn([x, { tags: ["trend"] }, { tags: ["Does it foam?"] }, {}]), [{ tag: "Does it foam?", count: 2 }, { tag: "trend", count: 1 }]);
 });
 
-test("the Does it foam? series file: 12 episodes, in order, exactly as asked", () => {
+test("the Does it foam? series file: 13 episodes, in order, exactly as asked", () => {
   const file = JSON.parse(fs.readFileSync(new URL("../film/does-it-foam.json", import.meta.url), "utf8"));
   const r = Film.importIdeas(file, [], { id: (n) => "ep" + (n + 1), now: NOW, by: "Ananth" });
-  assert.deepEqual([r.ideas.length, r.skipped, r.bad], [12, 0, 0]);
+  assert.deepEqual([r.ideas.length, r.skipped, r.bad], [13, 0, 0]);
   const order = r.ideas.slice().sort((a, b) => a.createdAt.localeCompare(b.createdAt)).map((x) => x.title);
   assert.deepEqual(order, r.ideas.map((x) => x.title));
   assert.equal(order[0], "Does it foam? Ep 1: Shampoo and conditioner");
   assert.equal(order[6], "Does it foam? Ep 7: Coke");
   assert.equal(order[9], "Does it foam? Ep 10: Kids' bubble mixture");
   assert.equal(order[11], "Does it foam? Ep 12: Our own snow foam");
+  assert.equal(order[12], "Does it foam? Ep 13: Pre workout");
   for (const [i, x] of r.ideas.entries()) {
     assert.equal(x.stage, "tofilm");
     assert.equal(x.who, null);
     assert.equal(x.when, null);
-    assert.deepEqual(x.tags, ["Does it foam?"]);
+    assert.equal(x.series, "Does it foam?"); // the whole file is one series
+    assert.deepEqual(x.tags, []);
     assert.match(x.title, new RegExp("^Does it foam\\? Ep " + (i + 1) + ": "));
     assert.match(x.caption, new RegExp("^Does it foam\\? Ep " + (i + 1) + ": "));
     assert.match(x.notes, /^Type: Satisfying\nLength: 15s\nPeople: 1\nHook: Hold up .+\. Text: DOES IT FOAM\?\nSteps:\n1\. Hold the product up to camera\n2\. Pour it into the foam cannon\n3\. Spray it on a TEST PANEL only, never a customer car\n4\. Show the result: thick, runny or nothing\n5\. Give it a score out of 10 and say: "Comment what we should try next"\n6\. Rinse the foam cannon properly after$/);
