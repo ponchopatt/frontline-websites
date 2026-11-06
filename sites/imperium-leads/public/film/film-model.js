@@ -3,9 +3,11 @@
   (lib/film-store.js) and the tests. The page loads it as window.FilmModel.
 
   One kind of document, an idea:
-    { title, notes, caption, link, tags, who, when, postAt, stage, stageAt, history, postedDay,
-      createdAt, createdBy, updatedAt }
-    tags    short labels like "Does it foam?" for a series; the app filters by them
+    { title, notes, caption, link, series, tags, who, when, postAt, stage, stageAt, history,
+      postedDay, createdAt, createdBy, updatedAt }
+    series  the group it belongs to, like "Does it foam?" or "Holden Commodore"; the lists show
+            each series as one folder that opens to its ideas. Blank = a loose idea.
+    tags    short labels, like "Reach" or "Expert"
   It moves through STAGES, one tick at a time: Ideas -> Filmed -> Edited -> Scheduled -> Posted.
     who     who does the next step (blank = both of them)
     when    the day the next step is due by ("2026-11-06"), or blank
@@ -135,6 +137,23 @@
     var k = str(tag).toLowerCase();
     return (x.tags || []).some(function (t) { return t.toLowerCase() === k; });
   }
+  // Every series in use: its name, how many ideas, and how far along they are. In the order the
+  // series was started, so folders stay put as ideas move.
+  function seriesIn(ideas) {
+    var by = {}, out = [];
+    (ideas || []).forEach(function (x) {
+      var name = str(x.series);
+      if (!name) return;
+      var k = name.toLowerCase();
+      if (!by[k]) { by[k] = { name: name, count: 0, first: x.createdAt || "", stages: {} }; out.push(by[k]); }
+      var g = by[k];
+      g.count++;
+      g.stages[x.stage] = (g.stages[x.stage] || 0) + 1;
+      if (String(x.createdAt || "") < g.first) g.first = x.createdAt;
+    });
+    return out.sort(function (a, b) { return String(a.first).localeCompare(String(b.first)) || a.name.localeCompare(b.name); });
+  }
+
   // Every tag in use, with how many ideas have it, most used first.
   function tagsIn(ideas) {
     var by = {};
@@ -150,7 +169,7 @@
   // The fields anyone fills in, checked. The title is the only one that must be there.
   function cleanFields(f) {
     f = f || {};
-    var out = { title: str(f.title, 140), notes: str(f.notes, 4000), caption: str(f.caption, 2200), link: f.link ? normaliseUrl(f.link) || "" : "", tags: splitTags(f.tags || []) };
+    var out = { title: str(f.title, 140), notes: str(f.notes, 4000), caption: str(f.caption, 2200), link: f.link ? normaliseUrl(f.link) || "" : "", series: str(f.series, 60).replace(/\s+/g, " "), tags: splitTags(f.tags || []) };
     if ("who" in f) out.who = cleanPerson(f.who);
     if ("when" in f) out.when = cleanDay(f.when);
     if ("postAt" in f) out.postAt = cleanTime(f.postAt);
@@ -161,7 +180,7 @@
     var f = cleanFields(fields);
     if (!f.title) throw new Error("An idea needs a title");
     return {
-      id: o.id, title: f.title, notes: f.notes, caption: f.caption, link: f.link, tags: f.tags,
+      id: o.id, title: f.title, notes: f.notes, caption: f.caption, link: f.link, series: f.series, tags: f.tags,
       who: f.who || null, when: f.when || null, postAt: null,
       stage: "tofilm", stageAt: o.now, history: [], postedDay: null, source: o.source || "app",
       createdAt: o.now, createdBy: o.by || null, updatedAt: o.now,
@@ -262,12 +281,14 @@
     var arrays = Object.keys(data).filter(function (k) { return Array.isArray(data[k]); });
     return arrays.length ? data[arrays[0]] : null;
   }
-  // A list of ideas from imperium_film_ideas.json (or anything shaped close to it). Tags become
-  // tags; types, hooks, steps and the rest go into the notes, so nothing in the file is lost.
-  // They're added in the file's order, a millisecond apart, so the lists keep that order.
+  // A list of ideas from imperium_film_ideas.json (or anything shaped close to it). A series
+  // (on each idea, or { series, ideas } for the whole file) and tags stay as they are; types,
+  // hooks, steps and the rest go into the notes, so nothing in the file is lost. They're added
+  // in the file's order, a millisecond apart, so the lists keep that order.
   function importIdeas(data, existing, o) {
     var list = ideasFrom(data);
     if (!list) throw new Error("That file has no list of ideas in it");
+    var fileSeries = data && !Array.isArray(data) && typeof data.series === "string" ? data.series : "";
     var seen = {};
     (existing || []).forEach(function (x) { seen[str(x.title).toLowerCase()] = 1; });
     var out = [], skipped = 0, bad = 0;
@@ -297,7 +318,8 @@
         title: title, notes: lines.join("\n"),
         caption: pick(raw, ["caption", "captions", "copy"]),
         link: pick(raw, ["link", "url", "reference", "inspo", "example"]),
-        tags: pick(raw, ["tags", "tag", "labels", "series"]) || [],
+        series: pick(raw, ["series", "group"]) || fileSeries,
+        tags: pick(raw, ["tags", "tag", "labels"]) || [],
       }, { id: o.id(n), now: now, by: o.by, source: "import" }));
     });
     return { ideas: out, skipped: skipped, bad: bad };
@@ -315,7 +337,7 @@
     stage: stage, stageLabel: stageLabel, normaliseUrl: normaliseUrl, platformOf: platformOf,
     dayIn: dayIn, localNow: localNow, addDays: addDays, daysBetween: daysBetween, minutesBetween: minutesBetween,
     cleanDay: cleanDay, cleanTime: cleanTime, cleanPerson: cleanPerson, dayLabel: dayLabel, timeLabel: timeLabel,
-    splitTags: splitTags, hasTag: hasTag, tagsIn: tagsIn,
+    splitTags: splitTags, hasTag: hasTag, tagsIn: tagsIn, seriesIn: seriesIn,
     cleanFields: cleanFields, newIdea: newIdea, editIdea: editIdea, move: move,
     remindersFor: remindersFor, digestText: digestText, importIdeas: importIdeas, countByStage: countByStage,
   };
