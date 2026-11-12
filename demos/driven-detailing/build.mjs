@@ -34,7 +34,7 @@ const { SIZES, RANGE, PACKAGES } = new Function(
   `${grab(/const SIZES = \[[^\]]*\];/, 'SIZES')}\n${grab(/const RANGE = \d+;/, 'RANGE')}\n${grab(/const PACKAGES = \[[\s\S]*?\n\];/, 'PACKAGES')}\nreturn { SIZES, RANGE, PACKAGES };`,
 )();
 const job = (id) => { const p = PACKAGES.find((x) => x.id === id); if (!p) throw new Error(`no package ${id}`); return p; };
-const $ = (n) => '$' + n;
+const $ = (n) => '$' + Number(n).toLocaleString('en-AU');
 const LABELS = ['Hatch or sedan', 'SUV or ute', '4x4 or 7-seater'];
 
 const P = {
@@ -52,7 +52,7 @@ const P = {
     const rows = ids.map((id) => {
       const p = job(id);
       const cells = p.prices.map((n, i) => n == null ? '<td>Quoted</td>'
-        : `<td>${$(n)}${p.ranged ? `<small>to ${$(n + RANGE)}</small>` : p.twoStep ? `<small>two-step ${$(p.twoStep[i])}</small>` : ''}</td>`).join('');
+        : `<td>${$(n)}${p.ranged ? `<small>to ${$(n + RANGE)}</small>` : p.twoStep ? `<small>two-step ${$(p.twoStep[i])}</small>` : p.tiers ? `<small>3 yrs. 5 yrs ${$(p.tiers[5][i])}, 7 yrs ${$(p.tiers[7][i])}</small>` : ''}</td>`).join('');
       return `<tr><td>${p.name}<small>${p.time || p.desc}</small></td>${cells}</tr>`;
     }).join('\n');
     const ranged = ids.some((id) => job(id).ranged);
@@ -63,6 +63,24 @@ ${rows}
   </tbody>
 </table></div>${ranged ? `\n<p class="ptable-note">A full or interior detail can be up to ${$(RANGE)} more if the car needs extra work. Seb tells you before he starts.</p>` : ''}`;
   },
+  // Ceramic coating: a row for each length of protection, a column for each car size.
+  ceramicTable: () => {
+    const p = job('cc');
+    const rows = [[3, p.prices], [5, p.tiers[5]], [7, p.tiers[7]]]
+      .map(([y, list]) => `<tr><td>${y} years</td>${list.map((n) => `<td>${$(n)}</td>`).join('')}</tr>`).join('\n');
+    return `<div class="ptable"><table>
+  <thead><tr><th scope="col">Protection</th>${LABELS.map((l) => `<th scope="col">${l}</th>`).join('')}</tr></thead>
+  <tbody>
+${rows}
+  </tbody>
+</table></div>`;
+  },
+  // "$997 for a hatch or sedan ($1,097 for an SUV or ute, $1,147 for a 4x4 or 7-seater)"
+  ceramicLine: (years) => {
+    const p = job('cc'), n = years === 3 ? p.prices : p.tiers[years];
+    return `${$(n[0])} for a ${SIZES[0]} (${$(n[1])} for an ${SIZES[1]}, ${$(n[2])} for a ${SIZES[2]})`;
+  },
+  tierFrom: (years) => $(job('cc').tiers[years][0]),
   reviews: (list) => `<h2>What customers say</h2>
 <div class="page-revs">
 ${list.map(([who, text]) => `  <figure class="rev">

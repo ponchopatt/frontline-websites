@@ -31,6 +31,13 @@ const PACKAGES = [
     inc: ['Full wash and clay bar decontamination', 'Paint checked under good light, and the finish agreed with you', 'Machine polish matched to your paint', 'Single-step: one polish for swirl marks and haze', 'Two-step: a cut, then a polish, for deeper defects'],
   },
   {
+    // Priced by how long it protects for: prices is 3 years, tiers has 5 and 7.
+    id: 'cc', name: 'Ceramic Coating', time: 'About 5 hrs',
+    desc: 'Polish, then a ceramic coating for 3, 5 or 7 years', prices: [997, 1097, 1147],
+    tiers: { 5: [1197, 1297, 1347], 7: [1347, 1447, 1597] },
+    inc: ['Full wash and clay bar decontamination', 'Single-stage machine polish for swirl marks and haze', 'Ceramic coating applied to the paintwork', 'Choose 3, 5 or 7 years of protection', 'Kept dry and undercover for 24 hours after, while it cures'],
+  },
+  {
     id: 'ext', name: 'Exterior Detail', time: '45 to 60 min',
     desc: 'Complete exterior detail', prices: [110, 125, 140],
     inc: ['Premium pH-balanced wash', 'Clay bar decontamination', 'Spray-on ceramic sealant', 'Wheels, rims and tyres detailed', 'Premium tyre shine', 'Wheel arches and mudguards', 'Wipers and blades cleaned', 'Exterior glass cleaned', 'Door jambs cleaned', 'Final inspection and finish'],
@@ -51,7 +58,7 @@ const BA = {
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-  const money = (n) => '$' + (n % 1 ? n.toFixed(2) : n);
+  const money = (n) => '$' + (n % 1 ? n.toFixed(2) : n.toLocaleString('en-AU'));
   const state = { size: 0, pack: 'full', formChose: false };
   const pick = () => PACKAGES.find((p) => p.id === state.pack) || PACKAGES[0];
   const price = (p) => p.prices[state.size];
@@ -63,6 +70,7 @@ const BA = {
     const n = price(p);
     if (n == null) return 'quoted';
     if (p.twoStep) return `${money(n)} single-step, ${money(p.twoStep[state.size])} two-step`;
+    if (p.tiers) return `${money(n)} for 3 years, ${money(p.tiers[5][state.size])} for 5, ${money(p.tiers[7][state.size])} for 7`;
     return money(n) + (p.ranged ? ' to ' + money(n + RANGE) : '');
   };
   // "a hatch or sedan", "an SUV or ute".
@@ -90,6 +98,7 @@ const BA = {
     const n = price(p);
     if (n == null) return '<b>Quoted</b><small>Text Seb photos of the paint</small>';
     if (p.twoStep) return `<b>${money(n)}</b><small>single-step, ${money(p.twoStep[state.size])} two-step</small>`;
+    if (p.tiers) return `<b>${money(n)}</b><small>3 yrs. 5 yrs ${money(p.tiers[5][state.size])}, 7 yrs ${money(p.tiers[7][state.size])}</small>`;
     return `<b>${money(n)}</b><small>${p.ranged ? 'to ' + money(n + RANGE) + ', by condition' : 'Set price'}</small>`;
   };
   function renderPacks() {

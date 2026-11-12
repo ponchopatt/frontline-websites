@@ -18,6 +18,7 @@ What's different from the demo:
   |---|---|
   | `/` | the new home page |
   | `/interior-car-detailing/`, `/exterior-car-detailing/`, `/paint-correction/` | rebuilt in the new design, with their own words |
+  | `/ceramic-coating/` | new: ceramic coating prices (3, 5 or 7 years, the same as Imperium's) and Seb's photos |
   | `/mobile-car-detailing/{glen-waverley,rowville,wheelers-hill,ferntree-gully,wantirna}/` | rebuilt in the new design, with their own words |
   | `/privacy.html` | their own policy, word for word |
   | `/book/` | redirects to `/#book` |
