@@ -93,7 +93,8 @@ ${list.map(([who, text]) => `  <figure class="rev">
 
 // ---- The page
 const pic = (name, alt) => {
-  const big = name === 'hero' ? 'hero-1400' : `${name}-1000`, small = name === 'hero' ? 'hero-800' : `${name}-600`;
+  // The hero files carry a version (-v2): browsers keep images for a year, so a new photo needs a new name.
+  const big = name === 'hero' ? 'hero-v2-1400' : `${name}-1000`, small = name === 'hero' ? 'hero-v2-800' : `${name}-600`;
   const [w, h] = name === 'hero' ? [1400, 933] : [1000, 750];
   return `<figure class="page-pic"><img src="/assets/${big}.webp" srcset="/assets/${small}.webp ${small.split('-').pop()}w, /assets/${big}.webp ${big.split('-').pop()}w" sizes="(min-width: 960px) 46vw, 100vw" width="${w}" height="${h}" alt="${alt}" fetchpriority="high"></figure>`;
 };
@@ -133,7 +134,7 @@ function page(pg, { legal = false } = {}) {
 <meta property="og:url" content="${url}">
 <meta property="og:title" content="${pg.title}">
 <meta property="og:description" content="${pg.desc}">
-<meta property="og:image" content="${SITE}/assets/og.jpg">
+<meta property="og:image" content="${SITE}/assets/og-v2.jpg">
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <meta name="theme-color" content="#05070c">
