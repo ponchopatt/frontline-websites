@@ -33,7 +33,7 @@ const near = (names) => {
 export default function content(P) {
   const suburb = ({ slug, postcode, intro, h2, body, nearby }) => ({
     path: `/mobile-car-detailing/${slug}/`,
-    title: `Mobile Car Detailing ${SUBURBS[slug]} | Driven Detailing`,
+    title: `Mobile Car Detailing ${SUBURBS[slug]} | Driven Detailing Melbourne`,
     desc: `Mobile car detailing in ${SUBURBS[slug]} VIC ${postcode}. We come to your home or work. Full details from ${P.from('full')}, interior from ${P.from('int')}. Call or text 0404 714 415.`,
     crumb: SUBURBS[slug],
     h1: `Mobile car detailing in ${SUBURBS[slug]}.`,
@@ -54,7 +54,7 @@ export default function content(P) {
   const pages = [
     {
       path: '/interior-car-detailing/',
-      title: 'Mobile Interior Car Detailing Melbourne | Driven Detailing',
+      title: 'Mobile Interior Car Detailing | Driven Detailing Melbourne',
       desc: `Interior car detailing at your home or work in Wantirna South and south-east Melbourne. Vacuum, leather shampoo, glass and odour, done by hand. From ${P.from('int')}.`,
       crumb: 'Interior detailing',
       h1: 'Interior car detailing at your home or work.',
@@ -88,7 +88,7 @@ export default function content(P) {
     },
     {
       path: '/exterior-car-detailing/',
-      title: 'Exterior Car Detailing, Clay Bar & Ceramic Sealant | Driven Detailing',
+      title: 'Exterior Car Detailing, Clay Bar & Ceramic Sealant | Driven Detailing Melbourne',
       desc: `Mobile exterior car detailing in south-east Melbourne. Every Exterior Detail includes a clay bar and a spray-on ceramic sealant. From ${P.from('ext')}.`,
       crumb: 'Exterior detailing',
       h1: 'Exterior car detailing, clay bar and ceramic sealant.',
@@ -110,7 +110,8 @@ export default function content(P) {
          <p>A clay bar is part of every Exterior and Full Detail.</p>`,
         `<h2>Spray-on ceramic sealant</h2>
          <p>Every Exterior and Full Detail finishes with our spray-on ceramic sealant. It&rsquo;s a ceramic (SiO2) sealant sprayed onto clean paint that adds slickness and gloss, makes water bead and sheet off, and makes the car easier to wash between details.</p>
-         <p>A spray-on ceramic is a quick, affordable layer of protection applied as part of your detail. It isn&rsquo;t the same as a multi-year professional ceramic coating, which needs full paint correction and hours of curing. It goes on after the clay bar, so it bonds to perfectly clean paint.</p>`,
+         <p>A spray-on ceramic is a quick, affordable layer of protection applied as part of your detail. It isn&rsquo;t the same as a multi-year professional ceramic coating, which needs the paint polished first and hours of curing. It goes on after the clay bar, so it bonds to perfectly clean paint.</p>
+         <p>Want protection that lasts years? See <a href="/ceramic-coating/">ceramic coating</a>, from ${P.from('cc')}.</p>`,
         P.reviews([
           ['Gabriel R.', 'Sebs attention to detail exceeded my expectations! Did an awesome job on my AMG, looks better now than when it left the showroom! Will be booking again.'],
           ['Stephen W.', 'Amazing professional service that made my Porsche 911 look brand new! Definitely recommend.'],
@@ -131,7 +132,7 @@ export default function content(P) {
     },
     {
       path: '/paint-correction/',
-      title: 'Paint Correction & Scratch Removal | Driven Detailing',
+      title: 'Paint Correction & Scratch Removal | Driven Detailing Melbourne',
       desc: `Mobile paint correction in south-east Melbourne. Remove swirl marks, light scratches and dull paint. Single-step from ${P.from('pc')}, two-step from $547.`,
       crumb: 'Paint correction',
       h1: 'Paint correction and scratch removal.',
@@ -160,6 +161,62 @@ export default function content(P) {
          <p>A <strong>two-step</strong> correction cuts first, for deeper defects, then polishes to refine the finish. Not sure which your car needs? Send photos and Seb will tell you.</p>`,
         `<h2>Prices</h2>${P.table(['pc'])}
          <p>Bigger cars, and light scratch removal, are quoted per car, because the time it takes depends on how hard the paint is and how many defects there are. Photos in daylight or under a torch help us quote accurately.</p>`,
+        `<h2>Keep the finish</h2>
+         <p>A <a href="/ceramic-coating/">ceramic coating</a> locks in a corrected finish for 3, 5 or 7 years, so the gloss lasts and the car is easier to wash. Coatings start at ${P.from('cc')} for a hatch or sedan, with a single-stage polish included.</p>`,
+      ],
+    },
+    {
+      path: '/ceramic-coating/',
+      title: 'Ceramic Coating, 3 to 7 Years | Driven Detailing Melbourne',
+      desc: `Ceramic coating across south-east Melbourne. The paint is polished, then coated for 3, 5 or 7 years. From ${P.from('cc')} for a hatch or sedan.`,
+      crumb: 'Ceramic coating',
+      h1: 'Ceramic coating.',
+      intro: 'A ceramic coating is a hard, glossy layer bonded to your paint. Dirt sticks less, washing is quicker, and the paint is protected from sun and bird droppings for years, not weeks. Seb polishes the paint first, then coats it.',
+      quick: `A ceramic coating from Driven Detailing Melbourne starts at ${P.ceramicLine(3)} with 3 years of protection. 5 years starts at ${P.tierFrom(5)} and 7 years at ${P.tierFrom(7)}. Every coating includes a wash, clay bar and single-stage polish first.`,
+      pic: 'ceramic-front',
+      picAlt: 'Black Tesla Model 3 after a ceramic coating, its bonnet reflecting a ceiling of hexagon lights',
+      blocks: [
+        `<h2>Fresh off a coating</h2>
+         <div class="gallery">
+${[
+  ['Front of the black Tesla Model 3 after its ceramic coating, with the Driven Detailing plate'],
+  ['Close-up of the coated bonnet and headlight, the hexagon lights reflected sharply in the paint'],
+  ['Side of the black Tesla Model 3 after its ceramic coating, the door panels like a mirror'],
+  ['Rear quarter of the black Tesla Model 3 after its ceramic coating'],
+].map(([alt], i) => `           <figure><img src="/assets/ceramic-${i + 1}-600.webp" srcset="/assets/ceramic-${i + 1}-600.webp 600w, /assets/ceramic-${i + 1}-1000.webp 1000w" sizes="(min-width: 960px) 240px, (min-width: 600px) 25vw, 50vw" width="600" height="800" alt="${alt}" loading="lazy" decoding="async"></figure>`).join('\n')}
+         </div>`,
+        `<h2>Ceramic coating prices</h2>${P.ceramicTable()}
+         <p>Every coating includes a full wash, clay bar decontamination and a single-stage machine polish before it goes on. Paint with deeper scratches may need a <a href="/paint-correction/">two-step correction</a> first: Seb will tell you from photos.</p>`,
+        `<h2>What a ceramic coating does</h2>
+         <ul>
+           <li><strong>Dirt sticks less,</strong> so the car stays cleaner for longer.</li>
+           <li><strong>Washing is quicker.</strong> Water beads and sheets off, taking the dirt with it.</li>
+           <li><strong>The paint is protected</strong> from sun, bird droppings and tree sap for years, not weeks.</li>
+           <li><strong>The gloss lasts.</strong> A polished, coated car keeps that deep, wet look.</li>
+         </ul>`,
+        `<h2>What it won&rsquo;t do</h2>
+         <ul>
+           <li><strong>It won&rsquo;t make the car scratch-proof.</strong> Keys and bad washing can still mark it.</li>
+           <li><strong>It won&rsquo;t stop stone chips.</strong> That&rsquo;s a job for paint protection film.</li>
+           <li><strong>You still need to wash it.</strong> It just takes less time.</li>
+         </ul>
+         <p>If anyone promises you more than that, ask questions.</p>`,
+        `<h2>How Seb coats your car</h2>
+         <ol>
+           <li><strong>Wash and decontaminate.</strong> A full wash, then a clay bar to pull out bonded grime.</li>
+           <li><strong>Polish.</strong> A single-stage machine polish takes out swirl marks and haze. A coating seals in whatever is underneath, so this comes first.</li>
+           <li><strong>Coat.</strong> The ceramic coating goes on panel by panel and is levelled by hand.</li>
+           <li><strong>Cure.</strong> The car stays dry and undercover for 24 hours while the coating hardens.</li>
+         </ol>
+         <p>A coating needs a dry, covered space for the day. Text Seb on <a href="sms:+61404714415">0404 714 415</a> to sort out where.</p>`,
+        `<h2>3, 5 or 7 years?</h2>
+         <p>Choose by how long you&rsquo;ll keep the car. Selling in a couple of years? 3 years covers it. Keeping it for the long haul? 7 years means one coating for most of the car&rsquo;s life with you.</p>`,
+        `<h2>Looking after it</h2>
+         <ul>
+           <li>Wash with a pH-neutral car shampoo and a clean mitt.</li>
+           <li>Skip automatic car washes: the brushes leave swirl marks.</li>
+           <li>A regular <a href="/#price">Maintenance Detail</a>, from ${P.from('maint')}, keeps it looking its best.</li>
+         </ul>`,
       ],
     },
     suburb({
@@ -206,7 +263,7 @@ export default function content(P) {
   // Their own policy, word for word. It still names Offsider Agency and memberships: see the README.
   const privacy = {
     path: '/privacy.html',
-    title: 'Privacy Policy | Driven Detailing',
+    title: 'Privacy Policy | Driven Detailing Melbourne',
     desc: 'How Driven Detailing collects, uses, shares and protects your personal information.',
     crumb: 'Privacy policy',
     h1: 'Privacy policy.',

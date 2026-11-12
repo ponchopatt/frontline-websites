@@ -92,6 +92,9 @@ em.nw { font-style: normal; }
 .top-in { display: flex; align-items: center; gap: 16px; height: 64px; }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font-weight: 640; font-stretch: 125%; font-size: 16px; letter-spacing: .005em; }
 .brand img { border-radius: 50%; }
+/* "Driven Detailing" over a small, spaced-out "MELBOURNE", like the logo. */
+.brand-name { display: grid; line-height: 1.05; }
+.brand-name small { font-size: 10px; font-weight: 560; font-stretch: 100%; letter-spacing: .34em; text-transform: uppercase; color: var(--soft); margin-top: 3px; }
 .nav { display: none; }
 .top-act { margin-left: auto; display: flex; gap: 10px; }
 
@@ -435,6 +438,11 @@ details[open] > summary::after { transform: rotate(225deg) translateY(-1px); }
 .page-hero .hero-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
 .page-pic { margin: 0; border-radius: var(--r); overflow: hidden; aspect-ratio: 4 / 3; background: var(--panel); }
 .page-pic img { width: 100%; height: 100%; object-fit: cover; }
+/* Photo grid on a service page: two across on a phone, four on a wider screen. */
+.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.gallery figure { margin: 0; border-radius: var(--r); overflow: hidden; aspect-ratio: 3 / 4; background: var(--panel); }
+.gallery img { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (min-width: 600px) { .gallery { grid-template-columns: repeat(4, 1fr); } }
 .prose { display: grid; gap: 14px; max-width: 70ch; }
 .prose + .prose { margin-top: 44px; }
 .prose h2 { font-size: clamp(1.45rem, 5.6vw, 1.9rem); }
