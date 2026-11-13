@@ -1,0 +1,293 @@
+{
+  "version": "2026-11-14",
+  "rules": [
+    "Mic check before every take: record 5 seconds, listen back with headphones. If you can't hear it clearly, don't roll.",
+    "Film vertical (9:16).",
+    "Two phones? Clap once in shot at the start so the clips line up in CapCut.",
+    "3 takes minimum of each ad. Keep the ad-libs.",
+    "Keep foam and water away from the phones and the mic.",
+    "Only water and car shampoo on people. Never real chemicals. Degreaser on the chain only.",
+    "Blur number plates in the edit.",
+    "On-screen text stays out of the top 14% and bottom 35% of the screen.",
+    "Every ad says 'we come to you' out loud.",
+    "A price on screen = the price said in that video. No made-up claims."
+  ],
+  "kit": [
+    "2 phones + tripod", "Lapel mic + sandwich bag", "Headphones", "Polisher light + tape", "Plastic table + 2 chairs",
+    "Ceramic bottle + jumper cables (props only)", "A properly dirty car", "Foam cannon + car shampoo", "Wheel brush, clay bar, vacuum",
+    "Spray bottles with water only", "Bucket of water", "Old hoodie, old shoes, sunglasses for Ananth", "Towels + full change of clothes for Ananth and Angus",
+    "A bike + a rider in full gear", "Chain degreaser + chain lube, soft bike brushes", "Headlight kit (sandpaper, polisher, sealant), masking tape, phone torch", "White microfibre towels"
+  ],
+  "offers": [
+    {"name": "Full detail", "price": "From $250", "runs": "Always"},
+    {"name": "Pay for the prep, coating's free", "price": "Paint correction from $697 + 3-year coating free", "runs": "Until 30 Nov"},
+    {"name": "Ceramic coating", "price": "From $997, correction included, up to 7 years warranty", "runs": "From 1 Dec"},
+    {"name": "Before & After Christmas Pack", "price": "2 full details: $449 hatch/sedan, $499 SUV/ute, $579 4x4/7-seater", "runs": "Orders close 20 Dec"},
+    {"name": "Bike detail", "price": "From $150", "runs": "Always"},
+    {"name": "Bike membership", "price": "$97/month", "runs": "Only once it's actually set up"},
+    {"name": "Headlight restoration", "price": "From [$X] (fill in)", "runs": "Always"},
+    {"name": "Car membership", "price": "From $205/month", "runs": "Always"}
+  ],
+  "ads": [
+    {
+      "id": "ad1", "number": 1, "title": "Interrogating a detailer", "priority": "must", "shootOrder": 1,
+      "length": "15-18s", "where": "Dark garage", "cast": ["Angus (interrogator)", "Ananth (chair)"],
+      "offer": "Pay for the prep, coating's free", "form": "Ceramic Coating Only", "deadline": "Edit same day, live by Tue 17 Nov",
+      "hook": "ANGUS (slams the ceramic bottle on the table): Does the coating bottle cost $140?!",
+      "body": [
+        "ANANTH (in the chair, cables on his shirt): I can't say!",
+        "(Angus lifts the cables. Spark sound.)",
+        "ANANTH: OKAY! YES! You're paying for the prep, not the coating!",
+        "(LIGHTS ON. Ananth unclips the cables, stands, walks to camera.)",
+        "ANANTH: So for November, the 3-year ceramic coating is free."
+      ],
+      "cta": [
+        "ANANTH: Tap the link below. (points down)",
+        "ANANTH (close to camera): Paint correction from $697. Coating's free. We come to you. Tap Get Quote.",
+        "(Behind him, Angus clicks the cables together. Ananth flinches.)"
+      ],
+      "visual": [
+        {"time": "Bottle slam", "shot": "Hand slams bottle, dark garage, one light on Ananth", "text": "Interrogating a detailer 😭"},
+        {"time": "Question", "shot": "Ananth's face under the light", "text": "Does the bottle cost $140?"},
+        {"time": "Ananth cracks", "shot": "Cables lift, spark sound", "text": "You're paying for the PREP"},
+        {"time": "Lights on", "shot": "Garage lights on, Ananth walks to camera", "text": "November: 3-year coating FREE 👇"},
+        {"time": "End", "shot": "Ananth close to camera, Angus clicks cables behind", "text": "Correction from $697 · Coating FREE · Tap Get Quote"}
+      ],
+      "setup": [
+        "Close all garage doors. Polisher light taped to the roof, pointing down on Ananth's face. Every other light off.",
+        "Plastic table in the middle. Ananth faces the camera, Angus has his back to the camera.",
+        "Bottle (label to camera) and cables on the table. Cables clipped to Ananth's shirt, not connected to anything.",
+        "Phone on a tripod behind Angus's shoulder, Ananth's eye level, ~1.5 m back. Lapel mic on Ananth.",
+        "Someone ready on the garage light switch for the lights-on moment."
+      ],
+      "broll": [],
+      "otherClips": ["Hand slamming the bottle", "Cables lifting", "Ananth's face under the light", "Wide of the dark setup", "2 takes of Ananth ad-libbing his begging"],
+      "checks": [
+        "$697 must be your real price for paint correction on its own, or 'free' isn't true.",
+        "Use the 3-year coating you actually apply. Never say '7 years' for this offer.",
+        "The offer must really end 30 November.",
+        "Keep it obviously a joke (over-the-top acting, sound-effect spark) so Meta doesn't flag it as violence.",
+        "When it goes live, turn off C-08 and C-09 ($997) until 1 Dec."
+      ]
+    },
+    {
+      "id": "ad8", "number": 8, "title": "Before & After Christmas Pack", "priority": "must", "shootOrder": 2, "isNew": true,
+      "length": "~15s", "where": "Driveway, next to a car", "cast": ["Ananth"],
+      "offer": "Before & After Christmas Pack", "form": "New Detailing Only", "deadline": "Orders close 20 Dec",
+      "hook": "STOP getting your car detailed before Christmas… …and then wrecking it on the road trip.",
+      "body": ["Our Before & After Christmas Pack: we detail it before Christmas, and again once the holidays are done.", "Two full details. We come to you both times."],
+      "cta": ["From $449. Orders close 20 December. Tap Get Quote."],
+      "visual": [
+        {"time": "0-3s", "shot": "Ananth to camera next to a clean car", "text": "STOP detailing it before Christmas…"},
+        {"time": "3-5s", "shot": "Cut to a messy back seat (chips, sand, bags)", "text": "…then wrecking it on the road trip"},
+        {"time": "5-11s", "shot": "Ananth explains, cuts of the crew detailing", "text": "Before & After Christmas Pack"},
+        {"time": "11-15s", "shot": "Ananth points down, clean car", "text": "Two full details from $449 · Orders close 20 Dec"}
+      ],
+      "setup": [],
+      "broll": ["Messy back seat (chips, sand, bags)", "The same car clean", "Crew detailing (foam, vacuum)"],
+      "otherClips": ["A car-park or coast vibe if you have one"],
+      "checks": ["Pricing: $449 hatch/sedan · $499 SUV/ute · $579 4x4/7-seater (both details). Save up to $61.", "Take it down on 20 December."]
+    },
+    {
+      "id": "ad9", "number": 9, "title": "Headlight restoration 50/50", "priority": "if-time", "shootOrder": 3, "isNew": true,
+      "length": "~15s", "where": "Driveway", "cast": ["Ananth"],
+      "offer": "Headlight restoration", "form": "New Detailing Only",
+      "hook": "STOP letting your headlights make your car look 10 years older.",
+      "body": ["(points to the yellow half) This is UV damage.", "(points to the clear half) This is [40 minutes] with us.", "We sand it, polish it and seal it so it stays clear."],
+      "cta": ["We come to you. Headlight restoration from [$X]. Tap Get Quote."],
+      "visual": [
+        {"time": "0-2s", "shot": "Extreme close-up of the yellow headlight, pull back to reveal the 50/50", "text": "STOP"},
+        {"time": "2-5s", "shot": "Ananth points at the yellow half", "text": "This is UV damage"},
+        {"time": "5-8s", "shot": "Points at the clear half, torch shines through both halves", "text": "This is [40 min] with us"},
+        {"time": "8-11s", "shot": "Quick cuts: wet sanding, polisher, sealant", "text": "Sand · Polish · Seal"},
+        {"time": "11-15s", "shot": "Both headlights done, front of car, reviews card", "text": "We come to you · From [$X] · Tap Get Quote 👇"}
+      ],
+      "setup": ["Tape down the middle of the headlight and do one half first."],
+      "broll": ["Wet sanding with water running", "Polisher on the lens", "Sealant going on", "Torch through the yellow half vs the clear half", "Front-on whole car before and after"],
+      "otherClips": ["Night version: driver's view with headlights on, before and after ('STOP driving around at night with headlights like this')"],
+      "checks": ["[$X] = your real price.", "[40 minutes] = your real time.", "Say how long the sealant really lasts, never 'forever'.", "Don't claim it fixes rego/roadworthy unless you've checked."]
+    },
+    {
+      "id": "ad2", "number": 2, "title": "Bike details (4 formats from one bike)", "priority": "if-time", "shootOrder": 4,
+      "length": "15-20s each", "where": "Driveway + a bike", "cast": ["Ananth", "Lucas", "Rider in full gear"],
+      "offer": "Bike detail from $150", "form": "New Detailing Only",
+      "filmingOrder": ["B4 arrival + dap-up with the rider on", "The whole detail with the rider still sitting there", "Rider gets off, film B3", "Clean bike, film B2", "Pull B1 from all the close-ups"],
+      "variants": [
+        {
+          "id": "B4", "title": "The rider stays on",
+          "hook": "Rider pulls up in full gear, helmet on, daps up Ananth. Ananth just starts foaming the bike. Rider doesn't move.",
+          "body": ["Fast process cuts with the rider still sitting there, arms crossed."],
+          "cta": ["ANANTH (to camera, rider behind): Bike details from $150. We come to you. Rider not included."],
+          "visual": [
+            {"time": "0-2s", "shot": "Rider pulls up, daps up Ananth", "text": "\"Bike detail?\" 🤝"},
+            {"time": "2-4s", "shot": "Ananth foams the bike, rider doesn't move", "text": "He didn't get off 😭"},
+            {"time": "4-14s", "shot": "Brush, chain, rinse, dry. Rider still on, arms crossed", "text": "Foam · Brushes · Chain · Protect"},
+            {"time": "14-17s", "shot": "Clean bike, rider thumbs up, still on it", "text": "We come to you"},
+            {"time": "17-20s", "shot": "Ananth to camera, rider behind", "text": "Bike details from $150 · Tap Get Quote"}
+          ]
+        },
+        {
+          "id": "B3", "title": "Talking while the detail happens",
+          "hook": "This is what a proper bike detail looks like.",
+          "body": ["(Lucas foaming) Snow foam first, never a pressure washer on the bearings.", "(brush on wheel) Soft brushes into every gap.", "(chain) Chain degreased and re-lubed.", "(wipe) Paint and plastics protected."],
+          "cta": ["We do it at your place. From $150. Tap Get Quote."]
+        },
+        {
+          "id": "B2-A", "title": "Talking in front of the clean bike: Pressure washer",
+          "hook": "STOP pressure-washing your bike. You're killing the bearings.",
+          "body": ["We detail bikes properly: foam, soft brushes, chain degreased and re-lubed, paint protected."],
+          "cta": ["And we come to you. Bike details from $150. Tap Get Quote."]
+        },
+        {
+          "id": "B2-B", "title": "Talking in front of the clean bike: Three things",
+          "hook": "Three things killing your bike's paint.",
+          "body": ["One: bugs. They're acidic, so get them off fast.", "Two: the servo car wash brush. Swirls everywhere.", "Three: leaving it in the Canberra sun with no protection.", "We clean it, decontaminate it and protect it."],
+          "cta": ["We come to you. Bike details from $150. Tap below."]
+        },
+        {
+          "id": "B2-C", "title": "Bike membership (ONLY once the plan is real)",
+          "hook": "You spent twenty grand on this bike. STOP letting road grime and bugs eat the paint.",
+          "body": ["For about three bucks a day, we come to your house every month and keep it looking like the day you bought it.", "Chain, paint, chrome, plastics."],
+          "cta": ["From $97 a month. Tap Get Quote."]
+        },
+        {
+          "id": "B1", "title": "The process edit (no talking)",
+          "hook": "Dirty bike, then foam hits.",
+          "body": ["15-20s to music: foam → soft brush on wheels → chain degreased → rinse → dry."],
+          "cta": ["Slow pan of the clean bike. Text: Full bike detail · We come to you · From $150"]
+        }
+      ],
+      "broll": ["Pressure washer near the hub (don't actually blast the bearings)", "Bugs on the fairing/screen close-up", "Foam on the bike", "Soft brush on the wheel", "Chain degreaser + re-lube close-up", "Grime running off the chain", "Clean bike slow pan"],
+      "otherClips": [],
+      "checks": ["Engine off, bike on its stand, rider's feet down.", "Visor shut, foam on gear only, never the face.", "Low-pressure rinse only near the rider and bearings.", "Get the rider's OK to be filmed.", "Only say 'you're killing the bearings' if that's how you'd explain it to a customer.", "Don't post Script C until the $97 plan is real."]
+    },
+    {
+      "id": "ad3", "number": 3, "title": "The race: can Ananth finish the ad before Lucas foams the car?", "priority": "must", "shootOrder": 5,
+      "length": "~20s", "where": "Driveway, dirty car", "cast": ["Ananth", "Lucas"],
+      "offer": "Full detail from $250", "form": "New Detailing Only",
+      "hook": "On screen: 'Finish the ad before the car's covered' · 3, 2, 1, GO. Rules: if Lucas wins, Ananth gets foamed.",
+      "body": ["ANANTH (fast, one take): Imperium Detailing. We come to you. Pre-wash, snow foam, hand wash, clay bar, ceramic sealant. Inside's vacuumed, carpets extracted, leather cleaned. If you want your car looking brand new, tap the link below. Full details from two-fif—", "(Lucas finishes and foams Ananth mid-sentence.)"],
+      "cta": ["ANANTH (covered, spitting foam, deadpan): …$250. Tap Get Quote."],
+      "visual": [
+        {"time": "0-2s", "shot": "Top: Ananth ready, deep breath. Bottom: Lucas lifting the foam cannon", "text": "Finish the ad before the car's covered · 3, 2, 1, GO"},
+        {"time": "2-12s", "shot": "Top: Ananth talking fast. Bottom: Lucas foaming, car going white", "text": "Big running timer 0:00 → 0:10"},
+        {"time": "12-14s", "shot": "Top: Ananth pointing down. Bottom: Lucas on the last panel", "text": "👇 Tap the link below"},
+        {"time": "14-16s", "shot": "Full screen: Lucas turns and foams Ananth mid-sentence", "text": "LUCAS WINS 😭"},
+        {"time": "16-20s", "shot": "Ananth covered in foam, deadpan", "text": "From $250 · Tap Get Quote"}
+      ],
+      "setup": ["Phone A on a tripod: Ananth chest-up, car behind him. Lapel mic into Phone A.", "Phone B handheld: Lucas foaming, whole car in frame.", "Start both phones, clap once, then GO.", "Real race: Lucas really tries to win, Ananth really rushes.", "3 takes. In one, let Ananth almost make it.", "Lucas aims at Ananth's body, never at the phones or mic."],
+      "broll": [], "otherClips": [],
+      "caption": "Ananth vs Lucas. Loser gets foamed 😭 #canberra #cardetailing #imperiumdetailing",
+      "checks": ["Series ideas: finish the ad before Lucas vacuums the interior / before the clay bar's done / swap who talks."]
+    },
+    {
+      "id": "ad7", "number": 7, "title": "Foam selfie", "priority": "must", "shootOrder": 6, "isNew": true,
+      "length": "8-10s", "where": "Driveway, straight after the race", "cast": ["Angus"],
+      "offer": "Full detail from $250", "form": "New Detailing Only",
+      "hook": "(Selfie, face covered in foam) Canberra. It's about time you booked your car in.",
+      "body": ["End the year with it looking brand new."],
+      "cta": ["We come to you. Full details from $250.", "(foam slides off his nose) Tap Get Quote."],
+      "altHook": "STOP driving into Christmas in a filthy car. We come to you. Full details from $250. Tap Get Quote. (wipes foam off his eyes, deadpan)",
+      "visual": [
+        {"time": "0-2s", "shot": "Selfie, face covered in foam, already talking", "text": "CANBERRA 👀"},
+        {"time": "2-5s", "shot": "Foam dripping, Lucas foaming a car behind", "text": "End the year with a clean car"},
+        {"time": "5-8s", "shot": "Still deadpan", "text": "We come to you · From $250"},
+        {"time": "8-10s", "shot": "Wipes foam off his eyes, points down", "text": "Tap Get Quote 👇"}
+      ],
+      "setup": ["One phone, selfie mode, arm's length.", "Lucas foaming a car behind him."],
+      "broll": [], "otherClips": [],
+      "checks": ["Car shampoo foam only, out of eyes and mouth.", "Wipe the lens between takes.", "3 takes, keep the one where the foam drops at a funny moment."]
+    },
+    {
+      "id": "ad4", "number": 4, "title": "We gave Ananth a full detail", "priority": "must", "shootOrder": 7,
+      "length": "~20s", "where": "Driveway", "cast": ["Ananth", "Lucas", "AJ", "Nick"],
+      "offer": "Full detail from $250", "form": "New Detailing Only",
+      "hook": "Here's everything you get in a full detail. (crew standing around him with gear)",
+      "body": ["Wheels and tyres… (Lucas scrubs his shoes with a wheel brush)", "Snow foam… (foam blasted onto his shoulders)", "Clay bar… (AJ rubs clay on his hoodie sleeve)", "Interior vacuumed… (vacuum on his hoodie)", "Glass inside and out… (Nick wipes his sunglasses while he's wearing them)", "Ceramic sealant… (water spray mist on his hoodie)"],
+      "cta": ["If you want your car looking brand new, tap the link below. We come to you. (points down)", "(dripping, deadpan) Full details from $250. For your car, not for me. Tap Get Quote.", "End on 2-3s of the real clean car."],
+      "visual": [
+        {"time": "Each step", "shot": "2 seconds each. One wide tripod shot + close-ups", "text": "Step name on screen"},
+        {"time": "End", "shot": "Real clean car, 2-3s", "text": "From $250 · Tap Get Quote"}
+      ],
+      "setup": [], "broll": ["Real clean car for the end shot"], "otherClips": [],
+      "checks": ["Clay only on clothes, never skin.", "Ananth can't laugh. Keep the takes where he nearly breaks."]
+    },
+    {
+      "id": "ad5", "number": 5, "title": "We gave Ananth a ceramic coating (2 endings)", "priority": "must", "shootOrder": 8,
+      "length": "~20s", "where": "Driveway (film straight after Ad 4)", "cast": ["Ananth", "Lucas"],
+      "offer": "Nov: pay for the prep, coating's free · Dec: ceramic from $997", "form": "Ceramic Coating Only",
+      "hook": "Here's what's in a ceramic coating with us.",
+      "body": ["Decontamination… (clay bar on his sleeve, clothes only)", "Paint correction. The bit that actually matters. (Lucas gently buffs his forehead with a clean microfibre, machine off)", "Then the coating… (misted head to toe with a water spray bottle)", "Water just beads off. (bucket of water thrown at him: LAST SHOT OF THE DAY)"],
+      "ctaVariants": [
+        {"label": "November (runs now to 30 Nov)", "cta": ["And for November, you only pay for the prep. The coating's free.", "Paint correction from $697. We come to you. Tap Get Quote. Please don't book me."]},
+        {"label": "December (runs from 1 Dec)", "cta": ["Up to 7 years warranty, and we come to you. Tap the link below.", "Ceramic from $997, paint correction included. For your car. Please don't book me."]}
+      ],
+      "visual": [{"time": "End", "shot": "Cut to real water beading on a coated car", "text": "Offer line for that ending"}],
+      "setup": ["Film BOTH endings before the bucket goes (one extra take of the last lines)."],
+      "broll": ["Real water beading on a coated car"], "otherClips": [],
+      "checks": ["Polisher must be off near his face, microfibre only.", "'Up to 7 years' only, never a flat 7 years."]
+    },
+    {
+      "id": "ad6", "number": 6, "title": "Meanwhile: This is what Saturdays are for", "priority": "separate-day", "shootOrder": 99,
+      "length": "~19s", "where": "Barber shop (Angus's next haircut)", "cast": ["Angus"],
+      "offer": "Full detail from $250", "form": "New Detailing Only",
+      "hook": "ANGUS (in the barber chair, dead serious): STOP spending your Saturday washing your car.",
+      "body": ["This is what Saturdays are for.", "(Cut to the crew detailing a car in a driveway.)"],
+      "cta": ["(barber still cutting, pointing down) We come to you. Tap the link below.", "Full details from $250. Tap Get Quote and get back to your Saturday."],
+      "visual": [
+        {"time": "0-3s", "shot": "Angus in the barber chair, deadpan", "text": "STOP washing your car on Saturdays"},
+        {"time": "3-5s", "shot": "Barber cutting, Angus relaxed", "text": "This is what Saturdays are for"},
+        {"time": "5-11s", "shot": "Quick cuts: crew foaming, vacuuming, extraction water", "text": "We come to you"},
+        {"time": "11-14s", "shot": "Back to Angus, pointing down", "text": "Tap the link below 👇"},
+        {"time": "14-19s", "shot": "Angus in the chair, fresh cut", "text": "Full details from $250 · Tap Get Quote"}
+      ],
+      "setup": ["Ask the barber first."],
+      "broll": ["Crew foaming (grab at tomorrow's shoot)", "Vacuuming (grab at tomorrow's shoot)", "Extraction water (grab at tomorrow's shoot)"],
+      "otherClips": ["Later versions: the gym, golf, a pie at the footy"], "checks": []
+    },
+    {
+      "id": "ad11", "number": 11, "title": "Touch-free car wash vs us (50/50)", "priority": "separate-day", "shootOrder": 100, "isNew": true,
+      "length": "~21s", "where": "Car wash day (film from inside the car), then driveway", "cast": ["Ananth", "Crew"],
+      "offer": "Full detail from $250", "form": "New Detailing Only",
+      "hook": "This car just went through a touch-free car wash. (steps back, it looks shiny) Looks clean, right?",
+      "body": ["(white microfibre along the lower door, comes up brown) Nope.", "Water and soap alone can't lift the grime that's bonded on.", "So we detailed exactly half. (walks along the tape line)", "Their half. Our half."],
+      "cta": ["We come to you. Full details from $250. Link below."],
+      "visual": [
+        {"time": "0-3s", "shot": "Inside the car going through the wash, jets on the windscreen", "text": "Touch-free car wash…"},
+        {"time": "3-5s", "shot": "Car rolls out shiny, Ananth steps back", "text": "Looks clean, right?"},
+        {"time": "5-8s", "shot": "White microfibre on the lower door: brown", "text": "Nope 😬"},
+        {"time": "8-14s", "shot": "Tape down the middle (wheel too), crew details one half", "text": "We detailed exactly half"},
+        {"time": "14-18s", "shot": "Slow walk along the line, tape pulled off (slow-mo)", "text": "Their half · Our half"},
+        {"time": "18-21s", "shot": "Torch/low sun across both halves, towel test on your side: clean", "text": "We come to you · From $250"}
+      ],
+      "setup": ["Use a properly dirty car (road film, wheel grime, not just dust).", "Don't touch their side after it comes out."],
+      "broll": ["Jets from inside the car", "Towel test both halves", "Tape pulled off", "Wheel split down the middle"], "otherClips": [],
+      "checks": ["Don't name or show the car wash. Blur any signage.", "Only say what you show on camera.", "Post this before Ad 10."]
+    },
+    {
+      "id": "ad10", "number": 10, "title": "STOP paying for a car wash membership", "priority": "separate-day", "shootOrder": 101, "isNew": true,
+      "length": "~16s", "where": "Car wash day, same car as Ad 11", "cast": ["Ananth"],
+      "offer": "Reel (organic). Ad version: car membership from $205/month", "form": "New Detailing Only (ad version)",
+      "hook": "STOP paying for a car wash membership.",
+      "body": ["Sixty bucks a month… (finger along the lower door, comes up black) …and it still looks like this.", "Machines can't get into the wheels, the door jambs, the grime down low.", "And that's just the outside. Inside's still a mess.", "You're paying every month for a car that's never actually clean.", "We hand-wash it, at your house. Every gap, inside and out."],
+      "cta": ["If you want it properly clean, link below."],
+      "ctaVariants": [{"label": "Ad version (only if the reel does well)", "cta": ["Our membership: we come to your house every month and actually clean it. Properly. From $205 a month. Tap Get Quote."]}],
+      "visual": [
+        {"time": "0-2s", "shot": "Ananth walking, car wash exit blurred behind", "text": "STOP paying for a car wash membership"},
+        {"time": "2-5s", "shot": "Finger test on the lower door, black finger", "text": "$60/month… for this?"},
+        {"time": "5-9s", "shot": "Close-ups: dirty wheel barrels, door jambs, crumbs in the seats", "text": "What the machine misses"},
+        {"time": "9-13s", "shot": "Crew hand-washing, jambs, interior", "text": "Every gap. Inside and out."},
+        {"time": "13-16s", "shot": "Finger test on your detailed car: clean", "text": "We come to you"}
+      ],
+      "setup": [], "broll": ["Dirty wheel barrels", "Door jambs", "Crumbs in the seats", "Crew hand-washing"], "otherClips": [],
+      "checks": ["Don't name the car wash.", "Check real Canberra membership prices and say 'around $60'.", "Don't say 'brushes scratch your paint'. Touch-free washes have no brushes.", "Ad version goes to the instant form, not the membership page."]
+    }
+  ],
+  "extraBroll": [
+    "Barber ad: foam, vacuum, extraction water",
+    "Christmas ads: messy back seat, then the same seat clean",
+    "Coating ads + statics: polisher doing a 50/50 under a light, water beading on a coated car",
+    "Headlights: torch through a yellow lens vs a clear lens",
+    "Everything: white towel test on dirty vs clean paint"
+  ]
+}
