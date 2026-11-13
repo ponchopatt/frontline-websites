@@ -3,8 +3,8 @@
   signal. /api/ is never cached, so no ideas are stored here. When online the network always
   wins, so a new release shows up on the next open.
 */
-const CACHE = "imperium-film-shell-v2";
-const SHELL = ["/film/", "/film/film.js", "/film/film-model.js", "/film/film.css", "/film/manifest.json", "/film/fonts/big-shoulders.woff2", "/film/fonts/instrument-sans.woff2", "/film/icon-192.png", "/film/icon-512.png", "/film/apple-touch-icon.png"];
+const CACHE = "imperium-film-shell-v3";
+const SHELL = ["/film/", "/film/film.js", "/film/film-model.js", "/film/film.css", "/film/ad-filming.json", "/film/manifest.json", "/film/fonts/big-shoulders.woff2", "/film/fonts/instrument-sans.woff2", "/film/icon-192.png", "/film/icon-512.png", "/film/apple-touch-icon.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

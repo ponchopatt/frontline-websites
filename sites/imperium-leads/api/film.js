@@ -2,12 +2,14 @@ import { createHash, randomUUID } from "node:crypto";
 import webpush from "web-push";
 import { json, sameSecret } from "../lib/http.js";
 import { C, Film, filmStore } from "../lib/film-store.js";
+import { AD, findAd, validTick, tickId, adIdea } from "../lib/film-ads.js";
 
 /*
   Imperium Film List's one endpoint. No PIN: anyone with the link can use it (the owner's choice).
 
   POST { action, who, ... }
     list, saveIdea, deleteIdea, move, import    the lists
+    tick, tickReset, adMove, adSeed             the ad shoot (lib/film-ads.js)
     inbox                                       the iPhone Shortcut: a shared reel becomes an idea
     pushKey, pushSubscribe, pushUnsubscribe, pushTest    phone reminders
   GET ?action=remind     Vercel runs this every hour (vercel.json): the 7am "today" reminder to each
@@ -29,9 +31,9 @@ async function readBody(request) {
 }
 
 async function list(store) {
-  const ideas = await store.all(C.ideas);
+  const [ideas, ticks] = await Promise.all([store.all(C.ideas), store.all(C.ticks)]);
   ideas.sort((a, b) => String(b.updatedAt).localeCompare(String(a.updatedAt)));
-  return { ideas, now: Film.localNow(new Date()) };
+  return { ideas, ticks: ticks.map(({ scope, item, by, at }) => ({ scope, item, by, at })), now: Film.localNow(new Date()) };
 }
 
 async function saveIdea(store, body, by) {
@@ -51,6 +53,11 @@ async function saveIdea(store, body, by) {
 async function moveIdea(store, body, by) {
   const idea = await store.get(C.ideas, body.id);
   if (!idea) return fail("That idea's gone", 404);
+  // An ad can't be scheduled until someone has gone through its "Check before posting".
+  const ad = idea.adId && findAd(idea.adId);
+  if (ad && body.dir > 0 && idea.stage === "edited" && (ad.checks || []).length && !(await store.get(C.ticks, tickId(`${ad.id}:checked`, "checked")))) {
+    return fail("Tick \u201cI've checked these\u201d under Check before posting first.", 409, { idea: { ...idea, id: body.id } });
+  }
   const now = new Date();
   const next = Film.move({ ...idea, id: body.id }, body.dir, { by, now: now.toISOString(), today: Film.dayIn(now), postAt: body.postAt });
   if (!next) return fail(body.dir < 0 ? "It's at the start already" : "It's posted already", 409, { idea });
@@ -70,6 +77,46 @@ async function fromShortcut(store, body, by) {
   const idea = Film.newIdea({ title: note || "Idea from " + where, link }, { id: randomUUID(), now: nowIso(), by, source: "shortcut" });
   await store.put(C.ideas, idea.id, idea);
   return json({ ok: true, idea, message: "Added to Ideas" });
+}
+
+/* ------------------------------------------------------------ the ad shoot */
+
+// One id per ad, so two phones making the same ad's idea at once write the same document.
+const adIdeaId = (ad) => `ad-shoot-${ad.id}`;
+
+// The ad's idea, made from the shoot file if it isn't on the list yet (or was deleted).
+async function adIdeaFor(store, ad, by, now) {
+  const ideas = await store.all(C.ideas);
+  const had = ideas.find((x) => x.adId === ad.id);
+  if (had) return { idea: had, made: false };
+  const idea = Film.newIdea(adIdea(ad), { id: adIdeaId(ad), now: now || nowIso(), by, source: "ads", adId: ad.id });
+  await store.put(C.ideas, idea.id, idea);
+  return { idea, made: true };
+}
+
+async function tick(store, body, by) {
+  const scope = String(body.scope || ""), item = String(body.item || "");
+  if (!validTick(scope, item)) return fail("That isn't on the list");
+  const id = tickId(scope, item);
+  if (body.on === false) await store.del(C.ticks, id);
+  else await store.put(C.ticks, id, { scope, item, by, at: nowIso() });
+  return json({ ok: true, tick: { scope, item, on: body.on !== false } });
+}
+
+// The ad shoot's ideas, one per ad, in shoot order. Ads already on the list are left alone.
+async function adSeed(store, by) {
+  const ideas = await store.all(C.ideas);
+  const have = new Set(ideas.map((x) => x.adId).filter(Boolean));
+  const base = Date.now();
+  const added = [];
+  for (const [i, ad] of [...AD.ads].sort((a, b) => a.shootOrder - b.shootOrder).entries()) {
+    if (have.has(ad.id)) continue;
+    // A millisecond apart, so the series lists them in shoot order.
+    const idea = Film.newIdea(adIdea(ad), { id: adIdeaId(ad), now: new Date(base + i).toISOString(), by, source: "ads", adId: ad.id });
+    added.push(idea);
+  }
+  if (added.length) await store.putMany(C.ideas, added);
+  return json({ ok: true, added: added.length, skipped: AD.ads.length - added.length, ideas: added });
 }
 
 /* ------------------------------------------------------------ phone reminders */
@@ -181,6 +228,25 @@ export async function POST(request) {
         return await moveIdea(store, body, who);
       case "inbox":
         return await fromShortcut(store, body, who);
+      case "tick":
+        return await tick(store, body, who);
+      case "tickReset": {
+        // The kit list (or the extra b-roll list) back to nothing ticked.
+        const scope = String(body.scope || "");
+        if (scope !== "kit" && scope !== "extra") return fail("Only the kit and extra b-roll lists reset");
+        const ticks = (await store.all(C.ticks)).filter((t) => t.scope === scope);
+        for (const t of ticks) await store.del(C.ticks, t.id);
+        return json({ ok: true, cleared: ticks.length });
+      }
+      case "adMove": {
+        // The ad card's tick: the same move as its idea in the list.
+        const ad = findAd(String(body.adId || ""));
+        if (!ad) return fail("That ad isn't in the shoot guide", 404);
+        const { idea } = await adIdeaFor(store, ad, who);
+        return await moveIdea(store, { ...body, id: idea.id }, who);
+      }
+      case "adSeed":
+        return await adSeed(store, who);
       case "import": {
         const existing = await store.all(C.ideas);
         const r = Film.importIdeas(body.data, existing, { id: () => randomUUID(), now: nowIso(), by: who });
@@ -217,6 +283,7 @@ export async function POST(request) {
   } catch (e) {
     // The model's own checks ("An idea needs a title") are someone's to fix; anything else is ours.
     const theirs = /needs a title|isn't a link|no list of ideas|Pick when/.test((e && e.message) || "");
+    if (!theirs) console.error("film:", action, e);
     return fail(theirs ? e.message : "Something went wrong on our side", theirs ? 400 : 500);
   }
 }

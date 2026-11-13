@@ -179,12 +179,15 @@
     o = o || {};
     var f = cleanFields(fields);
     if (!f.title) throw new Error("An idea needs a title");
-    return {
+    var idea = {
       id: o.id, title: f.title, notes: f.notes, caption: f.caption, link: f.link, series: f.series, tags: f.tags,
       who: f.who || null, when: f.when || null, postAt: null,
       stage: "tofilm", stageAt: o.now, history: [], postedDay: null, source: o.source || "app",
       createdAt: o.now, createdBy: o.by || null, updatedAt: o.now,
     };
+    // The ad shoot's ideas carry their ad's id, so the ad card and the idea share one stage.
+    if (o.adId) idea.adId = String(o.adId);
+    return idea;
   }
   // The same idea with someone's edits. Its stage and history stay as they are.
   function editIdea(idea, fields, now) {
@@ -332,6 +335,33 @@
     return out;
   }
 
+  /* ------------------------------------------------------------ the ad shoot */
+
+  // The series the ad shoot's ideas go in.
+  var AD_SERIES = "Ad shoot: 15 Nov";
+
+  // An ad as an idea: "Ad 1: Interrogating a detailer", with the hook in the notes. The bike ad
+  // has no hook of its own, so its notes are each version's hook.
+  function adIdeaFields(ad) {
+    var hooks = ad.hook ? [ad.hook] : (ad.variants || []).map(function (v) { return v.id + ": " + v.hook; });
+    return { title: "Ad " + ad.number + ": " + ad.title, notes: hooks.join("\n"), caption: ad.caption || "", series: AD_SERIES };
+  }
+
+  // Whether an offer is on, from its "runs" text: "Until 30 Nov" and "Orders close 20 Dec" end
+  // after that day; "From 1 Dec" hasn't started before it. Anything else ("Always") is on. year
+  // is the shoot guide's year, so the dates mean the right December.
+  var MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };
+  function offerStatus(runs, today, year) {
+    var r = str(runs);
+    var m = /(\d{1,2})\s+([a-z]{3})[a-z]*/i.exec(r);
+    var mon = m && MONTHS[m[2].toLowerCase()];
+    if (!mon) return { state: "on", label: "" };
+    var day = year + "-" + (mon < 10 ? "0" : "") + mon + "-" + (+m[1] < 10 ? "0" : "") + (+m[1]);
+    if (/^\s*(until|orders close|ends?|closes?)\b/i.test(r)) return today > day ? { state: "ended", label: "Ended" } : { state: "on", label: "" };
+    if (/^\s*from\b/i.test(r)) return today < day ? { state: "soon", label: "Not yet" } : { state: "on", label: "" };
+    return { state: "on", label: "" };
+  }
+
   root.FilmModel = {
     STAGES: STAGES, IDS: IDS, PEOPLE: PEOPLE, TZ: TZ,
     stage: stage, stageLabel: stageLabel, normaliseUrl: normaliseUrl, platformOf: platformOf,
@@ -340,5 +370,6 @@
     splitTags: splitTags, hasTag: hasTag, tagsIn: tagsIn, seriesIn: seriesIn,
     cleanFields: cleanFields, newIdea: newIdea, editIdea: editIdea, move: move,
     remindersFor: remindersFor, digestText: digestText, importIdeas: importIdeas, countByStage: countByStage,
+    AD_SERIES: AD_SERIES, adIdeaFields: adIdeaFields, offerStatus: offerStatus,
   };
 })(typeof window !== "undefined" ? window : globalThis);

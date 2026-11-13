@@ -36,6 +36,35 @@ There are four lists. Every idea has a tick circle, and tapping it moves the ide
   - Each reel's type (Reach, Expert, People or Proof) is a tag.
   - The notes hold the shots, what's said, the on-screen text, the post day and the "Every job" rules.
 
+## Ad filming
+
+The **Ad filming** button (the red record button under the four lists) opens the ad shoot.
+
+- **Where the words come from:** `public/film/ad-filming.json`. Every script, shot, checklist and offer is read from that file. To change an ad, change the file. Nothing is typed into the page code.
+- **The list:** the ads in shoot order, in three groups: Must shoot tomorrow, If there's time, and Separate day.
+  - Each card shows the length, where, who's on camera, the offer, a NEW badge and a red deadline chip.
+  - Its tick works like an idea's tick: Filmed, then Edited, then Scheduled.
+- **One ad:** Hook, Body, CTA, Visual, Setup, B-roll needed, Other clips, Check before posting and Caption, in that order.
+  - Each section folds away. A section the ad doesn't have isn't shown.
+  - (Stage directions) are grey. [Placeholders] such as [$X] are red, so nobody films or posts them.
+  - Each piece of on-screen text is a white chip. Tap it to copy it.
+- **The bike ad (Ad 2):** the filming order first, then each version (B4, B3, B2-A, B2-B, B2-C, B1). Each version has its own Filmed tick and its own teleprompter.
+- **Check before posting:** the yellow box. An ad can't be scheduled until someone ticks "I've checked these". The same box shows when you schedule it, from the ad card or from Ideas, and the server checks it too.
+- **Teleprompter:** the hook, body and CTA in huge white words on black.
+  - It scrolls by itself. Speed goes from 1 to 10, and A− and A+ change the size.
+  - Tap the words to stop or start.
+  - The screen stays on while it's open. On older iPhones that can't do this, it says to turn Auto-Lock off.
+- **For every ad:** Rules, Kit list (with Reset), Offers (greyed out once an offer's date has passed) and Extra B-roll.
+- **Ideas:** the series **Ad shoot: 15 Nov** has one idea per ad ("Ad 1: Interrogating a detailer"), with the hook in Notes and the caption if there is one.
+  - The idea and the ad card are the same thing. Tick one, and the other moves too.
+  - The idea has an "Open the ad card" button.
+  - The series is made the first time a phone opens Film List after this update. Ideas already on the list aren't touched.
+- **Syncing:** every tick is saved for both phones. On the ad screens, Film List checks for the other phone's ticks every 15 seconds. Elsewhere it checks every minute.
+- **Underneath:**
+  - An ad's stage is its idea's stage (`idea.adId`).
+  - Each checklist tick is its own document in `film_ticks`, so two phones ticking at the same moment can't undo each other.
+  - The server code is in `lib/film-ads.js` and `api/film.js` (`tick`, `tickReset`, `adMove`, `adSeed`). The tests are in `test/film-ads.test.js`.
+
 ## Reminders
 
 Once a phone has reminders turned on (Today box, or the gear icon then Reminders), it gets:
